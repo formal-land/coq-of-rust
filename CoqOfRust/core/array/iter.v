@@ -91,7 +91,7 @@ Module array.
                           [],
                           []
                         |),
-                        [ M.read (| M.get_constant (| "core::array::iter::N" |) |) ]
+                        [ M.read (| M.get_constant "core::array::iter::N" |) ]
                       |))
                   ]
               |)
@@ -242,7 +242,7 @@ Module array.
               let~ buffer :=
                 M.alloc (|
                   repeat (|
-                    M.read (| M.get_constant (| "core::array::iter::empty_discriminant" |) |),
+                    M.read (| M.get_constant "core::array::iter::empty_discriminant" |),
                     N
                   |)
                 |) in
@@ -1910,7 +1910,7 @@ Module array.
                     [
                       ("data",
                         repeat (|
-                          M.read (| M.get_constant (| "core::array::iter::clone_discriminant" |) |),
+                          M.read (| M.get_constant "core::array::iter::clone_discriminant" |),
                           N
                         |));
                       ("alive",

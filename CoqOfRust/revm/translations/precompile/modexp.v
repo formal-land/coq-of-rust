@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module modexp.
   Definition value_BYZANTIUM : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           Value.StructTuple
@@ -19,8 +19,11 @@ Module modexp.
             ]
         |))).
   
+  Axiom Constant_value_BYZANTIUM :
+    (M.get_constant "revm_precompile::modexp::BYZANTIUM") = value_BYZANTIUM.
+  
   Definition value_BERLIN : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           Value.StructTuple
@@ -35,6 +38,8 @@ Module modexp.
                 (M.get_function (| "revm_precompile::modexp::berlin_run", [], [] |))
             ]
         |))).
+  
+  Axiom Constant_value_BERLIN : (M.get_constant "revm_precompile::modexp::BERLIN") = value_BERLIN.
   
   (*
   pub fn byzantium_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -1024,9 +1029,8 @@ Module modexp.
                                                     [
                                                       ("start",
                                                         M.read (|
-                                                          M.get_constant (|
+                                                          M.get_constant
                                                             "revm_precompile::modexp::run_inner::HEADER_LENGTH"
-                                                          |)
                                                         |))
                                                     ]
                                                 ]
@@ -1730,7 +1734,10 @@ Module modexp.
   
   Module run_inner.
     Definition value_HEADER_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 96 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 96 |))).
+    
+    Axiom Constant_value_HEADER_LENGTH :
+      (M.get_constant "revm_precompile::modexp::run_inner::HEADER_LENGTH") = value_HEADER_LENGTH.
   End run_inner.
   
   (*

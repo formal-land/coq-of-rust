@@ -3,6 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter value_NUM : Value.t.
 
+Axiom Constant_value_NUM :
+  (M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM") = value_NUM.
+
 Parameter coerce_static : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_coerce_static :

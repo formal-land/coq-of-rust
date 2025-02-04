@@ -450,9 +450,8 @@ Module ability_field_requirements.
                                                   ]
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "move_binary_format::file_format::EMPTY"
-                                                  |)
                                                 |);
                                                 M.closure
                                                   (fun γ =>
@@ -646,9 +645,8 @@ Module ability_field_requirements.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (M.read (|
-                                                                        M.get_constant (|
+                                                                        M.get_constant
                                                                           "move_binary_format::file_format::ALL"
-                                                                        |)
                                                                       |)))
                                                                 ]
                                                               |)))

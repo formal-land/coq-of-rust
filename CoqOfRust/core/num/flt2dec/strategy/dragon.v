@@ -6,7 +6,7 @@ Module num.
     Module strategy.
       Module dragon.
         Definition value_POW10 : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
@@ -26,8 +26,11 @@ Module num.
                 |)
               |))).
         
+        Axiom Constant_value_POW10 :
+          (M.get_constant "core::num::flt2dec::strategy::dragon::POW10") = value_POW10.
+        
         Definition value_POW5TO16 : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
@@ -36,8 +39,11 @@ Module num.
                 |)
               |))).
         
+        Axiom Constant_value_POW5TO16 :
+          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO16") = value_POW5TO16.
+        
         Definition value_POW5TO32 : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
@@ -50,8 +56,11 @@ Module num.
                 |)
               |))).
         
+        Axiom Constant_value_POW5TO32 :
+          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO32") = value_POW5TO32.
+        
         Definition value_POW5TO64 : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
@@ -66,8 +75,11 @@ Module num.
                 |)
               |))).
         
+        Axiom Constant_value_POW5TO64 :
+          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO64") = value_POW5TO64.
+        
         Definition value_POW5TO128 : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
@@ -87,8 +99,11 @@ Module num.
                 |)
               |))).
         
+        Axiom Constant_value_POW5TO128 :
+          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO128") = value_POW5TO128.
+        
         Definition value_POW5TO256 : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
@@ -116,6 +131,9 @@ Module num.
                     ]
                 |)
               |))).
+        
+        Axiom Constant_value_POW5TO256 :
+          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO256") = value_POW5TO256.
         
         (*
         pub fn mul_pow10(x: &mut Big, n: usize) -> &mut Big {
@@ -250,9 +268,8 @@ Module num.
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (|
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::num::flt2dec::strategy::dragon::POW10"
-                                                      |)
                                                     |)
                                                   |),
                                                   M.alloc (|
@@ -313,9 +330,8 @@ Module num.
                                           M.SubPointer.get_array_field (|
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::dragon::POW10"
-                                                |)
                                               |)
                                             |),
                                             M.alloc (|
@@ -376,9 +392,8 @@ Module num.
                                           M.SubPointer.get_array_field (|
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::dragon::POW10"
-                                                |)
                                               |)
                                             |),
                                             M.alloc (| Value.Integer IntegerKind.Usize 8 |)
@@ -435,9 +450,8 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::dragon::POW5TO16"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -492,9 +506,8 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::dragon::POW5TO32"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -549,9 +562,8 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::dragon::POW5TO64"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -606,9 +618,8 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::dragon::POW5TO128"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -663,9 +674,8 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::dragon::POW5TO256"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -741,9 +751,7 @@ Module num.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.read (|
-                                    M.get_constant (|
-                                      "core::num::flt2dec::strategy::dragon::POW10"
-                                    |)
+                                    M.get_constant "core::num::flt2dec::strategy::dragon::POW10"
                                   |)
                                 |)
                               |)
@@ -788,9 +796,8 @@ Module num.
                                             M.SubPointer.get_array_field (|
                                               M.deref (|
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::num::flt2dec::strategy::dragon::POW10"
-                                                  |)
                                                 |)
                                               |),
                                               largest
@@ -838,9 +845,7 @@ Module num.
                                 M.SubPointer.get_array_field (|
                                   M.deref (|
                                     M.read (|
-                                      M.get_constant (|
-                                        "core::num::flt2dec::strategy::dragon::POW10"
-                                      |)
+                                      M.get_constant "core::num::flt2dec::strategy::dragon::POW10"
                                     |)
                                   |),
                                   n
@@ -1650,9 +1655,7 @@ Module num.
                                         |)
                                       ]
                                     |),
-                                    M.read (|
-                                      M.get_constant (| "core::num::flt2dec::MAX_SIG_DIGITS" |)
-                                    |)
+                                    M.read (| M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS" |)
                                   |)
                                 |)
                               |)) in

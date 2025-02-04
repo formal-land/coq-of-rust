@@ -2,11 +2,24 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module annotated_value.
-  Definition value_MOVE_STRUCT_NAME : Value.t := M.run ltac:(M.monadic (Value.String "struct")).
+  Definition value_MOVE_STRUCT_NAME : Value.t :=
+    M.run_constant ltac:(M.monadic (Value.String "struct")).
   
-  Definition value_MOVE_STRUCT_TYPE : Value.t := M.run ltac:(M.monadic (Value.String "type")).
+  Axiom Constant_value_MOVE_STRUCT_NAME :
+    (M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_NAME") = value_MOVE_STRUCT_NAME.
   
-  Definition value_MOVE_STRUCT_FIELDS : Value.t := M.run ltac:(M.monadic (Value.String "fields")).
+  Definition value_MOVE_STRUCT_TYPE : Value.t :=
+    M.run_constant ltac:(M.monadic (Value.String "type")).
+  
+  Axiom Constant_value_MOVE_STRUCT_TYPE :
+    (M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_TYPE") = value_MOVE_STRUCT_TYPE.
+  
+  Definition value_MOVE_STRUCT_FIELDS : Value.t :=
+    M.run_constant ltac:(M.monadic (Value.String "fields")).
+  
+  Axiom Constant_value_MOVE_STRUCT_FIELDS :
+    (M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_FIELDS") =
+      value_MOVE_STRUCT_FIELDS.
   
   (* StructRecord
     {
@@ -2186,7 +2199,7 @@ Module annotated_value.
                 M.read (| __deserializer |);
                 M.read (| Value.String "MoveFieldLayout" |);
                 M.read (|
-                  M.get_constant (| "move_core_types::annotated_value::_'1::deserialize::FIELDS" |)
+                  M.get_constant "move_core_types::annotated_value::_'1::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'1::deserialize::__Visitor"
@@ -2473,7 +2486,7 @@ Module annotated_value.
                 M.read (| __deserializer |);
                 M.read (| Value.String "MoveStructLayout" |);
                 M.read (|
-                  M.get_constant (| "move_core_types::annotated_value::_'3::deserialize::FIELDS" |)
+                  M.get_constant "move_core_types::annotated_value::_'3::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'3::deserialize::__Visitor"
@@ -2843,9 +2856,7 @@ Module annotated_value.
                 M.read (| __deserializer |);
                 M.read (| Value.String "MoveTypeLayout" |);
                 M.read (|
-                  M.get_constant (|
-                    "move_core_types::annotated_value::_'5::deserialize::VARIANTS"
-                  |)
+                  M.get_constant "move_core_types::annotated_value::_'5::deserialize::VARIANTS"
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'5::deserialize::__Visitor"
@@ -8181,9 +8192,8 @@ Module annotated_value.
                               [
                                 M.read (| serializer |);
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_core_types::annotated_value::MOVE_STRUCT_NAME"
-                                  |)
                                 |);
                                 Value.Integer IntegerKind.Usize 2
                               ]
@@ -8272,9 +8282,7 @@ Module annotated_value.
                             [
                               M.borrow (| Pointer.Kind.MutRef, t |);
                               M.read (|
-                                M.get_constant (|
-                                  "move_core_types::annotated_value::MOVE_STRUCT_TYPE"
-                                |)
+                                M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_TYPE"
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
@@ -8392,9 +8400,8 @@ Module annotated_value.
                             [
                               M.borrow (| Pointer.Kind.MutRef, t |);
                               M.read (|
-                                M.get_constant (|
+                                M.get_constant
                                   "move_core_types::annotated_value::MOVE_STRUCT_FIELDS"
-                                |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,

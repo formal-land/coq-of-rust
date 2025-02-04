@@ -8680,9 +8680,7 @@ Module signature.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant (|
-                                    "move_binary_format::file_format_common::VERSION_6"
-                                  |)
+                                  M.get_constant "move_binary_format::file_format_common::VERSION_6"
                                 |)
                               |)
                             |)) in

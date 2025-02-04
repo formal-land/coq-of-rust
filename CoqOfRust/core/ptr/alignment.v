@@ -1015,8 +1015,7 @@ Module ptr.
       *)
       Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] =>
-          ltac:(M.monadic (M.read (| M.get_constant (| "core::ptr::alignment::MIN" |) |)))
+        | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::ptr::alignment::MIN" |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

@@ -496,7 +496,7 @@ Module instructions.
                                                       M.cast
                                                         (Ty.path "u64")
                                                         (M.read (|
-                                                          M.get_constant (| "core::num::MAX" |)
+                                                          M.get_constant "core::num::MAX"
                                                         |))
                                                     |))
                                                     (BinOp.ne (|
@@ -663,9 +663,8 @@ Module instructions.
                                                                   M.cast
                                                                     (Ty.path "u64")
                                                                     (M.read (|
-                                                                      M.get_constant (|
+                                                                      M.get_constant
                                                                         "core::num::MAX"
-                                                                      |)
                                                                     |))
                                                                 |))
                                                                 (BinOp.ne (|
@@ -923,7 +922,7 @@ Module instructions.
                                   ]
                                 |) in
                               offset));
-                          fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                          fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
                         ]
                       |)
                     |) in

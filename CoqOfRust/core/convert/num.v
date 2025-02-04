@@ -3270,9 +3270,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u16")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u16") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3335,9 +3333,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u32") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3400,9 +3396,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u32") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3465,9 +3459,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3530,9 +3522,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3595,9 +3585,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3660,9 +3648,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3725,9 +3711,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3790,9 +3774,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3855,9 +3837,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3914,11 +3894,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -3987,11 +3967,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4060,11 +4040,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4133,11 +4113,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4206,11 +4186,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4279,11 +4259,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4352,11 +4332,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4425,11 +4405,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4498,11 +4478,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4571,11 +4551,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4650,9 +4630,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u8")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u8") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4715,9 +4693,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u16")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u16") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4780,9 +4756,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u16")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u16") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4845,9 +4819,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u32") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4910,9 +4882,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u32") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4975,9 +4945,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u32") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5040,9 +5008,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5105,9 +5071,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5170,9 +5134,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5235,9 +5197,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5300,9 +5260,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5365,9 +5323,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5430,9 +5386,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5495,9 +5449,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5560,9 +5512,7 @@ Module convert.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5919,11 +5869,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i16") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -6232,11 +6182,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -6305,11 +6255,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i32") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -6558,11 +6508,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -6631,11 +6581,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -6704,11 +6654,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i64") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -6897,11 +6847,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -6970,11 +6920,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -7043,11 +6993,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -7116,11 +7066,11 @@ Module convert.
             M.read (|
               let~ min :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
               let~ max :=
                 M.alloc (|
-                  M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                  M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -7257,7 +7207,7 @@ Module convert.
                               M.read (| u |),
                               M.cast
                                 (Ty.path "usize")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                (M.read (| M.get_constant "core::num::MAX" |))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7383,7 +7333,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "usize")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -7452,7 +7402,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "usize")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -7521,7 +7471,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "usize")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -7652,7 +7602,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "usize")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -7721,7 +7671,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "usize")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -7790,7 +7740,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "usize")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -7859,7 +7809,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "usize")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -7951,11 +7901,11 @@ Module convert.
               M.read (|
                 let~ min :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
                 let~ max :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -8028,11 +7978,11 @@ Module convert.
               M.read (|
                 let~ min :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
                 let~ max :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -8105,11 +8055,11 @@ Module convert.
               M.read (|
                 let~ min :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
                 let~ max :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -8310,11 +8260,11 @@ Module convert.
               M.read (|
                 let~ min :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
                 let~ max :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -8387,11 +8337,11 @@ Module convert.
               M.read (|
                 let~ min :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
                 let~ max :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -8464,11 +8414,11 @@ Module convert.
               M.read (|
                 let~ min :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
                 let~ max :=
                   M.alloc (|
-                    M.cast (Ty.path "isize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                    M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -8673,7 +8623,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "u128")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -8990,11 +8940,11 @@ Module convert.
               M.read (|
                 let~ min :=
                   M.alloc (|
-                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
                 let~ max :=
                   M.alloc (|
-                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -9137,7 +9087,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "u64")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -9206,7 +9156,7 @@ Module convert.
                                 M.read (| u |),
                                 M.cast
                                   (Ty.path "u128")
-                                  (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                  (M.read (| M.get_constant "core::num::MAX" |))
                               |)
                             |)) in
                         let _ :=
@@ -9329,11 +9279,11 @@ Module convert.
               M.read (|
                 let~ min :=
                   M.alloc (|
-                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
                 let~ max :=
                   M.alloc (|
-                    M.cast (Ty.path "i128") (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                    M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),

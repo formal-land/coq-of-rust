@@ -432,7 +432,7 @@ Module interpreter.
     End Impl_core_hash_Hash_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
     
     Definition value_EMPTY_SHARED_MEMORY : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructRecord
@@ -467,6 +467,10 @@ Module interpreter.
                 ("last_checkpoint", Value.Integer IntegerKind.Usize 0)
               ]
           |))).
+    
+    Axiom Constant_value_EMPTY_SHARED_MEMORY :
+      (M.get_constant "revm_interpreter::interpreter::shared_memory::EMPTY_SHARED_MEMORY") =
+        value_EMPTY_SHARED_MEMORY.
     
     Module Impl_core_fmt_Debug_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
       Definition Self : Ty.t :=

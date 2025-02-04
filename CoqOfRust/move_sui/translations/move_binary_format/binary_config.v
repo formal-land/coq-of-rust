@@ -772,20 +772,20 @@ Module binary_config.
           (Value.StructRecord
             "move_binary_format::binary_config::TableConfig"
             [
-              ("module_handles", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("struct_handles", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("function_handles", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("function_instantiations", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("signatures", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("constant_pool", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("identifiers", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("address_identifiers", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("struct_defs", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("struct_def_instantiations", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("function_defs", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("field_handles", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("field_instantiations", M.read (| M.get_constant (| "core::num::MAX" |) |));
-              ("friend_decls", M.read (| M.get_constant (| "core::num::MAX" |) |))
+              ("module_handles", M.read (| M.get_constant "core::num::MAX" |));
+              ("struct_handles", M.read (| M.get_constant "core::num::MAX" |));
+              ("function_handles", M.read (| M.get_constant "core::num::MAX" |));
+              ("function_instantiations", M.read (| M.get_constant "core::num::MAX" |));
+              ("signatures", M.read (| M.get_constant "core::num::MAX" |));
+              ("constant_pool", M.read (| M.get_constant "core::num::MAX" |));
+              ("identifiers", M.read (| M.get_constant "core::num::MAX" |));
+              ("address_identifiers", M.read (| M.get_constant "core::num::MAX" |));
+              ("struct_defs", M.read (| M.get_constant "core::num::MAX" |));
+              ("struct_def_instantiations", M.read (| M.get_constant "core::num::MAX" |));
+              ("function_defs", M.read (| M.get_constant "core::num::MAX" |));
+              ("field_handles", M.read (| M.get_constant "core::num::MAX" |));
+              ("field_instantiations", M.read (| M.get_constant "core::num::MAX" |));
+              ("friend_decls", M.read (| M.get_constant "core::num::MAX" |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1096,9 +1096,7 @@ Module binary_config.
             "move_binary_format::binary_config::BinaryConfig"
             [
               ("max_binary_format_version",
-                M.read (|
-                  M.get_constant (| "move_binary_format::file_format_common::VERSION_MAX" |)
-                |));
+                M.read (| M.get_constant "move_binary_format::file_format_common::VERSION_MAX" |));
               ("check_no_extraneous_bytes", M.read (| check_no_extraneous_bytes |));
               ("table_config",
                 M.call_closure (|
@@ -1134,9 +1132,7 @@ Module binary_config.
             "move_binary_format::binary_config::BinaryConfig"
             [
               ("max_binary_format_version",
-                M.read (|
-                  M.get_constant (| "move_binary_format::file_format_common::VERSION_MAX" |)
-                |));
+                M.read (| M.get_constant "move_binary_format::file_format_common::VERSION_MAX" |));
               ("check_no_extraneous_bytes", Value.Bool true);
               ("table_config",
                 M.call_closure (|

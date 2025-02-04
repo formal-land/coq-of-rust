@@ -171,7 +171,7 @@ Module num.
                         "f"
                       |)
                     |))
-                    (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
+                    (M.read (| M.get_constant "core::num::diy_float::mul::MASK" |))
                 |) in
               let~ c :=
                 M.alloc (|
@@ -196,7 +196,7 @@ Module num.
                         "f"
                       |)
                     |))
-                    (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
+                    (M.read (| M.get_constant "core::num::diy_float::mul::MASK" |))
                 |) in
               let~ ac := M.alloc (| BinOp.Wrap.mul (| M.read (| a |), M.read (| c |) |) |) in
               let~ bc := M.alloc (| BinOp.Wrap.mul (| M.read (| b |), M.read (| c |) |) |) in
@@ -210,11 +210,11 @@ Module num.
                         BinOp.Wrap.shr (| M.read (| bd |), Value.Integer IntegerKind.I32 32 |),
                         BinOp.bit_and
                           (M.read (| ad |))
-                          (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
+                          (M.read (| M.get_constant "core::num::diy_float::mul::MASK" |))
                       |),
                       BinOp.bit_and
                         (M.read (| bc |))
-                        (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
+                        (M.read (| M.get_constant "core::num::diy_float::mul::MASK" |))
                     |),
                     BinOp.Wrap.shl (|
                       Value.Integer IntegerKind.U64 1,

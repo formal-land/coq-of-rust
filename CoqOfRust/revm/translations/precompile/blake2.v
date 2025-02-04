@@ -3,13 +3,19 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module blake2.
   Definition value_F_ROUND : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+  
+  Axiom Constant_value_F_ROUND :
+    (M.get_constant "revm_precompile::blake2::F_ROUND") = value_F_ROUND.
   
   Definition value_INPUT_LENGTH : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 213 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 213 |))).
+  
+  Axiom Constant_value_INPUT_LENGTH :
+    (M.get_constant "revm_precompile::blake2::INPUT_LENGTH") = value_INPUT_LENGTH.
   
   Definition value_FUN : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           Value.StructTuple
@@ -23,6 +29,8 @@ Module blake2.
               M.pointer_coercion (M.get_function (| "revm_precompile::blake2::run", [], [] |))
             ]
         |))).
+  
+  Axiom Constant_value_FUN : (M.get_constant "revm_precompile::blake2::FUN") = value_FUN.
   
   (*
   pub fn run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -164,9 +172,7 @@ Module blake2.
                                     |)
                                   ]
                                 |),
-                                M.read (|
-                                  M.get_constant (| "revm_precompile::blake2::INPUT_LENGTH" |)
-                                |)
+                                M.read (| M.get_constant "revm_precompile::blake2::INPUT_LENGTH" |)
                               |)
                             |)) in
                         let _ :=
@@ -286,7 +292,7 @@ Module blake2.
                 M.alloc (|
                   BinOp.Wrap.mul (|
                     M.cast (Ty.path "u64") (M.read (| rounds |)),
-                    M.read (| M.get_constant (| "revm_precompile::blake2::F_ROUND" |) |)
+                    M.read (| M.get_constant "revm_precompile::blake2::F_ROUND" |)
                   |)
                 |) in
               let~ _ :=
@@ -1347,7 +1353,7 @@ Module blake2.
   
   Module algo.
     Definition value_SIGMA : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.Array
@@ -1545,8 +1551,11 @@ Module blake2.
               ]
           |))).
     
+    Axiom Constant_value_SIGMA :
+      (M.get_constant "revm_precompile::blake2::algo::SIGMA") = value_SIGMA.
+    
     Definition value_IV : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.Array
@@ -1561,6 +1570,8 @@ Module blake2.
                 Value.Integer IntegerKind.U64 6620516959819538809
               ]
           |))).
+    
+    Axiom Constant_value_IV : (M.get_constant "revm_precompile::blake2::algo::IV") = value_IV.
     
     (*
         pub fn g(v: &mut [u64], a: usize, b: usize, c: usize, d: usize, x: u64, y: u64) {
@@ -1879,7 +1890,7 @@ Module blake2.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant (| "revm_precompile::blake2::algo::IV" |)
+                          M.get_constant "revm_precompile::blake2::algo::IV"
                         |)
                       |)
                     |)
@@ -2021,9 +2032,7 @@ Module blake2.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.SubPointer.get_array_field (|
-                                              M.get_constant (|
-                                                "revm_precompile::blake2::algo::SIGMA"
-                                              |),
+                                              M.get_constant "revm_precompile::blake2::algo::SIGMA",
                                               M.alloc (|
                                                 BinOp.Wrap.rem (|
                                                   M.read (| i |),

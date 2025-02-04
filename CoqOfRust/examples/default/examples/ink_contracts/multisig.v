@@ -463,12 +463,18 @@ Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
   } *)
 
 Definition value_MAX_OWNERS : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 50 |))).
+  M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 50 |))).
+
+Axiom Constant_value_MAX_OWNERS : (M.get_constant "multisig::MAX_OWNERS") = value_MAX_OWNERS.
 
 Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
 Definition value_WRONG_TRANSACTION_ID : Value.t :=
-  M.run ltac:(M.monadic (Value.String "The user specified an invalid transaction id. Abort.")).
+  M.run_constant
+    ltac:(M.monadic (Value.String "The user specified an invalid transaction id. Abort.")).
+
+Axiom Constant_value_WRONG_TRANSACTION_ID :
+  (M.get_constant "multisig::WRONG_TRANSACTION_ID") = value_WRONG_TRANSACTION_ID.
 
 (* StructTuple
   {
@@ -1209,7 +1215,7 @@ Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α 
                             ltac:(M.monadic
                               (BinOp.le (|
                                 M.read (| owners |),
-                                M.read (| M.get_constant (| "multisig::MAX_OWNERS" |) |)
+                                M.read (| M.get_constant "multisig::MAX_OWNERS" |)
                               |)))
                           |)
                         |)
@@ -1588,9 +1594,7 @@ Module Impl_multisig_Multisig.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.deref (|
-                                      M.read (|
-                                        M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |)
-                                      |)
+                                      M.read (| M.get_constant "multisig::WRONG_TRANSACTION_ID" |)
                                     |)
                                   |)
                                 ]
@@ -1682,7 +1686,7 @@ Module Impl_multisig_Multisig.
                   |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.read (| M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |) |) |)
+                    M.deref (| M.read (| M.get_constant "multisig::WRONG_TRANSACTION_ID" |) |)
                   |)
                 ]
               |)
@@ -4724,7 +4728,7 @@ Module Impl_multisig_Multisig.
                   |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.read (| M.get_constant (| "multisig::WRONG_TRANSACTION_ID" |) |) |)
+                    M.deref (| M.read (| M.get_constant "multisig::WRONG_TRANSACTION_ID" |) |)
                   |)
                 ]
               |)

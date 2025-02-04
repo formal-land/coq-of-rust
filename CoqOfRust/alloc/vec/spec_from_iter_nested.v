@@ -128,9 +128,7 @@ Module vec.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_constant (|
-                                                  "alloc::raw_vec::MIN_NON_ZERO_CAP"
-                                                |)
+                                                M.get_constant "alloc::raw_vec::MIN_NON_ZERO_CAP"
                                               |);
                                               M.call_closure (|
                                                 M.get_associated_function (|

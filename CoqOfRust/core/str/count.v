@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module str.
   Module count.
     Definition value_USIZE_SIZE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -13,8 +13,14 @@ Module str.
             |)
           |))).
     
+    Axiom Constant_value_USIZE_SIZE :
+      (M.get_constant "core::str::count::USIZE_SIZE") = value_USIZE_SIZE.
+    
     Definition value_UNROLL_INNER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+    
+    Axiom Constant_value_UNROLL_INNER :
+      (M.get_constant "core::str::count::UNROLL_INNER") = value_UNROLL_INNER.
     
     (*
     pub(super) fn count_chars(s: &str) -> usize {
@@ -52,8 +58,8 @@ Module str.
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |),
                                 BinOp.Wrap.mul (|
-                                  M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |),
-                                  M.read (| M.get_constant (| "core::str::count::UNROLL_INNER" |) |)
+                                  M.read (| M.get_constant "core::str::count::USIZE_SIZE" |),
+                                  M.read (| M.get_constant "core::str::count::UNROLL_INNER" |)
                                 |)
                               |)))
                           |)
@@ -253,9 +259,7 @@ Module str.
                                                       ]
                                                     |),
                                                     M.read (|
-                                                      M.get_constant (|
-                                                        "core::str::count::USIZE_SIZE"
-                                                      |)
+                                                      M.get_constant "core::str::count::USIZE_SIZE"
                                                     |)
                                                   |)))
                                               |),
@@ -279,9 +283,7 @@ Module str.
                                                     ]
                                                   |),
                                                   M.read (|
-                                                    M.get_constant (|
-                                                      "core::str::count::USIZE_SIZE"
-                                                    |)
+                                                    M.get_constant "core::str::count::USIZE_SIZE"
                                                   |)
                                                 |)))
                                             |)
@@ -384,9 +386,8 @@ Module str.
                                           M.deref (| M.read (| body |) |)
                                         |);
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::str::count::do_count_chars::CHUNK_SIZE"
-                                          |)
                                         |)
                                       ]
                                     |)
@@ -1020,7 +1021,10 @@ Module str.
     
     Module do_count_chars.
       Definition value_CHUNK_SIZE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 192 |))).
+        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 192 |))).
+      
+      Axiom Constant_value_CHUNK_SIZE :
+        (M.get_constant "core::str::count::do_count_chars::CHUNK_SIZE") = value_CHUNK_SIZE.
     End do_count_chars.
     
     (*
@@ -1042,9 +1046,7 @@ Module str.
             (BinOp.bit_or
               (BinOp.Wrap.shr (| UnOp.not (| M.read (| w |) |), Value.Integer IntegerKind.I32 7 |))
               (BinOp.Wrap.shr (| M.read (| w |), Value.Integer IntegerKind.I32 6 |)))
-            (M.read (|
-              M.get_constant (| "core::str::count::contains_non_continuation_byte::LSB" |)
-            |))))
+            (M.read (| M.get_constant "core::str::count::contains_non_continuation_byte::LSB" |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1055,7 +1057,7 @@ Module str.
     
     Module contains_non_continuation_byte.
       Definition value_LSB : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
@@ -1063,6 +1065,9 @@ Module str.
                 [ Value.Integer IntegerKind.U8 1 ]
               |)
             |))).
+      
+      Axiom Constant_value_LSB :
+        (M.get_constant "core::str::count::contains_non_continuation_byte::LSB") = value_LSB.
     End contains_non_continuation_byte.
     
     (*
@@ -1086,13 +1091,11 @@ Module str.
                   BinOp.bit_and
                     (M.read (| values |))
                     (M.read (|
-                      M.get_constant (| "core::str::count::sum_bytes_in_usize::SKIP_BYTES" |)
+                      M.get_constant "core::str::count::sum_bytes_in_usize::SKIP_BYTES"
                     |)),
                   BinOp.bit_and
                     (BinOp.Wrap.shr (| M.read (| values |), Value.Integer IntegerKind.I32 8 |))
-                    (M.read (|
-                      M.get_constant (| "core::str::count::sum_bytes_in_usize::SKIP_BYTES" |)
-                    |))
+                    (M.read (| M.get_constant "core::str::count::sum_bytes_in_usize::SKIP_BYTES" |))
                 |)
               |) in
             M.alloc (|
@@ -1101,14 +1104,12 @@ Module str.
                   M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                   [
                     M.read (| pair_sum |);
-                    M.read (|
-                      M.get_constant (| "core::str::count::sum_bytes_in_usize::LSB_SHORTS" |)
-                    |)
+                    M.read (| M.get_constant "core::str::count::sum_bytes_in_usize::LSB_SHORTS" |)
                   ]
                 |),
                 BinOp.Wrap.mul (|
                   BinOp.Wrap.sub (|
-                    M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |),
+                    M.read (| M.get_constant "core::str::count::USIZE_SIZE" |),
                     Value.Integer IntegerKind.Usize 2
                   |),
                   Value.Integer IntegerKind.Usize 8
@@ -1124,7 +1125,7 @@ Module str.
     
     Module sum_bytes_in_usize.
       Definition value_LSB_SHORTS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
@@ -1133,8 +1134,11 @@ Module str.
               |)
             |))).
       
+      Axiom Constant_value_LSB_SHORTS :
+        (M.get_constant "core::str::count::sum_bytes_in_usize::LSB_SHORTS") = value_LSB_SHORTS.
+      
       Definition value_SKIP_BYTES : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
@@ -1142,6 +1146,9 @@ Module str.
                 [ Value.Integer IntegerKind.U16 255 ]
               |)
             |))).
+      
+      Axiom Constant_value_SKIP_BYTES :
+        (M.get_constant "core::str::count::sum_bytes_in_usize::SKIP_BYTES") = value_SKIP_BYTES.
     End sum_bytes_in_usize.
     
     (*

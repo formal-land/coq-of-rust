@@ -3,6 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter value_LOREM_IPSUM : Value.t.
 
+Axiom Constant_value_LOREM_IPSUM :
+  (M.get_constant "file_io_create::LOREM_IPSUM") = value_LOREM_IPSUM.
+
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "file_io_create::main" main.

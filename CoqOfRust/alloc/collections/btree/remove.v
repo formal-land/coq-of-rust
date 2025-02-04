@@ -370,9 +370,7 @@ Module collections.
                                         BinOp.lt (|
                                           M.read (| len |),
                                           M.read (|
-                                            M.get_constant (|
-                                              "alloc::collections::btree::map::MIN_LEN"
-                                            |)
+                                            M.get_constant "alloc::collections::btree::map::MIN_LEN"
                                           |)
                                         |)
                                       |)) in
@@ -544,9 +542,8 @@ Module collections.
                                                                             |),
                                                                             BinOp.Wrap.sub (|
                                                                               M.read (|
-                                                                                M.get_constant (|
+                                                                                M.get_constant
                                                                                   "alloc::collections::btree::map::MIN_LEN"
-                                                                                |)
                                                                               |),
                                                                               Value.Integer
                                                                                 IntegerKind.Usize
@@ -705,9 +702,8 @@ Module collections.
                                                                                       ]
                                                                                     |),
                                                                                     M.read (|
-                                                                                      M.get_constant (|
+                                                                                      M.get_constant
                                                                                         "alloc::collections::btree::map::MIN_LEN"
-                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
@@ -826,9 +822,8 @@ Module collections.
                                                                             |),
                                                                             BinOp.Wrap.sub (|
                                                                               M.read (|
-                                                                                M.get_constant (|
+                                                                                M.get_constant
                                                                                   "alloc::collections::btree::map::MIN_LEN"
-                                                                                |)
                                                                               |),
                                                                               Value.Integer
                                                                                 IntegerKind.Usize
@@ -987,9 +982,8 @@ Module collections.
                                                                                       ]
                                                                                     |),
                                                                                     M.read (|
-                                                                                      M.get_constant (|
+                                                                                      M.get_constant
                                                                                         "alloc::collections::btree::map::MIN_LEN"
-                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)

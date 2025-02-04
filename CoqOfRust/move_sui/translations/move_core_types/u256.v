@@ -3,20 +3,29 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module u256.
   Definition value_NUM_BITS_PER_BYTE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8 |))).
+  
+  Axiom Constant_value_NUM_BITS_PER_BYTE :
+    (M.get_constant "move_core_types::u256::NUM_BITS_PER_BYTE") = value_NUM_BITS_PER_BYTE.
   
   Definition value_U256_NUM_BITS : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+  
+  Axiom Constant_value_U256_NUM_BITS :
+    (M.get_constant "move_core_types::u256::U256_NUM_BITS") = value_U256_NUM_BITS.
   
   Definition value_U256_NUM_BYTES : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.div (|
-            M.read (| M.get_constant (| "move_core_types::u256::U256_NUM_BITS" |) |),
-            M.read (| M.get_constant (| "move_core_types::u256::NUM_BITS_PER_BYTE" |) |)
+            M.read (| M.get_constant "move_core_types::u256::U256_NUM_BITS" |),
+            M.read (| M.get_constant "move_core_types::u256::NUM_BITS_PER_BYTE" |)
           |)
         |))).
+  
+  Axiom Constant_value_U256_NUM_BYTES :
+    (M.get_constant "move_core_types::u256::U256_NUM_BYTES") = value_U256_NUM_BYTES.
   
   (* StructTuple
     {
@@ -3315,7 +3324,7 @@ Module u256.
                                   M.cast
                                     (Ty.path "u32")
                                     (M.read (|
-                                      M.get_constant (| "move_core_types::u256::U256_NUM_BITS" |)
+                                      M.get_constant "move_core_types::u256::U256_NUM_BITS"
                                     |))
                                 |)
                               |)) in
@@ -3400,7 +3409,7 @@ Module u256.
                                   M.cast
                                     (Ty.path "u32")
                                     (M.read (|
-                                      M.get_constant (| "move_core_types::u256::U256_NUM_BITS" |)
+                                      M.get_constant "move_core_types::u256::U256_NUM_BITS"
                                     |))
                                 |)
                               |)) in
@@ -3504,7 +3513,7 @@ Module u256.
                               Value.Integer IntegerKind.U128 1,
                               BinOp.Wrap.mul (|
                                 M.read (|
-                                  M.get_constant (| "move_core_types::u256::NUM_BITS_PER_BYTE" |)
+                                  M.get_constant "move_core_types::u256::NUM_BITS_PER_BYTE"
                                 |),
                                 M.read (| type_size |)
                               |)
@@ -3512,7 +3521,7 @@ Module u256.
                             Value.Integer IntegerKind.U128 1
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                    fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
                   ]
                 |)
               |) in
@@ -4666,9 +4675,7 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.cast
-                              (Ty.path "u64")
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4763,9 +4770,7 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.cast
-                              (Ty.path "u64")
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4860,9 +4865,7 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.cast
-                              (Ty.path "u64")
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4957,9 +4960,7 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.cast
-                              (Ty.path "u128")
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5059,7 +5060,7 @@ Module u256.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                                   |)
                                 |)
                               |)

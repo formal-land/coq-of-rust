@@ -602,9 +602,8 @@ Module verifier.
                                 [ M.borrow (| Pointer.Kind.Ref, bytes |) ]
                               |),
                               M.read (|
-                                M.get_constant (|
+                                M.get_constant
                                   "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE"
-                                |)
                               |)
                             |)
                           |)
@@ -662,9 +661,8 @@ Module verifier.
                                                   M.deref (|
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE"
-                                                      |)
                                                     |)
                                                   |)
                                                 |)
@@ -731,7 +729,12 @@ Module verifier.
   
   Module verify_module_with_config_for_test.
     Definition value_MAX_MODULE_SIZE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 65355 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 65355 |))).
+    
+    Axiom Constant_value_MAX_MODULE_SIZE :
+      (M.get_constant
+          "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE") =
+        value_MAX_MODULE_SIZE.
   End verify_module_with_config_for_test.
   
   (*

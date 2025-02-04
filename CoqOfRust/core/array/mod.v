@@ -21,7 +21,7 @@ Module array.
           [
             M.call_closure (|
               M.get_function (| "core::iter::sources::repeat_n::repeat_n", [], [ T ] |),
-              [ M.read (| val |); M.read (| M.get_constant (| "core::array::repeat::N" |) |) ]
+              [ M.read (| val |); M.read (| M.get_constant "core::array::repeat::N" |) ]
             |)
           ]
         |)))
@@ -102,10 +102,7 @@ Module array.
         M.read (|
           let~ array :=
             M.alloc (|
-              repeat (|
-                M.read (| M.get_constant (| "core::array::try_from_fn_discriminant" |) |),
-                N
-              |)
+              repeat (| M.read (| M.get_constant "core::array::try_from_fn_discriminant" |), N |)
             |) in
           M.match_operator (|
             M.alloc (|
@@ -843,7 +840,7 @@ Module array.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                             |),
-                            M.read (| M.get_constant (| "core::array::N" |) |)
+                            M.read (| M.get_constant "core::array::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -952,7 +949,7 @@ Module array.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                             |),
-                            M.read (| M.get_constant (| "core::array::N" |) |)
+                            M.read (| M.get_constant "core::array::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2334,7 +2331,7 @@ Module array.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "array")
-        [ M.unevaluated_const (M.get_constant (| "core::array_discriminant" |)) ]
+        [ M.unevaluated_const (M.get_constant "core::array_discriminant") ]
         [ T ].
     
     (*
@@ -5070,7 +5067,7 @@ Module array.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "array")
-        [ M.unevaluated_const (M.get_constant (| "core::array_discriminant" |)) ]
+        [ M.unevaluated_const (M.get_constant "core::array_discriminant") ]
         [ T ].
     
     (*             fn default() -> [T; $n] { [] } *)
@@ -5816,7 +5813,7 @@ Module array.
                                 |)
                               |),
                               M.read (|
-                                M.get_constant (| "core::array::try_from_trusted_iterator::N" |)
+                                M.get_constant "core::array::try_from_trusted_iterator::N"
                               |)
                             |)
                           |)
@@ -6518,7 +6515,7 @@ Module array.
           let~ array :=
             M.alloc (|
               repeat (|
-                M.read (| M.get_constant (| "core::array::iter_next_chunk_discriminant" |) |),
+                M.read (| M.get_constant "core::array::iter_next_chunk_discriminant" |),
                 N
               |)
             |) in

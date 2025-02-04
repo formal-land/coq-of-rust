@@ -229,16 +229,33 @@ Module locals_safety.
     End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
     
     Definition value_STEP_BASE_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 15 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 15 |))).
+    
+    Axiom Constant_value_STEP_BASE_COST :
+      (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::STEP_BASE_COST") =
+        value_STEP_BASE_COST.
     
     Definition value_RET_PER_LOCAL_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
+    
+    Axiom Constant_value_RET_PER_LOCAL_COST :
+      (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::RET_PER_LOCAL_COST") =
+        value_RET_PER_LOCAL_COST.
     
     Definition value_JOIN_BASE_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    
+    Axiom Constant_value_JOIN_BASE_COST :
+      (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::JOIN_BASE_COST") =
+        value_JOIN_BASE_COST.
     
     Definition value_JOIN_PER_LOCAL_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 5 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 5 |))).
+    
+    Axiom Constant_value_JOIN_PER_LOCAL_COST :
+      (M.get_constant
+          "move_bytecode_verifier::locals_safety::abstract_state::JOIN_PER_LOCAL_COST") =
+        value_JOIN_PER_LOCAL_COST.
     
     (* StructRecord
       {
@@ -2707,9 +2724,8 @@ Module locals_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_bytecode_verifier::locals_safety::abstract_state::JOIN_BASE_COST"
-                                  |)
                                 |)
                               ]
                             |)
@@ -2808,9 +2824,8 @@ Module locals_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_bytecode_verifier::locals_safety::abstract_state::JOIN_PER_LOCAL_COST"
-                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|

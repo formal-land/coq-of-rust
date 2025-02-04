@@ -3,21 +3,25 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module kzg_point_evaluation.
   Definition value_POINT_EVALUATION : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           Value.StructTuple
             "revm_precompile::PrecompileWithAddress"
             [
-              M.read (| M.get_constant (| "revm_precompile::kzg_point_evaluation::ADDRESS" |) |);
+              M.read (| M.get_constant "revm_precompile::kzg_point_evaluation::ADDRESS" |);
               (* ReifyFnPointer *)
               M.pointer_coercion
                 (M.get_function (| "revm_precompile::kzg_point_evaluation::run", [], [] |))
             ]
         |))).
   
+  Axiom Constant_value_POINT_EVALUATION :
+    (M.get_constant "revm_precompile::kzg_point_evaluation::POINT_EVALUATION") =
+      value_POINT_EVALUATION.
+  
   Definition value_ADDRESS : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
@@ -26,14 +30,24 @@ Module kzg_point_evaluation.
           |)
         |))).
   
+  Axiom Constant_value_ADDRESS :
+    (M.get_constant "revm_precompile::kzg_point_evaluation::ADDRESS") = value_ADDRESS.
+  
   Definition value_GAS_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 50000 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 50000 |))).
+  
+  Axiom Constant_value_GAS_COST :
+    (M.get_constant "revm_precompile::kzg_point_evaluation::GAS_COST") = value_GAS_COST.
   
   Definition value_VERSIONED_HASH_VERSION_KZG : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+  
+  Axiom Constant_value_VERSIONED_HASH_VERSION_KZG :
+    (M.get_constant "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG") =
+      value_VERSIONED_HASH_VERSION_KZG.
   
   Definition value_RETURN_VALUE : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.borrow (|
@@ -41,11 +55,14 @@ Module kzg_point_evaluation.
             M.deref (|
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.get_constant (| "revm_precompile::kzg_point_evaluation::RETURN_VALUE::RES" |)
+                M.get_constant "revm_precompile::kzg_point_evaluation::RETURN_VALUE::RES"
               |)
             |)
           |)
         |))).
+  
+  Axiom Constant_value_RETURN_VALUE :
+    (M.get_constant "revm_precompile::kzg_point_evaluation::RETURN_VALUE") = value_RETURN_VALUE.
   
   (*
   pub fn run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -99,9 +116,7 @@ Module kzg_point_evaluation.
                               BinOp.lt (|
                                 M.read (| gas_limit |),
                                 M.read (|
-                                  M.get_constant (|
-                                    "revm_precompile::kzg_point_evaluation::GAS_COST"
-                                  |)
+                                  M.get_constant "revm_precompile::kzg_point_evaluation::GAS_COST"
                                 |)
                               |)
                             |)) in
@@ -776,7 +791,7 @@ Module kzg_point_evaluation.
                       |),
                       [
                         M.read (|
-                          M.get_constant (| "revm_precompile::kzg_point_evaluation::GAS_COST" |)
+                          M.get_constant "revm_precompile::kzg_point_evaluation::GAS_COST"
                         |);
                         M.call_closure (|
                           M.get_trait_method (|
@@ -801,9 +816,8 @@ Module kzg_point_evaluation.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "revm_precompile::kzg_point_evaluation::RETURN_VALUE"
-                                  |)
                                 |)
                               |)
                             |)
@@ -964,9 +978,7 @@ Module kzg_point_evaluation.
                 M.alloc (| Value.Integer IntegerKind.Usize 0 |)
               |),
               M.read (|
-                M.get_constant (|
-                  "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG"
-                |)
+                M.get_constant "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG"
               |)
             |) in
           hash

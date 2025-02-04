@@ -3,7 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter value_LANGUAGE : Value.t.
 
+Axiom Constant_value_LANGUAGE : (M.get_constant "constants::LANGUAGE") = value_LANGUAGE.
+
 Parameter value_THRESHOLD : Value.t.
+
+Axiom Constant_value_THRESHOLD : (M.get_constant "constants::THRESHOLD") = value_THRESHOLD.
 
 Parameter is_big : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

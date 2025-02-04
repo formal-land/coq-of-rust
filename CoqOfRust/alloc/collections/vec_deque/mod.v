@@ -2237,9 +2237,7 @@ Module collections.
                                   LogicalOp.or (|
                                     LogicalOp.or (|
                                       M.read (|
-                                        M.get_constant (|
-                                          "core::mem::SizedTypeProperties::IS_ZST"
-                                        |)
+                                        M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                       |),
                                       ltac:(M.monadic
                                         (BinOp.eq (| M.read (| src |), M.read (| dst |) |)))
@@ -4853,10 +4851,9 @@ Module collections.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ :=
-                        M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                      (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.get_constant (| "core::num::MAX" |)));
+                      M.get_constant "core::num::MAX"));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -5958,7 +5955,7 @@ Module collections.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.read (|
-                                      M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.le (|
@@ -10552,8 +10549,7 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -11782,8 +11778,7 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ :=
@@ -17897,7 +17892,7 @@ Module collections.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "alloc::collections::vec_deque::N" |) |) ]
+                    [ M.read (| M.get_constant "alloc::collections::vec_deque::N" |) ]
                   |)
                 |) in
               let~ arr :=
@@ -17925,9 +17920,7 @@ Module collections.
                           M.use
                             (M.alloc (|
                               UnOp.not (|
-                                M.read (|
-                                  M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
-                                |)
+                                M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
                               |)
                             |)) in
                         let _ :=
@@ -17983,7 +17976,7 @@ Module collections.
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, deq |) ]
                                 |);
-                                M.read (| M.get_constant (| "alloc::collections::vec_deque::N" |) |)
+                                M.read (| M.get_constant "alloc::collections::vec_deque::N" |)
                               ]
                             |)
                           |) in
@@ -18007,7 +18000,7 @@ Module collections.
                     "alloc::collections::vec_deque::VecDeque",
                     "len"
                   |),
-                  M.read (| M.get_constant (| "alloc::collections::vec_deque::N" |) |)
+                  M.read (| M.get_constant "alloc::collections::vec_deque::N" |)
                 |) in
               deq
             |)))

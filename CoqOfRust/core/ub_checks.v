@@ -877,14 +877,12 @@ Module ub_checks.
                             BinOp.eq (| M.read (| size |), Value.Integer IntegerKind.Usize 0 |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.get_constant (| "core::num::MAX" |)));
+                      M.get_constant "core::num::MAX"));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         BinOp.Wrap.div (|
-                          M.cast
-                            (Ty.path "usize")
-                            (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+                          M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::MAX" |)),
                           M.read (| size |)
                         |)
                       |)))

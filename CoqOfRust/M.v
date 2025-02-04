@@ -120,22 +120,11 @@ Module Pointer.
     Definition t : Set := list Index.t.
   End Path.
 
-  Module Mutable.
-    Inductive t (Value A : Set) : Set :=
-    | Make {Address Big_A : Set}
-      (address : Address)
-      (path : Path.t)
-      (big_to_value : Big_A -> Value)
-      (projection : Big_A -> option A)
-      (injection : Big_A -> A -> option Big_A).
-    Arguments Make {_ _ _ _}.
-  End Mutable.
-
   Module Core.
-    Inductive t (Value A : Set) : Set :=
+    Inductive t (Value : Set) : Set :=
     | Immediate (value : Value)
-    | Mutable (mutable : Mutable.t Value A).
-    Arguments Immediate {_ _}.
+    | Mutable {Address : Set} (address : Address) (path : Path.t).
+    Arguments Immediate {_}.
     Arguments Mutable {_ _}.
   End Core.
 
@@ -159,14 +148,17 @@ Module Pointer.
       end.
   End Kind.
 
-  Inductive t (Value : Set) : Set :=
-  | Make {A : Set} (kind : Kind.t) (ty : Ty.t) (to_value : A -> Value) (core : Core.t Value A).
-  Arguments Make {_ _}.
+  Record t {Value : Set} : Set := {
+    kind : Kind.t;
+    core : Core.t Value;
+  }.
+  Arguments t : clear implicits.
 
   Definition deref {Value : Set} (pointer : t Value) : t Value :=
-    match pointer with
-    | Make _ ty to_value core => Make Kind.Raw ty to_value core
-    end.
+    {|
+      kind := Kind.Raw;
+      core :=pointer.(core);
+    |}.
 End Pointer.
 
 Module Value.
@@ -607,7 +599,7 @@ Definition get_sub_pointer (pointer : Value.t) (index : Pointer.Index.t) : M :=
 Definition are_equal (value1 value2 : Value.t) : M :=
   call_primitive (Primitive.AreEqual value1 value2).
 
-Parameter get_constant : string -> M.
+Parameter get_constant : string -> Value.t.
 
 Definition get_function (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t) :
     M :=
@@ -778,8 +770,8 @@ Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
 
 Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
   match value with
-  | Value.Pointer (Pointer.Make Pointer.Kind.Raw ty to_value core) =>
-    pure (Value.Pointer (Pointer.Make kind ty to_value core))
+  | Value.Pointer {| Pointer.kind := Pointer.Kind.Raw; Pointer.core := core |} =>
+    pure (Value.Pointer {| Pointer.kind := kind; Pointer.core := core |})
   | _ => impossible "expected a raw pointer"
   end.
 
@@ -808,3 +800,36 @@ Parameter struct_record_update : Value.t -> list (string * Value.t) -> Value.t.
 Parameter unevaluated_const : Value.t -> Value.t.
 
 Parameter yield : Value.t -> M.
+
+Fixpoint run_constant (constant : M) : Value.t :=
+  match constant with
+  | LowM.Pure value =>
+    match value with
+    | inl value => value
+    | inr _ => Value.Error "expected a success value"
+    end
+  | LowM.CallPrimitive primitive k =>
+    let value :=
+      match primitive with
+      | Primitive.StateAlloc value =>
+        Value.Pointer {|
+          Pointer.kind := Pointer.Kind.Raw;
+          Pointer.core := Pointer.Core.Immediate value;
+        |}
+      | Primitive.StateRead pointer =>
+        match pointer with
+        | Value.Pointer {|
+            Pointer.kind := Pointer.Kind.Raw;
+            Pointer.core := Pointer.Core.Immediate value;
+          |} =>
+          value
+        | _ => Value.Error "expected an immediate raw pointer"
+        end
+      | _ => Value.Error "unhandled primitive"
+      end in
+    run_constant (k value)
+  | LowM.CallClosure _ _ _ => Value.Error "unexpected closure call"
+  | LowM.Let _ _ => Value.Error "unexpected let"
+  | LowM.Loop _ _ => Value.Error "unexpected loop"
+  | LowM.Impossible _ => Value.Error "impossible"
+  end.

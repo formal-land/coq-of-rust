@@ -69,9 +69,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -204,9 +202,7 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant (|
-                                                                  "core::num::MAX"
-                                                                |)
+                                                                M.get_constant "core::num::MAX"
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -634,9 +630,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -769,9 +763,7 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant (|
-                                                                  "core::num::MAX"
-                                                                |)
+                                                                M.get_constant "core::num::MAX"
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -1144,9 +1136,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -1279,9 +1269,7 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant (|
-                                                                  "core::num::MAX"
-                                                                |)
+                                                                M.get_constant "core::num::MAX"
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -1657,9 +1645,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::BASE"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::BASE"
                                       |)
                                     ]
                                   |)
@@ -2032,9 +2018,7 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant (|
-                                                                  "core::num::MAX"
-                                                                |)
+                                                                M.get_constant "core::num::MAX"
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -2358,9 +2342,7 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant (|
-                                                                  "core::num::MAX"
-                                                                |)
+                                                                M.get_constant "core::num::MAX"
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -2505,9 +2487,7 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant (|
-                                                                  "core::num::MAX"
-                                                                |)
+                                                                M.get_constant "core::num::MAX"
                                                               |))
                                                           |))
                                                           (BinOp.ne (|

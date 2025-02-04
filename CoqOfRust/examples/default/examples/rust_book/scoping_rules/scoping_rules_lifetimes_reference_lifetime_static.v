@@ -2,7 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NUM : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 18 |) |))).
+  M.run_constant ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 18 |) |))).
+
+Axiom Constant_value_NUM :
+  (M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM") = value_NUM.
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
@@ -26,9 +29,7 @@ Definition coerce_static (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.read (|
-                        M.get_constant (|
-                          "scoping_rules_lifetimes_reference_lifetime_static::NUM"
-                        |)
+                        M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM"
                       |)
                     |)
                   |)
@@ -276,9 +277,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "scoping_rules_lifetimes_reference_lifetime_static::NUM"
-                                                |)
                                               |)
                                             |)
                                           |)

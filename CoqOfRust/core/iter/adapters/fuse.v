@@ -1081,9 +1081,8 @@ Module iter.
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (|
-                "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
-              |))).
+              (M.get_constant
+                "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT")).
         
         Axiom Implements :
           forall (I : Ty.t),

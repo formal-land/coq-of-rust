@@ -356,7 +356,7 @@ Module gas_algebra.
                 M.read (| __deserializer |);
                 M.read (| Value.String "GasQuantity" |);
                 M.read (|
-                  M.get_constant (| "move_core_types::gas_algebra::_'1::deserialize::FIELDS" |)
+                  M.get_constant "move_core_types::gas_algebra::_'1::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_core_types::gas_algebra::_'1::deserialize::__Visitor"
@@ -454,7 +454,7 @@ Module gas_algebra.
         ]).
   
   Definition value_BOX_ABSTRACT_SIZE : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
@@ -471,8 +471,11 @@ Module gas_algebra.
           |)
         |))).
   
+  Axiom Constant_value_BOX_ABSTRACT_SIZE :
+    (M.get_constant "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE") = value_BOX_ABSTRACT_SIZE.
+  
   Definition value_ENUM_BASE_ABSTRACT_SIZE : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
@@ -488,6 +491,10 @@ Module gas_algebra.
             [ Value.Integer IntegerKind.U64 8 ]
           |)
         |))).
+  
+  Axiom Constant_value_ENUM_BASE_ABSTRACT_SIZE :
+    (M.get_constant "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE") =
+      value_ENUM_BASE_ABSTRACT_SIZE.
   
   Module Impl_move_core_types_gas_algebra_GasQuantity_U.
     Definition Self (U : Ty.t) : Ty.t :=
@@ -777,7 +784,7 @@ Module gas_algebra.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant (| "move_core_types::gas_algebra::ToUnit::MULTIPLIER" |)
+                        M.get_constant "move_core_types::gas_algebra::ToUnit::MULTIPLIER"
                       |);
                       M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
                     ]
@@ -872,9 +879,7 @@ Module gas_algebra.
                           "val"
                         |)
                       |);
-                      M.read (|
-                        M.get_constant (| "move_core_types::gas_algebra::ToUnit::MULTIPLIER" |)
-                      |)
+                      M.read (| M.get_constant "move_core_types::gas_algebra::ToUnit::MULTIPLIER" |)
                     ]
                   |)
                 ]
@@ -930,12 +935,10 @@ Module gas_algebra.
                     |)
                   |);
                   M.read (|
-                    M.get_constant (| "move_core_types::gas_algebra::ToUnitFractional::NOMINATOR" |)
+                    M.get_constant "move_core_types::gas_algebra::ToUnitFractional::NOMINATOR"
                   |);
                   M.read (|
-                    M.get_constant (|
-                      "move_core_types::gas_algebra::ToUnitFractional::DENOMINATOR"
-                    |)
+                    M.get_constant "move_core_types::gas_algebra::ToUnitFractional::DENOMINATOR"
                   |)
                 ]
               |)
@@ -986,12 +989,10 @@ Module gas_algebra.
                     |)
                   |);
                   M.read (|
-                    M.get_constant (| "move_core_types::gas_algebra::ToUnitFractional::NOMINATOR" |)
+                    M.get_constant "move_core_types::gas_algebra::ToUnitFractional::NOMINATOR"
                   |);
                   M.read (|
-                    M.get_constant (|
-                      "move_core_types::gas_algebra::ToUnitFractional::DENOMINATOR"
-                    |)
+                    M.get_constant "move_core_types::gas_algebra::ToUnitFractional::DENOMINATOR"
                   |)
                 ]
               |)
@@ -2249,13 +2250,11 @@ Module gas_algebra.
                       (M.alloc (|
                         BinOp.gt (|
                           M.read (| res |),
-                          M.cast
-                            (Ty.path "u128")
-                            (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.get_constant (| "core::num::MAX" |)));
+                  M.get_constant "core::num::MAX"));
               fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
           |)
@@ -2489,13 +2488,11 @@ Module gas_algebra.
                       (M.alloc (|
                         BinOp.gt (|
                           M.read (| res |),
-                          M.cast
-                            (Ty.path "u128")
-                            (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.get_constant (| "core::num::MAX" |)));
+                  M.get_constant "core::num::MAX"));
               fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
           |)

@@ -7180,13 +7180,16 @@ Module file_format.
     M.IsFunction "move_binary_format::file_format::self_module_name" self_module_name.
   
   Definition value_NO_TYPE_ARGUMENTS : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           Value.StructTuple
             "move_binary_format::file_format::SignatureIndex"
             [ Value.Integer IntegerKind.U16 0 ]
         |))).
+  
+  Axiom Constant_value_NO_TYPE_ARGUMENTS :
+    (M.get_constant "move_binary_format::file_format::NO_TYPE_ARGUMENTS") = value_NO_TYPE_ARGUMENTS.
   
   (* StructRecord
     {
@@ -9854,7 +9857,7 @@ Module file_format.
                 M.read (| __deserializer |);
                 M.read (| Value.String "StructTypeParameter" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::file_format::_'1::deserialize::FIELDS" |)
+                  M.get_constant "move_binary_format::file_format::_'1::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_binary_format::file_format::_'1::deserialize::__Visitor"
@@ -10002,7 +10005,7 @@ Module file_format.
                 M.read (| __deserializer |);
                 M.read (| Value.String "Visibility" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::file_format::_'3::deserialize::VARIANTS" |)
+                  M.get_constant "move_binary_format::file_format::_'3::deserialize::VARIANTS"
                 |);
                 Value.StructRecord
                   "move_binary_format::file_format::_'3::deserialize::__Visitor"
@@ -13993,9 +13996,8 @@ Module file_format.
                           M.cast
                             (Ty.path "u8")
                             (BinOp.Wrap.add (|
-                              M.get_constant (|
-                                "move_binary_format::file_format::Visibility::Private_discriminant"
-                              |),
+                              M.get_constant
+                                "move_binary_format::file_format::Visibility::Private_discriminant",
                               Value.Integer IntegerKind.U8 0
                             |))
                         |)
@@ -14020,9 +14022,8 @@ Module file_format.
                           M.cast
                             (Ty.path "u8")
                             (BinOp.Wrap.add (|
-                              M.get_constant (|
-                                "move_binary_format::file_format::Visibility::Public_discriminant"
-                              |),
+                              M.get_constant
+                                "move_binary_format::file_format::Visibility::Public_discriminant",
                               Value.Integer IntegerKind.U8 0
                             |))
                         |)
@@ -14044,9 +14045,8 @@ Module file_format.
                           M.cast
                             (Ty.path "u8")
                             (BinOp.Wrap.add (|
-                              M.get_constant (|
-                                "move_binary_format::file_format::Visibility::Friend_discriminant"
-                              |),
+                              M.get_constant
+                                "move_binary_format::file_format::Visibility::Friend_discriminant",
                               Value.Integer IntegerKind.U8 0
                             |))
                         |)
@@ -16784,9 +16784,7 @@ Module file_format.
                           []
                         |),
                         [
-                          M.read (|
-                            M.get_constant (| "move_binary_format::file_format::EMPTY" |)
-                          |);
+                          M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |);
                           Value.StructTuple "move_binary_format::file_format::Ability::Copy" []
                         ]
                       |)
@@ -16807,9 +16805,7 @@ Module file_format.
                           []
                         |),
                         [
-                          M.read (|
-                            M.get_constant (| "move_binary_format::file_format::EMPTY" |)
-                          |);
+                          M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |);
                           Value.StructTuple "move_binary_format::file_format::Ability::Drop" []
                         ]
                       |)
@@ -16844,9 +16840,7 @@ Module file_format.
                               []
                             |),
                             [
-                              M.read (|
-                                M.get_constant (| "move_binary_format::file_format::EMPTY" |)
-                              |);
+                              M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |);
                               Value.StructTuple "move_binary_format::file_format::Ability::Store" []
                             ]
                           |);
@@ -16858,7 +16852,7 @@ Module file_format.
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Ability::Key" |) in
-                    M.get_constant (| "move_binary_format::file_format::EMPTY" |)))
+                    M.get_constant "move_binary_format::file_format::EMPTY"))
               ]
             |)
           |)))
@@ -17179,25 +17173,21 @@ Module file_format.
                     (M.cast
                       (Ty.path "u8")
                       (BinOp.Wrap.add (|
-                        M.get_constant (|
-                          "move_binary_format::file_format::Ability::Copy_discriminant"
-                        |),
+                        M.get_constant
+                          "move_binary_format::file_format::Ability::Copy_discriminant",
                         Value.Integer IntegerKind.U8 0
                       |)))
                     (M.cast
                       (Ty.path "u8")
                       (BinOp.Wrap.add (|
-                        M.get_constant (|
-                          "move_binary_format::file_format::Ability::Drop_discriminant"
-                        |),
+                        M.get_constant
+                          "move_binary_format::file_format::Ability::Drop_discriminant",
                         Value.Integer IntegerKind.U8 0
                       |))))
                   (M.cast
                     (Ty.path "u8")
                     (BinOp.Wrap.add (|
-                      M.get_constant (|
-                        "move_binary_format::file_format::Ability::Store_discriminant"
-                      |),
+                      M.get_constant "move_binary_format::file_format::Ability::Store_discriminant",
                       Value.Integer IntegerKind.U8 0
                     |)))
               ]
@@ -17219,17 +17209,13 @@ Module file_format.
                   (M.cast
                     (Ty.path "u8")
                     (BinOp.Wrap.add (|
-                      M.get_constant (|
-                        "move_binary_format::file_format::Ability::Copy_discriminant"
-                      |),
+                      M.get_constant "move_binary_format::file_format::Ability::Copy_discriminant",
                       Value.Integer IntegerKind.U8 0
                     |)))
                   (M.cast
                     (Ty.path "u8")
                     (BinOp.Wrap.add (|
-                      M.get_constant (|
-                        "move_binary_format::file_format::Ability::Drop_discriminant"
-                      |),
+                      M.get_constant "move_binary_format::file_format::Ability::Drop_discriminant",
                       Value.Integer IntegerKind.U8 0
                     |)))
               ]
@@ -17250,9 +17236,7 @@ Module file_format.
                 M.cast
                   (Ty.path "u8")
                   (BinOp.Wrap.add (|
-                    M.get_constant (|
-                      "move_binary_format::file_format::Ability::Drop_discriminant"
-                    |),
+                    M.get_constant "move_binary_format::file_format::Ability::Drop_discriminant",
                     Value.Integer IntegerKind.U8 0
                   |))
               ]
@@ -17277,25 +17261,21 @@ Module file_format.
                     (M.cast
                       (Ty.path "u8")
                       (BinOp.Wrap.add (|
-                        M.get_constant (|
-                          "move_binary_format::file_format::Ability::Copy_discriminant"
-                        |),
+                        M.get_constant
+                          "move_binary_format::file_format::Ability::Copy_discriminant",
                         Value.Integer IntegerKind.U8 0
                       |)))
                     (M.cast
                       (Ty.path "u8")
                       (BinOp.Wrap.add (|
-                        M.get_constant (|
-                          "move_binary_format::file_format::Ability::Drop_discriminant"
-                        |),
+                        M.get_constant
+                          "move_binary_format::file_format::Ability::Drop_discriminant",
                         Value.Integer IntegerKind.U8 0
                       |))))
                   (M.cast
                     (Ty.path "u8")
                     (BinOp.Wrap.add (|
-                      M.get_constant (|
-                        "move_binary_format::file_format::Ability::Store_discriminant"
-                      |),
+                      M.get_constant "move_binary_format::file_format::Ability::Store_discriminant",
                       Value.Integer IntegerKind.U8 0
                     |)))
               ]
@@ -17326,33 +17306,28 @@ Module file_format.
                       (M.cast
                         (Ty.path "u8")
                         (BinOp.Wrap.add (|
-                          M.get_constant (|
-                            "move_binary_format::file_format::Ability::Copy_discriminant"
-                          |),
+                          M.get_constant
+                            "move_binary_format::file_format::Ability::Copy_discriminant",
                           Value.Integer IntegerKind.U8 0
                         |)))
                       (M.cast
                         (Ty.path "u8")
                         (BinOp.Wrap.add (|
-                          M.get_constant (|
-                            "move_binary_format::file_format::Ability::Drop_discriminant"
-                          |),
+                          M.get_constant
+                            "move_binary_format::file_format::Ability::Drop_discriminant",
                           Value.Integer IntegerKind.U8 0
                         |))))
                     (M.cast
                       (Ty.path "u8")
                       (BinOp.Wrap.add (|
-                        M.get_constant (|
-                          "move_binary_format::file_format::Ability::Store_discriminant"
-                        |),
+                        M.get_constant
+                          "move_binary_format::file_format::Ability::Store_discriminant",
                         Value.Integer IntegerKind.U8 0
                       |))))
                   (M.cast
                     (Ty.path "u8")
                     (BinOp.Wrap.add (|
-                      M.get_constant (|
-                        "move_binary_format::file_format::Ability::Key_discriminant"
-                      |),
+                      M.get_constant "move_binary_format::file_format::Ability::Key_discriminant",
                       Value.Integer IntegerKind.U8 0
                     |)))
               ]
@@ -18185,9 +18160,8 @@ Module file_format.
                                                     ]
                                                   |);
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "move_binary_format::file_format::EMPTY"
-                                                    |)
                                                   |);
                                                   M.get_associated_function (|
                                                     Ty.path
@@ -18292,7 +18266,7 @@ Module file_format.
                               M.read (| byte |);
                               M.read (|
                                 M.SubPointer.get_struct_tuple_field (|
-                                  M.get_constant (| "move_binary_format::file_format::ALL" |),
+                                  M.get_constant "move_binary_format::file_format::ALL",
                                   "move_binary_format::file_format::AbilitySet",
                                   0
                                 |)
@@ -28816,7 +28790,7 @@ Module file_format.
                                   LogicalOp.and (|
                                     BinOp.lt (|
                                       M.read (| pc |),
-                                      M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                      M.read (| M.get_constant "core::num::MAX" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.lt (|
@@ -43150,9 +43124,8 @@ Module file_format.
                                       "core::result::Result::Ok"
                                       [
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "move_binary_format::file_format::PRIMITIVES"
-                                          |)
                                         |)
                                       ]
                                   |)))
@@ -43195,9 +43168,8 @@ Module file_format.
                                       "core::result::Result::Ok"
                                       [
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "move_binary_format::file_format::REFERENCES"
-                                          |)
                                         |)
                                       ]
                                   |)))
@@ -43215,10 +43187,7 @@ Module file_format.
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
-                            [
-                              M.read (|
-                                M.get_constant (| "move_binary_format::file_format::SIGNER" |)
-                              |)
+                            [ M.read (| M.get_constant "move_binary_format::file_format::SIGNER" |)
                             ]
                         |)));
                     fun γ =>
@@ -43278,9 +43247,7 @@ Module file_format.
                               ]
                             |),
                             [
-                              M.read (|
-                                M.get_constant (| "move_binary_format::file_format::VECTOR" |)
-                              |);
+                              M.read (| M.get_constant "move_binary_format::file_format::VECTOR" |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "bool" ],
@@ -44188,9 +44155,7 @@ Module file_format.
           "move_binary_format::file_format::CompiledModule"
           [
             ("version",
-              M.read (|
-                M.get_constant (| "move_binary_format::file_format_common::VERSION_MAX" |)
-              |));
+              M.read (| M.get_constant "move_binary_format::file_format_common::VERSION_MAX" |));
             ("module_handles",
               M.call_closure (|
                 M.get_associated_function (|
@@ -44345,11 +44310,7 @@ Module file_format.
                       [
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                M.get_constant (| "move_core_types::account_address::ZERO" |)
-                              |)
-                            ]
+                            [ M.read (| M.get_constant "move_core_types::account_address::ZERO" |) ]
                         |)
                       ]
                     |)
@@ -44991,7 +44952,7 @@ Module file_format.
                               |))
                           ]);
                       ("abilities",
-                        M.read (| M.get_constant (| "move_binary_format::file_format::EMPTY" |) |));
+                        M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |));
                       ("type_parameters",
                         M.call_closure (|
                           M.get_associated_function (|

@@ -55,8 +55,7 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -119,9 +118,8 @@ Module slice.
                                       BinOp.le (|
                                         M.read (| len |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT"
-                                          |)
                                         |)
                                       |)
                                     ]
@@ -180,7 +178,11 @@ Module slice.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
+        
+        Axiom Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT :
+          (M.get_constant "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT") =
+            value_MAX_LEN_ALWAYS_INSERTION_SORT.
       End sort.
       
       (*

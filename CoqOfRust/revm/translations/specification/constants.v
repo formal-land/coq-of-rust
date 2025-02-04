@@ -3,21 +3,33 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module constants.
   Definition value_STACK_LIMIT : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1024 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1024 |))).
+  
+  Axiom Constant_value_STACK_LIMIT :
+    (M.get_constant "revm_specification::constants::STACK_LIMIT") = value_STACK_LIMIT.
   
   Definition value_MAX_CODE_SIZE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 24576 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 24576 |))).
+  
+  Axiom Constant_value_MAX_CODE_SIZE :
+    (M.get_constant "revm_specification::constants::MAX_CODE_SIZE") = value_MAX_CODE_SIZE.
   
   Definition value_MAX_INITCODE_SIZE : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.mul (|
             Value.Integer IntegerKind.Usize 2,
-            M.read (| M.get_constant (| "revm_specification::constants::MAX_CODE_SIZE" |) |)
+            M.read (| M.get_constant "revm_specification::constants::MAX_CODE_SIZE" |)
           |)
         |))).
   
+  Axiom Constant_value_MAX_INITCODE_SIZE :
+    (M.get_constant "revm_specification::constants::MAX_INITCODE_SIZE") = value_MAX_INITCODE_SIZE.
+  
   Definition value_CALL_STACK_LIMIT : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+  
+  Axiom Constant_value_CALL_STACK_LIMIT :
+    (M.get_constant "revm_specification::constants::CALL_STACK_LIMIT") = value_CALL_STACK_LIMIT.
 End constants.

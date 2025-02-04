@@ -152,7 +152,7 @@ Module utilities.
                             [
                               ("end_",
                                 M.read (|
-                                  M.get_constant (| "revm_precompile::utilities::right_pad::LEN" |)
+                                  M.get_constant "revm_precompile::utilities::right_pad::LEN"
                                 |))
                             ]
                         ]
@@ -444,7 +444,7 @@ Module utilities.
                             [
                               ("end_",
                                 M.read (|
-                                  M.get_constant (| "revm_precompile::utilities::left_pad::LEN" |)
+                                  M.get_constant "revm_precompile::utilities::left_pad::LEN"
                                 |))
                             ]
                         ]
@@ -537,9 +537,8 @@ Module utilities.
                                       ("start",
                                         BinOp.Wrap.sub (|
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "revm_precompile::utilities::left_pad::LEN"
-                                            |)
                                           |),
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -776,10 +775,9 @@ Module utilities.
                 ltac:(M.monadic
                   (let γ := M.use value in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.get_constant (| "revm_precompile::utilities::bool_to_b256::TRUE" |)));
+                  M.get_constant "revm_precompile::utilities::bool_to_b256::TRUE"));
               fun γ =>
-                ltac:(M.monadic
-                  (M.get_constant (| "revm_precompile::utilities::bool_to_b256::FALSE" |)))
+                ltac:(M.monadic (M.get_constant "revm_precompile::utilities::bool_to_b256::FALSE"))
             ]
           |)
         |)))
@@ -791,7 +789,7 @@ Module utilities.
   
   Module bool_to_b256.
     Definition value_TRUE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.borrow (|
@@ -812,7 +810,7 @@ Module utilities.
                       |),
                       [
                         M.read (|
-                          M.get_constant (| "revm_precompile::utilities::bool_to_b256::TRUE::RES" |)
+                          M.get_constant "revm_precompile::utilities::bool_to_b256::TRUE::RES"
                         |)
                       ]
                     |)
@@ -822,8 +820,11 @@ Module utilities.
             |)
           |))).
     
+    Axiom Constant_value_TRUE :
+      (M.get_constant "revm_precompile::utilities::bool_to_b256::TRUE") = value_TRUE.
+    
     Definition value_FALSE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.borrow (|
@@ -844,9 +845,7 @@ Module utilities.
                       |),
                       [
                         M.read (|
-                          M.get_constant (|
-                            "revm_precompile::utilities::bool_to_b256::FALSE::RES"
-                          |)
+                          M.get_constant "revm_precompile::utilities::bool_to_b256::FALSE::RES"
                         |)
                       ]
                     |)
@@ -855,5 +854,8 @@ Module utilities.
               |)
             |)
           |))).
+    
+    Axiom Constant_value_FALSE :
+      (M.get_constant "revm_precompile::utilities::bool_to_b256::FALSE") = value_FALSE.
   End bool_to_b256.
 End utilities.

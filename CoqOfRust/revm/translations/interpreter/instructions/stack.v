@@ -67,9 +67,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::BASE"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::BASE"
                                       |)
                                     ]
                                   |)
@@ -308,9 +306,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::BASE"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::BASE"
                                       |)
                                     ]
                                   |)
@@ -384,7 +380,7 @@ Module instructions.
                                           "stack"
                                         |)
                                       |);
-                                      M.read (| M.get_constant (| "ruint::ZERO" |) |)
+                                      M.read (| M.get_constant "ruint::ZERO" |)
                                     ]
                                   |)
                                 |)
@@ -507,9 +503,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -583,7 +577,7 @@ Module instructions.
                                           "stack"
                                         |)
                                       |);
-                                      M.read (| M.get_constant (| "ruint::ZERO" |) |)
+                                      M.read (| M.get_constant "ruint::ZERO" |)
                                     ]
                                   |)
                                 |)
@@ -685,9 +679,7 @@ Module instructions.
                                   |)
                                 |);
                                 M.read (|
-                                  M.get_constant (|
-                                    "revm_interpreter::instructions::stack::push::N"
-                                  |)
+                                  M.get_constant "revm_interpreter::instructions::stack::push::N"
                                 |)
                               ]
                             |)
@@ -730,9 +722,7 @@ Module instructions.
                                 M.cast
                                   (Ty.path "isize")
                                   (M.read (|
-                                    M.get_constant (|
-                                      "revm_interpreter::instructions::stack::push::N"
-                                    |)
+                                    M.get_constant "revm_interpreter::instructions::stack::push::N"
                                   |))
                               ]
                             |)
@@ -814,9 +804,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -890,9 +878,7 @@ Module instructions.
                                       |)
                                     |);
                                     M.read (|
-                                      M.get_constant (|
-                                        "revm_interpreter::instructions::stack::dup::N"
-                                      |)
+                                      M.get_constant "revm_interpreter::instructions::stack::dup::N"
                                     |)
                                   ]
                                 |)
@@ -1006,9 +992,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -1065,9 +1049,8 @@ Module instructions.
                                 UnOp.not (|
                                   BinOp.ne (|
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "revm_interpreter::instructions::stack::swap::N"
-                                      |)
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -1116,9 +1099,8 @@ Module instructions.
                                     |);
                                     Value.Integer IntegerKind.Usize 0;
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "revm_interpreter::instructions::stack::swap::N"
-                                      |)
                                     |)
                                   ]
                                 |)
@@ -1306,9 +1288,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -1622,9 +1602,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -1941,9 +1919,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)

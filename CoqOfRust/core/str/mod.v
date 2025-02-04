@@ -161,9 +161,7 @@ Module str.
                 M.get_associated_function (| Ty.path "str", "floor_char_boundary", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
-                  M.read (|
-                    M.get_constant (| "core::str::slice_error_fail_rt::MAX_DISPLAY_LENGTH" |)
-                  |)
+                  M.read (| M.get_constant "core::str::slice_error_fail_rt::MAX_DISPLAY_LENGTH" |)
                 ]
               |)
             |) in
@@ -762,7 +760,11 @@ Module str.
   
   Module slice_error_fail_rt.
     Definition value_MAX_DISPLAY_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    
+    Axiom Constant_value_MAX_DISPLAY_LENGTH :
+      (M.get_constant "core::str::slice_error_fail_rt::MAX_DISPLAY_LENGTH") =
+        value_MAX_DISPLAY_LENGTH.
   End slice_error_fail_rt.
   
   Module Impl_str.
@@ -4888,9 +4890,8 @@ Module str.
                                                         [
                                                           M.read (| first |);
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "core::char::methods::ESCAPE_ALL"
-                                                            |)
                                                           |)
                                                         ]
                                                       |)))

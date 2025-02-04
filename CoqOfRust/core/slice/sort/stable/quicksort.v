@@ -984,9 +984,8 @@ Module slice.
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
-                                    (M.get_constant (|
-                                      "core::slice::sort::stable::quicksort::stable_partition_discriminant"
-                                    |)) in
+                                    (M.get_constant
+                                      "core::slice::sort::stable::quicksort::stable_partition_discriminant") in
                                 let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
@@ -1014,9 +1013,8 @@ Module slice.
                                             M.read (| loop_end_pos |);
                                             BinOp.Wrap.sub (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::slice::sort::stable::quicksort::stable_partition::UNROLL_LEN"
-                                                |)
                                               |),
                                               Value.Integer IntegerKind.Usize 1
                                             |)
@@ -1746,7 +1744,11 @@ Module slice.
         
         Module stable_partition.
           Definition value_UNROLL_LEN : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+          
+          Axiom Constant_value_UNROLL_LEN :
+            (M.get_constant "core::slice::sort::stable::quicksort::stable_partition::UNROLL_LEN") =
+              value_UNROLL_LEN.
         End stable_partition.
         
         (* StructRecord

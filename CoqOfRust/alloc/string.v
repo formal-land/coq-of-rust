@@ -1294,7 +1294,7 @@ Module string.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.read (|
-                              M.get_constant (| "alloc::string::from_utf8_lossy::REPLACEMENT" |)
+                              M.get_constant "alloc::string::from_utf8_lossy::REPLACEMENT"
                             |)
                           |)
                         |)
@@ -1457,9 +1457,8 @@ Module string.
                                                             Pointer.Kind.Ref,
                                                             M.deref (|
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "alloc::string::from_utf8_lossy::REPLACEMENT"
-                                                                |)
                                                               |)
                                                             |)
                                                           |)
@@ -1967,9 +1966,8 @@ Module string.
                                       [
                                         M.read (| r |);
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::char::methods::REPLACEMENT_CHARACTER"
-                                          |)
                                         |)
                                       ]
                                     |)))
@@ -2146,9 +2144,8 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant (|
-                                                      "core::num::from_le_bytes_discriminant"
-                                                    |))
+                                                    (M.get_constant
+                                                      "core::num::from_le_bytes_discriminant")
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -2195,9 +2192,8 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant (|
-                                                        "core::num::from_le_bytes_discriminant"
-                                                      |))
+                                                      (M.get_constant
+                                                        "core::num::from_le_bytes_discriminant")
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -2230,9 +2226,8 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant (|
-                                                        "core::num::from_le_bytes_discriminant"
-                                                      |))
+                                                      (M.get_constant
+                                                        "core::num::from_le_bytes_discriminant")
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -2471,9 +2466,8 @@ Module string.
                                               (Ty.path "array")
                                               [
                                                 M.unevaluated_const
-                                                  (M.get_constant (|
-                                                    "core::num::from_le_bytes_discriminant"
-                                                  |))
+                                                  (M.get_constant
+                                                    "core::num::from_le_bytes_discriminant")
                                               ]
                                               [ Ty.path "u8" ]
                                           ]
@@ -2533,9 +2527,8 @@ Module string.
                                               (Ty.path "array")
                                               [
                                                 M.unevaluated_const
-                                                  (M.get_constant (|
-                                                    "core::num::from_le_bytes_discriminant"
-                                                  |))
+                                                  (M.get_constant
+                                                    "core::num::from_le_bytes_discriminant")
                                               ]
                                               [ Ty.path "u8" ]
                                           ]
@@ -2595,9 +2588,8 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant (|
-                                                      "core::num::from_le_bytes_discriminant"
-                                                    |))
+                                                    (M.get_constant
+                                                      "core::num::from_le_bytes_discriminant")
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -2635,9 +2627,8 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant (|
-                                                      "core::num::from_le_bytes_discriminant"
-                                                    |))
+                                                    (M.get_constant
+                                                      "core::num::from_le_bytes_discriminant")
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -2730,9 +2721,8 @@ Module string.
                                                     [
                                                       M.read (| r |);
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "core::char::methods::REPLACEMENT_CHARACTER"
-                                                        |)
                                                       |)
                                                     ]
                                                   |)))
@@ -2976,9 +2966,8 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant (|
-                                                      "core::num::from_be_bytes_discriminant"
-                                                    |))
+                                                    (M.get_constant
+                                                      "core::num::from_be_bytes_discriminant")
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -3025,9 +3014,8 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant (|
-                                                        "core::num::from_be_bytes_discriminant"
-                                                      |))
+                                                      (M.get_constant
+                                                        "core::num::from_be_bytes_discriminant")
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -3060,9 +3048,8 @@ Module string.
                                                   (Ty.path "array")
                                                   [
                                                     M.unevaluated_const
-                                                      (M.get_constant (|
-                                                        "core::num::from_be_bytes_discriminant"
-                                                      |))
+                                                      (M.get_constant
+                                                        "core::num::from_be_bytes_discriminant")
                                                   ]
                                                   [ Ty.path "u8" ]
                                               ]
@@ -3301,9 +3288,8 @@ Module string.
                                               (Ty.path "array")
                                               [
                                                 M.unevaluated_const
-                                                  (M.get_constant (|
-                                                    "core::num::from_be_bytes_discriminant"
-                                                  |))
+                                                  (M.get_constant
+                                                    "core::num::from_be_bytes_discriminant")
                                               ]
                                               [ Ty.path "u8" ]
                                           ]
@@ -3363,9 +3349,8 @@ Module string.
                                               (Ty.path "array")
                                               [
                                                 M.unevaluated_const
-                                                  (M.get_constant (|
-                                                    "core::num::from_be_bytes_discriminant"
-                                                  |))
+                                                  (M.get_constant
+                                                    "core::num::from_be_bytes_discriminant")
                                               ]
                                               [ Ty.path "u8" ]
                                           ]
@@ -3425,9 +3410,8 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant (|
-                                                      "core::num::from_be_bytes_discriminant"
-                                                    |))
+                                                    (M.get_constant
+                                                      "core::num::from_be_bytes_discriminant")
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -3465,9 +3449,8 @@ Module string.
                                                 (Ty.path "array")
                                                 [
                                                   M.unevaluated_const
-                                                    (M.get_constant (|
-                                                      "core::num::from_be_bytes_discriminant"
-                                                    |))
+                                                    (M.get_constant
+                                                      "core::num::from_be_bytes_discriminant")
                                                 ]
                                                 [ Ty.path "u8" ]
                                             ]
@@ -3560,9 +3543,8 @@ Module string.
                                                     [
                                                       M.read (| r |);
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "core::char::methods::REPLACEMENT_CHARACTER"
-                                                        |)
                                                       |)
                                                     ]
                                                   |)))
@@ -8158,9 +8140,8 @@ Module string.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "alloc::string::into_utf8_lossy::REPLACEMENT"
-                                                            |)
                                                           |)
                                                         |)
                                                       |)

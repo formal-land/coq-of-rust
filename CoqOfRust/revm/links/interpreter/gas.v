@@ -619,7 +619,7 @@ Module Impl_revm_interpreter_gas_Gas.
       intros []; cbn; run_symbolic.
       eapply Run.Rewrite. {
         unfold BinOp.Wrap.div.
-        rewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64).
+        erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64) by smpl of_value.
         reflexivity.
       }
       run_symbolic.

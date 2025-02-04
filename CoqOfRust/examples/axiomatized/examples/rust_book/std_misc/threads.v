@@ -3,6 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter value_NTHREADS : Value.t.
 
+Axiom Constant_value_NTHREADS : (M.get_constant "threads::NTHREADS") = value_NTHREADS.
+
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "threads::main" main.

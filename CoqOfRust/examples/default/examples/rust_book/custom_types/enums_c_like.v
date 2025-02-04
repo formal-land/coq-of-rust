@@ -265,9 +265,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.cast
                                                 (Ty.path "i32")
                                                 (BinOp.Wrap.add (|
-                                                  M.get_constant (|
-                                                    "enums_c_like::Color::Red_discriminant"
-                                                  |),
+                                                  M.get_constant
+                                                    "enums_c_like::Color::Red_discriminant",
                                                   Value.Integer IntegerKind.Isize 0
                                                 |))
                                             |)
@@ -382,9 +381,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.cast
                                                 (Ty.path "i32")
                                                 (BinOp.Wrap.add (|
-                                                  M.get_constant (|
-                                                    "enums_c_like::Color::Blue_discriminant"
-                                                  |),
+                                                  M.get_constant
+                                                    "enums_c_like::Color::Blue_discriminant",
                                                   Value.Integer IntegerKind.Isize 0
                                                 |))
                                             |)

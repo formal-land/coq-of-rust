@@ -2095,9 +2095,8 @@ Module net.
                                               ltac:(M.monadic
                                                 (let~ result :=
                                                   M.copy (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::net::parser::ReadNumberHelper::ZERO"
-                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   M.loop (|

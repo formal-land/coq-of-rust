@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_PANGRAM : Value.t :=
-  M.run
+  M.run_constant
     ltac:(M.monadic (M.alloc (| Value.String "the quick brown fox jumped over the lazy dog
 " |))).
+
+Axiom Constant_value_PANGRAM : (M.get_constant "child_processes_pipes::PANGRAM") = value_PANGRAM.
 
 (*
 fn main() {
@@ -241,7 +243,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.read (|
                                 M.deref (|
-                                  M.read (| M.get_constant (| "child_processes_pipes::PANGRAM" |) |)
+                                  M.read (| M.get_constant "child_processes_pipes::PANGRAM" |)
                                 |)
                               |)
                             |)

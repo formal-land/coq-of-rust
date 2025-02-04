@@ -1532,9 +1532,7 @@ Module transaction_argument.
                 M.read (| __deserializer |);
                 M.read (| Value.String "TransactionArgument" |);
                 M.read (|
-                  M.get_constant (|
-                    "move_core_types::transaction_argument::_'1::deserialize::VARIANTS"
-                  |)
+                  M.get_constant "move_core_types::transaction_argument::_'1::deserialize::VARIANTS"
                 |);
                 Value.StructRecord
                   "move_core_types::transaction_argument::_'1::deserialize::__Visitor"

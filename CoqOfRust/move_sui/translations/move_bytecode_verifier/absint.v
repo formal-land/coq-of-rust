@@ -189,16 +189,31 @@ Module absint.
         ]).
   
   Definition value_ANALYZE_FUNCTION_BASE_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+  
+  Axiom Constant_value_ANALYZE_FUNCTION_BASE_COST :
+    (M.get_constant "move_bytecode_verifier::absint::ANALYZE_FUNCTION_BASE_COST") =
+      value_ANALYZE_FUNCTION_BASE_COST.
   
   Definition value_EXECUTE_BLOCK_BASE_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+  
+  Axiom Constant_value_EXECUTE_BLOCK_BASE_COST :
+    (M.get_constant "move_bytecode_verifier::absint::EXECUTE_BLOCK_BASE_COST") =
+      value_EXECUTE_BLOCK_BASE_COST.
   
   Definition value_PER_BACKEDGE_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+  
+  Axiom Constant_value_PER_BACKEDGE_COST :
+    (M.get_constant "move_bytecode_verifier::absint::PER_BACKEDGE_COST") = value_PER_BACKEDGE_COST.
   
   Definition value_PER_SUCCESSOR_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+  
+  Axiom Constant_value_PER_SUCCESSOR_COST :
+    (M.get_constant "move_bytecode_verifier::absint::PER_SUCCESSOR_COST") =
+      value_PER_SUCCESSOR_COST.
   
   (* Trait *)
   (* Empty module 'TransferFunctions' *)
@@ -252,9 +267,8 @@ Module absint.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                               Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                               M.read (|
-                                M.get_constant (|
+                                M.get_constant
                                   "move_bytecode_verifier::absint::ANALYZE_FUNCTION_BASE_COST"
-                                |)
                               |)
                             ]
                           |)
@@ -842,9 +856,8 @@ Module absint.
                                                                         "move_bytecode_verifier_meter::Scope::Function"
                                                                         [];
                                                                       M.read (|
-                                                                        M.get_constant (|
+                                                                        M.get_constant
                                                                           "move_bytecode_verifier::absint::PER_SUCCESSOR_COST"
-                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -1248,9 +1261,8 @@ Module absint.
                                                                                                       "move_bytecode_verifier_meter::Scope::Function"
                                                                                                       [];
                                                                                                     M.read (|
-                                                                                                      M.get_constant (|
+                                                                                                      M.get_constant
                                                                                                         "move_bytecode_verifier::absint::PER_BACKEDGE_COST"
-                                                                                                      |)
                                                                                                     |)
                                                                                                   ]
                                                                                                 |)
@@ -1514,9 +1526,8 @@ Module absint.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                               Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                               M.read (|
-                                M.get_constant (|
+                                M.get_constant
                                   "move_bytecode_verifier::absint::EXECUTE_BLOCK_BASE_COST"
-                                |)
                               |)
                             ]
                           |)

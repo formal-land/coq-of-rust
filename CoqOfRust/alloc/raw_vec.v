@@ -95,10 +95,9 @@ Module raw_vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ :=
-                      M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                    (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (| "alloc::raw_vec::ZERO" |)));
+                    M.get_constant "alloc::raw_vec::ZERO"));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (| Value.StructTuple "alloc::raw_vec::Cap" [ M.read (| cap |) ] |)))
@@ -191,7 +190,7 @@ Module raw_vec.
                   |),
                   [
                     M.read (| capacity |);
-                    M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -239,7 +238,7 @@ Module raw_vec.
                   [
                     M.read (| capacity |);
                     Value.StructTuple "alloc::alloc::Global" [];
-                    M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -470,7 +469,7 @@ Module raw_vec.
                   [
                     M.read (| capacity |);
                     M.read (| alloc |);
-                    M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -515,7 +514,7 @@ Module raw_vec.
                   [
                     M.read (| capacity |);
                     M.read (| alloc |);
-                    M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
                   ]
                 |)
               |),
@@ -587,7 +586,7 @@ Module raw_vec.
                   [
                     M.read (| capacity |);
                     M.read (| alloc |);
-                    M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+                    M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -1156,7 +1155,7 @@ Module raw_vec.
               |);
               M.read (| len |);
               M.read (| additional |);
-              M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1193,7 +1192,7 @@ Module raw_vec.
                   "inner"
                 |)
               |);
-              M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1234,7 +1233,7 @@ Module raw_vec.
               |);
               M.read (| len |);
               M.read (| additional |);
-              M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1280,7 +1279,7 @@ Module raw_vec.
               |);
               M.read (| len |);
               M.read (| additional |);
-              M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1330,7 +1329,7 @@ Module raw_vec.
               |);
               M.read (| len |);
               M.read (| additional |);
-              M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1374,7 +1373,7 @@ Module raw_vec.
                 |)
               |);
               M.read (| cap |);
-              M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1416,7 +1415,7 @@ Module raw_vec.
                   "inner"
                 |)
               |);
-              M.read (| M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |) |)
+              M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1468,7 +1467,7 @@ Module raw_vec.
                 "alloc::raw_vec::RawVecInner"
                 [
                   ("ptr", M.read (| ptr |));
-                  ("cap", M.read (| M.get_constant (| "alloc::raw_vec::ZERO" |) |));
+                  ("cap", M.read (| M.get_constant "alloc::raw_vec::ZERO" |));
                   ("alloc", M.read (| alloc |))
                 ]
             |)
@@ -2258,7 +2257,7 @@ Module raw_vec.
                           BinOp.eq (| M.read (| elem_size |), Value.Integer IntegerKind.Usize 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MAX" |)));
+                    M.get_constant "core::num::MAX"));
                 fun γ =>
                   ltac:(M.monadic
                     (M.SubPointer.get_struct_tuple_field (|
@@ -4530,7 +4529,7 @@ Module raw_vec.
                                         "alloc::raw_vec::RawVecInner",
                                         "cap"
                                       |),
-                                      M.read (| M.get_constant (| "alloc::raw_vec::ZERO" |) |)
+                                      M.read (| M.get_constant "alloc::raw_vec::ZERO" |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ =>
@@ -5386,7 +5385,7 @@ Module raw_vec.
                       (M.alloc (|
                         LogicalOp.and (|
                           BinOp.lt (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 64
                           |),
                           ltac:(M.monadic
@@ -5394,7 +5393,7 @@ Module raw_vec.
                               M.read (| alloc_size |),
                               M.cast
                                 (Ty.path "usize")
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                (M.read (| M.get_constant "core::num::MAX" |))
                             |)))
                         |)
                       |)) in

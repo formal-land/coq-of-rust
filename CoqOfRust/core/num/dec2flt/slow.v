@@ -124,9 +124,8 @@ Module num.
                                                         BinOp.lt (|
                                                           M.read (| n |),
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "core::num::dec2flt::slow::parse_long_mantissa::NUM_POWERS"
-                                                            |)
                                                           |)
                                                         |)
                                                       |)) in
@@ -140,18 +139,16 @@ Module num.
                                                       (Ty.path "usize")
                                                       (M.read (|
                                                         M.SubPointer.get_array_field (|
-                                                          M.get_constant (|
-                                                            "core::num::dec2flt::slow::parse_long_mantissa::POWERS"
-                                                          |),
+                                                          M.get_constant
+                                                            "core::num::dec2flt::slow::parse_long_mantissa::POWERS",
                                                           n
                                                         |)
                                                       |))
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.get_constant (|
-                                                    "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT"
-                                                  |)))
+                                                  (M.get_constant
+                                                    "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT"))
                                             ]
                                           |)
                                         |)))
@@ -183,9 +180,7 @@ Module num.
                         |),
                         [
                           M.read (|
-                            M.get_constant (|
-                              "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
-                            |)
+                            M.get_constant "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
                           |)
                         ]
                       |)
@@ -362,9 +357,8 @@ Module num.
                                                   |),
                                                   UnOp.neg (|
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::num::dec2flt::decimal::DECIMAL_POINT_RANGE"
-                                                      |)
                                                     |)
                                                   |)
                                                 |)
@@ -597,9 +591,8 @@ Module num.
                                                     |)
                                                   |),
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::num::dec2flt::decimal::DECIMAL_POINT_RANGE"
-                                                    |)
                                                   |)
                                                 |)
                                               |)) in
@@ -662,9 +655,8 @@ Module num.
                                       BinOp.gt (|
                                         BinOp.Wrap.add (|
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
-                                            |)
                                           |),
                                           Value.Integer IntegerKind.I32 1
                                         |),
@@ -683,9 +675,8 @@ Module num.
                                       (BinOp.Wrap.sub (|
                                         BinOp.Wrap.add (|
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
-                                            |)
                                           |),
                                           Value.Integer IntegerKind.I32 1
                                         |),
@@ -704,9 +695,8 @@ Module num.
                                                 BinOp.gt (|
                                                   M.read (| n |),
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT"
-                                                    |)
                                                   |)
                                                 |)
                                               |)) in
@@ -719,9 +709,8 @@ Module num.
                                             M.write (|
                                               n,
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT"
-                                                |)
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)));
@@ -779,15 +768,13 @@ Module num.
                                     BinOp.Wrap.sub (|
                                       M.read (| exp2 |),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
-                                        |)
                                       |)
                                     |),
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
-                                      |)
                                     |)
                                   |)
                                 |)) in
@@ -812,9 +799,8 @@ Module num.
                           M.borrow (| Pointer.Kind.MutRef, d |);
                           BinOp.Wrap.add (|
                             M.read (|
-                              M.get_constant (|
+                              M.get_constant
                                 "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
-                              |)
                             |),
                             Value.Integer IntegerKind.Usize 1
                           |)
@@ -848,9 +834,8 @@ Module num.
                                       Value.Integer IntegerKind.U64 1,
                                       BinOp.Wrap.add (|
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
-                                          |)
                                         |),
                                         Value.Integer IntegerKind.Usize 1
                                       |)
@@ -905,15 +890,13 @@ Module num.
                                             BinOp.Wrap.sub (|
                                               M.read (| exp2 |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
-                                                |)
                                               |)
                                             |),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
-                                              |)
                                             |)
                                           |)
                                         |)) in
@@ -938,9 +921,7 @@ Module num.
                       BinOp.Wrap.sub (|
                         M.read (| exp2 |),
                         M.read (|
-                          M.get_constant (|
-                            "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
-                          |)
+                          M.get_constant "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
                         |)
                       |)
                     |) in
@@ -958,9 +939,8 @@ Module num.
                                     BinOp.Wrap.shl (|
                                       Value.Integer IntegerKind.U64 1,
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
-                                        |)
                                       |)
                                     |)
                                   |)
@@ -987,9 +967,8 @@ Module num.
                           BinOp.Wrap.shl (|
                             Value.Integer IntegerKind.U64 1,
                             M.read (|
-                              M.get_constant (|
+                              M.get_constant
                                 "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
-                              |)
                             |)
                           |),
                           Value.Integer IntegerKind.U64 1
@@ -1010,13 +989,21 @@ Module num.
       
       Module parse_long_mantissa.
         Definition value_MAX_SHIFT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 60 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 60 |))).
+        
+        Axiom Constant_value_MAX_SHIFT :
+          (M.get_constant "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT") =
+            value_MAX_SHIFT.
         
         Definition value_NUM_POWERS : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 19 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 19 |))).
+        
+        Axiom Constant_value_NUM_POWERS :
+          (M.get_constant "core::num::dec2flt::slow::parse_long_mantissa::NUM_POWERS") =
+            value_NUM_POWERS.
         
         Definition value_POWERS : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 Value.Array
@@ -1042,6 +1029,9 @@ Module num.
                     Value.Integer IntegerKind.U8 59
                   ]
               |))).
+        
+        Axiom Constant_value_POWERS :
+          (M.get_constant "core::num::dec2flt::slow::parse_long_mantissa::POWERS") = value_POWERS.
       End parse_long_mantissa.
     End slow.
   End dec2flt.

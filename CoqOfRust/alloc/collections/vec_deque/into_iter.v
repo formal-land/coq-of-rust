@@ -1113,9 +1113,8 @@ Module collections.
                       M.alloc (|
                         repeat (|
                           M.read (|
-                            M.get_constant (|
+                            M.get_constant
                               "alloc::collections::vec_deque::into_iter::next_chunk_discriminant"
-                            |)
                           |),
                           N
                         |)
@@ -1210,9 +1209,8 @@ Module collections.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "alloc::collections::vec_deque::into_iter::next_chunk::N"
-                                                |)
                                               |)
                                             |)
                                           |)) in
@@ -1249,9 +1247,8 @@ Module collections.
                                                     |);
                                                     M.read (| raw_arr_ptr |);
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "alloc::collections::vec_deque::into_iter::next_chunk::N"
-                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -1288,9 +1285,8 @@ Module collections.
                                                       |)
                                                     |);
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "alloc::collections::vec_deque::into_iter::next_chunk::N"
-                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -1311,9 +1307,8 @@ Module collections.
                                                 BinOp.Wrap.sub (|
                                                   M.read (| β |),
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "alloc::collections::vec_deque::into_iter::next_chunk::N"
-                                                    |)
                                                   |)
                                                 |)
                                               |) in
@@ -1406,9 +1401,8 @@ Module collections.
                               M.alloc (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "alloc::collections::vec_deque::into_iter::next_chunk::N"
-                                    |)
                                   |),
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1540,9 +1534,8 @@ Module collections.
                                               |)
                                             |);
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "alloc::collections::vec_deque::into_iter::next_chunk::N"
-                                              |)
                                             |)
                                           ]
                                         |)
@@ -1563,9 +1556,8 @@ Module collections.
                                         BinOp.Wrap.sub (|
                                           M.read (| β |),
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "alloc::collections::vec_deque::into_iter::next_chunk::N"
-                                            |)
                                           |)
                                         |)
                                       |) in

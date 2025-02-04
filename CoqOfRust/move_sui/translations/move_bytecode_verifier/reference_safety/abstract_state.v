@@ -1643,31 +1643,74 @@ Module reference_safety.
     End Impl_core_fmt_Display_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
     
     Definition value_STEP_BASE_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    
+    Axiom Constant_value_STEP_BASE_COST :
+      (M.get_constant "move_bytecode_verifier::reference_safety::abstract_state::STEP_BASE_COST") =
+        value_STEP_BASE_COST.
     
     Definition value_STEP_PER_LOCAL_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 20 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 20 |))).
+    
+    Axiom Constant_value_STEP_PER_LOCAL_COST :
+      (M.get_constant
+          "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_LOCAL_COST") =
+        value_STEP_PER_LOCAL_COST.
     
     Definition value_STEP_PER_GRAPH_ITEM_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
+    
+    Axiom Constant_value_STEP_PER_GRAPH_ITEM_COST :
+      (M.get_constant
+          "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_GRAPH_ITEM_COST") =
+        value_STEP_PER_GRAPH_ITEM_COST.
     
     Definition value_JOIN_BASE_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
+    
+    Axiom Constant_value_JOIN_BASE_COST :
+      (M.get_constant "move_bytecode_verifier::reference_safety::abstract_state::JOIN_BASE_COST") =
+        value_JOIN_BASE_COST.
     
     Definition value_JOIN_PER_LOCAL_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    
+    Axiom Constant_value_JOIN_PER_LOCAL_COST :
+      (M.get_constant
+          "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_LOCAL_COST") =
+        value_JOIN_PER_LOCAL_COST.
     
     Definition value_JOIN_PER_GRAPH_ITEM_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
+    
+    Axiom Constant_value_JOIN_PER_GRAPH_ITEM_COST :
+      (M.get_constant
+          "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_GRAPH_ITEM_COST") =
+        value_JOIN_PER_GRAPH_ITEM_COST.
     
     Definition value_REF_PARAM_EDGE_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
+    
+    Axiom Constant_value_REF_PARAM_EDGE_COST :
+      (M.get_constant
+          "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST") =
+        value_REF_PARAM_EDGE_COST.
     
     Definition value_REF_PARAM_EDGE_COST_GROWTH : Value.t :=
-      M.run ltac:(M.monadic UnsupportedLiteral).
+      M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_REF_PARAM_EDGE_COST_GROWTH :
+      (M.get_constant
+          "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST_GROWTH") =
+        value_REF_PARAM_EDGE_COST_GROWTH.
     
     Definition value_CALL_PER_ACQUIRES_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
+    
+    Axiom Constant_value_CALL_PER_ACQUIRES_COST :
+      (M.get_constant
+          "move_bytecode_verifier::reference_safety::abstract_state::CALL_PER_ACQUIRES_COST") =
+        value_CALL_PER_ACQUIRES_COST.
     
     (* StructRecord
       {
@@ -8360,9 +8403,8 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_bytecode_verifier::reference_safety::abstract_state::CALL_PER_ACQUIRES_COST"
-                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -9628,9 +9670,8 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST"
-                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -9664,9 +9705,8 @@ Module reference_safety.
                                   ]
                                 |);
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST_GROWTH"
-                                  |)
                                 |)
                               ]
                             |)
@@ -12623,9 +12663,8 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_bytecode_verifier::reference_safety::abstract_state::JOIN_BASE_COST"
-                                  |)
                                 |)
                               ]
                             |)
@@ -12724,9 +12763,8 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_LOCAL_COST"
-                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -12850,9 +12888,8 @@ Module reference_safety.
                                   "move_bytecode_verifier_meter::Scope::Function"
                                   [];
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_GRAPH_ITEM_COST"
-                                  |)
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|

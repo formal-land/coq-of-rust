@@ -10398,7 +10398,7 @@ Module rc.
                                 |)
                               ]
                             |),
-                            M.read (| M.get_constant (| "alloc::rc::N" |) |)
+                            M.read (| M.get_constant "alloc::rc::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -11051,7 +11051,7 @@ Module rc.
                         [],
                         [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                       |),
-                      [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                      [ M.read (| M.get_constant "core::num::MAX" |) ]
                     |)
                   ]
                 |));
@@ -11129,7 +11129,7 @@ Module rc.
                         [],
                         [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                       |),
-                      [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                      [ M.read (| M.get_constant "core::num::MAX" |) ]
                     |)
                   ]
                 |));
@@ -12173,7 +12173,7 @@ Module rc.
               |)
             ]
           |),
-          M.read (| M.get_constant (| "core::num::MAX" |) |)
+          M.read (| M.get_constant "core::num::MAX" |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

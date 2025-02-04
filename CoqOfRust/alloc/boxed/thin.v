@@ -1140,16 +1140,14 @@ Module boxed.
                                                                   |),
                                                                   ltac:(M.monadic
                                                                     (M.read (|
-                                                                      M.get_constant (|
+                                                                      M.get_constant
                                                                         "core::mem::SizedTypeProperties::IS_ZST"
-                                                                      |)
                                                                     |)))
                                                                 |),
                                                                 ltac:(M.monadic
                                                                   (M.read (|
-                                                                    M.get_constant (|
+                                                                    M.get_constant
                                                                       "core::mem::SizedTypeProperties::IS_ZST"
-                                                                    |)
                                                                   |)))
                                                               |)
                                                             |)
@@ -1810,9 +1808,7 @@ Module boxed.
                   ]
                 |) in
               let~ alloc :=
-                M.copy (|
-                  M.get_constant (| "alloc::boxed::thin::new_unsize_zst_discriminant" |)
-                |) in
+                M.copy (| M.get_constant "alloc::boxed::thin::new_unsize_zst_discriminant" |) in
               let~ value_ptr :=
                 M.alloc (|
                   M.call_closure (|

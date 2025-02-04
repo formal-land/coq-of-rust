@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module bn128.
   Module add.
     Definition value_ADDRESS : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -13,17 +13,24 @@ Module bn128.
             |)
           |))).
     
+    Axiom Constant_value_ADDRESS :
+      (M.get_constant "revm_precompile::bn128::add::ADDRESS") = value_ADDRESS.
+    
     Definition value_ISTANBUL_ADD_GAS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 150 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 150 |))).
+    
+    Axiom Constant_value_ISTANBUL_ADD_GAS_COST :
+      (M.get_constant "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST") =
+        value_ISTANBUL_ADD_GAS_COST.
     
     Definition value_ISTANBUL : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
               "revm_precompile::PrecompileWithAddress"
               [
-                M.read (| M.get_constant (| "revm_precompile::bn128::add::ADDRESS" |) |);
+                M.read (| M.get_constant "revm_precompile::bn128::add::ADDRESS" |);
                 (* ClosureFnPointer(Safe) *)
                 M.pointer_coercion
                   (M.closure
@@ -93,9 +100,8 @@ Module bn128.
                                                   |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST"
-                                                  |)
                                                 |);
                                                 M.read (| gas_limit |)
                                               ]
@@ -108,18 +114,25 @@ Module bn128.
                         end)))
               ]
           |))).
+    
+    Axiom Constant_value_ISTANBUL :
+      (M.get_constant "revm_precompile::bn128::add::ISTANBUL") = value_ISTANBUL.
     
     Definition value_BYZANTIUM_ADD_GAS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 500 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 500 |))).
+    
+    Axiom Constant_value_BYZANTIUM_ADD_GAS_COST :
+      (M.get_constant "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST") =
+        value_BYZANTIUM_ADD_GAS_COST.
     
     Definition value_BYZANTIUM : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
               "revm_precompile::PrecompileWithAddress"
               [
-                M.read (| M.get_constant (| "revm_precompile::bn128::add::ADDRESS" |) |);
+                M.read (| M.get_constant "revm_precompile::bn128::add::ADDRESS" |);
                 (* ClosureFnPointer(Safe) *)
                 M.pointer_coercion
                   (M.closure
@@ -189,9 +202,8 @@ Module bn128.
                                                   |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST"
-                                                  |)
                                                 |);
                                                 M.read (| gas_limit |)
                                               ]
@@ -204,11 +216,14 @@ Module bn128.
                         end)))
               ]
           |))).
+    
+    Axiom Constant_value_BYZANTIUM :
+      (M.get_constant "revm_precompile::bn128::add::BYZANTIUM") = value_BYZANTIUM.
   End add.
   
   Module mul.
     Definition value_ADDRESS : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -217,17 +232,24 @@ Module bn128.
             |)
           |))).
     
+    Axiom Constant_value_ADDRESS :
+      (M.get_constant "revm_precompile::bn128::mul::ADDRESS") = value_ADDRESS.
+    
     Definition value_ISTANBUL_MUL_GAS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6000 |))).
+    
+    Axiom Constant_value_ISTANBUL_MUL_GAS_COST :
+      (M.get_constant "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST") =
+        value_ISTANBUL_MUL_GAS_COST.
     
     Definition value_ISTANBUL : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
               "revm_precompile::PrecompileWithAddress"
               [
-                M.read (| M.get_constant (| "revm_precompile::bn128::mul::ADDRESS" |) |);
+                M.read (| M.get_constant "revm_precompile::bn128::mul::ADDRESS" |);
                 (* ClosureFnPointer(Safe) *)
                 M.pointer_coercion
                   (M.closure
@@ -297,9 +319,8 @@ Module bn128.
                                                   |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST"
-                                                  |)
                                                 |);
                                                 M.read (| gas_limit |)
                                               ]
@@ -312,18 +333,25 @@ Module bn128.
                         end)))
               ]
           |))).
+    
+    Axiom Constant_value_ISTANBUL :
+      (M.get_constant "revm_precompile::bn128::mul::ISTANBUL") = value_ISTANBUL.
     
     Definition value_BYZANTIUM_MUL_GAS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 40000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 40000 |))).
+    
+    Axiom Constant_value_BYZANTIUM_MUL_GAS_COST :
+      (M.get_constant "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST") =
+        value_BYZANTIUM_MUL_GAS_COST.
     
     Definition value_BYZANTIUM : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
               "revm_precompile::PrecompileWithAddress"
               [
-                M.read (| M.get_constant (| "revm_precompile::bn128::mul::ADDRESS" |) |);
+                M.read (| M.get_constant "revm_precompile::bn128::mul::ADDRESS" |);
                 (* ClosureFnPointer(Safe) *)
                 M.pointer_coercion
                   (M.closure
@@ -393,9 +421,8 @@ Module bn128.
                                                   |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST"
-                                                  |)
                                                 |);
                                                 M.read (| gas_limit |)
                                               ]
@@ -408,11 +435,14 @@ Module bn128.
                         end)))
               ]
           |))).
+    
+    Axiom Constant_value_BYZANTIUM :
+      (M.get_constant "revm_precompile::bn128::mul::BYZANTIUM") = value_BYZANTIUM.
   End mul.
   
   Module pair_.
     Definition value_ADDRESS : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -421,20 +451,31 @@ Module bn128.
             |)
           |))).
     
+    Axiom Constant_value_ADDRESS :
+      (M.get_constant "revm_precompile::bn128::pair::ADDRESS") = value_ADDRESS.
+    
     Definition value_ISTANBUL_PAIR_PER_POINT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 34000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 34000 |))).
+    
+    Axiom Constant_value_ISTANBUL_PAIR_PER_POINT :
+      (M.get_constant "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT") =
+        value_ISTANBUL_PAIR_PER_POINT.
     
     Definition value_ISTANBUL_PAIR_BASE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
+    
+    Axiom Constant_value_ISTANBUL_PAIR_BASE :
+      (M.get_constant "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE") =
+        value_ISTANBUL_PAIR_BASE.
     
     Definition value_ISTANBUL : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
               "revm_precompile::PrecompileWithAddress"
               [
-                M.read (| M.get_constant (| "revm_precompile::bn128::pair::ADDRESS" |) |);
+                M.read (| M.get_constant "revm_precompile::bn128::pair::ADDRESS" |);
                 (* ClosureFnPointer(Safe) *)
                 M.pointer_coercion
                   (M.closure
@@ -504,14 +545,12 @@ Module bn128.
                                                   |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT"
-                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE"
-                                                  |)
                                                 |);
                                                 M.read (| gas_limit |)
                                               ]
@@ -524,21 +563,32 @@ Module bn128.
                         end)))
               ]
           |))).
+    
+    Axiom Constant_value_ISTANBUL :
+      (M.get_constant "revm_precompile::bn128::pair::ISTANBUL") = value_ISTANBUL.
     
     Definition value_BYZANTIUM_PAIR_PER_POINT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 80000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 80000 |))).
+    
+    Axiom Constant_value_BYZANTIUM_PAIR_PER_POINT :
+      (M.get_constant "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT") =
+        value_BYZANTIUM_PAIR_PER_POINT.
     
     Definition value_BYZANTIUM_PAIR_BASE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100000 |))).
+    
+    Axiom Constant_value_BYZANTIUM_PAIR_BASE :
+      (M.get_constant "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE") =
+        value_BYZANTIUM_PAIR_BASE.
     
     Definition value_BYZANTIUM : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
               "revm_precompile::PrecompileWithAddress"
               [
-                M.read (| M.get_constant (| "revm_precompile::bn128::pair::ADDRESS" |) |);
+                M.read (| M.get_constant "revm_precompile::bn128::pair::ADDRESS" |);
                 (* ClosureFnPointer(Safe) *)
                 M.pointer_coercion
                   (M.closure
@@ -608,14 +658,12 @@ Module bn128.
                                                   |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT"
-                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE"
-                                                  |)
                                                 |);
                                                 M.read (| gas_limit |)
                                               ]
@@ -628,10 +676,13 @@ Module bn128.
                         end)))
               ]
           |))).
+    
+    Axiom Constant_value_BYZANTIUM :
+      (M.get_constant "revm_precompile::bn128::pair::BYZANTIUM") = value_BYZANTIUM.
   End pair_.
   
   Definition value_ADD_INPUT_LEN : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.add (|
@@ -640,8 +691,11 @@ Module bn128.
           |)
         |))).
   
+  Axiom Constant_value_ADD_INPUT_LEN :
+    (M.get_constant "revm_precompile::bn128::ADD_INPUT_LEN") = value_ADD_INPUT_LEN.
+  
   Definition value_MUL_INPUT_LEN : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.add (|
@@ -650,8 +704,11 @@ Module bn128.
           |)
         |))).
   
+  Axiom Constant_value_MUL_INPUT_LEN :
+    (M.get_constant "revm_precompile::bn128::MUL_INPUT_LEN") = value_MUL_INPUT_LEN.
+  
   Definition value_PAIR_ELEMENT_LEN : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.add (|
@@ -659,6 +716,9 @@ Module bn128.
             Value.Integer IntegerKind.Usize 128
           |)
         |))).
+  
+  Axiom Constant_value_PAIR_ELEMENT_LEN :
+    (M.get_constant "revm_precompile::bn128::PAIR_ELEMENT_LEN") = value_PAIR_ELEMENT_LEN.
   
   (*
   pub fn read_fq(input: &[u8]) -> Result<Fq, PrecompileError> {
@@ -2467,9 +2527,7 @@ Module bn128.
                             |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                           |),
-                          M.read (|
-                            M.get_constant (| "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
-                          |)
+                          M.read (| M.get_constant "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
                         |)),
                       M.read (| pair_per_point_cost |)
                     |),
@@ -2546,7 +2604,7 @@ Module bn128.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant (| "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
+                                    M.get_constant "revm_precompile::bn128::PAIR_ELEMENT_LEN"
                                   |)
                                 |),
                                 Value.Integer IntegerKind.Usize 0
@@ -2633,7 +2691,7 @@ Module bn128.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant (| "revm_precompile::bn128::PAIR_ELEMENT_LEN" |)
+                                  M.get_constant "revm_precompile::bn128::PAIR_ELEMENT_LEN"
                                 |)
                               |)
                             |) in
@@ -2793,9 +2851,8 @@ Module bn128.
                                                                                                           |),
                                                                                                           BinOp.Wrap.div (|
                                                                                                             M.read (|
-                                                                                                              M.get_constant (|
+                                                                                                              M.get_constant
                                                                                                                 "revm_precompile::bn128::PAIR_ELEMENT_LEN"
-                                                                                                              |)
                                                                                                             |),
                                                                                                             Value.Integer
                                                                                                               IntegerKind.Usize
@@ -2858,9 +2915,8 @@ Module bn128.
                                                                                       idx
                                                                                     |),
                                                                                     M.read (|
-                                                                                      M.get_constant (|
+                                                                                      M.get_constant
                                                                                         "revm_precompile::bn128::PAIR_ELEMENT_LEN"
-                                                                                      |)
                                                                                     |)
                                                                                   |),
                                                                                   BinOp.Wrap.mul (|

@@ -314,7 +314,7 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
 Axiom Function_zero_address : M.IsFunction "erc1155::zero_address" zero_address.
 
 Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
-  M.run
+  M.run_constant
     ltac:(M.monadic
       (M.alloc (|
         Value.Array
@@ -326,8 +326,11 @@ Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
           ]
       |))).
 
+Axiom Constant_value_ON_ERC_1155_RECEIVED_SELECTOR :
+  (M.get_constant "erc1155::ON_ERC_1155_RECEIVED_SELECTOR") = value_ON_ERC_1155_RECEIVED_SELECTOR.
+
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
-  M.run
+  M.run_constant
     ltac:(M.monadic
       (M.alloc (|
         Value.Array
@@ -338,6 +341,10 @@ Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
             Value.Integer IntegerKind.U8 129
           ]
       |))).
+
+Axiom Constant__ON_ERC_1155_BATCH_RECEIVED_SELECTOR :
+  (M.get_constant "erc1155::_ON_ERC_1155_BATCH_RECEIVED_SELECTOR") =
+    _ON_ERC_1155_BATCH_RECEIVED_SELECTOR.
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 

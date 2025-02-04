@@ -379,7 +379,7 @@ Module iter.
                         (M.alloc (|
                           Value.Tuple
                             [
-                              M.read (| M.get_constant (| "core::num::MAX" |) |);
+                              M.read (| M.get_constant "core::num::MAX" |);
                               Value.StructTuple "core::option::Option::None" []
                             ]
                         |)))

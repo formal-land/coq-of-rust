@@ -796,7 +796,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant (| "core::slice::first_chunk::N" |) |)
+                            M.read (| M.get_constant "core::slice::first_chunk::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -895,7 +895,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant (| "core::slice::first_chunk_mut::N" |) |)
+                            M.read (| M.get_constant "core::slice::first_chunk_mut::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1001,7 +1001,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant (| "core::slice::split_first_chunk::N" |) |)
+                            M.read (| M.get_constant "core::slice::split_first_chunk::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1019,7 +1019,7 @@ Module slice.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            M.read (| M.get_constant (| "core::slice::split_first_chunk::N" |) |)
+                            M.read (| M.get_constant "core::slice::split_first_chunk::N" |)
                           ]
                         |)
                       |),
@@ -1136,9 +1136,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              M.get_constant (| "core::slice::split_first_chunk_mut::N" |)
-                            |)
+                            M.read (| M.get_constant "core::slice::split_first_chunk_mut::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1156,9 +1154,7 @@ Module slice.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                            M.read (|
-                              M.get_constant (| "core::slice::split_first_chunk_mut::N" |)
-                            |)
+                            M.read (| M.get_constant "core::slice::split_first_chunk_mut::N" |)
                           ]
                         |)
                       |),
@@ -1277,7 +1273,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant (| "core::slice::split_last_chunk::N" |) |)
+                            M.read (| M.get_constant "core::slice::split_last_chunk::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1305,7 +1301,7 @@ Module slice.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |),
-                              M.read (| M.get_constant (| "core::slice::split_last_chunk::N" |) |)
+                              M.read (| M.get_constant "core::slice::split_last_chunk::N" |)
                             |)
                           ]
                         |)
@@ -1423,7 +1419,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant (| "core::slice::split_last_chunk_mut::N" |) |)
+                            M.read (| M.get_constant "core::slice::split_last_chunk_mut::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1451,9 +1447,7 @@ Module slice.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |),
-                              M.read (|
-                                M.get_constant (| "core::slice::split_last_chunk_mut::N" |)
-                              |)
+                              M.read (| M.get_constant "core::slice::split_last_chunk_mut::N" |)
                             |)
                           ]
                         |)
@@ -1569,7 +1563,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant (| "core::slice::last_chunk::N" |) |)
+                            M.read (| M.get_constant "core::slice::last_chunk::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1604,7 +1598,7 @@ Module slice.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant (| "core::slice::last_chunk::N" |) |)
+                                  M.read (| M.get_constant "core::slice::last_chunk::N" |)
                                 |)
                               ]
                             |)
@@ -1708,7 +1702,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (| M.get_constant (| "core::slice::last_chunk_mut::N" |) |)
+                            M.read (| M.get_constant "core::slice::last_chunk_mut::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1750,9 +1744,7 @@ Module slice.
                                             |)
                                           ]
                                         |),
-                                        M.read (|
-                                          M.get_constant (| "core::slice::last_chunk_mut::N" |)
-                                        |)
+                                        M.read (| M.get_constant "core::slice::last_chunk_mut::N" |)
                                       |)
                                     ]
                                   |)
@@ -3078,9 +3070,7 @@ Module slice.
                               []
                             |),
                             [
-                              M.read (|
-                                M.get_constant (| "core::slice::as_chunks_unchecked::N" |)
-                              |);
+                              M.read (| M.get_constant "core::slice::as_chunks_unchecked::N" |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
@@ -3111,7 +3101,7 @@ Module slice.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |);
-                    M.read (| M.get_constant (| "core::slice::as_chunks_unchecked::N" |) |)
+                    M.read (| M.get_constant "core::slice::as_chunks_unchecked::N" |)
                   ]
                 |)
               |) in
@@ -3190,7 +3180,7 @@ Module slice.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.ne (|
-                                M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |),
+                                M.read (| M.get_constant "core::slice::as_chunks::N" |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
                             |)
@@ -3247,9 +3237,9 @@ Module slice.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
-                    M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |)
+                    M.read (| M.get_constant "core::slice::as_chunks::N" |)
                   |),
-                  M.read (| M.get_constant (| "core::slice::as_chunks::N" |) |)
+                  M.read (| M.get_constant "core::slice::as_chunks::N" |)
                 |)
               |) in
             M.match_operator (|
@@ -3337,7 +3327,7 @@ Module slice.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.ne (|
-                                M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |),
+                                M.read (| M.get_constant "core::slice::as_rchunks::N" |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
                             |)
@@ -3393,7 +3383,7 @@ Module slice.
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
-                  M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |)
+                  M.read (| M.get_constant "core::slice::as_rchunks::N" |)
                 |)
               |) in
             M.match_operator (|
@@ -3419,7 +3409,7 @@ Module slice.
                       |),
                       BinOp.Wrap.mul (|
                         M.read (| len |),
-                        M.read (| M.get_constant (| "core::slice::as_rchunks::N" |) |)
+                        M.read (| M.get_constant "core::slice::as_rchunks::N" |)
                       |)
                     |)
                   ]
@@ -3490,7 +3480,7 @@ Module slice.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.ne (|
-                                M.read (| M.get_constant (| "core::slice::array_chunks::N" |) |),
+                                M.read (| M.get_constant "core::slice::array_chunks::N" |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
                             |)
@@ -3609,7 +3599,7 @@ Module slice.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_constant (| "core::slice::as_chunks_unchecked_mut::N" |)
+                                    M.get_constant "core::slice::as_chunks_unchecked_mut::N"
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -3646,7 +3636,7 @@ Module slice.
                           |),
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |);
-                        M.read (| M.get_constant (| "core::slice::as_chunks_unchecked_mut::N" |) |)
+                        M.read (| M.get_constant "core::slice::as_chunks_unchecked_mut::N" |)
                       ]
                     |)
                   |) in
@@ -3737,7 +3727,7 @@ Module slice.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.ne (|
-                                M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |),
+                                M.read (| M.get_constant "core::slice::as_chunks_mut::N" |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
                             |)
@@ -3794,9 +3784,9 @@ Module slice.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
-                    M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |)
+                    M.read (| M.get_constant "core::slice::as_chunks_mut::N" |)
                   |),
-                  M.read (| M.get_constant (| "core::slice::as_chunks_mut::N" |) |)
+                  M.read (| M.get_constant "core::slice::as_chunks_mut::N" |)
                 |)
               |) in
             M.match_operator (|
@@ -3897,7 +3887,7 @@ Module slice.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.ne (|
-                                M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |),
+                                M.read (| M.get_constant "core::slice::as_rchunks_mut::N" |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
                             |)
@@ -3953,7 +3943,7 @@ Module slice.
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
-                  M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |)
+                  M.read (| M.get_constant "core::slice::as_rchunks_mut::N" |)
                 |)
               |) in
             M.match_operator (|
@@ -3979,7 +3969,7 @@ Module slice.
                       |),
                       BinOp.Wrap.mul (|
                         M.read (| len |),
-                        M.read (| M.get_constant (| "core::slice::as_rchunks_mut::N" |) |)
+                        M.read (| M.get_constant "core::slice::as_rchunks_mut::N" |)
                       |)
                     |)
                   ]
@@ -4060,9 +4050,7 @@ Module slice.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.ne (|
-                                M.read (|
-                                  M.get_constant (| "core::slice::array_chunks_mut::N" |)
-                                |),
+                                M.read (| M.get_constant "core::slice::array_chunks_mut::N" |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
                             |)
@@ -4149,7 +4137,7 @@ Module slice.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.ne (|
-                                M.read (| M.get_constant (| "core::slice::array_windows::N" |) |),
+                                M.read (| M.get_constant "core::slice::array_windows::N" |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
                             |)
@@ -9609,8 +9597,7 @@ Module slice.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ gcd :=
-              M.copy (| M.get_constant (| "core::slice::align_to_offsets_discriminant" |) |) in
+            let~ gcd := M.copy (| M.get_constant "core::slice::align_to_offsets_discriminant" |) in
             let~ ts :=
               M.alloc (|
                 BinOp.Wrap.div (|
@@ -9723,11 +9710,11 @@ Module slice.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.read (|
-                                    M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                    M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                   |),
                                   ltac:(M.monadic
                                     (M.read (|
-                                      M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                     |)))
                                 |)
                               |)) in
@@ -10056,11 +10043,11 @@ Module slice.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.read (|
-                                    M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                    M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                   |),
                                   ltac:(M.monadic
                                     (M.read (|
-                                      M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                     |)))
                                 |)
                               |)) in
@@ -12206,9 +12193,7 @@ Module slice.
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
-                              M.read (|
-                                M.get_constant (| "core::slice::get_many_unchecked_mut::N" |)
-                              |))
+                              M.read (| M.get_constant "core::slice::get_many_unchecked_mut::N" |))
                           ]
                       ]
                     |)
@@ -12497,7 +12482,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -12696,7 +12681,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -12938,8 +12923,7 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ :=
-                          M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -12976,7 +12960,7 @@ Module slice.
                                       |)
                                     ]
                                   |);
-                                  M.read (| M.get_constant (| "core::slice::N" |) |)
+                                  M.read (| M.get_constant "core::slice::N" |)
                                 ]
                               |);
                               M.borrow (|
@@ -13009,7 +12993,7 @@ Module slice.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
-                              M.read (| M.get_constant (| "core::slice::N" |) |)
+                              M.read (| M.get_constant "core::slice::N" |)
                             ]
                           |)
                         |)))
@@ -13096,8 +13080,7 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -13134,7 +13117,7 @@ Module slice.
                                           |)
                                         ]
                                       |);
-                                      M.read (| M.get_constant (| "core::slice::N" |) |)
+                                      M.read (| M.get_constant "core::slice::N" |)
                                     ]
                                   |);
                                   M.borrow (|
@@ -13172,7 +13155,7 @@ Module slice.
                                       |)
                                     ]
                                   |);
-                                  M.read (| M.get_constant (| "core::slice::N" |) |)
+                                  M.read (| M.get_constant "core::slice::N" |)
                                 ]
                               |)
                             |)))

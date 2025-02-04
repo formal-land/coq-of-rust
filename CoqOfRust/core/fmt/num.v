@@ -868,7 +868,7 @@ Module fmt.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::fmt::num::GenericRadix::BASE" |) |) ]
+                    [ M.read (| M.get_constant "core::fmt::num::GenericRadix::BASE" |) ]
                   |)
                 |) in
               let~ _ :=
@@ -1537,7 +1537,7 @@ Module fmt.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
-                        M.read (| M.get_constant (| "core::fmt::num::GenericRadix::PREFIX" |) |)
+                        M.read (| M.get_constant "core::fmt::num::GenericRadix::PREFIX" |)
                       |)
                     |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
@@ -1892,9 +1892,8 @@ Module fmt.
                                                         M.alloc (|
                                                           BinOp.Wrap.sub (|
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "core::fmt::num::GenericRadix::BASE"
-                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.U8 1
                                                           |)
@@ -2040,9 +2039,8 @@ Module fmt.
                                                         M.alloc (|
                                                           BinOp.Wrap.sub (|
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "core::fmt::num::GenericRadix::BASE"
-                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.U8 1
                                                           |)
@@ -2197,9 +2195,8 @@ Module fmt.
                                                         M.alloc (|
                                                           BinOp.Wrap.sub (|
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "core::fmt::num::GenericRadix::BASE"
-                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.U8 1
                                                           |)
@@ -2354,9 +2351,8 @@ Module fmt.
                                                         M.alloc (|
                                                           BinOp.Wrap.sub (|
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "core::fmt::num::GenericRadix::BASE"
-                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.U8 1
                                                           |)
@@ -6263,7 +6259,10 @@ Module fmt.
     End Impl_core_fmt_Debug_for_usize.
     
     Definition value_DEC_DIGITS_LUT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| UnsupportedLiteral |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| UnsupportedLiteral |))).
+    
+    Axiom Constant_value_DEC_DIGITS_LUT :
+      (M.get_constant "core::fmt::num::DEC_DIGITS_LUT") = value_DEC_DIGITS_LUT.
     
     Module imp.
       (*
@@ -6410,7 +6409,7 @@ Module fmt.
                         M.deref (|
                           M.read (|
                             M.deref (|
-                              M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
+                              M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
                             |)
                           |)
                         |)
@@ -8659,9 +8658,7 @@ Module fmt.
                                 M.deref (|
                                   M.read (|
                                     M.deref (|
-                                      M.read (|
-                                        M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |)
-                                      |)
+                                      M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
                                     |)
                                   |)
                                 |)
@@ -12237,9 +12234,7 @@ Module fmt.
                               M.deref (|
                                 M.read (|
                                   M.deref (|
-                                    M.read (|
-                                      M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |)
-                                    |)
+                                    M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |)
                                   |)
                                 |)
                               |)
@@ -13440,9 +13435,7 @@ Module fmt.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.deref (|
-                            M.read (| M.get_constant (| "core::fmt::num::DEC_DIGITS_LUT" |) |)
-                          |)
+                          M.deref (| M.read (| M.get_constant "core::fmt::num::DEC_DIGITS_LUT" |) |)
                         |)
                       |)
                     |)
@@ -15137,7 +15130,7 @@ Module fmt.
                                   Value.Integer IntegerKind.I32 19
                                 |)),
                               BinOp.Wrap.shr (|
-                                M.read (| M.get_constant (| "core::fmt::num::udiv_1e19::DIV" |) |),
+                                M.read (| M.get_constant "core::fmt::num::udiv_1e19::DIV" |),
                                 Value.Integer IntegerKind.I32 19
                               |)
                             |))
@@ -15150,9 +15143,7 @@ Module fmt.
                               M.get_function (| "core::fmt::num::u128_mulhi", [], [] |),
                               [
                                 M.read (| n |);
-                                M.read (|
-                                  M.get_constant (| "core::fmt::num::udiv_1e19::FACTOR" |)
-                                |)
+                                M.read (| M.get_constant "core::fmt::num::udiv_1e19::FACTOR" |)
                               ]
                             |),
                             Value.Integer IntegerKind.I32 62
@@ -15171,7 +15162,7 @@ Module fmt.
                       M.read (| quot |),
                       M.cast
                         (Ty.path "u128")
-                        (M.read (| M.get_constant (| "core::fmt::num::udiv_1e19::DIV" |) |))
+                        (M.read (| M.get_constant "core::fmt::num::udiv_1e19::DIV" |))
                     |)
                   |))
               |) in
@@ -15184,13 +15175,18 @@ Module fmt.
     
     Module udiv_1e19.
       Definition value_DIV : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |)) |))).
       
+      Axiom Constant_value_DIV : (M.get_constant "core::fmt::num::udiv_1e19::DIV") = value_DIV.
+      
       Definition value_FACTOR : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (| Value.Integer IntegerKind.U128 156927543384667019095894735580191660403 |))).
+      
+      Axiom Constant_value_FACTOR :
+        (M.get_constant "core::fmt::num::udiv_1e19::FACTOR") = value_FACTOR.
     End udiv_1e19.
     
     (*

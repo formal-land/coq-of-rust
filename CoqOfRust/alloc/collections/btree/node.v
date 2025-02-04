@@ -5,53 +5,73 @@ Module collections.
   Module btree.
     Module node.
       Definition value_B : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 6 |))).
+        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 6 |))).
+      
+      Axiom Constant_value_B : (M.get_constant "alloc::collections::btree::node::B") = value_B.
       
       Definition value_CAPACITY : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.mul (|
                   Value.Integer IntegerKind.Usize 2,
-                  M.read (| M.get_constant (| "alloc::collections::btree::node::B" |) |)
+                  M.read (| M.get_constant "alloc::collections::btree::node::B" |)
                 |),
                 Value.Integer IntegerKind.Usize 1
               |)
             |))).
       
+      Axiom Constant_value_CAPACITY :
+        (M.get_constant "alloc::collections::btree::node::CAPACITY") = value_CAPACITY.
+      
       Definition value_MIN_LEN_AFTER_SPLIT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant (| "alloc::collections::btree::node::B" |) |),
+                M.read (| M.get_constant "alloc::collections::btree::node::B" |),
                 Value.Integer IntegerKind.Usize 1
               |)
             |))).
+      
+      Axiom Constant_value_MIN_LEN_AFTER_SPLIT :
+        (M.get_constant "alloc::collections::btree::node::MIN_LEN_AFTER_SPLIT") =
+          value_MIN_LEN_AFTER_SPLIT.
       
       Definition value_KV_IDX_CENTER : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant (| "alloc::collections::btree::node::B" |) |),
+                M.read (| M.get_constant "alloc::collections::btree::node::B" |),
                 Value.Integer IntegerKind.Usize 1
               |)
             |))).
+      
+      Axiom Constant_value_KV_IDX_CENTER :
+        (M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER") = value_KV_IDX_CENTER.
       
       Definition value_EDGE_IDX_LEFT_OF_CENTER : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant (| "alloc::collections::btree::node::B" |) |),
+                M.read (| M.get_constant "alloc::collections::btree::node::B" |),
                 Value.Integer IntegerKind.Usize 1
               |)
             |))).
       
+      Axiom Constant_value_EDGE_IDX_LEFT_OF_CENTER :
+        (M.get_constant "alloc::collections::btree::node::EDGE_IDX_LEFT_OF_CENTER") =
+          value_EDGE_IDX_LEFT_OF_CENTER.
+      
       Definition value_EDGE_IDX_RIGHT_OF_CENTER : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "alloc::collections::btree::node::B" |))).
+        M.run_constant ltac:(M.monadic (M.get_constant "alloc::collections::btree::node::B")).
+      
+      Axiom Constant_value_EDGE_IDX_RIGHT_OF_CENTER :
+        (M.get_constant "alloc::collections::btree::node::EDGE_IDX_RIGHT_OF_CENTER") =
+          value_EDGE_IDX_RIGHT_OF_CENTER.
       
       (* StructRecord
         {
@@ -83,9 +103,7 @@ Module collections.
                   (Ty.path "array")
                   [
                     M.unevaluated_const
-                      (M.get_constant (|
-                        "alloc::collections::btree::node::LeafNode_discriminant"
-                      |))
+                      (M.get_constant "alloc::collections::btree::node::LeafNode_discriminant")
                   ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]);
               ("vals",
@@ -93,9 +111,7 @@ Module collections.
                   (Ty.path "array")
                   [
                     M.unevaluated_const
-                      (M.get_constant (|
-                        "alloc::collections::btree::node::LeafNode_discriminant"
-                      |))
+                      (M.get_constant "alloc::collections::btree::node::LeafNode_discriminant")
                   ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ])
             ];
@@ -308,9 +324,8 @@ Module collections.
                   (Ty.path "array")
                   [
                     M.unevaluated_const
-                      (M.get_constant (|
-                        "alloc::collections::btree::node::InternalNode::edges_discriminant"
-                      |))
+                      (M.get_constant
+                        "alloc::collections::btree::node::InternalNode::edges_discriminant")
                   ]
                   [
                     Ty.apply
@@ -2028,9 +2043,7 @@ Module collections.
                                   BinOp.lt (|
                                     M.read (| idx |),
                                     M.read (|
-                                      M.get_constant (|
-                                        "alloc::collections::btree::node::CAPACITY"
-                                      |)
+                                      M.get_constant "alloc::collections::btree::node::CAPACITY"
                                     |)
                                   |)
                                 |)
@@ -2518,8 +2531,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ _ :=
-                  M.get_constant (| "alloc::collections::btree::node::ascend_discriminant" |) in
+                let~ _ := M.get_constant "alloc::collections::btree::node::ascend_discriminant" in
                 let~ leaf_ptr :=
                   M.alloc (|
                     (* MutToConstPointer *)
@@ -6201,9 +6213,7 @@ Module collections.
                                   BinOp.lt (|
                                     M.read (| idx |),
                                     M.read (|
-                                      M.get_constant (|
-                                        "alloc::collections::btree::node::CAPACITY"
-                                      |)
+                                      M.get_constant "alloc::collections::btree::node::CAPACITY"
                                     |)
                                   |)
                                 |)
@@ -7792,9 +7802,8 @@ Module collections.
                                           BinOp.le (|
                                             M.read (| edge_idx |),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "alloc::collections::btree::node::CAPACITY"
-                                              |)
                                             |)
                                           |)
                                         |)
@@ -7833,9 +7842,7 @@ Module collections.
                           [
                             BinOp.Wrap.sub (|
                               M.read (|
-                                M.get_constant (|
-                                  "alloc::collections::btree::node::KV_IDX_CENTER"
-                                |)
+                                M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER"
                               |),
                               Value.Integer IntegerKind.Usize 1
                             |);
@@ -7855,7 +7862,7 @@ Module collections.
                         Value.Tuple
                           [
                             M.read (|
-                              M.get_constant (| "alloc::collections::btree::node::KV_IDX_CENTER" |)
+                              M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER"
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Left"
@@ -7873,7 +7880,7 @@ Module collections.
                         Value.Tuple
                           [
                             M.read (|
-                              M.get_constant (| "alloc::collections::btree::node::KV_IDX_CENTER" |)
+                              M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER"
                             |);
                             Value.StructTuple
                               "alloc::collections::btree::node::LeftOrRight::Right"
@@ -7887,9 +7894,7 @@ Module collections.
                           [
                             BinOp.Wrap.add (|
                               M.read (|
-                                M.get_constant (|
-                                  "alloc::collections::btree::node::KV_IDX_CENTER"
-                                |)
+                                M.get_constant "alloc::collections::btree::node::KV_IDX_CENTER"
                               |),
                               Value.Integer IntegerKind.Usize 1
                             |);
@@ -7901,9 +7906,8 @@ Module collections.
                                   BinOp.Wrap.add (|
                                     BinOp.Wrap.add (|
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "alloc::collections::btree::node::KV_IDX_CENTER"
-                                        |)
                                       |),
                                       Value.Integer IntegerKind.Usize 1
                                     |),
@@ -8022,9 +8026,8 @@ Module collections.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "alloc::collections::btree::node::CAPACITY"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -8380,7 +8383,7 @@ Module collections.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant (| "alloc::collections::btree::node::CAPACITY" |)
+                                  M.get_constant "alloc::collections::btree::node::CAPACITY"
                                 |)
                               |)
                             |)) in
@@ -9496,9 +9499,8 @@ Module collections.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "alloc::collections::btree::node::CAPACITY"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -10089,7 +10091,7 @@ Module collections.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant (| "alloc::collections::btree::node::CAPACITY" |)
+                                  M.get_constant "alloc::collections::btree::node::CAPACITY"
                                 |)
                               |)
                             |)) in
@@ -10464,8 +10466,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ _ :=
-                  M.get_constant (| "alloc::collections::btree::node::descend_discriminant" |) in
+                let~ _ := M.get_constant "alloc::collections::btree::node::descend_discriminant" in
                 let~ parent_ptr :=
                   M.alloc (|
                     M.call_closure (|
@@ -14224,7 +14225,7 @@ Module collections.
                     ]
                   |)
                 |),
-                M.read (| M.get_constant (| "alloc::collections::btree::node::CAPACITY" |) |)
+                M.read (| M.get_constant "alloc::collections::btree::node::CAPACITY" |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -14441,9 +14442,8 @@ Module collections.
                                           BinOp.le (|
                                             M.read (| new_left_len |),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "alloc::collections::btree::node::CAPACITY"
-                                              |)
                                             |)
                                           |)
                                         |)
@@ -16350,9 +16350,7 @@ Module collections.
                                       M.read (| count |)
                                     |),
                                     M.read (|
-                                      M.get_constant (|
-                                        "alloc::collections::btree::node::CAPACITY"
-                                      |)
+                                      M.get_constant "alloc::collections::btree::node::CAPACITY"
                                     |)
                                   |)
                                 |)
@@ -17650,9 +17648,7 @@ Module collections.
                                       M.read (| count |)
                                     |),
                                     M.read (|
-                                      M.get_constant (|
-                                        "alloc::collections::btree::node::CAPACITY"
-                                      |)
+                                      M.get_constant "alloc::collections::btree::node::CAPACITY"
                                     |)
                                   |)
                                 |)

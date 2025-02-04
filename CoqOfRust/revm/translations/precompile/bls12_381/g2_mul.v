@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module bls12_381.
   Module g2_mul.
     Definition value_PRECOMPILE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
@@ -12,8 +12,7 @@ Module bls12_381.
               [
                 M.call_closure (|
                   M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                  [ M.read (| M.get_constant (| "revm_precompile::bls12_381::g2_mul::ADDRESS" |) |)
-                  ]
+                  [ M.read (| M.get_constant "revm_precompile::bls12_381::g2_mul::ADDRESS" |) ]
                 |);
                 (* ReifyFnPointer *)
                 M.pointer_coercion
@@ -21,14 +20,26 @@ Module bls12_381.
               ]
           |))).
     
+    Axiom Constant_value_PRECOMPILE :
+      (M.get_constant "revm_precompile::bls12_381::g2_mul::PRECOMPILE") = value_PRECOMPILE.
+    
     Definition value_ADDRESS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
+    
+    Axiom Constant_value_ADDRESS :
+      (M.get_constant "revm_precompile::bls12_381::g2_mul::ADDRESS") = value_ADDRESS.
     
     Definition value_BASE_GAS_FEE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
+    
+    Axiom Constant_value_BASE_GAS_FEE :
+      (M.get_constant "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE") = value_BASE_GAS_FEE.
     
     Definition value_INPUT_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 288 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 288 |))).
+    
+    Axiom Constant_value_INPUT_LENGTH :
+      (M.get_constant "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH") = value_INPUT_LENGTH.
     
     (*
     pub(super) fn g2_mul(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -84,9 +95,8 @@ Module bls12_381.
                               (M.alloc (|
                                 BinOp.gt (|
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE"
-                                    |)
                                   |),
                                   M.read (| gas_limit |)
                                 |)
@@ -168,9 +178,8 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
-                                    |)
                                   |)
                                 |)
                               |)) in
@@ -298,9 +307,8 @@ Module bls12_381.
                                                                               |);
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
-                                                                                M.get_constant (|
+                                                                                M.get_constant
                                                                                   "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
-                                                                                |)
                                                                               |)
                                                                             ]
                                                                         |),
@@ -487,9 +495,8 @@ Module bls12_381.
                                                 [
                                                   ("end_",
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
-                                                      |)
                                                     |))
                                                 ]
                                             ]
@@ -688,9 +695,8 @@ Module bls12_381.
                                               [
                                                 ("start",
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
-                                                    |)
                                                   |))
                                               ]
                                           ]
@@ -807,7 +813,7 @@ Module bls12_381.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "revm_precompile::bls12_381::utils::NBITS" |) |)
+                        M.read (| M.get_constant "revm_precompile::bls12_381::utils::NBITS" |)
                       ]
                     |)
                   |) in
@@ -871,7 +877,7 @@ Module bls12_381.
                         |),
                         [
                           M.read (|
-                            M.get_constant (| "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE" |)
+                            M.get_constant "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE"
                           |);
                           M.read (| out |)
                         ]

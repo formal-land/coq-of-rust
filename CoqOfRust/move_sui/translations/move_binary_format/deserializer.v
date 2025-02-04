@@ -1899,9 +1899,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::SIGNATURE_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -2028,9 +2027,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::MODULE_HANDLE_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -2159,9 +2157,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::IDENTIFIER_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -2288,9 +2285,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::STRUCT_HANDLE_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -2425,9 +2421,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::ADDRESS_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -2558,9 +2553,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::STRUCT_DEF_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -2689,9 +2683,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::FUNCTION_HANDLE_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -2820,9 +2813,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::FIELD_HANDLE_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -2953,9 +2945,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::FIELD_INST_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -3084,9 +3075,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::FUNCTION_INST_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -3217,9 +3207,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::STRUCT_DEF_INST_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -3348,9 +3337,8 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::CONSTANT_INDEX_MAX"
-                                    |)
                                   |)
                                 ]
                               |)
@@ -3444,9 +3432,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::BYTECODE_COUNT_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::BYTECODE_COUNT_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3473,9 +3459,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::BYTECODE_INDEX_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::BYTECODE_INDEX_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3502,9 +3486,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3531,9 +3513,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::FIELD_COUNT_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::FIELD_COUNT_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3561,9 +3541,7 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant (|
-                "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX"
-              |)
+              M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX"
             |)
           ]
         |)))
@@ -3593,9 +3571,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3622,9 +3598,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::CONSTANT_SIZE_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::CONSTANT_SIZE_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3652,7 +3626,7 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX" |)
+              M.get_constant "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX"
             |)
           ]
         |)))
@@ -3681,7 +3655,7 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX" |)
+              M.get_constant "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX"
             |)
           ]
         |)))
@@ -3712,7 +3686,7 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX" |)
+              M.get_constant "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX"
             |)
           ]
         |)))
@@ -3741,9 +3715,7 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant (|
-                "move_binary_format::file_format_common::TYPE_PARAMETER_INDEX_MAX"
-              |)
+              M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_INDEX_MAX"
             |)
           ]
         |)))
@@ -3773,9 +3745,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::FIELD_OFFSET_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::FIELD_OFFSET_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3802,9 +3772,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::TABLE_COUNT_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::TABLE_COUNT_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3831,9 +3799,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::TABLE_OFFSET_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::TABLE_OFFSET_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3860,9 +3826,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::TABLE_SIZE_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::TABLE_SIZE_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3889,9 +3853,7 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (|
-              M.get_constant (| "move_binary_format::file_format_common::LOCAL_INDEX_MAX" |)
-            |)
+            M.read (| M.get_constant "move_binary_format::file_format_common::LOCAL_INDEX_MAX" |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -8937,9 +8899,8 @@ Module deserializer.
                                                                                 ]
                                                                               |),
                                                                               M.read (|
-                                                                                M.get_constant (|
+                                                                                M.get_constant
                                                                                   "move_binary_format::file_format_common::VERSION_5"
-                                                                                |)
                                                                               |)
                                                                             |)))
                                                                         |)
@@ -10174,9 +10135,8 @@ Module deserializer.
                                                                           ]
                                                                         |),
                                                                         M.read (|
-                                                                          M.get_constant (|
+                                                                          M.get_constant
                                                                             "move_binary_format::file_format_common::VERSION_2"
-                                                                          |)
                                                                         |)
                                                                       |)
                                                                     |)) in
@@ -16249,7 +16209,7 @@ Module deserializer.
                                       |)
                                     |)),
                                   M.read (|
-                                    M.get_constant (| "move_core_types::account_address::LENGTH" |)
+                                    M.get_constant "move_core_types::account_address::LENGTH"
                                   |)
                                 |),
                                 Value.Integer IntegerKind.Usize 0
@@ -16347,7 +16307,7 @@ Module deserializer.
                                       |)
                                     |)),
                                   M.read (|
-                                    M.get_constant (| "move_core_types::account_address::LENGTH" |)
+                                    M.get_constant "move_core_types::account_address::LENGTH"
                                   |)
                                 |))
                             ]
@@ -16406,9 +16366,8 @@ Module deserializer.
                                             BinOp.Wrap.add (|
                                               M.read (| start |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "move_core_types::account_address::LENGTH"
-                                                |)
                                               |)
                                             |)
                                           |) in
@@ -19031,9 +18990,8 @@ Module deserializer.
                                                                           ]
                                                                         |),
                                                                         M.read (|
-                                                                          M.get_constant (|
+                                                                          M.get_constant
                                                                             "move_binary_format::file_format_common::VERSION_6"
-                                                                          |)
                                                                         |)
                                                                       |)
                                                                     |) in
@@ -20356,9 +20314,8 @@ Module deserializer.
                                             [ M.borrow (| Pointer.Kind.Ref, stack |) ]
                                           |),
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX"
-                                            |)
                                           |)
                                         |)
                                       |)) in
@@ -21703,9 +21660,8 @@ Module deserializer.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          M.get_constant (|
+                                                          M.get_constant
                                                             "move_binary_format::file_format::EMPTY"
-                                                          |)
                                                         |);
                                                         Value.StructTuple
                                                           "move_binary_format::file_format::Ability::Store"
@@ -21772,9 +21728,8 @@ Module deserializer.
                                                           |),
                                                           [
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "move_binary_format::file_format::EMPTY"
-                                                              |)
                                                             |);
                                                             Value.StructTuple
                                                               "move_binary_format::file_format::Ability::Store"
@@ -21930,9 +21885,8 @@ Module deserializer.
                                                         γ,
                                                         "move_binary_format::deserializer::DeprecatedKind::ALL"
                                                       |) in
-                                                    M.get_constant (|
-                                                      "move_binary_format::file_format::EMPTY"
-                                                    |)));
+                                                    M.get_constant
+                                                      "move_binary_format::file_format::EMPTY"));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let _ :=
@@ -21972,9 +21926,8 @@ Module deserializer.
                                                             |),
                                                             [
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "move_binary_format::file_format::EMPTY"
-                                                                |)
                                                               |);
                                                               Value.StructTuple
                                                                 "move_binary_format::file_format::Ability::Copy"
@@ -22011,9 +21964,8 @@ Module deserializer.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "move_binary_format::file_format::EMPTY"
-                                                            |)
                                                           |);
                                                           Value.StructTuple
                                                             "move_binary_format::file_format::Ability::Key"
@@ -22149,9 +22101,7 @@ Module deserializer.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_constant (|
-                                                "move_binary_format::file_format::ALL"
-                                              |)
+                                              M.get_constant "move_binary_format::file_format::ALL"
                                             |)
                                           ]
                                         |))
@@ -23135,9 +23085,8 @@ Module deserializer.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "move_binary_format::file_format_common::VERSION_3"
-                                    |)
                                   |)
                                 |)
                               |)) in
@@ -25806,9 +25755,7 @@ Module deserializer.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant (|
-                                    "move_binary_format::file_format_common::VERSION_1"
-                                  |)
+                                  M.get_constant "move_binary_format::file_format_common::VERSION_1"
                                 |)
                               |)
                             |)) in
@@ -25828,9 +25775,8 @@ Module deserializer.
                                             BinOp.bit_and
                                               (M.read (| flags |))
                                               (M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "move_binary_format::file_format::DEPRECATED_PUBLIC_BIT"
-                                                |)
                                               |)),
                                             Value.Integer IntegerKind.U8 0
                                           |)
@@ -25847,9 +25793,8 @@ Module deserializer.
                                         BinOp.bit_xor
                                           (M.read (| β |))
                                           (M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "move_binary_format::file_format::DEPRECATED_PUBLIC_BIT"
-                                            |)
                                           |))
                                       |) in
                                     M.alloc (|
@@ -25897,9 +25842,8 @@ Module deserializer.
                                           ]
                                         |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "move_binary_format::file_format_common::VERSION_5"
-                                          |)
                                         |)
                                       |)
                                     |)) in
@@ -25920,9 +25864,8 @@ Module deserializer.
                                                 BinOp.eq (|
                                                   M.read (| flags |),
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "move_binary_format::file_format::DEPRECATED_SCRIPT"
-                                                    |)
                                                   |)
                                                 |)
                                               |)) in
@@ -26717,9 +26660,7 @@ Module deserializer.
                                       BinOp.bit_and
                                         (M.read (| extra_flags |))
                                         (M.read (|
-                                          M.get_constant (|
-                                            "move_binary_format::file_format::ENTRY"
-                                          |)
+                                          M.get_constant "move_binary_format::file_format::ENTRY"
                                         |)),
                                       Value.Integer IntegerKind.U8 0
                                     |)
@@ -26743,9 +26684,8 @@ Module deserializer.
                                               BinOp.bit_xor
                                                 (M.read (| β |))
                                                 (M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "move_binary_format::file_format::ENTRY"
-                                                  |)
                                                 |))
                                             |) in
                                           M.alloc (| Value.Tuple [] |)));
@@ -26891,9 +26831,8 @@ Module deserializer.
                                           BinOp.bit_and
                                             (M.read (| extra_flags |))
                                             (M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "move_binary_format::file_format::NATIVE"
-                                              |)
                                             |)),
                                           Value.Integer IntegerKind.U8 0
                                         |)
@@ -26910,9 +26849,7 @@ Module deserializer.
                                       BinOp.bit_xor
                                         (M.read (| β |))
                                         (M.read (|
-                                          M.get_constant (|
-                                            "move_binary_format::file_format::NATIVE"
-                                          |)
+                                          M.get_constant "move_binary_format::file_format::NATIVE"
                                         |))
                                     |) in
                                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -28393,9 +28330,8 @@ Module deserializer.
                                                                   ]
                                                                 |),
                                                                 M.read (|
-                                                                  M.get_constant (|
+                                                                  M.get_constant
                                                                     "move_binary_format::file_format_common::VERSION_4"
-                                                                  |)
                                                                 |)
                                                               |)
                                                             |)) in
@@ -28505,9 +28441,8 @@ Module deserializer.
                                                                                                             M.deref (|
                                                                                                               M.borrow (|
                                                                                                                 Pointer.Kind.Ref,
-                                                                                                                M.get_constant (|
+                                                                                                                M.get_constant
                                                                                                                   "move_binary_format::file_format_common::VERSION_4"
-                                                                                                                |)
                                                                                                               |)
                                                                                                             |)
                                                                                                           |)
@@ -28627,9 +28562,8 @@ Module deserializer.
                                                         ]
                                                       |),
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "move_binary_format::file_format_common::VERSION_6"
-                                                        |)
                                                       |)
                                                     |)
                                                   |) in
@@ -37236,9 +37170,8 @@ Module deserializer.
                                           BinOp.ne (|
                                             M.read (| count |),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "move_binary_format::file_format_common::MOVE_MAGIC_SIZE"
-                                              |)
                                             |)
                                           |),
                                           ltac:(M.monadic
@@ -37264,9 +37197,8 @@ Module deserializer.
                                                 M.borrow (| Pointer.Kind.Ref, magic |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "move_binary_format::file_format_common::MOVE_MAGIC"
-                                                  |)
                                                 |)
                                               ]
                                             |)))
@@ -37495,9 +37427,8 @@ Module deserializer.
                                             |)
                                           |);
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "move_binary_format::file_format_common::VERSION_MAX"
-                                            |)
                                           |)
                                         ]
                                       |)

@@ -4,137 +4,271 @@ Require Import CoqOfRust.CoqOfRust.
 Module gas.
   Module constants.
     Definition value_ZERO : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
+    
+    Axiom Constant_value_ZERO :
+      (M.get_constant "revm_interpreter::gas::constants::ZERO") = value_ZERO.
     
     Definition value_BASE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
+    
+    Axiom Constant_value_BASE :
+      (M.get_constant "revm_interpreter::gas::constants::BASE") = value_BASE.
     
     Definition value_VERYLOW : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    
+    Axiom Constant_value_VERYLOW :
+      (M.get_constant "revm_interpreter::gas::constants::VERYLOW") = value_VERYLOW.
     
     Definition value_DATA_LOADN_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    
+    Axiom Constant_value_DATA_LOADN_GAS :
+      (M.get_constant "revm_interpreter::gas::constants::DATA_LOADN_GAS") = value_DATA_LOADN_GAS.
     
     Definition value_CONDITION_JUMP_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+    
+    Axiom Constant_value_CONDITION_JUMP_GAS :
+      (M.get_constant "revm_interpreter::gas::constants::CONDITION_JUMP_GAS") =
+        value_CONDITION_JUMP_GAS.
     
     Definition value_RETF_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    
+    Axiom Constant_value_RETF_GAS :
+      (M.get_constant "revm_interpreter::gas::constants::RETF_GAS") = value_RETF_GAS.
     
     Definition value_DATA_LOAD_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+    
+    Axiom Constant_value_DATA_LOAD_GAS :
+      (M.get_constant "revm_interpreter::gas::constants::DATA_LOAD_GAS") = value_DATA_LOAD_GAS.
     
     Definition value_LOW : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5 |))).
+    
+    Axiom Constant_value_LOW : (M.get_constant "revm_interpreter::gas::constants::LOW") = value_LOW.
     
     Definition value_MID : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
+    
+    Axiom Constant_value_MID : (M.get_constant "revm_interpreter::gas::constants::MID") = value_MID.
     
     Definition value_HIGH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
+    
+    Axiom Constant_value_HIGH :
+      (M.get_constant "revm_interpreter::gas::constants::HIGH") = value_HIGH.
     
     Definition value_JUMPDEST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    
+    Axiom Constant_value_JUMPDEST :
+      (M.get_constant "revm_interpreter::gas::constants::JUMPDEST") = value_JUMPDEST.
     
     Definition value_SELFDESTRUCT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 24000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 24000 |))).
+    
+    Axiom Constant_value_SELFDESTRUCT :
+      (M.get_constant "revm_interpreter::gas::constants::SELFDESTRUCT") = value_SELFDESTRUCT.
     
     Definition value_CREATE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
+    
+    Axiom Constant_value_CREATE :
+      (M.get_constant "revm_interpreter::gas::constants::CREATE") = value_CREATE.
     
     Definition value_CALLVALUE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9000 |))).
+    
+    Axiom Constant_value_CALLVALUE :
+      (M.get_constant "revm_interpreter::gas::constants::CALLVALUE") = value_CALLVALUE.
     
     Definition value_NEWACCOUNT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 25000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 25000 |))).
+    
+    Axiom Constant_value_NEWACCOUNT :
+      (M.get_constant "revm_interpreter::gas::constants::NEWACCOUNT") = value_NEWACCOUNT.
     
     Definition value_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
+    
+    Axiom Constant_value_EXP : (M.get_constant "revm_interpreter::gas::constants::EXP") = value_EXP.
     
     Definition value_MEMORY : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    
+    Axiom Constant_value_MEMORY :
+      (M.get_constant "revm_interpreter::gas::constants::MEMORY") = value_MEMORY.
     
     Definition value_LOG : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
+    
+    Axiom Constant_value_LOG : (M.get_constant "revm_interpreter::gas::constants::LOG") = value_LOG.
     
     Definition value_LOGDATA : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
+    
+    Axiom Constant_value_LOGDATA :
+      (M.get_constant "revm_interpreter::gas::constants::LOGDATA") = value_LOGDATA.
     
     Definition value_LOGTOPIC : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
+    
+    Axiom Constant_value_LOGTOPIC :
+      (M.get_constant "revm_interpreter::gas::constants::LOGTOPIC") = value_LOGTOPIC.
     
     Definition value_KECCAK256 : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 30 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 30 |))).
+    
+    Axiom Constant_value_KECCAK256 :
+      (M.get_constant "revm_interpreter::gas::constants::KECCAK256") = value_KECCAK256.
     
     Definition value_KECCAK256WORD : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6 |))).
+    
+    Axiom Constant_value_KECCAK256WORD :
+      (M.get_constant "revm_interpreter::gas::constants::KECCAK256WORD") = value_KECCAK256WORD.
     
     Definition value_COPY : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    
+    Axiom Constant_value_COPY :
+      (M.get_constant "revm_interpreter::gas::constants::COPY") = value_COPY.
     
     Definition value_BLOCKHASH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20 |))).
+    
+    Axiom Constant_value_BLOCKHASH :
+      (M.get_constant "revm_interpreter::gas::constants::BLOCKHASH") = value_BLOCKHASH.
     
     Definition value_CODEDEPOSIT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 200 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 200 |))).
+    
+    Axiom Constant_value_CODEDEPOSIT :
+      (M.get_constant "revm_interpreter::gas::constants::CODEDEPOSIT") = value_CODEDEPOSIT.
     
     Definition value_ISTANBUL_SLOAD_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 800 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 800 |))).
+    
+    Axiom Constant_value_ISTANBUL_SLOAD_GAS :
+      (M.get_constant "revm_interpreter::gas::constants::ISTANBUL_SLOAD_GAS") =
+        value_ISTANBUL_SLOAD_GAS.
     
     Definition value_SSTORE_SET : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20000 |))).
+    
+    Axiom Constant_value_SSTORE_SET :
+      (M.get_constant "revm_interpreter::gas::constants::SSTORE_SET") = value_SSTORE_SET.
     
     Definition value_SSTORE_RESET : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5000 |))).
+    
+    Axiom Constant_value_SSTORE_RESET :
+      (M.get_constant "revm_interpreter::gas::constants::SSTORE_RESET") = value_SSTORE_RESET.
     
     Definition value_REFUND_SSTORE_CLEARS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 15000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 15000 |))).
+    
+    Axiom Constant_value_REFUND_SSTORE_CLEARS :
+      (M.get_constant "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS") =
+        value_REFUND_SSTORE_CLEARS.
     
     Definition value_TRANSACTION_ZERO_DATA : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+    
+    Axiom Constant_value_TRANSACTION_ZERO_DATA :
+      (M.get_constant "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA") =
+        value_TRANSACTION_ZERO_DATA.
     
     Definition value_TRANSACTION_NON_ZERO_DATA_INIT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 16 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 16 |))).
+    
+    Axiom Constant_value_TRANSACTION_NON_ZERO_DATA_INIT :
+      (M.get_constant "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_INIT") =
+        value_TRANSACTION_NON_ZERO_DATA_INIT.
     
     Definition value_TRANSACTION_NON_ZERO_DATA_FRONTIER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 68 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 68 |))).
+    
+    Axiom Constant_value_TRANSACTION_NON_ZERO_DATA_FRONTIER :
+      (M.get_constant "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_FRONTIER") =
+        value_TRANSACTION_NON_ZERO_DATA_FRONTIER.
     
     Definition value_EOF_CREATE_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
+    
+    Axiom Constant_value_EOF_CREATE_GAS :
+      (M.get_constant "revm_interpreter::gas::constants::EOF_CREATE_GAS") = value_EOF_CREATE_GAS.
     
     Definition value_ACCESS_LIST_ADDRESS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2400 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2400 |))).
+    
+    Axiom Constant_value_ACCESS_LIST_ADDRESS :
+      (M.get_constant "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS") =
+        value_ACCESS_LIST_ADDRESS.
     
     Definition value_ACCESS_LIST_STORAGE_KEY : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1900 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1900 |))).
+    
+    Axiom Constant_value_ACCESS_LIST_STORAGE_KEY :
+      (M.get_constant "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY") =
+        value_ACCESS_LIST_STORAGE_KEY.
     
     Definition value_COLD_SLOAD_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2100 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2100 |))).
+    
+    Axiom Constant_value_COLD_SLOAD_COST :
+      (M.get_constant "revm_interpreter::gas::constants::COLD_SLOAD_COST") = value_COLD_SLOAD_COST.
     
     Definition value_COLD_ACCOUNT_ACCESS_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2600 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2600 |))).
+    
+    Axiom Constant_value_COLD_ACCOUNT_ACCESS_COST :
+      (M.get_constant "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST") =
+        value_COLD_ACCOUNT_ACCESS_COST.
     
     Definition value_WARM_STORAGE_READ_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100 |))).
+    
+    Axiom Constant_value_WARM_STORAGE_READ_COST :
+      (M.get_constant "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST") =
+        value_WARM_STORAGE_READ_COST.
     
     Definition value_WARM_SSTORE_RESET : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             BinOp.Wrap.sub (|
-              M.read (| M.get_constant (| "revm_interpreter::gas::constants::SSTORE_RESET" |) |),
-              M.read (| M.get_constant (| "revm_interpreter::gas::constants::COLD_SLOAD_COST" |) |)
+              M.read (| M.get_constant "revm_interpreter::gas::constants::SSTORE_RESET" |),
+              M.read (| M.get_constant "revm_interpreter::gas::constants::COLD_SLOAD_COST" |)
             |)
           |))).
     
+    Axiom Constant_value_WARM_SSTORE_RESET :
+      (M.get_constant "revm_interpreter::gas::constants::WARM_SSTORE_RESET") =
+        value_WARM_SSTORE_RESET.
+    
     Definition value_INITCODE_WORD_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
+    
+    Axiom Constant_value_INITCODE_WORD_COST :
+      (M.get_constant "revm_interpreter::gas::constants::INITCODE_WORD_COST") =
+        value_INITCODE_WORD_COST.
     
     Definition value_CALL_STIPEND : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2300 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2300 |))).
+    
+    Axiom Constant_value_CALL_STIPEND :
+      (M.get_constant "revm_interpreter::gas::constants::CALL_STIPEND") = value_CALL_STIPEND.
     
     Definition value_MIN_CALLEE_GAS : Value.t :=
-      M.run
-        ltac:(M.monadic (M.get_constant (| "revm_interpreter::gas::constants::CALL_STIPEND" |))).
+      M.run_constant
+        ltac:(M.monadic (M.get_constant "revm_interpreter::gas::constants::CALL_STIPEND")).
+    
+    Axiom Constant_value_MIN_CALLEE_GAS :
+      (M.get_constant "revm_interpreter::gas::constants::MIN_CALLEE_GAS") = value_MIN_CALLEE_GAS.
   End constants.
 End gas.

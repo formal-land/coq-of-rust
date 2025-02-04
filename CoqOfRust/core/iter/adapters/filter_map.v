@@ -558,9 +558,7 @@ Module iter.
                   M.alloc (|
                     repeat (|
                       M.read (|
-                        M.get_constant (|
-                          "core::iter::adapters::filter_map::next_chunk_discriminant"
-                        |)
+                        M.get_constant "core::iter::adapters::filter_map::next_chunk_discriminant"
                       |),
                       N
                     |)
@@ -844,9 +842,8 @@ Module iter.
                                                               |)
                                                             |),
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "core::iter::adapters::filter_map::next_chunk::N"
-                                                              |)
                                                             |)
                                                           |)
                                                         |)) in
@@ -1547,7 +1544,7 @@ Module iter.
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
+              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
@@ -1558,7 +1555,7 @@ Module iter.
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::MERGE_BY" |))).
+              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
         
         Axiom Implements :
           forall (I F : Ty.t),

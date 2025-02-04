@@ -47,7 +47,7 @@ Module num.
                       (Ty.path "u8")
                       (BinOp.Wrap.shr (|
                         M.read (| v |),
-                        M.read (| M.get_constant (| "core::num::BITS" |) |)
+                        M.read (| M.get_constant "core::num::BITS" |)
                       |));
                     M.cast (Ty.path "u8") (M.read (| v |))
                   ]
@@ -124,7 +124,7 @@ Module num.
                   BinOp.bit_or
                     (BinOp.Wrap.shl (|
                       M.cast (Ty.path "u16") (M.read (| borrow |)),
-                      M.read (| M.get_constant (| "core::num::BITS" |) |)
+                      M.read (| M.get_constant "core::num::BITS" |)
                     |))
                     (M.cast (Ty.path "u16") (M.read (| self |)))
                 |) in
@@ -193,7 +193,7 @@ Module num.
                       (Ty.path "u16")
                       (BinOp.Wrap.shr (|
                         M.read (| v |),
-                        M.read (| M.get_constant (| "core::num::BITS" |) |)
+                        M.read (| M.get_constant "core::num::BITS" |)
                       |));
                     M.cast (Ty.path "u16") (M.read (| v |))
                   ]
@@ -270,7 +270,7 @@ Module num.
                   BinOp.bit_or
                     (BinOp.Wrap.shl (|
                       M.cast (Ty.path "u32") (M.read (| borrow |)),
-                      M.read (| M.get_constant (| "core::num::BITS" |) |)
+                      M.read (| M.get_constant "core::num::BITS" |)
                     |))
                     (M.cast (Ty.path "u32") (M.read (| self |)))
                 |) in
@@ -341,7 +341,7 @@ Module num.
                       (Ty.path "u32")
                       (BinOp.Wrap.shr (|
                         M.read (| v |),
-                        M.read (| M.get_constant (| "core::num::BITS" |) |)
+                        M.read (| M.get_constant "core::num::BITS" |)
                       |));
                     M.cast (Ty.path "u32") (M.read (| v |))
                   ]
@@ -418,7 +418,7 @@ Module num.
                   BinOp.bit_or
                     (BinOp.Wrap.shl (|
                       M.cast (Ty.path "u64") (M.read (| borrow |)),
-                      M.read (| M.get_constant (| "core::num::BITS" |) |)
+                      M.read (| M.get_constant "core::num::BITS" |)
                     |))
                     (M.cast (Ty.path "u64") (M.read (| self |)))
                 |) in
@@ -449,7 +449,7 @@ Module num.
     End Impl_core_num_bignum_FullOps_for_u32.
     
     Definition value_SMALL_POW5 : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.Array
@@ -462,6 +462,9 @@ Module num.
                   [ Value.Integer IntegerKind.U64 1220703125; Value.Integer IntegerKind.Usize 13 ]
               ]
           |))).
+    
+    Axiom Constant_value_SMALL_POW5 :
+      (M.get_constant "core::num::bignum::SMALL_POW5") = value_SMALL_POW5.
     
     Axiom Digit32 : (Ty.path "core::num::bignum::Digit32") = (Ty.path "u32").
     
@@ -566,7 +569,7 @@ Module num.
                                 β,
                                 BinOp.Wrap.shr (|
                                   M.read (| β |),
-                                  M.read (| M.get_constant (| "core::num::BITS" |) |)
+                                  M.read (| M.get_constant "core::num::BITS" |)
                                 |)
                               |) in
                             let~ _ :=
@@ -682,7 +685,7 @@ Module num.
             M.read (|
               let~ digitbits :=
                 M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::BITS" |) |))
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
                 |) in
               let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| i |), M.read (| digitbits |) |) |) in
               let~ b := M.alloc (| BinOp.Wrap.rem (| M.read (| i |), M.read (| digitbits |) |) |) in
@@ -811,7 +814,7 @@ Module num.
             M.read (|
               let~ digitbits :=
                 M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::BITS" |) |))
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
                 |) in
               let~ digits :=
                 M.alloc (|
@@ -2060,7 +2063,7 @@ Module num.
                 M.read (|
                   let~ digitbits :=
                     M.alloc (|
-                      M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::BITS" |) |))
+                      M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
                     |) in
                   let~ digits :=
                     M.alloc (| BinOp.Wrap.div (| M.read (| bits |), M.read (| digitbits |) |) |) in
@@ -2929,7 +2932,7 @@ Module num.
                     |) in
                   M.match_operator (|
                     M.SubPointer.get_array_field (|
-                      M.get_constant (| "core::num::bignum::SMALL_POW5" |),
+                      M.get_constant "core::num::bignum::SMALL_POW5",
                       table_index
                     |),
                     [
@@ -3686,7 +3689,7 @@ Module num.
                 |) in
               let~ digitbits :=
                 M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::BITS" |) |))
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
                 |) in
               let~ _ :=
                 M.use
@@ -5069,9 +5072,7 @@ Module num.
                   let~ digitlen :=
                     M.alloc (|
                       BinOp.Wrap.div (|
-                        M.cast
-                          (Ty.path "usize")
-                          (M.read (| M.get_constant (| "core::num::BITS" |) |)),
+                        M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |)),
                         Value.Integer IntegerKind.Usize 4
                       |)
                     |) in
@@ -5761,7 +5762,7 @@ Module num.
                                   β,
                                   BinOp.Wrap.shr (|
                                     M.read (| β |),
-                                    M.read (| M.get_constant (| "core::num::BITS" |) |)
+                                    M.read (| M.get_constant "core::num::BITS" |)
                                   |)
                                 |) in
                               let~ _ :=
@@ -5879,7 +5880,7 @@ Module num.
               M.read (|
                 let~ digitbits :=
                   M.alloc (|
-                    M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::BITS" |) |))
+                    M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
                   |) in
                 let~ d :=
                   M.alloc (| BinOp.Wrap.div (| M.read (| i |), M.read (| digitbits |) |) |) in
@@ -6009,7 +6010,7 @@ Module num.
               M.read (|
                 let~ digitbits :=
                   M.alloc (|
-                    M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::BITS" |) |))
+                    M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
                   |) in
                 let~ digits :=
                   M.alloc (|
@@ -7285,9 +7286,7 @@ Module num.
                   M.read (|
                     let~ digitbits :=
                       M.alloc (|
-                        M.cast
-                          (Ty.path "usize")
-                          (M.read (| M.get_constant (| "core::num::BITS" |) |))
+                        M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
                       |) in
                     let~ digits :=
                       M.alloc (|
@@ -8187,7 +8186,7 @@ Module num.
                       |) in
                     M.match_operator (|
                       M.SubPointer.get_array_field (|
-                        M.get_constant (| "core::num::bignum::SMALL_POW5" |),
+                        M.get_constant "core::num::bignum::SMALL_POW5",
                         table_index
                       |),
                       [
@@ -8955,7 +8954,7 @@ Module num.
                   |) in
                 let~ digitbits :=
                   M.alloc (|
-                    M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::BITS" |) |))
+                    M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
                   |) in
                 let~ _ :=
                   M.use
@@ -10364,9 +10363,7 @@ Module num.
                     let~ digitlen :=
                       M.alloc (|
                         BinOp.Wrap.div (|
-                          M.cast
-                            (Ty.path "usize")
-                            (M.read (| M.get_constant (| "core::num::BITS" |) |)),
+                          M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |)),
                           Value.Integer IntegerKind.Usize 4
                         |)
                       |) in

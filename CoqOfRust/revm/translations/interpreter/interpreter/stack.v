@@ -4,7 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Module interpreter.
   Module stack.
     Definition value_STACK_LIMIT : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1024 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1024 |))).
+    
+    Axiom Constant_value_STACK_LIMIT :
+      (M.get_constant "revm_interpreter::interpreter::stack::STACK_LIMIT") = value_STACK_LIMIT.
     
     (* StructRecord
       {
@@ -1095,9 +1098,7 @@ Module interpreter.
                                       ]
                                     |),
                                     M.read (|
-                                      M.get_constant (|
-                                        "revm_interpreter::interpreter::stack::popn::N"
-                                      |)
+                                      M.get_constant "revm_interpreter::interpreter::stack::popn::N"
                                     |)
                                   |)
                                 |)) in
@@ -1176,9 +1177,8 @@ Module interpreter.
                                     |),
                                     BinOp.Wrap.add (|
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "revm_interpreter::interpreter::stack::popn_top::POPN"
-                                        |)
                                       |),
                                       Value.Integer IntegerKind.Usize 1
                                     |)
@@ -1348,7 +1348,7 @@ Module interpreter.
                     |),
                     [
                       M.read (|
-                        M.get_constant (| "revm_interpreter::interpreter::stack::STACK_LIMIT" |)
+                        M.get_constant "revm_interpreter::interpreter::stack::STACK_LIMIT"
                       |)
                     ]
                   |))
@@ -1802,9 +1802,7 @@ Module interpreter.
                                 (M.alloc (|
                                   BinOp.eq (|
                                     M.read (|
-                                      M.get_constant (|
-                                        "revm_interpreter::interpreter::stack::popn::N"
-                                      |)
+                                      M.get_constant "revm_interpreter::interpreter::stack::popn::N"
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -1815,7 +1813,7 @@ Module interpreter.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    repeat (| M.read (| M.get_constant (| "ruint::ZERO" |) |), N |)
+                                    repeat (| M.read (| M.get_constant "ruint::ZERO" |), N |)
                                   |)
                                 |)
                               |)
@@ -1824,7 +1822,7 @@ Module interpreter.
                       ]
                     |) in
                   let~ result :=
-                    M.alloc (| repeat (| M.read (| M.get_constant (| "ruint::ZERO" |) |), N |) |) in
+                    M.alloc (| repeat (| M.read (| M.get_constant "ruint::ZERO" |), N |) |) in
                   let~ _ :=
                     M.use
                       (M.match_operator (|
@@ -2114,9 +2112,8 @@ Module interpreter.
                                         ]
                                       |),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "revm_interpreter::interpreter::stack::STACK_LIMIT"
-                                        |)
                                       |)
                                     |)
                                   |)
@@ -2270,9 +2267,8 @@ Module interpreter.
                                       ]
                                     |),
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "revm_interpreter::interpreter::stack::STACK_LIMIT"
-                                      |)
                                     |)
                                   |)
                                 |)) in
@@ -2675,9 +2671,8 @@ Module interpreter.
                                     Value.Integer IntegerKind.Usize 1
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_interpreter::interpreter::stack::STACK_LIMIT"
-                                    |)
                                   |)
                                 |)))
                             |)
@@ -3369,9 +3364,8 @@ Module interpreter.
                                   BinOp.gt (|
                                     M.read (| new_len |),
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "revm_interpreter::interpreter::stack::STACK_LIMIT"
-                                      |)
                                     |)
                                   |)
                                 |)) in

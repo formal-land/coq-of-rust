@@ -6,7 +6,11 @@ Module slice.
     Module shared.
       Module pivot.
         Definition value_PSEUDO_MEDIAN_REC_THRESHOLD : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+        
+        Axiom Constant_value_PSEUDO_MEDIAN_REC_THRESHOLD :
+          (M.get_constant "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD") =
+            value_PSEUDO_MEDIAN_REC_THRESHOLD.
         
         (*
         pub fn choose_pivot<T, F: FnMut(&T, &T) -> bool>(v: &[T], is_less: &mut F) -> usize {
@@ -145,9 +149,8 @@ Module slice.
                               BinOp.lt (|
                                 M.read (| len |),
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD"
-                                  |)
                                 |)
                               |)
                             |)) in
@@ -284,9 +287,8 @@ Module slice.
                                     Value.Integer IntegerKind.Usize 8
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD"
-                                    |)
                                   |)
                                 |)
                               |)) in

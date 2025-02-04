@@ -5,32 +5,39 @@ Module num.
   Module dec2flt.
     Module table.
       Definition value_SMALLEST_POWER_OF_FIVE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-342) |))).
+        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-342) |))).
+      
+      Axiom Constant_value_SMALLEST_POWER_OF_FIVE :
+        (M.get_constant "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE") =
+          value_SMALLEST_POWER_OF_FIVE.
       
       Definition value_LARGEST_POWER_OF_FIVE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
+        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
+      
+      Axiom Constant_value_LARGEST_POWER_OF_FIVE :
+        (M.get_constant "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE") =
+          value_LARGEST_POWER_OF_FIVE.
       
       Definition value_N_POWERS_OF_FIVE : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.cast
                 (Ty.path "usize")
                 (BinOp.Wrap.add (|
                   BinOp.Wrap.sub (|
-                    M.read (|
-                      M.get_constant (| "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE" |)
-                    |),
-                    M.read (|
-                      M.get_constant (| "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE" |)
-                    |)
+                    M.read (| M.get_constant "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE" |),
+                    M.read (| M.get_constant "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE" |)
                   |),
                   Value.Integer IntegerKind.I32 1
                 |))
             |))).
       
+      Axiom Constant_value_N_POWERS_OF_FIVE :
+        (M.get_constant "core::num::dec2flt::table::N_POWERS_OF_FIVE") = value_N_POWERS_OF_FIVE.
+      
       Definition value_POWER_OF_FIVE_128 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -3294,6 +3301,9 @@ Module num.
                   ]
               |)
             |))).
+      
+      Axiom Constant_value_POWER_OF_FIVE_128 :
+        (M.get_constant "core::num::dec2flt::table::POWER_OF_FIVE_128") = value_POWER_OF_FIVE_128.
     End table.
   End dec2flt.
 End num.

@@ -679,7 +679,7 @@ Module table.
     | [], [ WIRE; H ], [] =>
       ltac:(M.monadic
         (M.read (|
-          M.get_constant (| "revm_interpreter::table::make_instruction_table_discriminant" |)
+          M.get_constant "revm_interpreter::table::make_instruction_table_discriminant"
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

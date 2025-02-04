@@ -2332,9 +2332,7 @@ Module slice.
           (let v := M.alloc (| v |) in
           BinOp.ne (|
             BinOp.bit_and
-              (M.read (|
-                M.get_constant (| "core::slice::ascii::contains_nonascii::NONASCII_MASK" |)
-              |))
+              (M.read (| M.get_constant "core::slice::ascii::contains_nonascii::NONASCII_MASK" |))
               (M.read (| v |)),
             Value.Integer IntegerKind.Usize 0
           |)))
@@ -2346,7 +2344,7 @@ Module slice.
     
     Module contains_nonascii.
       Definition value_NONASCII_MASK : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
@@ -2354,6 +2352,10 @@ Module slice.
                 [ Value.Integer IntegerKind.U8 128 ]
               |)
             |))).
+      
+      Axiom Constant_value_NONASCII_MASK :
+        (M.get_constant "core::slice::ascii::contains_nonascii::NONASCII_MASK") =
+          value_NONASCII_MASK.
     End contains_nonascii.
     
     (*
@@ -2585,7 +2587,7 @@ Module slice.
                           |),
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                         |);
-                        M.read (| M.get_constant (| "core::slice::ascii::is_ascii::USIZE_SIZE" |) |)
+                        M.read (| M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE" |)
                       ]
                     |)
                   |) in
@@ -2603,9 +2605,7 @@ Module slice.
                                     BinOp.lt (|
                                       M.read (| len |),
                                       M.read (|
-                                        M.get_constant (|
-                                          "core::slice::ascii::is_ascii::USIZE_SIZE"
-                                        |)
+                                        M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE"
                                       |)
                                     |),
                                     ltac:(M.monadic
@@ -2614,9 +2614,7 @@ Module slice.
                                   ltac:(M.monadic
                                     (BinOp.lt (|
                                       M.read (|
-                                        M.get_constant (|
-                                          "core::slice::ascii::is_ascii::USIZE_SIZE"
-                                        |)
+                                        M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE"
                                       |),
                                       M.call_closure (|
                                         M.get_function (|
@@ -2668,7 +2666,7 @@ Module slice.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::slice::ascii::is_ascii::USIZE_SIZE" |)));
+                            M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE"));
                         fun γ => ltac:(M.monadic align_offset)
                       ]
                     |)
@@ -2873,9 +2871,7 @@ Module slice.
                                       BinOp.Wrap.sub (|
                                         M.read (| len |),
                                         M.read (|
-                                          M.get_constant (|
-                                            "core::slice::ascii::is_ascii::USIZE_SIZE"
-                                          |)
+                                          M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE"
                                         |)
                                       |)
                                     |)
@@ -2911,9 +2907,8 @@ Module slice.
                                                             BinOp.Wrap.add (|
                                                               M.read (| byte_pos |),
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "core::slice::ascii::is_ascii::USIZE_SIZE"
-                                                                |)
                                                               |)
                                                             |),
                                                             M.read (| len |)
@@ -3149,9 +3144,7 @@ Module slice.
                                   BinOp.Wrap.add (|
                                     M.read (| β |),
                                     M.read (|
-                                      M.get_constant (|
-                                        "core::slice::ascii::is_ascii::USIZE_SIZE"
-                                      |)
+                                      M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE"
                                     |)
                                   |)
                                 |) in
@@ -3216,9 +3209,8 @@ Module slice.
                                                     M.read (| byte_pos |)
                                                   |),
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::slice::ascii::is_ascii::USIZE_SIZE"
-                                                    |)
                                                   |)
                                                 |)))
                                             |)
@@ -3273,7 +3265,7 @@ Module slice.
                               BinOp.Wrap.sub (|
                                 M.read (| len |),
                                 M.read (|
-                                  M.get_constant (| "core::slice::ascii::is_ascii::USIZE_SIZE" |)
+                                  M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE"
                                 |)
                               |)
                             ]
@@ -3298,7 +3290,7 @@ Module slice.
     
     Module is_ascii.
       Definition value_USIZE_SIZE : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
@@ -3306,6 +3298,9 @@ Module slice.
                 []
               |)
             |))).
+      
+      Axiom Constant_value_USIZE_SIZE :
+        (M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE") = value_USIZE_SIZE.
     End is_ascii.
   End ascii.
 End slice.

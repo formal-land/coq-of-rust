@@ -1263,8 +1263,7 @@ Module ptr.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ :=
-                        M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                      (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       self));
                   fun γ =>

@@ -4500,7 +4500,7 @@ Module str.
                                   |)
                                 |)
                               |),
-                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              M.read (| M.get_constant "core::num::MAX" |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4578,7 +4578,7 @@ Module str.
                                   |)
                                 |)
                               |),
-                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              M.read (| M.get_constant "core::num::MAX" |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4736,7 +4736,7 @@ Module str.
                                     |)
                                   |)
                                 |),
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               |)
                             |)) in
                         let _ :=
@@ -4837,7 +4837,7 @@ Module str.
                                         |)
                                       |)
                                     |),
-                                    M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                    M.read (| M.get_constant "core::num::MAX" |)
                                   |)
                                 |)) in
                             let _ :=
@@ -4948,7 +4948,7 @@ Module str.
                                   "end"
                                 |)
                               |),
-                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              M.read (| M.get_constant "core::num::MAX" |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5017,7 +5017,7 @@ Module str.
                                   "end"
                                 |)
                               |),
-                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              M.read (| M.get_constant "core::num::MAX" |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5166,7 +5166,7 @@ Module str.
                                     "end"
                                   |)
                                 |),
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               |)
                             |)) in
                         let _ :=
@@ -5255,7 +5255,7 @@ Module str.
                                         "end"
                                       |)
                                     |),
-                                    M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                    M.read (| M.get_constant "core::num::MAX" |)
                                   |)
                                 |)) in
                             let _ :=

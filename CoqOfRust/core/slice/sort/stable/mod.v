@@ -76,8 +76,7 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -140,9 +139,8 @@ Module slice.
                                       BinOp.le (|
                                         M.read (| len |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT"
-                                          |)
                                         |)
                                       |)
                                     ]
@@ -205,7 +203,11 @@ Module slice.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 20 |))).
+        
+        Axiom Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT :
+          (M.get_constant "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT") =
+            value_MAX_LEN_ALWAYS_INSERTION_SORT.
       End sort.
       
       (*
@@ -254,9 +256,8 @@ Module slice.
                 M.alloc (|
                   BinOp.Wrap.div (|
                     M.read (|
-                      M.get_constant (|
+                      M.get_constant
                         "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES"
-                      |)
                     |),
                     M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                   |)
@@ -289,9 +290,8 @@ Module slice.
                         ]
                       |);
                       M.read (|
-                        M.get_constant (|
+                        M.get_constant
                           "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
-                        |)
                       |)
                     ]
                   |)
@@ -453,7 +453,11 @@ Module slice.
       
       Module driftsort_main.
         Definition value_MAX_FULL_ALLOC_BYTES : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8000000 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8000000 |))).
+        
+        Axiom Constant_value_MAX_FULL_ALLOC_BYTES :
+          (M.get_constant "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES") =
+            value_MAX_FULL_ALLOC_BYTES.
       End driftsort_main.
       
       (* Trait *)
@@ -501,9 +505,7 @@ Module slice.
                   ("_align", Value.Array []);
                   ("storage",
                     repeat (|
-                      M.read (|
-                        M.get_constant (| "core::slice::sort::stable::new_discriminant" |)
-                      |),
+                      M.read (| M.get_constant "core::slice::sort::stable::new_discriminant" |),
                       N
                     |))
                 ]))
@@ -541,7 +543,7 @@ Module slice.
                     let~ len :=
                       M.alloc (|
                         BinOp.Wrap.div (|
-                          M.read (| M.get_constant (| "core::slice::sort::stable::N" |) |),
+                          M.read (| M.get_constant "core::slice::sort::stable::N" |),
                           M.call_closure (|
                             M.get_function (| "core::mem::size_of", [], [ T ] |),
                             []

@@ -2,7 +2,9 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require Import core.num.mod.
+Require core.num.links.mod.
 Require Import revm.translations.interpreter.gas.calc.
+Require revm.links.interpreter.gas.constants.
 
 Import Run.
 
@@ -35,5 +37,31 @@ Proof.
   eapply Run.CallPrimitiveGetAssociatedFunction. {
     apply num.Impl_u64.AssociatedFunction_saturating_mul.
   }
-  admit.
-Admitted.
+  eapply Run.Rewrite. {
+    rewrite gas.constants.MEMORY_eq.
+    reflexivity.
+  }
+  run_symbolic.
+  eapply Run.CallClosure. {
+    apply num.links.mod.Impl_u64.run_saturating_mul.
+  }
+  intros []; run_symbolic.
+  eapply Run.CallPrimitiveGetAssociatedFunction. {
+    apply num.Impl_u64.AssociatedFunction_saturating_mul.
+  }
+  run_symbolic.
+  eapply Run.CallClosure. {
+    apply num.links.mod.Impl_u64.run_saturating_mul.
+  }
+  intros []; run_symbolic.
+  eapply Run.Rewrite. {
+    unfold BinOp.Wrap.div.
+    erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64) by smpl of_value.
+    reflexivity.
+  }
+  run_symbolic.
+  eapply Run.CallClosure. {
+    apply num.links.mod.Impl_u64.run_saturating_add.
+  }
+  intros []; run_symbolic.
+Defined.

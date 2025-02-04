@@ -2,73 +2,145 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module i128.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::i128::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::i128::MAX") = value_MAX.
 End i128.
 
 Module i16.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::i16::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::i16::MAX") = value_MAX.
 End i16.
 
 Module i32.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::i32::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::i32::MAX") = value_MAX.
 End i32.
 
 Module i64.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::i64::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::i64::MAX") = value_MAX.
 End i64.
 
 Module i8.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::i8::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::i8::MAX") = value_MAX.
 End i8.
 
 Module isize.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::isize::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::isize::MAX") = value_MAX.
 End isize.
 
 Module u128.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::u128::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::u128::MAX") = value_MAX.
 End u128.
 
 Module u16.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::u16::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::u16::MAX") = value_MAX.
 End u16.
 
 Module u32.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::u32::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::u32::MAX") = value_MAX.
 End u32.
 
 Module u64.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::u64::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::u64::MAX") = value_MAX.
 End u64.
 
 Module u8.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::u8::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::u8::MAX") = value_MAX.
 End u8.
 
 Module usize.
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MIN" |))).
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::num::MAX" |))).
+  Axiom Constant_value_MIN : (M.get_constant "core::usize::MIN") = value_MIN.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::usize::MAX") = value_MAX.
 End usize.

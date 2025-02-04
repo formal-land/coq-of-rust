@@ -6,12 +6,15 @@ Import Run.
 Module BinOp.
   Module Wrap.
     Lemma make_arithmetic_eq (kind : IntegerKind.t)
-        (bin_op : Z -> Z -> Z) (v1 v2 : Integer.t kind) :
-      BinOp.Wrap.make_arithmetic bin_op (φ v1) (φ v2) =
+        (bin_op : Z -> Z -> Z) (v1 v2 : Integer.t kind) (v1' v2' : Value.t) :
+      v1' = φ v1 ->
+      v2' = φ v2 ->
+      BinOp.Wrap.make_arithmetic bin_op v1' v2' =
       M.pure (φ (Integer.Build_t kind (
         Integer.normalize_wrap kind (bin_op v1.(Integer.value) v2.(Integer.value))
       ))).
     Proof.
+      intros -> ->.
       now destruct kind.
     Qed.
   End Wrap.

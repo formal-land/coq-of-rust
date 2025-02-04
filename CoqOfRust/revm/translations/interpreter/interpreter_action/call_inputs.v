@@ -1389,10 +1389,7 @@ Module interpreter_action.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.Ref, x |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.get_constant (| "ruint::ZERO" |)
-                                      |)
+                                      M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
                                     ]
                                   |)))
                             ]
@@ -2613,7 +2610,7 @@ Module interpreter_action.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
-              [ M.read (| M.get_constant (| "ruint::ZERO" |) |) ]))
+              [ M.read (| M.get_constant "ruint::ZERO" |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

@@ -933,7 +933,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc (|
                                               M.cast
                                                 (Ty.path "u8")
-                                                (M.read (| M.get_constant (| "core::f32::NAN" |) |))
+                                                (M.read (| M.get_constant "core::f32::NAN" |))
                                             |)
                                           |)
                                         |)
@@ -1166,8 +1166,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [],
                                                   [ Ty.path "u8" ]
                                                 |),
-                                                [ M.read (| M.get_constant (| "core::f32::NAN" |) |)
-                                                ]
+                                                [ M.read (| M.get_constant "core::f32::NAN" |) ]
                                               |)
                                             |)
                                           |)

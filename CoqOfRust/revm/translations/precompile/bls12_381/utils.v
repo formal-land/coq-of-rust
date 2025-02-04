@@ -4,25 +4,45 @@ Require Import CoqOfRust.CoqOfRust.
 Module bls12_381.
   Module utils.
     Definition value_NBITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    
+    Axiom Constant_value_NBITS :
+      (M.get_constant "revm_precompile::bls12_381::utils::NBITS") = value_NBITS.
     
     Definition value_FP_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 48 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 48 |))).
+    
+    Axiom Constant_value_FP_LENGTH :
+      (M.get_constant "revm_precompile::bls12_381::utils::FP_LENGTH") = value_FP_LENGTH.
     
     Definition value_PADDED_FP_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+    
+    Axiom Constant_value_PADDED_FP_LENGTH :
+      (M.get_constant "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH") =
+        value_PADDED_FP_LENGTH.
     
     Definition value_PADDED_FP2_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 128 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 128 |))).
+    
+    Axiom Constant_value_PADDED_FP2_LENGTH :
+      (M.get_constant "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH") =
+        value_PADDED_FP2_LENGTH.
     
     Definition value_PADDING_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+    
+    Axiom Constant_value_PADDING_LENGTH :
+      (M.get_constant "revm_precompile::bls12_381::utils::PADDING_LENGTH") = value_PADDING_LENGTH.
     
     Definition value_SCALAR_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+    
+    Axiom Constant_value_SCALAR_LENGTH :
+      (M.get_constant "revm_precompile::bls12_381::utils::SCALAR_LENGTH") = value_SCALAR_LENGTH.
     
     Definition value_MODULUS_REPR : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.Array
@@ -78,6 +98,9 @@ Module bls12_381.
               ]
           |))).
     
+    Axiom Constant_value_MODULUS_REPR :
+      (M.get_constant "revm_precompile::bls12_381::utils::MODULUS_REPR") = value_MODULUS_REPR.
+    
     (*
     pub(super) fn fp_to_bytes(out: &mut [u8], input: *const blst_fp) {
         if out.len() != PADDED_FP_LENGTH {
@@ -123,9 +146,8 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
-                                    |)
                                   |)
                                 |)
                               |)) in
@@ -149,7 +171,7 @@ Module bls12_381.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| out |) |) |);
                         M.read (|
-                          M.get_constant (| "revm_precompile::bls12_381::utils::PADDING_LENGTH" |)
+                          M.get_constant "revm_precompile::bls12_381::utils::PADDING_LENGTH"
                         |)
                       ]
                     |)
@@ -263,9 +285,8 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
-                                    |)
                                   |)
                                 |)
                               |)) in
@@ -366,9 +387,8 @@ Module bls12_381.
                                                                           |);
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
-                                                                            M.get_constant (|
+                                                                            M.get_constant
                                                                               "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
-                                                                            |)
                                                                           |)
                                                                         ]
                                                                     |),
@@ -467,7 +487,7 @@ Module bls12_381.
                       [
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
                         M.read (|
-                          M.get_constant (| "revm_precompile::bls12_381::utils::PADDING_LENGTH" |)
+                          M.get_constant "revm_precompile::bls12_381::utils::PADDING_LENGTH"
                         |)
                       ]
                     |)
@@ -642,9 +662,8 @@ Module bls12_381.
                                                                                       M.deref (|
                                                                                         M.borrow (|
                                                                                           Pointer.Kind.Ref,
-                                                                                          M.get_constant (|
+                                                                                          M.get_constant
                                                                                             "revm_precompile::bls12_381::utils::PADDING_LENGTH"
-                                                                                          |)
                                                                                         |)
                                                                                       |)
                                                                                     |)
@@ -798,9 +817,8 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
-                                    |)
                                   |)
                                 |)
                               |)) in
@@ -901,9 +919,8 @@ Module bls12_381.
                                                                           |);
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
-                                                                            M.get_constant (|
+                                                                            M.get_constant
                                                                               "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
-                                                                            |)
                                                                           |)
                                                                         ]
                                                                     |),
@@ -1112,9 +1129,8 @@ Module bls12_381.
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.get_constant (|
+                                      M.get_constant
                                         "revm_precompile::bls12_381::utils::MODULUS_REPR"
-                                      |)
                                     |)
                                   ]
                                 |)

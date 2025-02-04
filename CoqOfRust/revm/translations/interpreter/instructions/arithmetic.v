@@ -67,9 +67,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -248,7 +246,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (| "revm_interpreter::gas::constants::LOW" |)
+                                        M.get_constant "revm_interpreter::gas::constants::LOW"
                                       |)
                                     ]
                                   |)
@@ -427,9 +425,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -610,7 +606,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (| "revm_interpreter::gas::constants::LOW" |)
+                                        M.get_constant "revm_interpreter::gas::constants::LOW"
                                       |)
                                     ]
                                   |)
@@ -834,7 +830,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (| "revm_interpreter::gas::constants::LOW" |)
+                                        M.get_constant "revm_interpreter::gas::constants::LOW"
                                       |)
                                     ]
                                   |)
@@ -1005,7 +1001,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (| "revm_interpreter::gas::constants::LOW" |)
+                                        M.get_constant "revm_interpreter::gas::constants::LOW"
                                       |)
                                     ]
                                   |)
@@ -1229,7 +1225,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (| "revm_interpreter::gas::constants::LOW" |)
+                                        M.get_constant "revm_interpreter::gas::constants::LOW"
                                       |)
                                     ]
                                   |)
@@ -1396,7 +1392,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (| "revm_interpreter::gas::constants::MID" |)
+                                        M.get_constant "revm_interpreter::gas::constants::MID"
                                       |)
                                     ]
                                   |)
@@ -1580,7 +1576,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (| "revm_interpreter::gas::constants::MID" |)
+                                        M.get_constant "revm_interpreter::gas::constants::MID"
                                       |)
                                     ]
                                   |)
@@ -2040,7 +2036,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (| "revm_interpreter::gas::constants::LOW" |)
+                                        M.get_constant "revm_interpreter::gas::constants::LOW"
                                       |)
                                     ]
                                   |)

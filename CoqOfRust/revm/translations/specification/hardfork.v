@@ -1099,50 +1099,126 @@ Module hardfork.
   
   
   Module name.
-    Definition value_FRONTIER : Value.t := M.run ltac:(M.monadic (Value.String "Frontier")).
+    Definition value_FRONTIER : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "Frontier")).
+    
+    Axiom Constant_value_FRONTIER :
+      (M.get_constant "revm_specification::hardfork::name::FRONTIER") = value_FRONTIER.
     
     Definition value_FRONTIER_THAWING : Value.t :=
-      M.run ltac:(M.monadic (Value.String "Frontier Thawing")).
+      M.run_constant ltac:(M.monadic (Value.String "Frontier Thawing")).
     
-    Definition value_HOMESTEAD : Value.t := M.run ltac:(M.monadic (Value.String "Homestead")).
+    Axiom Constant_value_FRONTIER_THAWING :
+      (M.get_constant "revm_specification::hardfork::name::FRONTIER_THAWING") =
+        value_FRONTIER_THAWING.
     
-    Definition value_DAO_FORK : Value.t := M.run ltac:(M.monadic (Value.String "DAO Fork")).
+    Definition value_HOMESTEAD : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "Homestead")).
     
-    Definition value_TANGERINE : Value.t := M.run ltac:(M.monadic (Value.String "Tangerine")).
+    Axiom Constant_value_HOMESTEAD :
+      (M.get_constant "revm_specification::hardfork::name::HOMESTEAD") = value_HOMESTEAD.
     
-    Definition value_SPURIOUS_DRAGON : Value.t := M.run ltac:(M.monadic (Value.String "Spurious")).
+    Definition value_DAO_FORK : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "DAO Fork")).
     
-    Definition value_BYZANTIUM : Value.t := M.run ltac:(M.monadic (Value.String "Byzantium")).
+    Axiom Constant_value_DAO_FORK :
+      (M.get_constant "revm_specification::hardfork::name::DAO_FORK") = value_DAO_FORK.
+    
+    Definition value_TANGERINE : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "Tangerine")).
+    
+    Axiom Constant_value_TANGERINE :
+      (M.get_constant "revm_specification::hardfork::name::TANGERINE") = value_TANGERINE.
+    
+    Definition value_SPURIOUS_DRAGON : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "Spurious")).
+    
+    Axiom Constant_value_SPURIOUS_DRAGON :
+      (M.get_constant "revm_specification::hardfork::name::SPURIOUS_DRAGON") =
+        value_SPURIOUS_DRAGON.
+    
+    Definition value_BYZANTIUM : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "Byzantium")).
+    
+    Axiom Constant_value_BYZANTIUM :
+      (M.get_constant "revm_specification::hardfork::name::BYZANTIUM") = value_BYZANTIUM.
     
     Definition value_CONSTANTINOPLE : Value.t :=
-      M.run ltac:(M.monadic (Value.String "Constantinople")).
+      M.run_constant ltac:(M.monadic (Value.String "Constantinople")).
     
-    Definition value_PETERSBURG : Value.t := M.run ltac:(M.monadic (Value.String "Petersburg")).
+    Axiom Constant_value_CONSTANTINOPLE :
+      (M.get_constant "revm_specification::hardfork::name::CONSTANTINOPLE") = value_CONSTANTINOPLE.
     
-    Definition value_ISTANBUL : Value.t := M.run ltac:(M.monadic (Value.String "Istanbul")).
+    Definition value_PETERSBURG : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "Petersburg")).
     
-    Definition value_MUIR_GLACIER : Value.t := M.run ltac:(M.monadic (Value.String "MuirGlacier")).
+    Axiom Constant_value_PETERSBURG :
+      (M.get_constant "revm_specification::hardfork::name::PETERSBURG") = value_PETERSBURG.
     
-    Definition value_BERLIN : Value.t := M.run ltac:(M.monadic (Value.String "Berlin")).
+    Definition value_ISTANBUL : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "Istanbul")).
     
-    Definition value_LONDON : Value.t := M.run ltac:(M.monadic (Value.String "London")).
+    Axiom Constant_value_ISTANBUL :
+      (M.get_constant "revm_specification::hardfork::name::ISTANBUL") = value_ISTANBUL.
+    
+    Definition value_MUIR_GLACIER : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "MuirGlacier")).
+    
+    Axiom Constant_value_MUIR_GLACIER :
+      (M.get_constant "revm_specification::hardfork::name::MUIR_GLACIER") = value_MUIR_GLACIER.
+    
+    Definition value_BERLIN : Value.t := M.run_constant ltac:(M.monadic (Value.String "Berlin")).
+    
+    Axiom Constant_value_BERLIN :
+      (M.get_constant "revm_specification::hardfork::name::BERLIN") = value_BERLIN.
+    
+    Definition value_LONDON : Value.t := M.run_constant ltac:(M.monadic (Value.String "London")).
+    
+    Axiom Constant_value_LONDON :
+      (M.get_constant "revm_specification::hardfork::name::LONDON") = value_LONDON.
     
     Definition value_ARROW_GLACIER : Value.t :=
-      M.run ltac:(M.monadic (Value.String "Arrow Glacier")).
+      M.run_constant ltac:(M.monadic (Value.String "Arrow Glacier")).
     
-    Definition value_GRAY_GLACIER : Value.t := M.run ltac:(M.monadic (Value.String "Gray Glacier")).
+    Axiom Constant_value_ARROW_GLACIER :
+      (M.get_constant "revm_specification::hardfork::name::ARROW_GLACIER") = value_ARROW_GLACIER.
     
-    Definition value_MERGE : Value.t := M.run ltac:(M.monadic (Value.String "Merge")).
+    Definition value_GRAY_GLACIER : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "Gray Glacier")).
     
-    Definition value_SHANGHAI : Value.t := M.run ltac:(M.monadic (Value.String "Shanghai")).
+    Axiom Constant_value_GRAY_GLACIER :
+      (M.get_constant "revm_specification::hardfork::name::GRAY_GLACIER") = value_GRAY_GLACIER.
     
-    Definition value_CANCUN : Value.t := M.run ltac:(M.monadic (Value.String "Cancun")).
+    Definition value_MERGE : Value.t := M.run_constant ltac:(M.monadic (Value.String "Merge")).
     
-    Definition value_PRAGUE : Value.t := M.run ltac:(M.monadic (Value.String "Prague")).
+    Axiom Constant_value_MERGE :
+      (M.get_constant "revm_specification::hardfork::name::MERGE") = value_MERGE.
     
-    Definition value_OSAKA : Value.t := M.run ltac:(M.monadic (Value.String "PragueEOF")).
+    Definition value_SHANGHAI : Value.t :=
+      M.run_constant ltac:(M.monadic (Value.String "Shanghai")).
     
-    Definition value_LATEST : Value.t := M.run ltac:(M.monadic (Value.String "Latest")).
+    Axiom Constant_value_SHANGHAI :
+      (M.get_constant "revm_specification::hardfork::name::SHANGHAI") = value_SHANGHAI.
+    
+    Definition value_CANCUN : Value.t := M.run_constant ltac:(M.monadic (Value.String "Cancun")).
+    
+    Axiom Constant_value_CANCUN :
+      (M.get_constant "revm_specification::hardfork::name::CANCUN") = value_CANCUN.
+    
+    Definition value_PRAGUE : Value.t := M.run_constant ltac:(M.monadic (Value.String "Prague")).
+    
+    Axiom Constant_value_PRAGUE :
+      (M.get_constant "revm_specification::hardfork::name::PRAGUE") = value_PRAGUE.
+    
+    Definition value_OSAKA : Value.t := M.run_constant ltac:(M.monadic (Value.String "PragueEOF")).
+    
+    Axiom Constant_value_OSAKA :
+      (M.get_constant "revm_specification::hardfork::name::OSAKA") = value_OSAKA.
+    
+    Definition value_LATEST : Value.t := M.run_constant ltac:(M.monadic (Value.String "Latest")).
+    
+    Axiom Constant_value_LATEST :
+      (M.get_constant "revm_specification::hardfork::name::LATEST") = value_LATEST.
   End name.
   
   Module Impl_core_convert_From_ref__str_for_revm_specification_hardfork_SpecId.
@@ -1412,7 +1488,7 @@ Module hardfork.
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::FRONTIER" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::FRONTIER" |)));
+                    M.get_constant "revm_specification::hardfork::name::FRONTIER"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1420,7 +1496,7 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::FRONTIER_THAWING"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::FRONTIER_THAWING" |)));
+                    M.get_constant "revm_specification::hardfork::name::FRONTIER_THAWING"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1428,12 +1504,12 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::HOMESTEAD"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::HOMESTEAD" |)));
+                    M.get_constant "revm_specification::hardfork::name::HOMESTEAD"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::DAO_FORK" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::DAO_FORK" |)));
+                    M.get_constant "revm_specification::hardfork::name::DAO_FORK"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1441,7 +1517,7 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::TANGERINE"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::TANGERINE" |)));
+                    M.get_constant "revm_specification::hardfork::name::TANGERINE"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1449,7 +1525,7 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::SPURIOUS_DRAGON" |)));
+                    M.get_constant "revm_specification::hardfork::name::SPURIOUS_DRAGON"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1457,7 +1533,7 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::BYZANTIUM"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::BYZANTIUM" |)));
+                    M.get_constant "revm_specification::hardfork::name::BYZANTIUM"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1465,7 +1541,7 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::CONSTANTINOPLE" |)));
+                    M.get_constant "revm_specification::hardfork::name::CONSTANTINOPLE"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1473,12 +1549,12 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::PETERSBURG"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::PETERSBURG" |)));
+                    M.get_constant "revm_specification::hardfork::name::PETERSBURG"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::ISTANBUL" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::ISTANBUL" |)));
+                    M.get_constant "revm_specification::hardfork::name::ISTANBUL"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1486,17 +1562,17 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::MUIR_GLACIER"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::MUIR_GLACIER" |)));
+                    M.get_constant "revm_specification::hardfork::name::MUIR_GLACIER"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::BERLIN" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::BERLIN" |)));
+                    M.get_constant "revm_specification::hardfork::name::BERLIN"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LONDON" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::LONDON" |)));
+                    M.get_constant "revm_specification::hardfork::name::LONDON"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1504,7 +1580,7 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::ARROW_GLACIER"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::ARROW_GLACIER" |)));
+                    M.get_constant "revm_specification::hardfork::name::ARROW_GLACIER"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -1512,37 +1588,37 @@ Module hardfork.
                         γ,
                         "revm_specification::hardfork::SpecId::GRAY_GLACIER"
                       |) in
-                    M.get_constant (| "revm_specification::hardfork::name::GRAY_GLACIER" |)));
+                    M.get_constant "revm_specification::hardfork::name::GRAY_GLACIER"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::MERGE" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::MERGE" |)));
+                    M.get_constant "revm_specification::hardfork::name::MERGE"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::SHANGHAI" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::SHANGHAI" |)));
+                    M.get_constant "revm_specification::hardfork::name::SHANGHAI"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::CANCUN" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::CANCUN" |)));
+                    M.get_constant "revm_specification::hardfork::name::CANCUN"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::PRAGUE" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::PRAGUE" |)));
+                    M.get_constant "revm_specification::hardfork::name::PRAGUE"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::OSAKA" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::OSAKA" |)));
+                    M.get_constant "revm_specification::hardfork::name::OSAKA"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
                       M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LATEST" |) in
-                    M.get_constant (| "revm_specification::hardfork::name::LATEST" |)))
+                    M.get_constant "revm_specification::hardfork::name::LATEST"))
               ]
             |)
           |)))

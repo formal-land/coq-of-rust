@@ -6,13 +6,19 @@ Module num.
     Module strategy.
       Module grisu.
         Definition value_ALPHA : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-60) |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-60) |))).
+        
+        Axiom Constant_value_ALPHA :
+          (M.get_constant "core::num::flt2dec::strategy::grisu::ALPHA") = value_ALPHA.
         
         Definition value_GAMMA : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-32) |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-32) |))).
+        
+        Axiom Constant_value_GAMMA :
+          (M.get_constant "core::num::flt2dec::strategy::grisu::GAMMA") = value_GAMMA.
         
         Definition value_CACHED_POW10 : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
@@ -508,11 +514,22 @@ Module num.
                 |)
               |))).
         
+        Axiom Constant_value_CACHED_POW10 :
+          (M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10") = value_CACHED_POW10.
+        
         Definition value_CACHED_POW10_FIRST_E : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-1087) |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 (-1087) |))).
+        
+        Axiom Constant_value_CACHED_POW10_FIRST_E :
+          (M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E") =
+            value_CACHED_POW10_FIRST_E.
         
         Definition value_CACHED_POW10_LAST_E : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 1039 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 1039 |))).
+        
+        Axiom Constant_value_CACHED_POW10_LAST_E :
+          (M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_LAST_E") =
+            value_CACHED_POW10_LAST_E.
         
         (*
         pub fn cached_power(alpha: i16, gamma: i16) -> (i16, Fp) {
@@ -537,9 +554,7 @@ Module num.
                     M.cast
                       (Ty.path "i32")
                       (M.read (|
-                        M.get_constant (|
-                          "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E"
-                        |)
+                        M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E"
                       |))
                   |) in
                 let~ range :=
@@ -562,9 +577,7 @@ Module num.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.read (|
-                                  M.get_constant (|
-                                    "core::num::flt2dec::strategy::grisu::CACHED_POW10"
-                                  |)
+                                  M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10"
                                 |)
                               |)
                             |)
@@ -579,14 +592,10 @@ Module num.
                       (Ty.path "i32")
                       (BinOp.Wrap.sub (|
                         M.read (|
-                          M.get_constant (|
-                            "core::num::flt2dec::strategy::grisu::CACHED_POW10_LAST_E"
-                          |)
+                          M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_LAST_E"
                         |),
                         M.read (|
-                          M.get_constant (|
-                            "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E"
-                          |)
+                          M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10_FIRST_E"
                         |)
                       |))
                   |) in
@@ -607,7 +616,7 @@ Module num.
                   M.SubPointer.get_array_field (|
                     M.deref (|
                       M.read (|
-                        M.get_constant (| "core::num::flt2dec::strategy::grisu::CACHED_POW10" |)
+                        M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10"
                       |)
                     |),
                     M.alloc (| M.cast (Ty.path "usize") (M.read (| idx |)) |)
@@ -800,9 +809,8 @@ Module num.
                               BinOp.lt (|
                                 M.read (| x |),
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4"
-                                  |)
                                 |)
                               |)
                             |)) in
@@ -819,9 +827,8 @@ Module num.
                                       BinOp.lt (|
                                         M.read (| x |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2"
-                                          |)
                                         |)
                                       |)
                                     |)) in
@@ -841,9 +848,8 @@ Module num.
                                               BinOp.lt (|
                                                 M.read (| x |),
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1"
-                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -866,9 +872,8 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 1;
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1"
-                                                |)
                                               |)
                                             ]
                                         |)))
@@ -887,9 +892,8 @@ Module num.
                                               BinOp.lt (|
                                                 M.read (| x |),
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3"
-                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -903,9 +907,8 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 2;
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2"
-                                                |)
                                               |)
                                             ]
                                         |)));
@@ -916,9 +919,8 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 3;
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3"
-                                                |)
                                               |)
                                             ]
                                         |)))
@@ -939,9 +941,8 @@ Module num.
                                       BinOp.lt (|
                                         M.read (| x |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6"
-                                          |)
                                         |)
                                       |)
                                     |)) in
@@ -961,9 +962,8 @@ Module num.
                                               BinOp.lt (|
                                                 M.read (| x |),
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5"
-                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -977,9 +977,8 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 4;
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4"
-                                                |)
                                               |)
                                             ]
                                         |)));
@@ -990,9 +989,8 @@ Module num.
                                             [
                                               Value.Integer IntegerKind.U8 5;
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5"
-                                                |)
                                               |)
                                             ]
                                         |)))
@@ -1011,9 +1009,8 @@ Module num.
                                               BinOp.lt (|
                                                 M.read (| x |),
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8"
-                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -1033,9 +1030,8 @@ Module num.
                                                       BinOp.lt (|
                                                         M.read (| x |),
                                                         M.read (|
-                                                          M.get_constant (|
+                                                          M.get_constant
                                                             "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7"
-                                                          |)
                                                         |)
                                                       |)
                                                     |)) in
@@ -1049,9 +1045,8 @@ Module num.
                                                     [
                                                       Value.Integer IntegerKind.U8 6;
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6"
-                                                        |)
                                                       |)
                                                     ]
                                                 |)));
@@ -1062,9 +1057,8 @@ Module num.
                                                     [
                                                       Value.Integer IntegerKind.U8 7;
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7"
-                                                        |)
                                                       |)
                                                     ]
                                                 |)))
@@ -1083,9 +1077,8 @@ Module num.
                                                       BinOp.lt (|
                                                         M.read (| x |),
                                                         M.read (|
-                                                          M.get_constant (|
+                                                          M.get_constant
                                                             "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9"
-                                                          |)
                                                         |)
                                                       |)
                                                     |)) in
@@ -1099,9 +1092,8 @@ Module num.
                                                     [
                                                       Value.Integer IntegerKind.U8 8;
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8"
-                                                        |)
                                                       |)
                                                     ]
                                                 |)));
@@ -1112,9 +1104,8 @@ Module num.
                                                     [
                                                       Value.Integer IntegerKind.U8 9;
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9"
-                                                        |)
                                                       |)
                                                     ]
                                                 |)))
@@ -1137,31 +1128,68 @@ Module num.
         
         Module max_pow10_no_more_than.
           Definition value_X9 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000000 |))).
+            M.run_constant
+              ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000000 |))).
+          
+          Axiom Constant_value_X9 :
+            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9") =
+              value_X9.
           
           Definition value_X8 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000000 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000000 |))).
+          
+          Axiom Constant_value_X8 :
+            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8") =
+              value_X8.
           
           Definition value_X7 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000000 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000000 |))).
+          
+          Axiom Constant_value_X7 :
+            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7") =
+              value_X7.
           
           Definition value_X6 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
+          
+          Axiom Constant_value_X6 :
+            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6") =
+              value_X6.
           
           Definition value_X5 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100000 |))).
+          
+          Axiom Constant_value_X5 :
+            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5") =
+              value_X5.
           
           Definition value_X4 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10000 |))).
+          
+          Axiom Constant_value_X4 :
+            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4") =
+              value_X4.
           
           Definition value_X3 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
+          
+          Axiom Constant_value_X3 :
+            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3") =
+              value_X3.
           
           Definition value_X2 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 100 |))).
+          
+          Axiom Constant_value_X2 :
+            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2") =
+              value_X2.
           
           Definition value_X1 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10 |))).
+          
+          Axiom Constant_value_X1 :
+            (M.get_constant "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1") =
+              value_X1.
         End max_pow10_no_more_than.
         
         (*
@@ -1759,9 +1787,7 @@ Module num.
                                             ]
                                           |),
                                           M.read (|
-                                            M.get_constant (|
-                                              "core::num::flt2dec::MAX_SIG_DIGITS"
-                                            |)
+                                            M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS"
                                           |)
                                         |)
                                       |)
@@ -2000,9 +2026,7 @@ Module num.
                               BinOp.Wrap.sub (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant (|
-                                      "core::num::flt2dec::strategy::grisu::ALPHA"
-                                    |)
+                                    M.get_constant "core::num::flt2dec::strategy::grisu::ALPHA"
                                   |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -2017,9 +2041,7 @@ Module num.
                               BinOp.Wrap.sub (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant (|
-                                      "core::num::flt2dec::strategy::grisu::GAMMA"
-                                    |)
+                                    M.get_constant "core::num::flt2dec::strategy::grisu::GAMMA"
                                   |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -4351,9 +4373,7 @@ Module num.
                               BinOp.Wrap.sub (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant (|
-                                      "core::num::flt2dec::strategy::grisu::ALPHA"
-                                    |)
+                                    M.get_constant "core::num::flt2dec::strategy::grisu::ALPHA"
                                   |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -4368,9 +4388,7 @@ Module num.
                               BinOp.Wrap.sub (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant (|
-                                      "core::num::flt2dec::strategy::grisu::GAMMA"
-                                    |)
+                                    M.get_constant "core::num::flt2dec::strategy::grisu::GAMMA"
                                   |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -4507,9 +4525,8 @@ Module num.
                                                         M.read (| vint |),
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
-                                                            M.get_constant (|
-                                                              "core::num::flt2dec::strategy::grisu::format_exact_opt::POW10_UP_TO_9"
-                                                            |),
+                                                            M.get_constant
+                                                              "core::num::flt2dec::strategy::grisu::format_exact_opt::POW10_UP_TO_9",
                                                             M.alloc (|
                                                               BinOp.Wrap.sub (|
                                                                 M.read (| requested_digits |),
@@ -5645,7 +5662,7 @@ Module num.
         
         Module format_exact_opt.
           Definition value_POW10_UP_TO_9 : Value.t :=
-            M.run
+            M.run_constant
               ltac:(M.monadic
                 (M.alloc (|
                   Value.Array
@@ -5662,6 +5679,11 @@ Module num.
                       Value.Integer IntegerKind.U32 1000000000
                     ]
                 |))).
+          
+          Axiom Constant_value_POW10_UP_TO_9 :
+            (M.get_constant
+                "core::num::flt2dec::strategy::grisu::format_exact_opt::POW10_UP_TO_9") =
+              value_POW10_UP_TO_9.
           
           (*
               unsafe fn possibly_round(

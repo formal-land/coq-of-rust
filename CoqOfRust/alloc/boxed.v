@@ -658,8 +658,7 @@ Module boxed.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -990,8 +989,7 @@ Module boxed.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -2050,7 +2048,7 @@ Module boxed.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.read (|
-                                      M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -2356,7 +2354,7 @@ Module boxed.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.read (|
-                                      M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -2759,7 +2757,7 @@ Module boxed.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.read (|
-                                      M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -3058,7 +3056,7 @@ Module boxed.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.read (|
-                                      M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                      M.get_constant "core::mem::SizedTypeProperties::IS_ZST"
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -5616,9 +5614,7 @@ Module boxed.
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.get_constant (|
-                                  "alloc::boxed::boxed_slice_as_array_unchecked::N"
-                                |)
+                                M.get_constant "alloc::boxed::boxed_slice_as_array_unchecked::N"
                               |)
                             ]
                         |),
@@ -5810,7 +5806,7 @@ Module boxed.
                                 |)
                               ]
                             |),
-                            M.read (| M.get_constant (| "alloc::boxed::N" |) |)
+                            M.read (| M.get_constant "alloc::boxed::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5914,7 +5910,7 @@ Module boxed.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                             |),
-                            M.read (| M.get_constant (| "alloc::boxed::N" |) |)
+                            M.read (| M.get_constant "alloc::boxed::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

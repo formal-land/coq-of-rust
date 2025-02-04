@@ -2527,9 +2527,8 @@ Module limits.
                                                                         BinOp.Wrap.add (|
                                                                           M.read (| β |),
                                                                           M.read (|
-                                                                            M.get_constant (|
+                                                                            M.get_constant
                                                                               "move_bytecode_verifier::limits::verify_type_node::STRUCT_SIZE_WEIGHT"
-                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)))
@@ -2552,9 +2551,8 @@ Module limits.
                                                               BinOp.Wrap.add (|
                                                                 M.read (| β |),
                                                                 M.read (|
-                                                                  M.get_constant (|
+                                                                  M.get_constant
                                                                     "move_bytecode_verifier::limits::verify_type_node::PARAM_SIZE_WEIGHT"
-                                                                  |)
                                                                 |)
                                                               |)
                                                             |)));

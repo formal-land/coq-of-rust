@@ -35,11 +35,11 @@ Module num.
                 BinOp.bit_and
                   (BinOp.Wrap.add (|
                     M.read (| val |),
-                    M.read (| M.get_constant (| "core::num::int_log10::u8::C1" |) |)
+                    M.read (| M.get_constant "core::num::int_log10::u8::C1" |)
                   |))
                   (BinOp.Wrap.add (|
                     M.read (| val |),
-                    M.read (| M.get_constant (| "core::num::int_log10::u8::C2" |) |)
+                    M.read (| M.get_constant "core::num::int_log10::u8::C2" |)
                   |)),
                 Value.Integer IntegerKind.I32 8
               |)
@@ -52,7 +52,7 @@ Module num.
     
     Module u8.
       Definition value_C1 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -61,8 +61,10 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_value_C1 : (M.get_constant "core::num::int_log10::u8::C1") = value_C1.
+      
       Definition value_C2 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -70,6 +72,8 @@ Module num.
                 Value.Integer IntegerKind.U32 100
               |)
             |))).
+      
+      Axiom Constant_value_C2 : (M.get_constant "core::num::int_log10::u8::C2") = value_C2.
     End u8.
     
     (*
@@ -102,20 +106,20 @@ Module num.
               (BinOp.bit_and
                 (BinOp.Wrap.add (|
                   M.read (| val |),
-                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C1" |) |)
+                  M.read (| M.get_constant "core::num::int_log10::less_than_5::C1" |)
                 |))
                 (BinOp.Wrap.add (|
                   M.read (| val |),
-                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C2" |) |)
+                  M.read (| M.get_constant "core::num::int_log10::less_than_5::C2" |)
                 |)))
               (BinOp.bit_and
                 (BinOp.Wrap.add (|
                   M.read (| val |),
-                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C3" |) |)
+                  M.read (| M.get_constant "core::num::int_log10::less_than_5::C3" |)
                 |))
                 (BinOp.Wrap.add (|
                   M.read (| val |),
-                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C4" |) |)
+                  M.read (| M.get_constant "core::num::int_log10::less_than_5::C4" |)
                 |))),
             Value.Integer IntegerKind.I32 17
           |)))
@@ -126,7 +130,7 @@ Module num.
     
     Module less_than_5.
       Definition value_C1 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -135,8 +139,10 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_value_C1 : (M.get_constant "core::num::int_log10::less_than_5::C1") = value_C1.
+      
       Definition value_C2 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -145,8 +151,10 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_value_C2 : (M.get_constant "core::num::int_log10::less_than_5::C2") = value_C2.
+      
       Definition value_C3 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -155,8 +163,10 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_value_C3 : (M.get_constant "core::num::int_log10::less_than_5::C3") = value_C3.
+      
       Definition value_C4 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -164,6 +174,8 @@ Module num.
                 Value.Integer IntegerKind.U32 10000
               |)
             |))).
+      
+      Axiom Constant_value_C4 : (M.get_constant "core::num::int_log10::less_than_5::C4") = value_C4.
     End less_than_5.
     
     (*

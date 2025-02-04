@@ -181,14 +181,12 @@ Module slice.
                                         M.read (| len |),
                                         BinOp.Wrap.mul (|
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN"
-                                            |)
                                           |),
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN"
-                                            |)
                                           |)
                                         |)
                                       |)
@@ -210,9 +208,8 @@ Module slice.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN"
-                                        |)
                                       |)
                                     ]
                                   |)
@@ -866,7 +863,11 @@ Module slice.
         
         Module sort.
           Definition value_MIN_SQRT_RUN_LEN : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+          
+          Axiom Constant_value_MIN_SQRT_RUN_LEN :
+            (M.get_constant "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN") =
+              value_MIN_SQRT_RUN_LEN.
         End sort.
         
         (*
@@ -898,8 +899,8 @@ Module slice.
                             M.use
                               (M.alloc (|
                                 BinOp.gt (|
-                                  M.read (| M.get_constant (| "core::num::BITS" |) |),
-                                  M.read (| M.get_constant (| "core::num::BITS" |) |)
+                                  M.read (| M.get_constant "core::num::BITS" |),
+                                  M.read (| M.get_constant "core::num::BITS" |)
                                 |)
                               |)) in
                           let _ :=

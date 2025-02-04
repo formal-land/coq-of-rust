@@ -3945,9 +3945,8 @@ Module fmt.
                                                                               Pointer.Kind.Ref,
                                                                               M.deref (|
                                                                                 M.read (|
-                                                                                  M.get_constant (|
+                                                                                  M.get_constant
                                                                                     "core::fmt::write_formatted_parts::ZEROES"
-                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -4017,9 +4016,8 @@ Module fmt.
                                                                                 Pointer.Kind.Ref,
                                                                                 M.deref (|
                                                                                   M.read (|
-                                                                                    M.get_constant (|
+                                                                                    M.get_constant
                                                                                       "core::fmt::write_formatted_parts::ZEROES"
-                                                                                    |)
                                                                                   |)
                                                                                 |)
                                                                               |)
@@ -4114,9 +4112,8 @@ Module fmt.
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.read (|
-                                                                                M.get_constant (|
+                                                                                M.get_constant
                                                                                   "core::fmt::write_formatted_parts::ZEROES"
-                                                                                |)
                                                                               |)
                                                                             |)
                                                                           |)
@@ -4243,9 +4240,8 @@ Module fmt.
                                                                                       Pointer.Kind.Ref,
                                                                                       M.deref (|
                                                                                         M.read (|
-                                                                                          M.get_constant (|
+                                                                                          M.get_constant
                                                                                             "core::fmt::write_formatted_parts::ZEROES"
-                                                                                          |)
                                                                                         |)
                                                                                       |)
                                                                                     |);
@@ -7108,7 +7104,7 @@ Module fmt.
         ltac:(M.monadic
           (let pieces := M.alloc (| pieces |) in
           M.read (|
-            let~ _ := M.get_constant (| "core::fmt::new_const_discriminant" |) in
+            let~ _ := M.get_constant "core::fmt::new_const_discriminant" in
             M.alloc (|
               Value.StructRecord
                 "core::fmt::Arguments"
@@ -7144,7 +7140,7 @@ Module fmt.
           (let pieces := M.alloc (| pieces |) in
           let args := M.alloc (| args |) in
           M.read (|
-            let~ _ := M.get_constant (| "core::fmt::new_v1_discriminant" |) in
+            let~ _ := M.get_constant "core::fmt::new_v1_discriminant" in
             M.alloc (|
               Value.StructRecord
                 "core::fmt::Arguments"
@@ -12112,7 +12108,7 @@ Module fmt.
                                       M.cast
                                         (Ty.path "usize")
                                         (BinOp.Wrap.div (|
-                                          M.read (| M.get_constant (| "core::num::BITS" |) |),
+                                          M.read (| M.get_constant "core::num::BITS" |),
                                           Value.Integer IntegerKind.U32 4
                                         |)),
                                       Value.Integer IntegerKind.Usize 2

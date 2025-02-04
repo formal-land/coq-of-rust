@@ -714,8 +714,7 @@ Module num.
         *)
         Definition min_pos_norm_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           match ε, τ, α with
-          | [], [], [] =>
-            ltac:(M.monadic (M.read (| M.get_constant (| "core::f32::MIN_POSITIVE" |) |)))
+          | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::f32::MIN_POSITIVE" |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -737,8 +736,7 @@ Module num.
         *)
         Definition min_pos_norm_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           match ε, τ, α with
-          | [], [], [] =>
-            ltac:(M.monadic (M.read (| M.get_constant (| "core::f64::MIN_POSITIVE" |) |)))
+          | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::f64::MIN_POSITIVE" |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         

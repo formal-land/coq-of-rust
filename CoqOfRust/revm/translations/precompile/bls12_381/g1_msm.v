@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module bls12_381.
   Module g1_msm.
     Definition value_PRECOMPILE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
@@ -12,8 +12,7 @@ Module bls12_381.
               [
                 M.call_closure (|
                   M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                  [ M.read (| M.get_constant (| "revm_precompile::bls12_381::g1_msm::ADDRESS" |) |)
-                  ]
+                  [ M.read (| M.get_constant "revm_precompile::bls12_381::g1_msm::ADDRESS" |) ]
                 |);
                 (* ReifyFnPointer *)
                 M.pointer_coercion
@@ -21,8 +20,14 @@ Module bls12_381.
               ]
           |))).
     
+    Axiom Constant_value_PRECOMPILE :
+      (M.get_constant "revm_precompile::bls12_381::g1_msm::PRECOMPILE") = value_PRECOMPILE.
+    
     Definition value_ADDRESS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 13 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 13 |))).
+    
+    Axiom Constant_value_ADDRESS :
+      (M.get_constant "revm_precompile::bls12_381::g1_msm::ADDRESS") = value_ADDRESS.
     
     (*
     pub(super) fn g1_msm(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -142,9 +147,8 @@ Module bls12_381.
                                       BinOp.Wrap.rem (|
                                         M.read (| input_len |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "revm_precompile::bls12_381::g1_mul::INPUT_LENGTH"
-                                          |)
                                         |)
                                       |),
                                       Value.Integer IntegerKind.Usize 0
@@ -242,9 +246,8 @@ Module bls12_381.
                                                                                   M.deref (|
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
-                                                                                      M.get_constant (|
+                                                                                      M.get_constant
                                                                                         "revm_precompile::bls12_381::g1_mul::INPUT_LENGTH"
-                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
@@ -299,9 +302,7 @@ Module bls12_381.
                   M.alloc (|
                     BinOp.Wrap.div (|
                       M.read (| input_len |),
-                      M.read (|
-                        M.get_constant (| "revm_precompile::bls12_381::g1_mul::INPUT_LENGTH" |)
-                      |)
+                      M.read (| M.get_constant "revm_precompile::bls12_381::g1_mul::INPUT_LENGTH" |)
                     |)
                   |) in
                 let~ required_gas :=
@@ -315,7 +316,7 @@ Module bls12_381.
                       [
                         M.read (| k |);
                         M.read (|
-                          M.get_constant (| "revm_precompile::bls12_381::g1_mul::BASE_GAS_FEE" |)
+                          M.get_constant "revm_precompile::bls12_381::g1_mul::BASE_GAS_FEE"
                         |)
                       ]
                     |)
@@ -396,7 +397,7 @@ Module bls12_381.
                         BinOp.Wrap.mul (|
                           M.read (| k |),
                           M.read (|
-                            M.get_constant (| "revm_precompile::bls12_381::utils::SCALAR_LENGTH" |)
+                            M.get_constant "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
                           |)
                         |)
                       ]
@@ -550,9 +551,8 @@ Module bls12_381.
                                                             BinOp.Wrap.mul (|
                                                               M.read (| i |),
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "revm_precompile::bls12_381::g1_mul::INPUT_LENGTH"
-                                                                |)
                                                               |)
                                                             |));
                                                           ("end_",
@@ -560,15 +560,13 @@ Module bls12_381.
                                                               BinOp.Wrap.mul (|
                                                                 M.read (| i |),
                                                                 M.read (|
-                                                                  M.get_constant (|
+                                                                  M.get_constant
                                                                     "revm_precompile::bls12_381::g1_mul::INPUT_LENGTH"
-                                                                  |)
                                                                 |)
                                                               |),
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH"
-                                                                |)
                                                               |)
                                                             |))
                                                         ]
@@ -980,15 +978,13 @@ Module bls12_381.
                                                                                               i
                                                                                             |),
                                                                                             M.read (|
-                                                                                              M.get_constant (|
+                                                                                              M.get_constant
                                                                                                 "revm_precompile::bls12_381::g1_mul::INPUT_LENGTH"
-                                                                                              |)
                                                                                             |)
                                                                                           |),
                                                                                           M.read (|
-                                                                                            M.get_constant (|
+                                                                                            M.get_constant
                                                                                               "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH"
-                                                                                            |)
                                                                                           |)
                                                                                         |));
                                                                                       ("end_",
@@ -999,21 +995,18 @@ Module bls12_381.
                                                                                                 i
                                                                                               |),
                                                                                               M.read (|
-                                                                                                M.get_constant (|
+                                                                                                M.get_constant
                                                                                                   "revm_precompile::bls12_381::g1_mul::INPUT_LENGTH"
-                                                                                                |)
                                                                                               |)
                                                                                             |),
                                                                                             M.read (|
-                                                                                              M.get_constant (|
+                                                                                              M.get_constant
                                                                                                 "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH"
-                                                                                              |)
                                                                                             |)
                                                                                           |),
                                                                                           M.read (|
-                                                                                            M.get_constant (|
+                                                                                            M.get_constant
                                                                                               "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
-                                                                                            |)
                                                                                           |)
                                                                                         |))
                                                                                     ]
@@ -1242,7 +1235,7 @@ Module bls12_381.
                             |)
                           |)
                         |);
-                        M.read (| M.get_constant (| "revm_precompile::bls12_381::utils::NBITS" |) |)
+                        M.read (| M.get_constant "revm_precompile::bls12_381::utils::NBITS" |)
                       ]
                     |)
                   |) in

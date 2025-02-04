@@ -19,9 +19,7 @@ Module num.
                   (Ty.path "array")
                   [
                     M.unevaluated_const
-                      (M.get_constant (|
-                        "core::num::dec2flt::decimal::Decimal::digits_discriminant"
-                      |))
+                      (M.get_constant "core::num::dec2flt::decimal::Decimal::digits_discriminant")
                   ]
                   [ Ty.path "u8" ])
             ];
@@ -260,7 +258,7 @@ Module num.
                                     |)
                                   |),
                                   M.read (|
-                                    M.get_constant (| "core::num::dec2flt::decimal::MAX_DIGITS" |)
+                                    M.get_constant "core::num::dec2flt::decimal::MAX_DIGITS"
                                   |)
                                 |)
                               |)) in
@@ -354,9 +352,8 @@ Module num.
                                                 |)
                                               |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::dec2flt::decimal::MAX_DIGITS"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -1116,9 +1113,8 @@ Module num.
                                                   BinOp.lt (|
                                                     M.read (| write_index |),
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::num::dec2flt::decimal::MAX_DIGITS"
-                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -1253,9 +1249,8 @@ Module num.
                                                   BinOp.lt (|
                                                     M.read (| write_index |),
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::num::dec2flt::decimal::MAX_DIGITS"
-                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -1360,9 +1355,7 @@ Module num.
                                         |)
                                       |),
                                       M.read (|
-                                        M.get_constant (|
-                                          "core::num::dec2flt::decimal::MAX_DIGITS"
-                                        |)
+                                        M.get_constant "core::num::dec2flt::decimal::MAX_DIGITS"
                                       |)
                                     |)
                                   |)) in
@@ -1379,7 +1372,7 @@ Module num.
                                     "num_digits"
                                   |),
                                   M.read (|
-                                    M.get_constant (| "core::num::dec2flt::decimal::MAX_DIGITS" |)
+                                    M.get_constant "core::num::dec2flt::decimal::MAX_DIGITS"
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -1721,9 +1714,8 @@ Module num.
                                       |),
                                       UnOp.neg (|
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::num::dec2flt::decimal::DECIMAL_POINT_RANGE"
-                                          |)
                                         |)
                                       |)
                                     |)
@@ -1925,9 +1917,8 @@ Module num.
                                                 BinOp.lt (|
                                                   M.read (| write_index |),
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::num::dec2flt::decimal::MAX_DIGITS"
-                                                    |)
                                                   |)
                                                 |)
                                               |)) in
@@ -2426,9 +2417,8 @@ Module num.
                                                     Value.Integer IntegerKind.Usize 8
                                                   |),
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::num::dec2flt::decimal::MAX_DIGITS"
-                                                    |)
                                                   |)
                                                 |)))
                                             |)
@@ -3057,9 +3047,7 @@ Module num.
                                           |)
                                         |),
                                         M.read (|
-                                          M.get_constant (|
-                                            "core::num::dec2flt::decimal::MAX_DIGITS"
-                                          |)
+                                          M.get_constant "core::num::dec2flt::decimal::MAX_DIGITS"
                                         |)
                                       |)
                                     |)) in
@@ -3085,7 +3073,7 @@ Module num.
                                       "num_digits"
                                     |),
                                     M.read (|
-                                      M.get_constant (| "core::num::dec2flt::decimal::MAX_DIGITS" |)
+                                      M.get_constant "core::num::dec2flt::decimal::MAX_DIGITS"
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -3386,9 +3374,8 @@ Module num.
                                 |));
                               ("end_",
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "core::num::dec2flt::decimal::MAX_DIGITS_WITHOUT_OVERFLOW"
-                                  |)
                                 |))
                             ]
                         ]
@@ -3570,18 +3557,16 @@ Module num.
                   let~ x_a :=
                     M.copy (|
                       M.SubPointer.get_array_field (|
-                        M.get_constant (|
-                          "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE"
-                        |),
+                        M.get_constant
+                          "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE",
                         shift
                       |)
                     |) in
                   let~ x_b :=
                     M.copy (|
                       M.SubPointer.get_array_field (|
-                        M.get_constant (|
-                          "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE"
-                        |),
+                        M.get_constant
+                          "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE",
                         M.alloc (|
                           BinOp.Wrap.add (| M.read (| shift |), Value.Integer IntegerKind.Usize 1 |)
                         |)
@@ -3631,9 +3616,8 @@ Module num.
                             [
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.get_constant (|
+                                M.get_constant
                                   "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE_POW5"
-                                |)
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
@@ -3950,7 +3934,7 @@ Module num.
       
       Module number_of_digits_decimal_left_shift.
         Definition value_TABLE : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 Value.Array
@@ -4023,8 +4007,13 @@ Module num.
                   ]
               |))).
         
+        Axiom Constant_value_TABLE :
+          (M.get_constant
+              "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE") =
+            value_TABLE.
+        
         Definition value_TABLE_POW5 : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 Value.Array
@@ -5339,6 +5328,11 @@ Module num.
                     Value.Integer IntegerKind.U8 5
                   ]
               |))).
+        
+        Axiom Constant_value_TABLE_POW5 :
+          (M.get_constant
+              "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE_POW5") =
+            value_TABLE_POW5.
       End number_of_digits_decimal_left_shift.
     End decimal.
   End dec2flt.

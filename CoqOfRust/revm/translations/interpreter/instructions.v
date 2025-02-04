@@ -263,7 +263,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::STOP" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -281,7 +281,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ADD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -299,7 +299,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::STOP" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -317,7 +317,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ADD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -335,7 +335,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MUL" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::MUL" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -353,7 +353,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SUB" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SUB" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -371,7 +371,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DIV" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DIV" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -389,7 +389,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SDIV" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SDIV" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -407,7 +407,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MOD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::MOD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -425,7 +425,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SMOD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SMOD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -443,7 +443,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ADDMOD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::ADDMOD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -461,7 +461,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MULMOD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::MULMOD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -479,7 +479,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXP" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::EXP" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -497,7 +497,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SIGNEXTEND" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SIGNEXTEND" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -513,9 +513,7 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LT" |) |))
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::LT" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -531,9 +529,7 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::GT" |) |))
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::GT" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -551,7 +547,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SLT" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SLT" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -569,7 +565,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SGT" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SGT" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -585,9 +581,7 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EQ" |) |))
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::EQ" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -605,7 +599,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ISZERO" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::ISZERO" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -623,7 +617,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::AND" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::AND" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -639,9 +633,7 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::OR" |) |))
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::OR" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -659,7 +651,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::XOR" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::XOR" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -677,7 +669,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::NOT" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::NOT" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -695,7 +687,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BYTE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::BYTE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -713,7 +705,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SHL" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SHL" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -731,7 +723,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SHR" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SHR" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -749,7 +741,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SAR" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SAR" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -767,7 +759,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::KECCAK256" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::KECCAK256" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -785,7 +777,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ADDRESS" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::ADDRESS" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -803,7 +795,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BALANCE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -821,7 +813,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::ORIGIN" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::ORIGIN" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -839,7 +831,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLER" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLER" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -857,7 +849,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLVALUE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLVALUE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -875,7 +867,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLDATALOAD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLDATALOAD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -893,7 +885,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLDATASIZE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLDATASIZE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -911,7 +903,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLDATACOPY" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLDATACOPY" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -929,7 +921,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CODESIZE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CODESIZE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -947,7 +939,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CODECOPY" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CODECOPY" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -965,7 +957,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::GASPRICE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::GASPRICE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -983,7 +975,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTCODESIZE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTCODESIZE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1001,7 +993,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTCODECOPY" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTCODECOPY" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1019,7 +1011,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURNDATASIZE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURNDATASIZE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1037,7 +1029,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURNDATACOPY" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURNDATACOPY" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1055,7 +1047,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTCODEHASH" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTCODEHASH" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1073,7 +1065,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BLOCKHASH" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::BLOCKHASH" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1091,7 +1083,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::COINBASE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::COINBASE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1109,7 +1101,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::TIMESTAMP" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::TIMESTAMP" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1127,7 +1119,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::NUMBER" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::NUMBER" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1145,7 +1137,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DIFFICULTY" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DIFFICULTY" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1163,7 +1155,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::GASLIMIT" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::GASLIMIT" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1181,7 +1173,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CHAINID" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CHAINID" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1199,7 +1191,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SELFBALANCE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SELFBALANCE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1217,7 +1209,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BASEFEE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::BASEFEE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1235,7 +1227,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BLOBHASH" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::BLOBHASH" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1253,7 +1245,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::BLOBBASEFEE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::BLOBBASEFEE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1271,7 +1263,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::POP" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::POP" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1285,7 +1277,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MLOAD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::MLOAD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1303,7 +1295,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MSTORE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::MSTORE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1321,7 +1313,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MSTORE8" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::MSTORE8" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1339,7 +1331,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SLOAD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SLOAD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1357,7 +1349,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SSTORE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SSTORE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1375,7 +1367,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMP" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::JUMP" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1393,7 +1385,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMPI" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::JUMPI" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1409,9 +1401,7 @@ Module instructions.
               M.SubPointer.get_array_field (|
                 table,
                 M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PC" |) |))
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::PC" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1429,7 +1419,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MSIZE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::MSIZE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1447,7 +1437,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::GAS" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::GAS" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1465,7 +1455,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMPDEST" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::JUMPDEST" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1483,7 +1473,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::TLOAD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::TLOAD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1501,7 +1491,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::TSTORE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::TSTORE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1519,7 +1509,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::MCOPY" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::MCOPY" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1537,7 +1527,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH0" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH0" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1555,7 +1545,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH1" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH1" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1573,7 +1563,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH2" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH2" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1591,7 +1581,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH3" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH3" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1609,7 +1599,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH4" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH4" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1627,7 +1617,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH5" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH5" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1645,7 +1635,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH6" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH6" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1663,7 +1653,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH7" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH7" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1681,7 +1671,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH8" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH8" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1699,7 +1689,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH9" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH9" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1717,7 +1707,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH10" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH10" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1735,7 +1725,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH11" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH11" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1753,7 +1743,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH12" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH12" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1771,7 +1761,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH13" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH13" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1789,7 +1779,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH14" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH14" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1807,7 +1797,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH15" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH15" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1825,7 +1815,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH16" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH16" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1843,7 +1833,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH17" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH17" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1861,7 +1851,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH18" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH18" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1879,7 +1869,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH19" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH19" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1897,7 +1887,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH20" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH20" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1915,7 +1905,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH21" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH21" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1933,7 +1923,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH22" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH22" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1951,7 +1941,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH23" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH23" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1969,7 +1959,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH24" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH24" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -1987,7 +1977,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH25" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH25" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2005,7 +1995,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH26" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH26" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2023,7 +2013,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH27" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH27" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2041,7 +2031,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH28" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH28" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2059,7 +2049,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH29" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH29" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2077,7 +2067,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH30" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH30" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2095,7 +2085,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH31" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH31" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2113,7 +2103,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::PUSH32" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH32" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2131,7 +2121,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP1" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP1" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2149,7 +2139,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP2" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP2" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2167,7 +2157,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP3" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP3" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2185,7 +2175,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP4" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP4" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2203,7 +2193,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP5" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP5" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2221,7 +2211,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP6" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP6" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2239,7 +2229,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP7" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP7" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2257,7 +2247,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP8" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP8" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2275,7 +2265,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP9" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP9" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2293,7 +2283,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP10" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP10" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2311,7 +2301,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP11" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP11" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2329,7 +2319,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP12" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP12" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2347,7 +2337,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP13" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP13" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2365,7 +2355,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP14" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP14" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2383,7 +2373,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP15" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP15" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2401,7 +2391,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUP16" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP16" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2419,7 +2409,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP1" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP1" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2437,7 +2427,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP2" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP2" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2455,7 +2445,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP3" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP3" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2473,7 +2463,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP4" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP4" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2491,7 +2481,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP5" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP5" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2509,7 +2499,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP6" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP6" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2527,7 +2517,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP7" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP7" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2545,7 +2535,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP8" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP8" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2563,7 +2553,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP9" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP9" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2581,7 +2571,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP10" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP10" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2599,7 +2589,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP11" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP11" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2617,7 +2607,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP12" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP12" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2635,7 +2625,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP13" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP13" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2653,7 +2643,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP14" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP14" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2671,7 +2661,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP15" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP15" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2689,7 +2679,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAP16" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP16" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2707,7 +2697,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG0" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG0" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2725,7 +2715,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG1" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG1" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2743,7 +2733,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG2" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG2" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2761,7 +2751,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG3" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG3" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2779,7 +2769,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::LOG4" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG4" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2797,7 +2787,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DATALOAD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DATALOAD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2815,7 +2805,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DATALOADN" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DATALOADN" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2833,7 +2823,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DATASIZE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DATASIZE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2851,7 +2841,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DATACOPY" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DATACOPY" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2869,7 +2859,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RJUMP" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::RJUMP" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2887,7 +2877,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RJUMPI" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::RJUMPI" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2905,7 +2895,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RJUMPV" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::RJUMPV" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2923,7 +2913,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLF" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLF" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2941,7 +2931,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RETF" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::RETF" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2959,7 +2949,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::JUMPF" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::JUMPF" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2977,7 +2967,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DUPN" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DUPN" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -2995,7 +2985,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SWAPN" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAPN" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3013,7 +3003,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXCHANGE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::EXCHANGE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3031,7 +3021,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EOFCREATE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::EOFCREATE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3049,7 +3039,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURNCONTRACT" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURNCONTRACT" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3067,7 +3057,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CREATE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CREATE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3085,7 +3075,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALL" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CALL" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3103,7 +3093,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CALLCODE" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLCODE" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3121,7 +3111,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURN" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURN" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3139,7 +3129,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::DELEGATECALL" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::DELEGATECALL" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3157,7 +3147,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::CREATE2" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::CREATE2" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3175,7 +3165,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::RETURNDATALOAD" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURNDATALOAD" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3193,7 +3183,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTCALL" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTCALL" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3211,7 +3201,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTDELEGATECALL" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTDELEGATECALL" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3229,7 +3219,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::STATICCALL" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::STATICCALL" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3247,7 +3237,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::EXTSTATICCALL" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTSTATICCALL" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3265,7 +3255,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::REVERT" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::REVERT" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3283,7 +3273,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::INVALID" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::INVALID" |))
                 |)
               |),
               (* ReifyFnPointer *)
@@ -3301,7 +3291,7 @@ Module instructions.
                 M.alloc (|
                   M.cast
                     (Ty.path "usize")
-                    (M.read (| M.get_constant (| "revm_bytecode::opcode::SELFDESTRUCT" |) |))
+                    (M.read (| M.get_constant "revm_bytecode::opcode::SELFDESTRUCT" |))
                 |)
               |),
               (* ReifyFnPointer *)

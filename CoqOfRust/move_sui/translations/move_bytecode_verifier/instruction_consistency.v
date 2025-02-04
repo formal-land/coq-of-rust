@@ -3448,9 +3448,8 @@ Module instruction_consistency.
                                                                             M.cast
                                                                               (Ty.path "u64")
                                                                               (M.read (|
-                                                                                M.get_constant (|
+                                                                                M.get_constant
                                                                                   "core::num::MAX"
-                                                                                |)
                                                                               |))
                                                                           |)
                                                                         |)) in

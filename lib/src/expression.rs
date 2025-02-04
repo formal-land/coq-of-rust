@@ -455,7 +455,7 @@ impl Expr {
         match self {
             Expr::LocalVar(ref name) => coq::Expression::just_name(name),
             Expr::GetConst(path) => coq::Expression::just_name("M.get_constant")
-                .monadic_apply(&coq::Expression::String(path.to_string())),
+                .apply(&coq::Expression::String(path.to_string())),
             Expr::GetFunction {
                 func,
                 generic_consts,

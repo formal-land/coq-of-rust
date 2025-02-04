@@ -1682,7 +1682,9 @@ Module cell.
   Axiom BorrowFlag : (Ty.path "core::cell::BorrowFlag") = (Ty.path "isize").
   
   Definition value_UNUSED : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Isize 0 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Isize 0 |))).
+  
+  Axiom Constant_value_UNUSED : (M.get_constant "core::cell::UNUSED") = value_UNUSED.
   
   (*
   fn is_writing(x: BorrowFlag) -> bool {
@@ -1694,7 +1696,7 @@ Module cell.
     | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
-        BinOp.lt (| M.read (| x |), M.read (| M.get_constant (| "core::cell::UNUSED" |) |) |)))
+        BinOp.lt (| M.read (| x |), M.read (| M.get_constant "core::cell::UNUSED" |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -1710,7 +1712,7 @@ Module cell.
     | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
-        BinOp.gt (| M.read (| x |), M.read (| M.get_constant (| "core::cell::UNUSED" |) |) |)))
+        BinOp.gt (| M.read (| x |), M.read (| M.get_constant "core::cell::UNUSED" |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -1756,7 +1758,7 @@ Module cell.
                     [],
                     []
                   |),
-                  [ M.read (| M.get_constant (| "core::cell::UNUSED" |) |) ]
+                  [ M.read (| M.get_constant "core::cell::UNUSED" |) ]
                 |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2526,7 +2528,7 @@ Module cell.
                         ]
                       |)
                     |),
-                    M.read (| M.get_constant (| "core::cell::UNUSED" |) |)
+                    M.read (| M.get_constant "core::cell::UNUSED" |)
                   |) in
                 M.alloc (|
                   M.borrow (|
@@ -3971,7 +3973,7 @@ Module cell.
                             UnOp.not (|
                               BinOp.ne (|
                                 M.read (| borrow |),
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               |)
                             |)
                           |)) in
@@ -5311,7 +5313,7 @@ Module cell.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| borrow |) |) |);
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::cell::UNUSED" |) |),
+                              M.read (| M.get_constant "core::cell::UNUSED" |),
                               Value.Integer IntegerKind.Isize 1
                             |)
                           ]
@@ -5440,7 +5442,7 @@ Module cell.
                             UnOp.not (|
                               BinOp.ne (|
                                 M.read (| borrow |),
-                                M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                M.read (| M.get_constant "core::num::MIN" |)
                               |)
                             |)
                           |)) in
