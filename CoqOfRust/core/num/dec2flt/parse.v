@@ -5,7 +5,11 @@ Module num.
   Module dec2flt.
     Module parse.
       Definition value_MIN_19DIGIT_INT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000000000000000000 |))).
+        M.run_constant
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000000000000000000 |))).
+      
+      Axiom Constant_value_MIN_19DIGIT_INT :
+        (M.get_constant "core::num::dec2flt::parse::MIN_19DIGIT_INT") = value_MIN_19DIGIT_INT.
       
       (*
       fn parse_8digits(mut v: u64) -> u64 {
@@ -50,11 +54,9 @@ Module num.
                       BinOp.bit_and
                         (M.read (| v |))
                         (M.read (|
-                          M.get_constant (| "core::num::dec2flt::parse::parse_8digits::MASK" |)
+                          M.get_constant "core::num::dec2flt::parse::parse_8digits::MASK"
                         |));
-                      M.read (|
-                        M.get_constant (| "core::num::dec2flt::parse::parse_8digits::MUL1" |)
-                      |)
+                      M.read (| M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL1" |)
                     ]
                   |)
                 |) in
@@ -66,11 +68,9 @@ Module num.
                       BinOp.bit_and
                         (BinOp.Wrap.shr (| M.read (| v |), Value.Integer IntegerKind.I32 16 |))
                         (M.read (|
-                          M.get_constant (| "core::num::dec2flt::parse::parse_8digits::MASK" |)
+                          M.get_constant "core::num::dec2flt::parse::parse_8digits::MASK"
                         |));
-                      M.read (|
-                        M.get_constant (| "core::num::dec2flt::parse::parse_8digits::MUL2" |)
-                      |)
+                      M.read (| M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL2" |)
                     ]
                   |)
                 |) in
@@ -96,13 +96,25 @@ Module num.
       
       Module parse_8digits.
         Definition value_MASK : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1095216660735 |))).
+          M.run_constant
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1095216660735 |))).
+        
+        Axiom Constant_value_MASK :
+          (M.get_constant "core::num::dec2flt::parse::parse_8digits::MASK") = value_MASK.
         
         Definition value_MUL1 : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967296000100 |))).
+          M.run_constant
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967296000100 |))).
+        
+        Axiom Constant_value_MUL1 :
+          (M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL1") = value_MUL1.
         
         Definition value_MUL2 : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 42949672960001 |))).
+          M.run_constant
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 42949672960001 |))).
+        
+        Axiom Constant_value_MUL2 :
+          (M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL2") = value_MUL2.
       End parse_8digits.
       
       (*
@@ -416,9 +428,7 @@ Module num.
                                   BinOp.lt (|
                                     M.read (| M.deref (| M.read (| x |) |) |),
                                     M.read (|
-                                      M.get_constant (|
-                                        "core::num::dec2flt::parse::MIN_19DIGIT_INT"
-                                      |)
+                                      M.get_constant "core::num::dec2flt::parse::MIN_19DIGIT_INT"
                                     |)
                                   |)
                                 |)) in
@@ -1585,9 +1595,8 @@ Module num.
                                                   BinOp.ge (|
                                                     M.read (| mantissa |),
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::num::dec2flt::parse::MIN_19DIGIT_INT"
-                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -2089,9 +2098,7 @@ Module num.
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.Usize 3
                                 |) in
-                              M.get_constant (|
-                                "core::num::dec2flt::float::RawFloat::INFINITY"
-                              |)));
+                              M.get_constant "core::num::dec2flt::float::RawFloat::INFINITY"));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2106,9 +2113,7 @@ Module num.
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.Usize 8
                                 |) in
-                              M.get_constant (|
-                                "core::num::dec2flt::float::RawFloat::INFINITY"
-                              |)));
+                              M.get_constant "core::num::dec2flt::float::RawFloat::INFINITY"));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2123,7 +2128,7 @@ Module num.
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.Usize 3
                                 |) in
-                              M.get_constant (| "core::num::dec2flt::float::RawFloat::NAN" |)));
+                              M.get_constant "core::num::dec2flt::float::RawFloat::NAN"));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
@@ -2181,13 +2186,23 @@ Module num.
       
       Module parse_inf_nan.
         Definition value_INF_3 : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4607561 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4607561 |))).
+        
+        Axiom Constant_value_INF_3 :
+          (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::INF_3") = value_INF_3.
         
         Definition value_INF_8 : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6436850368004902473 |))).
+          M.run_constant
+            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6436850368004902473 |))).
+        
+        Axiom Constant_value_INF_8 :
+          (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::INF_8") = value_INF_8.
         
         Definition value_NAN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5128526 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5128526 |))).
+        
+        Axiom Constant_value_NAN :
+          (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::NAN") = value_NAN.
       End parse_inf_nan.
     End parse.
   End dec2flt.

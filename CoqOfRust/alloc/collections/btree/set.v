@@ -1785,7 +1785,11 @@ Module collections.
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_btree_set_Union_T.
       
       Definition value_ITER_PERFORMANCE_TIPPING_SIZE_DIFF : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+      
+      Axiom Constant_value_ITER_PERFORMANCE_TIPPING_SIZE_DIFF :
+        (M.get_constant "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF") =
+          value_ITER_PERFORMANCE_TIPPING_SIZE_DIFF.
       
       Module Impl_alloc_collections_btree_set_BTreeSet_T_alloc_alloc_Global.
         Definition Self (T : Ty.t) : Ty.t :=
@@ -2502,9 +2506,8 @@ Module collections.
                                                                 ]
                                                               |),
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
-                                                                |)
                                                               |)
                                                             |)
                                                           |)
@@ -3144,9 +3147,8 @@ Module collections.
                                                                 ]
                                                               |),
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
-                                                                |)
                                                               |)
                                                             |)
                                                           |)
@@ -3229,9 +3231,8 @@ Module collections.
                                                                 ]
                                                               |),
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
-                                                                |)
                                                               |)
                                                             |)
                                                           |)
@@ -4128,9 +4129,8 @@ Module collections.
                                                           ]
                                                         |),
                                                         M.read (|
-                                                          M.get_constant (|
+                                                          M.get_constant
                                                             "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
-                                                          |)
                                                         |)
                                                       |)
                                                     |)
@@ -6239,7 +6239,7 @@ Module collections.
                                   (M.alloc (|
                                     BinOp.eq (|
                                       M.read (|
-                                        M.get_constant (| "alloc::collections::btree::set::N" |)
+                                        M.get_constant "alloc::collections::btree::set::N"
                                       |),
                                       Value.Integer IntegerKind.Usize 0
                                     |)

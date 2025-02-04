@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module bls12_381.
   Module map_fp2_to_g2.
     Definition value_PRECOMPILE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
@@ -12,10 +12,7 @@ Module bls12_381.
               [
                 M.call_closure (|
                   M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                  [
-                    M.read (|
-                      M.get_constant (| "revm_precompile::bls12_381::map_fp2_to_g2::ADDRESS" |)
-                    |)
+                  [ M.read (| M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::ADDRESS" |)
                   ]
                 |);
                 (* ReifyFnPointer *)
@@ -28,11 +25,21 @@ Module bls12_381.
               ]
           |))).
     
+    Axiom Constant_value_PRECOMPILE :
+      (M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::PRECOMPILE") = value_PRECOMPILE.
+    
     Definition value_ADDRESS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 19 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 19 |))).
+    
+    Axiom Constant_value_ADDRESS :
+      (M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::ADDRESS") = value_ADDRESS.
     
     Definition value_BASE_GAS_FEE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 75000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 75000 |))).
+    
+    Axiom Constant_value_BASE_GAS_FEE :
+      (M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE") =
+        value_BASE_GAS_FEE.
     
     (*
     pub(super) fn map_fp2_to_g2(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -85,9 +92,8 @@ Module bls12_381.
                               (M.alloc (|
                                 BinOp.gt (|
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE"
-                                    |)
                                   |),
                                   M.read (| gas_limit |)
                                 |)
@@ -169,9 +175,8 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH"
-                                    |)
                                   |)
                                 |)
                               |)) in
@@ -299,9 +304,8 @@ Module bls12_381.
                                                                               |);
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
-                                                                                M.get_constant (|
+                                                                                M.get_constant
                                                                                   "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH"
-                                                                                |)
                                                                               |)
                                                                             ]
                                                                         |),
@@ -494,9 +498,8 @@ Module bls12_381.
                                               [
                                                 ("end_",
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
-                                                    |)
                                                   |))
                                               ]
                                           ]
@@ -671,15 +674,13 @@ Module bls12_381.
                                               [
                                                 ("start",
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
-                                                    |)
                                                   |));
                                                 ("end_",
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH"
-                                                    |)
                                                   |))
                                               ]
                                           ]
@@ -943,9 +944,7 @@ Module bls12_381.
                         |),
                         [
                           M.read (|
-                            M.get_constant (|
-                              "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE"
-                            |)
+                            M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::BASE_GAS_FEE"
                           |);
                           M.read (| out |)
                         ]

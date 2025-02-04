@@ -28,9 +28,8 @@ Module slice.
             | [], [], [] =>
               ltac:(M.monadic
                 (M.read (|
-                  M.get_constant (|
+                  M.get_constant
                     "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD"
-                  |)
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
@@ -142,9 +141,8 @@ Module slice.
             | [], [], [] =>
               ltac:(M.monadic
                 (M.read (|
-                  M.get_constant (|
+                  M.get_constant
                     "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD"
-                  |)
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
@@ -227,9 +225,8 @@ Module slice.
             | [], [], [] =>
               ltac:(M.monadic
                 (M.read (|
-                  M.get_constant (|
+                  M.get_constant
                     "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD"
-                  |)
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
@@ -418,28 +415,24 @@ Module slice.
                                       []
                                     |),
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
-                                      |)
                                     |)
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
-                                    |)
                                   |)
                                 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.get_constant (|
-                            "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD"
-                          |)));
+                          M.get_constant
+                            "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD"));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.get_constant (|
-                            "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD"
-                          |)))
+                          (M.get_constant
+                            "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD"))
                     ]
                   |)
                 |)))
@@ -486,15 +479,13 @@ Module slice.
                                       []
                                     |),
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
-                                      |)
                                     |)
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
-                                    |)
                                   |)
                                 |)
                               |)) in
@@ -624,24 +615,21 @@ Module slice.
                                           []
                                         |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN"
-                                          |)
                                         |)
                                       |),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
-                                        |)
                                       |)
                                     |)))
                                 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.get_constant (|
-                            "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_THRESHOLD"
-                          |)));
+                          M.get_constant
+                            "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_THRESHOLD"));
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -659,15 +647,13 @@ Module slice.
                                               []
                                             |),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
-                                              |)
                                             |)
                                           |),
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
-                                            |)
                                           |)
                                         |)
                                       |)) in
@@ -676,14 +662,12 @@ Module slice.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  M.get_constant (|
-                                    "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD"
-                                  |)));
+                                  M.get_constant
+                                    "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD"));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.get_constant (|
-                                    "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD"
-                                  |)))
+                                  (M.get_constant
+                                    "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD"))
                             ]
                           |)))
                     ]
@@ -746,15 +730,13 @@ Module slice.
                                           []
                                         |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN"
-                                          |)
                                         |)
                                       |),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
-                                        |)
                                       |)
                                     |)))
                                 |)
@@ -796,15 +778,13 @@ Module slice.
                                               []
                                             |),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
-                                              |)
                                             |)
                                           |),
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE"
-                                            |)
                                           |)
                                         |)
                                       |)) in
@@ -879,37 +859,59 @@ Module slice.
         End Impl_core_slice_sort_shared_smallsort_UnstableSmallSortFreezeTypeImpl_where_core_slice_sort_shared_FreezeMarker_T_where_core_slice_sort_shared_smallsort_CopyMarker_T_for_T.
         
         Definition value_SMALL_SORT_FALLBACK_THRESHOLD : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+        
+        Axiom Constant_value_SMALL_SORT_FALLBACK_THRESHOLD :
+          (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD") =
+            value_SMALL_SORT_FALLBACK_THRESHOLD.
         
         Definition value_SMALL_SORT_GENERAL_THRESHOLD : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+        
+        Axiom Constant_value_SMALL_SORT_GENERAL_THRESHOLD :
+          (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD") =
+            value_SMALL_SORT_GENERAL_THRESHOLD.
         
         Definition value_SMALL_SORT_GENERAL_SCRATCH_LEN : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
               (M.alloc (|
                 BinOp.Wrap.add (|
                   M.read (|
-                    M.get_constant (|
+                    M.get_constant
                       "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD"
-                    |)
                   |),
                   Value.Integer IntegerKind.Usize 16
                 |)
               |))).
         
+        Axiom Constant_value_SMALL_SORT_GENERAL_SCRATCH_LEN :
+          (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN") =
+            value_SMALL_SORT_GENERAL_SCRATCH_LEN.
+        
         Definition value_SMALL_SORT_NETWORK_THRESHOLD : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+        
+        Axiom Constant_value_SMALL_SORT_NETWORK_THRESHOLD :
+          (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_THRESHOLD") =
+            value_SMALL_SORT_NETWORK_THRESHOLD.
         
         Definition value_SMALL_SORT_NETWORK_SCRATCH_LEN : Value.t :=
-          M.run
+          M.run_constant
             ltac:(M.monadic
-              (M.get_constant (|
-                "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_THRESHOLD"
-              |))).
+              (M.get_constant
+                "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_THRESHOLD")).
+        
+        Axiom Constant_value_SMALL_SORT_NETWORK_SCRATCH_LEN :
+          (M.get_constant "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN") =
+            value_SMALL_SORT_NETWORK_SCRATCH_LEN.
         
         Definition value_MAX_STACK_ARRAY_SIZE : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4096 |))).
+          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4096 |))).
+        
+        Axiom Constant_value_MAX_STACK_ARRAY_SIZE :
+          (M.get_constant "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE") =
+            value_MAX_STACK_ARRAY_SIZE.
         
         (*
         fn small_sort_fallback<T, F: FnMut(&T, &T) -> bool>(v: &mut [T], is_less: &mut F) {
@@ -1054,9 +1056,8 @@ Module slice.
                                 [ M.borrow (| Pointer.Kind.MutRef, stack_array |) ]
                               |));
                             M.read (|
-                              M.get_constant (|
+                              M.get_constant
                                 "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN"
-                              |)
                             |)
                           ]
                         |)
@@ -1316,9 +1317,8 @@ Module slice.
                                     (M.alloc (|
                                       LogicalOp.and (|
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::slice::sort::shared::smallsort::small_sort_general_with_scratch_discriminant"
-                                          |)
                                         |),
                                         ltac:(M.monadic
                                           (BinOp.ge (|
@@ -2158,9 +2158,8 @@ Module slice.
                                     BinOp.gt (|
                                       M.read (| len |),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN"
-                                        |)
                                       |)
                                     |)
                                   |)) in

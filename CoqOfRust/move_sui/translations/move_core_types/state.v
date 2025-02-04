@@ -273,7 +273,7 @@ Module state.
             ]
           |),
           [
-            M.borrow (| Pointer.Kind.Ref, M.get_constant (| "move_core_types::state::STATE" |) |);
+            M.borrow (| Pointer.Kind.Ref, M.get_constant "move_core_types::state::STATE" |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -355,7 +355,7 @@ Module state.
             ]
           |),
           [
-            M.borrow (| Pointer.Kind.Ref, M.get_constant (| "move_core_types::state::STATE" |) |);
+            M.borrow (| Pointer.Kind.Ref, M.get_constant "move_core_types::state::STATE" |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic

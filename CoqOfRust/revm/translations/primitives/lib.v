@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_KECCAK_EMPTY : Value.t :=
-  M.run
+  M.run_constant
     ltac:(M.monadic
       (M.alloc (|
         M.call_closure (|
@@ -15,6 +15,9 @@ Definition value_KECCAK_EMPTY : Value.t :=
             [ Value.Integer IntegerKind.Usize 32 ],
             []
           |),
-          [ M.read (| M.get_constant (| "revm_primitives::KECCAK_EMPTY::RES" |) |) ]
+          [ M.read (| M.get_constant "revm_primitives::KECCAK_EMPTY::RES" |) ]
         |)
       |))).
+
+Axiom Constant_value_KECCAK_EMPTY :
+  (M.get_constant "revm_primitives::KECCAK_EMPTY") = value_KECCAK_EMPTY.

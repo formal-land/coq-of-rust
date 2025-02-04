@@ -3,34 +3,56 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module char.
   Definition value_TAG_CONT : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
+  
+  Axiom Constant_value_TAG_CONT : (M.get_constant "core::char::TAG_CONT") = value_TAG_CONT.
   
   Definition value_TAG_TWO_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 192 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 192 |))).
+  
+  Axiom Constant_value_TAG_TWO_B : (M.get_constant "core::char::TAG_TWO_B") = value_TAG_TWO_B.
   
   Definition value_TAG_THREE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 224 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 224 |))).
+  
+  Axiom Constant_value_TAG_THREE_B : (M.get_constant "core::char::TAG_THREE_B") = value_TAG_THREE_B.
   
   Definition value_TAG_FOUR_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 240 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 240 |))).
+  
+  Axiom Constant_value_TAG_FOUR_B : (M.get_constant "core::char::TAG_FOUR_B") = value_TAG_FOUR_B.
   
   Definition value_MAX_ONE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
+  
+  Axiom Constant_value_MAX_ONE_B : (M.get_constant "core::char::MAX_ONE_B") = value_MAX_ONE_B.
   
   Definition value_MAX_TWO_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2048 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2048 |))).
+  
+  Axiom Constant_value_MAX_TWO_B : (M.get_constant "core::char::MAX_TWO_B") = value_MAX_TWO_B.
   
   Definition value_MAX_THREE_B : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 65536 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 65536 |))).
+  
+  Axiom Constant_value_MAX_THREE_B : (M.get_constant "core::char::MAX_THREE_B") = value_MAX_THREE_B.
   
   Definition value_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::char::methods::MAX" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::char::methods::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::char::MAX") = value_MAX.
   
   Definition value_REPLACEMENT_CHARACTER : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::char::methods::REPLACEMENT_CHARACTER" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::char::methods::REPLACEMENT_CHARACTER")).
+  
+  Axiom Constant_value_REPLACEMENT_CHARACTER :
+    (M.get_constant "core::char::REPLACEMENT_CHARACTER") = value_REPLACEMENT_CHARACTER.
   
   Definition value_UNICODE_VERSION : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::char::methods::UNICODE_VERSION" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::char::methods::UNICODE_VERSION")).
+  
+  Axiom Constant_value_UNICODE_VERSION :
+    (M.get_constant "core::char::UNICODE_VERSION") = value_UNICODE_VERSION.
   
   (*
   pub fn decode_utf16<I: IntoIterator<Item = u16>>(iter: I) -> DecodeUtf16<I::IntoIter> {

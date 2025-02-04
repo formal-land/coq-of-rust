@@ -423,9 +423,7 @@ Module errmap.
               [
                 M.read (| __deserializer |);
                 M.read (| Value.String "ErrorDescription" |);
-                M.read (|
-                  M.get_constant (| "move_core_types::errmap::_'1::deserialize::FIELDS" |)
-                |);
+                M.read (| M.get_constant "move_core_types::errmap::_'1::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::errmap::_'1::deserialize::__Visitor"
                   [
@@ -727,9 +725,7 @@ Module errmap.
               [
                 M.read (| __deserializer |);
                 M.read (| Value.String "ErrorMapping" |);
-                M.read (|
-                  M.get_constant (| "move_core_types::errmap::_'3::deserialize::FIELDS" |)
-                |);
+                M.read (| M.get_constant "move_core_types::errmap::_'3::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::errmap::_'3::deserialize::__Visitor"
                   [

@@ -137,6 +137,7 @@ struct TypeEnumVariant {
 enum TopLevelItem {
     Const {
         name: String,
+        path: Rc<Path>,
         value: Option<Rc<Expr>>,
     },
     Definition {
@@ -363,7 +364,7 @@ fn compile_top_level_item_without_local_items<'a>(
                 value_without_alloc
             };
 
-            vec![Rc::new(TopLevelItem::Const { name, value })]
+            vec![Rc::new(TopLevelItem::Const { name, path, value })]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
             if check_if_is_test_main_function(env, body_id) {
@@ -409,6 +410,7 @@ fn compile_top_level_item_without_local_items<'a>(
                     rustc_hir::ForeignItemKind::Type => IsValue::No,
                 };
                 let name = to_valid_coq_name(is_value, item.ident.name.as_str());
+                let path = Path::concat(&[path.clone(), Path::new(&[name.clone()])]);
 
                 match &foreign_item.kind {
                     rustc_hir::ForeignItemKind::Fn(sign, _, generics) => {
@@ -418,8 +420,8 @@ fn compile_top_level_item_without_local_items<'a>(
                         };
 
                         Rc::new(TopLevelItem::Definition {
-                            name: name.clone(),
-                            path: Path::concat(&[path.clone(), Path::new(&[name])]),
+                            name,
+                            path,
                             snippet: None,
                             definition: FunDefinition::compile(
                                 env,
@@ -429,9 +431,11 @@ fn compile_top_level_item_without_local_items<'a>(
                             ),
                         })
                     }
-                    rustc_hir::ForeignItemKind::Static(..) => {
-                        Rc::new(TopLevelItem::Const { name, value: None })
-                    }
+                    rustc_hir::ForeignItemKind::Static(..) => Rc::new(TopLevelItem::Const {
+                        name,
+                        path,
+                        value: None,
+                    }),
                     rustc_hir::ForeignItemKind::Type => Rc::new(TopLevelItem::TypeForeign { name }),
                 }
             })
@@ -1731,25 +1735,38 @@ impl TopLevelItem {
     #[allow(clippy::format_collect)]
     fn to_coq(&self) -> Vec<coq::TopLevelItem> {
         match self {
-            TopLevelItem::Const { name, value } => match value {
-                None => vec![coq::TopLevelItem::Definition(coq::Definition::new(
-                    name,
-                    &coq::DefinitionKind::Assumption {
-                        ty: coq::Expression::just_name("Value.t"),
-                    },
-                ))],
-                Some(value) => {
-                    vec![coq::TopLevelItem::Definition(coq::Definition::new(
+            TopLevelItem::Const { name, path, value } => vec![
+                match value {
+                    None => coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Assumption {
+                            ty: coq::Expression::just_name("Value.t"),
+                        },
+                    )),
+                    Some(value) => coq::TopLevelItem::Definition(coq::Definition::new(
                         name,
                         &coq::DefinitionKind::Alias {
                             args: vec![],
                             ty: Some(coq::Expression::just_name("Value.t")),
-                            body: coq::Expression::just_name("M.run")
+                            body: coq::Expression::just_name("M.run_constant")
                                 .apply(&coq::Expression::monadic(&value.to_coq())),
                         },
-                    ))]
-                }
-            },
+                    )),
+                },
+                coq::TopLevelItem::Line,
+                coq::TopLevelItem::Definition(coq::Definition::new(
+                    &format!("Constant_{name}"),
+                    &coq::DefinitionKind::Axiom {
+                        ty: coq::Expression::Equality {
+                            lhs: Rc::new(
+                                coq::Expression::just_name("M.get_constant")
+                                    .apply(&coq::Expression::String(path.to_string())),
+                            ),
+                            rhs: Rc::new(coq::Expression::just_name(name)),
+                        },
+                    },
+                )),
+            ],
             TopLevelItem::Definition {
                 name,
                 path,

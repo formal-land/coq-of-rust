@@ -45,9 +45,8 @@ Module vec.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.get_constant (|
-                                "alloc::vec::in_place_collect::in_place_collectible_discriminant"
-                              |)) in
+                              (M.get_constant
+                                "alloc::vec::in_place_collect::in_place_collectible_discriminant") in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -168,9 +167,8 @@ Module vec.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.get_constant (|
-                                "alloc::vec::in_place_collect::needs_realloc_discriminant"
-                              |)) in
+                              (M.get_constant
+                                "alloc::vec::in_place_collect::needs_realloc_discriminant") in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -220,9 +218,8 @@ Module vec.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.get_constant (|
-                                "alloc::vec::in_place_collect::needs_realloc_discriminant"
-                              |)) in
+                              (M.get_constant
+                                "alloc::vec::in_place_collect::needs_realloc_discriminant") in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -309,7 +306,7 @@ Module vec.
             M.read (|
               let~ fun_ :=
                 M.copy (|
-                  M.get_constant (| "alloc::vec::in_place_collect::from_iter_discriminant" |)
+                  M.get_constant "alloc::vec::in_place_collect::from_iter_discriminant"
                 |) in
               M.alloc (| M.call_closure (| M.read (| fun_ |), [ M.read (| iterator |) ] |) |)
             |)))

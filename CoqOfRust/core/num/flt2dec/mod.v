@@ -4,7 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Module num.
   Module flt2dec.
     Definition value_MAX_SIG_DIGITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 17 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 17 |))).
+    
+    Axiom Constant_value_MAX_SIG_DIGITS :
+      (M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS") = value_MAX_SIG_DIGITS.
     
     (*
     pub fn round_up(d: &mut [u8]) -> Option<u8> {
@@ -2681,9 +2684,7 @@ Module num.
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
                                   ]
                                 |),
-                                M.read (|
-                                  M.get_constant (| "core::num::flt2dec::MAX_SIG_DIGITS" |)
-                                |)
+                                M.read (| M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS" |)
                               |)
                             |)
                           |)) in
@@ -3492,9 +3493,7 @@ Module num.
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
                                   ]
                                 |),
-                                M.read (|
-                                  M.get_constant (| "core::num::flt2dec::MAX_SIG_DIGITS" |)
-                                |)
+                                M.read (| M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS" |)
                               |)
                             |)
                           |)) in
@@ -5246,7 +5245,7 @@ Module num.
                                             |)
                                           |)
                                         |);
-                                        M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                        M.read (| M.get_constant "core::num::MIN" |)
                                       ]
                                   ]
                                 |)
@@ -6095,8 +6094,7 @@ Module num.
                                             M.cast (Ty.path "i16") (M.read (| frac_digits |))
                                           |)
                                         |)));
-                                    fun γ =>
-                                      ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                                    fun γ => ltac:(M.monadic (M.get_constant "core::num::MIN"))
                                   ]
                                 |)
                               |) in

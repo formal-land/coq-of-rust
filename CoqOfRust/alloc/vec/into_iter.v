@@ -651,7 +651,7 @@ Module vec.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -1025,8 +1025,7 @@ Module vec.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.use
-                                  (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                                M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -1277,7 +1276,7 @@ Module vec.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -1484,8 +1483,7 @@ Module vec.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ :=
-                          M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
@@ -1687,7 +1685,7 @@ Module vec.
                     M.alloc (|
                       repeat (|
                         M.read (|
-                          M.get_constant (| "alloc::vec::into_iter::next_chunk_discriminant" |)
+                          M.get_constant "alloc::vec::into_iter::next_chunk_discriminant"
                         |),
                         N
                       |)
@@ -1717,8 +1715,7 @@ Module vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -1736,9 +1733,8 @@ Module vec.
                                                   BinOp.lt (|
                                                     M.read (| len |),
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "alloc::vec::into_iter::next_chunk::N"
-                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -1830,9 +1826,7 @@ Module vec.
                                             |)
                                           |);
                                           M.read (|
-                                            M.get_constant (|
-                                              "alloc::vec::into_iter::next_chunk::N"
-                                            |)
+                                            M.get_constant "alloc::vec::into_iter::next_chunk::N"
                                           |)
                                         ]
                                       |)
@@ -1892,7 +1886,7 @@ Module vec.
                                   BinOp.lt (|
                                     M.read (| len |),
                                     M.read (|
-                                      M.get_constant (| "alloc::vec::into_iter::next_chunk::N" |)
+                                      M.get_constant "alloc::vec::into_iter::next_chunk::N"
                                     |)
                                   |)
                                 |)) in
@@ -2051,7 +2045,7 @@ Module vec.
                               |),
                               [ M.borrow (| Pointer.Kind.MutRef, raw_ary |) ]
                             |));
-                          M.read (| M.get_constant (| "alloc::vec::into_iter::next_chunk::N" |) |)
+                          M.read (| M.get_constant "alloc::vec::into_iter::next_chunk::N" |)
                         ]
                       |)
                     |) in
@@ -2077,7 +2071,7 @@ Module vec.
                               "ptr"
                             |)
                           |);
-                          M.read (| M.get_constant (| "alloc::vec::into_iter::next_chunk::N" |) |)
+                          M.read (| M.get_constant "alloc::vec::into_iter::next_chunk::N" |)
                         ]
                       |)
                     |) in
@@ -2164,8 +2158,7 @@ Module vec.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ :=
-                          M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.loop (|
@@ -2520,8 +2513,7 @@ Module vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.loop (|
@@ -3087,7 +3079,7 @@ Module vec.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ :=
@@ -3408,8 +3400,7 @@ Module vec.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ :=
-                          M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
@@ -3586,8 +3577,7 @@ Module vec.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ :=
-                        M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                      (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         BinOp.eq (|

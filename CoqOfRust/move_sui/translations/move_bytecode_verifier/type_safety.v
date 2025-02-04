@@ -18,7 +18,10 @@ Module type_safety.
     } *)
   
   Definition value_TYPE_NODE_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
+  
+  Axiom Constant_value_TYPE_NODE_COST :
+    (M.get_constant "move_bytecode_verifier::type_safety::TYPE_NODE_COST") = value_TYPE_NODE_COST.
   
   Module Impl_move_bytecode_verifier_type_safety_Locals.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::type_safety::Locals".
@@ -1431,9 +1434,7 @@ Module type_safety.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
               Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
-              M.read (|
-                M.get_constant (| "move_bytecode_verifier::type_safety::TYPE_NODE_COST" |)
-              |);
+              M.read (| M.get_constant "move_bytecode_verifier::type_safety::TYPE_NODE_COST" |);
               BinOp.Wrap.mul (|
                 M.call_closure (|
                   M.get_trait_method (|

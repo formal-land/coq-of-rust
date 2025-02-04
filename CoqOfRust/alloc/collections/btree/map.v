@@ -5,9 +5,11 @@ Module collections.
   Module btree.
     Module map.
       Definition value_MIN_LEN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.get_constant (| "alloc::collections::btree::node::MIN_LEN_AFTER_SPLIT" |))).
+        M.run_constant
+          ltac:(M.monadic (M.get_constant "alloc::collections::btree::node::MIN_LEN_AFTER_SPLIT")).
+      
+      Axiom Constant_value_MIN_LEN :
+        (M.get_constant "alloc::collections::btree::map::MIN_LEN") = value_MIN_LEN.
       
       (* StructRecord
         {
@@ -18108,7 +18110,7 @@ Module collections.
                                   (M.alloc (|
                                     BinOp.eq (|
                                       M.read (|
-                                        M.get_constant (| "alloc::collections::btree::map::N" |)
+                                        M.get_constant "alloc::collections::btree::map::N"
                                       |),
                                       Value.Integer IntegerKind.Usize 0
                                     |)

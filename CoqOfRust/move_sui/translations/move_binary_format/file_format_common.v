@@ -27,7 +27,7 @@ Module file_format_common.
       (Ty.path "array")
       [
         M.unevaluated_const
-          (M.get_constant (| "move_binary_format::file_format_common::MOVE_MAGIC_discriminant" |))
+          (M.get_constant "move_binary_format::file_format_common::MOVE_MAGIC_discriminant")
       ]
       [ Ty.path "u8" ] *)
     Definition value_MOVE_MAGIC : Value.t :=
@@ -53,9 +53,7 @@ Module file_format_common.
         ltac:(M.monadic
           (M.alloc (|
             BinOp.Wrap.add (|
-              M.read (|
-                M.get_constant (| "move_binary_format::file_format_common::MOVE_MAGIC_SIZE" |)
-              |),
+              M.read (| M.get_constant "move_binary_format::file_format_common::MOVE_MAGIC_SIZE" |),
               Value.Integer IntegerKind.Usize 5
             |)
           |))).
@@ -88,121 +86,233 @@ Module file_format_common.
   End Impl_move_binary_format_file_format_common_BinaryConstants.
   
   Definition value_TABLE_COUNT_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  
+  Axiom Constant_value_TABLE_COUNT_MAX :
+    (M.get_constant "move_binary_format::file_format_common::TABLE_COUNT_MAX") =
+      value_TABLE_COUNT_MAX.
   
   Definition value_TABLE_OFFSET_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+  
+  Axiom Constant_value_TABLE_OFFSET_MAX :
+    (M.get_constant "move_binary_format::file_format_common::TABLE_OFFSET_MAX") =
+      value_TABLE_OFFSET_MAX.
   
   Definition value_TABLE_SIZE_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+  
+  Axiom Constant_value_TABLE_SIZE_MAX :
+    (M.get_constant "move_binary_format::file_format_common::TABLE_SIZE_MAX") =
+      value_TABLE_SIZE_MAX.
   
   Definition value_TABLE_CONTENT_SIZE_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+  
+  Axiom Constant_value_TABLE_CONTENT_SIZE_MAX :
+    (M.get_constant "move_binary_format::file_format_common::TABLE_CONTENT_SIZE_MAX") =
+      value_TABLE_CONTENT_SIZE_MAX.
   
   Definition value_TABLE_INDEX_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  
+  Axiom Constant_value_TABLE_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX") =
+      value_TABLE_INDEX_MAX.
   
   Definition value_SIGNATURE_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_SIGNATURE_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::SIGNATURE_INDEX_MAX") =
+      value_SIGNATURE_INDEX_MAX.
   
   Definition value_ADDRESS_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_ADDRESS_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::ADDRESS_INDEX_MAX") =
+      value_ADDRESS_INDEX_MAX.
   
   Definition value_IDENTIFIER_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_IDENTIFIER_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::IDENTIFIER_INDEX_MAX") =
+      value_IDENTIFIER_INDEX_MAX.
   
   Definition value_MODULE_HANDLE_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_MODULE_HANDLE_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::MODULE_HANDLE_INDEX_MAX") =
+      value_MODULE_HANDLE_INDEX_MAX.
   
   Definition value_STRUCT_HANDLE_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_STRUCT_HANDLE_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::STRUCT_HANDLE_INDEX_MAX") =
+      value_STRUCT_HANDLE_INDEX_MAX.
   
   Definition value_STRUCT_DEF_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_STRUCT_DEF_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::STRUCT_DEF_INDEX_MAX") =
+      value_STRUCT_DEF_INDEX_MAX.
   
   Definition value_FUNCTION_HANDLE_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_FUNCTION_HANDLE_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::FUNCTION_HANDLE_INDEX_MAX") =
+      value_FUNCTION_HANDLE_INDEX_MAX.
   
   Definition value_FUNCTION_INST_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_FUNCTION_INST_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::FUNCTION_INST_INDEX_MAX") =
+      value_FUNCTION_INST_INDEX_MAX.
   
   Definition value_FIELD_HANDLE_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_FIELD_HANDLE_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::FIELD_HANDLE_INDEX_MAX") =
+      value_FIELD_HANDLE_INDEX_MAX.
   
   Definition value_FIELD_INST_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_FIELD_INST_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::FIELD_INST_INDEX_MAX") =
+      value_FIELD_INST_INDEX_MAX.
   
   Definition value_STRUCT_DEF_INST_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_STRUCT_DEF_INST_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::STRUCT_DEF_INST_INDEX_MAX") =
+      value_STRUCT_DEF_INST_INDEX_MAX.
   
   Definition value_CONSTANT_INDEX_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.get_constant (| "move_binary_format::file_format_common::TABLE_INDEX_MAX" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX")).
+  
+  Axiom Constant_value_CONSTANT_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::CONSTANT_INDEX_MAX") =
+      value_CONSTANT_INDEX_MAX.
   
   Definition value_BYTECODE_COUNT_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  
+  Axiom Constant_value_BYTECODE_COUNT_MAX :
+    (M.get_constant "move_binary_format::file_format_common::BYTECODE_COUNT_MAX") =
+      value_BYTECODE_COUNT_MAX.
   
   Definition value_BYTECODE_INDEX_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  
+  Axiom Constant_value_BYTECODE_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::BYTECODE_INDEX_MAX") =
+      value_BYTECODE_INDEX_MAX.
   
   Definition value_LOCAL_INDEX_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  
+  Axiom Constant_value_LOCAL_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::LOCAL_INDEX_MAX") =
+      value_LOCAL_INDEX_MAX.
   
   Definition value_IDENTIFIER_SIZE_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  
+  Axiom Constant_value_IDENTIFIER_SIZE_MAX :
+    (M.get_constant "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX") =
+      value_IDENTIFIER_SIZE_MAX.
   
   Definition value_CONSTANT_SIZE_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  
+  Axiom Constant_value_CONSTANT_SIZE_MAX :
+    (M.get_constant "move_binary_format::file_format_common::CONSTANT_SIZE_MAX") =
+      value_CONSTANT_SIZE_MAX.
   
   Definition value_METADATA_KEY_SIZE_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1023 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1023 |))).
+  
+  Axiom Constant_value_METADATA_KEY_SIZE_MAX :
+    (M.get_constant "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX") =
+      value_METADATA_KEY_SIZE_MAX.
   
   Definition value_METADATA_VALUE_SIZE_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+  
+  Axiom Constant_value_METADATA_VALUE_SIZE_MAX :
+    (M.get_constant "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX") =
+      value_METADATA_VALUE_SIZE_MAX.
   
   Definition value_SIGNATURE_SIZE_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  
+  Axiom Constant_value_SIGNATURE_SIZE_MAX :
+    (M.get_constant "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX") =
+      value_SIGNATURE_SIZE_MAX.
   
   Definition value_ACQUIRES_COUNT_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  
+  Axiom Constant_value_ACQUIRES_COUNT_MAX :
+    (M.get_constant "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX") =
+      value_ACQUIRES_COUNT_MAX.
   
   Definition value_FIELD_COUNT_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  
+  Axiom Constant_value_FIELD_COUNT_MAX :
+    (M.get_constant "move_binary_format::file_format_common::FIELD_COUNT_MAX") =
+      value_FIELD_COUNT_MAX.
   
   Definition value_FIELD_OFFSET_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  
+  Axiom Constant_value_FIELD_OFFSET_MAX :
+    (M.get_constant "move_binary_format::file_format_common::FIELD_OFFSET_MAX") =
+      value_FIELD_OFFSET_MAX.
   
   Definition value_TYPE_PARAMETER_COUNT_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+  
+  Axiom Constant_value_TYPE_PARAMETER_COUNT_MAX :
+    (M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX") =
+      value_TYPE_PARAMETER_COUNT_MAX.
   
   Definition value_TYPE_PARAMETER_INDEX_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65536 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65536 |))).
+  
+  Axiom Constant_value_TYPE_PARAMETER_INDEX_MAX :
+    (M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_INDEX_MAX") =
+      value_TYPE_PARAMETER_INDEX_MAX.
   
   Definition value_SIGNATURE_TOKEN_DEPTH_MAX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+  
+  Axiom Constant_value_SIGNATURE_TOKEN_DEPTH_MAX :
+    (M.get_constant "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX") =
+      value_SIGNATURE_TOKEN_DEPTH_MAX.
   
   (*
   Enum TableType
@@ -2728,7 +2838,7 @@ Module file_format_common.
   End Impl_core_fmt_Debug_for_move_binary_format_file_format_common_Opcodes.
   
   Definition value_BINARY_SIZE_LIMIT : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
@@ -2736,6 +2846,10 @@ Module file_format_common.
             []
           |)
         |))).
+  
+  Axiom Constant_value_BINARY_SIZE_LIMIT :
+    (M.get_constant "move_binary_format::file_format_common::BINARY_SIZE_LIMIT") =
+      value_BINARY_SIZE_LIMIT.
   
   (* StructRecord
     {
@@ -3183,9 +3297,8 @@ Module file_format_common.
                                                                               M.deref (|
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
-                                                                                  M.get_constant (|
+                                                                                  M.get_constant
                                                                                     "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
-                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -3526,9 +3639,8 @@ Module file_format_common.
                                                                               M.deref (|
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
-                                                                                  M.get_constant (|
+                                                                                  M.get_constant
                                                                                     "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
-                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -4761,7 +4873,7 @@ Module file_format_common.
                                           (M.alloc (|
                                             BinOp.gt (|
                                               M.read (| shift |),
-                                              M.read (| M.get_constant (| "core::num::BITS" |) |)
+                                              M.read (| M.get_constant "core::num::BITS" |)
                                             |)
                                           |)) in
                                       let _ :=
@@ -4844,30 +4956,54 @@ Module file_format_common.
     M.IsFunction "move_binary_format::file_format_common::read_uleb128_as_u64" read_uleb128_as_u64.
   
   Definition value_VERSION_1 : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1 |))).
+  
+  Axiom Constant_value_VERSION_1 :
+    (M.get_constant "move_binary_format::file_format_common::VERSION_1") = value_VERSION_1.
   
   Definition value_VERSION_2 : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
+  
+  Axiom Constant_value_VERSION_2 :
+    (M.get_constant "move_binary_format::file_format_common::VERSION_2") = value_VERSION_2.
   
   Definition value_VERSION_3 : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 3 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 3 |))).
+  
+  Axiom Constant_value_VERSION_3 :
+    (M.get_constant "move_binary_format::file_format_common::VERSION_3") = value_VERSION_3.
   
   Definition value_VERSION_4 : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 4 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 4 |))).
+  
+  Axiom Constant_value_VERSION_4 :
+    (M.get_constant "move_binary_format::file_format_common::VERSION_4") = value_VERSION_4.
   
   Definition value_VERSION_5 : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 5 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 5 |))).
+  
+  Axiom Constant_value_VERSION_5 :
+    (M.get_constant "move_binary_format::file_format_common::VERSION_5") = value_VERSION_5.
   
   Definition value_VERSION_6 : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 6 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 6 |))).
+  
+  Axiom Constant_value_VERSION_6 :
+    (M.get_constant "move_binary_format::file_format_common::VERSION_6") = value_VERSION_6.
   
   Definition value_VERSION_MAX : Value.t :=
-    M.run
-      ltac:(M.monadic (M.get_constant (| "move_binary_format::file_format_common::VERSION_6" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::VERSION_6")).
+  
+  Axiom Constant_value_VERSION_MAX :
+    (M.get_constant "move_binary_format::file_format_common::VERSION_MAX") = value_VERSION_MAX.
   
   Definition value_VERSION_MIN : Value.t :=
-    M.run
-      ltac:(M.monadic (M.get_constant (| "move_binary_format::file_format_common::VERSION_5" |))).
+    M.run_constant
+      ltac:(M.monadic (M.get_constant "move_binary_format::file_format_common::VERSION_5")).
+  
+  Axiom Constant_value_VERSION_MIN :
+    (M.get_constant "move_binary_format::file_format_common::VERSION_MIN") = value_VERSION_MIN.
   
   (*
   pub fn instruction_key(instruction: &Bytecode) -> u8 {

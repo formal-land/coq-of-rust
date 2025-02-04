@@ -3,13 +3,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module constants.
   Definition value_BLOCK_HASH_HISTORY : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 256 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 256 |))).
+  
+  Axiom Constant_value_BLOCK_HASH_HISTORY :
+    (M.get_constant "revm_primitives::constants::BLOCK_HASH_HISTORY") = value_BLOCK_HASH_HISTORY.
   
   Definition value_BLOCKHASH_SERVE_WINDOW : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8192 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8192 |))).
+  
+  Axiom Constant_value_BLOCKHASH_SERVE_WINDOW :
+    (M.get_constant "revm_primitives::constants::BLOCKHASH_SERVE_WINDOW") =
+      value_BLOCKHASH_SERVE_WINDOW.
   
   Definition value_BLOCKHASH_STORAGE_ADDRESS : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
@@ -21,14 +28,18 @@ Module constants.
             |),
             [
               M.read (|
-                M.get_constant (| "revm_primitives::constants::BLOCKHASH_STORAGE_ADDRESS::RES" |)
+                M.get_constant "revm_primitives::constants::BLOCKHASH_STORAGE_ADDRESS::RES"
               |)
             ]
           |)
         |))).
   
+  Axiom Constant_value_BLOCKHASH_STORAGE_ADDRESS :
+    (M.get_constant "revm_primitives::constants::BLOCKHASH_STORAGE_ADDRESS") =
+      value_BLOCKHASH_STORAGE_ADDRESS.
+  
   Definition value_PRECOMPILE3 : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
@@ -65,4 +76,7 @@ Module constants.
             ]
           |)
         |))).
+  
+  Axiom Constant_value_PRECOMPILE3 :
+    (M.get_constant "revm_primitives::constants::PRECOMPILE3") = value_PRECOMPILE3.
 End constants.

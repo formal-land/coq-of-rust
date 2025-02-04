@@ -21,6 +21,10 @@ Module alloc.
   
   Parameter __rust_no_alloc_shim_is_unstable : Value.t.
   
+  Axiom Constant___rust_no_alloc_shim_is_unstable :
+    (M.get_constant "alloc::alloc::__rust_no_alloc_shim_is_unstable") =
+      __rust_no_alloc_shim_is_unstable.
+  
   (* StructTuple
     {
       name := "Global";
@@ -136,7 +140,7 @@ Module alloc.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.read (|
-                            M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |)
+                            M.get_constant "alloc::alloc::__rust_no_alloc_shim_is_unstable"
                           |)
                         |)
                       |)
@@ -277,7 +281,7 @@ Module alloc.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.read (|
-                            M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |)
+                            M.get_constant "alloc::alloc::__rust_no_alloc_shim_is_unstable"
                           |)
                         |)
                       |)
@@ -2270,9 +2274,8 @@ Module alloc.
                             M.read (|
                               M.deref (|
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic"
-                                  |)
                                 |)
                               |)
                             |),
@@ -2412,6 +2415,11 @@ Module alloc.
     
     Module __rdl_oom.
       Parameter __rust_alloc_error_handler_should_panic : Value.t.
+      
+      Axiom Constant___rust_alloc_error_handler_should_panic :
+        (M.get_constant
+            "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic") =
+          __rust_alloc_error_handler_should_panic.
     End __rdl_oom.
   End __alloc_error_handler.
 End alloc.

@@ -10887,7 +10887,7 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               |)
                             |) in
                           M.match_operator (|
@@ -11252,7 +11252,7 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               |)
                             |) in
                           M.match_operator (|
@@ -11774,7 +11774,7 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               |)
                             |) in
                           M.match_operator (|
@@ -12138,7 +12138,7 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               |)
                             |) in
                           M.match_operator (|
@@ -13274,13 +13274,9 @@ Module str.
                                                     ("position", Value.Integer IntegerKind.Usize 0);
                                                     ("end_", M.read (| end_ |));
                                                     ("memory",
-                                                      M.read (|
-                                                        M.get_constant (| "core::num::MAX" |)
-                                                      |));
+                                                      M.read (| M.get_constant "core::num::MAX" |));
                                                     ("memory_back",
-                                                      M.read (|
-                                                        M.get_constant (| "core::num::MAX" |)
-                                                      |))
+                                                      M.read (| M.get_constant "core::num::MAX" |))
                                                   ]
                                               |)))
                                         ]
@@ -16828,9 +16824,7 @@ Module str.
                                     ]
                                   |),
                                   BinOp.Wrap.add (|
-                                    M.read (|
-                                      M.get_constant (| "core::core_simd::vector::LEN" |)
-                                    |),
+                                    M.read (| M.get_constant "core::core_simd::vector::LEN" |),
                                     M.read (| last_byte_offset |)
                                   |)
                                 |)
@@ -17629,12 +17623,11 @@ Module str.
                                           |),
                                           BinOp.Wrap.mul (|
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::str::pattern::simd_contains::UNROLL"
-                                              |)
                                             |),
                                             M.read (|
-                                              M.get_constant (| "core::core_simd::vector::LEN" |)
+                                              M.get_constant "core::core_simd::vector::LEN"
                                             |)
                                           |)
                                         |),
@@ -17692,9 +17685,8 @@ Module str.
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::str::pattern::simd_contains::UNROLL"
-                                                  |)
                                                 |))
                                             ]
                                         ]
@@ -17784,9 +17776,8 @@ Module str.
                                                                       BinOp.Wrap.mul (|
                                                                         M.read (| j |),
                                                                         M.read (|
-                                                                          M.get_constant (|
+                                                                          M.get_constant
                                                                             "core::core_simd::vector::LEN"
-                                                                          |)
                                                                         |)
                                                                       |)
                                                                     |)
@@ -17825,9 +17816,8 @@ Module str.
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::str::pattern::simd_contains::UNROLL"
-                                                  |)
                                                 |))
                                             ]
                                         ]
@@ -17958,9 +17948,8 @@ Module str.
                                                                                 BinOp.Wrap.mul (|
                                                                                   M.read (| j |),
                                                                                   M.read (|
-                                                                                    M.get_constant (|
+                                                                                    M.get_constant
                                                                                       "core::core_simd::vector::LEN"
-                                                                                    |)
                                                                                   |)
                                                                                 |)
                                                                               |);
@@ -17990,13 +17979,9 @@ Module str.
                                     M.read (| β |),
                                     BinOp.Wrap.mul (|
                                       M.read (|
-                                        M.get_constant (|
-                                          "core::str::pattern::simd_contains::UNROLL"
-                                        |)
+                                        M.get_constant "core::str::pattern::simd_contains::UNROLL"
                                       |),
-                                      M.read (|
-                                        M.get_constant (| "core::core_simd::vector::LEN" |)
-                                      |)
+                                      M.read (| M.get_constant "core::core_simd::vector::LEN" |)
                                     |)
                                   |)
                                 |) in
@@ -18035,9 +18020,7 @@ Module str.
                                             M.read (| i |),
                                             M.read (| last_byte_offset |)
                                           |),
-                                          M.read (|
-                                            M.get_constant (| "core::core_simd::vector::LEN" |)
-                                          |)
+                                          M.read (| M.get_constant "core::core_simd::vector::LEN" |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -18152,7 +18135,7 @@ Module str.
                                   β,
                                   BinOp.Wrap.add (|
                                     M.read (| β |),
-                                    M.read (| M.get_constant (| "core::core_simd::vector::LEN" |) |)
+                                    M.read (| M.get_constant "core::core_simd::vector::LEN" |)
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -18187,7 +18170,7 @@ Module str.
                         |),
                         M.read (| last_byte_offset |)
                       |),
-                      M.read (| M.get_constant (| "core::core_simd::vector::LEN" |) |)
+                      M.read (| M.get_constant "core::core_simd::vector::LEN" |)
                     |)
                   |) in
                 let~ mask :=
@@ -18259,7 +18242,10 @@ Module str.
     
     Module simd_contains.
       Definition value_UNROLL : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+      
+      Axiom Constant_value_UNROLL :
+        (M.get_constant "core::str::pattern::simd_contains::UNROLL") = value_UNROLL.
     End simd_contains.
     
     (*

@@ -3,14 +3,18 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module sync.
   Definition value_MAX_REFCOUNT : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
-        (M.alloc (|
-          M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::MAX" |) |))
-        |))).
+        (M.alloc (| M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::MAX" |)) |))).
+  
+  Axiom Constant_value_MAX_REFCOUNT :
+    (M.get_constant "alloc::sync::MAX_REFCOUNT") = value_MAX_REFCOUNT.
   
   Definition value_INTERNAL_OVERFLOW_ERROR : Value.t :=
-    M.run ltac:(M.monadic (Value.String "Arc counter overflow")).
+    M.run_constant ltac:(M.monadic (Value.String "Arc counter overflow")).
+  
+  Axiom Constant_value_INTERNAL_OVERFLOW_ERROR :
+    (M.get_constant "alloc::sync::INTERNAL_OVERFLOW_ERROR") = value_INTERNAL_OVERFLOW_ERROR.
   
   (* StructRecord
     {
@@ -5176,7 +5180,7 @@ Module sync.
                                         (M.alloc (|
                                           BinOp.eq (|
                                             M.read (| cur |),
-                                            M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                            M.read (| M.get_constant "core::num::MAX" |)
                                           |)
                                         |)) in
                                     let _ :=
@@ -5261,7 +5265,7 @@ Module sync.
                                             BinOp.le (|
                                               M.read (| cur |),
                                               M.read (|
-                                                M.get_constant (| "alloc::sync::MAX_REFCOUNT" |)
+                                                M.get_constant "alloc::sync::MAX_REFCOUNT"
                                               |)
                                             |)
                                           |)
@@ -5286,9 +5290,8 @@ Module sync.
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "alloc::sync::INTERNAL_OVERFLOW_ERROR"
-                                                  |)
                                                 |)
                                               |)
                                             |)
@@ -5581,7 +5584,7 @@ Module sync.
                         (M.alloc (|
                           BinOp.eq (|
                             M.read (| cnt |),
-                            M.read (| M.get_constant (| "core::num::MAX" |) |)
+                            M.read (| M.get_constant "core::num::MAX" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7319,7 +7322,7 @@ Module sync.
                                         |)
                                       |);
                                       Value.Integer IntegerKind.Usize 1;
-                                      M.read (| M.get_constant (| "core::num::MAX" |) |);
+                                      M.read (| M.get_constant "core::num::MAX" |);
                                       Value.StructTuple "core::sync::atomic::Ordering::Acquire" [];
                                       Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
                                     ]
@@ -9381,7 +9384,7 @@ Module sync.
                           (M.alloc (|
                             BinOp.gt (|
                               M.read (| old_size |),
-                              M.read (| M.get_constant (| "alloc::sync::MAX_REFCOUNT" |) |)
+                              M.read (| M.get_constant "alloc::sync::MAX_REFCOUNT" |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9749,9 +9752,8 @@ Module sync.
                                                         M.SubPointer.get_struct_record_field (|
                                                           M.deref (|
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "alloc::sync::STATIC_INNER_SLICE"
-                                                              |)
                                                             |)
                                                           |),
                                                           "alloc::sync::SliceArcInnerForStatic",
@@ -10159,7 +10161,7 @@ Module sync.
                         [],
                         [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                       |),
-                      [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                      [ M.read (| M.get_constant "core::num::MAX" |) ]
                     |)
                   ]
                 |));
@@ -10237,7 +10239,7 @@ Module sync.
                         [],
                         [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                       |),
-                      [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                      [ M.read (| M.get_constant "core::num::MAX" |) ]
                     |)
                   ]
                 |));
@@ -11435,7 +11437,7 @@ Module sync.
                                   (M.alloc (|
                                     BinOp.gt (|
                                       M.read (| old_size |),
-                                      M.read (| M.get_constant (| "alloc::sync::MAX_REFCOUNT" |) |)
+                                      M.read (| M.get_constant "alloc::sync::MAX_REFCOUNT" |)
                                     |)
                                   |)) in
                               let _ :=
@@ -11740,9 +11742,8 @@ Module sync.
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   M.deref (|
                                                                     M.read (|
-                                                                      M.get_constant (|
+                                                                      M.get_constant
                                                                         "alloc::sync::STATIC_INNER_SLICE"
-                                                                      |)
                                                                     |)
                                                                   |),
                                                                   "alloc::sync::SliceArcInnerForStatic",
@@ -12861,10 +12862,14 @@ Module sync.
     } *)
   
   Definition value_MAX_STATIC_INNER_SLICE_ALIGNMENT : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+  
+  Axiom Constant_value_MAX_STATIC_INNER_SLICE_ALIGNMENT :
+    (M.get_constant "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT") =
+      value_MAX_STATIC_INNER_SLICE_ALIGNMENT.
   
   Definition value_STATIC_INNER_SLICE : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.alloc (|
@@ -12900,6 +12905,9 @@ Module sync.
               ]
           |)
         |))).
+  
+  Axiom Constant_value_STATIC_INNER_SLICE :
+    (M.get_constant "alloc::sync::STATIC_INNER_SLICE") = value_STATIC_INNER_SLICE.
   
   Module Impl_core_default_Default_for_alloc_sync_Arc_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
@@ -13191,9 +13199,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.SubPointer.get_struct_record_field (|
-                        M.deref (|
-                          M.read (| M.get_constant (| "alloc::sync::STATIC_INNER_SLICE" |) |)
-                        |),
+                        M.deref (| M.read (| M.get_constant "alloc::sync::STATIC_INNER_SLICE" |) |),
                         "alloc::sync::SliceArcInnerForStatic",
                         "inner"
                       |)
@@ -13410,9 +13416,7 @@ Module sync.
                                     []
                                   |),
                                   M.read (|
-                                    M.get_constant (|
-                                      "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT"
-                                    |)
+                                    M.get_constant "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT"
                                   |)
                                 |)
                               |)) in
@@ -13446,7 +13450,7 @@ Module sync.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.read (|
-                                              M.get_constant (| "alloc::sync::STATIC_INNER_SLICE" |)
+                                              M.get_constant "alloc::sync::STATIC_INNER_SLICE"
                                             |)
                                           |)
                                         |)
@@ -14342,7 +14346,7 @@ Module sync.
                                 |)
                               ]
                             |),
-                            M.read (| M.get_constant (| "alloc::sync::N" |) |)
+                            M.read (| M.get_constant "alloc::sync::N" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

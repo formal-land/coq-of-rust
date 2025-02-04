@@ -2,11 +2,24 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module runtime_value.
-  Definition value_MOVE_STRUCT_NAME : Value.t := M.run ltac:(M.monadic (Value.String "struct")).
+  Definition value_MOVE_STRUCT_NAME : Value.t :=
+    M.run_constant ltac:(M.monadic (Value.String "struct")).
   
-  Definition value_MOVE_STRUCT_TYPE : Value.t := M.run ltac:(M.monadic (Value.String "type")).
+  Axiom Constant_value_MOVE_STRUCT_NAME :
+    (M.get_constant "move_core_types::runtime_value::MOVE_STRUCT_NAME") = value_MOVE_STRUCT_NAME.
   
-  Definition value_MOVE_STRUCT_FIELDS : Value.t := M.run ltac:(M.monadic (Value.String "fields")).
+  Definition value_MOVE_STRUCT_TYPE : Value.t :=
+    M.run_constant ltac:(M.monadic (Value.String "type")).
+  
+  Axiom Constant_value_MOVE_STRUCT_TYPE :
+    (M.get_constant "move_core_types::runtime_value::MOVE_STRUCT_TYPE") = value_MOVE_STRUCT_TYPE.
+  
+  Definition value_MOVE_STRUCT_FIELDS : Value.t :=
+    M.run_constant ltac:(M.monadic (Value.String "fields")).
+  
+  Axiom Constant_value_MOVE_STRUCT_FIELDS :
+    (M.get_constant "move_core_types::runtime_value::MOVE_STRUCT_FIELDS") =
+      value_MOVE_STRUCT_FIELDS.
   
   (* StructTuple
     {
@@ -2238,7 +2251,7 @@ Module runtime_value.
                 M.read (| __deserializer |);
                 M.read (| Value.String "MoveTypeLayout" |);
                 M.read (|
-                  M.get_constant (| "move_core_types::runtime_value::_'3::deserialize::VARIANTS" |)
+                  M.get_constant "move_core_types::runtime_value::_'3::deserialize::VARIANTS"
                 |);
                 Value.StructRecord
                   "move_core_types::runtime_value::_'3::deserialize::__Visitor"

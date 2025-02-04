@@ -359,7 +359,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.U8 1
                             |)
                           |),
@@ -438,7 +438,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.U8 1
                             |)
                           |),
@@ -749,7 +749,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.I8 1
                             |)
                           |),
@@ -828,7 +828,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.I8 1
                             |)
                           |),
@@ -1253,7 +1253,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.U16 1
                             |)
                           |),
@@ -1332,7 +1332,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.U16 1
                             |)
                           |),
@@ -1643,7 +1643,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.I16 1
                             |)
                           |),
@@ -1722,7 +1722,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.I16 1
                             |)
                           |),
@@ -2147,7 +2147,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.U32 1
                             |)
                           |),
@@ -2226,7 +2226,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.U32 1
                             |)
                           |),
@@ -2537,7 +2537,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.I32 1
                             |)
                           |),
@@ -2616,7 +2616,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.I32 1
                             |)
                           |),
@@ -3041,7 +3041,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.U64 1
                             |)
                           |),
@@ -3120,7 +3120,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.U64 1
                             |)
                           |),
@@ -3431,7 +3431,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.I64 1
                             |)
                           |),
@@ -3510,7 +3510,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.I64 1
                             |)
                           |),
@@ -3935,7 +3935,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.Usize 1
                             |)
                           |),
@@ -4014,7 +4014,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.Usize 1
                             |)
                           |),
@@ -4328,7 +4328,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.Isize 1
                             |)
                           |),
@@ -4407,7 +4407,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.Isize 1
                             |)
                           |),
@@ -4828,7 +4828,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.U128 1
                             |)
                           |),
@@ -4907,7 +4907,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.U128 1
                             |)
                           |),
@@ -5151,7 +5151,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              M.read (| M.get_constant "core::num::MAX" |),
                               Value.Integer IntegerKind.I128 1
                             |)
                           |),
@@ -5230,7 +5230,7 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              M.read (| M.get_constant "core::num::MIN" |),
                               Value.Integer IntegerKind.I128 1
                             |)
                           |),
@@ -5864,7 +5864,7 @@ Module iter.
                                   M.read (| res |),
                                   M.cast
                                     (Ty.path "u32")
-                                    (M.read (| M.get_constant (| "core::char::methods::MAX" |) |))
+                                    (M.read (| M.get_constant "core::char::methods::MAX" |))
                                 |)
                               |)) in
                           let _ :=
@@ -7905,7 +7905,7 @@ Module iter.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               ]
                             |)
                           |)));
@@ -8534,7 +8534,7 @@ Module iter.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               ]
                             |)
                           |)));
@@ -9060,7 +9060,7 @@ Module iter.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               ]
                             |)
                           |)));
@@ -9562,7 +9562,7 @@ Module iter.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               ]
                             |)
                           |)));
@@ -9818,10 +9818,7 @@ Module iter.
                                 [],
                                 []
                               |),
-                              [
-                                M.read (| hint |);
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
-                              ]
+                              [ M.read (| hint |); M.read (| M.get_constant "core::num::MAX" |) ]
                             |);
                             M.read (| hint |)
                           ]
@@ -10827,7 +10824,7 @@ Module iter.
             (let self := M.alloc (| self |) in
             Value.Tuple
               [
-                M.read (| M.get_constant (| "core::num::MAX" |) |);
+                M.read (| M.get_constant "core::num::MAX" |);
                 Value.StructTuple "core::option::Option::None" []
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13899,7 +13896,7 @@ Module iter.
                           M.alloc (|
                             Value.Tuple
                               [
-                                M.read (| M.get_constant (| "core::num::MAX" |) |);
+                                M.read (| M.get_constant "core::num::MAX" |);
                                 Value.StructTuple "core::option::Option::None" []
                               ]
                           |)))

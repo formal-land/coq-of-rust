@@ -14,7 +14,7 @@ Module resolver.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_constant (| "move_core_types::account_address::ZERO" |) |)))
+          M.read (| M.get_constant "move_core_types::account_address::ZERO" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

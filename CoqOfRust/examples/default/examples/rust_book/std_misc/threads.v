@@ -2,7 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NTHREADS : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10 |))).
+  M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10 |))).
+
+Axiom Constant_value_NTHREADS : (M.get_constant "threads::NTHREADS") = value_NTHREADS.
 
 (*
 fn main() {
@@ -64,7 +66,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       "core::ops::range::Range"
                       [
                         ("start", Value.Integer IntegerKind.U32 0);
-                        ("end_", M.read (| M.get_constant (| "threads::NTHREADS" |) |))
+                        ("end_", M.read (| M.get_constant "threads::NTHREADS" |))
                       ]
                   ]
                 |)

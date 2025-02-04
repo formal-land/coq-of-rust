@@ -1945,10 +1945,10 @@ Module identifier.
                     |),
                     [
                       M.read (| Value.String "IdentStr" |);
-                      M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::SIZE" |) |);
-                      M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::SIZE" |) |);
-                      M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN" |) |);
-                      M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN" |) |)
+                      M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
+                      M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
+                      M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |);
+                      M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |)
                     ]
                   |)
                 |) in
@@ -2004,12 +2004,10 @@ Module identifier.
                         |),
                         [
                           M.read (| Value.String "IdentStr" |);
-                          M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::SIZE" |) |);
-                          M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::SIZE" |) |);
-                          M.read (|
-                            M.get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN" |)
-                          |);
-                          M.read (| M.get_constant (| "ref_cast::layout::LayoutUnsized::ALIGN" |) |)
+                          M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
+                          M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
+                          M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |);
+                          M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |)
                         ]
                       |)
                     |) in

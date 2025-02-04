@@ -1775,8 +1775,7 @@ Module ptr.
                                               Value.Bool true
                                             |) in
                                           M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
-                                      fun γ =>
-                                        ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                                      fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
                                     ]
                                   |)
                                 |)
@@ -1892,8 +1891,7 @@ Module ptr.
                                               [ M.read (| byte_offset |); M.read (| stride |) ]
                                             |)
                                           |)));
-                                      fun γ =>
-                                        ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                                      fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
                                     ]
                                   |)
                                 |)
@@ -2073,7 +2071,7 @@ Module ptr.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.get_constant (| "core::num::MAX" |)
+              M.get_constant "core::num::MAX"
             |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2145,16 +2143,14 @@ Module ptr.
                   (Ty.path "usize")
                   (M.read (|
                     M.SubPointer.get_array_field (|
-                      M.get_constant (| "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16" |),
+                      M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16",
                       M.alloc (|
                         BinOp.Wrap.shr (|
                           BinOp.bit_and
                             (M.read (| x |))
                             (BinOp.Wrap.sub (|
                               M.read (|
-                                M.get_constant (|
-                                  "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
-                                |)
+                                M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
                               |),
                               Value.Integer IntegerKind.Usize 1
                             |)),
@@ -2165,7 +2161,7 @@ Module ptr.
                   |))
               |) in
             let~ mod_gate :=
-              M.copy (| M.get_constant (| "core::ptr::align_offset::mod_inv::INV_TABLE_MOD" |) |) in
+              M.copy (| M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD" |) in
             let~ _ :=
               M.loop (|
                 ltac:(M.monadic
@@ -2266,7 +2262,7 @@ Module ptr.
     
     Module mod_inv.
       Definition value_INV_TABLE_MOD_16 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               Value.Array
@@ -2282,8 +2278,15 @@ Module ptr.
                 ]
             |))).
       
+      Axiom Constant_value_INV_TABLE_MOD_16 :
+        (M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16") =
+          value_INV_TABLE_MOD_16.
+      
       Definition value_INV_TABLE_MOD : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+      
+      Axiom Constant_value_INV_TABLE_MOD :
+        (M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD") = value_INV_TABLE_MOD.
     End mod_inv.
   End align_offset.
   

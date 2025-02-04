@@ -30,7 +30,7 @@ Module char.
       (*     pub const UNICODE_VERSION: (u8, u8, u8) = crate::unicode::UNICODE_VERSION; *)
       (* Ty.tuple [ Ty.path "u8"; Ty.path "u8"; Ty.path "u8" ] *)
       Definition value_UNICODE_VERSION : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::unicode::UNICODE_VERSION" |))).
+        M.run ltac:(M.monadic (M.get_constant "core::unicode::UNICODE_VERSION")).
       
       Axiom AssociatedConstant_value_UNICODE_VERSION :
         M.IsAssociatedConstant Self "value_UNICODE_VERSION" value_UNICODE_VERSION.
@@ -619,10 +619,7 @@ Module char.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "char", "escape_debug_ext", [], [] |),
-              [
-                M.read (| self |);
-                M.read (| M.get_constant (| "core::char::methods::ESCAPE_ALL" |) |)
-              ]
+              [ M.read (| self |); M.read (| M.get_constant "core::char::methods::ESCAPE_ALL" |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2294,7 +2291,7 @@ Module char.
                                       Value.Integer IntegerKind.I32 6
                                     |))
                                     (Value.Integer IntegerKind.U32 31)))
-                                (M.read (| M.get_constant (| "core::char::TAG_TWO_B" |) |))
+                                (M.read (| M.get_constant "core::char::TAG_TWO_B" |))
                             |) in
                           let~ _ :=
                             M.write (|
@@ -2305,7 +2302,7 @@ Module char.
                                   (BinOp.bit_and
                                     (M.read (| code |))
                                     (Value.Integer IntegerKind.U32 63)))
-                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                                (M.read (| M.get_constant "core::char::TAG_CONT" |))
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -2337,7 +2334,7 @@ Module char.
                                       Value.Integer IntegerKind.I32 12
                                     |))
                                     (Value.Integer IntegerKind.U32 15)))
-                                (M.read (| M.get_constant (| "core::char::TAG_THREE_B" |) |))
+                                (M.read (| M.get_constant "core::char::TAG_THREE_B" |))
                             |) in
                           let~ _ :=
                             M.write (|
@@ -2351,7 +2348,7 @@ Module char.
                                       Value.Integer IntegerKind.I32 6
                                     |))
                                     (Value.Integer IntegerKind.U32 63)))
-                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                                (M.read (| M.get_constant "core::char::TAG_CONT" |))
                             |) in
                           let~ _ :=
                             M.write (|
@@ -2362,7 +2359,7 @@ Module char.
                                   (BinOp.bit_and
                                     (M.read (| code |))
                                     (Value.Integer IntegerKind.U32 63)))
-                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                                (M.read (| M.get_constant "core::char::TAG_CONT" |))
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -2396,7 +2393,7 @@ Module char.
                                       Value.Integer IntegerKind.I32 18
                                     |))
                                     (Value.Integer IntegerKind.U32 7)))
-                                (M.read (| M.get_constant (| "core::char::TAG_FOUR_B" |) |))
+                                (M.read (| M.get_constant "core::char::TAG_FOUR_B" |))
                             |) in
                           let~ _ :=
                             M.write (|
@@ -2410,7 +2407,7 @@ Module char.
                                       Value.Integer IntegerKind.I32 12
                                     |))
                                     (Value.Integer IntegerKind.U32 63)))
-                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                                (M.read (| M.get_constant "core::char::TAG_CONT" |))
                             |) in
                           let~ _ :=
                             M.write (|
@@ -2424,7 +2421,7 @@ Module char.
                                       Value.Integer IntegerKind.I32 6
                                     |))
                                     (Value.Integer IntegerKind.U32 63)))
-                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                                (M.read (| M.get_constant "core::char::TAG_CONT" |))
                             |) in
                           let~ _ :=
                             M.write (|
@@ -2435,7 +2432,7 @@ Module char.
                                   (BinOp.bit_and
                                     (M.read (| code |))
                                     (Value.Integer IntegerKind.U32 63)))
-                                (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
+                                (M.read (| M.get_constant "core::char::TAG_CONT" |))
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>

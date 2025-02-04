@@ -240,7 +240,7 @@ Module str.
                               BinOp.ge (|
                                 M.read (| remainder |),
                                 M.read (|
-                                  M.get_constant (| "core::str::iter::advance_by::CHUNK_SIZE" |)
+                                  M.get_constant "core::str::iter::advance_by::CHUNK_SIZE"
                                 |)
                               |)
                             |)) in
@@ -300,9 +300,8 @@ Module str.
                                             BinOp.gt (|
                                               M.read (| remainder |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::str::iter::advance_by::CHUNK_SIZE"
-                                                |)
                                               |)
                                             |)
                                           |)) in
@@ -343,9 +342,8 @@ Module str.
                                           BinOp.Wrap.add (|
                                             M.read (| β |),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::str::iter::advance_by::CHUNK_SIZE"
-                                              |)
                                             |)
                                           |)
                                         |) in
@@ -380,9 +378,8 @@ Module str.
                                                       ("start", Value.Integer IntegerKind.Usize 0);
                                                       ("end_",
                                                         M.read (|
-                                                          M.get_constant (|
+                                                          M.get_constant
                                                             "core::str::iter::advance_by::CHUNK_SIZE"
-                                                          |)
                                                         |))
                                                     ]
                                                 ]

@@ -488,9 +488,7 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| M.get_constant (| "revm_precompile::homestead::INSTANCE" |) |)
-                  |)
+                  M.deref (| M.read (| M.get_constant "revm_precompile::homestead::INSTANCE" |) |)
                 |);
                 M.closure
                   (fun γ =>
@@ -538,24 +536,17 @@ Module Impl_revm_precompile_Precompiles.
                                             Value.Array
                                               [
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::secp256k1::ECRECOVER"
-                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
-                                                    "revm_precompile::hash::SHA256"
-                                                  |)
+                                                  M.get_constant "revm_precompile::hash::SHA256"
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
-                                                    "revm_precompile::hash::RIPEMD160"
-                                                  |)
+                                                  M.get_constant "revm_precompile::hash::RIPEMD160"
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
-                                                    "revm_precompile::identity::FUN"
-                                                  |)
+                                                  M.get_constant "revm_precompile::identity::FUN"
                                                 |)
                                               ]
                                           ]
@@ -665,9 +656,7 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| M.get_constant (| "revm_precompile::byzantium::INSTANCE" |) |)
-                  |)
+                  M.deref (| M.read (| M.get_constant "revm_precompile::byzantium::INSTANCE" |) |)
                 |);
                 M.closure
                   (fun γ =>
@@ -730,24 +719,20 @@ Module Impl_revm_precompile_Precompiles.
                                             Value.Array
                                               [
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::add::BYZANTIUM"
-                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::mul::BYZANTIUM"
-                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::pair::BYZANTIUM"
-                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::modexp::BYZANTIUM"
-                                                  |)
                                                 |)
                                               ]
                                           ]
@@ -828,9 +813,7 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| M.get_constant (| "revm_precompile::istanbul::INSTANCE" |) |)
-                  |)
+                  M.deref (| M.read (| M.get_constant "revm_precompile::istanbul::INSTANCE" |) |)
                 |);
                 M.closure
                   (fun γ =>
@@ -893,24 +876,19 @@ Module Impl_revm_precompile_Precompiles.
                                             Value.Array
                                               [
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::add::ISTANBUL"
-                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::mul::ISTANBUL"
-                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_precompile::bn128::pair::ISTANBUL"
-                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
-                                                    "revm_precompile::blake2::FUN"
-                                                  |)
+                                                  M.get_constant "revm_precompile::blake2::FUN"
                                                 |)
                                               ]
                                           ]
@@ -987,9 +965,7 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| M.get_constant (| "revm_precompile::berlin::INSTANCE" |) |)
-                  |)
+                  M.deref (| M.read (| M.get_constant "revm_precompile::berlin::INSTANCE" |) |)
                 |);
                 M.closure
                   (fun γ =>
@@ -1052,9 +1028,7 @@ Module Impl_revm_precompile_Precompiles.
                                             Value.Array
                                               [
                                                 M.read (|
-                                                  M.get_constant (|
-                                                    "revm_precompile::modexp::BERLIN"
-                                                  |)
+                                                  M.get_constant "revm_precompile::modexp::BERLIN"
                                                 |)
                                               ]
                                           ]
@@ -1142,9 +1116,7 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| M.get_constant (| "revm_precompile::cancun::INSTANCE" |) |)
-                  |)
+                  M.deref (| M.read (| M.get_constant "revm_precompile::cancun::INSTANCE" |) |)
                 |);
                 M.closure
                   (fun γ =>
@@ -1203,9 +1175,8 @@ Module Impl_revm_precompile_Precompiles.
                                           [
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "revm_precompile::kzg_point_evaluation::POINT_EVALUATION"
-                                              |)
                                             |)
                                           ]
                                         |)
@@ -1306,9 +1277,7 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| M.get_constant (| "revm_precompile::prague::INSTANCE" |) |)
-                  |)
+                  M.deref (| M.read (| M.get_constant "revm_precompile::prague::INSTANCE" |) |)
                 |);
                 M.closure
                   (fun γ =>

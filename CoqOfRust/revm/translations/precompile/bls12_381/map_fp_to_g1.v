@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module bls12_381.
   Module map_fp_to_g1.
     Definition value_PRECOMPILE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.StructTuple
@@ -12,10 +12,7 @@ Module bls12_381.
               [
                 M.call_closure (|
                   M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                  [
-                    M.read (|
-                      M.get_constant (| "revm_precompile::bls12_381::map_fp_to_g1::ADDRESS" |)
-                    |)
+                  [ M.read (| M.get_constant "revm_precompile::bls12_381::map_fp_to_g1::ADDRESS" |)
                   ]
                 |);
                 (* ReifyFnPointer *)
@@ -28,11 +25,21 @@ Module bls12_381.
               ]
           |))).
     
+    Axiom Constant_value_PRECOMPILE :
+      (M.get_constant "revm_precompile::bls12_381::map_fp_to_g1::PRECOMPILE") = value_PRECOMPILE.
+    
     Definition value_ADDRESS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 18 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 18 |))).
+    
+    Axiom Constant_value_ADDRESS :
+      (M.get_constant "revm_precompile::bls12_381::map_fp_to_g1::ADDRESS") = value_ADDRESS.
     
     Definition value_MAP_FP_TO_G1_BASE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5500 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5500 |))).
+    
+    Axiom Constant_value_MAP_FP_TO_G1_BASE :
+      (M.get_constant "revm_precompile::bls12_381::map_fp_to_g1::MAP_FP_TO_G1_BASE") =
+        value_MAP_FP_TO_G1_BASE.
     
     (*
     pub(super) fn map_fp_to_g1(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -84,9 +91,8 @@ Module bls12_381.
                               (M.alloc (|
                                 BinOp.gt (|
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::map_fp_to_g1::MAP_FP_TO_G1_BASE"
-                                    |)
                                   |),
                                   M.read (| gas_limit |)
                                 |)
@@ -168,9 +174,8 @@ Module bls12_381.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
-                                    |)
                                   |)
                                 |)
                               |)) in
@@ -298,9 +303,8 @@ Module bls12_381.
                                                                               |);
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
-                                                                                M.get_constant (|
+                                                                                M.get_constant
                                                                                   "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH"
-                                                                                |)
                                                                               |)
                                                                             ]
                                                                         |),
@@ -712,9 +716,8 @@ Module bls12_381.
                         |),
                         [
                           M.read (|
-                            M.get_constant (|
+                            M.get_constant
                               "revm_precompile::bls12_381::map_fp_to_g1::MAP_FP_TO_G1_BASE"
-                            |)
                           |);
                           M.read (| out |)
                         ]

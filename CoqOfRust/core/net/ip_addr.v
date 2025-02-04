@@ -2949,7 +2949,7 @@ Module net.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant (| "core::net::ip_addr::BROADCAST" |)
+                        M.get_constant "core::net::ip_addr::BROADCAST"
                       |)
                     ]
                   |)
@@ -4847,7 +4847,7 @@ Module net.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant (| "core::net::ip_addr::UNSPECIFIED" |)
+                        M.get_constant "core::net::ip_addr::UNSPECIFIED"
                       |)
                     ]
                   |)
@@ -4898,7 +4898,7 @@ Module net.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant (| "core::net::ip_addr::LOCALHOST" |)
+                        M.get_constant "core::net::ip_addr::LOCALHOST"
                       |)
                     ]
                   |)

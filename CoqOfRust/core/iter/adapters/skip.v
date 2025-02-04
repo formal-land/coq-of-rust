@@ -1691,9 +1691,8 @@ Module iter.
                               (M.alloc (|
                                 LogicalOp.and (|
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
-                                    |)
                                   |),
                                   ltac:(M.monadic
                                     (BinOp.eq (|
@@ -2630,7 +2629,7 @@ Module iter.
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
+              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
@@ -2641,7 +2640,7 @@ Module iter.
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::MERGE_BY" |))).
+              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -2679,9 +2678,8 @@ Module iter.
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (|
-                "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
-              |))).
+              (M.get_constant
+                "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT")).
         
         Axiom Implements :
           forall (I : Ty.t),

@@ -347,9 +347,8 @@ Module collections.
                                                               ]
                                                             |),
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "alloc::collections::btree::node::CAPACITY"
-                                                              |)
                                                             |)
                                                           |)
                                                         |)) in
@@ -518,9 +517,8 @@ Module collections.
                                                                                     ]
                                                                                   |),
                                                                                   M.read (|
-                                                                                    M.get_constant (|
+                                                                                    M.get_constant
                                                                                       "alloc::collections::btree::node::CAPACITY"
-                                                                                    |)
                                                                                   |)
                                                                                 |)
                                                                               |)) in

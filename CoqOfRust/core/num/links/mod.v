@@ -28,4 +28,9 @@ Module Impl_u64.
     }
     intros []; run_symbolic.
   Defined.
+
+  Lemma run_saturating_mul (self rhs: Self) :
+    {{ num.Impl_u64.saturating_mul [] [] [ φ self; φ rhs ] 🔽 Self }}.
+  Proof.
+  Admitted.
 End Impl_u64.

@@ -4,7 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Module sync.
   Module atomic.
     Definition value_EMULATE_ATOMIC_BOOL : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+    
+    Axiom Constant_value_EMULATE_ATOMIC_BOOL :
+      (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") = value_EMULATE_ATOMIC_BOOL.
     
     (* StructRecord
       {
@@ -425,7 +428,7 @@ Module sync.
     End Impl_core_hash_Hash_for_core_sync_atomic_Ordering.
     
     Definition value_ATOMIC_BOOL_INIT : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -438,6 +441,9 @@ Module sync.
               [ Value.Bool false ]
             |)
           |))).
+    
+    Axiom Constant_value_ATOMIC_BOOL_INIT :
+      (M.get_constant "core::sync::atomic::ATOMIC_BOOL_INIT") = value_ATOMIC_BOOL_INIT.
     
     Module Impl_core_sync_atomic_AtomicBool.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicBool".
@@ -878,8 +884,7 @@ Module sync.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ :=
-                        M.use (M.get_constant (| "core::sync::atomic::EMULATE_ATOMIC_BOOL" |)) in
+                      (let γ := M.use (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1107,8 +1112,7 @@ Module sync.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ :=
-                        M.use (M.get_constant (| "core::sync::atomic::EMULATE_ATOMIC_BOOL" |)) in
+                      (let γ := M.use (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ order :=
                         M.copy (|
@@ -1520,8 +1524,7 @@ Module sync.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::sync::atomic::EMULATE_ATOMIC_BOOL" |)) in
+                              M.use (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -16752,7 +16755,7 @@ Module sync.
     End Impl_core_sync_atomic_AtomicUsize.
     
     Definition value_ATOMIC_ISIZE_INIT : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -16766,8 +16769,11 @@ Module sync.
             |)
           |))).
     
+    Axiom Constant_value_ATOMIC_ISIZE_INIT :
+      (M.get_constant "core::sync::atomic::ATOMIC_ISIZE_INIT") = value_ATOMIC_ISIZE_INIT.
+    
     Definition value_ATOMIC_USIZE_INIT : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -16780,6 +16786,9 @@ Module sync.
               [ Value.Integer IntegerKind.Usize 0 ]
             |)
           |))).
+    
+    Axiom Constant_value_ATOMIC_USIZE_INIT :
+      (M.get_constant "core::sync::atomic::ATOMIC_USIZE_INIT") = value_ATOMIC_USIZE_INIT.
     
     (*
     fn strongest_failure_ordering(order: Ordering) -> Ordering {

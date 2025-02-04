@@ -3162,7 +3162,7 @@ Module normalized.
                 M.read (| __deserializer |);
                 M.read (| Value.String "Type" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::normalized::_'1::deserialize::VARIANTS" |)
+                  M.get_constant "move_binary_format::normalized::_'1::deserialize::VARIANTS"
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'1::deserialize::__Visitor"
@@ -3441,7 +3441,7 @@ Module normalized.
                 M.read (| __deserializer |);
                 M.read (| Value.String "Field" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::normalized::_'3::deserialize::FIELDS" |)
+                  M.get_constant "move_binary_format::normalized::_'3::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'3::deserialize::__Visitor"
@@ -3725,7 +3725,7 @@ Module normalized.
                 M.read (| __deserializer |);
                 M.read (| Value.String "Constant" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::normalized::_'5::deserialize::FIELDS" |)
+                  M.get_constant "move_binary_format::normalized::_'5::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'5::deserialize::__Visitor"
@@ -4091,7 +4091,7 @@ Module normalized.
                 M.read (| __deserializer |);
                 M.read (| Value.String "Struct" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::normalized::_'7::deserialize::FIELDS" |)
+                  M.get_constant "move_binary_format::normalized::_'7::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'7::deserialize::__Visitor"
@@ -4686,7 +4686,7 @@ Module normalized.
                 M.read (| __deserializer |);
                 M.read (| Value.String "Function" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::normalized::_'9::deserialize::FIELDS" |)
+                  M.get_constant "move_binary_format::normalized::_'9::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'9::deserialize::__Visitor"
@@ -4965,7 +4965,7 @@ Module normalized.
                 M.read (| __deserializer |);
                 M.read (| Value.String "FieldRef" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::normalized::_'11::deserialize::FIELDS" |)
+                  M.get_constant "move_binary_format::normalized::_'11::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'11::deserialize::__Visitor"
@@ -5244,7 +5244,7 @@ Module normalized.
                 M.read (| __deserializer |);
                 M.read (| Value.String "FunctionRef" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::normalized::_'13::deserialize::FIELDS" |)
+                  M.get_constant "move_binary_format::normalized::_'13::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'13::deserialize::__Visitor"
@@ -7936,7 +7936,7 @@ Module normalized.
                 M.read (| __deserializer |);
                 M.read (| Value.String "Bytecode" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::normalized::_'15::deserialize::VARIANTS" |)
+                  M.get_constant "move_binary_format::normalized::_'15::deserialize::VARIANTS"
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'15::deserialize::__Visitor"
@@ -8683,7 +8683,7 @@ Module normalized.
                 M.read (| __deserializer |);
                 M.read (| Value.String "Module" |);
                 M.read (|
-                  M.get_constant (| "move_binary_format::normalized::_'17::deserialize::FIELDS" |)
+                  M.get_constant "move_binary_format::normalized::_'17::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'17::deserialize::__Visitor"

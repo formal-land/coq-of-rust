@@ -1007,9 +1007,7 @@ Module slice.
                     ]
                   |) in
                 let~ is_using_u32_as_idx_type_helpful :=
-                  M.copy (|
-                    M.get_constant (| "alloc::slice::sort_by_cached_key_discriminant" |)
-                  |) in
+                  M.copy (| M.get_constant "alloc::slice::sort_by_cached_key_discriminant" |) in
                 let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -1026,7 +1024,7 @@ Module slice.
                                       M.read (| len |),
                                       M.cast
                                         (Ty.path "usize")
-                                        (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                        (M.read (| M.get_constant "core::num::MAX" |))
                                     |)))
                                 |)
                               |)) in

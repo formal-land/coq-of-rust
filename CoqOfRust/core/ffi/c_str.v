@@ -1193,7 +1193,7 @@ Module ffi.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
-                            M.read (| M.get_constant (| "core::ffi::c_str::default::SLICE" |) |)
+                            M.read (| M.get_constant "core::ffi::c_str::default::SLICE" |)
                           |)
                         |)
                       ]

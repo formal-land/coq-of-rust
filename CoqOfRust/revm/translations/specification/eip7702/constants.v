@@ -4,9 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Module eip7702.
   Module constants.
     Definition value_PER_AUTH_BASE_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2500 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2500 |))).
+    
+    Axiom Constant_value_PER_AUTH_BASE_COST :
+      (M.get_constant "revm_specification::eip7702::constants::PER_AUTH_BASE_COST") =
+        value_PER_AUTH_BASE_COST.
     
     Definition value_PER_EMPTY_ACCOUNT_COST : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 25000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 25000 |))).
+    
+    Axiom Constant_value_PER_EMPTY_ACCOUNT_COST :
+      (M.get_constant "revm_specification::eip7702::constants::PER_EMPTY_ACCOUNT_COST") =
+        value_PER_EMPTY_ACCOUNT_COST.
   End constants.
 End eip7702.

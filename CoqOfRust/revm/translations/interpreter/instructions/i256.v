@@ -403,7 +403,7 @@ Module instructions.
     End Impl_core_hash_Hash_for_revm_interpreter_instructions_i256_Sign.
     
     Definition value_MAX_POSITIVE_VALUE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -428,8 +428,12 @@ Module instructions.
             |)
           |))).
     
+    Axiom Constant_value_MAX_POSITIVE_VALUE :
+      (M.get_constant "revm_interpreter::instructions::i256::MAX_POSITIVE_VALUE") =
+        value_MAX_POSITIVE_VALUE.
+    
     Definition value_MIN_NEGATIVE_VALUE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -454,8 +458,17 @@ Module instructions.
             |)
           |))).
     
+    Axiom Constant_value_MIN_NEGATIVE_VALUE :
+      (M.get_constant "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE") =
+        value_MIN_NEGATIVE_VALUE.
+    
     Definition value_FLIPH_BITMASK_U64 : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9223372036854775807 |))).
+      M.run_constant
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9223372036854775807 |))).
+    
+    Axiom Constant_value_FLIPH_BITMASK_U64 :
+      (M.get_constant "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64") =
+        value_FLIPH_BITMASK_U64.
     
     (*
     pub fn i256_sign(val: &U256) -> Sign {
@@ -500,7 +513,7 @@ Module instructions.
                             [
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |);
                               BinOp.Wrap.sub (|
-                                M.read (| M.get_constant (| "ruint::BITS'1" |) |),
+                                M.read (| M.get_constant "ruint::BITS'1" |),
                                 Value.Integer IntegerKind.Usize 1
                               |)
                             ]
@@ -668,7 +681,7 @@ Module instructions.
                 BinOp.bit_and
                   (M.read (| β |))
                   (M.read (|
-                    M.get_constant (| "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64" |)
+                    M.get_constant "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64"
                   |))
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -916,9 +929,7 @@ Module instructions.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (|
-                                M.return_ (| M.read (| M.get_constant (| "ruint::ZERO" |) |) |)
-                              |)
+                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -978,9 +989,8 @@ Module instructions.
                                       M.borrow (| Pointer.Kind.Ref, first |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant (|
+                                        M.get_constant
                                           "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE"
-                                        |)
                                       |)
                                     ]
                                   |),
@@ -1052,9 +1062,8 @@ Module instructions.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE"
-                                        |)
                                       |)
                                     ]
                                   |)
@@ -1319,9 +1328,7 @@ Module instructions.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (|
-                                M.return_ (| M.read (| M.get_constant (| "ruint::ZERO" |) |) |)
-                              |)
+                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1379,9 +1386,7 @@ Module instructions.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (|
-                                M.return_ (| M.read (| M.get_constant (| "ruint::ZERO" |) |) |)
-                              |)
+                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))

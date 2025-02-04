@@ -213,7 +213,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               Value.Tuple
                 [
-                  M.read (| M.get_constant (| "core::num::MAX" |) |);
+                  M.read (| M.get_constant "core::num::MAX" |);
                   Value.StructTuple "core::option::Option::None" []
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"

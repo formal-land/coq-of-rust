@@ -10,7 +10,7 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| UnOp.not (| M.read (| M.get_constant (| "core::num::MAX" |) |) |) |))).
+          (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
     Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
     
@@ -23,7 +23,7 @@ Module num.
             M.cast
               (Ty.path "i8")
               (BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::MAX" |) |),
+                M.read (| M.get_constant "core::num::MAX" |),
                 Value.Integer IntegerKind.I32 1
               |))
           |))).
@@ -32,8 +32,7 @@ Module num.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
-    Definition value_BITS : Value.t :=
-      M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+    Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
     Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
     
@@ -1153,7 +1152,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -1279,7 +1278,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -1401,7 +1400,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -1527,7 +1526,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -1819,7 +1818,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1996,7 +1995,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2044,7 +2043,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2225,7 +2224,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2243,7 +2242,7 @@ Module num.
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |)
                         ]
@@ -2808,9 +2807,7 @@ Module num.
                             [
                               BinOp.le (|
                                 M.read (| result |),
-                                M.read (|
-                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
-                                |)
+                                M.read (| M.get_constant "core::num::checked_isqrt::MAX_RESULT" |)
                               |)
                             ]
                           |)
@@ -2887,7 +2884,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -2956,7 +2953,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MIN" |)))
+                    M.get_constant "core::num::MIN"))
               ]
             |)
           |)))
@@ -3089,8 +3086,8 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::num::MAX" |)));
-                        fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                            M.get_constant "core::num::MAX"));
+                        fun γ => ltac:(M.monadic (M.get_constant "core::num::MIN"))
                       ]
                     |)))
               ]
@@ -3140,7 +3137,7 @@ Module num.
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -3200,11 +3197,11 @@ Module num.
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MIN" |)));
+                    M.get_constant "core::num::MIN"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -3467,7 +3464,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -3499,7 +3496,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -4233,7 +4230,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I8 (-1) |))
                             ]
@@ -4288,7 +4285,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I8 (-1) |))
                             ]
@@ -4353,7 +4350,7 @@ Module num.
                           Value.Integer IntegerKind.I8 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -4409,7 +4406,7 @@ Module num.
                           Value.Integer IntegerKind.I8 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -4462,15 +4459,14 @@ Module num.
                             [
                               BinOp.eq (|
                                 M.read (| self |),
-                                M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                M.read (| M.get_constant "core::num::MIN" |)
                               |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.Tuple
-                        [ M.read (| M.get_constant (| "core::num::MIN" |) |); Value.Bool true ]
+                      Value.Tuple [ M.read (| M.get_constant "core::num::MIN" |); Value.Bool true ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -4503,7 +4499,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i8", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4528,7 +4524,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i8", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4552,7 +4548,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i8", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
-              BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+              BinOp.eq (| M.read (| self |), M.read (| M.get_constant "core::num::MIN" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5276,7 +5272,7 @@ Module num.
                 BinOp.Wrap.shr (|
                   BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                   BinOp.Wrap.sub (|
-                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    M.read (| M.get_constant "core::num::BITS" |),
                     Value.Integer IntegerKind.U32 1
                   |)
                 |)
@@ -5333,7 +5329,7 @@ Module num.
                   BinOp.Wrap.shr (|
                     BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      M.read (| M.get_constant "core::num::BITS" |),
                       Value.Integer IntegerKind.U32 1
                     |)
                   |)
@@ -6011,7 +6007,7 @@ Module num.
                       M.alloc (|
                         BinOp.Wrap.sub (|
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |),
                           M.read (|
@@ -6437,7 +6433,7 @@ Module num.
     *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6450,7 +6446,7 @@ Module num.
     *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6639,7 +6635,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.I8 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -7575,7 +7571,7 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| UnOp.not (| M.read (| M.get_constant (| "core::num::MAX" |) |) |) |))).
+          (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
     Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
     
@@ -7588,7 +7584,7 @@ Module num.
             M.cast
               (Ty.path "i16")
               (BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::MAX" |) |),
+                M.read (| M.get_constant "core::num::MAX" |),
                 Value.Integer IntegerKind.I32 1
               |))
           |))).
@@ -7597,8 +7593,7 @@ Module num.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
-    Definition value_BITS : Value.t :=
-      M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+    Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
     Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
     
@@ -8718,7 +8713,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -8844,7 +8839,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -8966,7 +8961,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -9092,7 +9087,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -9384,7 +9379,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9561,7 +9556,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9609,7 +9604,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9790,7 +9785,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9808,7 +9803,7 @@ Module num.
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |)
                         ]
@@ -10373,9 +10368,7 @@ Module num.
                             [
                               BinOp.le (|
                                 M.read (| result |),
-                                M.read (|
-                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
-                                |)
+                                M.read (| M.get_constant "core::num::checked_isqrt::MAX_RESULT" |)
                               |)
                             ]
                           |)
@@ -10452,7 +10445,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -10521,7 +10514,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MIN" |)))
+                    M.get_constant "core::num::MIN"))
               ]
             |)
           |)))
@@ -10654,8 +10647,8 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::num::MAX" |)));
-                        fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                            M.get_constant "core::num::MAX"));
+                        fun γ => ltac:(M.monadic (M.get_constant "core::num::MIN"))
                       ]
                     |)))
               ]
@@ -10705,7 +10698,7 @@ Module num.
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -10765,11 +10758,11 @@ Module num.
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MIN" |)));
+                    M.get_constant "core::num::MIN"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -11033,7 +11026,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -11065,7 +11058,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -11799,7 +11792,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -11857,7 +11850,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -11925,7 +11918,7 @@ Module num.
                           Value.Integer IntegerKind.I16 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -11981,7 +11974,7 @@ Module num.
                           Value.Integer IntegerKind.I16 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -12034,15 +12027,14 @@ Module num.
                             [
                               BinOp.eq (|
                                 M.read (| self |),
-                                M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                M.read (| M.get_constant "core::num::MIN" |)
                               |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.Tuple
-                        [ M.read (| M.get_constant (| "core::num::MIN" |) |); Value.Bool true ]
+                      Value.Tuple [ M.read (| M.get_constant "core::num::MIN" |); Value.Bool true ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -12075,7 +12067,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i16", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12100,7 +12092,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i16", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12124,7 +12116,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i16", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
-              BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+              BinOp.eq (| M.read (| self |), M.read (| M.get_constant "core::num::MIN" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12848,7 +12840,7 @@ Module num.
                 BinOp.Wrap.shr (|
                   BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                   BinOp.Wrap.sub (|
-                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    M.read (| M.get_constant "core::num::BITS" |),
                     Value.Integer IntegerKind.U32 1
                   |)
                 |)
@@ -12905,7 +12897,7 @@ Module num.
                   BinOp.Wrap.shr (|
                     BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      M.read (| M.get_constant "core::num::BITS" |),
                       Value.Integer IntegerKind.U32 1
                     |)
                   |)
@@ -13589,7 +13581,7 @@ Module num.
                       M.alloc (|
                         BinOp.Wrap.sub (|
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |),
                           M.read (|
@@ -14015,7 +14007,7 @@ Module num.
     *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -14028,7 +14020,7 @@ Module num.
     *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -14217,7 +14209,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.I16 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -15157,7 +15149,7 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| UnOp.not (| M.read (| M.get_constant (| "core::num::MAX" |) |) |) |))).
+          (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
     Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
     
@@ -15170,7 +15162,7 @@ Module num.
             M.cast
               (Ty.path "i32")
               (BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::MAX" |) |),
+                M.read (| M.get_constant "core::num::MAX" |),
                 Value.Integer IntegerKind.I32 1
               |))
           |))).
@@ -15179,8 +15171,7 @@ Module num.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
-    Definition value_BITS : Value.t :=
-      M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+    Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
     Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
     
@@ -16300,7 +16291,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -16426,7 +16417,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -16548,7 +16539,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -16674,7 +16665,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -16966,7 +16957,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17143,7 +17134,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17191,7 +17182,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17372,7 +17363,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17390,7 +17381,7 @@ Module num.
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |)
                         ]
@@ -17955,9 +17946,7 @@ Module num.
                             [
                               BinOp.le (|
                                 M.read (| result |),
-                                M.read (|
-                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
-                                |)
+                                M.read (| M.get_constant "core::num::checked_isqrt::MAX_RESULT" |)
                               |)
                             ]
                           |)
@@ -18034,7 +18023,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -18103,7 +18092,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MIN" |)))
+                    M.get_constant "core::num::MIN"))
               ]
             |)
           |)))
@@ -18236,8 +18225,8 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::num::MAX" |)));
-                        fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                            M.get_constant "core::num::MAX"));
+                        fun γ => ltac:(M.monadic (M.get_constant "core::num::MIN"))
                       ]
                     |)))
               ]
@@ -18287,7 +18276,7 @@ Module num.
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -18347,11 +18336,11 @@ Module num.
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MIN" |)));
+                    M.get_constant "core::num::MIN"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -18615,7 +18604,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -18647,7 +18636,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -19381,7 +19370,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -19439,7 +19428,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -19507,7 +19496,7 @@ Module num.
                           Value.Integer IntegerKind.I32 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -19563,7 +19552,7 @@ Module num.
                           Value.Integer IntegerKind.I32 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -19616,15 +19605,14 @@ Module num.
                             [
                               BinOp.eq (|
                                 M.read (| self |),
-                                M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                M.read (| M.get_constant "core::num::MIN" |)
                               |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.Tuple
-                        [ M.read (| M.get_constant (| "core::num::MIN" |) |); Value.Bool true ]
+                      Value.Tuple [ M.read (| M.get_constant "core::num::MIN" |); Value.Bool true ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -19657,7 +19645,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i32", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -19682,7 +19670,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i32", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -19706,7 +19694,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i32", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
-              BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+              BinOp.eq (| M.read (| self |), M.read (| M.get_constant "core::num::MIN" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -20430,7 +20418,7 @@ Module num.
                 BinOp.Wrap.shr (|
                   BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                   BinOp.Wrap.sub (|
-                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    M.read (| M.get_constant "core::num::BITS" |),
                     Value.Integer IntegerKind.U32 1
                   |)
                 |)
@@ -20487,7 +20475,7 @@ Module num.
                   BinOp.Wrap.shr (|
                     BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      M.read (| M.get_constant "core::num::BITS" |),
                       Value.Integer IntegerKind.U32 1
                     |)
                   |)
@@ -21171,7 +21159,7 @@ Module num.
                       M.alloc (|
                         BinOp.Wrap.sub (|
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |),
                           M.read (|
@@ -21597,7 +21585,7 @@ Module num.
     *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -21610,7 +21598,7 @@ Module num.
     *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -21799,7 +21787,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.I32 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -22739,7 +22727,7 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| UnOp.not (| M.read (| M.get_constant (| "core::num::MAX" |) |) |) |))).
+          (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
     Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
     
@@ -22752,7 +22740,7 @@ Module num.
             M.cast
               (Ty.path "i64")
               (BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::MAX" |) |),
+                M.read (| M.get_constant "core::num::MAX" |),
                 Value.Integer IntegerKind.I32 1
               |))
           |))).
@@ -22761,8 +22749,7 @@ Module num.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
-    Definition value_BITS : Value.t :=
-      M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+    Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
     Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
     
@@ -23882,7 +23869,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -24008,7 +23995,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -24130,7 +24117,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -24256,7 +24243,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -24548,7 +24535,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -24725,7 +24712,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -24773,7 +24760,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -24954,7 +24941,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -24972,7 +24959,7 @@ Module num.
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |)
                         ]
@@ -25537,9 +25524,7 @@ Module num.
                             [
                               BinOp.le (|
                                 M.read (| result |),
-                                M.read (|
-                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
-                                |)
+                                M.read (| M.get_constant "core::num::checked_isqrt::MAX_RESULT" |)
                               |)
                             ]
                           |)
@@ -25616,7 +25601,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -25685,7 +25670,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MIN" |)))
+                    M.get_constant "core::num::MIN"))
               ]
             |)
           |)))
@@ -25818,8 +25803,8 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::num::MAX" |)));
-                        fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                            M.get_constant "core::num::MAX"));
+                        fun γ => ltac:(M.monadic (M.get_constant "core::num::MIN"))
                       ]
                     |)))
               ]
@@ -25869,7 +25854,7 @@ Module num.
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -25929,11 +25914,11 @@ Module num.
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MIN" |)));
+                    M.get_constant "core::num::MIN"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -26197,7 +26182,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -26229,7 +26214,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -26963,7 +26948,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -27021,7 +27006,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -27089,7 +27074,7 @@ Module num.
                           Value.Integer IntegerKind.I64 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -27145,7 +27130,7 @@ Module num.
                           Value.Integer IntegerKind.I64 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -27198,15 +27183,14 @@ Module num.
                             [
                               BinOp.eq (|
                                 M.read (| self |),
-                                M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                M.read (| M.get_constant "core::num::MIN" |)
                               |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.Tuple
-                        [ M.read (| M.get_constant (| "core::num::MIN" |) |); Value.Bool true ]
+                      Value.Tuple [ M.read (| M.get_constant "core::num::MIN" |); Value.Bool true ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -27239,7 +27223,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i64", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -27264,7 +27248,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i64", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -27288,7 +27272,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i64", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
-              BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+              BinOp.eq (| M.read (| self |), M.read (| M.get_constant "core::num::MIN" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -28012,7 +27996,7 @@ Module num.
                 BinOp.Wrap.shr (|
                   BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                   BinOp.Wrap.sub (|
-                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    M.read (| M.get_constant "core::num::BITS" |),
                     Value.Integer IntegerKind.U32 1
                   |)
                 |)
@@ -28069,7 +28053,7 @@ Module num.
                   BinOp.Wrap.shr (|
                     BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      M.read (| M.get_constant "core::num::BITS" |),
                       Value.Integer IntegerKind.U32 1
                     |)
                   |)
@@ -28753,7 +28737,7 @@ Module num.
                       M.alloc (|
                         BinOp.Wrap.sub (|
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |),
                           M.read (|
@@ -29179,7 +29163,7 @@ Module num.
     *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -29192,7 +29176,7 @@ Module num.
     *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -29381,7 +29365,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.I64 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -30321,7 +30305,7 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| UnOp.not (| M.read (| M.get_constant (| "core::num::MAX" |) |) |) |))).
+          (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
     Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
     
@@ -30334,7 +30318,7 @@ Module num.
             M.cast
               (Ty.path "i128")
               (BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::MAX" |) |),
+                M.read (| M.get_constant "core::num::MAX" |),
                 Value.Integer IntegerKind.I32 1
               |))
           |))).
@@ -30343,8 +30327,7 @@ Module num.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
-    Definition value_BITS : Value.t :=
-      M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+    Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
     Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
     
@@ -31484,7 +31467,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -31610,7 +31593,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -31732,7 +31715,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -31858,7 +31841,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -32150,7 +32133,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -32327,7 +32310,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -32375,7 +32358,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -32556,7 +32539,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -32574,7 +32557,7 @@ Module num.
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |)
                         ]
@@ -33144,9 +33127,7 @@ Module num.
                             [
                               BinOp.le (|
                                 M.read (| result |),
-                                M.read (|
-                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
-                                |)
+                                M.read (| M.get_constant "core::num::checked_isqrt::MAX_RESULT" |)
                               |)
                             ]
                           |)
@@ -33223,7 +33204,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -33292,7 +33273,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MIN" |)))
+                    M.get_constant "core::num::MIN"))
               ]
             |)
           |)))
@@ -33428,8 +33409,8 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::num::MAX" |)));
-                        fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                            M.get_constant "core::num::MAX"));
+                        fun γ => ltac:(M.monadic (M.get_constant "core::num::MIN"))
                       ]
                     |)))
               ]
@@ -33479,7 +33460,7 @@ Module num.
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -33539,11 +33520,11 @@ Module num.
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MIN" |)));
+                    M.get_constant "core::num::MIN"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -33807,7 +33788,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -33839,7 +33820,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -34585,7 +34566,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -34643,7 +34624,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -34711,7 +34692,7 @@ Module num.
                           Value.Integer IntegerKind.I128 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -34767,7 +34748,7 @@ Module num.
                           Value.Integer IntegerKind.I128 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -34820,15 +34801,14 @@ Module num.
                             [
                               BinOp.eq (|
                                 M.read (| self |),
-                                M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                M.read (| M.get_constant "core::num::MIN" |)
                               |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.Tuple
-                        [ M.read (| M.get_constant (| "core::num::MIN" |) |); Value.Bool true ]
+                      Value.Tuple [ M.read (| M.get_constant "core::num::MIN" |); Value.Bool true ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -34861,7 +34841,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i128", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -34886,7 +34866,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i128", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -34910,7 +34890,7 @@ Module num.
                 M.get_associated_function (| Ty.path "i128", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
-              BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+              BinOp.eq (| M.read (| self |), M.read (| M.get_constant "core::num::MIN" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -35634,7 +35614,7 @@ Module num.
                 BinOp.Wrap.shr (|
                   BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                   BinOp.Wrap.sub (|
-                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    M.read (| M.get_constant "core::num::BITS" |),
                     Value.Integer IntegerKind.U32 1
                   |)
                 |)
@@ -35691,7 +35671,7 @@ Module num.
                   BinOp.Wrap.shr (|
                     BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      M.read (| M.get_constant "core::num::BITS" |),
                       Value.Integer IntegerKind.U32 1
                     |)
                   |)
@@ -36375,7 +36355,7 @@ Module num.
                       M.alloc (|
                         BinOp.Wrap.sub (|
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |),
                           M.read (|
@@ -36801,7 +36781,7 @@ Module num.
     *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -36814,7 +36794,7 @@ Module num.
     *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -37003,7 +36983,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.I128 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -37943,7 +37923,7 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run
         ltac:(M.monadic
-          (M.alloc (| UnOp.not (| M.read (| M.get_constant (| "core::num::MAX" |) |) |) |))).
+          (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
     Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
     
@@ -37956,7 +37936,7 @@ Module num.
             M.cast
               (Ty.path "isize")
               (BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::MAX" |) |),
+                M.read (| M.get_constant "core::num::MAX" |),
                 Value.Integer IntegerKind.I32 1
               |))
           |))).
@@ -37965,8 +37945,7 @@ Module num.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
-    Definition value_BITS : Value.t :=
-      M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+    Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
     Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
     
@@ -39106,7 +39085,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -39232,7 +39211,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -39354,7 +39333,7 @@ Module num.
                                   (LogicalOp.and (|
                                     BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.eq (|
@@ -39480,7 +39459,7 @@ Module num.
                                   (BinOp.bit_and
                                     (BinOp.eq (|
                                       M.read (| self |),
-                                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                      M.read (| M.get_constant "core::num::MIN" |)
                                     |))
                                     (BinOp.eq (|
                                       M.read (| rhs |),
@@ -39772,7 +39751,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -39954,7 +39933,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -40002,7 +39981,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -40188,7 +40167,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -40206,7 +40185,7 @@ Module num.
                         [
                           M.read (| self |);
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |)
                         ]
@@ -40776,9 +40755,7 @@ Module num.
                             [
                               BinOp.le (|
                                 M.read (| result |),
-                                M.read (|
-                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
-                                |)
+                                M.read (| M.get_constant "core::num::checked_isqrt::MAX_RESULT" |)
                               |)
                             ]
                           |)
@@ -40855,7 +40832,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -40924,7 +40901,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MIN" |)))
+                    M.get_constant "core::num::MIN"))
               ]
             |)
           |)))
@@ -41060,8 +41037,8 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::num::MAX" |)));
-                        fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                            M.get_constant "core::num::MAX"));
+                        fun γ => ltac:(M.monadic (M.get_constant "core::num::MIN"))
                       ]
                     |)))
               ]
@@ -41111,7 +41088,7 @@ Module num.
                     let _result := M.copy (| γ0_0 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -41171,11 +41148,11 @@ Module num.
                         |)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (| "core::num::MIN" |)));
+                    M.get_constant "core::num::MIN"));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -41441,7 +41418,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -41473,7 +41450,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -42232,7 +42209,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -42290,7 +42267,7 @@ Module num.
                               BinOp.bit_and
                                 (BinOp.eq (|
                                   M.read (| self |),
-                                  M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                  M.read (| M.get_constant "core::num::MIN" |)
                                 |))
                                 (BinOp.eq (|
                                   M.read (| rhs |),
@@ -42359,7 +42336,7 @@ Module num.
                           Value.Integer IntegerKind.Isize 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -42416,7 +42393,7 @@ Module num.
                           Value.Integer IntegerKind.Isize 0;
                           BinOp.eq (|
                             M.read (| self |),
-                            M.read (| M.get_constant (| "core::num::MIN" |) |)
+                            M.read (| M.get_constant "core::num::MIN" |)
                           |)
                         ]
                     |)));
@@ -42469,15 +42446,14 @@ Module num.
                             [
                               BinOp.eq (|
                                 M.read (| self |),
-                                M.read (| M.get_constant (| "core::num::MIN" |) |)
+                                M.read (| M.get_constant "core::num::MIN" |)
                               |)
                             ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.Tuple
-                        [ M.read (| M.get_constant (| "core::num::MIN" |) |); Value.Bool true ]
+                      Value.Tuple [ M.read (| M.get_constant "core::num::MIN" |); Value.Bool true ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -42510,7 +42486,7 @@ Module num.
                 M.get_associated_function (| Ty.path "isize", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -42535,7 +42511,7 @@ Module num.
                 M.get_associated_function (| Ty.path "isize", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -42559,7 +42535,7 @@ Module num.
                 M.get_associated_function (| Ty.path "isize", "wrapping_abs", [], [] |),
                 [ M.read (| self |) ]
               |);
-              BinOp.eq (| M.read (| self |), M.read (| M.get_constant (| "core::num::MIN" |) |) |)
+              BinOp.eq (| M.read (| self |), M.read (| M.get_constant "core::num::MIN" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -43284,7 +43260,7 @@ Module num.
                 BinOp.Wrap.shr (|
                   BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                   BinOp.Wrap.sub (|
-                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    M.read (| M.get_constant "core::num::BITS" |),
                     Value.Integer IntegerKind.U32 1
                   |)
                 |)
@@ -43341,7 +43317,7 @@ Module num.
                   BinOp.Wrap.shr (|
                     BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      M.read (| M.get_constant "core::num::BITS" |),
                       Value.Integer IntegerKind.U32 1
                     |)
                   |)
@@ -44031,7 +44007,7 @@ Module num.
                       M.alloc (|
                         BinOp.Wrap.sub (|
                           BinOp.Wrap.sub (|
-                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            M.read (| M.get_constant "core::num::BITS" |),
                             Value.Integer IntegerKind.U32 1
                           |),
                           M.read (|
@@ -44460,7 +44436,7 @@ Module num.
     *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -44473,7 +44449,7 @@ Module num.
     *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -44531,7 +44507,10 @@ Module num.
   End Impl_isize.
   
   Definition value_ASCII_CASE_MASK : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 32 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 32 |))).
+  
+  Axiom Constant_value_ASCII_CASE_MASK :
+    (M.get_constant "core::num::ASCII_CASE_MASK") = value_ASCII_CASE_MASK.
   
   Module Impl_u8.
     Definition Self : Ty.t := Ty.path "u8".
@@ -44558,7 +44537,7 @@ Module num.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "u8", "count_ones", [], [] |),
-              [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              [ M.read (| M.get_constant "core::num::MAX" |) ]
             |)
           |))).
     
@@ -46259,7 +46238,7 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             BinOp.eq (|
-                                              M.read (| M.get_constant (| "core::num::BITS" |) |),
+                                              M.read (| M.get_constant "core::num::BITS" |),
                                               Value.Integer IntegerKind.U32 128
                                             |)
                                           |)) in
@@ -46647,7 +46626,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -46824,7 +46803,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -46872,7 +46851,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -47049,7 +47028,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -47530,7 +47509,7 @@ Module num.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.get_constant (| "core::num::MAX" |)));
+                                    M.get_constant "core::num::MAX"));
                                 fun γ =>
                                   ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |)))
                               ]
@@ -47603,7 +47582,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -47671,7 +47650,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -47873,7 +47852,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -47905,7 +47884,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -48710,7 +48689,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u8", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -48735,7 +48714,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u8", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -49269,7 +49248,7 @@ Module num.
                     [
                       BinOp.le (|
                         M.read (| result |),
-                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
+                        M.read (| M.get_constant "core::num::isqrt::MAX_RESULT" |)
                       |)
                     ]
                   |)
@@ -49628,10 +49607,7 @@ Module num.
                     |)
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.shr (|
-                    M.read (| M.get_constant (| "core::num::MAX" |) |),
-                    M.read (| z |)
-                  |)
+                  BinOp.Wrap.shr (| M.read (| M.get_constant "core::num::MAX" |), M.read (| z |) |)
                 |)
               |)))
           |)))
@@ -49896,7 +49872,7 @@ Module num.
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -49905,7 +49881,7 @@ Module num.
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -50090,7 +50066,7 @@ Module num.
                   M.get_associated_function (| Ty.path "u8", "is_ascii_lowercase", [], [] |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)),
-              M.read (| M.get_constant (| "core::num::ASCII_CASE_MASK" |) |)
+              M.read (| M.get_constant "core::num::ASCII_CASE_MASK" |)
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -50118,7 +50094,7 @@ Module num.
                   M.get_associated_function (| Ty.path "u8", "is_ascii_uppercase", [], [] |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)),
-              M.read (| M.get_constant (| "core::num::ASCII_CASE_MASK" |) |)
+              M.read (| M.get_constant "core::num::ASCII_CASE_MASK" |)
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -50142,7 +50118,7 @@ Module num.
           (let self := M.alloc (| self |) in
           BinOp.bit_xor
             (M.read (| M.deref (| M.read (| self |) |) |))
-            (M.read (| M.get_constant (| "core::num::ASCII_CASE_MASK" |) |))))
+            (M.read (| M.get_constant "core::num::ASCII_CASE_MASK" |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -50888,7 +50864,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.U8 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -51841,7 +51817,7 @@ Module num.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "u16", "count_ones", [], [] |),
-              [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              [ M.read (| M.get_constant "core::num::MAX" |) ]
             |)
           |))).
     
@@ -53542,7 +53518,7 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             BinOp.eq (|
-                                              M.read (| M.get_constant (| "core::num::BITS" |) |),
+                                              M.read (| M.get_constant "core::num::BITS" |),
                                               Value.Integer IntegerKind.U32 128
                                             |)
                                           |)) in
@@ -53930,7 +53906,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -54107,7 +54083,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -54155,7 +54131,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -54332,7 +54308,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -54813,7 +54789,7 @@ Module num.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.get_constant (| "core::num::MAX" |)));
+                                    M.get_constant "core::num::MAX"));
                                 fun γ =>
                                   ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |)))
                               ]
@@ -54886,7 +54862,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -54954,7 +54930,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -55157,7 +55133,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -55189,7 +55165,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -55994,7 +55970,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u16", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -56019,7 +55995,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u16", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -56553,7 +56529,7 @@ Module num.
                     [
                       BinOp.le (|
                         M.read (| result |),
-                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
+                        M.read (| M.get_constant "core::num::isqrt::MAX_RESULT" |)
                       |)
                     ]
                   |)
@@ -56912,10 +56888,7 @@ Module num.
                     |)
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.shr (|
-                    M.read (| M.get_constant (| "core::num::MAX" |) |),
-                    M.read (| z |)
-                  |)
+                  BinOp.Wrap.shr (| M.read (| M.get_constant "core::num::MAX" |), M.read (| z |) |)
                 |)
               |)))
           |)))
@@ -57180,7 +57153,7 @@ Module num.
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -57189,7 +57162,7 @@ Module num.
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -57519,7 +57492,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.U16 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -58476,7 +58449,7 @@ Module num.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "u32", "count_ones", [], [] |),
-              [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              [ M.read (| M.get_constant "core::num::MAX" |) ]
             |)
           |))).
     
@@ -60177,7 +60150,7 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             BinOp.eq (|
-                                              M.read (| M.get_constant (| "core::num::BITS" |) |),
+                                              M.read (| M.get_constant "core::num::BITS" |),
                                               Value.Integer IntegerKind.U32 128
                                             |)
                                           |)) in
@@ -60565,7 +60538,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -60742,7 +60715,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -60790,7 +60763,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -60967,7 +60940,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -61448,7 +61421,7 @@ Module num.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.get_constant (| "core::num::MAX" |)));
+                                    M.get_constant "core::num::MAX"));
                                 fun γ =>
                                   ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 0 |)))
                               ]
@@ -61521,7 +61494,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -61589,7 +61562,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -61792,7 +61765,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -61824,7 +61797,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -62629,7 +62602,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u32", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -62654,7 +62627,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u32", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -63188,7 +63161,7 @@ Module num.
                     [
                       BinOp.le (|
                         M.read (| result |),
-                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
+                        M.read (| M.get_constant "core::num::isqrt::MAX_RESULT" |)
                       |)
                     ]
                   |)
@@ -63547,10 +63520,7 @@ Module num.
                     |)
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.shr (|
-                    M.read (| M.get_constant (| "core::num::MAX" |) |),
-                    M.read (| z |)
-                  |)
+                  BinOp.Wrap.shr (| M.read (| M.get_constant "core::num::MAX" |), M.read (| z |) |)
                 |)
               |)))
           |)))
@@ -63815,7 +63785,7 @@ Module num.
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -63824,7 +63794,7 @@ Module num.
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -64129,7 +64099,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.U32 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -65068,7 +65038,7 @@ Module num.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "count_ones", [], [] |),
-              [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              [ M.read (| M.get_constant "core::num::MAX" |) ]
             |)
           |))).
     
@@ -66769,7 +66739,7 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             BinOp.eq (|
-                                              M.read (| M.get_constant (| "core::num::BITS" |) |),
+                                              M.read (| M.get_constant "core::num::BITS" |),
                                               Value.Integer IntegerKind.U32 128
                                             |)
                                           |)) in
@@ -67157,7 +67127,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -67334,7 +67304,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -67382,7 +67352,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -67559,7 +67529,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -68040,7 +68010,7 @@ Module num.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.get_constant (| "core::num::MAX" |)));
+                                    M.get_constant "core::num::MAX"));
                                 fun γ =>
                                   ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |)))
                               ]
@@ -68113,7 +68083,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -68181,7 +68151,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -68384,7 +68354,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -68416,7 +68386,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -69221,7 +69191,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u64", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -69246,7 +69216,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u64", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -69780,7 +69750,7 @@ Module num.
                     [
                       BinOp.le (|
                         M.read (| result |),
-                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
+                        M.read (| M.get_constant "core::num::isqrt::MAX_RESULT" |)
                       |)
                     ]
                   |)
@@ -70139,10 +70109,7 @@ Module num.
                     |)
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.shr (|
-                    M.read (| M.get_constant (| "core::num::MAX" |) |),
-                    M.read (| z |)
-                  |)
+                  BinOp.Wrap.shr (| M.read (| M.get_constant "core::num::MAX" |), M.read (| z |) |)
                 |)
               |)))
           |)))
@@ -70407,7 +70374,7 @@ Module num.
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -70416,7 +70383,7 @@ Module num.
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -70721,7 +70688,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.U64 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -71678,7 +71645,7 @@ Module num.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "u128", "count_ones", [], [] |),
-              [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              [ M.read (| M.get_constant "core::num::MAX" |) ]
             |)
           |))).
     
@@ -73379,7 +73346,7 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             BinOp.eq (|
-                                              M.read (| M.get_constant (| "core::num::BITS" |) |),
+                                              M.read (| M.get_constant "core::num::BITS" |),
                                               Value.Integer IntegerKind.U32 128
                                             |)
                                           |)) in
@@ -73773,7 +73740,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -73950,7 +73917,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -73998,7 +73965,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -74175,7 +74142,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -74664,7 +74631,7 @@ Module num.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.get_constant (| "core::num::MAX" |)));
+                                    M.get_constant "core::num::MAX"));
                                 fun γ =>
                                   ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 0 |)))
                               ]
@@ -74737,7 +74704,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -74805,7 +74772,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -75008,7 +74975,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -75040,7 +75007,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -75857,7 +75824,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u128", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -75882,7 +75849,7 @@ Module num.
                 M.get_associated_function (| Ty.path "u128", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -76416,7 +76383,7 @@ Module num.
                     [
                       BinOp.le (|
                         M.read (| result |),
-                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
+                        M.read (| M.get_constant "core::num::isqrt::MAX_RESULT" |)
                       |)
                     ]
                   |)
@@ -76775,10 +76742,7 @@ Module num.
                     |)
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.shr (|
-                    M.read (| M.get_constant (| "core::num::MAX" |) |),
-                    M.read (| z |)
-                  |)
+                  BinOp.Wrap.shr (| M.read (| M.get_constant "core::num::MAX" |), M.read (| z |) |)
                 |)
               |)))
           |)))
@@ -77043,7 +77007,7 @@ Module num.
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -77052,7 +77016,7 @@ Module num.
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -77266,7 +77230,7 @@ Module num.
                   M.alloc (|
                     BinOp.gt (|
                       Value.Integer IntegerKind.U128 0,
-                      M.read (| M.get_constant (| "core::num::MIN" |) |)
+                      M.read (| M.get_constant "core::num::MIN" |)
                     |)
                   |) in
                 let~ src :=
@@ -78223,7 +78187,7 @@ Module num.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "count_ones", [], [] |),
-              [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              [ M.read (| M.get_constant "core::num::MAX" |) ]
             |)
           |))).
     
@@ -79922,7 +79886,7 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             BinOp.eq (|
-                                              M.read (| M.get_constant (| "core::num::BITS" |) |),
+                                              M.read (| M.get_constant "core::num::BITS" |),
                                               Value.Integer IntegerKind.U32 128
                                             |)
                                           |)) in
@@ -80316,7 +80280,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -80498,7 +80462,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -80546,7 +80510,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -80728,7 +80692,7 @@ Module num.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| rhs |),
-                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                            M.read (| M.get_constant "core::num::BITS" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -81217,7 +81181,7 @@ Module num.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.get_constant (| "core::num::MAX" |)));
+                                    M.get_constant "core::num::MAX"));
                                 fun γ =>
                                   ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                               ]
@@ -81290,7 +81254,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -81358,7 +81322,7 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::num::MAX" |)))
+                    M.get_constant "core::num::MAX"))
               ]
             |)
           |)))
@@ -81563,7 +81527,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -81595,7 +81559,7 @@ Module num.
               BinOp.bit_and
                 (M.read (| rhs |))
                 (BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::num::BITS" |) |),
+                  M.read (| M.get_constant "core::num::BITS" |),
                   Value.Integer IntegerKind.U32 1
                 |))
             ]
@@ -82425,7 +82389,7 @@ Module num.
                 M.get_associated_function (| Ty.path "usize", "wrapping_shl", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -82450,7 +82414,7 @@ Module num.
                 M.get_associated_function (| Ty.path "usize", "wrapping_shr", [], [] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |);
-              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant (| "core::num::BITS" |) |) |)
+              BinOp.ge (| M.read (| rhs |), M.read (| M.get_constant "core::num::BITS" |) |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -82984,7 +82948,7 @@ Module num.
                     [
                       BinOp.le (|
                         M.read (| result |),
-                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
+                        M.read (| M.get_constant "core::num::isqrt::MAX_RESULT" |)
                       |)
                     ]
                   |)
@@ -83347,10 +83311,7 @@ Module num.
                     |)
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.shr (|
-                    M.read (| M.get_constant (| "core::num::MAX" |) |),
-                    M.read (| z |)
-                  |)
+                  BinOp.Wrap.shr (| M.read (| M.get_constant "core::num::MAX" |), M.read (| z |) |)
                 |)
               |)))
           |)))
@@ -83615,7 +83576,7 @@ Module num.
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MIN" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -83624,7 +83585,7 @@ Module num.
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::num::MAX" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

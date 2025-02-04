@@ -42,7 +42,7 @@ Module str.
               (Ty.path "u32")
               (BinOp.bit_and
                 (M.read (| byte |))
-                (M.read (| M.get_constant (| "core::str::validations::CONT_MASK" |) |))))))
+                (M.read (| M.get_constant "core::str::validations::CONT_MASK" |))))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -340,7 +340,7 @@ Module str.
                                     (BinOp.bit_and
                                       (M.read (| y |))
                                       (M.read (|
-                                        M.get_constant (| "core::str::validations::CONT_MASK" |)
+                                        M.get_constant "core::str::validations::CONT_MASK"
                                       |)));
                                   M.read (| z |)
                                 ]
@@ -839,7 +839,7 @@ Module str.
       M.IsFunction "core::str::validations::next_code_point_reverse" next_code_point_reverse.
     
     Definition value_NONASCII_MASK : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -847,6 +847,9 @@ Module str.
               [ Value.Integer IntegerKind.U8 128 ]
             |)
           |))).
+    
+    Axiom Constant_value_NONASCII_MASK :
+      (M.get_constant "core::str::validations::NONASCII_MASK") = value_NONASCII_MASK.
     
     (*
     const fn contains_nonascii(x: usize) -> bool {
@@ -861,7 +864,7 @@ Module str.
           BinOp.ne (|
             BinOp.bit_and
               (M.read (| x |))
-              (M.read (| M.get_constant (| "core::str::validations::NONASCII_MASK" |) |)),
+              (M.read (| M.get_constant "core::str::validations::NONASCII_MASK" |)),
             Value.Integer IntegerKind.Usize 0
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2062,9 +2065,7 @@ Module str.
                                                     LogicalOp.and (|
                                                       BinOp.ne (|
                                                         M.read (| align |),
-                                                        M.read (|
-                                                          M.get_constant (| "core::num::MAX" |)
-                                                        |)
+                                                        M.read (| M.get_constant "core::num::MAX" |)
                                                       |),
                                                       ltac:(M.monadic
                                                         (BinOp.eq (|
@@ -2372,7 +2373,7 @@ Module str.
       M.IsFunction "core::str::validations::run_utf8_validation" run_utf8_validation.
     
     Definition value_UTF8_CHAR_WIDTH : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.borrow (|
@@ -2646,6 +2647,9 @@ Module str.
             |)
           |))).
     
+    Axiom Constant_value_UTF8_CHAR_WIDTH :
+      (M.get_constant "core::str::validations::UTF8_CHAR_WIDTH") = value_UTF8_CHAR_WIDTH.
+    
     (*
     pub const fn utf8_char_width(b: u8) -> usize {
         UTF8_CHAR_WIDTH[b as usize] as usize
@@ -2660,9 +2664,7 @@ Module str.
             (Ty.path "usize")
             (M.read (|
               M.SubPointer.get_array_field (|
-                M.deref (|
-                  M.read (| M.get_constant (| "core::str::validations::UTF8_CHAR_WIDTH" |) |)
-                |),
+                M.deref (| M.read (| M.get_constant "core::str::validations::UTF8_CHAR_WIDTH" |) |),
                 M.alloc (| M.cast (Ty.path "usize") (M.read (| b |)) |)
               |)
             |))))
@@ -2673,6 +2675,9 @@ Module str.
       M.IsFunction "core::str::validations::utf8_char_width" utf8_char_width.
     
     Definition value_CONT_MASK : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 63 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 63 |))).
+    
+    Axiom Constant_value_CONT_MASK :
+      (M.get_constant "core::str::validations::CONT_MASK") = value_CONT_MASK.
   End validations.
 End str.

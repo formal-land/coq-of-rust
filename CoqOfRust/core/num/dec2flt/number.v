@@ -5,7 +5,7 @@ Module num.
   Module dec2flt.
     Module number.
       Definition value_INT_POW10 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               Value.Array
@@ -28,6 +28,9 @@ Module num.
                   Value.Integer IntegerKind.U64 1000000000000000
                 ]
             |))).
+      
+      Axiom Constant_value_INT_POW10 :
+        (M.get_constant "core::num::dec2flt::number::INT_POW10") = value_INT_POW10.
       
       (* StructRecord
         {
@@ -446,9 +449,7 @@ Module num.
                   LogicalOp.and (|
                     BinOp.le (|
                       M.read (|
-                        M.get_constant (|
-                          "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_FAST_PATH"
-                        |)
+                        M.get_constant "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_FAST_PATH"
                       |),
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -468,9 +469,8 @@ Module num.
                           |)
                         |),
                         M.read (|
-                          M.get_constant (|
+                          M.get_constant
                             "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_DISGUISED_FAST_PATH"
-                          |)
                         |)
                       |)))
                   |),
@@ -484,9 +484,7 @@ Module num.
                         |)
                       |),
                       M.read (|
-                        M.get_constant (|
-                          "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
-                        |)
+                        M.get_constant "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
                       |)
                     |)))
                 |),
@@ -607,9 +605,8 @@ Module num.
                                                   |)
                                                 |),
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
-                                                  |)
                                                 |)
                                               |)
                                             |)) in
@@ -760,9 +757,8 @@ Module num.
                                                 |)
                                               |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
-                                                |)
                                               |)
                                             |)
                                           |) in
@@ -801,9 +797,8 @@ Module num.
                                                         |);
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
-                                                            M.get_constant (|
-                                                              "core::num::dec2flt::number::INT_POW10"
-                                                            |),
+                                                            M.get_constant
+                                                              "core::num::dec2flt::number::INT_POW10",
                                                             M.alloc (|
                                                               M.cast
                                                                 (Ty.path "usize")
@@ -882,9 +877,8 @@ Module num.
                                                         BinOp.gt (|
                                                           M.read (| mantissa |),
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
-                                                            |)
                                                           |)
                                                         |)
                                                       |)) in
@@ -946,9 +940,8 @@ Module num.
                                                   M.cast
                                                     (Ty.path "usize")
                                                     (M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
-                                                      |)
                                                     |))
                                                 ]
                                               |)

@@ -4,10 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 Module bls12_381.
   Module msm.
     Definition value_MSM_MULTIPLIER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
+    
+    Axiom Constant_value_MSM_MULTIPLIER :
+      (M.get_constant "revm_precompile::bls12_381::msm::MSM_MULTIPLIER") = value_MSM_MULTIPLIER.
     
     Definition value_MSM_DISCOUNT_TABLE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.alloc (|
@@ -145,6 +148,10 @@ Module bls12_381.
             |)
           |))).
     
+    Axiom Constant_value_MSM_DISCOUNT_TABLE :
+      (M.get_constant "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE") =
+        value_MSM_DISCOUNT_TABLE.
+    
     (*
     pub(super) fn msm_required_gas(k: usize, multiplication_cost: u64) -> u64 {
         if k == 0 {
@@ -206,9 +213,8 @@ Module bls12_381.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
-                                    |)
                                   |)
                                 |)
                               |)
@@ -227,9 +233,7 @@ Module bls12_381.
                         M.SubPointer.get_array_field (|
                           M.deref (|
                             M.read (|
-                              M.get_constant (|
-                                "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
-                              |)
+                              M.get_constant "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
                             |)
                           |),
                           index
@@ -245,9 +249,7 @@ Module bls12_381.
                       |),
                       M.read (| multiplication_cost |)
                     |),
-                    M.read (|
-                      M.get_constant (| "revm_precompile::bls12_381::msm::MSM_MULTIPLIER" |)
-                    |)
+                    M.read (| M.get_constant "revm_precompile::bls12_381::msm::MSM_MULTIPLIER" |)
                   |)
                 |)
               |)))

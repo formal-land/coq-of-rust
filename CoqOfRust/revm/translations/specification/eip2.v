@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module eip2.
   Definition value_SECP256K1N_HALF : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
@@ -55,4 +55,7 @@ Module eip2.
             ]
           |)
         |))).
+  
+  Axiom Constant_value_SECP256K1N_HALF :
+    (M.get_constant "revm_specification::eip2::SECP256K1N_HALF") = value_SECP256K1N_HALF.
 End eip2.

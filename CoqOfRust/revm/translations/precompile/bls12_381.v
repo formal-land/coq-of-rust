@@ -38,19 +38,15 @@ Module bls12_381.
           [
             Value.Array
               [
-                M.read (| M.get_constant (| "revm_precompile::bls12_381::g1_add::PRECOMPILE" |) |);
-                M.read (| M.get_constant (| "revm_precompile::bls12_381::g1_mul::PRECOMPILE" |) |);
-                M.read (| M.get_constant (| "revm_precompile::bls12_381::g1_msm::PRECOMPILE" |) |);
-                M.read (| M.get_constant (| "revm_precompile::bls12_381::g2_add::PRECOMPILE" |) |);
-                M.read (| M.get_constant (| "revm_precompile::bls12_381::g2_mul::PRECOMPILE" |) |);
-                M.read (| M.get_constant (| "revm_precompile::bls12_381::g2_msm::PRECOMPILE" |) |);
-                M.read (| M.get_constant (| "revm_precompile::bls12_381::pairing::PRECOMPILE" |) |);
-                M.read (|
-                  M.get_constant (| "revm_precompile::bls12_381::map_fp_to_g1::PRECOMPILE" |)
-                |);
-                M.read (|
-                  M.get_constant (| "revm_precompile::bls12_381::map_fp2_to_g2::PRECOMPILE" |)
-                |)
+                M.read (| M.get_constant "revm_precompile::bls12_381::g1_add::PRECOMPILE" |);
+                M.read (| M.get_constant "revm_precompile::bls12_381::g1_mul::PRECOMPILE" |);
+                M.read (| M.get_constant "revm_precompile::bls12_381::g1_msm::PRECOMPILE" |);
+                M.read (| M.get_constant "revm_precompile::bls12_381::g2_add::PRECOMPILE" |);
+                M.read (| M.get_constant "revm_precompile::bls12_381::g2_mul::PRECOMPILE" |);
+                M.read (| M.get_constant "revm_precompile::bls12_381::g2_msm::PRECOMPILE" |);
+                M.read (| M.get_constant "revm_precompile::bls12_381::pairing::PRECOMPILE" |);
+                M.read (| M.get_constant "revm_precompile::bls12_381::map_fp_to_g1::PRECOMPILE" |);
+                M.read (| M.get_constant "revm_precompile::bls12_381::map_fp2_to_g2::PRECOMPILE" |)
               ]
           ]
         |)))

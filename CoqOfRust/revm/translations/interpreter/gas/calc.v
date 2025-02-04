@@ -118,28 +118,24 @@ Module gas.
                                     (BinOp.Wrap.add (|
                                       BinOp.Wrap.sub (|
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "revm_interpreter::gas::constants::SSTORE_RESET"
-                                          |)
                                         |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "revm_interpreter::gas::constants::COLD_SLOAD_COST"
-                                          |)
                                         |)
                                       |),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
-                                        |)
                                       |)
                                     |))
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.get_constant (|
-                                  "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS"
-                                |)))
+                                (M.get_constant
+                                  "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS"))
                           ]
                         |)
                       |) in
@@ -413,20 +409,17 @@ Module gas.
                                                             [
                                                               BinOp.Wrap.sub (|
                                                                 M.read (|
-                                                                  M.get_constant (|
+                                                                  M.get_constant
                                                                     "revm_interpreter::gas::constants::SSTORE_RESET"
-                                                                  |)
                                                                 |),
                                                                 M.read (|
-                                                                  M.get_constant (|
+                                                                  M.get_constant
                                                                     "revm_interpreter::gas::constants::COLD_SLOAD_COST"
-                                                                  |)
                                                                 |)
                                                               |);
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
-                                                                |)
                                                               |)
                                                             ]
                                                         |)));
@@ -436,9 +429,8 @@ Module gas.
                                                           Value.Tuple
                                                             [
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "revm_interpreter::gas::constants::SSTORE_RESET"
-                                                                |)
                                                               |);
                                                               M.call_closure (|
                                                                 M.get_function (|
@@ -505,9 +497,8 @@ Module gas.
                                                                       (Ty.path "i64")
                                                                       (BinOp.Wrap.sub (|
                                                                         M.read (|
-                                                                          M.get_constant (|
+                                                                          M.get_constant
                                                                             "revm_interpreter::gas::constants::SSTORE_SET"
-                                                                          |)
                                                                         |),
                                                                         M.read (| gas_sload |)
                                                                       |))
@@ -591,9 +582,8 @@ Module gas.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (|
-                              "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS"
-                            |)));
+                            M.get_constant
+                              "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS"));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 0 |)))
                       ]
                     |)))
@@ -621,7 +611,7 @@ Module gas.
               (M.call_closure (|
                 M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
-                  M.read (| M.get_constant (| "revm_interpreter::gas::constants::CREATE" |) |);
+                  M.read (| M.get_constant "revm_interpreter::gas::constants::CREATE" |);
                   M.read (|
                     M.match_operator (|
                       M.alloc (|
@@ -630,7 +620,7 @@ Module gas.
                           [
                             M.read (| len |);
                             M.read (|
-                              M.get_constant (| "revm_interpreter::gas::constants::KECCAK256WORD" |)
+                              M.get_constant "revm_interpreter::gas::constants::KECCAK256WORD"
                             |)
                           ]
                         |)
@@ -943,11 +933,7 @@ Module gas.
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
-                            [
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::gas::constants::EXP" |)
-                              |)
-                            ]
+                            [ M.read (| M.get_constant "revm_interpreter::gas::constants::EXP" |) ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1070,9 +1056,7 @@ Module gas.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_constant (|
-                                                "revm_interpreter::gas::constants::EXP"
-                                              |)
+                                              M.get_constant "revm_interpreter::gas::constants::EXP"
                                             |)
                                           ]
                                         |);
@@ -1330,7 +1314,7 @@ Module gas.
           M.call_closure (|
             M.get_function (| "revm_interpreter::gas::calc::copy_cost", [], [] |),
             [
-              M.read (| M.get_constant (| "revm_interpreter::gas::constants::VERYLOW" |) |);
+              M.read (| M.get_constant "revm_interpreter::gas::constants::VERYLOW" |);
               M.read (| len |)
             ]
           |)))
@@ -1476,9 +1460,7 @@ Module gas.
                           M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                           [
                             M.read (| len |);
-                            M.read (|
-                              M.get_constant (| "revm_interpreter::gas::constants::COPY" |)
-                            |)
+                            M.read (| M.get_constant "revm_interpreter::gas::constants::COPY" |)
                           ]
                         |)
                       |),
@@ -1536,9 +1518,7 @@ Module gas.
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                           [
-                            M.read (|
-                              M.get_constant (| "revm_interpreter::gas::constants::LOG" |)
-                            |);
+                            M.read (| M.get_constant "revm_interpreter::gas::constants::LOG" |);
                             M.read (|
                               M.match_operator (|
                                 M.alloc (|
@@ -1551,9 +1531,7 @@ Module gas.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::LOGDATA"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::LOGDATA"
                                       |);
                                       M.read (| len |)
                                     ]
@@ -1614,7 +1592,7 @@ Module gas.
                     |)
                   |);
                   BinOp.Wrap.mul (|
-                    M.read (| M.get_constant (| "revm_interpreter::gas::constants::LOGTOPIC" |) |),
+                    M.read (| M.get_constant "revm_interpreter::gas::constants::LOGTOPIC" |),
                     M.cast (Ty.path "u64") (M.read (| n |))
                   |)
                 ]
@@ -1640,7 +1618,7 @@ Module gas.
               (M.call_closure (|
                 M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
-                  M.read (| M.get_constant (| "revm_interpreter::gas::constants::KECCAK256" |) |);
+                  M.read (| M.get_constant "revm_interpreter::gas::constants::KECCAK256" |);
                   M.read (|
                     M.match_operator (|
                       M.alloc (|
@@ -1649,7 +1627,7 @@ Module gas.
                           [
                             M.read (| len |);
                             M.read (|
-                              M.get_constant (| "revm_interpreter::gas::constants::KECCAK256WORD" |)
+                              M.get_constant "revm_interpreter::gas::constants::KECCAK256WORD"
                             |)
                           ]
                         |)
@@ -1741,7 +1719,7 @@ Module gas.
                   [
                     M.read (| len |);
                     M.read (|
-                      M.get_constant (| "revm_interpreter::gas::constants::INITCODE_WORD_COST" |)
+                      M.get_constant "revm_interpreter::gas::constants::INITCODE_WORD_COST"
                     |)
                   ]
                 |)
@@ -1822,14 +1800,11 @@ Module gas.
                             (let γ := M.use is_cold in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (|
-                              "revm_interpreter::gas::constants::COLD_SLOAD_COST"
-                            |)));
+                            M.get_constant "revm_interpreter::gas::constants::COLD_SLOAD_COST"));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.get_constant (|
-                              "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
-                            |)))
+                            (M.get_constant
+                              "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"))
                       ]
                     |)));
                 fun γ =>
@@ -1859,9 +1834,7 @@ Module gas.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (|
-                              "revm_interpreter::gas::constants::ISTANBUL_SLOAD_GAS"
-                            |)));
+                            M.get_constant "revm_interpreter::gas::constants::ISTANBUL_SLOAD_GAS"));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -1987,9 +1960,8 @@ Module gas.
                                   BinOp.Wrap.add (|
                                     M.read (| β |),
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "revm_interpreter::gas::constants::COLD_SLOAD_COST"
-                                      |)
                                     |)
                                   |)
                                 |) in
@@ -2101,9 +2073,7 @@ Module gas.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (|
-                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SLOAD_GAS"
-                    |)));
+                    M.get_constant "revm_interpreter::gas::calc::istanbul_sstore_cost::SLOAD_GAS"));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -2148,7 +2118,7 @@ Module gas.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "revm_interpreter::gas::constants::SSTORE_SET" |)));
+                            M.get_constant "revm_interpreter::gas::constants::SSTORE_SET"));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -2179,14 +2149,12 @@ Module gas.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.get_constant (|
-                                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SSTORE_RESET_GAS"
-                                    |)));
+                                    M.get_constant
+                                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SSTORE_RESET_GAS"));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.get_constant (|
-                                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SLOAD_GAS"
-                                    |)))
+                                    (M.get_constant
+                                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SLOAD_GAS"))
                               ]
                             |)))
                       ]
@@ -2249,10 +2217,9 @@ Module gas.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (| "revm_interpreter::gas::constants::SSTORE_SET" |)));
+                    M.get_constant "revm_interpreter::gas::constants::SSTORE_SET"));
                 fun γ =>
-                  ltac:(M.monadic
-                    (M.get_constant (| "revm_interpreter::gas::constants::SSTORE_RESET" |)))
+                  ltac:(M.monadic (M.get_constant "revm_interpreter::gas::constants::SSTORE_RESET"))
               ]
             |)
           |)))
@@ -2491,9 +2458,8 @@ Module gas.
                         BinOp.Wrap.add (|
                           M.read (| β |),
                           M.read (|
-                            M.get_constant (|
+                            M.get_constant
                               "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST"
-                            |)
                           |)
                         |)
                       |)));
@@ -2647,7 +2613,7 @@ Module gas.
                           BinOp.Wrap.add (|
                             M.read (| β |),
                             M.read (|
-                              M.get_constant (| "revm_interpreter::gas::constants::CALLVALUE" |)
+                              M.get_constant "revm_interpreter::gas::constants::CALLVALUE"
                             |)
                           |)
                         |) in
@@ -2715,9 +2681,8 @@ Module gas.
                                           BinOp.Wrap.add (|
                                             M.read (| β |),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "revm_interpreter::gas::constants::NEWACCOUNT"
-                                              |)
                                             |)
                                           |)
                                         |) in
@@ -2734,9 +2699,7 @@ Module gas.
                                   BinOp.Wrap.add (|
                                     M.read (| β |),
                                     M.read (|
-                                      M.get_constant (|
-                                        "revm_interpreter::gas::constants::NEWACCOUNT"
-                                      |)
+                                      M.get_constant "revm_interpreter::gas::constants::NEWACCOUNT"
                                     |)
                                   |)
                                 |) in
@@ -2775,14 +2738,10 @@ Module gas.
                   ltac:(M.monadic
                     (let γ := M.use is_cold in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant (|
-                      "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST"
-                    |)));
+                    M.get_constant "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST"));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.get_constant (|
-                      "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
-                    |)))
+                    (M.get_constant "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"))
               ]
             |)
           |)))
@@ -2901,7 +2860,7 @@ Module gas.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                     [
-                      M.read (| M.get_constant (| "revm_interpreter::gas::constants::MEMORY" |) |);
+                      M.read (| M.get_constant "revm_interpreter::gas::constants::MEMORY" |);
                       M.read (| num_words |)
                     ]
                   |);
@@ -3105,7 +3064,7 @@ Module gas.
                   BinOp.Wrap.mul (|
                     M.read (| zero_data_len |),
                     M.read (|
-                      M.get_constant (| "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA" |)
+                      M.get_constant "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA"
                     |)
                   |)
                 |)
@@ -3205,9 +3164,8 @@ Module gas.
                                     BinOp.Wrap.mul (|
                                       M.cast (Ty.path "u64") (M.read (| account_num |)),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS"
-                                        |)
                                       |)
                                     |)
                                   |)
@@ -3221,9 +3179,8 @@ Module gas.
                                     BinOp.Wrap.mul (|
                                       M.cast (Ty.path "u64") (M.read (| storage_num |)),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
-                                        |)
                                       |)
                                     |)
                                   |)
@@ -3379,9 +3336,8 @@ Module gas.
                             BinOp.Wrap.mul (|
                               M.read (| authorization_list_num |),
                               M.read (|
-                                M.get_constant (|
+                                M.get_constant
                                   "revm_specification::eip7702::constants::PER_EMPTY_ACCOUNT_COST"
-                                |)
                               |)
                             |)
                           |)

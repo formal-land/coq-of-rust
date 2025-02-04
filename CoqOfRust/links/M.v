@@ -271,15 +271,12 @@ Module Ref.
     Arguments Immediate {_ _}.
     Arguments Mutable {_ _ _ _}.
 
-    Definition to_core {A : Set} `{Link A} (ref : t A) :
-        Pointer.Core.t Value.t A :=
+    Definition to_core {A : Set} `{Link A} (ref : t A) : Pointer.Core.t Value.t :=
       match ref with
       | Immediate value =>
         Pointer.Core.Immediate (φ value)
       | Mutable address path big_to_value projection injection =>
-        Pointer.Core.Mutable (Pointer.Mutable.Make
-          address path big_to_value projection injection
-        )
+        Pointer.Core.Mutable address path
       end.
   End Core.
 
@@ -289,12 +286,15 @@ Module Ref.
   Arguments t _ _ {_}.
 
   Definition to_core {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
-      Pointer.Core.t Value.t A :=
+      Pointer.Core.t Value.t :=
     Core.to_core ref.(core).
 
   Definition to_pointer {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
       Pointer.t Value.t :=
-    Pointer.Make kind (Φ A) φ (to_core ref).
+    {|
+      Pointer.kind := kind;
+      Pointer.core := to_core ref;
+    |}.
 
   Global Instance IsLink {kind : Pointer.Kind.t} {A : Set} `{Link A} : Link (t kind A) := {
     Φ := Ty.apply (Ty.path (Pointer.Kind.to_ty_path kind)) [] [Φ A];

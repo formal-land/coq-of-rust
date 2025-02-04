@@ -588,9 +588,7 @@ Module metadata.
               [
                 M.read (| __deserializer |);
                 M.read (| Value.String "Metadata" |);
-                M.read (|
-                  M.get_constant (| "move_core_types::metadata::_'1::deserialize::FIELDS" |)
-                |);
+                M.read (| M.get_constant "move_core_types::metadata::_'1::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::metadata::_'1::deserialize::__Visitor"
                   [

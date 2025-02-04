@@ -13,9 +13,7 @@ Module account_address.
             (Ty.path "array")
             [
               M.unevaluated_const
-                (M.get_constant (|
-                  "move_core_types::account_address::AccountAddress::0_discriminant"
-                |))
+                (M.get_constant "move_core_types::account_address::AccountAddress::0_discriminant")
             ]
             [ Ty.path "u8" ]
         ];
@@ -421,7 +419,7 @@ Module account_address.
                   addr,
                   M.alloc (|
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant (| "move_core_types::account_address::LENGTH" |) |),
+                      M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
                       Value.Integer IntegerKind.Usize 1
                     |)
                   |)
@@ -462,7 +460,7 @@ Module account_address.
                   addr,
                   M.alloc (|
                     BinOp.Wrap.sub (|
-                      M.read (| M.get_constant (| "move_core_types::account_address::LENGTH" |) |),
+                      M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
                       Value.Integer IntegerKind.Usize 1
                     |)
                   |)
@@ -918,7 +916,7 @@ Module account_address.
                                 M.read (| hex_len |),
                                 BinOp.Wrap.mul (|
                                   M.read (|
-                                    M.get_constant (| "move_core_types::account_address::LENGTH" |)
+                                    M.get_constant "move_core_types::account_address::LENGTH"
                                   |),
                                   Value.Integer IntegerKind.Usize 2
                                 |)
@@ -938,7 +936,7 @@ Module account_address.
                               [
                                 BinOp.Wrap.mul (|
                                   M.read (|
-                                    M.get_constant (| "move_core_types::account_address::LENGTH" |)
+                                    M.get_constant "move_core_types::account_address::LENGTH"
                                   |),
                                   Value.Integer IntegerKind.Usize 2
                                 |)
@@ -971,9 +969,8 @@ Module account_address.
                                           BinOp.Wrap.sub (|
                                             BinOp.Wrap.mul (|
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "move_core_types::account_address::LENGTH"
-                                                |)
                                               |),
                                               Value.Integer IntegerKind.Usize 2
                                             |),
@@ -1306,9 +1303,8 @@ Module account_address.
                       (Ty.path "array")
                       [
                         M.unevaluated_const
-                          (M.get_constant (|
-                            "move_core_types::account_address::AccountAddress::0_discriminant"
-                          |))
+                          (M.get_constant
+                            "move_core_types::account_address::AccountAddress::0_discriminant")
                       ]
                       [ Ty.path "u8" ]
                   ]
@@ -1500,9 +1496,8 @@ Module account_address.
                       (Ty.path "array")
                       [
                         M.unevaluated_const
-                          (M.get_constant (|
-                            "move_core_types::account_address::AccountAddress::0_discriminant"
-                          |))
+                          (M.get_constant
+                            "move_core_types::account_address::AccountAddress::0_discriminant")
                       ]
                       [ Ty.path "u8" ]
                   ]
@@ -1616,7 +1611,7 @@ Module account_address.
             [
               M.cast
                 (Ty.path "u64")
-                (M.read (| M.get_constant (| "move_core_types::account_address::LENGTH" |) |))
+                (M.read (| M.get_constant "move_core_types::account_address::LENGTH" |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1672,7 +1667,7 @@ Module account_address.
         (Ty.path "array")
         [
           M.unevaluated_const
-            (M.get_constant (| "move_core_types::account_address::Target_discriminant" |))
+            (M.get_constant "move_core_types::account_address::Target_discriminant")
         ]
         [ Ty.path "u8" ].
     
@@ -2835,10 +2830,7 @@ Module account_address.
           (* T *)
           Ty.apply
             (Ty.path "array")
-            [
-              M.unevaluated_const
-                (M.get_constant (| "move_core_types::account_address_discriminant" |))
-            ]
+            [ M.unevaluated_const (M.get_constant "move_core_types::account_address_discriminant") ]
             [ Ty.path "u8" ]
         ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
@@ -3025,8 +3017,7 @@ Module account_address.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "array")
-        [ M.unevaluated_const (M.get_constant (| "move_core_types::account_address_discriminant" |))
-        ]
+        [ M.unevaluated_const (M.get_constant "move_core_types::account_address_discriminant") ]
         [ Ty.path "u8" ].
     
     (*
@@ -3062,8 +3053,7 @@ Module account_address.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "array")
-        [ M.unevaluated_const (M.get_constant (| "move_core_types::account_address_discriminant" |))
-        ]
+        [ M.unevaluated_const (M.get_constant "move_core_types::account_address_discriminant") ]
         [ Ty.path "u8" ].
     
     (*
@@ -3875,9 +3865,7 @@ Module account_address.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant (|
-                                          "move_core_types::account_address::LENGTH"
-                                        |)
+                                        M.get_constant "move_core_types::account_address::LENGTH"
                                       |)
                                     |)
                                   |)

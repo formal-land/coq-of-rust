@@ -635,7 +635,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (| M.get_constant (| "core::num::wrapping::shift_max::u8" |) |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u8" |))))
                   ]
                 |)
               ]))
@@ -734,7 +734,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (| M.get_constant (| "core::num::wrapping::shift_max::u8" |) |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u8" |))))
                   ]
                 |)
               ]))
@@ -833,9 +833,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u16" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u16" |))))
                   ]
                 |)
               ]))
@@ -934,9 +932,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u16" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u16" |))))
                   ]
                 |)
               ]))
@@ -1035,9 +1031,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u32" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u32" |))))
                   ]
                 |)
               ]))
@@ -1136,9 +1130,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u32" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u32" |))))
                   ]
                 |)
               ]))
@@ -1237,9 +1229,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u64" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u64" |))))
                   ]
                 |)
               ]))
@@ -1338,9 +1328,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u64" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u64" |))))
                   ]
                 |)
               ]))
@@ -1439,9 +1427,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u128" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u128" |))))
                   ]
                 |)
               ]))
@@ -1540,9 +1526,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::u128" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::u128" |))))
                   ]
                 |)
               ]))
@@ -1642,7 +1626,7 @@ Module num.
                         (M.cast
                           (Ty.path "usize")
                           (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::platform::usize" |)
+                            M.get_constant "core::num::wrapping::shift_max::platform::usize"
                           |))))
                   ]
                 |)
@@ -1743,7 +1727,7 @@ Module num.
                         (M.cast
                           (Ty.path "usize")
                           (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::platform::usize" |)
+                            M.get_constant "core::num::wrapping::shift_max::platform::usize"
                           |))))
                   ]
                 |)
@@ -1843,7 +1827,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (| M.get_constant (| "core::num::wrapping::shift_max::i8" |) |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i8" |))))
                   ]
                 |)
               ]))
@@ -1942,7 +1926,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (| M.get_constant (| "core::num::wrapping::shift_max::i8" |) |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i8" |))))
                   ]
                 |)
               ]))
@@ -2041,9 +2025,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i16" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i16" |))))
                   ]
                 |)
               ]))
@@ -2142,9 +2124,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i16" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i16" |))))
                   ]
                 |)
               ]))
@@ -2243,9 +2223,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i32" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i32" |))))
                   ]
                 |)
               ]))
@@ -2344,9 +2322,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i32" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i32" |))))
                   ]
                 |)
               ]))
@@ -2445,9 +2421,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i64" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i64" |))))
                   ]
                 |)
               ]))
@@ -2546,9 +2520,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i64" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i64" |))))
                   ]
                 |)
               ]))
@@ -2647,9 +2619,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i128" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i128" |))))
                   ]
                 |)
               ]))
@@ -2748,9 +2718,7 @@ Module num.
                         (M.read (| other |))
                         (M.cast
                           (Ty.path "usize")
-                          (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::i128" |)
-                          |))))
+                          (M.read (| M.get_constant "core::num::wrapping::shift_max::i128" |))))
                   ]
                 |)
               ]))
@@ -2850,7 +2818,7 @@ Module num.
                         (M.cast
                           (Ty.path "usize")
                           (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::platform::isize" |)
+                            M.get_constant "core::num::wrapping::shift_max::platform::isize"
                           |))))
                   ]
                 |)
@@ -2951,7 +2919,7 @@ Module num.
                         (M.cast
                           (Ty.path "usize")
                           (M.read (|
-                            M.get_constant (| "core::num::wrapping::shift_max::platform::isize" |)
+                            M.get_constant "core::num::wrapping::shift_max::platform::isize"
                           |))))
                   ]
                 |)
@@ -18073,7 +18041,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -18086,15 +18054,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -18552,7 +18519,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -18565,15 +18532,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -19031,7 +18997,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -19044,15 +19010,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -19510,7 +19475,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -19523,15 +19488,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -19989,7 +19953,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -20002,15 +19966,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -20468,7 +20431,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -20481,15 +20444,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -20947,7 +20909,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -20960,15 +20922,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -21473,7 +21434,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -21486,15 +21447,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -21999,7 +21959,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -22012,15 +21972,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -22525,7 +22484,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -22538,15 +22497,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -23051,7 +23009,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -23064,15 +23022,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -23577,7 +23534,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -23590,15 +23547,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::wrapping::Wrapping"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -24106,14 +24062,20 @@ Module num.
     Module shift_max.
       Module platform.
         Definition usize : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::u64" |))).
+          M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::u64")).
+        
+        Axiom Constant_usize :
+          (M.get_constant "core::num::wrapping::shift_max::platform::usize") = usize.
         
         Definition isize : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i64" |))).
+          M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i64")).
+        
+        Axiom Constant_isize :
+          (M.get_constant "core::num::wrapping::shift_max::platform::isize") = isize.
       End platform.
       
       Definition i8 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -24125,8 +24087,10 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_i8 : (M.get_constant "core::num::wrapping::shift_max::i8") = i8.
+      
       Definition i16 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -24138,8 +24102,10 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_i16 : (M.get_constant "core::num::wrapping::shift_max::i16") = i16.
+      
       Definition i32 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -24151,8 +24117,10 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_i32 : (M.get_constant "core::num::wrapping::shift_max::i32") = i32.
+      
       Definition i64 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -24164,8 +24132,10 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_i64 : (M.get_constant "core::num::wrapping::shift_max::i64") = i64.
+      
       Definition i128 : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -24177,20 +24147,32 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_i128 : (M.get_constant "core::num::wrapping::shift_max::i128") = i128.
+      
       Definition u8 : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i8" |))).
+        M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i8")).
+      
+      Axiom Constant_u8 : (M.get_constant "core::num::wrapping::shift_max::u8") = u8.
       
       Definition u16 : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i16" |))).
+        M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i16")).
+      
+      Axiom Constant_u16 : (M.get_constant "core::num::wrapping::shift_max::u16") = u16.
       
       Definition u32 : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i32" |))).
+        M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i32")).
+      
+      Axiom Constant_u32 : (M.get_constant "core::num::wrapping::shift_max::u32") = u32.
       
       Definition u64 : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i64" |))).
+        M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i64")).
+      
+      Axiom Constant_u64 : (M.get_constant "core::num::wrapping::shift_max::u64") = u64.
       
       Definition u128 : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::wrapping::shift_max::i128" |))).
+        M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i128")).
+      
+      Axiom Constant_u128 : (M.get_constant "core::num::wrapping::shift_max::u128") = u128.
     End shift_max.
   End wrapping.
 End num.

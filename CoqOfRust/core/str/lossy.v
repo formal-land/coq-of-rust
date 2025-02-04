@@ -2145,9 +2145,8 @@ Module str.
                                                                         IntegerKind.U8
                                                                         192),
                                                                     M.read (|
-                                                                      M.get_constant (|
+                                                                      M.get_constant
                                                                         "core::str::lossy::next::TAG_CONT_U8"
-                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)) in
@@ -2339,9 +2338,8 @@ Module str.
                                                                         IntegerKind.U8
                                                                         192),
                                                                     M.read (|
-                                                                      M.get_constant (|
+                                                                      M.get_constant
                                                                         "core::str::lossy::next::TAG_CONT_U8"
-                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)) in
@@ -2520,9 +2518,8 @@ Module str.
                                                                         IntegerKind.U8
                                                                         192),
                                                                     M.read (|
-                                                                      M.get_constant (|
+                                                                      M.get_constant
                                                                         "core::str::lossy::next::TAG_CONT_U8"
-                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)) in
@@ -2592,9 +2589,8 @@ Module str.
                                                                         IntegerKind.U8
                                                                         192),
                                                                     M.read (|
-                                                                      M.get_constant (|
+                                                                      M.get_constant
                                                                         "core::str::lossy::next::TAG_CONT_U8"
-                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)) in

@@ -481,9 +481,7 @@ Module vec.
                           M.use
                             (M.alloc (|
                               UnOp.not (|
-                                M.read (|
-                                  M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
-                                |)
+                                M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
                               |)
                             |)) in
                         let _ :=
@@ -1131,8 +1129,7 @@ Module vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use
-                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|

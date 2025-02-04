@@ -3,31 +3,58 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module time.
   Definition value_NANOS_PER_SEC : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000000 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000000 |))).
+  
+  Axiom Constant_value_NANOS_PER_SEC :
+    (M.get_constant "core::time::NANOS_PER_SEC") = value_NANOS_PER_SEC.
   
   Definition value_NANOS_PER_MILLI : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
+  
+  Axiom Constant_value_NANOS_PER_MILLI :
+    (M.get_constant "core::time::NANOS_PER_MILLI") = value_NANOS_PER_MILLI.
   
   Definition value_NANOS_PER_MICRO : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
+  
+  Axiom Constant_value_NANOS_PER_MICRO :
+    (M.get_constant "core::time::NANOS_PER_MICRO") = value_NANOS_PER_MICRO.
   
   Definition value_MILLIS_PER_SEC : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
+  
+  Axiom Constant_value_MILLIS_PER_SEC :
+    (M.get_constant "core::time::MILLIS_PER_SEC") = value_MILLIS_PER_SEC.
   
   Definition value_MICROS_PER_SEC : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000000 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000000 |))).
+  
+  Axiom Constant_value_MICROS_PER_SEC :
+    (M.get_constant "core::time::MICROS_PER_SEC") = value_MICROS_PER_SEC.
   
   Definition value_SECS_PER_MINUTE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
+  
+  Axiom Constant_value_SECS_PER_MINUTE :
+    (M.get_constant "core::time::SECS_PER_MINUTE") = value_SECS_PER_MINUTE.
   
   Definition value_MINS_PER_HOUR : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
+  
+  Axiom Constant_value_MINS_PER_HOUR :
+    (M.get_constant "core::time::MINS_PER_HOUR") = value_MINS_PER_HOUR.
   
   Definition value_HOURS_PER_DAY : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 24 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 24 |))).
+  
+  Axiom Constant_value_HOURS_PER_DAY :
+    (M.get_constant "core::time::HOURS_PER_DAY") = value_HOURS_PER_DAY.
   
   Definition value_DAYS_PER_WEEK : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 7 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 7 |))).
+  
+  Axiom Constant_value_DAYS_PER_WEEK :
+    (M.get_constant "core::time::DAYS_PER_WEEK") = value_DAYS_PER_WEEK.
   
   (* StructTuple
     {
@@ -330,7 +357,7 @@ Module time.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::time::ZERO" |) |)))
+      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::time::ZERO" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -958,9 +985,9 @@ Module time.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
               [
-                M.read (| M.get_constant (| "core::num::MAX" |) |);
+                M.read (| M.get_constant "core::num::MAX" |);
                 BinOp.Wrap.sub (|
-                  M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |),
+                  M.read (| M.get_constant "core::time::NANOS_PER_SEC" |),
                   Value.Integer IntegerKind.U32 1
                 |)
               ]
@@ -1003,7 +1030,7 @@ Module time.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| nanos |),
-                            M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)
+                            M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1030,7 +1057,7 @@ Module time.
                                   (Ty.path "u64")
                                   (BinOp.Wrap.div (|
                                     M.read (| nanos |),
-                                    M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)
+                                    M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
                                   |))
                               ]
                             |)
@@ -1091,7 +1118,7 @@ Module time.
                       M.alloc (|
                         BinOp.Wrap.rem (|
                           M.read (| nanos |),
-                          M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)
+                          M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
                         |)
                       |) in
                     M.alloc (|
@@ -1123,9 +1150,7 @@ Module time.
           (let secs := M.alloc (| secs |) in
           Value.StructRecord
             "core::time::Duration"
-            [
-              ("secs", M.read (| secs |));
-              ("nanos", M.read (| M.get_constant (| "core::time::ZERO" |) |))
+            [ ("secs", M.read (| secs |)); ("nanos", M.read (| M.get_constant "core::time::ZERO" |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1153,7 +1178,7 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.div (|
                   M.read (| millis |),
-                  M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |)
+                  M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |)
                 |)
               |) in
             let~ subsec_millis :=
@@ -1162,7 +1187,7 @@ Module time.
                   (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| millis |),
-                    M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |)
+                    M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |)
                   |))
               |) in
             let~ subsec_nanos :=
@@ -1172,7 +1197,7 @@ Module time.
                   [
                     BinOp.Wrap.mul (|
                       M.read (| subsec_millis |),
-                      M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
+                      M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
                     |)
                   ]
               |) in
@@ -1208,7 +1233,7 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.div (|
                   M.read (| micros |),
-                  M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |)
+                  M.read (| M.get_constant "core::time::MICROS_PER_SEC" |)
                 |)
               |) in
             let~ subsec_micros :=
@@ -1217,7 +1242,7 @@ Module time.
                   (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| micros |),
-                    M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |)
+                    M.read (| M.get_constant "core::time::MICROS_PER_SEC" |)
                   |))
               |) in
             let~ subsec_nanos :=
@@ -1227,7 +1252,7 @@ Module time.
                   [
                     BinOp.Wrap.mul (|
                       M.read (| subsec_micros |),
-                      M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |)
+                      M.read (| M.get_constant "core::time::NANOS_PER_MICRO" |)
                     |)
                   ]
               |) in
@@ -1263,7 +1288,7 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.div (|
                   M.read (| nanos |),
-                  M.read (| M.get_constant (| "core::time::from_nanos::NANOS_PER_SEC" |) |)
+                  M.read (| M.get_constant "core::time::from_nanos::NANOS_PER_SEC" |)
                 |)
               |) in
             let~ subsec_nanos :=
@@ -1272,7 +1297,7 @@ Module time.
                   (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| nanos |),
-                    M.read (| M.get_constant (| "core::time::from_nanos::NANOS_PER_SEC" |) |)
+                    M.read (| M.get_constant "core::time::from_nanos::NANOS_PER_SEC" |)
                   |))
               |) in
             let~ subsec_nanos :=
@@ -1317,18 +1342,16 @@ Module time.
                             BinOp.gt (|
                               M.read (| weeks |),
                               BinOp.Wrap.div (|
-                                M.read (| M.get_constant (| "core::num::MAX" |) |),
+                                M.read (| M.get_constant "core::num::MAX" |),
                                 BinOp.Wrap.mul (|
                                   BinOp.Wrap.mul (|
                                     BinOp.Wrap.mul (|
-                                      M.read (|
-                                        M.get_constant (| "core::time::SECS_PER_MINUTE" |)
-                                      |),
-                                      M.read (| M.get_constant (| "core::time::MINS_PER_HOUR" |) |)
+                                      M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |),
+                                      M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
                                     |),
-                                    M.read (| M.get_constant (| "core::time::HOURS_PER_DAY" |) |)
+                                    M.read (| M.get_constant "core::time::HOURS_PER_DAY" |)
                                   |),
-                                  M.read (| M.get_constant (| "core::time::DAYS_PER_WEEK" |) |)
+                                  M.read (| M.get_constant "core::time::DAYS_PER_WEEK" |)
                                 |)
                               |)
                             |)
@@ -1381,13 +1404,13 @@ Module time.
                       BinOp.Wrap.mul (|
                         BinOp.Wrap.mul (|
                           M.read (| weeks |),
-                          M.read (| M.get_constant (| "core::time::MINS_PER_HOUR" |) |)
+                          M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
                         |),
-                        M.read (| M.get_constant (| "core::time::SECS_PER_MINUTE" |) |)
+                        M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
                       |),
-                      M.read (| M.get_constant (| "core::time::HOURS_PER_DAY" |) |)
+                      M.read (| M.get_constant "core::time::HOURS_PER_DAY" |)
                     |),
-                    M.read (| M.get_constant (| "core::time::DAYS_PER_WEEK" |) |)
+                    M.read (| M.get_constant "core::time::DAYS_PER_WEEK" |)
                   |)
                 ]
               |)
@@ -1425,13 +1448,13 @@ Module time.
                             BinOp.gt (|
                               M.read (| days |),
                               BinOp.Wrap.div (|
-                                M.read (| M.get_constant (| "core::num::MAX" |) |),
+                                M.read (| M.get_constant "core::num::MAX" |),
                                 BinOp.Wrap.mul (|
                                   BinOp.Wrap.mul (|
-                                    M.read (| M.get_constant (| "core::time::SECS_PER_MINUTE" |) |),
-                                    M.read (| M.get_constant (| "core::time::MINS_PER_HOUR" |) |)
+                                    M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |),
+                                    M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
                                   |),
-                                  M.read (| M.get_constant (| "core::time::HOURS_PER_DAY" |) |)
+                                  M.read (| M.get_constant "core::time::HOURS_PER_DAY" |)
                                 |)
                               |)
                             |)
@@ -1483,11 +1506,11 @@ Module time.
                     BinOp.Wrap.mul (|
                       BinOp.Wrap.mul (|
                         M.read (| days |),
-                        M.read (| M.get_constant (| "core::time::MINS_PER_HOUR" |) |)
+                        M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
                       |),
-                      M.read (| M.get_constant (| "core::time::SECS_PER_MINUTE" |) |)
+                      M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
                     |),
-                    M.read (| M.get_constant (| "core::time::HOURS_PER_DAY" |) |)
+                    M.read (| M.get_constant "core::time::HOURS_PER_DAY" |)
                   |)
                 ]
               |)
@@ -1525,10 +1548,10 @@ Module time.
                             BinOp.gt (|
                               M.read (| hours |),
                               BinOp.Wrap.div (|
-                                M.read (| M.get_constant (| "core::num::MAX" |) |),
+                                M.read (| M.get_constant "core::num::MAX" |),
                                 BinOp.Wrap.mul (|
-                                  M.read (| M.get_constant (| "core::time::SECS_PER_MINUTE" |) |),
-                                  M.read (| M.get_constant (| "core::time::MINS_PER_HOUR" |) |)
+                                  M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |),
+                                  M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
                                 |)
                               |)
                             |)
@@ -1579,9 +1602,9 @@ Module time.
                   BinOp.Wrap.mul (|
                     BinOp.Wrap.mul (|
                       M.read (| hours |),
-                      M.read (| M.get_constant (| "core::time::MINS_PER_HOUR" |) |)
+                      M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
                     |),
-                    M.read (| M.get_constant (| "core::time::SECS_PER_MINUTE" |) |)
+                    M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
                   |)
                 ]
               |)
@@ -1619,8 +1642,8 @@ Module time.
                             BinOp.gt (|
                               M.read (| mins |),
                               BinOp.Wrap.div (|
-                                M.read (| M.get_constant (| "core::num::MAX" |) |),
-                                M.read (| M.get_constant (| "core::time::SECS_PER_MINUTE" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |),
+                                M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
                               |)
                             |)
                           |)) in
@@ -1669,7 +1692,7 @@ Module time.
                 [
                   BinOp.Wrap.mul (|
                     M.read (| mins |),
-                    M.read (| M.get_constant (| "core::time::SECS_PER_MINUTE" |) |)
+                    M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
                   |)
                 ]
               |)
@@ -1766,7 +1789,7 @@ Module time.
                 0
               |)
             |),
-            M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
+            M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1796,7 +1819,7 @@ Module time.
                 0
               |)
             |),
-            M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |)
+            M.read (| M.get_constant "core::time::NANOS_PER_MICRO" |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1851,9 +1874,7 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast
-                (Ty.path "u128")
-                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
+              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |))
             |),
             M.cast
               (Ty.path "u128")
@@ -1869,7 +1890,7 @@ Module time.
                     0
                   |)
                 |),
-                M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
+                M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
               |))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1898,9 +1919,7 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast
-                (Ty.path "u128")
-                (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |))
+              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::time::MICROS_PER_SEC" |))
             |),
             M.cast
               (Ty.path "u128")
@@ -1916,7 +1935,7 @@ Module time.
                     0
                   |)
                 |),
-                M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |)
+                M.read (| M.get_constant "core::time::NANOS_PER_MICRO" |)
               |))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1945,9 +1964,7 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast
-                (Ty.path "u128")
-                (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
             |),
             M.cast
               (Ty.path "u128")
@@ -2139,9 +2156,7 @@ Module time.
                                       (M.alloc (|
                                         BinOp.ge (|
                                           M.read (| nanos |),
-                                          M.read (|
-                                            M.get_constant (| "core::time::NANOS_PER_SEC" |)
-                                          |)
+                                          M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
                                         |)
                                       |)) in
                                   let _ :=
@@ -2155,9 +2170,7 @@ Module time.
                                       β,
                                       BinOp.Wrap.sub (|
                                         M.read (| β |),
-                                        M.read (|
-                                          M.get_constant (| "core::time::NANOS_PER_SEC" |)
-                                        |)
+                                        M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
                                       |)
                                     |) in
                                   M.match_operator (|
@@ -2228,9 +2241,7 @@ Module time.
                                                     BinOp.lt (|
                                                       M.read (| nanos |),
                                                       M.read (|
-                                                        M.get_constant (|
-                                                          "core::time::NANOS_PER_SEC"
-                                                        |)
+                                                        M.get_constant "core::time::NANOS_PER_SEC"
                                                       |)
                                                     |)
                                                   |)
@@ -2332,7 +2343,7 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::time::MAX" |)))
+                    M.get_constant "core::time::MAX"))
               ]
             |)
           |)))
@@ -2514,7 +2525,7 @@ Module time.
                                                     |)
                                                   |),
                                                   M.read (|
-                                                    M.get_constant (| "core::time::NANOS_PER_SEC" |)
+                                                    M.get_constant "core::time::NANOS_PER_SEC"
                                                   |)
                                                 |),
                                                 M.read (|
@@ -2573,9 +2584,7 @@ Module time.
                                                     BinOp.lt (|
                                                       M.read (| nanos |),
                                                       M.read (|
-                                                        M.get_constant (|
-                                                          "core::time::NANOS_PER_SEC"
-                                                        |)
+                                                        M.get_constant "core::time::NANOS_PER_SEC"
                                                       |)
                                                     |)
                                                   |)
@@ -2677,7 +2686,7 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::time::ZERO" |)))
+                    M.get_constant "core::time::ZERO"))
               ]
             |)
           |)))
@@ -2737,7 +2746,7 @@ Module time.
                       M.read (| total_nanos |),
                       M.cast
                         (Ty.path "u64")
-                        (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                        (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                     |)
                   |) in
                 let~ nanos :=
@@ -2748,7 +2757,7 @@ Module time.
                         M.read (| total_nanos |),
                         M.cast
                           (Ty.path "u64")
-                          (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                          (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                       |))
                   |) in
                 let~ _ :=
@@ -2837,9 +2846,8 @@ Module time.
                                                                     BinOp.lt (|
                                                                       M.read (| nanos |),
                                                                       M.read (|
-                                                                        M.get_constant (|
+                                                                        M.get_constant
                                                                           "core::time::NANOS_PER_SEC"
-                                                                        |)
                                                                       |)
                                                                     |)
                                                                   |)
@@ -2949,7 +2957,7 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant (| "core::time::MAX" |)))
+                    M.get_constant "core::time::MAX"))
               ]
             |)
           |)))
@@ -3080,9 +3088,7 @@ Module time.
                                                   M.cast
                                                     (Ty.path "u64")
                                                     (M.read (|
-                                                      M.get_constant (|
-                                                        "core::time::NANOS_PER_SEC"
-                                                      |)
+                                                      M.get_constant "core::time::NANOS_PER_SEC"
                                                     |))
                                                 |),
                                                 M.cast (Ty.path "u64") (M.read (| extra_nanos |))
@@ -3116,9 +3122,8 @@ Module time.
                                                                 BinOp.lt (|
                                                                   M.read (| nanos |),
                                                                   M.read (|
-                                                                    M.get_constant (|
+                                                                    M.get_constant
                                                                       "core::time::NANOS_PER_SEC"
-                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
@@ -3217,7 +3222,7 @@ Module time.
                     0
                   |)
                 |)),
-              M.cast (Ty.path "f64") (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+              M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3259,7 +3264,7 @@ Module time.
                     0
                   |)
                 |)),
-              M.cast (Ty.path "f32") (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+              M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3289,9 +3294,7 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast
-                (Ty.path "f64")
-                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
+              M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |))
             |),
             BinOp.Wrap.div (|
               M.cast
@@ -3307,9 +3310,7 @@ Module time.
                     0
                   |)
                 |)),
-              M.cast
-                (Ty.path "f64")
-                (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
+              M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3340,9 +3341,7 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast
-                (Ty.path "f32")
-                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
+              M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |))
             |),
             BinOp.Wrap.div (|
               M.cast
@@ -3358,9 +3357,7 @@ Module time.
                     0
                   |)
                 |)),
-              M.cast
-                (Ty.path "f32")
-                (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
+              M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3688,9 +3685,7 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.cast
-                      (Ty.path "f64")
-                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                   |),
                   M.cast
                     (Ty.path "f64")
@@ -3720,9 +3715,7 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.cast
-                      (Ty.path "f64")
-                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                   |),
                   M.cast
                     (Ty.path "f64")
@@ -3774,9 +3767,7 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.cast
-                      (Ty.path "f32")
-                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                   |),
                   M.cast
                     (Ty.path "f32")
@@ -3806,9 +3797,7 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.cast
-                      (Ty.path "f32")
-                      (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                    M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                   |),
                   M.cast
                     (Ty.path "f32")
@@ -3900,13 +3889,9 @@ Module time.
                     BinOp.bit_or
                       (BinOp.bit_and
                         (M.read (| bits |))
-                        (M.read (|
-                          M.get_constant (| "core::time::try_from_secs_f32::MANT_MASK" |)
-                        |)))
+                        (M.read (| M.get_constant "core::time::try_from_secs_f32::MANT_MASK" |)))
                       (BinOp.Wrap.add (|
-                        M.read (|
-                          M.get_constant (| "core::time::try_from_secs_f32::MANT_MASK" |)
-                        |),
+                        M.read (| M.get_constant "core::time::try_from_secs_f32::MANT_MASK" |),
                         Value.Integer IntegerKind.U32 1
                       |))
                   |) in
@@ -3917,10 +3902,8 @@ Module time.
                         (Ty.path "i16")
                         (BinOp.bit_and
                           (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 23 |))
-                          (M.read (|
-                            M.get_constant (| "core::time::try_from_secs_f32::EXP_MASK" |)
-                          |))),
-                      M.read (| M.get_constant (| "core::time::try_from_secs_f32::MIN_EXP" |) |)
+                          (M.read (| M.get_constant "core::time::try_from_secs_f32::EXP_MASK" |))),
+                      M.read (| M.get_constant "core::time::try_from_secs_f32::MIN_EXP" |)
                     |)
                   |) in
                 M.match_operator (|
@@ -4001,10 +3984,7 @@ Module time.
                                             [],
                                             []
                                           |),
-                                          [
-                                            M.read (|
-                                              M.get_constant (| "core::time::NANOS_PER_SEC" |)
-                                            |)
+                                          [ M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
                                           ]
                                         |),
                                         M.call_closure (|
@@ -4113,9 +4093,7 @@ Module time.
                                                     (BinOp.ne (|
                                                       M.read (| nanos |),
                                                       M.read (|
-                                                        M.get_constant (|
-                                                          "core::time::NANOS_PER_SEC"
-                                                        |)
+                                                        M.get_constant "core::time::NANOS_PER_SEC"
                                                       |)
                                                     |)))
                                                 |)
@@ -4203,9 +4181,8 @@ Module time.
                                                       M.read (| exp |)
                                                     |))
                                                     (M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::time::try_from_secs_f32::MANT_MASK"
-                                                      |)
                                                     |))
                                                 ]
                                               |)
@@ -4227,9 +4204,7 @@ Module time.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_constant (|
-                                                        "core::time::NANOS_PER_SEC"
-                                                      |)
+                                                      M.get_constant "core::time::NANOS_PER_SEC"
                                                     |)
                                                   ]
                                                 |),
@@ -4333,9 +4308,8 @@ Module time.
                                                             (BinOp.ne (|
                                                               M.read (| nanos |),
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "core::time::NANOS_PER_SEC"
-                                                                |)
                                                               |)
                                                             |)))
                                                         |)
@@ -4541,13 +4515,9 @@ Module time.
                     BinOp.bit_or
                       (BinOp.bit_and
                         (M.read (| bits |))
-                        (M.read (|
-                          M.get_constant (| "core::time::try_from_secs_f64::MANT_MASK" |)
-                        |)))
+                        (M.read (| M.get_constant "core::time::try_from_secs_f64::MANT_MASK" |)))
                       (BinOp.Wrap.add (|
-                        M.read (|
-                          M.get_constant (| "core::time::try_from_secs_f64::MANT_MASK" |)
-                        |),
+                        M.read (| M.get_constant "core::time::try_from_secs_f64::MANT_MASK" |),
                         Value.Integer IntegerKind.U64 1
                       |))
                   |) in
@@ -4558,10 +4528,8 @@ Module time.
                         (Ty.path "i16")
                         (BinOp.bit_and
                           (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 52 |))
-                          (M.read (|
-                            M.get_constant (| "core::time::try_from_secs_f64::EXP_MASK" |)
-                          |))),
-                      M.read (| M.get_constant (| "core::time::try_from_secs_f64::MIN_EXP" |) |)
+                          (M.read (| M.get_constant "core::time::try_from_secs_f64::EXP_MASK" |))),
+                      M.read (| M.get_constant "core::time::try_from_secs_f64::MIN_EXP" |)
                     |)
                   |) in
                 M.match_operator (|
@@ -4642,10 +4610,7 @@ Module time.
                                             [],
                                             []
                                           |),
-                                          [
-                                            M.read (|
-                                              M.get_constant (| "core::time::NANOS_PER_SEC" |)
-                                            |)
+                                          [ M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
                                           ]
                                         |),
                                         M.call_closure (|
@@ -4754,9 +4719,7 @@ Module time.
                                                     (BinOp.ne (|
                                                       M.read (| nanos |),
                                                       M.read (|
-                                                        M.get_constant (|
-                                                          "core::time::NANOS_PER_SEC"
-                                                        |)
+                                                        M.get_constant "core::time::NANOS_PER_SEC"
                                                       |)
                                                     |)))
                                                 |)
@@ -4844,9 +4807,8 @@ Module time.
                                                       M.read (| exp |)
                                                     |))
                                                     (M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::time::try_from_secs_f64::MANT_MASK"
-                                                      |)
                                                     |))
                                                 ]
                                               |)
@@ -4868,9 +4830,7 @@ Module time.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_constant (|
-                                                        "core::time::NANOS_PER_SEC"
-                                                      |)
+                                                      M.get_constant "core::time::NANOS_PER_SEC"
                                                     |)
                                                   ]
                                                 |),
@@ -4974,9 +4934,8 @@ Module time.
                                                             (BinOp.ne (|
                                                               M.read (| nanos |),
                                                               M.read (|
-                                                                M.get_constant (|
+                                                                M.get_constant
                                                                   "core::time::NANOS_PER_SEC"
-                                                                |)
                                                               |)
                                                             |)))
                                                         |)
@@ -5737,9 +5696,8 @@ Module time.
                                                                   M.cast
                                                                     (Ty.path "u64")
                                                                     (M.read (|
-                                                                      M.get_constant (|
+                                                                      M.get_constant
                                                                         "core::time::NANOS_PER_SEC"
-                                                                      |)
                                                                     |))
                                                                 |)
                                                               ]
@@ -5763,9 +5721,8 @@ Module time.
                                                           M.cast
                                                             (Ty.path "u64")
                                                             (M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "core::time::NANOS_PER_SEC"
-                                                              |)
                                                             |))
                                                         |),
                                                         M.cast
@@ -5813,7 +5770,7 @@ Module time.
                           M.read (| total_nanos |),
                           M.cast
                             (Ty.path "u64")
-                            (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                            (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                         |)
                       ]
                     |);
@@ -5829,9 +5786,7 @@ Module time.
                 total_nanos,
                 BinOp.Wrap.rem (|
                   M.read (| total_nanos |),
-                  M.cast
-                    (Ty.path "u64")
-                    (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                  M.cast (Ty.path "u64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                 |)
               |) in
             M.alloc (|
@@ -6050,9 +6005,8 @@ Module time.
                                                                   M.cast
                                                                     (Ty.path "u64")
                                                                     (M.read (|
-                                                                      M.get_constant (|
+                                                                      M.get_constant
                                                                         "core::time::NANOS_PER_SEC"
-                                                                      |)
                                                                     |))
                                                                 |)
                                                               ]
@@ -6076,9 +6030,8 @@ Module time.
                                                           M.cast
                                                             (Ty.path "u64")
                                                             (M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "core::time::NANOS_PER_SEC"
-                                                              |)
                                                             |))
                                                         |),
                                                         M.cast
@@ -6126,7 +6079,7 @@ Module time.
                           M.read (| total_nanos |),
                           M.cast
                             (Ty.path "u64")
-                            (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                            (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                         |)
                       ]
                     |);
@@ -6142,9 +6095,7 @@ Module time.
                 total_nanos,
                 BinOp.Wrap.rem (|
                   M.read (| total_nanos |),
-                  M.cast
-                    (Ty.path "u64")
-                    (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                  M.cast (Ty.path "u64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
                 |)
               |) in
             M.alloc (|
@@ -6443,7 +6394,7 @@ Module time.
                             |)
                           |);
                           BinOp.Wrap.div (|
-                            M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |),
+                            M.read (| M.get_constant "core::time::NANOS_PER_SEC" |),
                             Value.Integer IntegerKind.U32 10
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| prefix |) |) |);
@@ -6476,7 +6427,7 @@ Module time.
                                         0
                                       |)
                                     |),
-                                    M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
+                                    M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
                                   |)
                                 |)) in
                             let _ :=
@@ -6500,9 +6451,7 @@ Module time.
                                           0
                                         |)
                                       |),
-                                      M.read (|
-                                        M.get_constant (| "core::time::NANOS_PER_MILLI" |)
-                                      |)
+                                      M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
                                     |));
                                   BinOp.Wrap.rem (|
                                     M.read (|
@@ -6516,10 +6465,10 @@ Module time.
                                         0
                                       |)
                                     |),
-                                    M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
+                                    M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
                                   |);
                                   BinOp.Wrap.div (|
-                                    M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |),
+                                    M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |),
                                     Value.Integer IntegerKind.U32 10
                                   |);
                                   M.borrow (|
@@ -6556,7 +6505,7 @@ Module time.
                                               |)
                                             |),
                                             M.read (|
-                                              M.get_constant (| "core::time::NANOS_PER_MICRO" |)
+                                              M.get_constant "core::time::NANOS_PER_MICRO"
                                             |)
                                           |)
                                         |)) in
@@ -6593,7 +6542,7 @@ Module time.
                                                 |)
                                               |),
                                               M.read (|
-                                                M.get_constant (| "core::time::NANOS_PER_MICRO" |)
+                                                M.get_constant "core::time::NANOS_PER_MICRO"
                                               |)
                                             |));
                                           BinOp.Wrap.rem (|
@@ -6609,12 +6558,12 @@ Module time.
                                               |)
                                             |),
                                             M.read (|
-                                              M.get_constant (| "core::time::NANOS_PER_MICRO" |)
+                                              M.get_constant "core::time::NANOS_PER_MICRO"
                                             |)
                                           |);
                                           BinOp.Wrap.div (|
                                             M.read (|
-                                              M.get_constant (| "core::time::NANOS_PER_MICRO" |)
+                                              M.get_constant "core::time::NANOS_PER_MICRO"
                                             |),
                                             Value.Integer IntegerKind.U32 10
                                           |);

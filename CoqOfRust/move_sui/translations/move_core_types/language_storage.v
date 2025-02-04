@@ -3,16 +3,26 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module language_storage.
   Definition value_CODE_TAG : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
+  
+  Axiom Constant_value_CODE_TAG :
+    (M.get_constant "move_core_types::language_storage::CODE_TAG") = value_CODE_TAG.
   
   Definition value_RESOURCE_TAG : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+  
+  Axiom Constant_value_RESOURCE_TAG :
+    (M.get_constant "move_core_types::language_storage::RESOURCE_TAG") = value_RESOURCE_TAG.
   
   Definition value_CORE_CODE_ADDRESS : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "move_core_types::account_address::ONE" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "move_core_types::account_address::ONE")).
+  
+  Axiom Constant_value_CORE_CODE_ADDRESS :
+    (M.get_constant "move_core_types::language_storage::CORE_CODE_ADDRESS") =
+      value_CORE_CODE_ADDRESS.
   
   Definition value_TYPETAG_ENUM_ABSTRACT_SIZE : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           M.alloc (|
@@ -77,14 +87,12 @@ Module language_storage.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE"
-                                          |)
                                         |);
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE"
-                                          |)
                                         |)
                                       ]
                                     |)))
@@ -96,6 +104,10 @@ Module language_storage.
             |)
           |)
         |))).
+  
+  Axiom Constant_value_TYPETAG_ENUM_ABSTRACT_SIZE :
+    (M.get_constant "move_core_types::language_storage::TYPETAG_ENUM_ABSTRACT_SIZE") =
+      value_TYPETAG_ENUM_ABSTRACT_SIZE.
   
   (*
   Enum TypeTag
@@ -542,9 +554,7 @@ Module language_storage.
                 M.read (| __deserializer |);
                 M.read (| Value.String "TypeTag" |);
                 M.read (|
-                  M.get_constant (|
-                    "move_core_types::language_storage::_'1::deserialize::VARIANTS"
-                  |)
+                  M.get_constant "move_core_types::language_storage::_'1::deserialize::VARIANTS"
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'1::deserialize::__Visitor"
@@ -973,7 +983,7 @@ Module language_storage.
                 M.read (| __deserializer |);
                 M.read (| Value.String "StructTag" |);
                 M.read (|
-                  M.get_constant (| "move_core_types::language_storage::_'3::deserialize::FIELDS" |)
+                  M.get_constant "move_core_types::language_storage::_'3::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'3::deserialize::__Visitor"
@@ -1252,7 +1262,7 @@ Module language_storage.
                 M.read (| __deserializer |);
                 M.read (| Value.String "ResourceKey" |);
                 M.read (|
-                  M.get_constant (| "move_core_types::language_storage::_'5::deserialize::FIELDS" |)
+                  M.get_constant "move_core_types::language_storage::_'5::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'5::deserialize::__Visitor"
@@ -1531,7 +1541,7 @@ Module language_storage.
                 M.read (| __deserializer |);
                 M.read (| Value.String "ModuleId" |);
                 M.read (|
-                  M.get_constant (| "move_core_types::language_storage::_'7::deserialize::FIELDS" |)
+                  M.get_constant "move_core_types::language_storage::_'7::deserialize::FIELDS"
                 |);
                 Value.StructRecord
                   "move_core_types::language_storage::_'7::deserialize::__Visitor"
@@ -2946,9 +2956,8 @@ Module language_storage.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.read (|
-                            M.get_constant (|
+                            M.get_constant
                               "move_core_types::language_storage::TYPETAG_ENUM_ABSTRACT_SIZE"
-                            |)
                           |)
                         |)
                       |)
@@ -4317,9 +4326,7 @@ Module language_storage.
                             Value.Array
                               [
                                 M.read (|
-                                  M.get_constant (|
-                                    "move_core_types::language_storage::RESOURCE_TAG"
-                                  |)
+                                  M.get_constant "move_core_types::language_storage::RESOURCE_TAG"
                                 |)
                               ]
                           |)
@@ -6726,7 +6733,7 @@ Module language_storage.
                             Value.Array
                               [
                                 M.read (|
-                                  M.get_constant (| "move_core_types::language_storage::CODE_TAG" |)
+                                  M.get_constant "move_core_types::language_storage::CODE_TAG"
                                 |)
                               ]
                           |)

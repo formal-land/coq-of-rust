@@ -1313,7 +1313,7 @@ Module iter.
                                   (M.alloc (|
                                     BinOp.eq (|
                                       M.read (| n |),
-                                      M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                      M.read (| M.get_constant "core::num::MAX" |)
                                     |)
                                   |)) in
                               let _ :=
@@ -1467,14 +1467,14 @@ Module iter.
                               let~ div_n :=
                                 M.alloc (|
                                   BinOp.Wrap.div (|
-                                    M.read (| M.get_constant (| "core::num::MAX" |) |),
+                                    M.read (| M.get_constant "core::num::MAX" |),
                                     M.read (| n |)
                                   |)
                                 |) in
                               let~ div_step :=
                                 M.alloc (|
                                   BinOp.Wrap.div (|
-                                    M.read (| M.get_constant (| "core::num::MAX" |) |),
+                                    M.read (| M.get_constant "core::num::MAX" |),
                                     M.read (| step |)
                                   |)
                                 |) in
@@ -2754,7 +2754,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in
@@ -3293,7 +3293,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in
@@ -3610,7 +3610,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in
@@ -4149,7 +4149,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in
@@ -4466,7 +4466,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in
@@ -5005,7 +5005,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in
@@ -5322,7 +5322,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in
@@ -5861,7 +5861,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in
@@ -6179,7 +6179,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in
@@ -6723,7 +6723,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::num::MAX" |) |)
+                        M.read (| M.get_constant "core::num::MAX" |)
                       ]
                     |)
                   |) in

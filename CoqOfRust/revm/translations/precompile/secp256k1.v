@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module secp256k1.
   Definition value_ECRECOVER : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           Value.StructTuple
@@ -18,6 +18,9 @@ Module secp256k1.
                 (M.get_function (| "revm_precompile::secp256k1::ec_recover_run", [], [] |))
             ]
         |))).
+  
+  Axiom Constant_value_ECRECOVER :
+    (M.get_constant "revm_precompile::secp256k1::ECRECOVER") = value_ECRECOVER.
   
   Module secp256k1.
     (*
@@ -261,9 +264,8 @@ Module secp256k1.
                                             M.read (|
                                               M.deref (|
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "secp256k1::context::global::SECP256K1"
-                                                  |)
                                                 |)
                                               |)
                                             |)
@@ -505,9 +507,8 @@ Module secp256k1.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE"
-                                  |)
                                 |),
                                 M.read (| gas_limit |)
                               |)
@@ -814,9 +815,8 @@ Module secp256k1.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE"
-                                          |)
                                         |);
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -1226,9 +1226,8 @@ Module secp256k1.
                       |),
                       [
                         M.read (|
-                          M.get_constant (|
+                          M.get_constant
                             "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE"
-                          |)
                         |);
                         M.read (| out |)
                       ]
@@ -1245,6 +1244,10 @@ Module secp256k1.
   
   Module ec_recover_run.
     Definition value_ECRECOVER_BASE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3000 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3000 |))).
+    
+    Axiom Constant_value_ECRECOVER_BASE :
+      (M.get_constant "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE") =
+        value_ECRECOVER_BASE.
   End ec_recover_run.
 End secp256k1.

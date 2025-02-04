@@ -2,7 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NTHREADS : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 3 |) |))).
+  M.run_constant ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 3 |) |))).
+
+Axiom Constant_value_NTHREADS : (M.get_constant "channels::NTHREADS") = value_NTHREADS.
 
 (*
 fn main() {
@@ -105,9 +107,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 ("start", Value.Integer IntegerKind.I32 0);
                                 ("end_",
                                   M.read (|
-                                    M.deref (|
-                                      M.read (| M.get_constant (| "channels::NTHREADS" |) |)
-                                    |)
+                                    M.deref (| M.read (| M.get_constant "channels::NTHREADS" |) |)
                                   |))
                               ]
                           ]
@@ -398,7 +398,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.cast
                           (Ty.path "usize")
                           (M.read (|
-                            M.deref (| M.read (| M.get_constant (| "channels::NTHREADS" |) |) |)
+                            M.deref (| M.read (| M.get_constant "channels::NTHREADS" |) |)
                           |))
                       ]
                     |)
@@ -424,9 +424,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 ("start", Value.Integer IntegerKind.I32 0);
                                 ("end_",
                                   M.read (|
-                                    M.deref (|
-                                      M.read (| M.get_constant (| "channels::NTHREADS" |) |)
-                                    |)
+                                    M.deref (| M.read (| M.get_constant "channels::NTHREADS" |) |)
                                   |))
                               ]
                           ]

@@ -99,7 +99,7 @@ Module collections.
                               BinOp.ge (|
                                 M.read (| len |),
                                 M.read (|
-                                  M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
+                                  M.get_constant "alloc::collections::btree::map::MIN_LEN"
                                 |)
                               |)
                             |)) in
@@ -220,9 +220,8 @@ Module collections.
                                                 M.borrow (| Pointer.Kind.MutRef, left_parent_kv |);
                                                 BinOp.Wrap.sub (|
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "alloc::collections::btree::map::MIN_LEN"
-                                                    |)
                                                   |),
                                                   M.read (| len |)
                                                 |)
@@ -322,9 +321,8 @@ Module collections.
                                                 M.borrow (| Pointer.Kind.MutRef, right_parent_kv |);
                                                 BinOp.Wrap.sub (|
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "alloc::collections::btree::map::MIN_LEN"
-                                                    |)
                                                   |),
                                                   M.read (| len |)
                                                 |)
@@ -1269,9 +1267,8 @@ Module collections.
                                                           |),
                                                           BinOp.Wrap.mul (|
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "alloc::collections::btree::map::MIN_LEN"
-                                                              |)
                                                             |),
                                                             Value.Integer IntegerKind.Usize 2
                                                           |)
@@ -1334,9 +1331,8 @@ Module collections.
                                             BinOp.lt (|
                                               M.read (| right_child_len |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "alloc::collections::btree::map::MIN_LEN"
-                                                |)
                                               |)
                                             |)
                                           |)) in
@@ -1362,9 +1358,8 @@ Module collections.
                                               M.borrow (| Pointer.Kind.MutRef, last_kv |);
                                               BinOp.Wrap.sub (|
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "alloc::collections::btree::map::MIN_LEN"
-                                                  |)
                                                 |),
                                                 M.read (| right_child_len |)
                                               |)
@@ -1672,9 +1667,8 @@ Module collections.
                                                             ]
                                                           |),
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "alloc::collections::btree::map::MIN_LEN"
-                                                            |)
                                                           |)
                                                         |)
                                                       |)
@@ -1970,9 +1964,8 @@ Module collections.
                                                             ]
                                                           |),
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "alloc::collections::btree::map::MIN_LEN"
-                                                            |)
                                                           |)
                                                         |)
                                                       |)
@@ -2159,9 +2152,8 @@ Module collections.
                                                 [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
                                               |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "alloc::collections::btree::map::MIN_LEN"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -2242,7 +2234,7 @@ Module collections.
                               [
                                 BinOp.Wrap.add (|
                                   M.read (|
-                                    M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
+                                    M.get_constant "alloc::collections::btree::map::MIN_LEN"
                                   |),
                                   Value.Integer IntegerKind.Usize 1
                                 |);
@@ -2424,9 +2416,8 @@ Module collections.
                                                 [ M.borrow (| Pointer.Kind.Ref, internal_kv |) ]
                                               |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "alloc::collections::btree::map::MIN_LEN"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -2507,7 +2498,7 @@ Module collections.
                               [
                                 BinOp.Wrap.add (|
                                   M.read (|
-                                    M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
+                                    M.get_constant "alloc::collections::btree::map::MIN_LEN"
                                   |),
                                   Value.Integer IntegerKind.Usize 1
                                 |);

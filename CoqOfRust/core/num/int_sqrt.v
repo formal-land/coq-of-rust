@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module num.
   Module int_sqrt.
     Definition value_U8_ISQRT_WITH_REMAINDER : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (let~ result :=
             M.alloc (|
@@ -133,6 +133,10 @@ Module num.
             |) in
           result)).
     
+    Axiom Constant_value_U8_ISQRT_WITH_REMAINDER :
+      (M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER") =
+        value_U8_ISQRT_WITH_REMAINDER.
+    
     (*
     pub const fn u8(n: u8) -> u8 {
         U8_ISQRT_WITH_REMAINDER[n as usize].0
@@ -146,7 +150,7 @@ Module num.
           M.read (|
             M.SubPointer.get_tuple_field (|
               M.SubPointer.get_array_field (|
-                M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
+                M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
                 M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
               |),
               0
@@ -737,12 +741,12 @@ Module num.
                 M.alloc (|
                   BinOp.Wrap.shr (|
                     M.read (| n |),
-                    M.read (| M.get_constant (| "core::num::int_sqrt::u16_stages::N_SHIFT" |) |)
+                    M.read (| M.get_constant "core::num::int_sqrt::u16_stages::N_SHIFT" |)
                   |)
                 |) in
               M.match_operator (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
+                  M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
                   M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
@@ -854,9 +858,7 @@ Module num.
                         BinOp.bit_and
                           (M.read (| n |))
                           (M.read (|
-                            M.get_constant (|
-                              "core::num::int_sqrt::u16_stages::LOWER_HALF_1_BITS"
-                            |)
+                            M.get_constant "core::num::int_sqrt::u16_stages::LOWER_HALF_1_BITS"
                           |))
                       |) in
                     let~ numerator :=
@@ -865,13 +867,13 @@ Module num.
                           (BinOp.Wrap.shl (|
                             M.cast (Ty.path "u16") (M.read (| r |)),
                             M.read (|
-                              M.get_constant (| "core::num::int_sqrt::u16_stages::QUARTER_BITS" |)
+                              M.get_constant "core::num::int_sqrt::u16_stages::QUARTER_BITS"
                             |)
                           |))
                           (BinOp.Wrap.shr (|
                             M.read (| lo |),
                             M.read (|
-                              M.get_constant (| "core::num::int_sqrt::u16_stages::QUARTER_BITS" |)
+                              M.get_constant "core::num::int_sqrt::u16_stages::QUARTER_BITS"
                             |)
                           |))
                       |) in
@@ -894,7 +896,7 @@ Module num.
                             (BinOp.Wrap.shl (|
                               M.read (| s |),
                               M.read (|
-                                M.get_constant (| "core::num::int_sqrt::u16_stages::QUARTER_BITS" |)
+                                M.get_constant "core::num::int_sqrt::u16_stages::QUARTER_BITS"
                               |)
                             |)),
                           M.read (| q |)
@@ -963,44 +965,57 @@ Module num.
     
     Module u16_stages.
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 16, Value.Integer IntegerKind.U32 8 |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u16_stages::N_SHIFT") = value_N_SHIFT.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u16_stages::HALF_BITS") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u16_stages::QUARTER_BITS") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u16_stages::HALF_BITS" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u16_stages::HALF_BITS" |)
                 |),
                 Value.Integer IntegerKind.U16 1
               |)
             |))).
+      
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u16_stages::LOWER_HALF_1_BITS") =
+          value_LOWER_HALF_1_BITS.
     End u16_stages.
     
     (*
@@ -1094,12 +1109,12 @@ Module num.
                 M.alloc (|
                   BinOp.Wrap.shr (|
                     M.read (| n |),
-                    M.read (| M.get_constant (| "core::num::int_sqrt::u32_stages::N_SHIFT" |) |)
+                    M.read (| M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT" |)
                   |)
                 |) in
               M.match_operator (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
+                  M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
                   M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
@@ -1214,7 +1229,7 @@ Module num.
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
-                                M.get_constant (| "core::num::int_sqrt::u32_stages::N_SHIFT'1" |)
+                                M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT'1"
                               |)
                             |))
                         |) in
@@ -1223,9 +1238,7 @@ Module num.
                           BinOp.bit_and
                             (M.read (| n |))
                             (M.read (|
-                              M.get_constant (|
-                                "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS"
-                              |)
+                              M.get_constant "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS"
                             |))
                         |) in
                       let~ numerator :=
@@ -1234,13 +1247,13 @@ Module num.
                             (BinOp.Wrap.shl (|
                               M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
-                                M.get_constant (| "core::num::int_sqrt::u32_stages::QUARTER_BITS" |)
+                                M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS"
                               |)
                             |))
                             (BinOp.Wrap.shr (|
                               M.read (| lo |),
                               M.read (|
-                                M.get_constant (| "core::num::int_sqrt::u32_stages::QUARTER_BITS" |)
+                                M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS"
                               |)
                             |))
                         |) in
@@ -1267,9 +1280,7 @@ Module num.
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
-                                  M.get_constant (|
-                                    "core::num::int_sqrt::u32_stages::QUARTER_BITS"
-                                  |)
+                                  M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS"
                                 |)
                               |)),
                             M.read (| q |)
@@ -1289,17 +1300,14 @@ Module num.
                                 (BinOp.Wrap.shl (|
                                   M.read (| u |),
                                   M.read (|
-                                    M.get_constant (|
-                                      "core::num::int_sqrt::u32_stages::QUARTER_BITS"
-                                    |)
+                                    M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS"
                                   |)
                                 |))
                                 (BinOp.bit_and
                                   (M.read (| lo |))
                                   (M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::num::int_sqrt::u32_stages::LOWEST_QUARTER_1_BITS"
-                                    |)
                                   |)));
                               BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                             ]
@@ -1462,9 +1470,8 @@ Module num.
                                 BinOp.bit_and
                                   (M.read (| n |))
                                   (M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS'1"
-                                    |)
                                   |))
                               |) in
                             let~ numerator :=
@@ -1473,17 +1480,15 @@ Module num.
                                   (BinOp.Wrap.shl (|
                                     M.cast (Ty.path "u32") (M.read (| r |)),
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "core::num::int_sqrt::u32_stages::QUARTER_BITS'1"
-                                      |)
                                     |)
                                   |))
                                   (BinOp.Wrap.shr (|
                                     M.read (| lo |),
                                     M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "core::num::int_sqrt::u32_stages::QUARTER_BITS'1"
-                                      |)
                                     |)
                                   |))
                               |) in
@@ -1509,9 +1514,8 @@ Module num.
                                     (BinOp.Wrap.shl (|
                                       M.read (| s |),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::num::int_sqrt::u32_stages::QUARTER_BITS'1"
-                                        |)
                                       |)
                                     |)),
                                   M.read (| q |)
@@ -1587,100 +1591,130 @@ Module num.
     
     Module u32_stages.
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 32, Value.Integer IntegerKind.U32 8 |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT") = value_N_SHIFT.
+      
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 Value.Integer IntegerKind.U32 32,
-                M.read (| M.get_constant (| "core::num::BITS" |) |)
+                M.read (| M.get_constant "core::num::BITS" |)
               |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u32_stages::N_SHIFT'1") = value_N_SHIFT.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u32_stages::HALF_BITS" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS" |)
                 |),
                 Value.Integer IntegerKind.U16 1
               |)
             |))).
+      
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS") =
+          value_LOWER_HALF_1_BITS.
       
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u32_stages::QUARTER_BITS" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS" |)
                 |),
                 Value.Integer IntegerKind.U16 1
               |)
             |))).
       
+      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u32_stages::LOWEST_QUARTER_1_BITS") =
+          value_LOWEST_QUARTER_1_BITS.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS'1") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u32_stages::QUARTER_BITS'1") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U32 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u32_stages::HALF_BITS'1" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u32_stages::HALF_BITS'1" |)
                 |),
                 Value.Integer IntegerKind.U32 1
               |)
             |))).
+      
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u32_stages::LOWER_HALF_1_BITS'1") =
+          value_LOWER_HALF_1_BITS.
     End u32_stages.
     
     (*
@@ -1775,12 +1809,12 @@ Module num.
                 M.alloc (|
                   BinOp.Wrap.shr (|
                     M.read (| n |),
-                    M.read (| M.get_constant (| "core::num::int_sqrt::u64_stages::N_SHIFT" |) |)
+                    M.read (| M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT" |)
                   |)
                 |) in
               M.match_operator (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
+                  M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
                   M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
@@ -1895,7 +1929,7 @@ Module num.
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
-                                M.get_constant (| "core::num::int_sqrt::u64_stages::N_SHIFT'1" |)
+                                M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'1"
                               |)
                             |))
                         |) in
@@ -1904,9 +1938,7 @@ Module num.
                           BinOp.bit_and
                             (M.read (| n |))
                             (M.read (|
-                              M.get_constant (|
-                                "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS"
-                              |)
+                              M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS"
                             |))
                         |) in
                       let~ numerator :=
@@ -1915,13 +1947,13 @@ Module num.
                             (BinOp.Wrap.shl (|
                               M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
-                                M.get_constant (| "core::num::int_sqrt::u64_stages::QUARTER_BITS" |)
+                                M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS"
                               |)
                             |))
                             (BinOp.Wrap.shr (|
                               M.read (| lo |),
                               M.read (|
-                                M.get_constant (| "core::num::int_sqrt::u64_stages::QUARTER_BITS" |)
+                                M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS"
                               |)
                             |))
                         |) in
@@ -1948,9 +1980,7 @@ Module num.
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
-                                  M.get_constant (|
-                                    "core::num::int_sqrt::u64_stages::QUARTER_BITS"
-                                  |)
+                                  M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS"
                                 |)
                               |)),
                             M.read (| q |)
@@ -1970,17 +2000,14 @@ Module num.
                                 (BinOp.Wrap.shl (|
                                   M.read (| u |),
                                   M.read (|
-                                    M.get_constant (|
-                                      "core::num::int_sqrt::u64_stages::QUARTER_BITS"
-                                    |)
+                                    M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS"
                                   |)
                                 |))
                                 (BinOp.bit_and
                                   (M.read (| lo |))
                                   (M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS"
-                                    |)
                                   |)));
                               BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                             ]
@@ -2147,9 +2174,7 @@ Module num.
                                     (BinOp.Wrap.shr (|
                                       M.read (| n |),
                                       M.read (|
-                                        M.get_constant (|
-                                          "core::num::int_sqrt::u64_stages::N_SHIFT'2"
-                                        |)
+                                        M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'2"
                                       |)
                                     |))
                                 |) in
@@ -2158,9 +2183,8 @@ Module num.
                                   BinOp.bit_and
                                     (M.read (| n |))
                                     (M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'1"
-                                      |)
                                     |))
                                 |) in
                               let~ numerator :=
@@ -2169,17 +2193,15 @@ Module num.
                                     (BinOp.Wrap.shl (|
                                       M.cast (Ty.path "u32") (M.read (| r |)),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
-                                        |)
                                       |)
                                     |))
                                     (BinOp.Wrap.shr (|
                                       M.read (| lo |),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
-                                        |)
                                       |)
                                     |))
                                 |) in
@@ -2212,9 +2234,8 @@ Module num.
                                       (BinOp.Wrap.shl (|
                                         M.read (| s |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
-                                          |)
                                         |)
                                       |)),
                                     M.read (| q |)
@@ -2234,17 +2255,15 @@ Module num.
                                         (BinOp.Wrap.shl (|
                                           M.read (| u |),
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::num::int_sqrt::u64_stages::QUARTER_BITS'1"
-                                            |)
                                           |)
                                         |))
                                         (BinOp.bit_and
                                           (M.read (| lo |))
                                           (M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS'1"
-                                            |)
                                           |)));
                                       BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                                     ]
@@ -2417,9 +2436,8 @@ Module num.
                                         BinOp.bit_and
                                           (M.read (| n |))
                                           (M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'2"
-                                            |)
                                           |))
                                       |) in
                                     let~ numerator :=
@@ -2428,17 +2446,15 @@ Module num.
                                           (BinOp.Wrap.shl (|
                                             M.cast (Ty.path "u64") (M.read (| r |)),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::num::int_sqrt::u64_stages::QUARTER_BITS'2"
-                                              |)
                                             |)
                                           |))
                                           (BinOp.Wrap.shr (|
                                             M.read (| lo |),
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::num::int_sqrt::u64_stages::QUARTER_BITS'2"
-                                              |)
                                             |)
                                           |))
                                       |) in
@@ -2464,9 +2480,8 @@ Module num.
                                             (BinOp.Wrap.shl (|
                                               M.read (| s |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::int_sqrt::u64_stages::QUARTER_BITS'2"
-                                                |)
                                               |)
                                             |)),
                                           M.read (| q |)
@@ -2545,158 +2560,203 @@ Module num.
     
     Module u64_stages.
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (| Value.Integer IntegerKind.U32 64, Value.Integer IntegerKind.U32 8 |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT") = value_N_SHIFT.
+      
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 Value.Integer IntegerKind.U32 64,
-                M.read (| M.get_constant (| "core::num::BITS" |) |)
+                M.read (| M.get_constant "core::num::BITS" |)
               |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'1") = value_N_SHIFT.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u64_stages::HALF_BITS" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS" |)
                 |),
                 Value.Integer IntegerKind.U16 1
               |)
             |))).
       
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS") =
+          value_LOWER_HALF_1_BITS.
+      
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u64_stages::QUARTER_BITS" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS" |)
                 |),
                 Value.Integer IntegerKind.U16 1
               |)
             |))).
       
+      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS") =
+          value_LOWEST_QUARTER_1_BITS.
+      
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 Value.Integer IntegerKind.U32 64,
-                M.read (| M.get_constant (| "core::num::BITS" |) |)
+                M.read (| M.get_constant "core::num::BITS" |)
               |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u64_stages::N_SHIFT'2") = value_N_SHIFT.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'1") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS'1") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U32 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u64_stages::HALF_BITS'1" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'1" |)
                 |),
                 Value.Integer IntegerKind.U32 1
               |)
             |))).
+      
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'1") =
+          value_LOWER_HALF_1_BITS.
       
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U32 1,
-                  M.read (|
-                    M.get_constant (| "core::num::int_sqrt::u64_stages::QUARTER_BITS'1" |)
-                  |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS'1" |)
                 |),
                 Value.Integer IntegerKind.U32 1
               |)
             |))).
       
+      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::LOWEST_QUARTER_1_BITS'1") =
+          value_LOWEST_QUARTER_1_BITS.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'2") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::QUARTER_BITS'2") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U64 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u64_stages::HALF_BITS'2" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u64_stages::HALF_BITS'2" |)
                 |),
                 Value.Integer IntegerKind.U64 1
               |)
             |))).
+      
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u64_stages::LOWER_HALF_1_BITS'2") =
+          value_LOWER_HALF_1_BITS.
     End u64_stages.
     
     (*
@@ -2792,12 +2852,12 @@ Module num.
                 M.alloc (|
                   BinOp.Wrap.shr (|
                     M.read (| n |),
-                    M.read (| M.get_constant (| "core::num::int_sqrt::u128_stages::N_SHIFT" |) |)
+                    M.read (| M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT" |)
                   |)
                 |) in
               M.match_operator (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER" |),
+                  M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
                   M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
                 |),
                 [
@@ -2912,7 +2972,7 @@ Module num.
                             (BinOp.Wrap.shr (|
                               M.read (| n |),
                               M.read (|
-                                M.get_constant (| "core::num::int_sqrt::u128_stages::N_SHIFT'1" |)
+                                M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'1"
                               |)
                             |))
                         |) in
@@ -2921,9 +2981,7 @@ Module num.
                           BinOp.bit_and
                             (M.read (| n |))
                             (M.read (|
-                              M.get_constant (|
-                                "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS"
-                              |)
+                              M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS"
                             |))
                         |) in
                       let~ numerator :=
@@ -2932,17 +2990,13 @@ Module num.
                             (BinOp.Wrap.shl (|
                               M.cast (Ty.path "u16") (M.read (| r |)),
                               M.read (|
-                                M.get_constant (|
-                                  "core::num::int_sqrt::u128_stages::QUARTER_BITS"
-                                |)
+                                M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS"
                               |)
                             |))
                             (BinOp.Wrap.shr (|
                               M.read (| lo |),
                               M.read (|
-                                M.get_constant (|
-                                  "core::num::int_sqrt::u128_stages::QUARTER_BITS"
-                                |)
+                                M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS"
                               |)
                             |))
                         |) in
@@ -2969,9 +3023,7 @@ Module num.
                               (BinOp.Wrap.shl (|
                                 M.read (| s |),
                                 M.read (|
-                                  M.get_constant (|
-                                    "core::num::int_sqrt::u128_stages::QUARTER_BITS"
-                                  |)
+                                  M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS"
                                 |)
                               |)),
                             M.read (| q |)
@@ -2991,17 +3043,14 @@ Module num.
                                 (BinOp.Wrap.shl (|
                                   M.read (| u |),
                                   M.read (|
-                                    M.get_constant (|
-                                      "core::num::int_sqrt::u128_stages::QUARTER_BITS"
-                                    |)
+                                    M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS"
                                   |)
                                 |))
                                 (BinOp.bit_and
                                   (M.read (| lo |))
                                   (M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS"
-                                    |)
                                   |)));
                               BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                             ]
@@ -3168,9 +3217,7 @@ Module num.
                                     (BinOp.Wrap.shr (|
                                       M.read (| n |),
                                       M.read (|
-                                        M.get_constant (|
-                                          "core::num::int_sqrt::u128_stages::N_SHIFT'2"
-                                        |)
+                                        M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'2"
                                       |)
                                     |))
                                 |) in
@@ -3179,9 +3226,8 @@ Module num.
                                   BinOp.bit_and
                                     (M.read (| n |))
                                     (M.read (|
-                                      M.get_constant (|
+                                      M.get_constant
                                         "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'1"
-                                      |)
                                     |))
                                 |) in
                               let~ numerator :=
@@ -3190,17 +3236,15 @@ Module num.
                                     (BinOp.Wrap.shl (|
                                       M.cast (Ty.path "u32") (M.read (| r |)),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
-                                        |)
                                       |)
                                     |))
                                     (BinOp.Wrap.shr (|
                                       M.read (| lo |),
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
-                                        |)
                                       |)
                                     |))
                                 |) in
@@ -3233,9 +3277,8 @@ Module num.
                                       (BinOp.Wrap.shl (|
                                         M.read (| s |),
                                         M.read (|
-                                          M.get_constant (|
+                                          M.get_constant
                                             "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
-                                          |)
                                         |)
                                       |)),
                                     M.read (| q |)
@@ -3255,17 +3298,15 @@ Module num.
                                         (BinOp.Wrap.shl (|
                                           M.read (| u |),
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::num::int_sqrt::u128_stages::QUARTER_BITS'1"
-                                            |)
                                           |)
                                         |))
                                         (BinOp.bit_and
                                           (M.read (| lo |))
                                           (M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'1"
-                                            |)
                                           |)));
                                       BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                                     ]
@@ -3442,9 +3483,8 @@ Module num.
                                             (BinOp.Wrap.shr (|
                                               M.read (| n |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::int_sqrt::u128_stages::N_SHIFT'3"
-                                                |)
                                               |)
                                             |))
                                         |) in
@@ -3453,9 +3493,8 @@ Module num.
                                           BinOp.bit_and
                                             (M.read (| n |))
                                             (M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'2"
-                                              |)
                                             |))
                                         |) in
                                       let~ numerator :=
@@ -3464,17 +3503,15 @@ Module num.
                                             (BinOp.Wrap.shl (|
                                               M.cast (Ty.path "u64") (M.read (| r |)),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
-                                                |)
                                               |)
                                             |))
                                             (BinOp.Wrap.shr (|
                                               M.read (| lo |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
-                                                |)
                                               |)
                                             |))
                                         |) in
@@ -3507,9 +3544,8 @@ Module num.
                                               (BinOp.Wrap.shl (|
                                                 M.read (| s |),
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
-                                                  |)
                                                 |)
                                               |)),
                                             M.read (| q |)
@@ -3529,17 +3565,15 @@ Module num.
                                                 (BinOp.Wrap.shl (|
                                                   M.read (| u |),
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::num::int_sqrt::u128_stages::QUARTER_BITS'2"
-                                                    |)
                                                   |)
                                                 |))
                                                 (BinOp.bit_and
                                                   (M.read (| lo |))
                                                   (M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'2"
-                                                    |)
                                                   |)));
                                               BinOp.Wrap.mul (| M.read (| q |), M.read (| q |) |)
                                             ]
@@ -3722,9 +3756,8 @@ Module num.
                                                 BinOp.bit_and
                                                   (M.read (| n |))
                                                   (M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'3"
-                                                    |)
                                                   |))
                                               |) in
                                             let~ numerator :=
@@ -3733,17 +3766,15 @@ Module num.
                                                   (BinOp.Wrap.shl (|
                                                     M.cast (Ty.path "u128") (M.read (| r |)),
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::num::int_sqrt::u128_stages::QUARTER_BITS'3"
-                                                      |)
                                                     |)
                                                   |))
                                                   (BinOp.Wrap.shr (|
                                                     M.read (| lo |),
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::num::int_sqrt::u128_stages::QUARTER_BITS'3"
-                                                      |)
                                                     |)
                                                   |))
                                               |) in
@@ -3769,9 +3800,8 @@ Module num.
                                                     (BinOp.Wrap.shl (|
                                                       M.read (| s |),
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "core::num::int_sqrt::u128_stages::QUARTER_BITS'3"
-                                                        |)
                                                       |)
                                                     |)),
                                                   M.read (| q |)
@@ -3855,7 +3885,7 @@ Module num.
     
     Module u128_stages.
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
@@ -3864,210 +3894,270 @@ Module num.
               |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT") = value_N_SHIFT.
+      
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 Value.Integer IntegerKind.U32 128,
-                M.read (| M.get_constant (| "core::num::BITS" |) |)
+                M.read (| M.get_constant "core::num::BITS" |)
               |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'1") = value_N_SHIFT.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u128_stages::HALF_BITS" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS" |)
                 |),
                 Value.Integer IntegerKind.U16 1
               |)
             |))).
       
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS") =
+          value_LOWER_HALF_1_BITS.
+      
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U16 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u128_stages::QUARTER_BITS" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS" |)
                 |),
                 Value.Integer IntegerKind.U16 1
               |)
             |))).
       
+      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS") =
+          value_LOWEST_QUARTER_1_BITS.
+      
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 Value.Integer IntegerKind.U32 128,
-                M.read (| M.get_constant (| "core::num::BITS" |) |)
+                M.read (| M.get_constant "core::num::BITS" |)
               |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'2") = value_N_SHIFT.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'1") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'1") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U32 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u128_stages::HALF_BITS'1" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'1" |)
                 |),
                 Value.Integer IntegerKind.U32 1
               |)
             |))).
       
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'1") =
+          value_LOWER_HALF_1_BITS.
+      
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U32 1,
-                  M.read (|
-                    M.get_constant (| "core::num::int_sqrt::u128_stages::QUARTER_BITS'1" |)
-                  |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'1" |)
                 |),
                 Value.Integer IntegerKind.U32 1
               |)
             |))).
       
+      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'1") =
+          value_LOWEST_QUARTER_1_BITS.
+      
       Definition value_N_SHIFT : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 Value.Integer IntegerKind.U32 128,
-                M.read (| M.get_constant (| "core::num::BITS" |) |)
+                M.read (| M.get_constant "core::num::BITS" |)
               |)
             |))).
       
+      Axiom Constant_value_N_SHIFT :
+        (M.get_constant "core::num::int_sqrt::u128_stages::N_SHIFT'3") = value_N_SHIFT.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'2") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'2") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U64 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u128_stages::HALF_BITS'2" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'2" |)
                 |),
                 Value.Integer IntegerKind.U64 1
               |)
             |))).
+      
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'2") =
+          value_LOWER_HALF_1_BITS.
       
       Definition value_LOWEST_QUARTER_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U64 1,
-                  M.read (|
-                    M.get_constant (| "core::num::int_sqrt::u128_stages::QUARTER_BITS'2" |)
-                  |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'2" |)
                 |),
                 Value.Integer IntegerKind.U64 1
               |)
             |))).
       
+      Axiom Constant_value_LOWEST_QUARTER_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::LOWEST_QUARTER_1_BITS'2") =
+          value_LOWEST_QUARTER_1_BITS.
+      
       Definition value_HALF_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 1
               |)
             |))).
       
+      Axiom Constant_value_HALF_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'3") = value_HALF_BITS.
+      
       Definition value_QUARTER_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.shr (|
-                M.read (| M.get_constant (| "core::num::BITS" |) |),
+                M.read (| M.get_constant "core::num::BITS" |),
                 Value.Integer IntegerKind.I32 2
               |)
             |))).
       
+      Axiom Constant_value_QUARTER_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::QUARTER_BITS'3") = value_QUARTER_BITS.
+      
       Definition value_LOWER_HALF_1_BITS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Wrap.sub (|
                 BinOp.Wrap.shl (|
                   Value.Integer IntegerKind.U128 1,
-                  M.read (| M.get_constant (| "core::num::int_sqrt::u128_stages::HALF_BITS'3" |) |)
+                  M.read (| M.get_constant "core::num::int_sqrt::u128_stages::HALF_BITS'3" |)
                 |),
                 Value.Integer IntegerKind.U128 1
               |)
             |))).
+      
+      Axiom Constant_value_LOWER_HALF_1_BITS :
+        (M.get_constant "core::num::int_sqrt::u128_stages::LOWER_HALF_1_BITS'3") =
+          value_LOWER_HALF_1_BITS.
     End u128_stages.
     
     (*
@@ -4132,9 +4222,7 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.cast
-                              (Ty.path "u16")
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast (Ty.path "u16") (M.read (| M.get_constant "core::num::MAX" |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4156,7 +4244,7 @@ Module num.
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
-                            M.get_constant (| "core::num::int_sqrt::u16::EVEN_MAKING_BITMASK" |)
+                            M.get_constant "core::num::int_sqrt::u16::EVEN_MAKING_BITMASK"
                           |))
                       |) in
                     let~ _ :=
@@ -4192,7 +4280,12 @@ Module num.
     
     Module u16.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+        M.run_constant
+          ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+      
+      Axiom Constant_value_EVEN_MAKING_BITMASK :
+        (M.get_constant "core::num::int_sqrt::u16::EVEN_MAKING_BITMASK") =
+          value_EVEN_MAKING_BITMASK.
     End u16.
     
     (*
@@ -4257,9 +4350,7 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.cast
-                              (Ty.path "u32")
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast (Ty.path "u32") (M.read (| M.get_constant "core::num::MAX" |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4281,7 +4372,7 @@ Module num.
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
-                            M.get_constant (| "core::num::int_sqrt::u32::EVEN_MAKING_BITMASK" |)
+                            M.get_constant "core::num::int_sqrt::u32::EVEN_MAKING_BITMASK"
                           |))
                       |) in
                     let~ _ :=
@@ -4317,7 +4408,12 @@ Module num.
     
     Module u32.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+        M.run_constant
+          ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+      
+      Axiom Constant_value_EVEN_MAKING_BITMASK :
+        (M.get_constant "core::num::int_sqrt::u32::EVEN_MAKING_BITMASK") =
+          value_EVEN_MAKING_BITMASK.
     End u32.
     
     (*
@@ -4382,9 +4478,7 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.cast
-                              (Ty.path "u64")
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4406,7 +4500,7 @@ Module num.
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
-                            M.get_constant (| "core::num::int_sqrt::u64::EVEN_MAKING_BITMASK" |)
+                            M.get_constant "core::num::int_sqrt::u64::EVEN_MAKING_BITMASK"
                           |))
                       |) in
                     let~ _ :=
@@ -4442,7 +4536,12 @@ Module num.
     
     Module u64.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+        M.run_constant
+          ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+      
+      Axiom Constant_value_EVEN_MAKING_BITMASK :
+        (M.get_constant "core::num::int_sqrt::u64::EVEN_MAKING_BITMASK") =
+          value_EVEN_MAKING_BITMASK.
     End u64.
     
     (*
@@ -4507,9 +4606,7 @@ Module num.
                         (M.alloc (|
                           BinOp.le (|
                             M.read (| n |),
-                            M.cast
-                              (Ty.path "u128")
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                            M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4531,7 +4628,7 @@ Module num.
                             [ M.read (| n |) ]
                           |))
                           (M.read (|
-                            M.get_constant (| "core::num::int_sqrt::u128::EVEN_MAKING_BITMASK" |)
+                            M.get_constant "core::num::int_sqrt::u128::EVEN_MAKING_BITMASK"
                           |))
                       |) in
                     let~ _ :=
@@ -4567,7 +4664,12 @@ Module num.
     
     Module u128.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+        M.run_constant
+          ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+      
+      Axiom Constant_value_EVEN_MAKING_BITMASK :
+        (M.get_constant "core::num::int_sqrt::u128::EVEN_MAKING_BITMASK") =
+          value_EVEN_MAKING_BITMASK.
     End u128.
     
     (*

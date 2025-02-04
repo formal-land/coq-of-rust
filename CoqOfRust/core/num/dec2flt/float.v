@@ -13,24 +13,23 @@ Module num.
         (*     const INFINITY: Self = f32::INFINITY; *)
         (* Ty.path "f32" *)
         Definition value_INFINITY : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant (| "core::f32::INFINITY" |))).
+          M.run ltac:(M.monadic (M.get_constant "core::f32::INFINITY")).
         
         (*     const NEG_INFINITY: Self = f32::NEG_INFINITY; *)
         (* Ty.path "f32" *)
         Definition value_NEG_INFINITY : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant (| "core::f32::NEG_INFINITY" |))).
+          M.run ltac:(M.monadic (M.get_constant "core::f32::NEG_INFINITY")).
         
         (*     const NAN: Self = f32::NAN; *)
         (* Ty.path "f32" *)
-        Definition value_NAN : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant (| "core::f32::NAN" |))).
+        Definition value_NAN : Value.t := M.run ltac:(M.monadic (M.get_constant "core::f32::NAN")).
         
         (*     const NEG_NAN: Self = -f32::NAN; *)
         (* Ty.path "f32" *)
         Definition value_NEG_NAN : Value.t :=
           M.run
             ltac:(M.monadic
-              (M.alloc (| UnOp.neg (| M.read (| M.get_constant (| "core::f32::NAN" |) |) |) |))).
+              (M.alloc (| UnOp.neg (| M.read (| M.get_constant "core::f32::NAN" |) |) |))).
         
         (*     const MANTISSA_EXPLICIT_BITS: usize = 23; *)
         (* Ty.path "usize" *)
@@ -121,9 +120,8 @@ Module num.
                                             BinOp.le (|
                                               M.read (| v |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -194,7 +192,7 @@ Module num.
               (let exponent := M.alloc (| exponent |) in
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::num::dec2flt::float::pow10_fast_path::TABLE" |),
+                  M.get_constant "core::num::dec2flt::float::pow10_fast_path::TABLE",
                   M.alloc (|
                     BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 15)
                   |)
@@ -378,24 +376,23 @@ Module num.
         (*     const INFINITY: Self = f64::INFINITY; *)
         (* Ty.path "f64" *)
         Definition value_INFINITY : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant (| "core::f64::INFINITY" |))).
+          M.run ltac:(M.monadic (M.get_constant "core::f64::INFINITY")).
         
         (*     const NEG_INFINITY: Self = f64::NEG_INFINITY; *)
         (* Ty.path "f64" *)
         Definition value_NEG_INFINITY : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant (| "core::f64::NEG_INFINITY" |))).
+          M.run ltac:(M.monadic (M.get_constant "core::f64::NEG_INFINITY")).
         
         (*     const NAN: Self = f64::NAN; *)
         (* Ty.path "f64" *)
-        Definition value_NAN : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant (| "core::f64::NAN" |))).
+        Definition value_NAN : Value.t := M.run ltac:(M.monadic (M.get_constant "core::f64::NAN")).
         
         (*     const NEG_NAN: Self = -f64::NAN; *)
         (* Ty.path "f64" *)
         Definition value_NEG_NAN : Value.t :=
           M.run
             ltac:(M.monadic
-              (M.alloc (| UnOp.neg (| M.read (| M.get_constant (| "core::f64::NAN" |) |) |) |))).
+              (M.alloc (| UnOp.neg (| M.read (| M.get_constant "core::f64::NAN" |) |) |))).
         
         (*     const MANTISSA_EXPLICIT_BITS: usize = 52; *)
         (* Ty.path "usize" *)
@@ -486,9 +483,8 @@ Module num.
                                             BinOp.le (|
                                               M.read (| v |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
-                                                |)
                                               |)
                                             |)
                                           |)
@@ -556,7 +552,7 @@ Module num.
               (let exponent := M.alloc (| exponent |) in
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::num::dec2flt::float::pow10_fast_path::TABLE" |),
+                  M.get_constant "core::num::dec2flt::float::pow10_fast_path::TABLE",
                   M.alloc (|
                     BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 31)
                   |)

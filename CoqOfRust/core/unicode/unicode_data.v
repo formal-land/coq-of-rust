@@ -75,9 +75,7 @@ Module unicode.
                     BinOp.Wrap.div (|
                       M.read (| bucket_idx |),
                       M.read (|
-                        M.get_constant (|
-                          "core::unicode::unicode_data::bitset_search::CHUNK_SIZE"
-                        |)
+                        M.get_constant "core::unicode::unicode_data::bitset_search::CHUNK_SIZE"
                       |)
                     |)
                   |) in
@@ -86,9 +84,7 @@ Module unicode.
                     BinOp.Wrap.rem (|
                       M.read (| bucket_idx |),
                       M.read (|
-                        M.get_constant (|
-                          "core::unicode::unicode_data::bitset_search::CHUNK_SIZE"
-                        |)
+                        M.get_constant "core::unicode::unicode_data::bitset_search::CHUNK_SIZE"
                       |)
                     |)
                   |) in
@@ -834,7 +830,7 @@ Module unicode.
       M.IsFunction "core::unicode::unicode_data::skip_search" skip_search.
     
     Definition value_UNICODE_VERSION : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             Value.Tuple
@@ -845,9 +841,12 @@ Module unicode.
               ]
           |))).
     
+    Axiom Constant_value_UNICODE_VERSION :
+      (M.get_constant "core::unicode::unicode_data::UNICODE_VERSION") = value_UNICODE_VERSION.
+    
     Module alphabetic.
       Definition value_SHORT_OFFSET_RUNS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -910,8 +909,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_SHORT_OFFSET_RUNS :
+        (M.get_constant "core::unicode::unicode_data::alphabetic::SHORT_OFFSET_RUNS") =
+          value_SHORT_OFFSET_RUNS.
+      
       Definition value_OFFSETS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -2436,6 +2439,9 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_OFFSETS :
+        (M.get_constant "core::unicode::unicode_data::alphabetic::OFFSETS") = value_OFFSETS.
+      
       (*
           pub fn lookup(c: char) -> bool {
               super::skip_search(
@@ -2465,9 +2471,8 @@ Module unicode.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.get_constant (|
+                          M.get_constant
                             "core::unicode::unicode_data::alphabetic::SHORT_OFFSET_RUNS"
-                          |)
                         |)
                       |)
                     |)
@@ -2480,7 +2485,7 @@ Module unicode.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.get_constant (| "core::unicode::unicode_data::alphabetic::OFFSETS" |)
+                          M.get_constant "core::unicode::unicode_data::alphabetic::OFFSETS"
                         |)
                       |)
                     |)
@@ -2496,7 +2501,7 @@ Module unicode.
     
     Module case_ignorable.
       Definition value_SHORT_OFFSET_RUNS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -2543,8 +2548,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_SHORT_OFFSET_RUNS :
+        (M.get_constant "core::unicode::unicode_data::case_ignorable::SHORT_OFFSET_RUNS") =
+          value_SHORT_OFFSET_RUNS.
+      
       Definition value_OFFSETS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -3459,6 +3468,9 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_OFFSETS :
+        (M.get_constant "core::unicode::unicode_data::case_ignorable::OFFSETS") = value_OFFSETS.
+      
       (*
           pub fn lookup(c: char) -> bool {
               super::skip_search(
@@ -3488,9 +3500,8 @@ Module unicode.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.get_constant (|
+                          M.get_constant
                             "core::unicode::unicode_data::case_ignorable::SHORT_OFFSET_RUNS"
-                          |)
                         |)
                       |)
                     |)
@@ -3503,9 +3514,7 @@ Module unicode.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.get_constant (|
-                            "core::unicode::unicode_data::case_ignorable::OFFSETS"
-                          |)
+                          M.get_constant "core::unicode::unicode_data::case_ignorable::OFFSETS"
                         |)
                       |)
                     |)
@@ -3522,7 +3531,7 @@ Module unicode.
     
     Module cased.
       Definition value_SHORT_OFFSET_RUNS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -3554,8 +3563,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_SHORT_OFFSET_RUNS :
+        (M.get_constant "core::unicode::unicode_data::cased::SHORT_OFFSET_RUNS") =
+          value_SHORT_OFFSET_RUNS.
+      
       Definition value_OFFSETS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -3884,6 +3897,9 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_OFFSETS :
+        (M.get_constant "core::unicode::unicode_data::cased::OFFSETS") = value_OFFSETS.
+      
       (*
           pub fn lookup(c: char) -> bool {
               super::skip_search(
@@ -3913,9 +3929,7 @@ Module unicode.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.get_constant (|
-                            "core::unicode::unicode_data::cased::SHORT_OFFSET_RUNS"
-                          |)
+                          M.get_constant "core::unicode::unicode_data::cased::SHORT_OFFSET_RUNS"
                         |)
                       |)
                     |)
@@ -3927,9 +3941,7 @@ Module unicode.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
-                        M.read (|
-                          M.get_constant (| "core::unicode::unicode_data::cased::OFFSETS" |)
-                        |)
+                        M.read (| M.get_constant "core::unicode::unicode_data::cased::OFFSETS" |)
                       |)
                     |)
                   |)
@@ -3944,12 +3956,16 @@ Module unicode.
     
     Module cc.
       Definition value_SHORT_OFFSET_RUNS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (| M.alloc (| Value.Array [ Value.Integer IntegerKind.U32 1114272 ] |) |))).
       
+      Axiom Constant_value_SHORT_OFFSET_RUNS :
+        (M.get_constant "core::unicode::unicode_data::cc::SHORT_OFFSET_RUNS") =
+          value_SHORT_OFFSET_RUNS.
+      
       Definition value_OFFSETS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -3963,6 +3979,9 @@ Module unicode.
                   ]
               |)
             |))).
+      
+      Axiom Constant_value_OFFSETS :
+        (M.get_constant "core::unicode::unicode_data::cc::OFFSETS") = value_OFFSETS.
       
       (*
           pub fn lookup(c: char) -> bool {
@@ -3993,7 +4012,7 @@ Module unicode.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.get_constant (| "core::unicode::unicode_data::cc::SHORT_OFFSET_RUNS" |)
+                          M.get_constant "core::unicode::unicode_data::cc::SHORT_OFFSET_RUNS"
                         |)
                       |)
                     |)
@@ -4005,7 +4024,7 @@ Module unicode.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
-                        M.read (| M.get_constant (| "core::unicode::unicode_data::cc::OFFSETS" |) |)
+                        M.read (| M.get_constant "core::unicode::unicode_data::cc::OFFSETS" |)
                       |)
                     |)
                   |)
@@ -4020,7 +4039,7 @@ Module unicode.
     
     Module grapheme_extend.
       Definition value_SHORT_OFFSET_RUNS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -4064,8 +4083,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_SHORT_OFFSET_RUNS :
+        (M.get_constant "core::unicode::unicode_data::grapheme_extend::SHORT_OFFSET_RUNS") =
+          value_SHORT_OFFSET_RUNS.
+      
       Definition value_OFFSETS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -4826,6 +4849,9 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_OFFSETS :
+        (M.get_constant "core::unicode::unicode_data::grapheme_extend::OFFSETS") = value_OFFSETS.
+      
       (*
           pub fn lookup(c: char) -> bool {
               (c as u32) >= 0x300 && lookup_slow(c)
@@ -4886,9 +4912,8 @@ Module unicode.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.get_constant (|
+                          M.get_constant
                             "core::unicode::unicode_data::grapheme_extend::SHORT_OFFSET_RUNS"
-                          |)
                         |)
                       |)
                     |)
@@ -4901,9 +4926,7 @@ Module unicode.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.get_constant (|
-                            "core::unicode::unicode_data::grapheme_extend::OFFSETS"
-                          |)
+                          M.get_constant "core::unicode::unicode_data::grapheme_extend::OFFSETS"
                         |)
                       |)
                     |)
@@ -4920,7 +4943,7 @@ Module unicode.
     
     Module lowercase.
       Definition value_BITSET_CHUNKS_MAP : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.borrow (|
@@ -5061,8 +5084,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_BITSET_CHUNKS_MAP :
+        (M.get_constant "core::unicode::unicode_data::lowercase::BITSET_CHUNKS_MAP") =
+          value_BITSET_CHUNKS_MAP.
+      
       Definition value_BITSET_INDEX_CHUNKS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.borrow (|
@@ -5460,8 +5487,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_BITSET_INDEX_CHUNKS :
+        (M.get_constant "core::unicode::unicode_data::lowercase::BITSET_INDEX_CHUNKS") =
+          value_BITSET_INDEX_CHUNKS.
+      
       Definition value_BITSET_CANONICAL : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.borrow (|
@@ -5535,8 +5566,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_BITSET_CANONICAL :
+        (M.get_constant "core::unicode::unicode_data::lowercase::BITSET_CANONICAL") =
+          value_BITSET_CANONICAL.
+      
       Definition value_BITSET_MAPPING : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.borrow (|
@@ -5598,6 +5633,10 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_BITSET_MAPPING :
+        (M.get_constant "core::unicode::unicode_data::lowercase::BITSET_MAPPING") =
+          value_BITSET_MAPPING.
+      
       (*
           pub const fn lookup(c: char) -> bool {
               super::bitset_search(
@@ -5635,9 +5674,7 @@ Module unicode.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant (|
-                            "core::unicode::unicode_data::lowercase::BITSET_CHUNKS_MAP"
-                          |)
+                          M.get_constant "core::unicode::unicode_data::lowercase::BITSET_CHUNKS_MAP"
                         |)
                       |)
                     |)
@@ -5650,9 +5687,8 @@ Module unicode.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant (|
+                          M.get_constant
                             "core::unicode::unicode_data::lowercase::BITSET_INDEX_CHUNKS"
-                          |)
                         |)
                       |)
                     |)
@@ -5665,9 +5701,7 @@ Module unicode.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant (|
-                            "core::unicode::unicode_data::lowercase::BITSET_CANONICAL"
-                          |)
+                          M.get_constant "core::unicode::unicode_data::lowercase::BITSET_CANONICAL"
                         |)
                       |)
                     |)
@@ -5680,9 +5714,7 @@ Module unicode.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant (|
-                            "core::unicode::unicode_data::lowercase::BITSET_MAPPING"
-                          |)
+                          M.get_constant "core::unicode::unicode_data::lowercase::BITSET_MAPPING"
                         |)
                       |)
                     |)
@@ -5698,7 +5730,7 @@ Module unicode.
     
     Module n.
       Definition value_SHORT_OFFSET_RUNS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -5750,8 +5782,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_SHORT_OFFSET_RUNS :
+        (M.get_constant "core::unicode::unicode_data::n::SHORT_OFFSET_RUNS") =
+          value_SHORT_OFFSET_RUNS.
+      
       Definition value_OFFSETS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -6050,6 +6086,9 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_OFFSETS :
+        (M.get_constant "core::unicode::unicode_data::n::OFFSETS") = value_OFFSETS.
+      
       (*
           pub fn lookup(c: char) -> bool {
               super::skip_search(
@@ -6079,7 +6118,7 @@ Module unicode.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.read (|
-                          M.get_constant (| "core::unicode::unicode_data::n::SHORT_OFFSET_RUNS" |)
+                          M.get_constant "core::unicode::unicode_data::n::SHORT_OFFSET_RUNS"
                         |)
                       |)
                     |)
@@ -6091,7 +6130,7 @@ Module unicode.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
-                        M.read (| M.get_constant (| "core::unicode::unicode_data::n::OFFSETS" |) |)
+                        M.read (| M.get_constant "core::unicode::unicode_data::n::OFFSETS" |)
                       |)
                     |)
                   |)
@@ -6106,7 +6145,7 @@ Module unicode.
     
     Module uppercase.
       Definition value_BITSET_CHUNKS_MAP : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.borrow (|
@@ -6249,8 +6288,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_BITSET_CHUNKS_MAP :
+        (M.get_constant "core::unicode::unicode_data::uppercase::BITSET_CHUNKS_MAP") =
+          value_BITSET_CHUNKS_MAP.
+      
       Definition value_BITSET_INDEX_CHUNKS : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.borrow (|
@@ -6591,8 +6634,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_BITSET_INDEX_CHUNKS :
+        (M.get_constant "core::unicode::unicode_data::uppercase::BITSET_INDEX_CHUNKS") =
+          value_BITSET_INDEX_CHUNKS.
+      
       Definition value_BITSET_CANONICAL : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.borrow (|
@@ -6654,8 +6701,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_BITSET_CANONICAL :
+        (M.get_constant "core::unicode::unicode_data::uppercase::BITSET_CANONICAL") =
+          value_BITSET_CANONICAL.
+      
       Definition value_BITSET_MAPPING : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.borrow (|
@@ -6723,6 +6774,10 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_BITSET_MAPPING :
+        (M.get_constant "core::unicode::unicode_data::uppercase::BITSET_MAPPING") =
+          value_BITSET_MAPPING.
+      
       (*
           pub const fn lookup(c: char) -> bool {
               super::bitset_search(
@@ -6760,9 +6815,7 @@ Module unicode.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant (|
-                            "core::unicode::unicode_data::uppercase::BITSET_CHUNKS_MAP"
-                          |)
+                          M.get_constant "core::unicode::unicode_data::uppercase::BITSET_CHUNKS_MAP"
                         |)
                       |)
                     |)
@@ -6775,9 +6828,8 @@ Module unicode.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant (|
+                          M.get_constant
                             "core::unicode::unicode_data::uppercase::BITSET_INDEX_CHUNKS"
-                          |)
                         |)
                       |)
                     |)
@@ -6790,9 +6842,7 @@ Module unicode.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant (|
-                            "core::unicode::unicode_data::uppercase::BITSET_CANONICAL"
-                          |)
+                          M.get_constant "core::unicode::unicode_data::uppercase::BITSET_CANONICAL"
                         |)
                       |)
                     |)
@@ -6805,9 +6855,7 @@ Module unicode.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant (|
-                            "core::unicode::unicode_data::uppercase::BITSET_MAPPING"
-                          |)
+                          M.get_constant "core::unicode::unicode_data::uppercase::BITSET_MAPPING"
                         |)
                       |)
                     |)
@@ -6823,7 +6871,7 @@ Module unicode.
     
     Module white_space.
       Definition value_WHITESPACE_MAP : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -7089,6 +7137,10 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_WHITESPACE_MAP :
+        (M.get_constant "core::unicode::unicode_data::white_space::WHITESPACE_MAP") =
+          value_WHITESPACE_MAP.
+      
       (*
           pub fn lookup(c: char) -> bool {
               match c as u32 >> 8 {
@@ -7128,9 +7180,8 @@ Module unicode.
                               M.SubPointer.get_array_field (|
                                 M.deref (|
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::unicode::unicode_data::white_space::WHITESPACE_MAP"
-                                    |)
                                   |)
                                 |),
                                 M.alloc (|
@@ -7171,9 +7222,8 @@ Module unicode.
                               M.SubPointer.get_array_field (|
                                 M.deref (|
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::unicode::unicode_data::white_space::WHITESPACE_MAP"
-                                    |)
                                   |)
                                 |),
                                 M.alloc (|
@@ -7213,7 +7263,10 @@ Module unicode.
     
     Module conversions.
       Definition value_INDEX_MASK : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 4194304 |))).
+        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 4194304 |))).
+      
+      Axiom Constant_value_INDEX_MASK :
+        (M.get_constant "core::unicode::unicode_data::conversions::INDEX_MASK") = value_INDEX_MASK.
       
       (*
           pub fn to_lower(c: char) -> [char; 3] {
@@ -7347,9 +7400,8 @@ Module unicode.
                                         M.read (|
                                           M.deref (|
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::unicode::unicode_data::conversions::LOWERCASE_TABLE"
-                                              |)
                                             |)
                                           |)
                                         |)
@@ -7419,9 +7471,8 @@ Module unicode.
                                                               M.read (|
                                                                 M.deref (|
                                                                   M.read (|
-                                                                    M.get_constant (|
+                                                                    M.get_constant
                                                                       "core::unicode::unicode_data::conversions::LOWERCASE_TABLE"
-                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
@@ -7572,9 +7623,8 @@ Module unicode.
                                                                                         M.read (|
                                                                                           M.deref (|
                                                                                             M.read (|
-                                                                                              M.get_constant (|
+                                                                                              M.get_constant
                                                                                                 "core::unicode::unicode_data::conversions::LOWERCASE_TABLE_MULTI"
-                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         |)
@@ -7589,9 +7639,8 @@ Module unicode.
                                                                                         |))
                                                                                         (BinOp.Wrap.sub (|
                                                                                           M.read (|
-                                                                                            M.get_constant (|
+                                                                                            M.get_constant
                                                                                               "core::unicode::unicode_data::conversions::INDEX_MASK"
-                                                                                            |)
                                                                                           |),
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
@@ -7762,9 +7811,8 @@ Module unicode.
                                         M.read (|
                                           M.deref (|
                                             M.read (|
-                                              M.get_constant (|
+                                              M.get_constant
                                                 "core::unicode::unicode_data::conversions::UPPERCASE_TABLE"
-                                              |)
                                             |)
                                           |)
                                         |)
@@ -7834,9 +7882,8 @@ Module unicode.
                                                               M.read (|
                                                                 M.deref (|
                                                                   M.read (|
-                                                                    M.get_constant (|
+                                                                    M.get_constant
                                                                       "core::unicode::unicode_data::conversions::UPPERCASE_TABLE"
-                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
@@ -7987,9 +8034,8 @@ Module unicode.
                                                                                         M.read (|
                                                                                           M.deref (|
                                                                                             M.read (|
-                                                                                              M.get_constant (|
+                                                                                              M.get_constant
                                                                                                 "core::unicode::unicode_data::conversions::UPPERCASE_TABLE_MULTI"
-                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         |)
@@ -8004,9 +8050,8 @@ Module unicode.
                                                                                         |))
                                                                                         (BinOp.Wrap.sub (|
                                                                                           M.read (|
-                                                                                            M.get_constant (|
+                                                                                            M.get_constant
                                                                                               "core::unicode::unicode_data::conversions::INDEX_MASK"
-                                                                                            |)
                                                                                           |),
                                                                                           Value.Integer
                                                                                             IntegerKind.U32
@@ -8046,7 +8091,7 @@ Module unicode.
         M.IsFunction "core::unicode::unicode_data::conversions::to_upper" to_upper.
       
       Definition value_LOWERCASE_TABLE : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -10934,8 +10979,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_LOWERCASE_TABLE :
+        (M.get_constant "core::unicode::unicode_data::conversions::LOWERCASE_TABLE") =
+          value_LOWERCASE_TABLE.
+      
       Definition value_LOWERCASE_TABLE_MULTI : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -10957,8 +11006,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_LOWERCASE_TABLE_MULTI :
+        (M.get_constant "core::unicode::unicode_data::conversions::LOWERCASE_TABLE_MULTI") =
+          value_LOWERCASE_TABLE_MULTI.
+      
       Definition value_UPPERCASE_TABLE : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -14028,8 +14081,12 @@ Module unicode.
               |)
             |))).
       
+      Axiom Constant_value_UPPERCASE_TABLE :
+        (M.get_constant "core::unicode::unicode_data::conversions::UPPERCASE_TABLE") =
+          value_UPPERCASE_TABLE.
+      
       Definition value_UPPERCASE_TABLE_MULTI : Value.t :=
-        M.run
+        M.run_constant
           ltac:(M.monadic
             (M.alloc (|
               M.alloc (|
@@ -14323,6 +14380,10 @@ Module unicode.
                 |)
               |)
             |))).
+      
+      Axiom Constant_value_UPPERCASE_TABLE_MULTI :
+        (M.get_constant "core::unicode::unicode_data::conversions::UPPERCASE_TABLE_MULTI") =
+          value_UPPERCASE_TABLE_MULTI.
     End conversions.
   End unicode_data.
 End unicode.

@@ -663,9 +663,7 @@ Module num.
                         |)
                       |)),
                     M.read (|
-                      M.get_constant (|
-                        "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
-                      |)
+                      M.get_constant "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                     |)
                   |))
               |) in

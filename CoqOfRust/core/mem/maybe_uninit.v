@@ -166,9 +166,7 @@ Module mem.
         | [ N ], [], [] =>
           ltac:(M.monadic
             (repeat (|
-              M.read (|
-                M.get_constant (| "core::mem::maybe_uninit::uninit_array_discriminant" |)
-              |),
+              M.read (| M.get_constant "core::mem::maybe_uninit::uninit_array_discriminant" |),
               N
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

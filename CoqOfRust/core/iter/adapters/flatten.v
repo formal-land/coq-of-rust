@@ -908,7 +908,7 @@ Module iter.
           let Self : Ty.t := Self I U F in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::adapters::flatten::EXPAND_BY_discriminant" |))).
+              (M.get_constant "core::iter::adapters::flatten::EXPAND_BY_discriminant")).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
@@ -919,7 +919,7 @@ Module iter.
           let Self : Ty.t := Self I U F in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::MERGE_BY" |))).
+              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
         
         Axiom Implements :
           forall (I U F : Ty.t),
@@ -1120,7 +1120,7 @@ Module iter.
                     [],
                     []
                   |),
-                  [ M.read (| M.get_constant (| "core::iter::adapters::flatten::N" |) |) ]
+                  [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]
                 |)
               |))).
         
@@ -1155,7 +1155,7 @@ Module iter.
                     [],
                     []
                   |),
-                  [ M.read (| M.get_constant (| "core::iter::adapters::flatten::N" |) |) ]
+                  [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]
                 |)
               |))).
         
@@ -1182,7 +1182,7 @@ Module iter.
           let Self : Ty.t := Self I P in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND" |))).
+              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
         
         Axiom Implements :
           forall (I P : Ty.t),
@@ -1207,7 +1207,7 @@ Module iter.
           let Self : Ty.t := Self I P in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND" |))).
+              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
         
         Axiom Implements :
           forall (I P : Ty.t),
@@ -1232,7 +1232,7 @@ Module iter.
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND" |))).
+              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
         
         Axiom Implements :
           forall (I F : Ty.t),
@@ -1257,7 +1257,7 @@ Module iter.
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND" |))).
+              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -1281,7 +1281,7 @@ Module iter.
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND" |))).
+              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -2031,7 +2031,7 @@ Module iter.
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::adapters::flatten::EXPAND_BY_discriminant" |))).
+              (M.get_constant "core::iter::adapters::flatten::EXPAND_BY_discriminant")).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
@@ -2042,7 +2042,7 @@ Module iter.
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::MERGE_BY" |))).
+              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -5649,7 +5649,7 @@ Module iter.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
-                [ M.read (| M.get_constant (| "core::iter::adapters::flatten::N" |) |) ]))
+                [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -5684,7 +5684,7 @@ Module iter.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
-                [ M.read (| M.get_constant (| "core::iter::adapters::flatten::N" |) |) ]))
+                [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -5719,7 +5719,7 @@ Module iter.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
-                [ M.read (| M.get_constant (| "core::iter::adapters::flatten::N" |) |) ]))
+                [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         

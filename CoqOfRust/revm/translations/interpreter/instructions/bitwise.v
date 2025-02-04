@@ -67,9 +67,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -279,9 +277,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -491,9 +487,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -713,9 +707,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -937,9 +929,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -1148,9 +1138,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -1347,9 +1335,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -1537,9 +1523,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -1727,9 +1711,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -1917,9 +1899,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -2103,9 +2083,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -2301,7 +2279,7 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant (| "core::num::MAX" |)))
+                                                      (M.get_constant "core::num::MAX"))
                                                 ]
                                               |)))
                                         ]
@@ -2309,7 +2287,7 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               ]
                             |)
                           |) in
@@ -2383,7 +2361,7 @@ Module instructions.
                                           ]
                                         |)
                                       |)));
-                                  fun γ => ltac:(M.monadic (M.get_constant (| "ruint::ZERO" |)))
+                                  fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
                                 ]
                               |)
                             |)
@@ -2554,9 +2532,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -2752,7 +2728,7 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant (| "core::num::MAX" |)))
+                                                      (M.get_constant "core::num::MAX"))
                                                 ]
                                               |)))
                                         ]
@@ -2760,7 +2736,7 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               ]
                             |)
                           |) in
@@ -2808,7 +2784,7 @@ Module instructions.
                                         ]
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.get_constant (| "ruint::ZERO" |)))
+                                fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
                               ]
                             |)
                           |)
@@ -2978,9 +2954,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -3176,7 +3150,7 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant (| "core::num::MAX" |)))
+                                                      (M.get_constant "core::num::MAX"))
                                                 ]
                                               |)))
                                         ]
@@ -3184,7 +3158,7 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               ]
                             |)
                           |) in
@@ -3232,7 +3206,7 @@ Module instructions.
                                         ]
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.get_constant (| "ruint::ZERO" |)))
+                                fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
                               ]
                             |)
                           |)
@@ -3404,9 +3378,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::VERYLOW"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
                                       |)
                                     ]
                                   |)
@@ -3602,7 +3574,7 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant (| "core::num::MAX" |)))
+                                                      (M.get_constant "core::num::MAX"))
                                                 ]
                                               |)))
                                         ]
@@ -3610,7 +3582,7 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                                M.read (| M.get_constant "core::num::MAX" |)
                               ]
                             |)
                           |) in
@@ -3699,9 +3671,8 @@ Module instructions.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              M.get_constant (| "ruint::MAX" |)));
-                                          fun γ =>
-                                            ltac:(M.monadic (M.get_constant (| "ruint::ZERO" |)))
+                                              M.get_constant "ruint::MAX"));
+                                          fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
                                         ]
                                       |)))
                                 ]

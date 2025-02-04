@@ -28,9 +28,7 @@ Module move_resource.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.read (|
-                    M.get_constant (|
-                      "move_core_types::move_resource::MoveStructType::MODULE_NAME"
-                    |)
+                    M.get_constant "move_core_types::move_resource::MoveStructType::MODULE_NAME"
                   |)
                 |)
               |)
@@ -68,9 +66,7 @@ Module move_resource.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.read (|
-                    M.get_constant (|
-                      "move_core_types::move_resource::MoveStructType::STRUCT_NAME"
-                    |)
+                    M.get_constant "move_core_types::move_resource::MoveStructType::STRUCT_NAME"
                   |)
                 |)
               |)
@@ -122,7 +118,7 @@ Module move_resource.
             [
               ("address",
                 M.read (|
-                  M.get_constant (| "move_core_types::move_resource::MoveStructType::ADDRESS" |)
+                  M.get_constant "move_core_types::move_resource::MoveStructType::ADDRESS"
                 |));
               ("name",
                 M.call_closure (|

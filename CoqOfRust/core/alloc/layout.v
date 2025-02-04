@@ -533,7 +533,7 @@ Module alloc.
               M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
               [
                 BinOp.Wrap.add (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+                  M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::MAX" |)),
                   Value.Integer IntegerKind.Usize 1
                 |);
                 M.call_closure (|
@@ -1698,9 +1698,7 @@ Module alloc.
                       M.call_closure (|
                         M.get_associated_function (| Self, "inner.array", [], [] |),
                         [
-                          M.read (|
-                            M.get_constant (| "core::mem::SizedTypeProperties::LAYOUT" |)
-                          |);
+                          M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |);
                           M.read (| n |)
                         ]
                       |)

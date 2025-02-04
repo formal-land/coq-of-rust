@@ -219,7 +219,7 @@ Module iter.
                                 UnOp.not (|
                                   BinOp.ne (|
                                     M.read (|
-                                      M.get_constant (| "core::iter::adapters::array_chunks::N" |)
+                                      M.get_constant "core::iter::adapters::array_chunks::N"
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -512,7 +512,7 @@ Module iter.
                               |)
                             ]
                           |),
-                          M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
+                          M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
                         |)
                       |) in
                     let~ remainder :=
@@ -795,9 +795,7 @@ Module iter.
                             [
                               BinOp.Wrap.div (|
                                 M.read (| lower |),
-                                M.read (|
-                                  M.get_constant (| "core::iter::adapters::array_chunks::N" |)
-                                |)
+                                M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -826,9 +824,8 @@ Module iter.
                                                     BinOp.Wrap.div (|
                                                       M.read (| n |),
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "core::iter::adapters::array_chunks::N"
-                                                        |)
                                                       |)
                                                     |)))
                                               ]
@@ -883,7 +880,7 @@ Module iter.
                     |)
                   ]
                 |),
-                M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
+                M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1675,7 +1672,7 @@ Module iter.
                     |)
                   ]
                 |),
-                M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
+                M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1719,7 +1716,7 @@ Module iter.
                     |)
                   ]
                 |),
-                M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
+                M.read (| M.get_constant "core::iter::adapters::array_chunks::N" |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1906,7 +1903,7 @@ Module iter.
                                     BinOp.ge (|
                                       BinOp.Wrap.sub (| M.read (| inner_len |), M.read (| i |) |),
                                       M.read (|
-                                        M.get_constant (| "core::iter::adapters::array_chunks::N" |)
+                                        M.get_constant "core::iter::adapters::array_chunks::N"
                                       |)
                                     |)
                                   |)) in
@@ -2008,7 +2005,7 @@ Module iter.
                                   BinOp.Wrap.add (|
                                     M.read (| β |),
                                     M.read (|
-                                      M.get_constant (| "core::iter::adapters::array_chunks::N" |)
+                                      M.get_constant "core::iter::adapters::array_chunks::N"
                                     |)
                                   |)
                                 |) in
@@ -2138,7 +2135,7 @@ Module iter.
           let Self : Ty.t := Self N I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
+              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
         
         (*
             const MERGE_BY: Option<NonZero<usize>> = const {
@@ -2156,7 +2153,7 @@ Module iter.
           let Self : Ty.t := Self N I in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::adapters::array_chunks::MERGE_BY_discriminant" |))).
+              (M.get_constant "core::iter::adapters::array_chunks::MERGE_BY_discriminant")).
         
         Axiom Implements :
           forall (N : Value.t) (I : Ty.t),

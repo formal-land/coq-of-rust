@@ -15509,7 +15509,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -15522,15 +15522,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -15971,7 +15970,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -15984,15 +15983,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -16433,7 +16431,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -16446,15 +16444,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -16895,7 +16892,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -16908,15 +16905,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -17357,7 +17353,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -17370,15 +17366,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -17819,7 +17814,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -17832,15 +17827,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -18281,7 +18275,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -18294,15 +18288,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -18831,7 +18824,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -18844,15 +18837,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -19381,7 +19373,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -19394,15 +19386,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -19931,7 +19922,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -19944,15 +19935,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -20481,7 +20471,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -20494,15 +20484,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -21031,7 +21020,7 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                [ M.read (| M.get_constant "core::num::MIN" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -21044,15 +21033,14 @@ Module num.
             (M.alloc (|
               Value.StructTuple
                 "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                [ M.read (| M.get_constant "core::num::MAX" |) ]
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       

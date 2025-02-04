@@ -406,7 +406,7 @@ Module mem.
           ltac:(M.monadic
             (M.alloc (|
               M.struct_record_update
-                (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
+                (M.read (| M.get_constant "core::mem::transmutability::NOTHING" |))
                 [ ("alignment", Value.Bool true) ]
             |))).
       
@@ -420,7 +420,7 @@ Module mem.
           ltac:(M.monadic
             (M.alloc (|
               M.struct_record_update
-                (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
+                (M.read (| M.get_constant "core::mem::transmutability::NOTHING" |))
                 [ ("lifetimes", Value.Bool true) ]
             |))).
       
@@ -434,7 +434,7 @@ Module mem.
           ltac:(M.monadic
             (M.alloc (|
               M.struct_record_update
-                (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
+                (M.read (| M.get_constant "core::mem::transmutability::NOTHING" |))
                 [ ("safety", Value.Bool true) ]
             |))).
       
@@ -448,7 +448,7 @@ Module mem.
           ltac:(M.monadic
             (M.alloc (|
               M.struct_record_update
-                (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
+                (M.read (| M.get_constant "core::mem::transmutability::NOTHING" |))
                 [ ("validity", Value.Bool true) ]
             |))).
       

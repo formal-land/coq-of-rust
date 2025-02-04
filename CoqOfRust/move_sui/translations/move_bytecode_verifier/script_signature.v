@@ -71,9 +71,7 @@ Module script_signature.
                                   |)
                                 |),
                                 M.read (|
-                                  M.get_constant (|
-                                    "move_binary_format::file_format_common::VERSION_5"
-                                  |)
+                                  M.get_constant "move_binary_format::file_format_common::VERSION_5"
                                 |)
                               |)
                             |)) in
@@ -1196,7 +1194,7 @@ Module script_signature.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                       |),
                       M.read (|
-                        M.get_constant (| "move_binary_format::file_format_common::VERSION_5" |)
+                        M.get_constant "move_binary_format::file_format_common::VERSION_5"
                       |)
                     |),
                     ltac:(M.monadic (M.read (| is_entry |)))
@@ -1595,9 +1593,7 @@ Module script_signature.
                                 ]
                               |),
                               M.read (|
-                                M.get_constant (|
-                                  "move_binary_format::file_format_common::VERSION_1"
-                                |)
+                                M.get_constant "move_binary_format::file_format_common::VERSION_1"
                               |)
                             |)
                           |)) in

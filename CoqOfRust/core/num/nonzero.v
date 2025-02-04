@@ -3915,8 +3915,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -4476,7 +4475,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -4761,7 +4760,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                M.read (| M.get_constant "core::num::nonzero::BITS" |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -5642,8 +5641,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -6203,7 +6201,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -6488,7 +6486,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                M.read (| M.get_constant "core::num::nonzero::BITS" |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -7369,8 +7367,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -7930,7 +7927,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -8215,7 +8212,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                M.read (| M.get_constant "core::num::nonzero::BITS" |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -9096,8 +9093,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -9657,7 +9653,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -9942,7 +9938,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                M.read (| M.get_constant "core::num::nonzero::BITS" |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -10823,8 +10819,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -11384,7 +11379,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -11669,7 +11664,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                M.read (| M.get_constant "core::num::nonzero::BITS" |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -12550,8 +12545,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -13111,7 +13105,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -13396,7 +13390,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
+                M.read (| M.get_constant "core::num::nonzero::BITS" |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -14277,8 +14271,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -14800,7 +14793,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MIN" |) ]
                   |)
                 ]
               |)
@@ -14832,7 +14825,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -15409,7 +15402,7 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant (| "core::num::nonzero::MAX" |)
+                  M.get_constant "core::num::nonzero::MAX"
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -16036,8 +16029,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -16559,7 +16551,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MIN" |) ]
                   |)
                 ]
               |)
@@ -16591,7 +16583,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -17168,7 +17160,7 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant (| "core::num::nonzero::MAX" |)
+                  M.get_constant "core::num::nonzero::MAX"
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -17795,8 +17787,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -18318,7 +18309,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MIN" |) ]
                   |)
                 ]
               |)
@@ -18350,7 +18341,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -18927,7 +18918,7 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant (| "core::num::nonzero::MAX" |)
+                  M.get_constant "core::num::nonzero::MAX"
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -19554,8 +19545,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -20077,7 +20067,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MIN" |) ]
                   |)
                 ]
               |)
@@ -20109,7 +20099,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -20686,7 +20676,7 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant (| "core::num::nonzero::MAX" |)
+                  M.get_constant "core::num::nonzero::MAX"
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -21313,8 +21303,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -21836,7 +21825,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MIN" |) ]
                   |)
                 ]
               |)
@@ -21868,7 +21857,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -22445,7 +22434,7 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant (| "core::num::nonzero::MAX" |)
+                  M.get_constant "core::num::nonzero::MAX"
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -23072,8 +23061,7 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -23595,7 +23583,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MIN" |) ]
                   |)
                 ]
               |)
@@ -23627,7 +23615,7 @@ Module num.
                       [],
                       []
                     |),
-                    [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+                    [ M.read (| M.get_constant "core::num::MAX" |) ]
                   |)
                 ]
               |)
@@ -24204,7 +24192,7 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant (| "core::num::nonzero::MAX" |)
+                  M.get_constant "core::num::nonzero::MAX"
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

@@ -714,9 +714,8 @@ Module unicode.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::unicode::printable::SINGLETONS0U"
-                                                    |)
                                                   |)
                                                 |)
                                               |);
@@ -724,9 +723,8 @@ Module unicode.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::unicode::printable::SINGLETONS0L"
-                                                    |)
                                                   |)
                                                 |)
                                               |);
@@ -734,9 +732,8 @@ Module unicode.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::unicode::printable::NORMAL0"
-                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -776,9 +773,8 @@ Module unicode.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "core::unicode::printable::SINGLETONS1U"
-                                                            |)
                                                           |)
                                                         |)
                                                       |);
@@ -786,9 +782,8 @@ Module unicode.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "core::unicode::printable::SINGLETONS1L"
-                                                            |)
                                                           |)
                                                         |)
                                                       |);
@@ -796,9 +791,8 @@ Module unicode.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.read (|
-                                                            M.get_constant (|
+                                                            M.get_constant
                                                               "core::unicode::printable::NORMAL1"
-                                                            |)
                                                           |)
                                                         |)
                                                       |)
@@ -1245,7 +1239,7 @@ Module unicode.
       M.IsFunction "core::unicode::printable::is_printable" is_printable.
     
     Definition value_SINGLETONS0U : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.borrow (|
@@ -1343,8 +1337,11 @@ Module unicode.
             |)
           |))).
     
+    Axiom Constant_value_SINGLETONS0U :
+      (M.get_constant "core::unicode::printable::SINGLETONS0U") = value_SINGLETONS0U.
+    
     Definition value_SINGLETONS0L : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.borrow (|
@@ -1652,8 +1649,11 @@ Module unicode.
             |)
           |))).
     
+    Axiom Constant_value_SINGLETONS0L :
+      (M.get_constant "core::unicode::printable::SINGLETONS0L") = value_SINGLETONS0L.
+    
     Definition value_SINGLETONS1U : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.borrow (|
@@ -1759,8 +1759,11 @@ Module unicode.
             |)
           |))).
     
+    Axiom Constant_value_SINGLETONS1U :
+      (M.get_constant "core::unicode::printable::SINGLETONS1U") = value_SINGLETONS1U.
+    
     Definition value_SINGLETONS1L : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.borrow (|
@@ -1986,8 +1989,11 @@ Module unicode.
             |)
           |))).
     
+    Axiom Constant_value_SINGLETONS1L :
+      (M.get_constant "core::unicode::printable::SINGLETONS1L") = value_SINGLETONS1L.
+    
     Definition value_NORMAL0 : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.borrow (|
@@ -2302,8 +2308,11 @@ Module unicode.
             |)
           |))).
     
+    Axiom Constant_value_NORMAL0 :
+      (M.get_constant "core::unicode::printable::NORMAL0") = value_NORMAL0.
+    
     Definition value_NORMAL1 : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.borrow (|
@@ -2806,5 +2815,8 @@ Module unicode.
               |)
             |)
           |))).
+    
+    Axiom Constant_value_NORMAL1 :
+      (M.get_constant "core::unicode::printable::NORMAL1") = value_NORMAL1.
   End printable.
 End unicode.

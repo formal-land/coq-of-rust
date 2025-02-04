@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_LOREM_IPSUM : Value.t :=
-  M.run
+  M.run_constant
     ltac:(M.monadic
       (M.alloc (|
         Value.String
@@ -14,6 +14,9 @@ cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 "
       |))).
+
+Axiom Constant_value_LOREM_IPSUM :
+  (M.get_constant "file_io_create::LOREM_IPSUM") = value_LOREM_IPSUM.
 
 (*
 fn main() {
@@ -198,7 +201,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.deref (|
                             M.read (|
                               M.deref (|
-                                M.read (| M.get_constant (| "file_io_create::LOREM_IPSUM" |) |)
+                                M.read (| M.get_constant "file_io_create::LOREM_IPSUM" |)
                               |)
                             |)
                           |)

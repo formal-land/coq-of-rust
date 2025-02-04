@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module identity.
   Definition value_FUN : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           Value.StructTuple
@@ -19,11 +19,19 @@ Module identity.
             ]
         |))).
   
+  Axiom Constant_value_FUN : (M.get_constant "revm_precompile::identity::FUN") = value_FUN.
+  
   Definition value_IDENTITY_BASE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
+  
+  Axiom Constant_value_IDENTITY_BASE :
+    (M.get_constant "revm_precompile::identity::IDENTITY_BASE") = value_IDENTITY_BASE.
   
   Definition value_IDENTITY_PER_WORD : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+  
+  Axiom Constant_value_IDENTITY_PER_WORD :
+    (M.get_constant "revm_precompile::identity::IDENTITY_PER_WORD") = value_IDENTITY_PER_WORD.
   
   (*
   pub fn identity_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -76,10 +84,8 @@ Module identity.
                           |)
                         ]
                       |);
-                      M.read (| M.get_constant (| "revm_precompile::identity::IDENTITY_BASE" |) |);
-                      M.read (|
-                        M.get_constant (| "revm_precompile::identity::IDENTITY_PER_WORD" |)
-                      |)
+                      M.read (| M.get_constant "revm_precompile::identity::IDENTITY_BASE" |);
+                      M.read (| M.get_constant "revm_precompile::identity::IDENTITY_PER_WORD" |)
                     ]
                   |)
                 |) in

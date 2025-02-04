@@ -561,7 +561,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (| "revm_interpreter::gas::constants::LOW" |)
+                                        M.get_constant "revm_interpreter::gas::constants::LOW"
                                       |)
                                     ]
                                   |)
@@ -2247,9 +2247,8 @@ Module instructions.
                                                                     M.cast
                                                                       (Ty.path "u64")
                                                                       (M.read (|
-                                                                        M.get_constant (|
+                                                                        M.get_constant
                                                                           "core::num::MAX"
-                                                                        |)
                                                                       |))
                                                                   |))
                                                                   (BinOp.ne (|
@@ -2650,9 +2649,8 @@ Module instructions.
                                                                             M.cast
                                                                               (Ty.path "u64")
                                                                               (M.read (|
-                                                                                M.get_constant (|
+                                                                                M.get_constant
                                                                                   "core::num::MAX"
-                                                                                |)
                                                                               |))
                                                                           |))
                                                                           (BinOp.ne (|
@@ -2928,9 +2926,8 @@ Module instructions.
                                                                           |)));
                                                                       fun γ =>
                                                                         ltac:(M.monadic
-                                                                          (M.get_constant (|
-                                                                            "core::num::MAX"
-                                                                          |)))
+                                                                          (M.get_constant
+                                                                            "core::num::MAX"))
                                                                     ]
                                                                   |)))
                                                             ]
@@ -2938,9 +2935,7 @@ Module instructions.
                                                         |)
                                                       ]
                                                     |);
-                                                    M.read (|
-                                                      M.get_constant (| "core::num::MAX" |)
-                                                    |)
+                                                    M.read (| M.get_constant "core::num::MAX" |)
                                                   ]
                                                 |);
                                                 M.call_closure (|
@@ -3290,9 +3285,7 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::gas::constants::BLOCKHASH"
-                                        |)
+                                        M.get_constant "revm_interpreter::gas::constants::BLOCKHASH"
                                       |)
                                     ]
                                   |)
@@ -3458,8 +3451,7 @@ Module instructions.
                                               M.deref (| M.read (| x |) |),
                                               M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                             |)));
-                                        fun γ =>
-                                          ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                                        fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
                                       ]
                                     |)))
                               ]
@@ -4096,9 +4088,8 @@ Module instructions.
                                                         ]
                                                       |),
                                                       M.read (|
-                                                        M.get_constant (|
+                                                        M.get_constant
                                                           "revm_interpreter::gas::constants::CALL_STIPEND"
-                                                        |)
                                                       |)
                                                     |)))
                                                 |)
@@ -4606,9 +4597,8 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
-                                        |)
                                       |)
                                     ]
                                   |)
@@ -4892,9 +4882,8 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
-                                        |)
                                       |)
                                     ]
                                   |)
@@ -5231,9 +5220,7 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant (|
-                                                                  "core::num::MAX"
-                                                                |)
+                                                                M.get_constant "core::num::MAX"
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -5340,9 +5327,7 @@ Module instructions.
                                   M.cast
                                     (Ty.path "u8")
                                     (M.read (|
-                                      M.get_constant (|
-                                        "revm_interpreter::instructions::host::log::N"
-                                      |)
+                                      M.get_constant "revm_interpreter::instructions::host::log::N"
                                     |));
                                   M.cast (Ty.path "u64") (M.read (| len |))
                                 ]
@@ -5578,9 +5563,8 @@ Module instructions.
                                                                         M.cast
                                                                           (Ty.path "u64")
                                                                           (M.read (|
-                                                                            M.get_constant (|
+                                                                            M.get_constant
                                                                               "core::num::MAX"
-                                                                            |)
                                                                           |))
                                                                       |))
                                                                       (BinOp.ne (|
@@ -5962,9 +5946,8 @@ Module instructions.
                                             ]
                                           |),
                                           M.read (|
-                                            M.get_constant (|
+                                            M.get_constant
                                               "revm_interpreter::instructions::host::log::N"
-                                            |)
                                           |)
                                         |)
                                       |)) in
@@ -6637,9 +6620,8 @@ Module instructions.
                                                   |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "revm_interpreter::gas::constants::SELFDESTRUCT"
-                                                  |)
                                                 |)
                                               ]
                                             |)

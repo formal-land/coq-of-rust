@@ -3,94 +3,191 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module f64.
   Definition value_RADIX : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::RADIX" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::RADIX")).
+  
+  Axiom Constant_value_RADIX : (M.get_constant "core::f64::RADIX") = value_RADIX.
   
   Definition value_MANTISSA_DIGITS : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::MANTISSA_DIGITS" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MANTISSA_DIGITS")).
+  
+  Axiom Constant_value_MANTISSA_DIGITS :
+    (M.get_constant "core::f64::MANTISSA_DIGITS") = value_MANTISSA_DIGITS.
   
   Definition value_DIGITS : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::DIGITS" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::DIGITS")).
+  
+  Axiom Constant_value_DIGITS : (M.get_constant "core::f64::DIGITS") = value_DIGITS.
   
   Definition value_EPSILON : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::EPSILON" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::EPSILON")).
   
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::f64::MIN" |))).
+  Axiom Constant_value_EPSILON : (M.get_constant "core::f64::EPSILON") = value_EPSILON.
+  
+  Definition value_MIN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MIN")).
+  
+  Axiom Constant_value_MIN : (M.get_constant "core::f64::MIN") = value_MIN.
   
   Definition value_MIN_POSITIVE : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::MIN_POSITIVE" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MIN_POSITIVE")).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::f64::MAX" |))).
+  Axiom Constant_value_MIN_POSITIVE :
+    (M.get_constant "core::f64::MIN_POSITIVE") = value_MIN_POSITIVE.
+  
+  Definition value_MAX : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MAX")).
+  
+  Axiom Constant_value_MAX : (M.get_constant "core::f64::MAX") = value_MAX.
   
   Definition value_MIN_EXP : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::MIN_EXP" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MIN_EXP")).
+  
+  Axiom Constant_value_MIN_EXP : (M.get_constant "core::f64::MIN_EXP") = value_MIN_EXP.
   
   Definition value_MAX_EXP : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::MAX_EXP" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MAX_EXP")).
+  
+  Axiom Constant_value_MAX_EXP : (M.get_constant "core::f64::MAX_EXP") = value_MAX_EXP.
   
   Definition value_MIN_10_EXP : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::MIN_10_EXP" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MIN_10_EXP")).
+  
+  Axiom Constant_value_MIN_10_EXP : (M.get_constant "core::f64::MIN_10_EXP") = value_MIN_10_EXP.
   
   Definition value_MAX_10_EXP : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::MAX_10_EXP" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::MAX_10_EXP")).
   
-  Definition value_NAN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::f64::NAN" |))).
+  Axiom Constant_value_MAX_10_EXP : (M.get_constant "core::f64::MAX_10_EXP") = value_MAX_10_EXP.
+  
+  Definition value_NAN : Value.t :=
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::NAN")).
+  
+  Axiom Constant_value_NAN : (M.get_constant "core::f64::NAN") = value_NAN.
   
   Definition value_INFINITY : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::INFINITY" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::INFINITY")).
+  
+  Axiom Constant_value_INFINITY : (M.get_constant "core::f64::INFINITY") = value_INFINITY.
   
   Definition value_NEG_INFINITY : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f64::NEG_INFINITY" |))).
+    M.run_constant ltac:(M.monadic (M.get_constant "core::f64::NEG_INFINITY")).
+  
+  Axiom Constant_value_NEG_INFINITY :
+    (M.get_constant "core::f64::NEG_INFINITY") = value_NEG_INFINITY.
   
   Module consts.
-    Definition value_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_TAU : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_PI : (M.get_constant "core::f64::consts::PI") = value_PI.
     
-    Definition value_PHI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_TAU : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_EGAMMA : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_TAU : (M.get_constant "core::f64::consts::TAU") = value_TAU.
     
-    Definition value_FRAC_PI_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_PHI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_PI_3 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_PHI : (M.get_constant "core::f64::consts::PHI") = value_PHI.
     
-    Definition value_FRAC_PI_4 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_EGAMMA : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_PI_6 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_EGAMMA : (M.get_constant "core::f64::consts::EGAMMA") = value_EGAMMA.
     
-    Definition value_FRAC_PI_8 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_1_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_2 :
+      (M.get_constant "core::f64::consts::FRAC_PI_2") = value_FRAC_PI_2.
     
-    Definition value_FRAC_1_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_1_SQRT_2PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_3 :
+      (M.get_constant "core::f64::consts::FRAC_PI_3") = value_FRAC_PI_3.
     
-    Definition value_FRAC_2_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_4 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_2_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_4 :
+      (M.get_constant "core::f64::consts::FRAC_PI_4") = value_FRAC_PI_4.
     
-    Definition value_SQRT_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_6 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_1_SQRT_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_6 :
+      (M.get_constant "core::f64::consts::FRAC_PI_6") = value_FRAC_PI_6.
     
-    Definition value_SQRT_3 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_8 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_1_SQRT_3 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_8 :
+      (M.get_constant "core::f64::consts::FRAC_PI_8") = value_FRAC_PI_8.
     
-    Definition value_E : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_LOG2_10 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_1_PI :
+      (M.get_constant "core::f64::consts::FRAC_1_PI") = value_FRAC_1_PI.
     
-    Definition value_LOG2_E : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_LOG10_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_1_SQRT_PI :
+      (M.get_constant "core::f64::consts::FRAC_1_SQRT_PI") = value_FRAC_1_SQRT_PI.
     
-    Definition value_LOG10_E : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_2PI : Value.t :=
+      M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_LN_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_1_SQRT_2PI :
+      (M.get_constant "core::f64::consts::FRAC_1_SQRT_2PI") = value_FRAC_1_SQRT_2PI.
     
-    Definition value_LN_10 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_2_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_FRAC_2_PI :
+      (M.get_constant "core::f64::consts::FRAC_2_PI") = value_FRAC_2_PI.
+    
+    Definition value_FRAC_2_SQRT_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_FRAC_2_SQRT_PI :
+      (M.get_constant "core::f64::consts::FRAC_2_SQRT_PI") = value_FRAC_2_SQRT_PI.
+    
+    Definition value_SQRT_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_SQRT_2 : (M.get_constant "core::f64::consts::SQRT_2") = value_SQRT_2.
+    
+    Definition value_FRAC_1_SQRT_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_FRAC_1_SQRT_2 :
+      (M.get_constant "core::f64::consts::FRAC_1_SQRT_2") = value_FRAC_1_SQRT_2.
+    
+    Definition value_SQRT_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_SQRT_3 : (M.get_constant "core::f64::consts::SQRT_3") = value_SQRT_3.
+    
+    Definition value_FRAC_1_SQRT_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_FRAC_1_SQRT_3 :
+      (M.get_constant "core::f64::consts::FRAC_1_SQRT_3") = value_FRAC_1_SQRT_3.
+    
+    Definition value_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_E : (M.get_constant "core::f64::consts::E") = value_E.
+    
+    Definition value_LOG2_10 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LOG2_10 : (M.get_constant "core::f64::consts::LOG2_10") = value_LOG2_10.
+    
+    Definition value_LOG2_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LOG2_E : (M.get_constant "core::f64::consts::LOG2_E") = value_LOG2_E.
+    
+    Definition value_LOG10_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LOG10_2 : (M.get_constant "core::f64::consts::LOG10_2") = value_LOG10_2.
+    
+    Definition value_LOG10_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LOG10_E : (M.get_constant "core::f64::consts::LOG10_E") = value_LOG10_E.
+    
+    Definition value_LN_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LN_2 : (M.get_constant "core::f64::consts::LN_2") = value_LN_2.
+    
+    Definition value_LN_10 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LN_10 : (M.get_constant "core::f64::consts::LN_10") = value_LN_10.
   End consts.
   
   Module Impl_f64.
@@ -250,8 +347,8 @@ Module f64.
         ltac:(M.monadic
           (M.alloc (|
             BinOp.bit_or
-              (M.read (| M.get_constant (| "core::f64::TINY_BITS" |) |))
-              (M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |))
+              (M.read (| M.get_constant "core::f64::TINY_BITS" |))
+              (M.read (| M.get_constant "core::f64::SIGN_MASK" |))
           |))).
     
     Axiom AssociatedConstant_value_NEG_TINY_BITS :
@@ -300,7 +397,7 @@ Module f64.
                   |),
                   [ M.read (| self |) ]
                 |))
-                (UnOp.not (| M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |) |))
+                (UnOp.not (| M.read (| M.get_constant "core::f64::SIGN_MASK" |) |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -322,13 +419,10 @@ Module f64.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.bit_or
+            (BinOp.eq (| M.read (| self |), M.read (| M.get_constant "core::f64::INFINITY" |) |))
             (BinOp.eq (|
               M.read (| self |),
-              M.read (| M.get_constant (| "core::f64::INFINITY" |) |)
-            |))
-            (BinOp.eq (|
-              M.read (| self |),
-              M.read (| M.get_constant (| "core::f64::NEG_INFINITY" |) |)
+              M.read (| M.get_constant "core::f64::NEG_INFINITY" |)
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -352,7 +446,7 @@ Module f64.
               M.get_associated_function (| Ty.path "f64", "abs_private", [], [] |),
               [ M.read (| self |) ]
             |),
-            M.read (| M.get_constant (| "core::f64::INFINITY" |) |)
+            M.read (| M.get_constant "core::f64::INFINITY" |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -459,10 +553,10 @@ Module f64.
                   [
                     BinOp.bit_and
                       (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f64::MAN_MASK" |) |));
+                      (M.read (| M.get_constant "core::f64::MAN_MASK" |));
                     BinOp.bit_and
                       (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f64::EXP_MASK" |) |))
+                      (M.read (| M.get_constant "core::f64::EXP_MASK" |))
                   ]
               |),
               [
@@ -591,7 +685,7 @@ Module f64.
                 |),
                 [ M.read (| self |) ]
               |))
-              (M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |)),
+              (M.read (| M.get_constant "core::f64::SIGN_MASK" |)),
             Value.Integer IntegerKind.U64 0
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -679,7 +773,7 @@ Module f64.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| M.get_constant (| "core::f64::INFINITY" |) |) ]
+                                        [ M.read (| M.get_constant "core::f64::INFINITY" |) ]
                                       |)
                                     |)))
                                 |)
@@ -696,7 +790,7 @@ Module f64.
                   M.alloc (|
                     BinOp.bit_and
                       (M.read (| bits |))
-                      (UnOp.not (| M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |) |))
+                      (UnOp.not (| M.read (| M.get_constant "core::f64::SIGN_MASK" |) |))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -712,7 +806,7 @@ Module f64.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::f64::TINY_BITS" |)));
+                            M.get_constant "core::f64::TINY_BITS"));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -822,11 +916,7 @@ Module f64.
                                           [],
                                           []
                                         |),
-                                        [
-                                          M.read (|
-                                            M.get_constant (| "core::f64::NEG_INFINITY" |)
-                                          |)
-                                        ]
+                                        [ M.read (| M.get_constant "core::f64::NEG_INFINITY" |) ]
                                       |)
                                     |)))
                                 |)
@@ -843,7 +933,7 @@ Module f64.
                   M.alloc (|
                     BinOp.bit_and
                       (M.read (| bits |))
-                      (UnOp.not (| M.read (| M.get_constant (| "core::f64::SIGN_MASK" |) |) |))
+                      (UnOp.not (| M.read (| M.get_constant "core::f64::SIGN_MASK" |) |))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -859,7 +949,7 @@ Module f64.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::f64::NEG_TINY_BITS" |)));
+                            M.get_constant "core::f64::NEG_TINY_BITS"));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -942,7 +1032,7 @@ Module f64.
             M.read (| self |),
             BinOp.Wrap.div (|
               M.read (| UnsupportedLiteral |),
-              M.read (| M.get_constant (| "core::f64::consts::PI" |) |)
+              M.read (| M.get_constant "core::f64::consts::PI" |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -963,7 +1053,7 @@ Module f64.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.mul (|
             M.read (| self |),
-            M.read (| M.get_constant (| "core::f64::to_radians::RADS_PER_DEG" |) |)
+            M.read (| M.get_constant "core::f64::to_radians::RADS_PER_DEG" |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1310,12 +1400,12 @@ Module f64.
                                   LogicalOp.and (|
                                     BinOp.le (|
                                       M.read (| abs_a |),
-                                      M.read (| M.get_constant (| "core::f64::midpoint::HI" |) |)
+                                      M.read (| M.get_constant "core::f64::midpoint::HI" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.le (|
                                         M.read (| abs_b |),
-                                        M.read (| M.get_constant (| "core::f64::midpoint::HI" |) |)
+                                        M.read (| M.get_constant "core::f64::midpoint::HI" |)
                                       |)))
                                   |)
                                 |)) in
@@ -1339,9 +1429,7 @@ Module f64.
                                         (M.alloc (|
                                           BinOp.lt (|
                                             M.read (| abs_a |),
-                                            M.read (|
-                                              M.get_constant (| "core::f64::midpoint::LO" |)
-                                            |)
+                                            M.read (| M.get_constant "core::f64::midpoint::LO" |)
                                           |)
                                         |)) in
                                     let _ :=
@@ -1371,7 +1459,7 @@ Module f64.
                                                   BinOp.lt (|
                                                     M.read (| abs_b |),
                                                     M.read (|
-                                                      M.get_constant (| "core::f64::midpoint::LO" |)
+                                                      M.get_constant "core::f64::midpoint::LO"
                                                     |)
                                                   |)
                                                 |)) in

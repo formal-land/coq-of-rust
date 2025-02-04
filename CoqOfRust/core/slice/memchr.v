@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module slice.
   Module memchr.
     Definition value_LO_USIZE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -13,8 +13,11 @@ Module slice.
             |)
           |))).
     
+    Axiom Constant_value_LO_USIZE :
+      (M.get_constant "core::slice::memchr::LO_USIZE") = value_LO_USIZE.
+    
     Definition value_HI_USIZE : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -23,8 +26,11 @@ Module slice.
             |)
           |))).
     
+    Axiom Constant_value_HI_USIZE :
+      (M.get_constant "core::slice::memchr::HI_USIZE") = value_HI_USIZE.
+    
     Definition value_USIZE_BYTES : Value.t :=
-      M.run
+      M.run_constant
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
@@ -32,6 +38,9 @@ Module slice.
               []
             |)
           |))).
+    
+    Axiom Constant_value_USIZE_BYTES :
+      (M.get_constant "core::slice::memchr::USIZE_BYTES") = value_USIZE_BYTES.
     
     (*
     const fn contains_zero_byte(x: usize) -> bool {
@@ -48,13 +57,10 @@ Module slice.
               (BinOp.bit_and
                 (M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
-                  [
-                    M.read (| x |);
-                    M.read (| M.get_constant (| "core::slice::memchr::LO_USIZE" |) |)
-                  ]
+                  [ M.read (| x |); M.read (| M.get_constant "core::slice::memchr::LO_USIZE" |) ]
                 |))
                 (UnOp.not (| M.read (| x |) |)))
-              (M.read (| M.get_constant (| "core::slice::memchr::HI_USIZE" |) |)),
+              (M.read (| M.get_constant "core::slice::memchr::HI_USIZE" |)),
             Value.Integer IntegerKind.Usize 0
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -108,9 +114,7 @@ Module slice.
                                   |),
                                   BinOp.Wrap.mul (|
                                     Value.Integer IntegerKind.Usize 2,
-                                    M.read (|
-                                      M.get_constant (| "core::slice::memchr::USIZE_BYTES" |)
-                                    |)
+                                    M.read (| M.get_constant "core::slice::memchr::USIZE_BYTES" |)
                                   |)
                                 |)
                               |)) in
@@ -385,7 +389,7 @@ Module slice.
                       |),
                       [
                         M.read (| ptr |);
-                        M.read (| M.get_constant (| "core::slice::memchr::USIZE_BYTES" |) |)
+                        M.read (| M.get_constant "core::slice::memchr::USIZE_BYTES" |)
                       ]
                     |)
                   |) in
@@ -528,7 +532,7 @@ Module slice.
                                         BinOp.Wrap.mul (|
                                           Value.Integer IntegerKind.Usize 2,
                                           M.read (|
-                                            M.get_constant (| "core::slice::memchr::USIZE_BYTES" |)
+                                            M.get_constant "core::slice::memchr::USIZE_BYTES"
                                           |)
                                         |)
                                       |)
@@ -573,9 +577,7 @@ Module slice.
                                             BinOp.Wrap.add (|
                                               M.read (| offset |),
                                               M.read (|
-                                                M.get_constant (|
-                                                  "core::slice::memchr::USIZE_BYTES"
-                                                |)
+                                                M.get_constant "core::slice::memchr::USIZE_BYTES"
                                               |)
                                             |)
                                           ]
@@ -636,7 +638,7 @@ Module slice.
                                     M.read (| β |),
                                     BinOp.Wrap.mul (|
                                       M.read (|
-                                        M.get_constant (| "core::slice::memchr::USIZE_BYTES" |)
+                                        M.get_constant "core::slice::memchr::USIZE_BYTES"
                                       |),
                                       Value.Integer IntegerKind.Usize 2
                                     |)

@@ -463,7 +463,7 @@ Module compatibility.
               ("check_friend_linking", Value.Bool true);
               ("check_private_entry_linking", Value.Bool true);
               ("disallowed_new_abilities",
-                M.read (| M.get_constant (| "move_binary_format::file_format::EMPTY" |) |));
+                M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |));
               ("disallow_change_struct_type_params", Value.Bool true)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -530,7 +530,7 @@ Module compatibility.
               ("check_friend_linking", Value.Bool false);
               ("check_private_entry_linking", Value.Bool false);
               ("disallowed_new_abilities",
-                M.read (| M.get_constant (| "move_binary_format::file_format::EMPTY" |) |));
+                M.read (| M.get_constant "move_binary_format::file_format::EMPTY" |));
               ("disallow_change_struct_type_params", Value.Bool false)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1510,9 +1510,8 @@ Module compatibility.
                                                                             |)
                                                                           |),
                                                                           M.read (|
-                                                                            M.get_constant (|
+                                                                            M.get_constant
                                                                               "move_binary_format::file_format_common::VERSION_5"
-                                                                            |)
                                                                           |)
                                                                         |),
                                                                         ltac:(M.monadic
@@ -1529,9 +1528,8 @@ Module compatibility.
                                                                               |)
                                                                             |),
                                                                             M.read (|
-                                                                              M.get_constant (|
+                                                                              M.get_constant
                                                                                 "move_binary_format::file_format_common::VERSION_5"
-                                                                              |)
                                                                             |)
                                                                           |)))
                                                                       |),

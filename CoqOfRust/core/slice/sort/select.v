@@ -171,8 +171,7 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ :=
-                          M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                        (let γ := M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -445,7 +444,11 @@ Module slice.
         M.IsFunction "core::slice::sort::select::partition_at_index" partition_at_index.
       
       Definition value_INSERTION_SORT_THRESHOLD : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+      
+      Axiom Constant_value_INSERTION_SORT_THRESHOLD :
+        (M.get_constant "core::slice::sort::select::INSERTION_SORT_THRESHOLD") =
+          value_INSERTION_SORT_THRESHOLD.
       
       (*
       fn partition_at_index_loop<'a, T, F>(
@@ -575,9 +578,8 @@ Module slice.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::slice::sort::select::INSERTION_SORT_THRESHOLD"
-                                                |)
                                               |)
                                             |)
                                           |)) in
@@ -1802,9 +1804,8 @@ Module slice.
                                             UnOp.not (|
                                               UnOp.not (|
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::mem::SizedTypeProperties::IS_ZST"
-                                                  |)
                                                 |)
                                               |)
                                             |)
@@ -1863,9 +1864,8 @@ Module slice.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant (|
+                                                M.get_constant
                                                   "core::slice::sort::select::INSERTION_SORT_THRESHOLD"
-                                                |)
                                               |)
                                             |)
                                           |)) in

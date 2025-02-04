@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module escape.
   Definition value_HEX_DIGITS : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.deref (|
           M.call_closure (|
@@ -43,6 +43,8 @@ Module escape.
           |)
         |))).
   
+  Axiom Constant_value_HEX_DIGITS : (M.get_constant "core::escape::HEX_DIGITS") = value_HEX_DIGITS.
+  
   (*
   const fn backslash<const N: usize>(a: ascii::Char) -> ([ascii::Char; N], Range<u8>) {
       const { assert!(N >= 2) };
@@ -61,7 +63,7 @@ Module escape.
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         M.read (|
-          let~ _ := M.get_constant (| "core::escape::backslash_discriminant" |) in
+          let~ _ := M.get_constant "core::escape::backslash_discriminant" in
           let~ output :=
             M.alloc (|
               repeat (| Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [], N |)
@@ -141,7 +143,7 @@ Module escape.
       ltac:(M.monadic
         (let byte := M.alloc (| byte |) in
         M.read (|
-          let~ _ := M.get_constant (| "core::escape::escape_ascii_discriminant" |) in
+          let~ _ := M.get_constant "core::escape::escape_ascii_discriminant" in
           M.match_operator (|
             byte,
             [
@@ -294,7 +296,7 @@ Module escape.
                           (let~ hi :=
                             M.copy (|
                               M.SubPointer.get_array_field (|
-                                M.get_constant (| "core::escape::HEX_DIGITS" |),
+                                M.get_constant "core::escape::HEX_DIGITS",
                                 M.alloc (|
                                   M.cast
                                     (Ty.path "usize")
@@ -308,7 +310,7 @@ Module escape.
                           let~ lo :=
                             M.copy (|
                               M.SubPointer.get_array_field (|
-                                M.get_constant (| "core::escape::HEX_DIGITS" |),
+                                M.get_constant "core::escape::HEX_DIGITS",
                                 M.alloc (|
                                   M.cast
                                     (Ty.path "usize")
@@ -405,7 +407,7 @@ Module escape.
       ltac:(M.monadic
         (let c := M.alloc (| c |) in
         M.read (|
-          let~ _ := M.get_constant (| "core::escape::escape_unicode_discriminant" |) in
+          let~ _ := M.get_constant "core::escape::escape_unicode_discriminant" in
           let~ c := M.alloc (| M.cast (Ty.path "u32") (M.read (| c |)) |) in
           let~ start :=
             M.alloc (|
@@ -434,7 +436,7 @@ Module escape.
               |),
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::escape::HEX_DIGITS" |),
+                  M.get_constant "core::escape::HEX_DIGITS",
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
@@ -453,7 +455,7 @@ Module escape.
               |),
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::escape::HEX_DIGITS" |),
+                  M.get_constant "core::escape::HEX_DIGITS",
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
@@ -472,7 +474,7 @@ Module escape.
               |),
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::escape::HEX_DIGITS" |),
+                  M.get_constant "core::escape::HEX_DIGITS",
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
@@ -491,7 +493,7 @@ Module escape.
               |),
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::escape::HEX_DIGITS" |),
+                  M.get_constant "core::escape::HEX_DIGITS",
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
@@ -510,7 +512,7 @@ Module escape.
               |),
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::escape::HEX_DIGITS" |),
+                  M.get_constant "core::escape::HEX_DIGITS",
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
@@ -529,7 +531,7 @@ Module escape.
               |),
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant (| "core::escape::HEX_DIGITS" |),
+                  M.get_constant "core::escape::HEX_DIGITS",
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
@@ -589,7 +591,7 @@ Module escape.
                     ("end_",
                       M.cast
                         (Ty.path "u8")
-                        (M.read (| M.get_constant (| "core::escape::escape_unicode::N" |) |)))
+                        (M.read (| M.get_constant "core::escape::escape_unicode::N" |)))
                   ]
               ]
           |)

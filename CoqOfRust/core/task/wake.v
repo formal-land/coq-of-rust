@@ -215,7 +215,7 @@ Module task.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant (| "core::task::wake::NOOP::VTABLE" |)
+                        M.get_constant "core::task::wake::NOOP::VTABLE"
                       |)
                     |)
                   |)
@@ -1758,7 +1758,7 @@ Module task.
       Definition noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [] =>
-          ltac:(M.monadic (M.read (| M.get_constant (| "core::task::wake::noop::WAKER" |) |)))
+          ltac:(M.monadic (M.read (| M.get_constant "core::task::wake::noop::WAKER" |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2487,7 +2487,7 @@ Module task.
       Definition noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [] =>
-          ltac:(M.monadic (M.read (| M.get_constant (| "core::task::wake::noop::WAKER" |) |)))
+          ltac:(M.monadic (M.read (| M.get_constant "core::task::wake::noop::WAKER" |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

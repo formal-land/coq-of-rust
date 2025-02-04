@@ -449,7 +449,11 @@ Module control_flow_graph.
   End Impl_move_binary_format_control_flow_graph_BasicBlock.
   
   Definition value_ENTRY_BLOCK_ID : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
+  
+  Axiom Constant_value_ENTRY_BLOCK_ID :
+    (M.get_constant "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID") =
+      value_ENTRY_BLOCK_ID.
   
   Module Impl_move_binary_format_control_flow_graph_VMControlFlowGraph.
     Definition Self : Ty.t := Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph".
@@ -651,7 +655,7 @@ Module control_flow_graph.
                   [
                     M.borrow (| Pointer.Kind.MutRef, block_ids |);
                     M.read (|
-                      M.get_constant (| "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID" |)
+                      M.get_constant "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID"
                     |)
                   ]
                 |)
@@ -1163,9 +1167,8 @@ Module control_flow_graph.
                             Value.Array
                               [
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID"
-                                  |)
                                 |)
                               ]
                           |)
@@ -3452,9 +3455,7 @@ Module control_flow_graph.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.get_constant (| "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID" |)
-          |)))
+          M.read (| M.get_constant "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID" |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

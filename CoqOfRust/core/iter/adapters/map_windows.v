@@ -104,7 +104,7 @@ Module iter.
                                 UnOp.not (|
                                   BinOp.ne (|
                                     M.read (|
-                                      M.get_constant (| "core::iter::adapters::map_windows::N" |)
+                                      M.get_constant "core::iter::adapters::map_windows::N"
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -207,9 +207,8 @@ Module iter.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          M.get_constant (|
+                                                          M.get_constant
                                                             "core::iter::adapters::map_windows::N"
-                                                          |)
                                                         |);
                                                         Value.Integer IntegerKind.Usize 2
                                                       ]
@@ -839,9 +838,8 @@ Module iter.
                                                   M.read (| lo |);
                                                   BinOp.Wrap.sub (|
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::iter::adapters::map_windows::N"
-                                                      |)
                                                     |),
                                                     Value.Integer IntegerKind.Usize 1
                                                   |)
@@ -887,9 +885,8 @@ Module iter.
                                                                         M.read (| hi |);
                                                                         BinOp.Wrap.sub (|
                                                                           M.read (|
-                                                                            M.get_constant (|
+                                                                            M.get_constant
                                                                               "core::iter::adapters::map_windows::N"
-                                                                            |)
                                                                           |),
                                                                           Value.Integer
                                                                             IntegerKind.Usize
@@ -1086,9 +1083,8 @@ Module iter.
                             |);
                             repeat (|
                               M.read (|
-                                M.get_constant (|
+                                M.get_constant
                                   "core::iter::adapters::map_windows::try_from_iter_discriminant"
-                                |)
                               |),
                               N
                             |)
@@ -1301,17 +1297,15 @@ Module iter.
                                                   |)
                                                 |),
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::iter::adapters::map_windows::N"
-                                                  |)
                                                 |)
                                               |),
                                               BinOp.Wrap.mul (|
                                                 Value.Integer IntegerKind.Usize 2,
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::iter::adapters::map_windows::N"
-                                                  |)
                                                 |)
                                               |)
                                             |)
@@ -1474,17 +1468,15 @@ Module iter.
                                                       |)
                                                     |),
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::iter::adapters::map_windows::N"
-                                                      |)
                                                     |)
                                                   |),
                                                   BinOp.Wrap.mul (|
                                                     Value.Integer IntegerKind.Usize 2,
                                                     M.read (|
-                                                      M.get_constant (|
+                                                      M.get_constant
                                                         "core::iter::adapters::map_windows::N"
-                                                      |)
                                                     |)
                                                   |)
                                                 |)
@@ -1720,17 +1712,15 @@ Module iter.
                                                   |)
                                                 |),
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::iter::adapters::map_windows::N"
-                                                  |)
                                                 |)
                                               |),
                                               BinOp.Wrap.mul (|
                                                 Value.Integer IntegerKind.Usize 2,
                                                 M.read (|
-                                                  M.get_constant (|
+                                                  M.get_constant
                                                     "core::iter::adapters::map_windows::N"
-                                                  |)
                                                 |)
                                               |)
                                             |)
@@ -1780,7 +1770,7 @@ Module iter.
                                       |)
                                     |),
                                     M.read (|
-                                      M.get_constant (| "core::iter::adapters::map_windows::N" |)
+                                      M.get_constant "core::iter::adapters::map_windows::N"
                                     |)
                                   |)
                                 |)) in
@@ -1836,9 +1826,7 @@ Module iter.
                                         M.read (| buffer_mut_ptr |);
                                         BinOp.Wrap.sub (|
                                           M.read (|
-                                            M.get_constant (|
-                                              "core::iter::adapters::map_windows::N"
-                                            |)
+                                            M.get_constant "core::iter::adapters::map_windows::N"
                                           |),
                                           Value.Integer IntegerKind.Usize 1
                                         |)
@@ -1881,9 +1869,8 @@ Module iter.
                                                 M.read (| buffer_mut_ptr |);
                                                 BinOp.Wrap.sub (|
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::iter::adapters::map_windows::N"
-                                                    |)
                                                   |),
                                                   Value.Integer IntegerKind.Usize 1
                                                 |)
@@ -1981,9 +1968,8 @@ Module iter.
                                                     |)
                                                   |),
                                                   M.read (|
-                                                    M.get_constant (|
+                                                    M.get_constant
                                                       "core::iter::adapters::map_windows::N"
-                                                    |)
                                                   |)
                                                 |)
                                               ]
@@ -2109,17 +2095,15 @@ Module iter.
                             [
                               repeat (|
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "core::iter::adapters::map_windows::clone_discriminant"
-                                  |)
                                 |),
                                 N
                               |);
                               repeat (|
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "core::iter::adapters::map_windows::clone_discriminant"
-                                  |)
                                 |),
                                 N
                               |)
@@ -2392,7 +2376,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant (| "core::iter::adapters::map_windows::N" |) |)
+                        M.read (| M.get_constant "core::iter::adapters::map_windows::N" |)
                       ]
                     |)
                   |) in

@@ -148,9 +148,8 @@ Module iter.
                   M.alloc (|
                     repeat (|
                       M.read (|
-                        M.get_constant (|
+                        M.get_constant
                           "core::iter::adapters::filter::next_chunk_dropless_discriminant"
-                        |)
                       |),
                       N
                     |)
@@ -310,9 +309,8 @@ Module iter.
                                                           BinOp.lt (|
                                                             M.read (| initialized |),
                                                             M.read (|
-                                                              M.get_constant (|
+                                                              M.get_constant
                                                                 "core::iter::adapters::filter::next_chunk_dropless::N"
-                                                              |)
                                                             |)
                                                           |)
                                                         |)) in
@@ -841,7 +839,7 @@ Module iter.
               M.read (|
                 let~ fun_ :=
                   M.copy (|
-                    M.get_constant (| "core::iter::adapters::filter::next_chunk_discriminant" |)
+                    M.get_constant "core::iter::adapters::filter::next_chunk_discriminant"
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -1434,7 +1432,7 @@ Module iter.
           let Self : Ty.t := Self I P in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
+              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
@@ -1445,7 +1443,7 @@ Module iter.
           let Self : Ty.t := Self I P in
           M.run
             ltac:(M.monadic
-              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::MERGE_BY" |))).
+              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
         
         Axiom Implements :
           forall (I P : Ty.t),

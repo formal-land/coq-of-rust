@@ -1693,7 +1693,7 @@ Module ascii.
                         let~ hi :=
                           M.copy (|
                             M.SubPointer.get_array_field (|
-                              M.get_constant (| "core::ascii::ascii_char::fmt::HEX_DIGITS" |),
+                              M.get_constant "core::ascii::ascii_char::fmt::HEX_DIGITS",
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -1718,7 +1718,7 @@ Module ascii.
                         let~ lo :=
                           M.copy (|
                             M.SubPointer.get_array_field (|
-                              M.get_constant (| "core::ascii::ascii_char::fmt::HEX_DIGITS" |),
+                              M.get_constant "core::ascii::ascii_char::fmt::HEX_DIGITS",
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|

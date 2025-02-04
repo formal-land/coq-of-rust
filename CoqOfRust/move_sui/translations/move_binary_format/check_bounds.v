@@ -9053,7 +9053,7 @@ Module check_bounds.
                                   M.read (| locals_count |),
                                   M.cast
                                     (Ty.path "usize")
-                                    (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                    (M.read (| M.get_constant "core::num::MAX" |))
                                 |)
                               |)) in
                           let _ :=
@@ -15147,9 +15147,7 @@ Module check_bounds.
                                 "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
                                 [];
                               M.read (|
-                                M.get_constant (|
-                                  "move_binary_format::internals::ModuleIndex::KIND"
-                                |)
+                                M.get_constant "move_binary_format::internals::ModuleIndex::KIND"
                               |);
                               M.read (| idx |);
                               M.read (| len |);
@@ -15660,9 +15658,7 @@ Module check_bounds.
                               "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
                               [];
                             M.read (|
-                              M.get_constant (|
-                                "move_binary_format::internals::ModuleIndex::KIND"
-                              |)
+                              M.get_constant "move_binary_format::internals::ModuleIndex::KIND"
                             |);
                             M.cast (Ty.path "u16") (M.read (| idx |));
                             M.read (| len |)

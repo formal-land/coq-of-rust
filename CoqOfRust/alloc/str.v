@@ -5768,9 +5768,7 @@ Module str.
                                     |)
                                   ]
                                 |),
-                                M.read (|
-                                  M.get_constant (| "alloc::str::convert_while_ascii::N" |)
-                                |)
+                                M.read (| M.get_constant "alloc::str::convert_while_ascii::N" |)
                               |)
                             |)) in
                         let _ :=
@@ -5796,7 +5794,7 @@ Module str.
                                   [
                                     ("end_",
                                       M.read (|
-                                        M.get_constant (| "alloc::str::convert_while_ascii::N" |)
+                                        M.get_constant "alloc::str::convert_while_ascii::N"
                                       |))
                                   ]
                               ]
@@ -5837,9 +5835,7 @@ Module str.
                                       [
                                         ("end_",
                                           M.read (|
-                                            M.get_constant (|
-                                              "alloc::str::convert_while_ascii::N"
-                                            |)
+                                            M.get_constant "alloc::str::convert_while_ascii::N"
                                           |))
                                       ]
                                   ]
@@ -5871,9 +5867,7 @@ Module str.
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
                                           M.read (|
-                                            M.get_constant (|
-                                              "alloc::str::convert_while_ascii::N"
-                                            |)
+                                            M.get_constant "alloc::str::convert_while_ascii::N"
                                           |))
                                       ]
                                   ]
@@ -6064,9 +6058,7 @@ Module str.
                                               ]
                                             |)),
                                           M.read (|
-                                            M.get_constant (|
-                                              "alloc::str::convert_while_ascii::N"
-                                            |)
+                                            M.get_constant "alloc::str::convert_while_ascii::N"
                                           |)
                                         |)
                                       |)) in
@@ -6103,9 +6095,7 @@ Module str.
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
                                           M.read (|
-                                            M.get_constant (|
-                                              "alloc::str::convert_while_ascii::N"
-                                            |)
+                                            M.get_constant "alloc::str::convert_while_ascii::N"
                                           |))
                                       ]
                                   ]
@@ -6216,7 +6206,7 @@ Module str.
                             β,
                             BinOp.Wrap.add (|
                               M.read (| β |),
-                              M.read (| M.get_constant (| "alloc::str::convert_while_ascii::N" |) |)
+                              M.read (| M.get_constant "alloc::str::convert_while_ascii::N" |)
                             |)
                           |) in
                         let~ _ :=
@@ -6247,9 +6237,7 @@ Module str.
                                       [
                                         ("start",
                                           M.read (|
-                                            M.get_constant (|
-                                              "alloc::str::convert_while_ascii::N"
-                                            |)
+                                            M.get_constant "alloc::str::convert_while_ascii::N"
                                           |))
                                       ]
                                   ]
@@ -6296,9 +6284,7 @@ Module str.
                                           [
                                             ("start",
                                               M.read (|
-                                                M.get_constant (|
-                                                  "alloc::str::convert_while_ascii::N"
-                                                |)
+                                                M.get_constant "alloc::str::convert_while_ascii::N"
                                               |))
                                           ]
                                       ]
@@ -6582,6 +6568,8 @@ Module str.
   
   Module convert_while_ascii.
     Definition value_N : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+    
+    Axiom Constant_value_N : (M.get_constant "alloc::str::convert_while_ascii::N") = value_N.
   End convert_while_ascii.
 End str.

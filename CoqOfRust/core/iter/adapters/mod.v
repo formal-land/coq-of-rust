@@ -648,7 +648,7 @@ Module iter.
         let Self : Ty.t := Self I R in
         M.run
           ltac:(M.monadic
-            (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
+            (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
       
       (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
       (* Ty.apply
@@ -658,8 +658,7 @@ Module iter.
       Definition value_MERGE_BY (I R : Ty.t) : Value.t :=
         let Self : Ty.t := Self I R in
         M.run
-          ltac:(M.monadic
-            (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::MERGE_BY" |))).
+          ltac:(M.monadic (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
       
       Axiom Implements :
         forall (I R : Ty.t),

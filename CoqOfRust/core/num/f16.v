@@ -3,55 +3,118 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module f16.
   Module consts.
-    Definition value_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_TAU : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_PI : (M.get_constant "core::f16::consts::PI") = value_PI.
     
-    Definition value_PHI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_TAU : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_EGAMMA : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_TAU : (M.get_constant "core::f16::consts::TAU") = value_TAU.
     
-    Definition value_FRAC_PI_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_PHI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_PI_3 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_PHI : (M.get_constant "core::f16::consts::PHI") = value_PHI.
     
-    Definition value_FRAC_PI_4 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_EGAMMA : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_PI_6 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_EGAMMA : (M.get_constant "core::f16::consts::EGAMMA") = value_EGAMMA.
     
-    Definition value_FRAC_PI_8 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_1_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_2 :
+      (M.get_constant "core::f16::consts::FRAC_PI_2") = value_FRAC_PI_2.
     
-    Definition value_FRAC_1_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_1_SQRT_2PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_3 :
+      (M.get_constant "core::f16::consts::FRAC_PI_3") = value_FRAC_PI_3.
     
-    Definition value_FRAC_2_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_4 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_2_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_4 :
+      (M.get_constant "core::f16::consts::FRAC_PI_4") = value_FRAC_PI_4.
     
-    Definition value_SQRT_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_6 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_1_SQRT_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_6 :
+      (M.get_constant "core::f16::consts::FRAC_PI_6") = value_FRAC_PI_6.
     
-    Definition value_SQRT_3 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_8 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_FRAC_1_SQRT_3 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_PI_8 :
+      (M.get_constant "core::f16::consts::FRAC_PI_8") = value_FRAC_PI_8.
     
-    Definition value_E : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_LOG2_10 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_1_PI :
+      (M.get_constant "core::f16::consts::FRAC_1_PI") = value_FRAC_1_PI.
     
-    Definition value_LOG2_E : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_LOG10_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_1_SQRT_PI :
+      (M.get_constant "core::f16::consts::FRAC_1_SQRT_PI") = value_FRAC_1_SQRT_PI.
     
-    Definition value_LOG10_E : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_2PI : Value.t :=
+      M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
-    Definition value_LN_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Axiom Constant_value_FRAC_1_SQRT_2PI :
+      (M.get_constant "core::f16::consts::FRAC_1_SQRT_2PI") = value_FRAC_1_SQRT_2PI.
     
-    Definition value_LN_10 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_2_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_FRAC_2_PI :
+      (M.get_constant "core::f16::consts::FRAC_2_PI") = value_FRAC_2_PI.
+    
+    Definition value_FRAC_2_SQRT_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_FRAC_2_SQRT_PI :
+      (M.get_constant "core::f16::consts::FRAC_2_SQRT_PI") = value_FRAC_2_SQRT_PI.
+    
+    Definition value_SQRT_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_SQRT_2 : (M.get_constant "core::f16::consts::SQRT_2") = value_SQRT_2.
+    
+    Definition value_FRAC_1_SQRT_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_FRAC_1_SQRT_2 :
+      (M.get_constant "core::f16::consts::FRAC_1_SQRT_2") = value_FRAC_1_SQRT_2.
+    
+    Definition value_SQRT_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_SQRT_3 : (M.get_constant "core::f16::consts::SQRT_3") = value_SQRT_3.
+    
+    Definition value_FRAC_1_SQRT_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_FRAC_1_SQRT_3 :
+      (M.get_constant "core::f16::consts::FRAC_1_SQRT_3") = value_FRAC_1_SQRT_3.
+    
+    Definition value_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_E : (M.get_constant "core::f16::consts::E") = value_E.
+    
+    Definition value_LOG2_10 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LOG2_10 : (M.get_constant "core::f16::consts::LOG2_10") = value_LOG2_10.
+    
+    Definition value_LOG2_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LOG2_E : (M.get_constant "core::f16::consts::LOG2_E") = value_LOG2_E.
+    
+    Definition value_LOG10_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LOG10_2 : (M.get_constant "core::f16::consts::LOG10_2") = value_LOG10_2.
+    
+    Definition value_LOG10_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LOG10_E : (M.get_constant "core::f16::consts::LOG10_E") = value_LOG10_E.
+    
+    Definition value_LN_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LN_2 : (M.get_constant "core::f16::consts::LN_2") = value_LN_2.
+    
+    Definition value_LN_10 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
+    
+    Axiom Constant_value_LN_10 : (M.get_constant "core::f16::consts::LN_10") = value_LN_10.
   End consts.
   
   Module Impl_f16.
@@ -211,8 +274,8 @@ Module f16.
         ltac:(M.monadic
           (M.alloc (|
             BinOp.bit_or
-              (M.read (| M.get_constant (| "core::f16::TINY_BITS" |) |))
-              (M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |))
+              (M.read (| M.get_constant "core::f16::TINY_BITS" |))
+              (M.read (| M.get_constant "core::f16::SIGN_MASK" |))
           |))).
     
     Axiom AssociatedConstant_value_NEG_TINY_BITS :
@@ -261,7 +324,7 @@ Module f16.
                   |),
                   [ M.read (| self |) ]
                 |))
-                (UnOp.not (| M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |) |))
+                (UnOp.not (| M.read (| M.get_constant "core::f16::SIGN_MASK" |) |))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -280,13 +343,10 @@ Module f16.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.bit_or
+            (BinOp.eq (| M.read (| self |), M.read (| M.get_constant "core::f16::INFINITY" |) |))
             (BinOp.eq (|
               M.read (| self |),
-              M.read (| M.get_constant (| "core::f16::INFINITY" |) |)
-            |))
-            (BinOp.eq (|
-              M.read (| self |),
-              M.read (| M.get_constant (| "core::f16::NEG_INFINITY" |) |)
+              M.read (| M.get_constant "core::f16::NEG_INFINITY" |)
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -310,7 +370,7 @@ Module f16.
               M.get_associated_function (| Ty.path "f16", "abs_private", [], [] |),
               [ M.read (| self |) ]
             |),
-            M.read (| M.get_constant (| "core::f16::INFINITY" |) |)
+            M.read (| M.get_constant "core::f16::INFINITY" |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -412,10 +472,10 @@ Module f16.
                   [
                     BinOp.bit_and
                       (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f16::MAN_MASK" |) |));
+                      (M.read (| M.get_constant "core::f16::MAN_MASK" |));
                     BinOp.bit_and
                       (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f16::EXP_MASK" |) |))
+                      (M.read (| M.get_constant "core::f16::EXP_MASK" |))
                   ]
               |),
               [
@@ -593,7 +653,7 @@ Module f16.
                                           [],
                                           []
                                         |),
-                                        [ M.read (| M.get_constant (| "core::f16::INFINITY" |) |) ]
+                                        [ M.read (| M.get_constant "core::f16::INFINITY" |) ]
                                       |)
                                     |)))
                                 |)
@@ -610,7 +670,7 @@ Module f16.
                   M.alloc (|
                     BinOp.bit_and
                       (M.read (| bits |))
-                      (UnOp.not (| M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |) |))
+                      (UnOp.not (| M.read (| M.get_constant "core::f16::SIGN_MASK" |) |))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -626,7 +686,7 @@ Module f16.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::f16::TINY_BITS" |)));
+                            M.get_constant "core::f16::TINY_BITS"));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -736,11 +796,7 @@ Module f16.
                                           [],
                                           []
                                         |),
-                                        [
-                                          M.read (|
-                                            M.get_constant (| "core::f16::NEG_INFINITY" |)
-                                          |)
-                                        ]
+                                        [ M.read (| M.get_constant "core::f16::NEG_INFINITY" |) ]
                                       |)
                                     |)))
                                 |)
@@ -757,7 +813,7 @@ Module f16.
                   M.alloc (|
                     BinOp.bit_and
                       (M.read (| bits |))
-                      (UnOp.not (| M.read (| M.get_constant (| "core::f16::SIGN_MASK" |) |) |))
+                      (UnOp.not (| M.read (| M.get_constant "core::f16::SIGN_MASK" |) |))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -773,7 +829,7 @@ Module f16.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::f16::NEG_TINY_BITS" |)));
+                            M.get_constant "core::f16::NEG_TINY_BITS"));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -853,7 +909,7 @@ Module f16.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.mul (|
             M.read (| self |),
-            M.read (| M.get_constant (| "core::f16::to_degrees::PIS_IN_180" |) |)
+            M.read (| M.get_constant "core::f16::to_degrees::PIS_IN_180" |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -874,7 +930,7 @@ Module f16.
           (let self := M.alloc (| self |) in
           BinOp.Wrap.mul (|
             M.read (| self |),
-            M.read (| M.get_constant (| "core::f16::to_radians::RADS_PER_DEG" |) |)
+            M.read (| M.get_constant "core::f16::to_radians::RADS_PER_DEG" |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1221,12 +1277,12 @@ Module f16.
                                   LogicalOp.and (|
                                     BinOp.le (|
                                       M.read (| abs_a |),
-                                      M.read (| M.get_constant (| "core::f16::midpoint::HI" |) |)
+                                      M.read (| M.get_constant "core::f16::midpoint::HI" |)
                                     |),
                                     ltac:(M.monadic
                                       (BinOp.le (|
                                         M.read (| abs_b |),
-                                        M.read (| M.get_constant (| "core::f16::midpoint::HI" |) |)
+                                        M.read (| M.get_constant "core::f16::midpoint::HI" |)
                                       |)))
                                   |)
                                 |)) in
@@ -1250,9 +1306,7 @@ Module f16.
                                         (M.alloc (|
                                           BinOp.lt (|
                                             M.read (| abs_a |),
-                                            M.read (|
-                                              M.get_constant (| "core::f16::midpoint::LO" |)
-                                            |)
+                                            M.read (| M.get_constant "core::f16::midpoint::LO" |)
                                           |)
                                         |)) in
                                     let _ :=
@@ -1282,7 +1336,7 @@ Module f16.
                                                   BinOp.lt (|
                                                     M.read (| abs_b |),
                                                     M.read (|
-                                                      M.get_constant (| "core::f16::midpoint::LO" |)
+                                                      M.get_constant "core::f16::midpoint::LO"
                                                     |)
                                                   |)
                                                 |)) in

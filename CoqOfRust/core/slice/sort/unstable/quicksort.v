@@ -852,9 +852,8 @@ Module slice.
                               M.alloc (|
                                 M.call_closure (|
                                   M.read (|
-                                    M.get_constant (|
+                                    M.get_constant
                                       "core::slice::sort::unstable::quicksort::partition_discriminant"
-                                    |)
                                   |),
                                   [
                                     M.borrow (|
@@ -968,9 +967,8 @@ Module slice.
                                   []
                                 |),
                                 M.read (|
-                                  M.get_constant (|
+                                  M.get_constant
                                     "core::slice::sort::unstable::quicksort::inst_partition::MAX_BRANCHLESS_PARTITION_SIZE"
-                                  |)
                                 |)
                               |)
                             |)) in
@@ -1007,7 +1005,12 @@ Module slice.
         
         Module inst_partition.
           Definition value_MAX_BRANCHLESS_PARTITION_SIZE : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 96 |))).
+            M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 96 |))).
+          
+          Axiom Constant_value_MAX_BRANCHLESS_PARTITION_SIZE :
+            (M.get_constant
+                "core::slice::sort::unstable::quicksort::inst_partition::MAX_BRANCHLESS_PARTITION_SIZE") =
+              value_MAX_BRANCHLESS_PARTITION_SIZE.
         End inst_partition.
         
         (*
@@ -2040,9 +2043,8 @@ Module slice.
                       |) in
                     let~ unroll_len :=
                       M.copy (|
-                        M.get_constant (|
+                        M.get_constant
                           "core::slice::sort::unstable::quicksort::partition_lomuto_branchless_cyclic_discriminant"
-                        |)
                       |) in
                     let~ unroll_end :=
                       M.alloc (|

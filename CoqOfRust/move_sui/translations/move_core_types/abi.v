@@ -625,9 +625,7 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 M.read (| Value.String "ScriptABI" |);
-                M.read (|
-                  M.get_constant (| "move_core_types::abi::_'1::deserialize::VARIANTS" |)
-                |);
+                M.read (| M.get_constant "move_core_types::abi::_'1::deserialize::VARIANTS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'1::deserialize::__Visitor"
                   [
@@ -1133,7 +1131,7 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 M.read (| Value.String "ScriptFunctionABI" |);
-                M.read (| M.get_constant (| "move_core_types::abi::_'3::deserialize::FIELDS" |) |);
+                M.read (| M.get_constant "move_core_types::abi::_'3::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'3::deserialize::__Visitor"
                   [
@@ -1659,7 +1657,7 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 M.read (| Value.String "TransactionScriptABI" |);
-                M.read (| M.get_constant (| "move_core_types::abi::_'5::deserialize::FIELDS" |) |);
+                M.read (| M.get_constant "move_core_types::abi::_'5::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'5::deserialize::__Visitor"
                   [
@@ -1936,7 +1934,7 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 M.read (| Value.String "ArgumentABI" |);
-                M.read (| M.get_constant (| "move_core_types::abi::_'7::deserialize::FIELDS" |) |);
+                M.read (| M.get_constant "move_core_types::abi::_'7::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'7::deserialize::__Visitor"
                   [
@@ -2142,7 +2140,7 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 M.read (| Value.String "TypeArgumentABI" |);
-                M.read (| M.get_constant (| "move_core_types::abi::_'9::deserialize::FIELDS" |) |);
+                M.read (| M.get_constant "move_core_types::abi::_'9::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'9::deserialize::__Visitor"
                   [

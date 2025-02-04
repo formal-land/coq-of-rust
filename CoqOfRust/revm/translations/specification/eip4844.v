@@ -3,57 +3,81 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module eip4844.
   Definition value_GAS_PER_BLOB : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 17 |)
         |))).
   
+  Axiom Constant_value_GAS_PER_BLOB :
+    (M.get_constant "revm_specification::eip4844::GAS_PER_BLOB") = value_GAS_PER_BLOB.
+  
   Definition value_TARGET_BLOB_NUMBER_PER_BLOCK : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+  
+  Axiom Constant_value_TARGET_BLOB_NUMBER_PER_BLOCK :
+    (M.get_constant "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK") =
+      value_TARGET_BLOB_NUMBER_PER_BLOCK.
   
   Definition value_MAX_BLOB_NUMBER_PER_BLOCK : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.mul (|
             Value.Integer IntegerKind.U64 2,
-            M.read (|
-              M.get_constant (| "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK" |)
-            |)
+            M.read (| M.get_constant "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK" |)
           |)
         |))).
+  
+  Axiom Constant_value_MAX_BLOB_NUMBER_PER_BLOCK :
+    (M.get_constant "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK") =
+      value_MAX_BLOB_NUMBER_PER_BLOCK.
   
   Definition value_MAX_BLOB_GAS_PER_BLOCK : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.mul (|
-            M.read (|
-              M.get_constant (| "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK" |)
-            |),
-            M.read (| M.get_constant (| "revm_specification::eip4844::GAS_PER_BLOB" |) |)
+            M.read (| M.get_constant "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK" |),
+            M.read (| M.get_constant "revm_specification::eip4844::GAS_PER_BLOB" |)
           |)
         |))).
+  
+  Axiom Constant_value_MAX_BLOB_GAS_PER_BLOCK :
+    (M.get_constant "revm_specification::eip4844::MAX_BLOB_GAS_PER_BLOCK") =
+      value_MAX_BLOB_GAS_PER_BLOCK.
   
   Definition value_TARGET_BLOB_GAS_PER_BLOCK : Value.t :=
-    M.run
+    M.run_constant
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.mul (|
-            M.read (|
-              M.get_constant (| "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK" |)
-            |),
-            M.read (| M.get_constant (| "revm_specification::eip4844::GAS_PER_BLOB" |) |)
+            M.read (| M.get_constant "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK" |),
+            M.read (| M.get_constant "revm_specification::eip4844::GAS_PER_BLOB" |)
           |)
         |))).
   
+  Axiom Constant_value_TARGET_BLOB_GAS_PER_BLOCK :
+    (M.get_constant "revm_specification::eip4844::TARGET_BLOB_GAS_PER_BLOCK") =
+      value_TARGET_BLOB_GAS_PER_BLOCK.
+  
   Definition value_MIN_BLOB_GASPRICE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+  
+  Axiom Constant_value_MIN_BLOB_GASPRICE :
+    (M.get_constant "revm_specification::eip4844::MIN_BLOB_GASPRICE") = value_MIN_BLOB_GASPRICE.
   
   Definition value_BLOB_GASPRICE_UPDATE_FRACTION : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3338477 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3338477 |))).
+  
+  Axiom Constant_value_BLOB_GASPRICE_UPDATE_FRACTION :
+    (M.get_constant "revm_specification::eip4844::BLOB_GASPRICE_UPDATE_FRACTION") =
+      value_BLOB_GASPRICE_UPDATE_FRACTION.
   
   Definition value_VERSIONED_HASH_VERSION_KZG : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+  
+  Axiom Constant_value_VERSIONED_HASH_VERSION_KZG :
+    (M.get_constant "revm_specification::eip4844::VERSIONED_HASH_VERSION_KZG") =
+      value_VERSIONED_HASH_VERSION_KZG.
 End eip4844.

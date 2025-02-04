@@ -330,9 +330,8 @@ Module locals_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                             M.read (|
-                              M.get_constant (|
+                              M.get_constant
                                 "move_bytecode_verifier::locals_safety::abstract_state::STEP_BASE_COST"
-                              |)
                             |)
                           ]
                         |)
@@ -948,9 +947,8 @@ Module locals_safety.
                                         "move_bytecode_verifier_meter::Scope::Function"
                                         [];
                                       M.read (|
-                                        M.get_constant (|
+                                        M.get_constant
                                           "move_bytecode_verifier::locals_safety::abstract_state::RET_PER_LOCAL_COST"
-                                        |)
                                       |);
                                       M.call_closure (|
                                         M.get_associated_function (|
