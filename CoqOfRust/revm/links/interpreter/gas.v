@@ -67,6 +67,7 @@ Module MemoryGas.
     Proof.
       now constructor.
     Qed.
+    Smpl Add run_sub_pointer get_words_num_is_valid : run_symbolic.
 
     Definition get_expansion_cost : SubPointer.Runner.t t U64.t := {|
       SubPointer.Runner.index :=
@@ -80,6 +81,7 @@ Module MemoryGas.
     Proof.
       now constructor.
     Qed.
+    Smpl Add run_sub_pointer get_expansion_cost_is_valid : run_symbolic.
   End SubPointer.
 End MemoryGas.
 
@@ -162,15 +164,11 @@ Module Impl_MemoryGas.
     run_symbolic.
     eapply Run.Let. {
       run_symbolic.
-      run_sub_pointer MemoryGas.SubPointer.get_words_num_is_valid.
-      run_symbolic.
       eapply Run.CallPrimitiveAreEqual with (A := bool); try smpl of_value.
       intros []; run_symbolic.
     }
     intros [|[]]; run_symbolic.
     eapply Run.Let. {
-      run_symbolic.
-      run_sub_pointer MemoryGas.SubPointer.get_words_num_is_valid.
       run_symbolic.
     }
     intros [|[]]; run_symbolic.
@@ -263,6 +261,7 @@ Module Gas.
     Proof.
       now constructor.
     Qed.
+    Smpl Add run_sub_pointer get_limit_is_valid : run_symbolic.
 
     Definition get_remaining : SubPointer.Runner.t t U64.t := {|
       SubPointer.Runner.index :=
@@ -276,6 +275,7 @@ Module Gas.
     Proof.
       now constructor.
     Qed.
+    Smpl Add run_sub_pointer get_remaining_is_valid : run_symbolic.
 
     Definition get_refunded : SubPointer.Runner.t t I64.t := {|
       SubPointer.Runner.index :=
@@ -289,6 +289,7 @@ Module Gas.
     Proof.
       now constructor.
     Qed.
+    Smpl Add run_sub_pointer get_refunded_is_valid : run_symbolic.
 
     Definition get_memory : SubPointer.Runner.t t MemoryGas.t := {|
       SubPointer.Runner.index :=
@@ -302,6 +303,7 @@ Module Gas.
     Proof.
       now constructor.
     Qed.
+    Smpl Add run_sub_pointer get_memory_is_valid : run_symbolic.
   End SubPointer.
 End Gas.
 
@@ -437,8 +439,6 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.limit [] [] [φ self] 🔽 U64.t }}.
   Proof.
     run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_limit_is_valid.
-    run_symbolic.
   Defined.
 
   (*
@@ -461,8 +461,6 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.refunded [] [] [φ self] 🔽 I64.t }}.
   Proof.
     run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
-    run_symbolic.
   Defined.
 
   (*
@@ -473,10 +471,6 @@ Module Impl_revm_interpreter_gas_Gas.
   Definition run_spent (self : Ref.t Pointer.Kind.Ref Self) :
     {{ gas.Impl_revm_interpreter_gas_Gas.spent [] [] [φ self] 🔽 U64.t }}.
   Proof.
-    run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_limit_is_valid.
-    run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
     run_symbolic.
   Defined.
 
@@ -489,8 +483,6 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.remaining [] [] [φ self] 🔽 U64.t }}.
   Proof.
     run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
-    run_symbolic.
   Defined.
 
   (*
@@ -501,10 +493,6 @@ Module Impl_revm_interpreter_gas_Gas.
   Definition run_remaining_63_of_64_parts (self : Ref.t Pointer.Kind.Ref Self) :
     {{ gas.Impl_revm_interpreter_gas_Gas.remaining_63_of_64_parts [] [] [φ self] 🔽 U64.t }}.
   Proof.
-    run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
-    run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
     run_symbolic.
   Defined.
 
@@ -530,8 +518,6 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [] [φ self; φ returned] 🔽 unit }}.
   Proof.
     run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
-    run_symbolic.
     eapply Run.Let. {
       run_symbolic.
     }
@@ -549,8 +535,6 @@ Module Impl_revm_interpreter_gas_Gas.
     run_symbolic.
     eapply Run.Let. {
       run_symbolic.
-      run_sub_pointer Gas.SubPointer.get_remaining_is_valid.
-      run_symbolic.
     }
     intros []; run_symbolic.
   Defined.
@@ -563,8 +547,6 @@ Module Impl_revm_interpreter_gas_Gas.
   Definition run_record_refund (self : Ref.t Pointer.Kind.MutRef Self) (refund : I64.t) :
     {{ gas.Impl_revm_interpreter_gas_Gas.record_refund [] [] [φ self; φ refund] 🔽 unit }}.
   Proof.
-    run_symbolic.
-    run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
     run_symbolic.
     eapply Run.Let. {
       run_symbolic.
@@ -590,7 +572,6 @@ Module Impl_revm_interpreter_gas_Gas.
     cbn; intros []; [|run_symbolic].
     eapply Run.Let. {
       run_symbolic.
-      run_sub_pointer Gas.SubPointer.get_refunded_is_valid.
       destruct cmp.Impl_Ord_for_u64.run_min as [min [H_min run_min]].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_min.
