@@ -17,6 +17,26 @@ Module BinOp.
       intros -> ->.
       now destruct kind.
     Qed.
+
+    Ltac rewrite_make_arithmetic :=
+      eapply Run.Rewrite; [
+        (
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U8) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U16) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U32) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U128) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.Usize) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I8) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I16) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I32) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I64) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I128) by smpl of_value) ||
+          (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.Isize) by smpl of_value)
+        );
+        reflexivity
+      |].
+    Smpl Add rewrite_make_arithmetic : run_symbolic.
   End Wrap.
 End BinOp.
 

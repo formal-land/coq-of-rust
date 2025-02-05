@@ -875,7 +875,14 @@ Smpl Create run_symbolic.
 Ltac run_symbolic :=
   progress (repeat (
     run_symbolic_one_step_immediate ||
-    smpl run_symbolic
+    smpl run_symbolic ||
+    (
+      (* Automatically handle common lets *)
+      eapply Run.Let; [
+        run_symbolic
+      |];
+      intros []; run_symbolic
+    )
   )).
 
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding

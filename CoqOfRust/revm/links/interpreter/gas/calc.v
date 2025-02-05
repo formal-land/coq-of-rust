@@ -20,18 +20,8 @@ Lemma run_memory_gas (num_words: Usize.t) :
   {{ gas.calc.memory_gas [] [] [ φ num_words ] 🔽 U64.t }}.
 Proof.
   run_symbolic.
-  eapply Run.Let. {
-    run_symbolic.
-  }
-  intros []; run_symbolic.
   eapply Run.Rewrite. {
     rewrite gas.constants.MEMORY_eq.
-    reflexivity.
-  }
-  run_symbolic.
-  eapply Run.Rewrite. {
-    unfold BinOp.Wrap.div.
-    erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64) by smpl of_value.
     reflexivity.
   }
   run_symbolic.
