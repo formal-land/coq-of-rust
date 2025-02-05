@@ -10,6 +10,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite ZERO_eq : run_constant.
 
 Lemma BASE_eq :
   M.get_constant "revm_interpreter::gas::constants::BASE" =
@@ -18,6 +19,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite BASE_eq : run_constant.
 
 Lemma VERYLOW_eq :
   M.get_constant "revm_interpreter::gas::constants::VERYLOW" =
@@ -26,6 +28,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite VERYLOW_eq : run_constant.
 
 Lemma DATA_LOADN_GAS_eq :
   M.get_constant "revm_interpreter::gas::constants::DATA_LOADN_GAS" =
@@ -34,6 +37,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite DATA_LOADN_GAS_eq : run_constant.
 
 Lemma CONDITION_JUMP_GAS_eq :
   M.get_constant "revm_interpreter::gas::constants::CONDITION_JUMP_GAS" =
@@ -42,6 +46,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite CONDITION_JUMP_GAS_eq : run_constant.
 
 Lemma RETF_GAS_eq :
   M.get_constant "revm_interpreter::gas::constants::RETF_GAS" =
@@ -50,6 +55,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite RETF_GAS_eq : run_constant.
 
 Lemma DATA_LOAD_GAS_eq :
   M.get_constant "revm_interpreter::gas::constants::DATA_LOAD_GAS" =
@@ -58,6 +64,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite DATA_LOAD_GAS_eq : run_constant.
 
 Lemma LOW_eq :
   M.get_constant "revm_interpreter::gas::constants::LOW" =
@@ -66,6 +73,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite LOW_eq : run_constant.
 
 Lemma MID_eq :
   M.get_constant "revm_interpreter::gas::constants::MID" =
@@ -74,6 +82,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite MID_eq : run_constant.
 
 Lemma HIGH_eq :
   M.get_constant "revm_interpreter::gas::constants::HIGH" =
@@ -82,6 +91,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite HIGH_eq : run_constant.
 
 Lemma JUMPDEST_eq :
   M.get_constant "revm_interpreter::gas::constants::JUMPDEST" =
@@ -90,6 +100,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite JUMPDEST_eq : run_constant.
 
 Lemma SELFDESTRUCT_eq :
   M.get_constant "revm_interpreter::gas::constants::SELFDESTRUCT" =
@@ -98,6 +109,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite SELFDESTRUCT_eq : run_constant.
 
 Lemma CREATE_eq :
   M.get_constant "revm_interpreter::gas::constants::CREATE" =
@@ -106,6 +118,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite CREATE_eq : run_constant.
 
 Lemma CALLVALUE_eq :
   M.get_constant "revm_interpreter::gas::constants::CALLVALUE" =
@@ -114,6 +127,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite CALLVALUE_eq : run_constant.
 
 Lemma NEWACCOUNT_eq :
   M.get_constant "revm_interpreter::gas::constants::NEWACCOUNT" =
@@ -122,6 +136,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite NEWACCOUNT_eq : run_constant.
 
 Lemma EXP_eq :
   M.get_constant "revm_interpreter::gas::constants::EXP" =
@@ -130,6 +145,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite EXP_eq : run_constant.
 
 Lemma MEMORY_eq :
   M.get_constant "revm_interpreter::gas::constants::MEMORY" =
@@ -138,6 +154,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite MEMORY_eq : run_constant.
 
 Lemma LOG_eq :
   M.get_constant "revm_interpreter::gas::constants::LOG" =
@@ -146,6 +163,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite LOG_eq : run_constant.
 
 Lemma LOGDATA_eq :
   M.get_constant "revm_interpreter::gas::constants::LOGDATA" =
@@ -154,6 +172,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite LOGDATA_eq : run_constant.
 
 Lemma LOGTOPIC_eq :
   M.get_constant "revm_interpreter::gas::constants::LOGTOPIC" =
@@ -162,6 +181,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite LOGTOPIC_eq : run_constant.
 
 Lemma KECCAK256_eq :
   M.get_constant "revm_interpreter::gas::constants::KECCAK256" =
@@ -170,6 +190,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite KECCAK256_eq : run_constant.
 
 Lemma KECCAK256WORD_eq :
   M.get_constant "revm_interpreter::gas::constants::KECCAK256WORD" =
@@ -178,6 +199,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite KECCAK256WORD_eq : run_constant.
 
 Lemma COPY_eq :
   M.get_constant "revm_interpreter::gas::constants::COPY" =
@@ -186,6 +208,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite COPY_eq : run_constant.
 
 Lemma BLOCKHASH_eq :
   M.get_constant "revm_interpreter::gas::constants::BLOCKHASH" =
@@ -194,6 +217,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite BLOCKHASH_eq : run_constant.
 
 Lemma CODEDEPOSIT_eq :
   M.get_constant "revm_interpreter::gas::constants::CODEDEPOSIT" =
@@ -202,6 +226,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite CODEDEPOSIT_eq : run_constant.
 
 Lemma ISTANBUL_SLOAD_GAS_eq :
   M.get_constant "revm_interpreter::gas::constants::ISTANBUL_SLOAD_GAS" =
@@ -210,6 +235,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite ISTANBUL_SLOAD_GAS_eq : run_constant.
 
 Lemma SSTORE_SET_eq :
   M.get_constant "revm_interpreter::gas::constants::SSTORE_SET" =
@@ -218,6 +244,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite SSTORE_SET_eq : run_constant.
 
 Lemma SSTORE_RESET_eq :
   M.get_constant "revm_interpreter::gas::constants::SSTORE_RESET" =
@@ -226,6 +253,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite SSTORE_RESET_eq : run_constant.
 
 Lemma REFUND_SSTORE_CLEARS_eq :
   M.get_constant "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS" =
@@ -234,6 +262,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite REFUND_SSTORE_CLEARS_eq : run_constant.
 
 Lemma TRANSACTION_ZERO_DATA_eq :
   M.get_constant "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA" =
@@ -242,6 +271,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite TRANSACTION_ZERO_DATA_eq : run_constant.
 
 Lemma TRANSACTION_NON_ZERO_DATA_INIT_eq :
   M.get_constant "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_INIT" =
@@ -250,6 +280,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite TRANSACTION_NON_ZERO_DATA_INIT_eq : run_constant.
 
 Lemma TRANSACTION_NON_ZERO_DATA_FRONTIER_eq :
   M.get_constant "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_FRONTIER" =
@@ -258,6 +289,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite TRANSACTION_NON_ZERO_DATA_FRONTIER_eq : run_constant.
 
 Lemma EOF_CREATE_GAS_eq :
   M.get_constant "revm_interpreter::gas::constants::EOF_CREATE_GAS" =
@@ -266,6 +298,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite EOF_CREATE_GAS_eq : run_constant.
 
 Lemma ACCESS_LIST_ADDRESS_eq :
   M.get_constant "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS" =
@@ -274,6 +307,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite ACCESS_LIST_ADDRESS_eq : run_constant.
 
 Lemma ACCESS_LIST_STORAGE_KEY_eq :
   M.get_constant "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY" =
@@ -282,6 +316,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite ACCESS_LIST_STORAGE_KEY_eq : run_constant.
 
 Lemma COLD_SLOAD_COST_eq :
   M.get_constant "revm_interpreter::gas::constants::COLD_SLOAD_COST" =
@@ -290,6 +325,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite COLD_SLOAD_COST_eq : run_constant.
 
 Lemma COLD_ACCOUNT_ACCESS_COST_eq :
   M.get_constant "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST" =
@@ -298,6 +334,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite COLD_ACCOUNT_ACCESS_COST_eq : run_constant.
 
 Lemma WARM_STORAGE_READ_COST_eq :
   M.get_constant "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST" =
@@ -306,6 +343,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite WARM_STORAGE_READ_COST_eq : run_constant.
 
 Lemma WARM_SSTORE_RESET_eq :
   M.get_constant "revm_interpreter::gas::constants::WARM_SSTORE_RESET" =
@@ -314,6 +352,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite WARM_SSTORE_RESET_eq : run_constant.
 
 Lemma INITCODE_WORD_COST_eq :
   M.get_constant "revm_interpreter::gas::constants::INITCODE_WORD_COST" =
@@ -322,6 +361,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite INITCODE_WORD_COST_eq : run_constant.
 
 Lemma CALL_STIPEND_eq :
   M.get_constant "revm_interpreter::gas::constants::CALL_STIPEND" =
@@ -330,6 +370,7 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite CALL_STIPEND_eq : run_constant.
 
 Lemma MIN_CALLEE_GAS_eq :
   M.get_constant "revm_interpreter::gas::constants::MIN_CALLEE_GAS" =
@@ -338,3 +379,4 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Qed.
+Global Hint Rewrite MIN_CALLEE_GAS_eq : run_constant.

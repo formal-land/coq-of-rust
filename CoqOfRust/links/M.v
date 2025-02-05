@@ -843,13 +843,14 @@ Ltac run_symbolic_closure :=
     intros []
   ].
 
-Ltac run_rewrite_deref_borrow :=
+Ltac run_rewrites :=
   eapply Run.Rewrite; [
-    (
+    (repeat (
       rewrite Ref.deref_eq ||
       rewrite Ref.borrow_eq ||
-      rewrite Ref.cast_cast_eq
-    );
+      rewrite Ref.cast_cast_eq ||
+      autorewrite with run_constant
+    ));
     reflexivity
   |].
 
@@ -864,7 +865,7 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_get_associated_function ||
     run_symbolic_get_trait_method ||
     run_symbolic_closure ||
-    run_rewrite_deref_borrow ||
+    run_rewrites ||
     fold @LowM.let_ ||
     cbn
   end.

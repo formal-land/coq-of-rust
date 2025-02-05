@@ -20,10 +20,5 @@ Lemma run_memory_gas (num_words: Usize.t) :
   {{ gas.calc.memory_gas [] [] [ φ num_words ] 🔽 U64.t }}.
 Proof.
   run_symbolic.
-  eapply Run.Rewrite. {
-    rewrite gas.constants.MEMORY_eq.
-    reflexivity.
-  }
-  run_symbolic.
 Defined.
 Smpl Add apply run_memory_gas : run_closure.

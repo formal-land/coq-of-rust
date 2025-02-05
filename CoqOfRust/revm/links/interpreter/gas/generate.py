@@ -69,6 +69,7 @@ Require Import revm.translations.interpreter.gas.constants.
         output += "  repeat (autorewrite with constant_rewrites || cbn).\n"
         output += "  reflexivity.\n"
         output += "Qed.\n"
+        output += f"Global Hint Rewrite {name}_eq : run_constant.\n"
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(current_dir, "constants.v")
