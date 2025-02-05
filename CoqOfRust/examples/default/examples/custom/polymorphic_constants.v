@@ -57,6 +57,7 @@ Module Impl_polymorphic_constants_Foo_N_A.
   Axiom AssociatedFunction_convert :
     forall (N : Value.t) (A : Ty.t),
     M.IsAssociatedFunction (Self N A) "convert" (convert N A).
+  Smpl Add apply AssociatedFunction_convert : is_associated.
 End Impl_polymorphic_constants_Foo_N_A.
 
 (*

@@ -110,6 +110,7 @@ Module ops.
       Axiom AssociatedFunction_wrap_mut_1 :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "wrap_mut_1" (wrap_mut_1 T).
+      Smpl Add apply AssociatedFunction_wrap_mut_1 : is_associated.
       
       (*
           pub fn wrap_mut_2<A, B>(mut f: impl FnMut(A, B) -> T) -> impl FnMut(A, B) -> Self {
@@ -171,6 +172,7 @@ Module ops.
       Axiom AssociatedFunction_wrap_mut_2 :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "wrap_mut_2" (wrap_mut_2 T).
+      Smpl Add apply AssociatedFunction_wrap_mut_2 : is_associated.
     End Impl_core_ops_try_trait_NeverShortCircuit_T.
     
     (*

@@ -376,6 +376,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
     End Impl_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame.
     
     (* StructRecord
@@ -795,6 +796,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn len(&self) -> usize {
@@ -835,6 +837,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -875,6 +878,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
       
       (*
           pub fn return_stack_len(&self) -> usize {
@@ -916,6 +920,7 @@ Module interpreter.
       
       Axiom AssociatedFunction_return_stack_len :
         M.IsAssociatedFunction Self "return_stack_len" return_stack_len.
+      Smpl Add apply AssociatedFunction_return_stack_len : is_associated.
       
       (*
           pub fn set_current_code_idx(&mut self, idx: usize) {
@@ -945,6 +950,7 @@ Module interpreter.
       
       Axiom AssociatedFunction_set_current_code_idx :
         M.IsAssociatedFunction Self "set_current_code_idx" set_current_code_idx.
+      Smpl Add apply AssociatedFunction_set_current_code_idx : is_associated.
     End Impl_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.
     
     Module Impl_revm_interpreter_interpreter_types_SubRoutineStack_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.

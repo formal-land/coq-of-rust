@@ -18,6 +18,7 @@ Module Impl_polymorphic_associated_function_Foo_A.
   Axiom AssociatedFunction_convert :
     forall (A : Ty.t),
     M.IsAssociatedFunction (Self A) "convert" (convert A).
+  Smpl Add apply AssociatedFunction_convert : is_associated.
 End Impl_polymorphic_associated_function_Foo_A.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.

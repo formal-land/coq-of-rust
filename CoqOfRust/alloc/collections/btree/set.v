@@ -1836,6 +1836,7 @@ Module collections.
         Axiom AssociatedFunction_new :
           forall (T : Ty.t),
           M.IsAssociatedFunction (Self T) "new" (new T).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_alloc_collections_btree_set_BTreeSet_T_alloc_alloc_Global.
       
       Module Impl_alloc_collections_btree_set_BTreeSet_T_A.
@@ -1876,6 +1877,7 @@ Module collections.
         Axiom AssociatedFunction_new_in :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
+        Smpl Add apply AssociatedFunction_new_in : is_associated.
         
         (*
             pub fn range<K: ?Sized, R>(&self, range: R) -> Range<'_, T>
@@ -1927,6 +1929,7 @@ Module collections.
         Axiom AssociatedFunction_range :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "range" (range T A).
+        Smpl Add apply AssociatedFunction_range : is_associated.
         
         (*
             pub fn difference<'a>(&'a self, other: &'a BTreeSet<T, A>) -> Difference<'a, T, A>
@@ -2630,6 +2633,7 @@ Module collections.
         Axiom AssociatedFunction_difference :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "difference" (difference T A).
+        Smpl Add apply AssociatedFunction_difference : is_associated.
         
         (*
             pub fn symmetric_difference<'a>(
@@ -2695,6 +2699,7 @@ Module collections.
         Axiom AssociatedFunction_symmetric_difference :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "symmetric_difference" (symmetric_difference T A).
+        Smpl Add apply AssociatedFunction_symmetric_difference : is_associated.
         
         (*
             pub fn intersection<'a>(&'a self, other: &'a BTreeSet<T, A>) -> Intersection<'a, T, A>
@@ -3336,6 +3341,7 @@ Module collections.
         Axiom AssociatedFunction_intersection :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "intersection" (intersection T A).
+        Smpl Add apply AssociatedFunction_intersection : is_associated.
         
         (*
             pub fn union<'a>(&'a self, other: &'a BTreeSet<T, A>) -> Union<'a, T>
@@ -3393,6 +3399,7 @@ Module collections.
         Axiom AssociatedFunction_union :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "union" (union T A).
+        Smpl Add apply AssociatedFunction_union : is_associated.
         
         (*
             pub fn clear(&mut self)
@@ -3435,6 +3442,7 @@ Module collections.
         Axiom AssociatedFunction_clear :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "clear" (clear T A).
+        Smpl Add apply AssociatedFunction_clear : is_associated.
         
         (*
             pub fn contains<Q: ?Sized>(&self, value: &Q) -> bool
@@ -3485,6 +3493,7 @@ Module collections.
         Axiom AssociatedFunction_contains :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "contains" (contains T A).
+        Smpl Add apply AssociatedFunction_contains : is_associated.
         
         (*
             pub fn get<Q: ?Sized>(&self, value: &Q) -> Option<&T>
@@ -3538,6 +3547,7 @@ Module collections.
         Axiom AssociatedFunction_get :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "get" (get T A).
+        Smpl Add apply AssociatedFunction_get : is_associated.
         
         (*
             pub fn is_disjoint(&self, other: &BTreeSet<T, A>) -> bool
@@ -3616,6 +3626,7 @@ Module collections.
         Axiom AssociatedFunction_is_disjoint :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "is_disjoint" (is_disjoint T A).
+        Smpl Add apply AssociatedFunction_is_disjoint : is_associated.
         
         (*
             pub fn is_subset(&self, other: &BTreeSet<T, A>) -> bool
@@ -4590,6 +4601,7 @@ Module collections.
         Axiom AssociatedFunction_is_subset :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "is_subset" (is_subset T A).
+        Smpl Add apply AssociatedFunction_is_subset : is_associated.
         
         (*
             pub fn is_superset(&self, other: &BTreeSet<T, A>) -> bool
@@ -4629,6 +4641,7 @@ Module collections.
         Axiom AssociatedFunction_is_superset :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "is_superset" (is_superset T A).
+        Smpl Add apply AssociatedFunction_is_superset : is_associated.
         
         (*
             pub fn first(&self) -> Option<&T>
@@ -4729,6 +4742,7 @@ Module collections.
         Axiom AssociatedFunction_first :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "first" (first T A).
+        Smpl Add apply AssociatedFunction_first : is_associated.
         
         (*
             pub fn last(&self) -> Option<&T>
@@ -4829,6 +4843,7 @@ Module collections.
         Axiom AssociatedFunction_last :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "last" (last T A).
+        Smpl Add apply AssociatedFunction_last : is_associated.
         
         (*
             pub fn pop_first(&mut self) -> Option<T>
@@ -4915,6 +4930,7 @@ Module collections.
         Axiom AssociatedFunction_pop_first :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "pop_first" (pop_first T A).
+        Smpl Add apply AssociatedFunction_pop_first : is_associated.
         
         (*
             pub fn pop_last(&mut self) -> Option<T>
@@ -5001,6 +5017,7 @@ Module collections.
         Axiom AssociatedFunction_pop_last :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "pop_last" (pop_last T A).
+        Smpl Add apply AssociatedFunction_pop_last : is_associated.
         
         (*
             pub fn insert(&mut self, value: T) -> bool
@@ -5075,6 +5092,7 @@ Module collections.
         Axiom AssociatedFunction_insert :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "insert" (insert T A).
+        Smpl Add apply AssociatedFunction_insert : is_associated.
         
         (*
             pub fn replace(&mut self, value: T) -> Option<T>
@@ -5127,6 +5145,7 @@ Module collections.
         Axiom AssociatedFunction_replace :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "replace" (replace T A).
+        Smpl Add apply AssociatedFunction_replace : is_associated.
         
         (*
             pub fn remove<Q: ?Sized>(&mut self, value: &Q) -> bool
@@ -5190,6 +5209,7 @@ Module collections.
         Axiom AssociatedFunction_remove :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "remove" (remove T A).
+        Smpl Add apply AssociatedFunction_remove : is_associated.
         
         (*
             pub fn take<Q: ?Sized>(&mut self, value: &Q) -> Option<T>
@@ -5243,6 +5263,7 @@ Module collections.
         Axiom AssociatedFunction_take :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "take" (take T A).
+        Smpl Add apply AssociatedFunction_take : is_associated.
         
         (*
             pub fn retain<F>(&mut self, mut f: F)
@@ -5353,6 +5374,7 @@ Module collections.
         Axiom AssociatedFunction_retain :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "retain" (retain T A).
+        Smpl Add apply AssociatedFunction_retain : is_associated.
         
         (*
             pub fn append(&mut self, other: &mut Self)
@@ -5416,6 +5438,7 @@ Module collections.
         Axiom AssociatedFunction_append :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "append" (append T A).
+        Smpl Add apply AssociatedFunction_append : is_associated.
         
         (*
             pub fn split_off<Q: ?Sized + Ord>(&mut self, value: &Q) -> Self
@@ -5471,6 +5494,7 @@ Module collections.
         Axiom AssociatedFunction_split_off :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "split_off" (split_off T A).
+        Smpl Add apply AssociatedFunction_split_off : is_associated.
         
         (*
             pub fn extract_if<'a, F>(&'a mut self, pred: F) -> ExtractIf<'a, T, F, A>
@@ -5544,6 +5568,7 @@ Module collections.
         Axiom AssociatedFunction_extract_if :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "extract_if" (extract_if T A).
+        Smpl Add apply AssociatedFunction_extract_if : is_associated.
         
         (*
             pub fn iter(&self) -> Iter<'_, T> {
@@ -5588,6 +5613,7 @@ Module collections.
         Axiom AssociatedFunction_iter :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "iter" (iter T A).
+        Smpl Add apply AssociatedFunction_iter : is_associated.
         
         (*
             pub const fn len(&self) -> usize {
@@ -5627,6 +5653,7 @@ Module collections.
         Axiom AssociatedFunction_len :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "len" (len T A).
+        Smpl Add apply AssociatedFunction_len : is_associated.
         
         (*
             pub const fn is_empty(&self) -> bool {
@@ -5662,6 +5689,7 @@ Module collections.
         Axiom AssociatedFunction_is_empty :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "is_empty" (is_empty T A).
+        Smpl Add apply AssociatedFunction_is_empty : is_associated.
         
         (*
             pub fn lower_bound<Q: ?Sized>(&self, bound: Bound<&Q>) -> Cursor<'_, T>
@@ -5717,6 +5745,7 @@ Module collections.
         Axiom AssociatedFunction_lower_bound :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "lower_bound" (lower_bound T A).
+        Smpl Add apply AssociatedFunction_lower_bound : is_associated.
         
         (*
             pub fn lower_bound_mut<Q: ?Sized>(&mut self, bound: Bound<&Q>) -> CursorMut<'_, T, A>
@@ -5772,6 +5801,7 @@ Module collections.
         Axiom AssociatedFunction_lower_bound_mut :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "lower_bound_mut" (lower_bound_mut T A).
+        Smpl Add apply AssociatedFunction_lower_bound_mut : is_associated.
         
         (*
             pub fn upper_bound<Q: ?Sized>(&self, bound: Bound<&Q>) -> Cursor<'_, T>
@@ -5827,6 +5857,7 @@ Module collections.
         Axiom AssociatedFunction_upper_bound :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "upper_bound" (upper_bound T A).
+        Smpl Add apply AssociatedFunction_upper_bound : is_associated.
         
         (*
             pub unsafe fn upper_bound_mut<Q: ?Sized>(&mut self, bound: Bound<&Q>) -> CursorMut<'_, T, A>
@@ -5882,6 +5913,7 @@ Module collections.
         Axiom AssociatedFunction_upper_bound_mut :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "upper_bound_mut" (upper_bound_mut T A).
+        Smpl Add apply AssociatedFunction_upper_bound_mut : is_associated.
         (*
             fn from_sorted_iter<I: Iterator<Item = T>>(iter: I, alloc: A) -> BTreeSet<T, A> {
                 let iter = iter.map(|k| (k, SetValZST::default()));
@@ -5996,6 +6028,7 @@ Module collections.
         Axiom AssociatedFunction_from_sorted_iter :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "from_sorted_iter" (from_sorted_iter T A).
+        Smpl Add apply AssociatedFunction_from_sorted_iter : is_associated.
       End Impl_alloc_collections_btree_set_BTreeSet_T_A.
       
       Module Impl_core_iter_traits_collect_FromIterator_where_core_cmp_Ord_T_T_for_alloc_collections_btree_set_BTreeSet_T_alloc_alloc_Global.
@@ -12423,6 +12456,7 @@ Module collections.
         Axiom AssociatedFunction_next :
           forall (K : Ty.t),
           M.IsAssociatedFunction (Self K) "next" (next K).
+        Smpl Add apply AssociatedFunction_next : is_associated.
         
         (*
             pub fn prev(&mut self) -> Option<&'a K> {
@@ -12520,6 +12554,7 @@ Module collections.
         Axiom AssociatedFunction_prev :
           forall (K : Ty.t),
           M.IsAssociatedFunction (Self K) "prev" (prev K).
+        Smpl Add apply AssociatedFunction_prev : is_associated.
         
         (*
             pub fn peek_next(&self) -> Option<&'a K> {
@@ -12617,6 +12652,7 @@ Module collections.
         Axiom AssociatedFunction_peek_next :
           forall (K : Ty.t),
           M.IsAssociatedFunction (Self K) "peek_next" (peek_next K).
+        Smpl Add apply AssociatedFunction_peek_next : is_associated.
         
         (*
             pub fn peek_prev(&self) -> Option<&'a K> {
@@ -12714,6 +12750,7 @@ Module collections.
         Axiom AssociatedFunction_peek_prev :
           forall (K : Ty.t),
           M.IsAssociatedFunction (Self K) "peek_prev" (peek_prev K).
+        Smpl Add apply AssociatedFunction_peek_prev : is_associated.
       End Impl_alloc_collections_btree_set_Cursor_K.
       
       Module Impl_alloc_collections_btree_set_CursorMut_T_A.
@@ -12816,6 +12853,7 @@ Module collections.
         Axiom AssociatedFunction_next :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "next" (next T A).
+        Smpl Add apply AssociatedFunction_next : is_associated.
         
         (*
             pub fn prev(&mut self) -> Option<&T> {
@@ -12913,6 +12951,7 @@ Module collections.
         Axiom AssociatedFunction_prev :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "prev" (prev T A).
+        Smpl Add apply AssociatedFunction_prev : is_associated.
         
         (*
             pub fn peek_next(&mut self) -> Option<&T> {
@@ -13015,6 +13054,7 @@ Module collections.
         Axiom AssociatedFunction_peek_next :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "peek_next" (peek_next T A).
+        Smpl Add apply AssociatedFunction_peek_next : is_associated.
         
         (*
             pub fn peek_prev(&mut self) -> Option<&T> {
@@ -13117,6 +13157,7 @@ Module collections.
         Axiom AssociatedFunction_peek_prev :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "peek_prev" (peek_prev T A).
+        Smpl Add apply AssociatedFunction_peek_prev : is_associated.
         
         (*
             pub fn as_cursor(&self) -> Cursor<'_, T> {
@@ -13166,6 +13207,7 @@ Module collections.
         Axiom AssociatedFunction_as_cursor :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "as_cursor" (as_cursor T A).
+        Smpl Add apply AssociatedFunction_as_cursor : is_associated.
         
         (*
             pub unsafe fn with_mutable_key(self) -> CursorMutKey<'a, T, A> {
@@ -13214,6 +13256,7 @@ Module collections.
         Axiom AssociatedFunction_with_mutable_key :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "with_mutable_key" (with_mutable_key T A).
+        Smpl Add apply AssociatedFunction_with_mutable_key : is_associated.
         (*
             pub unsafe fn insert_after_unchecked(&mut self, value: T) {
                 unsafe { self.inner.insert_after_unchecked(value, SetValZST) }
@@ -13260,6 +13303,7 @@ Module collections.
         Axiom AssociatedFunction_insert_after_unchecked :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "insert_after_unchecked" (insert_after_unchecked T A).
+        Smpl Add apply AssociatedFunction_insert_after_unchecked : is_associated.
         
         (*
             pub unsafe fn insert_before_unchecked(&mut self, value: T) {
@@ -13307,6 +13351,7 @@ Module collections.
         Axiom AssociatedFunction_insert_before_unchecked :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "insert_before_unchecked" (insert_before_unchecked T A).
+        Smpl Add apply AssociatedFunction_insert_before_unchecked : is_associated.
         
         (*
             pub fn insert_after(&mut self, value: T) -> Result<(), UnorderedKeyError> {
@@ -13354,6 +13399,7 @@ Module collections.
         Axiom AssociatedFunction_insert_after :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "insert_after" (insert_after T A).
+        Smpl Add apply AssociatedFunction_insert_after : is_associated.
         
         (*
             pub fn insert_before(&mut self, value: T) -> Result<(), UnorderedKeyError> {
@@ -13401,6 +13447,7 @@ Module collections.
         Axiom AssociatedFunction_insert_before :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "insert_before" (insert_before T A).
+        Smpl Add apply AssociatedFunction_insert_before : is_associated.
         
         (*
             pub fn remove_next(&mut self) -> Option<T> {
@@ -13486,6 +13533,7 @@ Module collections.
         Axiom AssociatedFunction_remove_next :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "remove_next" (remove_next T A).
+        Smpl Add apply AssociatedFunction_remove_next : is_associated.
         
         (*
             pub fn remove_prev(&mut self) -> Option<T> {
@@ -13571,6 +13619,7 @@ Module collections.
         Axiom AssociatedFunction_remove_prev :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "remove_prev" (remove_prev T A).
+        Smpl Add apply AssociatedFunction_remove_prev : is_associated.
       End Impl_alloc_collections_btree_set_CursorMut_T_A.
       
       Module Impl_alloc_collections_btree_set_CursorMutKey_T_A.
@@ -13673,6 +13722,7 @@ Module collections.
         Axiom AssociatedFunction_next :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "next" (next T A).
+        Smpl Add apply AssociatedFunction_next : is_associated.
         
         (*
             pub fn prev(&mut self) -> Option<&mut T> {
@@ -13770,6 +13820,7 @@ Module collections.
         Axiom AssociatedFunction_prev :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "prev" (prev T A).
+        Smpl Add apply AssociatedFunction_prev : is_associated.
         
         (*
             pub fn peek_next(&mut self) -> Option<&mut T> {
@@ -13872,6 +13923,7 @@ Module collections.
         Axiom AssociatedFunction_peek_next :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "peek_next" (peek_next T A).
+        Smpl Add apply AssociatedFunction_peek_next : is_associated.
         
         (*
             pub fn peek_prev(&mut self) -> Option<&mut T> {
@@ -13974,6 +14026,7 @@ Module collections.
         Axiom AssociatedFunction_peek_prev :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "peek_prev" (peek_prev T A).
+        Smpl Add apply AssociatedFunction_peek_prev : is_associated.
         
         (*
             pub fn as_cursor(&self) -> Cursor<'_, T> {
@@ -14023,6 +14076,7 @@ Module collections.
         Axiom AssociatedFunction_as_cursor :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "as_cursor" (as_cursor T A).
+        Smpl Add apply AssociatedFunction_as_cursor : is_associated.
         (*
             pub unsafe fn insert_after_unchecked(&mut self, value: T) {
                 unsafe { self.inner.insert_after_unchecked(value, SetValZST) }
@@ -14069,6 +14123,7 @@ Module collections.
         Axiom AssociatedFunction_insert_after_unchecked :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "insert_after_unchecked" (insert_after_unchecked T A).
+        Smpl Add apply AssociatedFunction_insert_after_unchecked : is_associated.
         
         (*
             pub unsafe fn insert_before_unchecked(&mut self, value: T) {
@@ -14116,6 +14171,7 @@ Module collections.
         Axiom AssociatedFunction_insert_before_unchecked :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "insert_before_unchecked" (insert_before_unchecked T A).
+        Smpl Add apply AssociatedFunction_insert_before_unchecked : is_associated.
         
         (*
             pub fn insert_after(&mut self, value: T) -> Result<(), UnorderedKeyError> {
@@ -14163,6 +14219,7 @@ Module collections.
         Axiom AssociatedFunction_insert_after :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "insert_after" (insert_after T A).
+        Smpl Add apply AssociatedFunction_insert_after : is_associated.
         
         (*
             pub fn insert_before(&mut self, value: T) -> Result<(), UnorderedKeyError> {
@@ -14210,6 +14267,7 @@ Module collections.
         Axiom AssociatedFunction_insert_before :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "insert_before" (insert_before T A).
+        Smpl Add apply AssociatedFunction_insert_before : is_associated.
         
         (*
             pub fn remove_next(&mut self) -> Option<T> {
@@ -14295,6 +14353,7 @@ Module collections.
         Axiom AssociatedFunction_remove_next :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "remove_next" (remove_next T A).
+        Smpl Add apply AssociatedFunction_remove_next : is_associated.
         
         (*
             pub fn remove_prev(&mut self) -> Option<T> {
@@ -14380,6 +14439,7 @@ Module collections.
         Axiom AssociatedFunction_remove_prev :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "remove_prev" (remove_prev T A).
+        Smpl Add apply AssociatedFunction_remove_prev : is_associated.
       End Impl_alloc_collections_btree_set_CursorMutKey_T_A.
       
       

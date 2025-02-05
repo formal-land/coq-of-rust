@@ -11,6 +11,7 @@ Module char.
       Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 0 |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*     pub const MAX: char = '\u{10ffff}'; *)
       (* Ty.path "char" *)
@@ -18,6 +19,7 @@ Module char.
         M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 1114111 |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*     pub const REPLACEMENT_CHARACTER: char = '\u{FFFD}'; *)
       (* Ty.path "char" *)
@@ -26,6 +28,7 @@ Module char.
       
       Axiom AssociatedConstant_value_REPLACEMENT_CHARACTER :
         M.IsAssociatedConstant Self "value_REPLACEMENT_CHARACTER" value_REPLACEMENT_CHARACTER.
+      Smpl Add apply AssociatedConstant_value_REPLACEMENT_CHARACTER : is_associated.
       
       (*     pub const UNICODE_VERSION: (u8, u8, u8) = crate::unicode::UNICODE_VERSION; *)
       (* Ty.tuple [ Ty.path "u8"; Ty.path "u8"; Ty.path "u8" ] *)
@@ -34,6 +37,7 @@ Module char.
       
       Axiom AssociatedConstant_value_UNICODE_VERSION :
         M.IsAssociatedConstant Self "value_UNICODE_VERSION" value_UNICODE_VERSION.
+      Smpl Add apply AssociatedConstant_value_UNICODE_VERSION : is_associated.
       
       (*
           pub fn decode_utf16<I: IntoIterator<Item = u16>>(iter: I) -> DecodeUtf16<I::IntoIter> {
@@ -54,6 +58,7 @@ Module char.
       
       Axiom AssociatedFunction_decode_utf16 :
         M.IsAssociatedFunction Self "decode_utf16" decode_utf16.
+      Smpl Add apply AssociatedFunction_decode_utf16 : is_associated.
       
       (*
           pub const fn from_u32(i: u32) -> Option<char> {
@@ -73,6 +78,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_from_u32 : M.IsAssociatedFunction Self "from_u32" from_u32.
+      Smpl Add apply AssociatedFunction_from_u32 : is_associated.
       
       (*
           pub const unsafe fn from_u32_unchecked(i: u32) -> char {
@@ -94,6 +100,7 @@ Module char.
       
       Axiom AssociatedFunction_from_u32_unchecked :
         M.IsAssociatedFunction Self "from_u32_unchecked" from_u32_unchecked.
+      Smpl Add apply AssociatedFunction_from_u32_unchecked : is_associated.
       
       (*
           pub const fn from_digit(num: u32, radix: u32) -> Option<char> {
@@ -114,6 +121,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_from_digit : M.IsAssociatedFunction Self "from_digit" from_digit.
+      Smpl Add apply AssociatedFunction_from_digit : is_associated.
       
       (*
           pub fn is_digit(self, radix: u32) -> bool {
@@ -149,6 +157,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_is_digit : M.IsAssociatedFunction Self "is_digit" is_digit.
+      Smpl Add apply AssociatedFunction_is_digit : is_associated.
       
       (*
           pub const fn to_digit(self, radix: u32) -> Option<u32> {
@@ -357,6 +366,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_to_digit : M.IsAssociatedFunction Self "to_digit" to_digit.
+      Smpl Add apply AssociatedFunction_to_digit : is_associated.
       
       (*
           pub fn escape_unicode(self) -> EscapeUnicode {
@@ -377,6 +387,7 @@ Module char.
       
       Axiom AssociatedFunction_escape_unicode :
         M.IsAssociatedFunction Self "escape_unicode" escape_unicode.
+      Smpl Add apply AssociatedFunction_escape_unicode : is_associated.
       
       (*
           pub(crate) fn escape_debug_ext(self, args: EscapeDebugExtArgs) -> EscapeDebug {
@@ -606,6 +617,7 @@ Module char.
       
       Axiom AssociatedFunction_escape_debug_ext :
         M.IsAssociatedFunction Self "escape_debug_ext" escape_debug_ext.
+      Smpl Add apply AssociatedFunction_escape_debug_ext : is_associated.
       
       (*
           pub fn escape_debug(self) -> EscapeDebug {
@@ -626,6 +638,7 @@ Module char.
       
       Axiom AssociatedFunction_escape_debug :
         M.IsAssociatedFunction Self "escape_debug" escape_debug.
+      Smpl Add apply AssociatedFunction_escape_debug : is_associated.
       
       (*
           pub fn escape_default(self) -> EscapeDefault {
@@ -823,6 +836,7 @@ Module char.
       
       Axiom AssociatedFunction_escape_default :
         M.IsAssociatedFunction Self "escape_default" escape_default.
+      Smpl Add apply AssociatedFunction_escape_default : is_associated.
       
       (*
           pub const fn len_utf8(self) -> usize {
@@ -842,6 +856,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_len_utf8 : M.IsAssociatedFunction Self "len_utf8" len_utf8.
+      Smpl Add apply AssociatedFunction_len_utf8 : is_associated.
       
       (*
           pub const fn len_utf16(self) -> usize {
@@ -861,6 +876,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_len_utf16 : M.IsAssociatedFunction Self "len_utf16" len_utf16.
+      Smpl Add apply AssociatedFunction_len_utf16 : is_associated.
       
       (*
           pub const fn encode_utf8(self, dst: &mut [u8]) -> &mut str {
@@ -921,6 +937,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_encode_utf8 : M.IsAssociatedFunction Self "encode_utf8" encode_utf8.
+      Smpl Add apply AssociatedFunction_encode_utf8 : is_associated.
       
       (*
           pub const fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] {
@@ -955,6 +972,7 @@ Module char.
       
       Axiom AssociatedFunction_encode_utf16 :
         M.IsAssociatedFunction Self "encode_utf16" encode_utf16.
+      Smpl Add apply AssociatedFunction_encode_utf16 : is_associated.
       
       (*
           pub fn is_alphabetic(self) -> bool {
@@ -1013,6 +1031,7 @@ Module char.
       
       Axiom AssociatedFunction_is_alphabetic :
         M.IsAssociatedFunction Self "is_alphabetic" is_alphabetic.
+      Smpl Add apply AssociatedFunction_is_alphabetic : is_associated.
       
       (*
           pub const fn is_lowercase(self) -> bool {
@@ -1057,6 +1076,7 @@ Module char.
       
       Axiom AssociatedFunction_is_lowercase :
         M.IsAssociatedFunction Self "is_lowercase" is_lowercase.
+      Smpl Add apply AssociatedFunction_is_lowercase : is_associated.
       
       (*
           pub const fn is_uppercase(self) -> bool {
@@ -1101,6 +1121,7 @@ Module char.
       
       Axiom AssociatedFunction_is_uppercase :
         M.IsAssociatedFunction Self "is_uppercase" is_uppercase.
+      Smpl Add apply AssociatedFunction_is_uppercase : is_associated.
       
       (*
           pub fn is_whitespace(self) -> bool {
@@ -1166,6 +1187,7 @@ Module char.
       
       Axiom AssociatedFunction_is_whitespace :
         M.IsAssociatedFunction Self "is_whitespace" is_whitespace.
+      Smpl Add apply AssociatedFunction_is_whitespace : is_associated.
       
       (*
           pub fn is_alphanumeric(self) -> bool {
@@ -1193,6 +1215,7 @@ Module char.
       
       Axiom AssociatedFunction_is_alphanumeric :
         M.IsAssociatedFunction Self "is_alphanumeric" is_alphanumeric.
+      Smpl Add apply AssociatedFunction_is_alphanumeric : is_associated.
       
       (*
           pub fn is_control(self) -> bool {
@@ -1212,6 +1235,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_is_control : M.IsAssociatedFunction Self "is_control" is_control.
+      Smpl Add apply AssociatedFunction_is_control : is_associated.
       
       (*
           pub(crate) fn is_grapheme_extended(self) -> bool {
@@ -1232,6 +1256,7 @@ Module char.
       
       Axiom AssociatedFunction_is_grapheme_extended :
         M.IsAssociatedFunction Self "is_grapheme_extended" is_grapheme_extended.
+      Smpl Add apply AssociatedFunction_is_grapheme_extended : is_associated.
       
       (*
           pub fn is_numeric(self) -> bool {
@@ -1271,6 +1296,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_is_numeric : M.IsAssociatedFunction Self "is_numeric" is_numeric.
+      Smpl Add apply AssociatedFunction_is_numeric : is_associated.
       
       (*
           pub fn to_lowercase(self) -> ToLowercase {
@@ -1309,6 +1335,7 @@ Module char.
       
       Axiom AssociatedFunction_to_lowercase :
         M.IsAssociatedFunction Self "to_lowercase" to_lowercase.
+      Smpl Add apply AssociatedFunction_to_lowercase : is_associated.
       
       (*
           pub fn to_uppercase(self) -> ToUppercase {
@@ -1347,6 +1374,7 @@ Module char.
       
       Axiom AssociatedFunction_to_uppercase :
         M.IsAssociatedFunction Self "to_uppercase" to_uppercase.
+      Smpl Add apply AssociatedFunction_to_uppercase : is_associated.
       
       (*
           pub const fn is_ascii(&self) -> bool {
@@ -1366,6 +1394,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
+      Smpl Add apply AssociatedFunction_is_ascii : is_associated.
       
       (*
           pub const fn as_ascii(&self) -> Option<ascii::Char> {
@@ -1423,6 +1452,7 @@ Module char.
         end.
       
       Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
+      Smpl Add apply AssociatedFunction_as_ascii : is_associated.
       
       (*
           pub const fn to_ascii_uppercase(&self) -> char {
@@ -1489,6 +1519,7 @@ Module char.
       
       Axiom AssociatedFunction_to_ascii_uppercase :
         M.IsAssociatedFunction Self "to_ascii_uppercase" to_ascii_uppercase.
+      Smpl Add apply AssociatedFunction_to_ascii_uppercase : is_associated.
       
       (*
           pub const fn to_ascii_lowercase(&self) -> char {
@@ -1555,6 +1586,7 @@ Module char.
       
       Axiom AssociatedFunction_to_ascii_lowercase :
         M.IsAssociatedFunction Self "to_ascii_lowercase" to_ascii_lowercase.
+      Smpl Add apply AssociatedFunction_to_ascii_lowercase : is_associated.
       
       (*
           pub const fn eq_ignore_ascii_case(&self, other: &char) -> bool {
@@ -1582,6 +1614,7 @@ Module char.
       
       Axiom AssociatedFunction_eq_ignore_ascii_case :
         M.IsAssociatedFunction Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
+      Smpl Add apply AssociatedFunction_eq_ignore_ascii_case : is_associated.
       
       (*
           pub const fn make_ascii_uppercase(&mut self) {
@@ -1609,6 +1642,7 @@ Module char.
       
       Axiom AssociatedFunction_make_ascii_uppercase :
         M.IsAssociatedFunction Self "make_ascii_uppercase" make_ascii_uppercase.
+      Smpl Add apply AssociatedFunction_make_ascii_uppercase : is_associated.
       
       (*
           pub const fn make_ascii_lowercase(&mut self) {
@@ -1636,6 +1670,7 @@ Module char.
       
       Axiom AssociatedFunction_make_ascii_lowercase :
         M.IsAssociatedFunction Self "make_ascii_lowercase" make_ascii_lowercase.
+      Smpl Add apply AssociatedFunction_make_ascii_lowercase : is_associated.
       
       (*
           pub const fn is_ascii_alphabetic(&self) -> bool {
@@ -1675,6 +1710,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_alphabetic :
         M.IsAssociatedFunction Self "is_ascii_alphabetic" is_ascii_alphabetic.
+      Smpl Add apply AssociatedFunction_is_ascii_alphabetic : is_associated.
       
       (*
           pub const fn is_ascii_uppercase(&self) -> bool {
@@ -1700,6 +1736,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_uppercase :
         M.IsAssociatedFunction Self "is_ascii_uppercase" is_ascii_uppercase.
+      Smpl Add apply AssociatedFunction_is_ascii_uppercase : is_associated.
       
       (*
           pub const fn is_ascii_lowercase(&self) -> bool {
@@ -1725,6 +1762,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_lowercase :
         M.IsAssociatedFunction Self "is_ascii_lowercase" is_ascii_lowercase.
+      Smpl Add apply AssociatedFunction_is_ascii_lowercase : is_associated.
       
       (*
           pub const fn is_ascii_alphanumeric(&self) -> bool {
@@ -1770,6 +1808,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_alphanumeric :
         M.IsAssociatedFunction Self "is_ascii_alphanumeric" is_ascii_alphanumeric.
+      Smpl Add apply AssociatedFunction_is_ascii_alphanumeric : is_associated.
       
       (*
           pub const fn is_ascii_digit(&self) -> bool {
@@ -1795,6 +1834,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_digit :
         M.IsAssociatedFunction Self "is_ascii_digit" is_ascii_digit.
+      Smpl Add apply AssociatedFunction_is_ascii_digit : is_associated.
       
       (*
           pub const fn is_ascii_octdigit(&self) -> bool {
@@ -1820,6 +1860,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_octdigit :
         M.IsAssociatedFunction Self "is_ascii_octdigit" is_ascii_octdigit.
+      Smpl Add apply AssociatedFunction_is_ascii_octdigit : is_associated.
       
       (*
           pub const fn is_ascii_hexdigit(&self) -> bool {
@@ -1865,6 +1906,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_hexdigit :
         M.IsAssociatedFunction Self "is_ascii_hexdigit" is_ascii_hexdigit.
+      Smpl Add apply AssociatedFunction_is_ascii_hexdigit : is_associated.
       
       (*
           pub const fn is_ascii_punctuation(&self) -> bool {
@@ -1923,6 +1965,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_punctuation :
         M.IsAssociatedFunction Self "is_ascii_punctuation" is_ascii_punctuation.
+      Smpl Add apply AssociatedFunction_is_ascii_punctuation : is_associated.
       
       (*
           pub const fn is_ascii_graphic(&self) -> bool {
@@ -1948,6 +1991,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_graphic :
         M.IsAssociatedFunction Self "is_ascii_graphic" is_ascii_graphic.
+      Smpl Add apply AssociatedFunction_is_ascii_graphic : is_associated.
       
       (*
           pub const fn is_ascii_whitespace(&self) -> bool {
@@ -2025,6 +2069,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_whitespace :
         M.IsAssociatedFunction Self "is_ascii_whitespace" is_ascii_whitespace.
+      Smpl Add apply AssociatedFunction_is_ascii_whitespace : is_associated.
       
       (*
           pub const fn is_ascii_control(&self) -> bool {
@@ -2071,6 +2116,7 @@ Module char.
       
       Axiom AssociatedFunction_is_ascii_control :
         M.IsAssociatedFunction Self "is_ascii_control" is_ascii_control.
+      Smpl Add apply AssociatedFunction_is_ascii_control : is_associated.
     End Impl_char.
     
     (* StructRecord
@@ -2112,6 +2158,7 @@ Module char.
       
       Axiom AssociatedConstant_value_ESCAPE_ALL :
         M.IsAssociatedConstant Self "value_ESCAPE_ALL" value_ESCAPE_ALL.
+      Smpl Add apply AssociatedConstant_value_ESCAPE_ALL : is_associated.
     End Impl_core_char_methods_EscapeDebugExtArgs.
     
     (*

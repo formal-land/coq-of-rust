@@ -109,6 +109,7 @@ Module collections.
             (Self K V)
             "append_from_sorted_iters"
             (append_from_sorted_iters K V).
+        Smpl Add apply AssociatedFunction_append_from_sorted_iters : is_associated.
         
         (*
             pub fn bulk_push<I, A: Allocator + Clone>(&mut self, iter: I, length: &mut usize, alloc: A)
@@ -1013,6 +1014,7 @@ Module collections.
         Axiom AssociatedFunction_bulk_push :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "bulk_push" (bulk_push K V).
+        Smpl Add apply AssociatedFunction_bulk_push : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       (* StructTuple

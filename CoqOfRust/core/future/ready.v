@@ -255,6 +255,7 @@ Module future.
       Axiom AssociatedFunction_into_inner :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
     End Impl_core_future_ready_Ready_T.
     
     (*

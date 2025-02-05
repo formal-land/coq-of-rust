@@ -77,6 +77,7 @@ Module Impl_erc20_Mapping_K_V.
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
+  Smpl Add apply AssociatedFunction_get : is_associated.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
@@ -88,6 +89,7 @@ Module Impl_erc20_Mapping_K_V.
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
+  Smpl Add apply AssociatedFunction_insert : is_associated.
 End Impl_erc20_Mapping_K_V.
 
 (* StructTuple
@@ -362,6 +364,7 @@ Module Impl_erc20_Env.
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
+  Smpl Add apply AssociatedFunction_caller : is_associated.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -371,6 +374,7 @@ Module Impl_erc20_Env.
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
+  Smpl Add apply AssociatedFunction_emit_event : is_associated.
 End Impl_erc20_Env.
 
 Module Impl_erc20_Erc20.
@@ -384,6 +388,7 @@ Module Impl_erc20_Erc20.
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
+  Smpl Add apply AssociatedFunction_init_env : is_associated.
   
   (*
       fn env(&self) -> Env {
@@ -403,6 +408,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
+  Smpl Add apply AssociatedFunction_env : is_associated.
   (*
       fn new(total_supply: Balance) -> Self {
           let mut balances = Mapping::default();
@@ -541,6 +547,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       fn total_supply(&self) -> Balance {
@@ -563,6 +570,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_total_supply : M.IsAssociatedFunction Self "total_supply" total_supply.
+  Smpl Add apply AssociatedFunction_total_supply : is_associated.
   
   (*
       fn balance_of_impl(&self, owner: &AccountId) -> Balance {
@@ -612,6 +620,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_balance_of_impl :
     M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl.
+  Smpl Add apply AssociatedFunction_balance_of_impl : is_associated.
   
   (*
       fn balance_of(&self, owner: AccountId) -> Balance {
@@ -635,6 +644,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
+  Smpl Add apply AssociatedFunction_balance_of : is_associated.
   
   (*
       fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
@@ -702,6 +712,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_allowance_impl :
     M.IsAssociatedFunction Self "allowance_impl" allowance_impl.
+  Smpl Add apply AssociatedFunction_allowance_impl : is_associated.
   
   (*
       fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
@@ -727,6 +738,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_allowance : M.IsAssociatedFunction Self "allowance" allowance.
+  Smpl Add apply AssociatedFunction_allowance : is_associated.
   
   (*
       fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
@@ -908,6 +920,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_transfer_from_to :
     M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to.
+  Smpl Add apply AssociatedFunction_transfer_from_to : is_associated.
   
   (*
       fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
@@ -959,6 +972,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
+  Smpl Add apply AssociatedFunction_transfer : is_associated.
   
   (*
       fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
@@ -1060,6 +1074,7 @@ Module Impl_erc20_Erc20.
     end.
   
   Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
+  Smpl Add apply AssociatedFunction_approve : is_associated.
   
   (*
       fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
@@ -1280,5 +1295,6 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_transfer_from :
     M.IsAssociatedFunction Self "transfer_from" transfer_from.
+  Smpl Add apply AssociatedFunction_transfer_from : is_associated.
 End Impl_erc20_Erc20.
 

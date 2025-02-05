@@ -121,6 +121,7 @@ Module ascii.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub(crate) fn empty() -> Self {
@@ -151,6 +152,7 @@ Module ascii.
       end.
     
     Axiom AssociatedFunction_empty : M.IsAssociatedFunction Self "empty" empty.
+    Smpl Add apply AssociatedFunction_empty : is_associated.
     
     (*
         pub(crate) fn as_str(&self) -> &str {
@@ -192,6 +194,7 @@ Module ascii.
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+    Smpl Add apply AssociatedFunction_as_str : is_associated.
   End Impl_core_ascii_EscapeDefault.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_ascii_EscapeDefault.

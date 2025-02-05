@@ -579,6 +579,7 @@ Module alloc.
       end.
     
     Axiom AssociatedFunction_alloc_impl : M.IsAssociatedFunction Self "alloc_impl" alloc_impl.
+    Smpl Add apply AssociatedFunction_alloc_impl : is_associated.
     
     (*
         unsafe fn grow_impl(
@@ -1208,6 +1209,7 @@ Module alloc.
       end.
     
     Axiom AssociatedFunction_grow_impl : M.IsAssociatedFunction Self "grow_impl" grow_impl.
+    Smpl Add apply AssociatedFunction_grow_impl : is_associated.
   End Impl_alloc_alloc_Global.
   
   Module Impl_core_alloc_Allocator_for_alloc_alloc_Global.

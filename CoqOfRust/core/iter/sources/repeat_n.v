@@ -178,6 +178,7 @@ Module iter.
         Axiom AssociatedFunction_element_ref :
           forall (A : Ty.t),
           M.IsAssociatedFunction (Self A) "element_ref" (element_ref A).
+        Smpl Add apply AssociatedFunction_element_ref : is_associated.
         
         (*
             fn take_element(&mut self) -> Option<A> {
@@ -302,6 +303,7 @@ Module iter.
         Axiom AssociatedFunction_take_element :
           forall (A : Ty.t),
           M.IsAssociatedFunction (Self A) "take_element" (take_element A).
+        Smpl Add apply AssociatedFunction_take_element : is_associated.
       End Impl_core_iter_sources_repeat_n_RepeatN_A.
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_iter_sources_repeat_n_RepeatN_A.

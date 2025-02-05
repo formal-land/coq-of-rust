@@ -255,6 +255,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_as_va_list : M.IsAssociatedFunction Self "as_va_list" as_va_list.
+      Smpl Add apply AssociatedFunction_as_va_list : is_associated.
       (*
           pub unsafe fn arg<T: sealed_trait::VaArgSafe>(&mut self) -> T {
               // SAFETY: the caller must uphold the safety contract for `va_arg`.
@@ -274,6 +275,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_arg : M.IsAssociatedFunction Self "arg" arg.
+      Smpl Add apply AssociatedFunction_arg : is_associated.
       
       (*
           pub unsafe fn with_copy<F, R>(&self, f: F) -> R
@@ -360,6 +362,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_with_copy : M.IsAssociatedFunction Self "with_copy" with_copy.
+      Smpl Add apply AssociatedFunction_with_copy : is_associated.
     End Impl_core_ffi_va_list_VaListImpl.
     
     Module Impl_core_ops_deref_Deref_for_core_ffi_va_list_VaList.

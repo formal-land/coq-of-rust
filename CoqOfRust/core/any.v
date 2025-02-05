@@ -260,6 +260,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    Smpl Add apply AssociatedFunction_is : is_associated.
     
     (*
         pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
@@ -327,6 +328,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    Smpl Add apply AssociatedFunction_downcast_ref : is_associated.
     
     (*
         pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
@@ -399,6 +401,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
     
     (*
         pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
@@ -497,6 +500,7 @@ Module any.
     
     Axiom AssociatedFunction_downcast_ref_unchecked :
       M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
+    Smpl Add apply AssociatedFunction_downcast_ref_unchecked : is_associated.
     
     (*
         pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
@@ -609,6 +613,7 @@ Module any.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
       M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
+    Smpl Add apply AssociatedFunction_downcast_mut_unchecked : is_associated.
   End Impl_Dyn_core_any_Any_Trait.
   
   Module Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
@@ -638,6 +643,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    Smpl Add apply AssociatedFunction_is : is_associated.
     
     (*
         pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
@@ -662,6 +668,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    Smpl Add apply AssociatedFunction_downcast_ref : is_associated.
     
     (*
         pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
@@ -686,6 +693,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
     
     (*
         pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
@@ -717,6 +725,7 @@ Module any.
     
     Axiom AssociatedFunction_downcast_ref_unchecked :
       M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
+    Smpl Add apply AssociatedFunction_downcast_ref_unchecked : is_associated.
     
     (*
         pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
@@ -758,6 +767,7 @@ Module any.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
       M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
+    Smpl Add apply AssociatedFunction_downcast_mut_unchecked : is_associated.
   End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
   Module Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
@@ -792,6 +802,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    Smpl Add apply AssociatedFunction_is : is_associated.
     
     (*
         pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
@@ -816,6 +827,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    Smpl Add apply AssociatedFunction_downcast_ref : is_associated.
     
     (*
         pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
@@ -840,6 +852,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
     
     (*
         pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
@@ -871,6 +884,7 @@ Module any.
     
     Axiom AssociatedFunction_downcast_ref_unchecked :
       M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
+    Smpl Add apply AssociatedFunction_downcast_ref_unchecked : is_associated.
     
     (*
         pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
@@ -912,6 +926,7 @@ Module any.
     
     Axiom AssociatedFunction_downcast_mut_unchecked :
       M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
+    Smpl Add apply AssociatedFunction_downcast_mut_unchecked : is_associated.
   End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
   
   (* StructRecord
@@ -1202,6 +1217,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_of : M.IsAssociatedFunction Self "of" of.
+    Smpl Add apply AssociatedFunction_of : is_associated.
     
     (*
         fn as_u128(self) -> u128 {
@@ -1259,6 +1275,7 @@ Module any.
       end.
     
     Axiom AssociatedFunction_as_u128 : M.IsAssociatedFunction Self "as_u128" as_u128.
+    Smpl Add apply AssociatedFunction_as_u128 : is_associated.
   End Impl_core_any_TypeId.
   
   Module Impl_core_hash_Hash_for_core_any_TypeId.

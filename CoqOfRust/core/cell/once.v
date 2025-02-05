@@ -54,6 +54,7 @@ Module cell.
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn get(&self) -> Option<&T> {
@@ -114,6 +115,7 @@ Module cell.
       Axiom AssociatedFunction_get :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get" (get T).
+      Smpl Add apply AssociatedFunction_get : is_associated.
       
       (*
           pub fn get_mut(&mut self) -> Option<&mut T> {
@@ -168,6 +170,7 @@ Module cell.
       Axiom AssociatedFunction_get_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
           pub fn set(&self, value: T) -> Result<(), T> {
@@ -235,6 +238,7 @@ Module cell.
       Axiom AssociatedFunction_set :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "set" (set T).
+      Smpl Add apply AssociatedFunction_set : is_associated.
       
       (*
           pub fn try_insert(&self, value: T) -> Result<&T, (&T, T)> {
@@ -374,6 +378,7 @@ Module cell.
       Axiom AssociatedFunction_try_insert :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "try_insert" (try_insert T).
+      Smpl Add apply AssociatedFunction_try_insert : is_associated.
       
       (*
           pub fn get_or_init<F>(&self, f: F) -> &T
@@ -465,6 +470,7 @@ Module cell.
       Axiom AssociatedFunction_get_or_init :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_or_init" (get_or_init T).
+      Smpl Add apply AssociatedFunction_get_or_init : is_associated.
       
       (*
           pub fn get_mut_or_init<F>(&mut self, f: F) -> &mut T
@@ -574,6 +580,7 @@ Module cell.
       Axiom AssociatedFunction_get_mut_or_init :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_mut_or_init" (get_mut_or_init T).
+      Smpl Add apply AssociatedFunction_get_mut_or_init : is_associated.
       
       (*
           pub fn get_or_try_init<F, E>(&self, f: F) -> Result<&T, E>
@@ -668,6 +675,7 @@ Module cell.
       Axiom AssociatedFunction_get_or_try_init :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_or_try_init" (get_or_try_init T).
+      Smpl Add apply AssociatedFunction_get_or_try_init : is_associated.
       
       (*
           pub fn get_mut_or_try_init<F, E>(&mut self, f: F) -> Result<&mut T, E>
@@ -877,6 +885,7 @@ Module cell.
       Axiom AssociatedFunction_get_mut_or_try_init :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_mut_or_try_init" (get_mut_or_try_init T).
+      Smpl Add apply AssociatedFunction_get_mut_or_try_init : is_associated.
       
       (*
           fn try_init<F, E>(&self, f: F) -> Result<&T, E>
@@ -1057,6 +1066,7 @@ Module cell.
       Axiom AssociatedFunction_try_init :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "try_init" (try_init T).
+      Smpl Add apply AssociatedFunction_try_init : is_associated.
       
       (*
           pub const fn into_inner(self) -> Option<T> {
@@ -1097,6 +1107,7 @@ Module cell.
       Axiom AssociatedFunction_into_inner :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
           pub fn take(&mut self) -> Option<T> {
@@ -1133,6 +1144,7 @@ Module cell.
       Axiom AssociatedFunction_take :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "take" (take T).
+      Smpl Add apply AssociatedFunction_take : is_associated.
     End Impl_core_cell_once_OnceCell_T.
     
     Module Impl_core_default_Default_for_core_cell_once_OnceCell_T.

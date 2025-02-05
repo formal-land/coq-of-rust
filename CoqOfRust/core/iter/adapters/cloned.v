@@ -137,6 +137,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_cloned_Cloned_I.
       
       (*

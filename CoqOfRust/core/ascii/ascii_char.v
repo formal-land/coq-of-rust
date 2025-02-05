@@ -1006,6 +1006,7 @@ Module ascii.
         end.
       
       Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
+      Smpl Add apply AssociatedFunction_from_u8 : is_associated.
       
       (*
           pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
@@ -1031,6 +1032,7 @@ Module ascii.
       
       Axiom AssociatedFunction_from_u8_unchecked :
         M.IsAssociatedFunction Self "from_u8_unchecked" from_u8_unchecked.
+      Smpl Add apply AssociatedFunction_from_u8_unchecked : is_associated.
       
       (*
           pub const fn digit(d: u8) -> Option<Self> {
@@ -1084,6 +1086,7 @@ Module ascii.
         end.
       
       Axiom AssociatedFunction_digit : M.IsAssociatedFunction Self "digit" digit.
+      Smpl Add apply AssociatedFunction_digit : is_associated.
       
       (*
           pub const unsafe fn digit_unchecked(d: u8) -> Self {
@@ -1164,6 +1167,7 @@ Module ascii.
       
       Axiom AssociatedFunction_digit_unchecked :
         M.IsAssociatedFunction Self "digit_unchecked" digit_unchecked.
+      Smpl Add apply AssociatedFunction_digit_unchecked : is_associated.
       
       (*
           pub const fn to_u8(self) -> u8 {
@@ -1180,6 +1184,7 @@ Module ascii.
         end.
       
       Axiom AssociatedFunction_to_u8 : M.IsAssociatedFunction Self "to_u8" to_u8.
+      Smpl Add apply AssociatedFunction_to_u8 : is_associated.
       
       (*
           pub const fn to_char(self) -> char {
@@ -1196,6 +1201,7 @@ Module ascii.
         end.
       
       Axiom AssociatedFunction_to_char : M.IsAssociatedFunction Self "to_char" to_char.
+      Smpl Add apply AssociatedFunction_to_char : is_associated.
       
       (*
           pub const fn as_str(&self) -> &str {
@@ -1239,6 +1245,7 @@ Module ascii.
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+      Smpl Add apply AssociatedFunction_as_str : is_associated.
     End Impl_core_ascii_ascii_char_AsciiChar.
     
     Module Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u8.
@@ -1429,6 +1436,7 @@ Module ascii.
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+      Smpl Add apply AssociatedFunction_as_str : is_associated.
       
       (*
           pub const fn as_bytes(&self) -> &[u8] {
@@ -1471,6 +1479,7 @@ Module ascii.
         end.
       
       Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
+      Smpl Add apply AssociatedFunction_as_bytes : is_associated.
     End Impl_slice_core_ascii_ascii_char_AsciiChar.
     
     Module Impl_core_fmt_Display_for_core_ascii_ascii_char_AsciiChar.

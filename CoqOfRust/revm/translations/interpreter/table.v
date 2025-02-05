@@ -190,6 +190,7 @@ Module table.
     Axiom AssociatedFunction_insert :
       forall (WIRE H CI : Ty.t),
       M.IsAssociatedFunction (Self WIRE H CI) "insert" (insert WIRE H CI).
+    Smpl Add apply AssociatedFunction_insert : is_associated.
     
     (*
         pub fn to_custom(&mut self) -> &mut CustomInstructionTable<CI> {
@@ -287,6 +288,7 @@ Module table.
     Axiom AssociatedFunction_to_custom :
       forall (WIRE H CI : Ty.t),
       M.IsAssociatedFunction (Self WIRE H CI) "to_custom" (to_custom WIRE H CI).
+    Smpl Add apply AssociatedFunction_to_custom : is_associated.
     
     (*
         pub fn to_custom_with<F>(&mut self, f: F) -> &mut CustomInstructionTable<CI>
@@ -384,6 +386,7 @@ Module table.
     Axiom AssociatedFunction_to_custom_with :
       forall (WIRE H CI : Ty.t),
       M.IsAssociatedFunction (Self WIRE H CI) "to_custom_with" (to_custom_with WIRE H CI).
+    Smpl Add apply AssociatedFunction_to_custom_with : is_associated.
     
     (*
         fn to_custom_with_slow<F>(&mut self, f: F) -> &mut CustomInstructionTable<CI>
@@ -504,6 +507,7 @@ Module table.
     Axiom AssociatedFunction_to_custom_with_slow :
       forall (WIRE H CI : Ty.t),
       M.IsAssociatedFunction (Self WIRE H CI) "to_custom_with_slow" (to_custom_with_slow WIRE H CI).
+    Smpl Add apply AssociatedFunction_to_custom_with_slow : is_associated.
     
     (*
         pub fn get_custom(&mut self, opcode: u8) -> &mut CI {
@@ -558,6 +562,7 @@ Module table.
     Axiom AssociatedFunction_get_custom :
       forall (WIRE H CI : Ty.t),
       M.IsAssociatedFunction (Self WIRE H CI) "get_custom" (get_custom WIRE H CI).
+    Smpl Add apply AssociatedFunction_get_custom : is_associated.
     
     (*
         pub fn insert_custom(&mut self, opcode: u8, instruction: CI) {
@@ -607,6 +612,7 @@ Module table.
     Axiom AssociatedFunction_insert_custom :
       forall (WIRE H CI : Ty.t),
       M.IsAssociatedFunction (Self WIRE H CI) "insert_custom" (insert_custom WIRE H CI).
+    Smpl Add apply AssociatedFunction_insert_custom : is_associated.
     
     (*
         pub fn replace_boxed(&mut self, opcode: u8, instruction: CI) -> CI {
@@ -658,6 +664,7 @@ Module table.
     Axiom AssociatedFunction_replace_boxed :
       forall (WIRE H CI : Ty.t),
       M.IsAssociatedFunction (Self WIRE H CI) "replace_boxed" (replace_boxed WIRE H CI).
+    Smpl Add apply AssociatedFunction_replace_boxed : is_associated.
   End Impl_revm_interpreter_table_InstructionTables_WIRE_H_CI.
   
   (*

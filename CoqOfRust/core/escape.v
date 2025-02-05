@@ -816,6 +816,7 @@ Module escape.
     Axiom AssociatedFunction_backslash :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "backslash" (backslash N).
+    Smpl Add apply AssociatedFunction_backslash : is_associated.
     
     (*
         pub const fn ascii(c: u8) -> Self {
@@ -858,6 +859,7 @@ Module escape.
     Axiom AssociatedFunction_ascii :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "ascii" (ascii N).
+    Smpl Add apply AssociatedFunction_ascii : is_associated.
     
     (*
         pub const fn unicode(c: char) -> Self {
@@ -900,6 +902,7 @@ Module escape.
     Axiom AssociatedFunction_unicode :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "unicode" (unicode N).
+    Smpl Add apply AssociatedFunction_unicode : is_associated.
     
     (*
         pub const fn empty() -> Self {
@@ -930,6 +933,7 @@ Module escape.
     Axiom AssociatedFunction_empty :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "empty" (empty N).
+    Smpl Add apply AssociatedFunction_empty : is_associated.
     
     (*
         pub fn as_ascii(&self) -> &[ascii::Char] {
@@ -1028,6 +1032,7 @@ Module escape.
     Axiom AssociatedFunction_as_ascii :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "as_ascii" (as_ascii N).
+    Smpl Add apply AssociatedFunction_as_ascii : is_associated.
     
     (*
         pub fn as_str(&self) -> &str {
@@ -1075,6 +1080,7 @@ Module escape.
     Axiom AssociatedFunction_as_str :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "as_str" (as_str N).
+    Smpl Add apply AssociatedFunction_as_str : is_associated.
     
     (*
         pub fn len(&self) -> usize {
@@ -1130,6 +1136,7 @@ Module escape.
     Axiom AssociatedFunction_len :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "len" (len N).
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub fn next(&mut self) -> Option<u8> {
@@ -1299,6 +1306,7 @@ Module escape.
     Axiom AssociatedFunction_next :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "next" (next N).
+    Smpl Add apply AssociatedFunction_next : is_associated.
     
     (*
         pub fn next_back(&mut self) -> Option<u8> {
@@ -1468,6 +1476,7 @@ Module escape.
     Axiom AssociatedFunction_next_back :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "next_back" (next_back N).
+    Smpl Add apply AssociatedFunction_next_back : is_associated.
     
     (*
         pub fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
@@ -1509,6 +1518,7 @@ Module escape.
     Axiom AssociatedFunction_advance_by :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "advance_by" (advance_by N).
+    Smpl Add apply AssociatedFunction_advance_by : is_associated.
     
     (*
         pub fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
@@ -1555,5 +1565,6 @@ Module escape.
     Axiom AssociatedFunction_advance_back_by :
       forall (N : Value.t),
       M.IsAssociatedFunction (Self N) "advance_back_by" (advance_back_by N).
+    Smpl Add apply AssociatedFunction_advance_back_by : is_associated.
   End Impl_core_escape_EscapeIterInner_N.
 End escape.

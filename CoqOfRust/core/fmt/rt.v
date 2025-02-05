@@ -127,6 +127,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
     End Impl_core_fmt_rt_Placeholder.
     
     (*
@@ -648,6 +649,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn new_display<'b, T: Display>(x: &'b T) -> Argument<'b> {
@@ -672,6 +674,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_new_display : M.IsAssociatedFunction Self "new_display" new_display.
+      Smpl Add apply AssociatedFunction_new_display : is_associated.
       
       (*
           pub fn new_debug<'b, T: Debug>(x: &'b T) -> Argument<'b> {
@@ -696,6 +699,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_new_debug : M.IsAssociatedFunction Self "new_debug" new_debug.
+      Smpl Add apply AssociatedFunction_new_debug : is_associated.
       
       (*
           pub fn new_debug_noop<'b, T: Debug>(x: &'b T) -> Argument<'b> {
@@ -745,6 +749,7 @@ Module fmt.
       
       Axiom AssociatedFunction_new_debug_noop :
         M.IsAssociatedFunction Self "new_debug_noop" new_debug_noop.
+      Smpl Add apply AssociatedFunction_new_debug_noop : is_associated.
       
       (*
           pub fn new_octal<'b, T: Octal>(x: &'b T) -> Argument<'b> {
@@ -769,6 +774,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_new_octal : M.IsAssociatedFunction Self "new_octal" new_octal.
+      Smpl Add apply AssociatedFunction_new_octal : is_associated.
       
       (*
           pub fn new_lower_hex<'b, T: LowerHex>(x: &'b T) -> Argument<'b> {
@@ -794,6 +800,7 @@ Module fmt.
       
       Axiom AssociatedFunction_new_lower_hex :
         M.IsAssociatedFunction Self "new_lower_hex" new_lower_hex.
+      Smpl Add apply AssociatedFunction_new_lower_hex : is_associated.
       
       (*
           pub fn new_upper_hex<'b, T: UpperHex>(x: &'b T) -> Argument<'b> {
@@ -819,6 +826,7 @@ Module fmt.
       
       Axiom AssociatedFunction_new_upper_hex :
         M.IsAssociatedFunction Self "new_upper_hex" new_upper_hex.
+      Smpl Add apply AssociatedFunction_new_upper_hex : is_associated.
       
       (*
           pub fn new_pointer<'b, T: Pointer>(x: &'b T) -> Argument<'b> {
@@ -843,6 +851,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_new_pointer : M.IsAssociatedFunction Self "new_pointer" new_pointer.
+      Smpl Add apply AssociatedFunction_new_pointer : is_associated.
       
       (*
           pub fn new_binary<'b, T: Binary>(x: &'b T) -> Argument<'b> {
@@ -867,6 +876,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_new_binary : M.IsAssociatedFunction Self "new_binary" new_binary.
+      Smpl Add apply AssociatedFunction_new_binary : is_associated.
       
       (*
           pub fn new_lower_exp<'b, T: LowerExp>(x: &'b T) -> Argument<'b> {
@@ -892,6 +902,7 @@ Module fmt.
       
       Axiom AssociatedFunction_new_lower_exp :
         M.IsAssociatedFunction Self "new_lower_exp" new_lower_exp.
+      Smpl Add apply AssociatedFunction_new_lower_exp : is_associated.
       
       (*
           pub fn new_upper_exp<'b, T: UpperExp>(x: &'b T) -> Argument<'b> {
@@ -917,6 +928,7 @@ Module fmt.
       
       Axiom AssociatedFunction_new_upper_exp :
         M.IsAssociatedFunction Self "new_upper_exp" new_upper_exp.
+      Smpl Add apply AssociatedFunction_new_upper_exp : is_associated.
       
       (*
           pub fn from_usize(x: &usize) -> Argument<'_> {
@@ -940,6 +952,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_from_usize : M.IsAssociatedFunction Self "from_usize" from_usize.
+      Smpl Add apply AssociatedFunction_from_usize : is_associated.
       
       (*
           pub(super) unsafe fn fmt(&self, f: &mut Formatter<'_>) -> Result {
@@ -1019,6 +1032,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_fmt : M.IsAssociatedFunction Self "fmt" fmt.
+      Smpl Add apply AssociatedFunction_fmt : is_associated.
       
       (*
           pub(super) fn as_usize(&self) -> Option<usize> {
@@ -1065,6 +1079,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_as_usize : M.IsAssociatedFunction Self "as_usize" as_usize.
+      Smpl Add apply AssociatedFunction_as_usize : is_associated.
       
       (*
           pub fn none() -> [Self; 0] {
@@ -1078,6 +1093,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_none : M.IsAssociatedFunction Self "none" none.
+      Smpl Add apply AssociatedFunction_none : is_associated.
     End Impl_core_fmt_rt_Argument.
     
     (* StructRecord
@@ -1105,6 +1121,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
     End Impl_core_fmt_rt_UnsafeArg.
   End rt.
 End fmt.

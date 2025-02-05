@@ -170,6 +170,7 @@ Module range.
       Axiom AssociatedFunction_remainder :
         forall (A : Ty.t),
         M.IsAssociatedFunction (Self A) "remainder" (remainder A).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_range_iter_IterRange_A.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_usize.
@@ -1281,6 +1282,7 @@ Module range.
       Axiom AssociatedFunction_remainder :
         forall (A : Ty.t),
         M.IsAssociatedFunction (Self A) "remainder" (remainder A).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_range_iter_IterRangeInclusive_A.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_range_Step_A_for_core_range_iter_IterRangeInclusive_A.
@@ -2076,6 +2078,7 @@ Module range.
       Axiom AssociatedFunction_remainder :
         forall (A : Ty.t),
         M.IsAssociatedFunction (Self A) "remainder" (remainder A).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_range_iter_IterRangeFrom_A.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_range_Step_A_for_core_range_iter_IterRangeFrom_A.

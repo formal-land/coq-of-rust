@@ -1516,6 +1516,7 @@ Module serializer.
       end.
     
     Axiom AssociatedFunction_serialize : M.IsAssociatedFunction Self "serialize" serialize.
+    Smpl Add apply AssociatedFunction_serialize : is_associated.
     
     (*
         pub fn serialize_for_version(
@@ -2402,6 +2403,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_for_version :
       M.IsAssociatedFunction Self "serialize_for_version" serialize_for_version.
+    Smpl Add apply AssociatedFunction_serialize_for_version : is_associated.
   End Impl_move_binary_format_file_format_CompiledModule.
   
   (* StructRecord
@@ -19595,6 +19597,7 @@ Module serializer.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn serialize_header(&mut self, binary: &mut BinaryData) -> Result<()> {
@@ -19792,6 +19795,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_header :
       M.IsAssociatedFunction Self "serialize_header" serialize_header.
+    Smpl Add apply AssociatedFunction_serialize_header : is_associated.
     
     (*
         fn serialize_table_indices(&mut self, binary: &mut BinaryData) -> Result<()> {
@@ -20950,6 +20954,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_table_indices :
       M.IsAssociatedFunction Self "serialize_table_indices" serialize_table_indices.
+    Smpl Add apply AssociatedFunction_serialize_table_indices : is_associated.
     
     (*
         fn serialize_common_tables<T: CommonTables>(
@@ -22099,6 +22104,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_common_tables :
       M.IsAssociatedFunction Self "serialize_common_tables" serialize_common_tables.
+    Smpl Add apply AssociatedFunction_serialize_common_tables : is_associated.
     
     (*
         fn serialize_module_handles(
@@ -22593,6 +22599,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_module_handles :
       M.IsAssociatedFunction Self "serialize_module_handles" serialize_module_handles.
+    Smpl Add apply AssociatedFunction_serialize_module_handles : is_associated.
     
     (*
         fn serialize_struct_handles(
@@ -23087,6 +23094,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_struct_handles :
       M.IsAssociatedFunction Self "serialize_struct_handles" serialize_struct_handles.
+    Smpl Add apply AssociatedFunction_serialize_struct_handles : is_associated.
     
     (*
         fn serialize_function_handles(
@@ -23587,6 +23595,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_function_handles :
       M.IsAssociatedFunction Self "serialize_function_handles" serialize_function_handles.
+    Smpl Add apply AssociatedFunction_serialize_function_handles : is_associated.
     
     (*
         fn serialize_function_instantiations(
@@ -24095,6 +24104,7 @@ Module serializer.
         Self
         "serialize_function_instantiations"
         serialize_function_instantiations.
+    Smpl Add apply AssociatedFunction_serialize_function_instantiations : is_associated.
     
     (*
         fn serialize_identifiers(
@@ -24624,6 +24634,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_identifiers :
       M.IsAssociatedFunction Self "serialize_identifiers" serialize_identifiers.
+    Smpl Add apply AssociatedFunction_serialize_identifiers : is_associated.
     
     (*
         fn serialize_address_identifiers(
@@ -25124,6 +25135,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_address_identifiers :
       M.IsAssociatedFunction Self "serialize_address_identifiers" serialize_address_identifiers.
+    Smpl Add apply AssociatedFunction_serialize_address_identifiers : is_associated.
     
     (*
         fn serialize_constants(
@@ -25615,6 +25627,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_constants :
       M.IsAssociatedFunction Self "serialize_constants" serialize_constants.
+    Smpl Add apply AssociatedFunction_serialize_constants : is_associated.
     
     (*
         fn serialize_metadata(&mut self, binary: &mut BinaryData, metadata: &[Metadata]) -> Result<()> {
@@ -26100,6 +26113,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_metadata :
       M.IsAssociatedFunction Self "serialize_metadata" serialize_metadata.
+    Smpl Add apply AssociatedFunction_serialize_metadata : is_associated.
     
     (*
         fn serialize_signatures(
@@ -26591,6 +26605,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_signatures :
       M.IsAssociatedFunction Self "serialize_signatures" serialize_signatures.
+    Smpl Add apply AssociatedFunction_serialize_signatures : is_associated.
     
     (*
         pub fn major_version(&self) -> u32 {
@@ -26614,6 +26629,7 @@ Module serializer.
     
     Axiom AssociatedFunction_major_version :
       M.IsAssociatedFunction Self "major_version" major_version.
+    Smpl Add apply AssociatedFunction_major_version : is_associated.
   End Impl_move_binary_format_serializer_CommonSerializer.
   
   Module Impl_move_binary_format_serializer_ModuleSerializer.
@@ -26667,6 +26683,7 @@ Module serializer.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn serialize_tables(&mut self, binary: &mut BinaryData, module: &CompiledModule) -> Result<()> {
@@ -27454,6 +27471,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_tables :
       M.IsAssociatedFunction Self "serialize_tables" serialize_tables.
+    Smpl Add apply AssociatedFunction_serialize_tables : is_associated.
     
     (*
         fn serialize_table_indices(&mut self, binary: &mut BinaryData) -> Result<()> {
@@ -28242,6 +28260,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_table_indices :
       M.IsAssociatedFunction Self "serialize_table_indices" serialize_table_indices.
+    Smpl Add apply AssociatedFunction_serialize_table_indices : is_associated.
     
     (*
         fn serialize_struct_definitions(
@@ -28766,6 +28785,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_struct_definitions :
       M.IsAssociatedFunction Self "serialize_struct_definitions" serialize_struct_definitions.
+    Smpl Add apply AssociatedFunction_serialize_struct_definitions : is_associated.
     
     (*
         fn serialize_struct_def_instantiations(
@@ -29296,6 +29316,7 @@ Module serializer.
         Self
         "serialize_struct_def_instantiations"
         serialize_struct_def_instantiations.
+    Smpl Add apply AssociatedFunction_serialize_struct_def_instantiations : is_associated.
     
     (*
         fn serialize_field_handles(
@@ -29792,6 +29813,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_field_handles :
       M.IsAssociatedFunction Self "serialize_field_handles" serialize_field_handles.
+    Smpl Add apply AssociatedFunction_serialize_field_handles : is_associated.
     
     (*
         fn serialize_field_instantiations(
@@ -30300,6 +30322,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_field_instantiations :
       M.IsAssociatedFunction Self "serialize_field_instantiations" serialize_field_instantiations.
+    Smpl Add apply AssociatedFunction_serialize_field_instantiations : is_associated.
     
     (*
         fn serialize_function_definitions(
@@ -30832,6 +30855,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_function_definitions :
       M.IsAssociatedFunction Self "serialize_function_definitions" serialize_function_definitions.
+    Smpl Add apply AssociatedFunction_serialize_function_definitions : is_associated.
     
     (*
         fn serialize_function_definition(
@@ -31700,6 +31724,7 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_function_definition :
       M.IsAssociatedFunction Self "serialize_function_definition" serialize_function_definition.
+    Smpl Add apply AssociatedFunction_serialize_function_definition : is_associated.
     
     (*
         fn serialize_friend_declarations(
@@ -32221,5 +32246,6 @@ Module serializer.
     
     Axiom AssociatedFunction_serialize_friend_declarations :
       M.IsAssociatedFunction Self "serialize_friend_declarations" serialize_friend_declarations.
+    Smpl Add apply AssociatedFunction_serialize_friend_declarations : is_associated.
   End Impl_move_binary_format_serializer_ModuleSerializer.
 End serializer.

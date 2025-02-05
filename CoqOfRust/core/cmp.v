@@ -471,6 +471,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_eq : M.IsAssociatedFunction Self "is_eq" is_eq.
+    Smpl Add apply AssociatedFunction_is_eq : is_associated.
     
     (*
         pub const fn is_ne(self) -> bool {
@@ -500,6 +501,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_ne : M.IsAssociatedFunction Self "is_ne" is_ne.
+    Smpl Add apply AssociatedFunction_is_ne : is_associated.
     
     (*
         pub const fn is_lt(self) -> bool {
@@ -527,6 +529,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_lt : M.IsAssociatedFunction Self "is_lt" is_lt.
+    Smpl Add apply AssociatedFunction_is_lt : is_associated.
     
     (*
         pub const fn is_gt(self) -> bool {
@@ -554,6 +557,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_gt : M.IsAssociatedFunction Self "is_gt" is_gt.
+    Smpl Add apply AssociatedFunction_is_gt : is_associated.
     
     (*
         pub const fn is_le(self) -> bool {
@@ -583,6 +587,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_le : M.IsAssociatedFunction Self "is_le" is_le.
+    Smpl Add apply AssociatedFunction_is_le : is_associated.
     
     (*
         pub const fn is_ge(self) -> bool {
@@ -612,6 +617,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_ge : M.IsAssociatedFunction Self "is_ge" is_ge.
+    Smpl Add apply AssociatedFunction_is_ge : is_associated.
     
     (*
         pub const fn reverse(self) -> Ordering {
@@ -650,6 +656,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_reverse : M.IsAssociatedFunction Self "reverse" reverse.
+    Smpl Add apply AssociatedFunction_reverse : is_associated.
     
     (*
         pub const fn then(self, other: Ordering) -> Ordering {
@@ -681,6 +688,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_then_ : M.IsAssociatedFunction Self "then_" then_.
+    Smpl Add apply AssociatedFunction_then_ : is_associated.
     
     (*
         pub fn then_with<F: FnOnce() -> Ordering>(self, f: F) -> Ordering {
@@ -725,6 +733,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_then_with : M.IsAssociatedFunction Self "then_with" then_with.
+    Smpl Add apply AssociatedFunction_then_with : is_associated.
   End Impl_core_cmp_Ordering.
   
   (* StructTuple

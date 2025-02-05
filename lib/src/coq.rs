@@ -16,7 +16,11 @@ pub(crate) struct TopLevel {
 pub(crate) enum TopLevelItem {
     Comment(Vec<Expression>),
     Definition(Definition),
-    HintRewrite { hint: String, database: String },
+    Hint {
+        kind: String,
+        name: String,
+        database: String,
+    },
     Line,
     Module(Module),
 }
@@ -326,10 +330,16 @@ impl<'a> TopLevelItem {
                 }
             }
             TopLevelItem::Definition(definition) => definition.to_doc(),
-            TopLevelItem::HintRewrite { hint, database } => concat([
-                text("Global Hint Rewrite "),
-                text(hint.to_owned()),
-                text(" : "),
+            TopLevelItem::Hint {
+                kind,
+                name,
+                database,
+            } => nest([
+                text(kind.to_owned()),
+                text(" "),
+                text(name.to_owned()),
+                text(" :"),
+                line(),
                 text(database.to_owned()),
                 text("."),
             ]),

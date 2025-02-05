@@ -605,6 +605,7 @@ Module collections.
         Axiom AssociatedFunction_calc_split_length :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "calc_split_length" (calc_split_length K V).
+        Smpl Add apply AssociatedFunction_calc_split_length : is_associated.
         
         (*
             pub fn split_off<Q: ?Sized + Ord, A: Allocator + Clone>(&mut self, key: &Q, alloc: A) -> Self
@@ -1083,6 +1084,7 @@ Module collections.
         Axiom AssociatedFunction_split_off :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "split_off" (split_off K V).
+        Smpl Add apply AssociatedFunction_split_off : is_associated.
         
         (*
             fn new_pillar<A: Allocator + Clone>(height: usize, alloc: A) -> Self {
@@ -1256,6 +1258,7 @@ Module collections.
         Axiom AssociatedFunction_new_pillar :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "new_pillar" (new_pillar K V).
+        Smpl Add apply AssociatedFunction_new_pillar : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
     End split.
   End btree.

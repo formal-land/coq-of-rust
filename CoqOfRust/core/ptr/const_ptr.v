@@ -59,6 +59,7 @@ Module ptr.
       Axiom AssociatedFunction_is_null :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "is_null" (is_null T).
+      Smpl Add apply AssociatedFunction_is_null : is_associated.
       
       (*
           pub const fn cast<U>(self) -> *const U {
@@ -78,6 +79,7 @@ Module ptr.
       Axiom AssociatedFunction_cast :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "cast" (cast T).
+      Smpl Add apply AssociatedFunction_cast : is_associated.
       
       (*
           pub const fn with_metadata_of<U>(self, meta: *const U) -> *const U
@@ -115,6 +117,7 @@ Module ptr.
       Axiom AssociatedFunction_with_metadata_of :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "with_metadata_of" (with_metadata_of T).
+      Smpl Add apply AssociatedFunction_with_metadata_of : is_associated.
       
       (*
           pub const fn cast_mut(self) -> *mut T {
@@ -134,6 +137,7 @@ Module ptr.
       Axiom AssociatedFunction_cast_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "cast_mut" (cast_mut T).
+      Smpl Add apply AssociatedFunction_cast_mut : is_associated.
       
       (*
           pub fn addr(self) -> usize {
@@ -173,6 +177,7 @@ Module ptr.
       Axiom AssociatedFunction_addr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "addr" (addr T).
+      Smpl Add apply AssociatedFunction_addr : is_associated.
       
       (*
           pub fn expose_provenance(self) -> usize {
@@ -208,6 +213,7 @@ Module ptr.
       Axiom AssociatedFunction_expose_provenance :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "expose_provenance" (expose_provenance T).
+      Smpl Add apply AssociatedFunction_expose_provenance : is_associated.
       
       (*
           pub fn with_addr(self, addr: usize) -> Self {
@@ -272,6 +278,7 @@ Module ptr.
       Axiom AssociatedFunction_with_addr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "with_addr" (with_addr T).
+      Smpl Add apply AssociatedFunction_with_addr : is_associated.
       
       (*
           pub fn map_addr(self, f: impl FnOnce(usize) -> usize) -> Self {
@@ -328,6 +335,7 @@ Module ptr.
       Axiom AssociatedFunction_map_addr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "map_addr" (map_addr T).
+      Smpl Add apply AssociatedFunction_map_addr : is_associated.
       
       (*
           pub const fn to_raw_parts(self) -> ( *const (), <T as super::Pointee>::Metadata) {
@@ -367,6 +375,7 @@ Module ptr.
       Axiom AssociatedFunction_to_raw_parts :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "to_raw_parts" (to_raw_parts T).
+      Smpl Add apply AssociatedFunction_to_raw_parts : is_associated.
       
       (*
           pub const unsafe fn as_ref<'a>(self) -> Option<&'a T> {
@@ -425,6 +434,7 @@ Module ptr.
       Axiom AssociatedFunction_as_ref :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
+      Smpl Add apply AssociatedFunction_as_ref : is_associated.
       
       (*
           pub const unsafe fn as_ref_unchecked<'a>(self) -> &'a T {
@@ -453,6 +463,7 @@ Module ptr.
       Axiom AssociatedFunction_as_ref_unchecked :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ref_unchecked" (as_ref_unchecked T).
+      Smpl Add apply AssociatedFunction_as_ref_unchecked : is_associated.
       
       (*
           pub const unsafe fn as_uninit_ref<'a>(self) -> Option<&'a MaybeUninit<T>>
@@ -534,6 +545,7 @@ Module ptr.
       Axiom AssociatedFunction_as_uninit_ref :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_uninit_ref" (as_uninit_ref T).
+      Smpl Add apply AssociatedFunction_as_uninit_ref : is_associated.
       
       (*
           pub const unsafe fn offset(self, count: isize) -> *const T
@@ -565,6 +577,7 @@ Module ptr.
       Axiom AssociatedFunction_offset :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "offset" (offset T).
+      Smpl Add apply AssociatedFunction_offset : is_associated.
       
       (*
           pub const unsafe fn byte_offset(self, count: isize) -> Self {
@@ -616,6 +629,7 @@ Module ptr.
       Axiom AssociatedFunction_byte_offset :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "byte_offset" (byte_offset T).
+      Smpl Add apply AssociatedFunction_byte_offset : is_associated.
       
       (*
           pub const fn wrapping_offset(self, count: isize) -> *const T
@@ -648,6 +662,7 @@ Module ptr.
       Axiom AssociatedFunction_wrapping_offset :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "wrapping_offset" (wrapping_offset T).
+      Smpl Add apply AssociatedFunction_wrapping_offset : is_associated.
       
       (*
           pub const fn wrapping_byte_offset(self, count: isize) -> Self {
@@ -703,6 +718,7 @@ Module ptr.
       Axiom AssociatedFunction_wrapping_byte_offset :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "wrapping_byte_offset" (wrapping_byte_offset T).
+      Smpl Add apply AssociatedFunction_wrapping_byte_offset : is_associated.
       
       (*
           pub fn mask(self, mask: usize) -> *const T {
@@ -748,6 +764,7 @@ Module ptr.
       Axiom AssociatedFunction_mask :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "mask" (mask T).
+      Smpl Add apply AssociatedFunction_mask : is_associated.
       
       (*
           pub const unsafe fn offset_from(self, origin: *const T) -> isize
@@ -828,6 +845,7 @@ Module ptr.
       Axiom AssociatedFunction_offset_from :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "offset_from" (offset_from T).
+      Smpl Add apply AssociatedFunction_offset_from : is_associated.
       
       (*
           pub const unsafe fn byte_offset_from<U: ?Sized>(self, origin: *const U) -> isize {
@@ -881,6 +899,7 @@ Module ptr.
       Axiom AssociatedFunction_byte_offset_from :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "byte_offset_from" (byte_offset_from T).
+      Smpl Add apply AssociatedFunction_byte_offset_from : is_associated.
       
       (*
           pub const unsafe fn sub_ptr(self, origin: *const T) -> usize
@@ -1021,6 +1040,7 @@ Module ptr.
       Axiom AssociatedFunction_sub_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "sub_ptr" (sub_ptr T).
+      Smpl Add apply AssociatedFunction_sub_ptr : is_associated.
       
       (*
           pub const fn guaranteed_eq(self, other: *const T) -> Option<bool>
@@ -1079,6 +1099,7 @@ Module ptr.
       Axiom AssociatedFunction_guaranteed_eq :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "guaranteed_eq" (guaranteed_eq T).
+      Smpl Add apply AssociatedFunction_guaranteed_eq : is_associated.
       
       (*
           pub const fn guaranteed_ne(self, other: *const T) -> Option<bool>
@@ -1144,6 +1165,7 @@ Module ptr.
       Axiom AssociatedFunction_guaranteed_ne :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "guaranteed_ne" (guaranteed_ne T).
+      Smpl Add apply AssociatedFunction_guaranteed_ne : is_associated.
       
       (*
           pub const unsafe fn add(self, count: usize) -> Self
@@ -1175,6 +1197,7 @@ Module ptr.
       Axiom AssociatedFunction_add :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "add" (add T).
+      Smpl Add apply AssociatedFunction_add : is_associated.
       
       (*
           pub const unsafe fn byte_add(self, count: usize) -> Self {
@@ -1226,6 +1249,7 @@ Module ptr.
       Axiom AssociatedFunction_byte_add :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "byte_add" (byte_add T).
+      Smpl Add apply AssociatedFunction_byte_add : is_associated.
       
       (*
           pub const unsafe fn sub(self, count: usize) -> Self
@@ -1292,6 +1316,7 @@ Module ptr.
       Axiom AssociatedFunction_sub :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "sub" (sub T).
+      Smpl Add apply AssociatedFunction_sub : is_associated.
       
       (*
           pub const unsafe fn byte_sub(self, count: usize) -> Self {
@@ -1343,6 +1368,7 @@ Module ptr.
       Axiom AssociatedFunction_byte_sub :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "byte_sub" (byte_sub T).
+      Smpl Add apply AssociatedFunction_byte_sub : is_associated.
       
       (*
           pub const fn wrapping_add(self, count: usize) -> Self
@@ -1379,6 +1405,7 @@ Module ptr.
       Axiom AssociatedFunction_wrapping_add :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "wrapping_add" (wrapping_add T).
+      Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
       
       (*
           pub const fn wrapping_byte_add(self, count: usize) -> Self {
@@ -1434,6 +1461,7 @@ Module ptr.
       Axiom AssociatedFunction_wrapping_byte_add :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "wrapping_byte_add" (wrapping_byte_add T).
+      Smpl Add apply AssociatedFunction_wrapping_byte_add : is_associated.
       
       (*
           pub const fn wrapping_sub(self, count: usize) -> Self
@@ -1476,6 +1504,7 @@ Module ptr.
       Axiom AssociatedFunction_wrapping_sub :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "wrapping_sub" (wrapping_sub T).
+      Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
       
       (*
           pub const fn wrapping_byte_sub(self, count: usize) -> Self {
@@ -1531,6 +1560,7 @@ Module ptr.
       Axiom AssociatedFunction_wrapping_byte_sub :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "wrapping_byte_sub" (wrapping_byte_sub T).
+      Smpl Add apply AssociatedFunction_wrapping_byte_sub : is_associated.
       
       (*
           pub const unsafe fn read(self) -> T
@@ -1557,6 +1587,7 @@ Module ptr.
       Axiom AssociatedFunction_read :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "read" (read T).
+      Smpl Add apply AssociatedFunction_read : is_associated.
       
       (*
           pub unsafe fn read_volatile(self) -> T
@@ -1588,6 +1619,7 @@ Module ptr.
       Axiom AssociatedFunction_read_volatile :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "read_volatile" (read_volatile T).
+      Smpl Add apply AssociatedFunction_read_volatile : is_associated.
       
       (*
           pub const unsafe fn read_unaligned(self) -> T
@@ -1619,6 +1651,7 @@ Module ptr.
       Axiom AssociatedFunction_read_unaligned :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "read_unaligned" (read_unaligned T).
+      Smpl Add apply AssociatedFunction_read_unaligned : is_associated.
       
       (*
           pub const unsafe fn copy_to(self, dest: *mut T, count: usize)
@@ -1647,6 +1680,7 @@ Module ptr.
       Axiom AssociatedFunction_copy_to :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "copy_to" (copy_to T).
+      Smpl Add apply AssociatedFunction_copy_to : is_associated.
       
       (*
           pub const unsafe fn copy_to_nonoverlapping(self, dest: *mut T, count: usize)
@@ -1680,6 +1714,7 @@ Module ptr.
       Axiom AssociatedFunction_copy_to_nonoverlapping :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "copy_to_nonoverlapping" (copy_to_nonoverlapping T).
+      Smpl Add apply AssociatedFunction_copy_to_nonoverlapping : is_associated.
       
       (*
           pub const fn align_offset(self, align: usize) -> usize
@@ -1792,6 +1827,7 @@ Module ptr.
       Axiom AssociatedFunction_align_offset :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "align_offset" (align_offset T).
+      Smpl Add apply AssociatedFunction_align_offset : is_associated.
       
       (*
           pub const fn is_aligned(self) -> bool
@@ -1825,6 +1861,7 @@ Module ptr.
       Axiom AssociatedFunction_is_aligned :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "is_aligned" (is_aligned T).
+      Smpl Add apply AssociatedFunction_is_aligned : is_associated.
       
       (*
           pub const fn is_aligned_to(self, align: usize) -> bool {
@@ -1966,6 +2003,7 @@ Module ptr.
       Axiom AssociatedFunction_is_aligned_to :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "is_aligned_to" (is_aligned_to T).
+      Smpl Add apply AssociatedFunction_is_aligned_to : is_associated.
     End Impl_pointer_const_T.
     
     Module Impl_pointer_const_slice_T.
@@ -1997,6 +2035,7 @@ Module ptr.
       Axiom AssociatedFunction_len :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "len" (len T).
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub const fn is_empty(self) -> bool {
@@ -2027,6 +2066,7 @@ Module ptr.
       Axiom AssociatedFunction_is_empty :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "is_empty" (is_empty T).
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
       
       (*
           pub const fn as_ptr(self) -> *const T {
@@ -2046,6 +2086,7 @@ Module ptr.
       Axiom AssociatedFunction_as_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
       
       (*
           pub unsafe fn get_unchecked<I>(self, index: I) -> *const I::Output
@@ -2086,6 +2127,7 @@ Module ptr.
       Axiom AssociatedFunction_get_unchecked :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_unchecked" (get_unchecked T).
+      Smpl Add apply AssociatedFunction_get_unchecked : is_associated.
       
       (*
           pub const unsafe fn as_uninit_slice<'a>(self) -> Option<&'a [MaybeUninit<T>]> {
@@ -2191,6 +2233,7 @@ Module ptr.
       Axiom AssociatedFunction_as_uninit_slice :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_uninit_slice" (as_uninit_slice T).
+      Smpl Add apply AssociatedFunction_as_uninit_slice : is_associated.
     End Impl_pointer_const_slice_T.
     
     Module Impl_pointer_const_array_N_T.
@@ -2221,6 +2264,7 @@ Module ptr.
       Axiom AssociatedFunction_as_ptr :
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "as_ptr" (as_ptr N T).
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
       
       (*
           pub const fn as_slice(self) -> *const [T] {
@@ -2246,6 +2290,7 @@ Module ptr.
       Axiom AssociatedFunction_as_slice :
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "as_slice" (as_slice N T).
+      Smpl Add apply AssociatedFunction_as_slice : is_associated.
     End Impl_pointer_const_array_N_T.
     
     Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_pointer_const_T.

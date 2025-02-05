@@ -19,13 +19,16 @@ Module Impl_wildcard_selector_WildcardSelector.
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   Parameter wildcard : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_wildcard : M.IsAssociatedFunction Self "wildcard" wildcard.
+  Smpl Add apply AssociatedFunction_wildcard : is_associated.
   
   Parameter wildcard_complement : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_wildcard_complement :
     M.IsAssociatedFunction Self "wildcard_complement" wildcard_complement.
+  Smpl Add apply AssociatedFunction_wildcard_complement : is_associated.
 End Impl_wildcard_selector_WildcardSelector.

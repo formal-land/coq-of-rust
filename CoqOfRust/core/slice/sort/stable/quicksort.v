@@ -1807,6 +1807,7 @@ Module slice.
           Axiom AssociatedFunction_new :
             forall (T : Ty.t),
             M.IsAssociatedFunction (Self T) "new" (new T).
+          Smpl Add apply AssociatedFunction_new : is_associated.
           
           (*
               unsafe fn partition_one(&mut self, towards_left: bool) -> *mut T {
@@ -1983,6 +1984,7 @@ Module slice.
           Axiom AssociatedFunction_partition_one :
             forall (T : Ty.t),
             M.IsAssociatedFunction (Self T) "partition_one" (partition_one T).
+          Smpl Add apply AssociatedFunction_partition_one : is_associated.
         End Impl_core_slice_sort_stable_quicksort_PartitionState_T.
         
         (* Trait *)

@@ -1153,6 +1153,7 @@ Module char.
       
       Axiom AssociatedFunction_unpaired_surrogate :
         M.IsAssociatedFunction Self "unpaired_surrogate" unpaired_surrogate.
+      Smpl Add apply AssociatedFunction_unpaired_surrogate : is_associated.
     End Impl_core_char_decode_DecodeUtf16Error.
     
     Module Impl_core_fmt_Display_for_core_char_decode_DecodeUtf16Error.

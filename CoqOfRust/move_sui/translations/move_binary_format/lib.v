@@ -742,6 +742,7 @@ Module Impl_move_binary_format_IndexKind.
     end.
   
   Axiom AssociatedFunction_variants : M.IsAssociatedFunction Self "variants" variants.
+  Smpl Add apply AssociatedFunction_variants : is_associated.
 End Impl_move_binary_format_IndexKind.
 
 Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.

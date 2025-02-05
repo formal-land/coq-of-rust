@@ -711,6 +711,7 @@ Module pin.
     Axiom AssociatedFunction_new :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "new" (new Ptr).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub const fn into_inner(pin: Pin<Ptr>) -> Ptr {
@@ -732,6 +733,7 @@ Module pin.
     Axiom AssociatedFunction_into_inner :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "into_inner" (into_inner Ptr).
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     (*
         pub const unsafe fn new_unchecked(pointer: Ptr) -> Pin<Ptr> {
             Pin { __pointer: pointer }
@@ -755,6 +757,7 @@ Module pin.
     Axiom AssociatedFunction_new_unchecked :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "new_unchecked" (new_unchecked Ptr).
+    Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
     
     (*
         pub fn as_ref(&self) -> Pin<&Ptr::Target> {
@@ -818,6 +821,7 @@ Module pin.
     Axiom AssociatedFunction_as_ref :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "as_ref" (as_ref Ptr).
+    Smpl Add apply AssociatedFunction_as_ref : is_associated.
     (*
         pub fn as_mut(&mut self) -> Pin<&mut Ptr::Target> {
             // SAFETY: see documentation on this function
@@ -880,6 +884,7 @@ Module pin.
     Axiom AssociatedFunction_as_mut :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "as_mut" (as_mut Ptr).
+    Smpl Add apply AssociatedFunction_as_mut : is_associated.
     
     (*
         pub fn as_deref_mut(self: Pin<&mut Pin<Ptr>>) -> Pin<&mut Ptr::Target> {
@@ -959,6 +964,7 @@ Module pin.
     Axiom AssociatedFunction_as_deref_mut :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "as_deref_mut" (as_deref_mut Ptr).
+    Smpl Add apply AssociatedFunction_as_deref_mut : is_associated.
     
     (*
         pub fn set(&mut self, value: Ptr::Target)
@@ -1011,6 +1017,7 @@ Module pin.
     Axiom AssociatedFunction_set :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "set" (set Ptr).
+    Smpl Add apply AssociatedFunction_set : is_associated.
     (*
         pub const unsafe fn into_inner_unchecked(pin: Pin<Ptr>) -> Ptr {
             pin.__pointer
@@ -1036,6 +1043,7 @@ Module pin.
     Axiom AssociatedFunction_into_inner_unchecked :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "into_inner_unchecked" (into_inner_unchecked Ptr).
+    Smpl Add apply AssociatedFunction_into_inner_unchecked : is_associated.
   End Impl_core_pin_Pin_Ptr.
   
   
@@ -1115,6 +1123,7 @@ Module pin.
     Axiom AssociatedFunction_map_unchecked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "map_unchecked" (map_unchecked T).
+    Smpl Add apply AssociatedFunction_map_unchecked : is_associated.
     
     (*
         pub const fn get_ref(self) -> &'a T {
@@ -1136,6 +1145,7 @@ Module pin.
     Axiom AssociatedFunction_get_ref :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_ref" (get_ref T).
+    Smpl Add apply AssociatedFunction_get_ref : is_associated.
     (*
         pub const fn static_ref(r: &'static T) -> Pin<&'static T> {
             // SAFETY: The 'static borrow guarantees the data will not be
@@ -1164,6 +1174,7 @@ Module pin.
     Axiom AssociatedFunction_static_ref :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "static_ref" (static_ref T).
+    Smpl Add apply AssociatedFunction_static_ref : is_associated.
   End Impl_core_pin_Pin_ref__T.
   
   Module Impl_core_pin_Pin_ref_mut_T.
@@ -1200,6 +1211,7 @@ Module pin.
     Axiom AssociatedFunction_into_ref :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "into_ref" (into_ref T).
+    Smpl Add apply AssociatedFunction_into_ref : is_associated.
     
     (*
         pub const fn get_mut(self) -> &'a mut T
@@ -1234,6 +1246,7 @@ Module pin.
     Axiom AssociatedFunction_get_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
+    Smpl Add apply AssociatedFunction_get_mut : is_associated.
     
     (*
         pub const unsafe fn get_unchecked_mut(self) -> &'a mut T {
@@ -1270,6 +1283,7 @@ Module pin.
     Axiom AssociatedFunction_get_unchecked_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_unchecked_mut" (get_unchecked_mut T).
+    Smpl Add apply AssociatedFunction_get_unchecked_mut : is_associated.
     
     (*
         pub unsafe fn map_unchecked_mut<U, F>(self, func: F) -> Pin<&'a mut U>
@@ -1356,6 +1370,7 @@ Module pin.
     Axiom AssociatedFunction_map_unchecked_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "map_unchecked_mut" (map_unchecked_mut T).
+    Smpl Add apply AssociatedFunction_map_unchecked_mut : is_associated.
     (*
         pub const fn static_mut(r: &'static mut T) -> Pin<&'static mut T> {
             // SAFETY: The 'static borrow guarantees the data will not be
@@ -1384,6 +1399,7 @@ Module pin.
     Axiom AssociatedFunction_static_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "static_mut" (static_mut T).
+    Smpl Add apply AssociatedFunction_static_mut : is_associated.
   End Impl_core_pin_Pin_ref_mut_T.
   
   

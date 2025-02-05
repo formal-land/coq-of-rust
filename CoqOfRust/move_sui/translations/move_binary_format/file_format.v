@@ -335,6 +335,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_ModuleHandleIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_ModuleHandleIndex.
@@ -880,6 +881,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_StructHandleIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_StructHandleIndex.
@@ -1425,6 +1427,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_FunctionHandleIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FunctionHandleIndex.
@@ -1970,6 +1973,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_FieldHandleIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FieldHandleIndex.
@@ -2525,6 +2529,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_StructDefInstantiationIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_StructDefInstantiationIndex.
@@ -3075,6 +3080,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_FunctionInstantiationIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FunctionInstantiationIndex.
@@ -3622,6 +3628,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_FieldInstantiationIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FieldInstantiationIndex.
@@ -4167,6 +4174,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_IdentifierIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_IdentifierIndex.
@@ -4712,6 +4720,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_AddressIdentifierIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_AddressIdentifierIndex.
@@ -5257,6 +5266,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_ConstantPoolIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_ConstantPoolIndex.
@@ -5800,6 +5810,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_SignatureIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_SignatureIndex.
@@ -6345,6 +6356,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_StructDefinitionIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_StructDefinitionIndex.
@@ -6890,6 +6902,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_file_format_FunctionDefinitionIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FunctionDefinitionIndex.
@@ -9030,6 +9043,7 @@ Module file_format.
     
     Axiom AssociatedFunction_type_param_constraints :
       M.IsAssociatedFunction Self "type_param_constraints" type_param_constraints.
+    Smpl Add apply AssociatedFunction_type_param_constraints : is_associated.
   End Impl_move_binary_format_file_format_StructHandle.
   
   (* StructRecord
@@ -13114,6 +13128,7 @@ Module file_format.
     
     Axiom AssociatedFunction_declared_field_count :
       M.IsAssociatedFunction Self "declared_field_count" declared_field_count.
+    Smpl Add apply AssociatedFunction_declared_field_count : is_associated.
     
     (*
         pub fn field(&self, offset: usize) -> Option<&FieldDefinition> {
@@ -13208,6 +13223,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
+    Smpl Add apply AssociatedFunction_field : is_associated.
     
     (*
         pub fn fields(&self) -> Option<&[FieldDefinition]> {
@@ -13291,6 +13307,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_fields : M.IsAssociatedFunction Self "fields" fields.
+    Smpl Add apply AssociatedFunction_fields : is_associated.
   End Impl_move_binary_format_file_format_StructDefinition.
   
   (* StructRecord
@@ -13960,6 +13977,7 @@ Module file_format.
     
     Axiom AssociatedConstant_value_DEPRECATED_SCRIPT :
       M.IsAssociatedConstant Self "value_DEPRECATED_SCRIPT" value_DEPRECATED_SCRIPT.
+    Smpl Add apply AssociatedConstant_value_DEPRECATED_SCRIPT : is_associated.
   End Impl_move_binary_format_file_format_Visibility.
   
   Module Impl_core_convert_TryFrom_u8_for_move_binary_format_file_format_Visibility.
@@ -14782,6 +14800,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_is_native : M.IsAssociatedFunction Self "is_native" is_native.
+    Smpl Add apply AssociatedFunction_is_native : is_associated.
     
     (*     pub const DEPRECATED_PUBLIC_BIT: u8 = 0b01; *)
     (* Ty.path "u8" *)
@@ -14790,6 +14809,7 @@ Module file_format.
     
     Axiom AssociatedConstant_value_DEPRECATED_PUBLIC_BIT :
       M.IsAssociatedConstant Self "value_DEPRECATED_PUBLIC_BIT" value_DEPRECATED_PUBLIC_BIT.
+    Smpl Add apply AssociatedConstant_value_DEPRECATED_PUBLIC_BIT : is_associated.
     
     (*     pub const NATIVE: u8 = 0b10; *)
     (* Ty.path "u8" *)
@@ -14797,6 +14817,7 @@ Module file_format.
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
     
     Axiom AssociatedConstant_value_NATIVE : M.IsAssociatedConstant Self "value_NATIVE" value_NATIVE.
+    Smpl Add apply AssociatedConstant_value_NATIVE : is_associated.
     
     (*     pub const ENTRY: u8 = 0b100; *)
     (* Ty.path "u8" *)
@@ -14804,6 +14825,7 @@ Module file_format.
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 4 |))).
     
     Axiom AssociatedConstant_value_ENTRY : M.IsAssociatedConstant Self "value_ENTRY" value_ENTRY.
+    Smpl Add apply AssociatedConstant_value_ENTRY : is_associated.
   End Impl_move_binary_format_file_format_FunctionDefinition.
   
   (* StructTuple
@@ -16149,6 +16171,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -16188,6 +16211,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
   End Impl_move_binary_format_file_format_Signature.
   
   Axiom TypeParameterIndex :
@@ -16691,6 +16715,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
+    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
     
     (*
         pub fn requires(self) -> Self {
@@ -16749,6 +16774,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_requires : M.IsAssociatedFunction Self "requires" requires.
+    Smpl Add apply AssociatedFunction_requires : is_associated.
     
     (*
         pub fn required_by(self) -> AbilitySet {
@@ -16861,6 +16887,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_required_by : M.IsAssociatedFunction Self "required_by" required_by.
+    Smpl Add apply AssociatedFunction_required_by : is_associated.
   End Impl_move_binary_format_file_format_Ability.
   
   (* StructTuple
@@ -17156,6 +17183,7 @@ Module file_format.
           |))).
     
     Axiom AssociatedConstant_value_EMPTY : M.IsAssociatedConstant Self "value_EMPTY" value_EMPTY.
+    Smpl Add apply AssociatedConstant_value_EMPTY : is_associated.
     
     (*
         pub const PRIMITIVES: AbilitySet =
@@ -17196,6 +17224,7 @@ Module file_format.
     
     Axiom AssociatedConstant_value_PRIMITIVES :
       M.IsAssociatedConstant Self "value_PRIMITIVES" value_PRIMITIVES.
+    Smpl Add apply AssociatedConstant_value_PRIMITIVES : is_associated.
     
     (*     pub const REFERENCES: AbilitySet = Self((Ability::Copy as u8) | (Ability::Drop as u8)); *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
@@ -17224,6 +17253,7 @@ Module file_format.
     
     Axiom AssociatedConstant_value_REFERENCES :
       M.IsAssociatedConstant Self "value_REFERENCES" value_REFERENCES.
+    Smpl Add apply AssociatedConstant_value_REFERENCES : is_associated.
     
     (*     pub const SIGNER: AbilitySet = Self(Ability::Drop as u8); *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
@@ -17244,6 +17274,7 @@ Module file_format.
           |))).
     
     Axiom AssociatedConstant_value_SIGNER : M.IsAssociatedConstant Self "value_SIGNER" value_SIGNER.
+    Smpl Add apply AssociatedConstant_value_SIGNER : is_associated.
     
     (*
         pub const VECTOR: AbilitySet =
@@ -17283,6 +17314,7 @@ Module file_format.
           |))).
     
     Axiom AssociatedConstant_value_VECTOR : M.IsAssociatedConstant Self "value_VECTOR" value_VECTOR.
+    Smpl Add apply AssociatedConstant_value_VECTOR : is_associated.
     
     (*
         pub const ALL: Self = Self(
@@ -17335,6 +17367,7 @@ Module file_format.
           |))).
     
     Axiom AssociatedConstant_value_ALL : M.IsAssociatedConstant Self "value_ALL" value_ALL.
+    Smpl Add apply AssociatedConstant_value_ALL : is_associated.
     
     (*
         pub fn singleton(ability: Ability) -> Self {
@@ -17353,6 +17386,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_singleton : M.IsAssociatedFunction Self "singleton" singleton.
+    Smpl Add apply AssociatedFunction_singleton : is_associated.
     
     (*
         pub fn has_ability(self, ability: Ability) -> bool {
@@ -17387,6 +17421,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_has_ability : M.IsAssociatedFunction Self "has_ability" has_ability.
+    Smpl Add apply AssociatedFunction_has_ability : is_associated.
     
     (*
         pub fn has_copy(self) -> bool {
@@ -17414,6 +17449,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_has_copy : M.IsAssociatedFunction Self "has_copy" has_copy.
+    Smpl Add apply AssociatedFunction_has_copy : is_associated.
     
     (*
         pub fn has_drop(self) -> bool {
@@ -17441,6 +17477,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_has_drop : M.IsAssociatedFunction Self "has_drop" has_drop.
+    Smpl Add apply AssociatedFunction_has_drop : is_associated.
     
     (*
         pub fn has_store(self) -> bool {
@@ -17468,6 +17505,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_has_store : M.IsAssociatedFunction Self "has_store" has_store.
+    Smpl Add apply AssociatedFunction_has_store : is_associated.
     
     (*
         pub fn has_key(self) -> bool {
@@ -17495,6 +17533,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_has_key : M.IsAssociatedFunction Self "has_key" has_key.
+    Smpl Add apply AssociatedFunction_has_key : is_associated.
     
     (*
         pub fn remove(self, ability: Ability) -> Self {
@@ -17524,6 +17563,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_remove : M.IsAssociatedFunction Self "remove" remove.
+    Smpl Add apply AssociatedFunction_remove : is_associated.
     
     (*
         pub fn intersect(self, other: Self) -> Self {
@@ -17559,6 +17599,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_intersect : M.IsAssociatedFunction Self "intersect" intersect.
+    Smpl Add apply AssociatedFunction_intersect : is_associated.
     
     (*
         pub fn union(self, other: Self) -> Self {
@@ -17594,6 +17635,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_union : M.IsAssociatedFunction Self "union" union.
+    Smpl Add apply AssociatedFunction_union : is_associated.
     
     (*
         fn is_subset_bits(sub: u8, sup: u8) -> bool {
@@ -17612,6 +17654,7 @@ Module file_format.
     
     Axiom AssociatedFunction_is_subset_bits :
       M.IsAssociatedFunction Self "is_subset_bits" is_subset_bits.
+    Smpl Add apply AssociatedFunction_is_subset_bits : is_associated.
     
     (*
         pub fn is_subset(self, other: Self) -> bool {
@@ -17652,6 +17695,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_is_subset : M.IsAssociatedFunction Self "is_subset" is_subset.
+    Smpl Add apply AssociatedFunction_is_subset : is_associated.
     
     (*
         pub fn polymorphic_abilities<I1, I2>(
@@ -18228,6 +18272,7 @@ Module file_format.
     
     Axiom AssociatedFunction_polymorphic_abilities :
       M.IsAssociatedFunction Self "polymorphic_abilities" polymorphic_abilities.
+    Smpl Add apply AssociatedFunction_polymorphic_abilities : is_associated.
     
     (*
         pub fn from_u8(byte: u8) -> Option<Self> {
@@ -18294,6 +18339,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
+    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
     
     (*
         pub fn into_u8(self) -> u8 {
@@ -18316,6 +18362,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_into_u8 : M.IsAssociatedFunction Self "into_u8" into_u8.
+    Smpl Add apply AssociatedFunction_into_u8 : is_associated.
   End Impl_move_binary_format_file_format_AbilitySet.
   
   Module Impl_core_ops_bit_BitOr_move_binary_format_file_format_Ability_for_move_binary_format_file_format_AbilitySet.
@@ -23308,6 +23355,7 @@ Module file_format.
     
     Axiom AssociatedFunction_signature_token_kind :
       M.IsAssociatedFunction Self "signature_token_kind" signature_token_kind.
+    Smpl Add apply AssociatedFunction_signature_token_kind : is_associated.
     
     (*
         pub fn is_integer(&self) -> bool {
@@ -23509,6 +23557,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_is_integer : M.IsAssociatedFunction Self "is_integer" is_integer.
+    Smpl Add apply AssociatedFunction_is_integer : is_associated.
     
     (*
         pub fn is_reference(&self) -> bool {
@@ -23567,6 +23616,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_is_reference : M.IsAssociatedFunction Self "is_reference" is_reference.
+    Smpl Add apply AssociatedFunction_is_reference : is_associated.
     
     (*
         pub fn is_mutable_reference(&self) -> bool {
@@ -23603,6 +23653,7 @@ Module file_format.
     
     Axiom AssociatedFunction_is_mutable_reference :
       M.IsAssociatedFunction Self "is_mutable_reference" is_mutable_reference.
+    Smpl Add apply AssociatedFunction_is_mutable_reference : is_associated.
     
     (*
         pub fn is_signer(&self) -> bool {
@@ -23637,6 +23688,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_is_signer : M.IsAssociatedFunction Self "is_signer" is_signer.
+    Smpl Add apply AssociatedFunction_is_signer : is_associated.
     
     (*
         pub fn is_valid_for_constant(&self) -> bool {
@@ -23854,6 +23906,7 @@ Module file_format.
     
     Axiom AssociatedFunction_is_valid_for_constant :
       M.IsAssociatedFunction Self "is_valid_for_constant" is_valid_for_constant.
+    Smpl Add apply AssociatedFunction_is_valid_for_constant : is_associated.
     
     (*
         pub fn debug_set_sh_idx(&mut self, sh_idx: StructHandleIndex) {
@@ -24111,6 +24164,7 @@ Module file_format.
     
     Axiom AssociatedFunction_debug_set_sh_idx :
       M.IsAssociatedFunction Self "debug_set_sh_idx" debug_set_sh_idx.
+    Smpl Add apply AssociatedFunction_debug_set_sh_idx : is_associated.
     
     (*
         pub fn preorder_traversal(&self) -> SignatureTokenPreorderTraversalIter<'_> {
@@ -24180,6 +24234,7 @@ Module file_format.
     
     Axiom AssociatedFunction_preorder_traversal :
       M.IsAssociatedFunction Self "preorder_traversal" preorder_traversal.
+    Smpl Add apply AssociatedFunction_preorder_traversal : is_associated.
     
     (*
         pub fn preorder_traversal_with_depth(
@@ -24275,6 +24330,7 @@ Module file_format.
     
     Axiom AssociatedFunction_preorder_traversal_with_depth :
       M.IsAssociatedFunction Self "preorder_traversal_with_depth" preorder_traversal_with_depth.
+    Smpl Add apply AssociatedFunction_preorder_traversal_with_depth : is_associated.
   End Impl_move_binary_format_file_format_SignatureToken.
   
   (* StructRecord
@@ -28492,6 +28548,7 @@ Module file_format.
     
     Axiom AssociatedConstant_value_VARIANT_COUNT :
       M.IsAssociatedConstant Self "value_VARIANT_COUNT" value_VARIANT_COUNT.
+    Smpl Add apply AssociatedConstant_value_VARIANT_COUNT : is_associated.
     (*
         pub fn is_unconditional_branch(&self) -> bool {
             matches!(self, Bytecode::Ret | Bytecode::Abort | Bytecode::Branch(_))
@@ -28556,6 +28613,7 @@ Module file_format.
     
     Axiom AssociatedFunction_is_unconditional_branch :
       M.IsAssociatedFunction Self "is_unconditional_branch" is_unconditional_branch.
+    Smpl Add apply AssociatedFunction_is_unconditional_branch : is_associated.
     
     (*
         pub fn is_conditional_branch(&self) -> bool {
@@ -28613,6 +28671,7 @@ Module file_format.
     
     Axiom AssociatedFunction_is_conditional_branch :
       M.IsAssociatedFunction Self "is_conditional_branch" is_conditional_branch.
+    Smpl Add apply AssociatedFunction_is_conditional_branch : is_associated.
     
     (*
         pub fn is_branch(&self) -> bool {
@@ -28649,6 +28708,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_is_branch : M.IsAssociatedFunction Self "is_branch" is_branch.
+    Smpl Add apply AssociatedFunction_is_branch : is_associated.
     
     (*
         pub fn offset(&self) -> Option<&CodeOffset> {
@@ -28735,6 +28795,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_offset : M.IsAssociatedFunction Self "offset" offset.
+    Smpl Add apply AssociatedFunction_offset : is_associated.
     
     (*
         pub fn get_successors(pc: CodeOffset, code: &[Bytecode]) -> Vec<CodeOffset> {
@@ -29195,6 +29256,7 @@ Module file_format.
     
     Axiom AssociatedFunction_get_successors :
       M.IsAssociatedFunction Self "get_successors" get_successors.
+    Smpl Add apply AssociatedFunction_get_successors : is_associated.
   End Impl_move_binary_format_file_format_Bytecode.
   
   Module Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_Bytecode.
@@ -39339,6 +39401,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_kind_count : M.IsAssociatedFunction Self "kind_count" kind_count.
+    Smpl Add apply AssociatedFunction_kind_count : is_associated.
     
     (*
         pub fn self_handle_idx(&self) -> ModuleHandleIndex {
@@ -39362,6 +39425,7 @@ Module file_format.
     
     Axiom AssociatedFunction_self_handle_idx :
       M.IsAssociatedFunction Self "self_handle_idx" self_handle_idx.
+    Smpl Add apply AssociatedFunction_self_handle_idx : is_associated.
     
     (*
         pub fn self_handle(&self) -> &ModuleHandle {
@@ -39591,6 +39655,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_self_handle : M.IsAssociatedFunction Self "self_handle" self_handle.
+    Smpl Add apply AssociatedFunction_self_handle : is_associated.
     
     (*
         pub fn name(&self) -> &IdentStr {
@@ -39639,6 +39704,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
+    Smpl Add apply AssociatedFunction_name : is_associated.
     
     (*
         pub fn address(&self) -> &AccountAddress {
@@ -39687,6 +39753,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
+    Smpl Add apply AssociatedFunction_address : is_associated.
     
     (*
         pub fn struct_name(&self, idx: StructDefinitionIndex) -> &IdentStr {
@@ -39768,6 +39835,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_struct_name : M.IsAssociatedFunction Self "struct_name" struct_name.
+    Smpl Add apply AssociatedFunction_struct_name : is_associated.
     
     (*
         pub fn module_handle_at(&self, idx: ModuleHandleIndex) -> &ModuleHandle {
@@ -40023,6 +40091,7 @@ Module file_format.
     
     Axiom AssociatedFunction_module_handle_at :
       M.IsAssociatedFunction Self "module_handle_at" module_handle_at.
+    Smpl Add apply AssociatedFunction_module_handle_at : is_associated.
     
     (*
         pub fn struct_handle_at(&self, idx: StructHandleIndex) -> &StructHandle {
@@ -40185,6 +40254,7 @@ Module file_format.
     
     Axiom AssociatedFunction_struct_handle_at :
       M.IsAssociatedFunction Self "struct_handle_at" struct_handle_at.
+    Smpl Add apply AssociatedFunction_struct_handle_at : is_associated.
     
     (*
         pub fn function_handle_at(&self, idx: FunctionHandleIndex) -> &FunctionHandle {
@@ -40441,6 +40511,7 @@ Module file_format.
     
     Axiom AssociatedFunction_function_handle_at :
       M.IsAssociatedFunction Self "function_handle_at" function_handle_at.
+    Smpl Add apply AssociatedFunction_function_handle_at : is_associated.
     
     (*
         pub fn field_handle_at(&self, idx: FieldHandleIndex) -> &FieldHandle {
@@ -40603,6 +40674,7 @@ Module file_format.
     
     Axiom AssociatedFunction_field_handle_at :
       M.IsAssociatedFunction Self "field_handle_at" field_handle_at.
+    Smpl Add apply AssociatedFunction_field_handle_at : is_associated.
     
     (*
         pub fn struct_instantiation_at(
@@ -40672,6 +40744,7 @@ Module file_format.
     
     Axiom AssociatedFunction_struct_instantiation_at :
       M.IsAssociatedFunction Self "struct_instantiation_at" struct_instantiation_at.
+    Smpl Add apply AssociatedFunction_struct_instantiation_at : is_associated.
     
     (*
         pub fn function_instantiation_at(
@@ -40745,6 +40818,7 @@ Module file_format.
     
     Axiom AssociatedFunction_function_instantiation_at :
       M.IsAssociatedFunction Self "function_instantiation_at" function_instantiation_at.
+    Smpl Add apply AssociatedFunction_function_instantiation_at : is_associated.
     
     (*
         pub fn field_instantiation_at(&self, idx: FieldInstantiationIndex) -> &FieldInstantiation {
@@ -40811,6 +40885,7 @@ Module file_format.
     
     Axiom AssociatedFunction_field_instantiation_at :
       M.IsAssociatedFunction Self "field_instantiation_at" field_instantiation_at.
+    Smpl Add apply AssociatedFunction_field_instantiation_at : is_associated.
     
     (*
         pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
@@ -40876,6 +40951,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_signature_at : M.IsAssociatedFunction Self "signature_at" signature_at.
+    Smpl Add apply AssociatedFunction_signature_at : is_associated.
     
     (*
         pub fn identifier_at(&self, idx: IdentifierIndex) -> &IdentStr {
@@ -40960,6 +41036,7 @@ Module file_format.
     
     Axiom AssociatedFunction_identifier_at :
       M.IsAssociatedFunction Self "identifier_at" identifier_at.
+    Smpl Add apply AssociatedFunction_identifier_at : is_associated.
     
     (*
         pub fn address_identifier_at(&self, idx: AddressIdentifierIndex) -> &AccountAddress {
@@ -41026,6 +41103,7 @@ Module file_format.
     
     Axiom AssociatedFunction_address_identifier_at :
       M.IsAssociatedFunction Self "address_identifier_at" address_identifier_at.
+    Smpl Add apply AssociatedFunction_address_identifier_at : is_associated.
     
     (*
         pub fn constant_at(&self, idx: ConstantPoolIndex) -> &Constant {
@@ -41091,6 +41169,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_constant_at : M.IsAssociatedFunction Self "constant_at" constant_at.
+    Smpl Add apply AssociatedFunction_constant_at : is_associated.
     
     (*
         pub fn struct_def_at(&self, idx: StructDefinitionIndex) -> &StructDefinition {
@@ -41157,6 +41236,7 @@ Module file_format.
     
     Axiom AssociatedFunction_struct_def_at :
       M.IsAssociatedFunction Self "struct_def_at" struct_def_at.
+    Smpl Add apply AssociatedFunction_struct_def_at : is_associated.
     
     (*
         pub fn function_def_at(&self, idx: FunctionDefinitionIndex) -> &FunctionDefinition {
@@ -41478,6 +41558,7 @@ Module file_format.
     
     Axiom AssociatedFunction_function_def_at :
       M.IsAssociatedFunction Self "function_def_at" function_def_at.
+    Smpl Add apply AssociatedFunction_function_def_at : is_associated.
     
     (*
         pub fn module_handles(&self) -> &[ModuleHandle] {
@@ -41531,6 +41612,7 @@ Module file_format.
     
     Axiom AssociatedFunction_module_handles :
       M.IsAssociatedFunction Self "module_handles" module_handles.
+    Smpl Add apply AssociatedFunction_module_handles : is_associated.
     
     (*
         pub fn struct_handles(&self) -> &[StructHandle] {
@@ -41584,6 +41666,7 @@ Module file_format.
     
     Axiom AssociatedFunction_struct_handles :
       M.IsAssociatedFunction Self "struct_handles" struct_handles.
+    Smpl Add apply AssociatedFunction_struct_handles : is_associated.
     
     (*
         pub fn function_handles(&self) -> &[FunctionHandle] {
@@ -41637,6 +41720,7 @@ Module file_format.
     
     Axiom AssociatedFunction_function_handles :
       M.IsAssociatedFunction Self "function_handles" function_handles.
+    Smpl Add apply AssociatedFunction_function_handles : is_associated.
     
     (*
         pub fn field_handles(&self) -> &[FieldHandle] {
@@ -41690,6 +41774,7 @@ Module file_format.
     
     Axiom AssociatedFunction_field_handles :
       M.IsAssociatedFunction Self "field_handles" field_handles.
+    Smpl Add apply AssociatedFunction_field_handles : is_associated.
     
     (*
         pub fn struct_instantiations(&self) -> &[StructDefInstantiation] {
@@ -41743,6 +41828,7 @@ Module file_format.
     
     Axiom AssociatedFunction_struct_instantiations :
       M.IsAssociatedFunction Self "struct_instantiations" struct_instantiations.
+    Smpl Add apply AssociatedFunction_struct_instantiations : is_associated.
     
     (*
         pub fn function_instantiations(&self) -> &[FunctionInstantiation] {
@@ -41796,6 +41882,7 @@ Module file_format.
     
     Axiom AssociatedFunction_function_instantiations :
       M.IsAssociatedFunction Self "function_instantiations" function_instantiations.
+    Smpl Add apply AssociatedFunction_function_instantiations : is_associated.
     
     (*
         pub fn field_instantiations(&self) -> &[FieldInstantiation] {
@@ -41849,6 +41936,7 @@ Module file_format.
     
     Axiom AssociatedFunction_field_instantiations :
       M.IsAssociatedFunction Self "field_instantiations" field_instantiations.
+    Smpl Add apply AssociatedFunction_field_instantiations : is_associated.
     
     (*
         pub fn signatures(&self) -> &[Signature] {
@@ -41901,6 +41989,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_signatures : M.IsAssociatedFunction Self "signatures" signatures.
+    Smpl Add apply AssociatedFunction_signatures : is_associated.
     
     (*
         pub fn constant_pool(&self) -> &[Constant] {
@@ -41954,6 +42043,7 @@ Module file_format.
     
     Axiom AssociatedFunction_constant_pool :
       M.IsAssociatedFunction Self "constant_pool" constant_pool.
+    Smpl Add apply AssociatedFunction_constant_pool : is_associated.
     
     (*
         pub fn identifiers(&self) -> &[Identifier] {
@@ -42006,6 +42096,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_identifiers : M.IsAssociatedFunction Self "identifiers" identifiers.
+    Smpl Add apply AssociatedFunction_identifiers : is_associated.
     
     (*
         pub fn address_identifiers(&self) -> &[AccountAddress] {
@@ -42059,6 +42150,7 @@ Module file_format.
     
     Axiom AssociatedFunction_address_identifiers :
       M.IsAssociatedFunction Self "address_identifiers" address_identifiers.
+    Smpl Add apply AssociatedFunction_address_identifiers : is_associated.
     
     (*
         pub fn struct_defs(&self) -> &[StructDefinition] {
@@ -42111,6 +42203,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_struct_defs : M.IsAssociatedFunction Self "struct_defs" struct_defs.
+    Smpl Add apply AssociatedFunction_struct_defs : is_associated.
     
     (*
         pub fn function_defs(&self) -> &[FunctionDefinition] {
@@ -42164,6 +42257,7 @@ Module file_format.
     
     Axiom AssociatedFunction_function_defs :
       M.IsAssociatedFunction Self "function_defs" function_defs.
+    Smpl Add apply AssociatedFunction_function_defs : is_associated.
     
     (*
         pub fn friend_decls(&self) -> &[ModuleHandle] {
@@ -42216,6 +42310,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_friend_decls : M.IsAssociatedFunction Self "friend_decls" friend_decls.
+    Smpl Add apply AssociatedFunction_friend_decls : is_associated.
     
     (*
         pub fn version(&self) -> u32 {
@@ -42238,6 +42333,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_version : M.IsAssociatedFunction Self "version" version.
+    Smpl Add apply AssociatedFunction_version : is_associated.
     
     (*
         pub fn immediate_dependencies(&self) -> Vec<ModuleId> {
@@ -42533,6 +42629,7 @@ Module file_format.
     
     Axiom AssociatedFunction_immediate_dependencies :
       M.IsAssociatedFunction Self "immediate_dependencies" immediate_dependencies.
+    Smpl Add apply AssociatedFunction_immediate_dependencies : is_associated.
     
     (*
         pub fn immediate_friends(&self) -> Vec<ModuleId> {
@@ -42682,6 +42779,7 @@ Module file_format.
     
     Axiom AssociatedFunction_immediate_friends :
       M.IsAssociatedFunction Self "immediate_friends" immediate_friends.
+    Smpl Add apply AssociatedFunction_immediate_friends : is_associated.
     
     (*
         pub fn find_struct_def(&self, idx: StructHandleIndex) -> Option<&StructDefinition> {
@@ -42803,6 +42901,7 @@ Module file_format.
     
     Axiom AssociatedFunction_find_struct_def :
       M.IsAssociatedFunction Self "find_struct_def" find_struct_def.
+    Smpl Add apply AssociatedFunction_find_struct_def : is_associated.
     
     (*
         pub fn find_struct_def_by_name(&self, name: &IdentStr) -> Option<&StructDefinition> {
@@ -42983,6 +43082,7 @@ Module file_format.
     
     Axiom AssociatedFunction_find_struct_def_by_name :
       M.IsAssociatedFunction Self "find_struct_def_by_name" find_struct_def_by_name.
+    Smpl Add apply AssociatedFunction_find_struct_def_by_name : is_associated.
     
     (*
         pub fn abilities(
@@ -43992,6 +44092,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_abilities : M.IsAssociatedFunction Self "abilities" abilities.
+    Smpl Add apply AssociatedFunction_abilities : is_associated.
     
     (*
         pub fn module_id_for_handle(&self, module_handle: &ModuleHandle) -> ModuleId {
@@ -44080,6 +44181,7 @@ Module file_format.
     
     Axiom AssociatedFunction_module_id_for_handle :
       M.IsAssociatedFunction Self "module_id_for_handle" module_id_for_handle.
+    Smpl Add apply AssociatedFunction_module_id_for_handle : is_associated.
     
     (*
         pub fn self_id(&self) -> ModuleId {
@@ -44120,6 +44222,7 @@ Module file_format.
       end.
     
     Axiom AssociatedFunction_self_id : M.IsAssociatedFunction Self "self_id" self_id.
+    Smpl Add apply AssociatedFunction_self_id : is_associated.
   End Impl_move_binary_format_file_format_CompiledModule.
   
   (*

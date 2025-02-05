@@ -526,6 +526,7 @@ Module gas_algebra.
       end.
     
     Axiom AssociatedFunction_new : forall (U : Ty.t), M.IsAssociatedFunction (Self U) "new" (new U).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub const fn zero() -> Self {
@@ -552,6 +553,7 @@ Module gas_algebra.
     Axiom AssociatedFunction_zero :
       forall (U : Ty.t),
       M.IsAssociatedFunction (Self U) "zero" (zero U).
+    Smpl Add apply AssociatedFunction_zero : is_associated.
     
     (*
         pub const fn one() -> Self {
@@ -576,6 +578,7 @@ Module gas_algebra.
       end.
     
     Axiom AssociatedFunction_one : forall (U : Ty.t), M.IsAssociatedFunction (Self U) "one" (one U).
+    Smpl Add apply AssociatedFunction_one : is_associated.
     
     (*
         pub const fn is_zero(&self) -> bool {
@@ -604,6 +607,7 @@ Module gas_algebra.
     Axiom AssociatedFunction_is_zero :
       forall (U : Ty.t),
       M.IsAssociatedFunction (Self U) "is_zero" (is_zero U).
+    Smpl Add apply AssociatedFunction_is_zero : is_associated.
     (*
         fn cmp_impl(&self, other: &Self) -> Ordering {
             self.val.cmp(&other.val)
@@ -648,6 +652,7 @@ Module gas_algebra.
     Axiom AssociatedFunction_cmp_impl :
       forall (U : Ty.t),
       M.IsAssociatedFunction (Self U) "cmp_impl" (cmp_impl U).
+    Smpl Add apply AssociatedFunction_cmp_impl : is_associated.
     (*
         pub fn checked_sub(self, other: Self) -> Option<Self> {
             self.val.checked_sub(other.val).map(Self::new)
@@ -706,6 +711,7 @@ Module gas_algebra.
     Axiom AssociatedFunction_checked_sub :
       forall (U : Ty.t),
       M.IsAssociatedFunction (Self U) "checked_sub" (checked_sub U).
+    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
     
     (*
         pub fn saturating_sub(self, other: Self) -> Self {
@@ -762,6 +768,7 @@ Module gas_algebra.
     Axiom AssociatedFunction_saturating_sub :
       forall (U : Ty.t),
       M.IsAssociatedFunction (Self U) "saturating_sub" (saturating_sub U).
+    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
     (*
         pub fn to_unit<T>(self) -> GasQuantity<T>
         where
@@ -894,6 +901,7 @@ Module gas_algebra.
     Axiom AssociatedFunction_to_unit :
       forall (U : Ty.t),
       M.IsAssociatedFunction (Self U) "to_unit" (to_unit U).
+    Smpl Add apply AssociatedFunction_to_unit : is_associated.
     
     (*
         pub fn to_unit_round_down<T>(self) -> GasQuantity<T>
@@ -952,6 +960,7 @@ Module gas_algebra.
     Axiom AssociatedFunction_to_unit_round_down :
       forall (U : Ty.t),
       M.IsAssociatedFunction (Self U) "to_unit_round_down" (to_unit_round_down U).
+    Smpl Add apply AssociatedFunction_to_unit_round_down : is_associated.
     
     (*
         pub fn to_unit_round_up<T>(self) -> GasQuantity<T>
@@ -1006,6 +1015,7 @@ Module gas_algebra.
     Axiom AssociatedFunction_to_unit_round_up :
       forall (U : Ty.t),
       M.IsAssociatedFunction (Self U) "to_unit_round_up" (to_unit_round_up U).
+    Smpl Add apply AssociatedFunction_to_unit_round_up : is_associated.
     (*
         pub fn to_unit_with_params<T>(
             self,
@@ -1159,6 +1169,7 @@ Module gas_algebra.
     Axiom AssociatedFunction_to_unit_with_params :
       forall (U : Ty.t),
       M.IsAssociatedFunction (Self U) "to_unit_with_params" (to_unit_with_params U).
+    Smpl Add apply AssociatedFunction_to_unit_with_params : is_associated.
     
     (*
         pub fn to_unit_round_down_with_params<T>(
@@ -1249,6 +1260,7 @@ Module gas_algebra.
         (Self U)
         "to_unit_round_down_with_params"
         (to_unit_round_down_with_params U).
+    Smpl Add apply AssociatedFunction_to_unit_round_down_with_params : is_associated.
     
     (*
         pub fn to_unit_round_up_with_params<T>(
@@ -1339,6 +1351,7 @@ Module gas_algebra.
         (Self U)
         "to_unit_round_up_with_params"
         (to_unit_round_up_with_params U).
+    Smpl Add apply AssociatedFunction_to_unit_round_up_with_params : is_associated.
   End Impl_move_core_types_gas_algebra_GasQuantity_U.
   
   Module Impl_core_convert_From_u64_for_move_core_types_gas_algebra_GasQuantity_U.

@@ -1357,6 +1357,7 @@ Module parser.
     
     Axiom AssociatedFunction_is_whitespace :
       M.IsAssociatedFunction Self "is_whitespace" is_whitespace.
+    Smpl Add apply AssociatedFunction_is_whitespace : is_associated.
   End Impl_move_core_types_parser_Token.
   
   (*
@@ -4898,6 +4899,7 @@ Module parser.
       end.
     
     Axiom AssociatedFunction_new : forall (I : Ty.t), M.IsAssociatedFunction (Self I) "new" (new I).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn next(&mut self) -> Result<Token> {
@@ -5020,6 +5022,7 @@ Module parser.
     Axiom AssociatedFunction_next :
       forall (I : Ty.t),
       M.IsAssociatedFunction (Self I) "next" (next I).
+    Smpl Add apply AssociatedFunction_next : is_associated.
     
     (*
         fn peek(&mut self) -> Option<&Token> {
@@ -5056,6 +5059,7 @@ Module parser.
     Axiom AssociatedFunction_peek :
       forall (I : Ty.t),
       M.IsAssociatedFunction (Self I) "peek" (peek I).
+    Smpl Add apply AssociatedFunction_peek : is_associated.
     
     (*
         fn consume(&mut self, tok: Token) -> Result<()> {
@@ -5335,6 +5339,7 @@ Module parser.
     Axiom AssociatedFunction_consume :
       forall (I : Ty.t),
       M.IsAssociatedFunction (Self I) "consume" (consume I).
+    Smpl Add apply AssociatedFunction_consume : is_associated.
     
     (*
         fn parse_comma_list<F, R>(
@@ -5920,6 +5925,7 @@ Module parser.
     Axiom AssociatedFunction_parse_comma_list :
       forall (I : Ty.t),
       M.IsAssociatedFunction (Self I) "parse_comma_list" (parse_comma_list I).
+    Smpl Add apply AssociatedFunction_parse_comma_list : is_associated.
     
     (*
         fn parse_string(&mut self) -> Result<String> {
@@ -6170,6 +6176,7 @@ Module parser.
     Axiom AssociatedFunction_parse_string :
       forall (I : Ty.t),
       M.IsAssociatedFunction (Self I) "parse_string" (parse_string I).
+    Smpl Add apply AssociatedFunction_parse_string : is_associated.
     
     (*
         fn parse_type_tag(&mut self) -> Result<TypeTag> {
@@ -8160,6 +8167,7 @@ Module parser.
     Axiom AssociatedFunction_parse_type_tag :
       forall (I : Ty.t),
       M.IsAssociatedFunction (Self I) "parse_type_tag" (parse_type_tag I).
+    Smpl Add apply AssociatedFunction_parse_type_tag : is_associated.
     
     (*
         fn parse_transaction_argument(&mut self) -> Result<TransactionArgument> {
@@ -9696,6 +9704,7 @@ Module parser.
     Axiom AssociatedFunction_parse_transaction_argument :
       forall (I : Ty.t),
       M.IsAssociatedFunction (Self I) "parse_transaction_argument" (parse_transaction_argument I).
+    Smpl Add apply AssociatedFunction_parse_transaction_argument : is_associated.
   End Impl_move_core_types_parser_Parser_I.
   
   (*

@@ -111,6 +111,7 @@ Module Impl_contract_transfer_Env.
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
+  Smpl Add apply AssociatedFunction_caller : is_associated.
   
   (*
       fn balance(&self) -> Balance {
@@ -120,6 +121,7 @@ Module Impl_contract_transfer_Env.
   Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
+  Smpl Add apply AssociatedFunction_balance : is_associated.
   
   (*
       fn transfer(&mut self, _to: AccountId, _value: Balance) -> Result<(), ()> {
@@ -129,6 +131,7 @@ Module Impl_contract_transfer_Env.
   Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
+  Smpl Add apply AssociatedFunction_transfer : is_associated.
   
   (*
       fn transferred_value(&self) -> Balance {
@@ -139,6 +142,7 @@ Module Impl_contract_transfer_Env.
   
   Axiom AssociatedFunction_transferred_value :
     M.IsAssociatedFunction Self "transferred_value" transferred_value.
+  Smpl Add apply AssociatedFunction_transferred_value : is_associated.
 End Impl_contract_transfer_Env.
 
 (* StructTuple
@@ -160,6 +164,7 @@ Module Impl_contract_transfer_GiveMe.
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
+  Smpl Add apply AssociatedFunction_init_env : is_associated.
   
   (*
       fn env(&self) -> Env {
@@ -179,6 +184,7 @@ Module Impl_contract_transfer_GiveMe.
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
+  Smpl Add apply AssociatedFunction_env : is_associated.
   
   (*
       pub fn new() -> Self {
@@ -192,6 +198,7 @@ Module Impl_contract_transfer_GiveMe.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn give_me(&mut self, value: Balance) {
@@ -549,6 +556,7 @@ Module Impl_contract_transfer_GiveMe.
     end.
   
   Axiom AssociatedFunction_give_me : M.IsAssociatedFunction Self "give_me" give_me.
+  Smpl Add apply AssociatedFunction_give_me : is_associated.
   
   (*
       pub fn was_it_ten(&self) {
@@ -726,4 +734,5 @@ Module Impl_contract_transfer_GiveMe.
     end.
   
   Axiom AssociatedFunction_was_it_ten : M.IsAssociatedFunction Self "was_it_ten" was_it_ten.
+  Smpl Add apply AssociatedFunction_was_it_ten : is_associated.
 End Impl_contract_transfer_GiveMe.

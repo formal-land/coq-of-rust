@@ -1036,6 +1036,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn is_valid(s: impl AsRef<str>) -> bool {
@@ -1073,6 +1074,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_is_valid : M.IsAssociatedFunction Self "is_valid" is_valid.
+    Smpl Add apply AssociatedFunction_is_valid : is_associated.
     
     (*
         pub fn is_self(&self) -> bool {
@@ -1119,6 +1121,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_is_self : M.IsAssociatedFunction Self "is_self" is_self.
+    Smpl Add apply AssociatedFunction_is_self : is_associated.
     
     (*
         pub fn from_utf8(vec: Vec<u8>) -> Result<Self> {
@@ -1241,6 +1244,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_from_utf8 : M.IsAssociatedFunction Self "from_utf8" from_utf8.
+    Smpl Add apply AssociatedFunction_from_utf8 : is_associated.
     
     (*
         pub fn as_ident_str(&self) -> &IdentStr {
@@ -1273,6 +1277,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_as_ident_str : M.IsAssociatedFunction Self "as_ident_str" as_ident_str.
+    Smpl Add apply AssociatedFunction_as_ident_str : is_associated.
     
     (*
         pub fn into_string(self) -> String {
@@ -1311,6 +1316,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
+    Smpl Add apply AssociatedFunction_into_string : is_associated.
     
     (*
         pub fn into_bytes(self) -> Vec<u8> {
@@ -1340,6 +1346,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
+    Smpl Add apply AssociatedFunction_into_bytes : is_associated.
   End Impl_move_core_types_identifier_Identifier.
   
   Module Impl_core_str_traits_FromStr_for_move_core_types_identifier_Identifier.
@@ -2248,6 +2255,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn is_valid(s: impl AsRef<str>) -> bool {
@@ -2285,6 +2293,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_is_valid : M.IsAssociatedFunction Self "is_valid" is_valid.
+    Smpl Add apply AssociatedFunction_is_valid : is_associated.
     
     (*
         pub fn len(&self) -> usize {
@@ -2313,6 +2322,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -2341,6 +2351,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
     
     (*
         pub fn as_str(&self) -> &str {
@@ -2369,6 +2380,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+    Smpl Add apply AssociatedFunction_as_str : is_associated.
     
     (*
         pub fn as_bytes(&self) -> &[u8] {
@@ -2402,6 +2414,7 @@ Module identifier.
       end.
     
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
+    Smpl Add apply AssociatedFunction_as_bytes : is_associated.
     
     (*
         pub fn abstract_size_for_gas_metering(&self) -> AbstractMemorySize {
@@ -2446,6 +2459,7 @@ Module identifier.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
       M.IsAssociatedFunction Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
+    Smpl Add apply AssociatedFunction_abstract_size_for_gas_metering : is_associated.
   End Impl_move_core_types_identifier_IdentStr.
   
   Module Impl_core_borrow_Borrow_move_core_types_identifier_IdentStr_for_move_core_types_identifier_Identifier.

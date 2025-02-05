@@ -294,6 +294,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (N : Value.t) (I F : Ty.t),
           M.IsAssociatedFunction (Self N I F) "new" (new N I F).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
       Module Impl_core_iter_adapters_map_windows_MapWindowsInner_N_I.
@@ -329,6 +330,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (N : Value.t) (I : Ty.t),
           M.IsAssociatedFunction (Self N I) "new" (new N I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             fn next_window(&mut self) -> Option<&[I::Item; N]> {
@@ -710,6 +712,7 @@ Module iter.
         Axiom AssociatedFunction_next_window :
           forall (N : Value.t) (I : Ty.t),
           M.IsAssociatedFunction (Self N I) "next_window" (next_window N I).
+        Smpl Add apply AssociatedFunction_next_window : is_associated.
         
         (*
             fn size_hint(&self) -> (usize, Option<usize>) {
@@ -916,6 +919,7 @@ Module iter.
         Axiom AssociatedFunction_size_hint :
           forall (N : Value.t) (I : Ty.t),
           M.IsAssociatedFunction (Self N I) "size_hint" (size_hint N I).
+        Smpl Add apply AssociatedFunction_size_hint : is_associated.
       End Impl_core_iter_adapters_map_windows_MapWindowsInner_N_I.
       
       Module Impl_core_iter_adapters_map_windows_Buffer_N_T.
@@ -1110,6 +1114,7 @@ Module iter.
         Axiom AssociatedFunction_try_from_iter :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "try_from_iter" (try_from_iter N T).
+        Smpl Add apply AssociatedFunction_try_from_iter : is_associated.
         
         (*
             fn buffer_ptr(&self) -> *const MaybeUninit<T> {
@@ -1178,6 +1183,7 @@ Module iter.
         Axiom AssociatedFunction_buffer_ptr :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "buffer_ptr" (buffer_ptr N T).
+        Smpl Add apply AssociatedFunction_buffer_ptr : is_associated.
         
         (*
             fn buffer_mut_ptr(&mut self) -> *mut MaybeUninit<T> {
@@ -1246,6 +1252,7 @@ Module iter.
         Axiom AssociatedFunction_buffer_mut_ptr :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "buffer_mut_ptr" (buffer_mut_ptr N T).
+        Smpl Add apply AssociatedFunction_buffer_mut_ptr : is_associated.
         
         (*
             fn as_array_ref(&self) -> &[T; N] {
@@ -1411,6 +1418,7 @@ Module iter.
         Axiom AssociatedFunction_as_array_ref :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "as_array_ref" (as_array_ref N T).
+        Smpl Add apply AssociatedFunction_as_array_ref : is_associated.
         
         (*
             fn as_uninit_array_mut(&mut self) -> &mut MaybeUninit<[T; N]> {
@@ -1599,6 +1607,7 @@ Module iter.
         Axiom AssociatedFunction_as_uninit_array_mut :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "as_uninit_array_mut" (as_uninit_array_mut N T).
+        Smpl Add apply AssociatedFunction_as_uninit_array_mut : is_associated.
         
         (*
             fn push(&mut self, next: T) {
@@ -2056,6 +2065,7 @@ Module iter.
         Axiom AssociatedFunction_push :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "push" (push N T).
+        Smpl Add apply AssociatedFunction_push : is_associated.
       End Impl_core_iter_adapters_map_windows_Buffer_N_T.
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_iter_adapters_map_windows_Buffer_N_T.

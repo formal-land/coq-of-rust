@@ -47,6 +47,7 @@ Module Impl_trait_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
 End Impl_trait_flipper_Flipper.
 
 Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

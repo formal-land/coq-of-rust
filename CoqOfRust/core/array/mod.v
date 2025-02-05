@@ -5148,6 +5148,7 @@ Module array.
     Axiom AssociatedFunction_map :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "map" (map N T).
+    Smpl Add apply AssociatedFunction_map : is_associated.
     
     (*
         pub fn try_map<R>(self, f: impl FnMut(T) -> R) -> ChangeOutputType<R, [R::Output; N]>
@@ -5239,6 +5240,7 @@ Module array.
     Axiom AssociatedFunction_try_map :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "try_map" (try_map N T).
+    Smpl Add apply AssociatedFunction_try_map : is_associated.
     
     (*
         pub const fn as_slice(&self) -> &[T] {
@@ -5264,6 +5266,7 @@ Module array.
     Axiom AssociatedFunction_as_slice :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "as_slice" (as_slice N T).
+    Smpl Add apply AssociatedFunction_as_slice : is_associated.
     
     (*
         pub fn as_mut_slice(&mut self) -> &mut [T] {
@@ -5292,6 +5295,7 @@ Module array.
     Axiom AssociatedFunction_as_mut_slice :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "as_mut_slice" (as_mut_slice N T).
+    Smpl Add apply AssociatedFunction_as_mut_slice : is_associated.
     
     (*
         pub fn each_ref(&self) -> [&T; N] {
@@ -5332,6 +5336,7 @@ Module array.
     Axiom AssociatedFunction_each_ref :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "each_ref" (each_ref N T).
+    Smpl Add apply AssociatedFunction_each_ref : is_associated.
     
     (*
         pub fn each_mut(&mut self) -> [&mut T; N] {
@@ -5377,6 +5382,7 @@ Module array.
     Axiom AssociatedFunction_each_mut :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "each_mut" (each_mut N T).
+    Smpl Add apply AssociatedFunction_each_mut : is_associated.
     
     (*
         pub fn split_array_ref<const M: usize>(&self) -> (&[T; M], &[T]) {
@@ -5455,6 +5461,7 @@ Module array.
     Axiom AssociatedFunction_split_array_ref :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "split_array_ref" (split_array_ref N T).
+    Smpl Add apply AssociatedFunction_split_array_ref : is_associated.
     
     (*
         pub fn split_array_mut<const M: usize>(&mut self) -> (&mut [T; M], &mut [T]) {
@@ -5533,6 +5540,7 @@ Module array.
     Axiom AssociatedFunction_split_array_mut :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "split_array_mut" (split_array_mut N T).
+    Smpl Add apply AssociatedFunction_split_array_mut : is_associated.
     
     (*
         pub fn rsplit_array_ref<const M: usize>(&self) -> (&[T], &[T; M]) {
@@ -5611,6 +5619,7 @@ Module array.
     Axiom AssociatedFunction_rsplit_array_ref :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "rsplit_array_ref" (rsplit_array_ref N T).
+    Smpl Add apply AssociatedFunction_rsplit_array_ref : is_associated.
     
     (*
         pub fn rsplit_array_mut<const M: usize>(&mut self) -> (&mut [T], &mut [T; M]) {
@@ -5689,6 +5698,7 @@ Module array.
     Axiom AssociatedFunction_rsplit_array_mut :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "rsplit_array_mut" (rsplit_array_mut N T).
+    Smpl Add apply AssociatedFunction_rsplit_array_mut : is_associated.
   End Impl_array_N_T.
   
   (*
@@ -6287,6 +6297,7 @@ Module array.
     Axiom AssociatedFunction_push_unchecked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "push_unchecked" (push_unchecked T).
+    Smpl Add apply AssociatedFunction_push_unchecked : is_associated.
   End Impl_core_array_Guard_T.
   
   Module Impl_core_ops_drop_Drop_for_core_array_Guard_T.

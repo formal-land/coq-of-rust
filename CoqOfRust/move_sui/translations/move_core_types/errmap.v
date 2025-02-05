@@ -1365,6 +1365,7 @@ Module errmap.
     
     Axiom AssociatedFunction_add_error_category :
       M.IsAssociatedFunction Self "add_error_category" add_error_category.
+    Smpl Add apply AssociatedFunction_add_error_category : is_associated.
     
     (*
         pub fn add_module_error(
@@ -1825,6 +1826,7 @@ Module errmap.
     
     Axiom AssociatedFunction_add_module_error :
       M.IsAssociatedFunction Self "add_module_error" add_module_error.
+    Smpl Add apply AssociatedFunction_add_module_error : is_associated.
     
     (*
         pub fn from_file<P: AsRef<Path>>(path: P) -> Self {
@@ -1969,6 +1971,7 @@ Module errmap.
       end.
     
     Axiom AssociatedFunction_from_file : M.IsAssociatedFunction Self "from_file" from_file.
+    Smpl Add apply AssociatedFunction_from_file : is_associated.
     
     (*
         pub fn to_file<P: AsRef<Path>>(&self, path: P) {
@@ -2095,6 +2098,7 @@ Module errmap.
       end.
     
     Axiom AssociatedFunction_to_file : M.IsAssociatedFunction Self "to_file" to_file.
+    Smpl Add apply AssociatedFunction_to_file : is_associated.
     
     (*
         pub fn get_explanation(&self, module: &ModuleId, output_code: u64) -> Option<ErrorDescription> {
@@ -2259,5 +2263,6 @@ Module errmap.
     
     Axiom AssociatedFunction_get_explanation :
       M.IsAssociatedFunction Self "get_explanation" get_explanation.
+    Smpl Add apply AssociatedFunction_get_explanation : is_associated.
   End Impl_move_core_types_errmap_ErrorMapping.
 End errmap.

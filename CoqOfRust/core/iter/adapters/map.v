@@ -102,6 +102,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I F : Ty.t),
           M.IsAssociatedFunction (Self I F) "new" (new I F).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             pub(crate) fn into_inner(self) -> I {
@@ -132,6 +133,7 @@ Module iter.
         Axiom AssociatedFunction_into_inner :
           forall (I F : Ty.t),
           M.IsAssociatedFunction (Self I F) "into_inner" (into_inner I F).
+        Smpl Add apply AssociatedFunction_into_inner : is_associated.
       End Impl_core_iter_adapters_map_Map_I_F.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_map_Map_I_F.

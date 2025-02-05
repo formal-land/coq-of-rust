@@ -1074,6 +1074,7 @@ Module collections.
           Axiom AssociatedFunction_or_insert :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "or_insert" (or_insert K V A).
+          Smpl Add apply AssociatedFunction_or_insert : is_associated.
           
           (*
               pub fn or_insert_with<F: FnOnce() -> V>(self, default: F) -> &'a mut V {
@@ -1190,6 +1191,7 @@ Module collections.
           Axiom AssociatedFunction_or_insert_with :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "or_insert_with" (or_insert_with K V A).
+          Smpl Add apply AssociatedFunction_or_insert_with : is_associated.
           
           (*
               pub fn or_insert_with_key<F: FnOnce(&K) -> V>(self, default: F) -> &'a mut V {
@@ -1333,6 +1335,7 @@ Module collections.
           Axiom AssociatedFunction_or_insert_with_key :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "or_insert_with_key" (or_insert_with_key K V A).
+          Smpl Add apply AssociatedFunction_or_insert_with_key : is_associated.
           
           (*
               pub fn key(&self) -> &K {
@@ -1434,6 +1437,7 @@ Module collections.
           Axiom AssociatedFunction_key :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "key" (key K V A).
+          Smpl Add apply AssociatedFunction_key : is_associated.
           
           (*
               pub fn and_modify<F>(self, f: F) -> Self
@@ -1540,6 +1544,7 @@ Module collections.
           Axiom AssociatedFunction_and_modify :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "and_modify" (and_modify K V A).
+          Smpl Add apply AssociatedFunction_and_modify : is_associated.
           (*
               pub fn or_default(self) -> &'a mut V {
                   match self {
@@ -1654,6 +1659,7 @@ Module collections.
           Axiom AssociatedFunction_or_default :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "or_default" (or_default K V A).
+          Smpl Add apply AssociatedFunction_or_default : is_associated.
         End Impl_alloc_collections_btree_map_entry_Entry_K_V_A.
         
         
@@ -1691,6 +1697,7 @@ Module collections.
           Axiom AssociatedFunction_key :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "key" (key K V A).
+          Smpl Add apply AssociatedFunction_key : is_associated.
           
           (*
               pub fn into_key(self) -> K {
@@ -1721,6 +1728,7 @@ Module collections.
           Axiom AssociatedFunction_into_key :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "into_key" (into_key K V A).
+          Smpl Add apply AssociatedFunction_into_key : is_associated.
           
           (*
               pub fn insert(mut self, value: V) -> &'a mut V {
@@ -2425,6 +2433,7 @@ Module collections.
           Axiom AssociatedFunction_insert :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "insert" (insert K V A).
+          Smpl Add apply AssociatedFunction_insert : is_associated.
         End Impl_alloc_collections_btree_map_entry_VacantEntry_K_V_A.
         
         Module Impl_alloc_collections_btree_map_entry_OccupiedEntry_K_V_A.
@@ -2521,6 +2530,7 @@ Module collections.
           Axiom AssociatedFunction_key :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "key" (key K V A).
+          Smpl Add apply AssociatedFunction_key : is_associated.
           
           (*
               pub fn remove_entry(self) -> (K, V) {
@@ -2556,6 +2566,7 @@ Module collections.
           Axiom AssociatedFunction_remove_entry :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "remove_entry" (remove_entry K V A).
+          Smpl Add apply AssociatedFunction_remove_entry : is_associated.
           
           (*
               pub fn get(&self) -> &V {
@@ -2644,6 +2655,7 @@ Module collections.
           Axiom AssociatedFunction_get :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "get" (get K V A).
+          Smpl Add apply AssociatedFunction_get : is_associated.
           
           (*
               pub fn get_mut(&mut self) -> &mut V {
@@ -2717,6 +2729,7 @@ Module collections.
           Axiom AssociatedFunction_get_mut :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "get_mut" (get_mut K V A).
+          Smpl Add apply AssociatedFunction_get_mut : is_associated.
           
           (*
               pub fn into_mut(self) -> &'a mut V {
@@ -2782,6 +2795,7 @@ Module collections.
           Axiom AssociatedFunction_into_mut :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "into_mut" (into_mut K V A).
+          Smpl Add apply AssociatedFunction_into_mut : is_associated.
           
           (*
               pub fn insert(&mut self, value: V) -> V {
@@ -2829,6 +2843,7 @@ Module collections.
           Axiom AssociatedFunction_insert :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "insert" (insert K V A).
+          Smpl Add apply AssociatedFunction_insert : is_associated.
           
           (*
               pub fn remove(self) -> V {
@@ -2871,6 +2886,7 @@ Module collections.
           Axiom AssociatedFunction_remove :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "remove" (remove K V A).
+          Smpl Add apply AssociatedFunction_remove : is_associated.
           
           (*
               pub(super) fn remove_kv(self) -> (K, V) {
@@ -3151,6 +3167,7 @@ Module collections.
           Axiom AssociatedFunction_remove_kv :
             forall (K V A : Ty.t),
             M.IsAssociatedFunction (Self K V A) "remove_kv" (remove_kv K V A).
+          Smpl Add apply AssociatedFunction_remove_kv : is_associated.
         End Impl_alloc_collections_btree_map_entry_OccupiedEntry_K_V_A.
       End entry.
     End map.

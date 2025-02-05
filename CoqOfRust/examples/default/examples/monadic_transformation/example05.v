@@ -30,6 +30,7 @@ Module Impl_example05_Foo.
     end.
   
   Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1.
+  Smpl Add apply AssociatedFunction_plus1 : is_associated.
 End Impl_example05_Foo.
 
 (*

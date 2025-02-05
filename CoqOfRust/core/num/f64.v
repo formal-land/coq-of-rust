@@ -238,6 +238,7 @@ Module f64.
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
     
     Axiom AssociatedConstant_value_RADIX : M.IsAssociatedConstant Self "value_RADIX" value_RADIX.
+    Smpl Add apply AssociatedConstant_value_RADIX : is_associated.
     
     (*     pub const MANTISSA_DIGITS: u32 = 53; *)
     (* Ty.path "u32" *)
@@ -246,6 +247,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_MANTISSA_DIGITS :
       M.IsAssociatedConstant Self "value_MANTISSA_DIGITS" value_MANTISSA_DIGITS.
+    Smpl Add apply AssociatedConstant_value_MANTISSA_DIGITS : is_associated.
     
     (*     pub const DIGITS: u32 = 15; *)
     (* Ty.path "u32" *)
@@ -253,6 +255,7 @@ Module f64.
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 15 |))).
     
     Axiom AssociatedConstant_value_DIGITS : M.IsAssociatedConstant Self "value_DIGITS" value_DIGITS.
+    Smpl Add apply AssociatedConstant_value_DIGITS : is_associated.
     
     (*     pub const EPSILON: f64 = 2.2204460492503131e-16_f64; *)
     (* Ty.path "f64" *)
@@ -260,12 +263,14 @@ Module f64.
     
     Axiom AssociatedConstant_value_EPSILON :
       M.IsAssociatedConstant Self "value_EPSILON" value_EPSILON.
+    Smpl Add apply AssociatedConstant_value_EPSILON : is_associated.
     
     (*     pub const MIN: f64 = -1.7976931348623157e+308_f64; *)
     (* Ty.path "f64" *)
     Definition value_MIN : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
     Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
     
     (*     pub const MIN_POSITIVE: f64 = 2.2250738585072014e-308_f64; *)
     (* Ty.path "f64" *)
@@ -273,12 +278,14 @@ Module f64.
     
     Axiom AssociatedConstant_value_MIN_POSITIVE :
       M.IsAssociatedConstant Self "value_MIN_POSITIVE" value_MIN_POSITIVE.
+    Smpl Add apply AssociatedConstant_value_MIN_POSITIVE : is_associated.
     
     (*     pub const MAX: f64 = 1.7976931348623157e+308_f64; *)
     (* Ty.path "f64" *)
     Definition value_MAX : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
     Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
     
     (*     pub const MIN_EXP: i32 = -1021; *)
     (* Ty.path "i32" *)
@@ -287,6 +294,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_MIN_EXP :
       M.IsAssociatedConstant Self "value_MIN_EXP" value_MIN_EXP.
+    Smpl Add apply AssociatedConstant_value_MIN_EXP : is_associated.
     
     (*     pub const MAX_EXP: i32 = 1024; *)
     (* Ty.path "i32" *)
@@ -295,6 +303,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_MAX_EXP :
       M.IsAssociatedConstant Self "value_MAX_EXP" value_MAX_EXP.
+    Smpl Add apply AssociatedConstant_value_MAX_EXP : is_associated.
     
     (*     pub const MIN_10_EXP: i32 = -307; *)
     (* Ty.path "i32" *)
@@ -303,6 +312,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_MIN_10_EXP :
       M.IsAssociatedConstant Self "value_MIN_10_EXP" value_MIN_10_EXP.
+    Smpl Add apply AssociatedConstant_value_MIN_10_EXP : is_associated.
     
     (*     pub const MAX_10_EXP: i32 = 308; *)
     (* Ty.path "i32" *)
@@ -311,6 +321,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_MAX_10_EXP :
       M.IsAssociatedConstant Self "value_MAX_10_EXP" value_MAX_10_EXP.
+    Smpl Add apply AssociatedConstant_value_MAX_10_EXP : is_associated.
     
     (*     pub const NAN: f64 = 0.0_f64 / 0.0_f64; *)
     (* Ty.path "f64" *)
@@ -322,6 +333,7 @@ Module f64.
           |))).
     
     Axiom AssociatedConstant_value_NAN : M.IsAssociatedConstant Self "value_NAN" value_NAN.
+    Smpl Add apply AssociatedConstant_value_NAN : is_associated.
     
     (*     pub const INFINITY: f64 = 1.0_f64 / 0.0_f64; *)
     (* Ty.path "f64" *)
@@ -334,6 +346,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_INFINITY :
       M.IsAssociatedConstant Self "value_INFINITY" value_INFINITY.
+    Smpl Add apply AssociatedConstant_value_INFINITY : is_associated.
     
     (*     pub const NEG_INFINITY: f64 = -1.0_f64 / 0.0_f64; *)
     (* Ty.path "f64" *)
@@ -346,6 +359,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_NEG_INFINITY :
       M.IsAssociatedConstant Self "value_NEG_INFINITY" value_NEG_INFINITY.
+    Smpl Add apply AssociatedConstant_value_NEG_INFINITY : is_associated.
     
     (*     const SIGN_MASK: u64 = 0x8000_0000_0000_0000; *)
     (* Ty.path "u64" *)
@@ -354,6 +368,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_SIGN_MASK :
       M.IsAssociatedConstant Self "value_SIGN_MASK" value_SIGN_MASK.
+    Smpl Add apply AssociatedConstant_value_SIGN_MASK : is_associated.
     
     (*     const EXP_MASK: u64 = 0x7ff0_0000_0000_0000; *)
     (* Ty.path "u64" *)
@@ -362,6 +377,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_EXP_MASK :
       M.IsAssociatedConstant Self "value_EXP_MASK" value_EXP_MASK.
+    Smpl Add apply AssociatedConstant_value_EXP_MASK : is_associated.
     
     (*     const MAN_MASK: u64 = 0x000f_ffff_ffff_ffff; *)
     (* Ty.path "u64" *)
@@ -370,6 +386,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_MAN_MASK :
       M.IsAssociatedConstant Self "value_MAN_MASK" value_MAN_MASK.
+    Smpl Add apply AssociatedConstant_value_MAN_MASK : is_associated.
     
     (*     const TINY_BITS: u64 = 0x1; *)
     (* Ty.path "u64" *)
@@ -378,6 +395,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_TINY_BITS :
       M.IsAssociatedConstant Self "value_TINY_BITS" value_TINY_BITS.
+    Smpl Add apply AssociatedConstant_value_TINY_BITS : is_associated.
     
     (*     const NEG_TINY_BITS: u64 = Self::TINY_BITS | Self::SIGN_MASK; *)
     (* Ty.path "u64" *)
@@ -392,6 +410,7 @@ Module f64.
     
     Axiom AssociatedConstant_value_NEG_TINY_BITS :
       M.IsAssociatedConstant Self "value_NEG_TINY_BITS" value_NEG_TINY_BITS.
+    Smpl Add apply AssociatedConstant_value_NEG_TINY_BITS : is_associated.
     
     (*
         pub const fn is_nan(self) -> bool {
@@ -408,6 +427,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_is_nan : M.IsAssociatedFunction Self "is_nan" is_nan.
+    Smpl Add apply AssociatedFunction_is_nan : is_associated.
     
     (*
         pub(crate) const fn abs_private(self) -> f64 {
@@ -443,6 +463,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_abs_private : M.IsAssociatedFunction Self "abs_private" abs_private.
+    Smpl Add apply AssociatedFunction_abs_private : is_associated.
     
     (*
         pub const fn is_infinite(self) -> bool {
@@ -467,6 +488,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_is_infinite : M.IsAssociatedFunction Self "is_infinite" is_infinite.
+    Smpl Add apply AssociatedFunction_is_infinite : is_associated.
     
     (*
         pub const fn is_finite(self) -> bool {
@@ -491,6 +513,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_is_finite : M.IsAssociatedFunction Self "is_finite" is_finite.
+    Smpl Add apply AssociatedFunction_is_finite : is_associated.
     
     (*
         pub const fn is_subnormal(self) -> bool {
@@ -523,6 +546,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_is_subnormal : M.IsAssociatedFunction Self "is_subnormal" is_subnormal.
+    Smpl Add apply AssociatedFunction_is_subnormal : is_associated.
     
     (*
         pub const fn is_normal(self) -> bool {
@@ -555,6 +579,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_is_normal : M.IsAssociatedFunction Self "is_normal" is_normal.
+    Smpl Add apply AssociatedFunction_is_normal : is_associated.
     
     (*
         pub const fn classify(self) -> FpCategory {
@@ -659,6 +684,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_classify : M.IsAssociatedFunction Self "classify" classify.
+    Smpl Add apply AssociatedFunction_classify : is_associated.
     
     (*
         pub const fn is_sign_positive(self) -> bool {
@@ -681,6 +707,7 @@ Module f64.
     
     Axiom AssociatedFunction_is_sign_positive :
       M.IsAssociatedFunction Self "is_sign_positive" is_sign_positive.
+    Smpl Add apply AssociatedFunction_is_sign_positive : is_associated.
     
     (*
         pub fn is_positive(self) -> bool {
@@ -700,6 +727,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
+    Smpl Add apply AssociatedFunction_is_positive : is_associated.
     
     (*
         pub const fn is_sign_negative(self) -> bool {
@@ -732,6 +760,7 @@ Module f64.
     
     Axiom AssociatedFunction_is_sign_negative :
       M.IsAssociatedFunction Self "is_sign_negative" is_sign_negative.
+    Smpl Add apply AssociatedFunction_is_sign_negative : is_associated.
     
     (*
         pub fn is_negative(self) -> bool {
@@ -751,6 +780,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
+    Smpl Add apply AssociatedFunction_is_negative : is_associated.
     
     (*
         pub const fn next_up(self) -> Self {
@@ -894,6 +924,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_next_up : M.IsAssociatedFunction Self "next_up" next_up.
+    Smpl Add apply AssociatedFunction_next_up : is_associated.
     
     (*
         pub const fn next_down(self) -> Self {
@@ -1037,6 +1068,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_next_down : M.IsAssociatedFunction Self "next_down" next_down.
+    Smpl Add apply AssociatedFunction_next_down : is_associated.
     
     (*
         pub fn recip(self) -> f64 {
@@ -1053,6 +1085,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_recip : M.IsAssociatedFunction Self "recip" recip.
+    Smpl Add apply AssociatedFunction_recip : is_associated.
     
     (*
         pub fn to_degrees(self) -> f64 {
@@ -1078,6 +1111,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_to_degrees : M.IsAssociatedFunction Self "to_degrees" to_degrees.
+    Smpl Add apply AssociatedFunction_to_degrees : is_associated.
     
     (*
         pub fn to_radians(self) -> f64 {
@@ -1098,6 +1132,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_to_radians : M.IsAssociatedFunction Self "to_radians" to_radians.
+    Smpl Add apply AssociatedFunction_to_radians : is_associated.
     
     (*
         pub fn max(self, other: f64) -> f64 {
@@ -1118,6 +1153,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_max : M.IsAssociatedFunction Self "max" max.
+    Smpl Add apply AssociatedFunction_max : is_associated.
     
     (*
         pub fn min(self, other: f64) -> f64 {
@@ -1138,6 +1174,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_min : M.IsAssociatedFunction Self "min" min.
+    Smpl Add apply AssociatedFunction_min : is_associated.
     
     (*
         pub fn maximum(self, other: f64) -> f64 {
@@ -1255,6 +1292,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_maximum : M.IsAssociatedFunction Self "maximum" maximum.
+    Smpl Add apply AssociatedFunction_maximum : is_associated.
     
     (*
         pub fn minimum(self, other: f64) -> f64 {
@@ -1373,6 +1411,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_minimum : M.IsAssociatedFunction Self "minimum" minimum.
+    Smpl Add apply AssociatedFunction_minimum : is_associated.
     
     (*
         pub fn midpoint(self, other: f64) -> f64 {
@@ -1543,6 +1582,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
+    Smpl Add apply AssociatedFunction_midpoint : is_associated.
     
     (*
         pub unsafe fn to_int_unchecked<Int>(self) -> Int
@@ -1576,6 +1616,7 @@ Module f64.
     
     Axiom AssociatedFunction_to_int_unchecked :
       M.IsAssociatedFunction Self "to_int_unchecked" to_int_unchecked.
+    Smpl Add apply AssociatedFunction_to_int_unchecked : is_associated.
     
     (*
         pub const fn to_bits(self) -> u64 {
@@ -1600,6 +1641,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
+    Smpl Add apply AssociatedFunction_to_bits : is_associated.
     
     (*
         pub const fn from_bits(v: u64) -> Self {
@@ -1625,6 +1667,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
+    Smpl Add apply AssociatedFunction_from_bits : is_associated.
     
     (*
         pub const fn to_be_bytes(self) -> [u8; 8] {
@@ -1649,6 +1692,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
+    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
     
     (*
         pub const fn to_le_bytes(self) -> [u8; 8] {
@@ -1673,6 +1717,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
+    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
     
     (*
         pub const fn to_ne_bytes(self) -> [u8; 8] {
@@ -1697,6 +1742,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
+    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
     
     (*
         pub const fn from_be_bytes(bytes: [u8; 8]) -> Self {
@@ -1722,6 +1768,7 @@ Module f64.
     
     Axiom AssociatedFunction_from_be_bytes :
       M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
+    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
     
     (*
         pub const fn from_le_bytes(bytes: [u8; 8]) -> Self {
@@ -1747,6 +1794,7 @@ Module f64.
     
     Axiom AssociatedFunction_from_le_bytes :
       M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
+    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
     
     (*
         pub const fn from_ne_bytes(bytes: [u8; 8]) -> Self {
@@ -1772,6 +1820,7 @@ Module f64.
     
     Axiom AssociatedFunction_from_ne_bytes :
       M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
+    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
     
     (*
         pub fn total_cmp(&self, other: &Self) -> crate::cmp::Ordering {
@@ -1878,6 +1927,7 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_total_cmp : M.IsAssociatedFunction Self "total_cmp" total_cmp.
+    Smpl Add apply AssociatedFunction_total_cmp : is_associated.
     
     (*
         pub fn clamp(mut self, min: f64, max: f64) -> f64 {
@@ -2029,5 +2079,6 @@ Module f64.
       end.
     
     Axiom AssociatedFunction_clamp : M.IsAssociatedFunction Self "clamp" clamp.
+    Smpl Add apply AssociatedFunction_clamp : is_associated.
   End Impl_f64.
 End f64.

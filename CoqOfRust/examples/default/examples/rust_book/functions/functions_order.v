@@ -49,6 +49,7 @@ Module Impl_functions_order_SomeType.
     end.
   
   Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
+  Smpl Add apply AssociatedFunction_meth1 : is_associated.
   
   (*     fn meth2(self) {} *)
   Definition meth2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -61,6 +62,7 @@ Module Impl_functions_order_SomeType.
     end.
   
   Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
+  Smpl Add apply AssociatedFunction_meth2 : is_associated.
 End Impl_functions_order_SomeType.
 
 (*

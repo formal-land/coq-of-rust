@@ -1166,6 +1166,7 @@ Module instruction_result.
       end.
     
     Axiom AssociatedFunction_is_ok : M.IsAssociatedFunction Self "is_ok" is_ok.
+    Smpl Add apply AssociatedFunction_is_ok : is_associated.
     
     (*
         pub const fn is_ok_or_revert(self) -> bool {
@@ -1317,6 +1318,7 @@ Module instruction_result.
     
     Axiom AssociatedFunction_is_ok_or_revert :
       M.IsAssociatedFunction Self "is_ok_or_revert" is_ok_or_revert.
+    Smpl Add apply AssociatedFunction_is_ok_or_revert : is_associated.
     
     (*
         pub const fn is_continue(self) -> bool {
@@ -1348,6 +1350,7 @@ Module instruction_result.
       end.
     
     Axiom AssociatedFunction_is_continue : M.IsAssociatedFunction Self "is_continue" is_continue.
+    Smpl Add apply AssociatedFunction_is_continue : is_associated.
     
     (*
         pub const fn is_revert(self) -> bool {
@@ -1432,6 +1435,7 @@ Module instruction_result.
       end.
     
     Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
+    Smpl Add apply AssociatedFunction_is_revert : is_associated.
     
     (*
         pub const fn is_error(self) -> bool {
@@ -1700,6 +1704,7 @@ Module instruction_result.
       end.
     
     Axiom AssociatedFunction_is_error : M.IsAssociatedFunction Self "is_error" is_error.
+    Smpl Add apply AssociatedFunction_is_error : is_associated.
   End Impl_revm_interpreter_instruction_result_InstructionResult.
   
   Module Impl_core_convert_From_revm_context_interface_result_SuccessReason_for_revm_interpreter_instruction_result_InstructionResult.
@@ -3325,6 +3330,7 @@ Module instruction_result.
     Axiom AssociatedFunction_is_success :
       forall (HaltReasonT : Ty.t),
       M.IsAssociatedFunction (Self HaltReasonT) "is_success" (is_success HaltReasonT).
+    Smpl Add apply AssociatedFunction_is_success : is_associated.
     
     (*
         pub fn to_success(self) -> Option<SuccessReason> {
@@ -3372,6 +3378,7 @@ Module instruction_result.
     Axiom AssociatedFunction_to_success :
       forall (HaltReasonT : Ty.t),
       M.IsAssociatedFunction (Self HaltReasonT) "to_success" (to_success HaltReasonT).
+    Smpl Add apply AssociatedFunction_to_success : is_associated.
     
     (*
         pub fn is_revert(self) -> bool {
@@ -3411,6 +3418,7 @@ Module instruction_result.
     Axiom AssociatedFunction_is_revert :
       forall (HaltReasonT : Ty.t),
       M.IsAssociatedFunction (Self HaltReasonT) "is_revert" (is_revert HaltReasonT).
+    Smpl Add apply AssociatedFunction_is_revert : is_associated.
     
     (*
         pub fn is_halt(self) -> bool {
@@ -3451,6 +3459,7 @@ Module instruction_result.
     Axiom AssociatedFunction_is_halt :
       forall (HaltReasonT : Ty.t),
       M.IsAssociatedFunction (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
+    Smpl Add apply AssociatedFunction_is_halt : is_associated.
     
     (*
         pub fn to_halt(self) -> Option<HaltReasonT> {
@@ -3498,6 +3507,7 @@ Module instruction_result.
     Axiom AssociatedFunction_to_halt :
       forall (HaltReasonT : Ty.t),
       M.IsAssociatedFunction (Self HaltReasonT) "to_halt" (to_halt HaltReasonT).
+    Smpl Add apply AssociatedFunction_to_halt : is_associated.
   End Impl_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
   Module Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HALT_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_SuccessOrHalt_HALT.

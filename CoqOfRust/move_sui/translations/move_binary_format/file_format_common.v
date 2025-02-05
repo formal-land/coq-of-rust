@@ -21,6 +21,7 @@ Module file_format_common.
     
     Axiom AssociatedConstant_value_MOVE_MAGIC_SIZE :
       M.IsAssociatedConstant Self "value_MOVE_MAGIC_SIZE" value_MOVE_MAGIC_SIZE.
+    Smpl Add apply AssociatedConstant_value_MOVE_MAGIC_SIZE : is_associated.
     
     (*     pub const MOVE_MAGIC: [u8; BinaryConstants::MOVE_MAGIC_SIZE] = [0xA1, 0x1C, 0xEB, 0x0B]; *)
     (* Ty.apply
@@ -45,6 +46,7 @@ Module file_format_common.
     
     Axiom AssociatedConstant_value_MOVE_MAGIC :
       M.IsAssociatedConstant Self "value_MOVE_MAGIC" value_MOVE_MAGIC.
+    Smpl Add apply AssociatedConstant_value_MOVE_MAGIC : is_associated.
     
     (*     pub const HEADER_SIZE: usize = BinaryConstants::MOVE_MAGIC_SIZE + 5; *)
     (* Ty.path "usize" *)
@@ -60,6 +62,7 @@ Module file_format_common.
     
     Axiom AssociatedConstant_value_HEADER_SIZE :
       M.IsAssociatedConstant Self "value_HEADER_SIZE" value_HEADER_SIZE.
+    Smpl Add apply AssociatedConstant_value_HEADER_SIZE : is_associated.
     
     (*     pub const TABLE_HEADER_SIZE: u8 = size_of::<u32>() as u8 * 2 + 1; *)
     (* Ty.path "u8" *)
@@ -83,6 +86,7 @@ Module file_format_common.
     
     Axiom AssociatedConstant_value_TABLE_HEADER_SIZE :
       M.IsAssociatedConstant Self "value_TABLE_HEADER_SIZE" value_TABLE_HEADER_SIZE.
+    Smpl Add apply AssociatedConstant_value_TABLE_HEADER_SIZE : is_associated.
   End Impl_move_binary_format_file_format_common_BinaryConstants.
   
   Definition value_TABLE_COUNT_MAX : Value.t :=
@@ -3024,6 +3028,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn as_inner(&self) -> &[u8] {
@@ -3073,6 +3078,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_as_inner : M.IsAssociatedFunction Self "as_inner" as_inner.
+    Smpl Add apply AssociatedFunction_as_inner : is_associated.
     
     (*
         pub fn into_inner(self) -> Vec<u8> {
@@ -3095,6 +3101,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     
     (*
         pub fn push(&mut self, item: u8) -> Result<()> {
@@ -3366,6 +3373,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
+    Smpl Add apply AssociatedFunction_push : is_associated.
     
     (*
         pub fn extend(&mut self, vec: &[u8]) -> Result<()> {
@@ -3708,6 +3716,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
+    Smpl Add apply AssociatedFunction_extend : is_associated.
     
     (*
         pub fn len(&self) -> usize {
@@ -3744,6 +3753,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -3780,6 +3790,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
     
     (*
         pub fn clear(&mut self) {
@@ -3822,6 +3833,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
+    Smpl Add apply AssociatedFunction_clear : is_associated.
   End Impl_move_binary_format_file_format_common_BinaryData.
   
   Module Impl_core_convert_From_alloc_vec_Vec_u8_alloc_alloc_Global_for_move_binary_format_file_format_common_BinaryData.

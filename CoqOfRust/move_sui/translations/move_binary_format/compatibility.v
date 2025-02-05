@@ -505,6 +505,7 @@ Module compatibility.
       end.
     
     Axiom AssociatedFunction_full_check : M.IsAssociatedFunction Self "full_check" full_check.
+    Smpl Add apply AssociatedFunction_full_check : is_associated.
     
     (*
         pub fn no_check() -> Self {
@@ -537,6 +538,7 @@ Module compatibility.
       end.
     
     Axiom AssociatedFunction_no_check : M.IsAssociatedFunction Self "no_check" no_check.
+    Smpl Add apply AssociatedFunction_no_check : is_associated.
     
     (*
         pub fn need_check_compat(&self) -> bool {
@@ -594,6 +596,7 @@ Module compatibility.
     
     Axiom AssociatedFunction_need_check_compat :
       M.IsAssociatedFunction Self "need_check_compat" need_check_compat.
+    Smpl Add apply AssociatedFunction_need_check_compat : is_associated.
     
     (*
         pub fn check(&self, old_module: &Module, new_module: &Module) -> PartialVMResult<()> {
@@ -2408,6 +2411,7 @@ Module compatibility.
       end.
     
     Axiom AssociatedFunction_check : M.IsAssociatedFunction Self "check" check.
+    Smpl Add apply AssociatedFunction_check : is_associated.
   End Impl_move_binary_format_compatibility_Compatibility.
   
   (*
@@ -4369,5 +4373,6 @@ Module compatibility.
       end.
     
     Axiom AssociatedFunction_check : M.IsAssociatedFunction Self "check" check.
+    Smpl Add apply AssociatedFunction_check : is_associated.
   End Impl_move_binary_format_compatibility_InclusionCheck.
 End compatibility.

@@ -135,6 +135,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (T : Ty.t),
           M.IsAssociatedFunction (Self T) "new" (new T).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_rev_Rev_T.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_for_core_iter_adapters_rev_Rev_I.

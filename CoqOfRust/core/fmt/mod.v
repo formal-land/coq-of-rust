@@ -634,6 +634,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     (*
         fn wrap_buf<'b, 'c, F>(&'b mut self, wrap: F) -> Formatter<'c>
         where
@@ -750,6 +751,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_wrap_buf : M.IsAssociatedFunction Self "wrap_buf" wrap_buf.
+    Smpl Add apply AssociatedFunction_wrap_buf : is_associated.
     
     (*
         pub fn pad_integral(&mut self, is_nonnegative: bool, prefix: &str, buf: &str) -> Result {
@@ -2017,6 +2019,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_pad_integral : M.IsAssociatedFunction Self "pad_integral" pad_integral.
+    Smpl Add apply AssociatedFunction_pad_integral : is_associated.
     
     (*
         pub fn pad(&mut self, s: &str) -> Result {
@@ -2648,6 +2651,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_pad : M.IsAssociatedFunction Self "pad" pad.
+    Smpl Add apply AssociatedFunction_pad : is_associated.
     
     (*
         pub(crate) fn padding(
@@ -2998,6 +3002,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_padding : M.IsAssociatedFunction Self "padding" padding.
+    Smpl Add apply AssociatedFunction_padding : is_associated.
     
     (*
         unsafe fn pad_formatted_parts(&mut self, formatted: &numfmt::Formatted<'_>) -> Result {
@@ -3623,6 +3628,7 @@ Module fmt.
     
     Axiom AssociatedFunction_pad_formatted_parts :
       M.IsAssociatedFunction Self "pad_formatted_parts" pad_formatted_parts.
+    Smpl Add apply AssociatedFunction_pad_formatted_parts : is_associated.
     
     (*
         unsafe fn write_formatted_parts(&mut self, formatted: &numfmt::Formatted<'_>) -> Result {
@@ -4872,6 +4878,7 @@ Module fmt.
     
     Axiom AssociatedFunction_write_formatted_parts :
       M.IsAssociatedFunction Self "write_formatted_parts" write_formatted_parts.
+    Smpl Add apply AssociatedFunction_write_formatted_parts : is_associated.
     
     (*
         pub fn write_str(&mut self, data: &str) -> Result {
@@ -4914,6 +4921,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_write_str : M.IsAssociatedFunction Self "write_str" write_str.
+    Smpl Add apply AssociatedFunction_write_str : is_associated.
     
     (*
         pub fn write_fmt(&mut self, fmt: Arguments<'_>) -> Result {
@@ -5012,6 +5020,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_write_fmt : M.IsAssociatedFunction Self "write_fmt" write_fmt.
+    Smpl Add apply AssociatedFunction_write_fmt : is_associated.
     
     (*
         pub fn flags(&self) -> u32 {
@@ -5034,6 +5043,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_flags : M.IsAssociatedFunction Self "flags" flags.
+    Smpl Add apply AssociatedFunction_flags : is_associated.
     
     (*
         pub fn fill(&self) -> char {
@@ -5056,6 +5066,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_fill : M.IsAssociatedFunction Self "fill" fill.
+    Smpl Add apply AssociatedFunction_fill : is_associated.
     
     (*
         pub fn align(&self) -> Option<Alignment> {
@@ -5115,6 +5126,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_align : M.IsAssociatedFunction Self "align" align.
+    Smpl Add apply AssociatedFunction_align : is_associated.
     
     (*
         pub fn width(&self) -> Option<usize> {
@@ -5137,6 +5149,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_width : M.IsAssociatedFunction Self "width" width.
+    Smpl Add apply AssociatedFunction_width : is_associated.
     
     (*
         pub fn precision(&self) -> Option<usize> {
@@ -5159,6 +5172,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_precision : M.IsAssociatedFunction Self "precision" precision.
+    Smpl Add apply AssociatedFunction_precision : is_associated.
     
     (*
         pub fn sign_plus(&self) -> bool {
@@ -5189,6 +5203,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_sign_plus : M.IsAssociatedFunction Self "sign_plus" sign_plus.
+    Smpl Add apply AssociatedFunction_sign_plus : is_associated.
     
     (*
         pub fn sign_minus(&self) -> bool {
@@ -5219,6 +5234,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_sign_minus : M.IsAssociatedFunction Self "sign_minus" sign_minus.
+    Smpl Add apply AssociatedFunction_sign_minus : is_associated.
     
     (*
         pub fn alternate(&self) -> bool {
@@ -5249,6 +5265,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_alternate : M.IsAssociatedFunction Self "alternate" alternate.
+    Smpl Add apply AssociatedFunction_alternate : is_associated.
     
     (*
         pub fn sign_aware_zero_pad(&self) -> bool {
@@ -5280,6 +5297,7 @@ Module fmt.
     
     Axiom AssociatedFunction_sign_aware_zero_pad :
       M.IsAssociatedFunction Self "sign_aware_zero_pad" sign_aware_zero_pad.
+    Smpl Add apply AssociatedFunction_sign_aware_zero_pad : is_associated.
     
     (*
         fn debug_lower_hex(&self) -> bool {
@@ -5311,6 +5329,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_lower_hex :
       M.IsAssociatedFunction Self "debug_lower_hex" debug_lower_hex.
+    Smpl Add apply AssociatedFunction_debug_lower_hex : is_associated.
     
     (*
         fn debug_upper_hex(&self) -> bool {
@@ -5342,6 +5361,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_upper_hex :
       M.IsAssociatedFunction Self "debug_upper_hex" debug_upper_hex.
+    Smpl Add apply AssociatedFunction_debug_upper_hex : is_associated.
     
     (*
         pub fn debug_struct<'b>(&'b mut self, name: &str) -> DebugStruct<'b, 'a> {
@@ -5365,6 +5385,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_debug_struct : M.IsAssociatedFunction Self "debug_struct" debug_struct.
+    Smpl Add apply AssociatedFunction_debug_struct : is_associated.
     
     (*
         pub fn debug_struct_field1_finish<'b>(
@@ -5434,6 +5455,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_struct_field1_finish :
       M.IsAssociatedFunction Self "debug_struct_field1_finish" debug_struct_field1_finish.
+    Smpl Add apply AssociatedFunction_debug_struct_field1_finish : is_associated.
     
     (*
         pub fn debug_struct_field2_finish<'b>(
@@ -5524,6 +5546,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_struct_field2_finish :
       M.IsAssociatedFunction Self "debug_struct_field2_finish" debug_struct_field2_finish.
+    Smpl Add apply AssociatedFunction_debug_struct_field2_finish : is_associated.
     
     (*
         pub fn debug_struct_field3_finish<'b>(
@@ -5635,6 +5658,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_struct_field3_finish :
       M.IsAssociatedFunction Self "debug_struct_field3_finish" debug_struct_field3_finish.
+    Smpl Add apply AssociatedFunction_debug_struct_field3_finish : is_associated.
     
     (*
         pub fn debug_struct_field4_finish<'b>(
@@ -5767,6 +5791,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_struct_field4_finish :
       M.IsAssociatedFunction Self "debug_struct_field4_finish" debug_struct_field4_finish.
+    Smpl Add apply AssociatedFunction_debug_struct_field4_finish : is_associated.
     
     (*
         pub fn debug_struct_field5_finish<'b>(
@@ -5923,6 +5948,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_struct_field5_finish :
       M.IsAssociatedFunction Self "debug_struct_field5_finish" debug_struct_field5_finish.
+    Smpl Add apply AssociatedFunction_debug_struct_field5_finish : is_associated.
     
     (*
         pub fn debug_struct_fields_finish<'b>(
@@ -6260,6 +6286,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_struct_fields_finish :
       M.IsAssociatedFunction Self "debug_struct_fields_finish" debug_struct_fields_finish.
+    Smpl Add apply AssociatedFunction_debug_struct_fields_finish : is_associated.
     
     (*
         pub fn debug_tuple<'b>(&'b mut self, name: &str) -> DebugTuple<'b, 'a> {
@@ -6283,6 +6310,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_debug_tuple : M.IsAssociatedFunction Self "debug_tuple" debug_tuple.
+    Smpl Add apply AssociatedFunction_debug_tuple : is_associated.
     
     (*
         pub fn debug_tuple_field1_finish<'b>(&'b mut self, name: &str, value1: &dyn Debug) -> Result {
@@ -6345,6 +6373,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_tuple_field1_finish :
       M.IsAssociatedFunction Self "debug_tuple_field1_finish" debug_tuple_field1_finish.
+    Smpl Add apply AssociatedFunction_debug_tuple_field1_finish : is_associated.
     
     (*
         pub fn debug_tuple_field2_finish<'b>(
@@ -6429,6 +6458,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_tuple_field2_finish :
       M.IsAssociatedFunction Self "debug_tuple_field2_finish" debug_tuple_field2_finish.
+    Smpl Add apply AssociatedFunction_debug_tuple_field2_finish : is_associated.
     
     (*
         pub fn debug_tuple_field3_finish<'b>(
@@ -6531,6 +6561,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_tuple_field3_finish :
       M.IsAssociatedFunction Self "debug_tuple_field3_finish" debug_tuple_field3_finish.
+    Smpl Add apply AssociatedFunction_debug_tuple_field3_finish : is_associated.
     
     (*
         pub fn debug_tuple_field4_finish<'b>(
@@ -6651,6 +6682,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_tuple_field4_finish :
       M.IsAssociatedFunction Self "debug_tuple_field4_finish" debug_tuple_field4_finish.
+    Smpl Add apply AssociatedFunction_debug_tuple_field4_finish : is_associated.
     
     (*
         pub fn debug_tuple_field5_finish<'b>(
@@ -6789,6 +6821,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_tuple_field5_finish :
       M.IsAssociatedFunction Self "debug_tuple_field5_finish" debug_tuple_field5_finish.
+    Smpl Add apply AssociatedFunction_debug_tuple_field5_finish : is_associated.
     
     (*
         pub fn debug_tuple_fields_finish<'b>(
@@ -6949,6 +6982,7 @@ Module fmt.
     
     Axiom AssociatedFunction_debug_tuple_fields_finish :
       M.IsAssociatedFunction Self "debug_tuple_fields_finish" debug_tuple_fields_finish.
+    Smpl Add apply AssociatedFunction_debug_tuple_fields_finish : is_associated.
     
     (*
         pub fn debug_list<'b>(&'b mut self) -> DebugList<'b, 'a> {
@@ -6968,6 +7002,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_debug_list : M.IsAssociatedFunction Self "debug_list" debug_list.
+    Smpl Add apply AssociatedFunction_debug_list : is_associated.
     
     (*
         pub fn debug_set<'b>(&'b mut self) -> DebugSet<'b, 'a> {
@@ -6987,6 +7022,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_debug_set : M.IsAssociatedFunction Self "debug_set" debug_set.
+    Smpl Add apply AssociatedFunction_debug_set : is_associated.
     
     (*
         pub fn debug_map<'b>(&'b mut self) -> DebugMap<'b, 'a> {
@@ -7006,6 +7042,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_debug_map : M.IsAssociatedFunction Self "debug_map" debug_map.
+    Smpl Add apply AssociatedFunction_debug_map : is_associated.
   End Impl_core_fmt_Formatter.
   
   (* StructRecord
@@ -7123,6 +7160,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_new_const : M.IsAssociatedFunction Self "new_const" new_const.
+    Smpl Add apply AssociatedFunction_new_const : is_associated.
     
     (*
         pub fn new_v1<const P: usize, const A: usize>(
@@ -7155,6 +7193,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_new_v1 : M.IsAssociatedFunction Self "new_v1" new_v1.
+    Smpl Add apply AssociatedFunction_new_v1 : is_associated.
     
     (*
         pub fn new_v1_formatted(
@@ -7189,6 +7228,7 @@ Module fmt.
     
     Axiom AssociatedFunction_new_v1_formatted :
       M.IsAssociatedFunction Self "new_v1_formatted" new_v1_formatted.
+    Smpl Add apply AssociatedFunction_new_v1_formatted : is_associated.
     
     (*
         pub fn estimated_capacity(&self) -> usize {
@@ -7484,6 +7524,7 @@ Module fmt.
     
     Axiom AssociatedFunction_estimated_capacity :
       M.IsAssociatedFunction Self "estimated_capacity" estimated_capacity.
+    Smpl Add apply AssociatedFunction_estimated_capacity : is_associated.
     (*
         pub const fn as_str(&self) -> Option<&'static str> {
             match (self.pieces, self.args) {
@@ -7563,6 +7604,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+    Smpl Add apply AssociatedFunction_as_str : is_associated.
     
     (*
         fn as_statically_known_str(&self) -> Option<&'static str> {
@@ -7625,6 +7667,7 @@ Module fmt.
     
     Axiom AssociatedFunction_as_statically_known_str :
       M.IsAssociatedFunction Self "as_statically_known_str" as_statically_known_str.
+    Smpl Add apply AssociatedFunction_as_statically_known_str : is_associated.
   End Impl_core_fmt_Arguments.
   
   
@@ -9329,6 +9372,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub(crate) fn write(self, f: &mut Formatter<'_>) -> Result {
@@ -9550,6 +9594,7 @@ Module fmt.
       end.
     
     Axiom AssociatedFunction_write : M.IsAssociatedFunction Self "write" write.
+    Smpl Add apply AssociatedFunction_write : is_associated.
   End Impl_core_fmt_PostPadding.
   
   

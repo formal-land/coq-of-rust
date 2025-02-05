@@ -394,6 +394,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_capacity : M.IsAssociatedFunction Self "capacity" capacity.
+      Smpl Add apply AssociatedFunction_capacity : is_associated.
       
       (*
           pub fn len(&self) -> usize {
@@ -416,6 +417,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub fn init_len(&self) -> usize {
@@ -438,6 +440,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_init_len : M.IsAssociatedFunction Self "init_len" init_len.
+      Smpl Add apply AssociatedFunction_init_len : is_associated.
       
       (*
           pub fn filled(&self) -> &[u8] {
@@ -523,6 +526,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_filled : M.IsAssociatedFunction Self "filled" filled.
+      Smpl Add apply AssociatedFunction_filled : is_associated.
       
       (*
           pub fn filled_mut(&mut self) -> &mut [u8] {
@@ -623,6 +627,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_filled_mut : M.IsAssociatedFunction Self "filled_mut" filled_mut.
+      Smpl Add apply AssociatedFunction_filled_mut : is_associated.
       
       (*
           pub fn unfilled<'this>(&'this mut self) -> BorrowedCursor<'this> {
@@ -685,6 +690,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_unfilled : M.IsAssociatedFunction Self "unfilled" unfilled.
+      Smpl Add apply AssociatedFunction_unfilled : is_associated.
       
       (*
           pub fn clear(&mut self) -> &mut Self {
@@ -718,6 +724,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
+      Smpl Add apply AssociatedFunction_clear : is_associated.
       
       (*
           pub unsafe fn set_init(&mut self, n: usize) -> &mut Self {
@@ -764,6 +771,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_set_init : M.IsAssociatedFunction Self "set_init" set_init.
+      Smpl Add apply AssociatedFunction_set_init : is_associated.
     End Impl_core_io_borrowed_buf_BorrowedBuf.
     
     (* StructRecord
@@ -926,6 +934,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_reborrow : M.IsAssociatedFunction Self "reborrow" reborrow.
+      Smpl Add apply AssociatedFunction_reborrow : is_associated.
       
       (*
           pub fn capacity(&self) -> usize {
@@ -980,6 +989,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_capacity : M.IsAssociatedFunction Self "capacity" capacity.
+      Smpl Add apply AssociatedFunction_capacity : is_associated.
       
       (*
           pub fn written(&self) -> usize {
@@ -1019,6 +1029,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_written : M.IsAssociatedFunction Self "written" written.
+      Smpl Add apply AssociatedFunction_written : is_associated.
       
       (*
           pub fn init_ref(&self) -> &[u8] {
@@ -1136,6 +1147,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_init_ref : M.IsAssociatedFunction Self "init_ref" init_ref.
+      Smpl Add apply AssociatedFunction_init_ref : is_associated.
       
       (*
           pub fn init_mut(&mut self) -> &mut [u8] {
@@ -1264,6 +1276,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_init_mut : M.IsAssociatedFunction Self "init_mut" init_mut.
+      Smpl Add apply AssociatedFunction_init_mut : is_associated.
       
       (*
           pub fn uninit_mut(&mut self) -> &mut [MaybeUninit<u8>] {
@@ -1358,6 +1371,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_uninit_mut : M.IsAssociatedFunction Self "uninit_mut" uninit_mut.
+      Smpl Add apply AssociatedFunction_uninit_mut : is_associated.
       
       (*
           pub unsafe fn as_mut(&mut self) -> &mut [MaybeUninit<u8>] {
@@ -1452,6 +1466,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_as_mut : M.IsAssociatedFunction Self "as_mut" as_mut.
+      Smpl Add apply AssociatedFunction_as_mut : is_associated.
       
       (*
           pub fn advance(&mut self, n: usize) -> &mut Self {
@@ -1568,6 +1583,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_advance : M.IsAssociatedFunction Self "advance" advance.
+      Smpl Add apply AssociatedFunction_advance : is_associated.
       
       (*
           pub unsafe fn advance_unchecked(&mut self, n: usize) -> &mut Self {
@@ -1662,6 +1678,7 @@ Module io.
       
       Axiom AssociatedFunction_advance_unchecked :
         M.IsAssociatedFunction Self "advance_unchecked" advance_unchecked.
+      Smpl Add apply AssociatedFunction_advance_unchecked : is_associated.
       
       (*
           pub fn ensure_init(&mut self) -> &mut Self {
@@ -1802,6 +1819,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_ensure_init : M.IsAssociatedFunction Self "ensure_init" ensure_init.
+      Smpl Add apply AssociatedFunction_ensure_init : is_associated.
       
       (*
           pub unsafe fn set_init(&mut self, n: usize) -> &mut Self {
@@ -1881,6 +1899,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_set_init : M.IsAssociatedFunction Self "set_init" set_init.
+      Smpl Add apply AssociatedFunction_set_init : is_associated.
       
       (*
           pub fn append(&mut self, buf: &[u8]) {
@@ -2118,6 +2137,7 @@ Module io.
         end.
       
       Axiom AssociatedFunction_append : M.IsAssociatedFunction Self "append" append.
+      Smpl Add apply AssociatedFunction_append : is_associated.
     End Impl_core_io_borrowed_buf_BorrowedCursor.
   End borrowed_buf.
 End io.

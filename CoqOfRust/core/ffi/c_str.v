@@ -695,6 +695,7 @@ Module ffi.
       
       Axiom AssociatedFunction_interior_nul :
         M.IsAssociatedFunction Self "interior_nul" interior_nul.
+      Smpl Add apply AssociatedFunction_interior_nul : is_associated.
       
       (*
           const fn not_nul_terminated() -> FromBytesWithNulError {
@@ -718,6 +719,7 @@ Module ffi.
       
       Axiom AssociatedFunction_not_nul_terminated :
         M.IsAssociatedFunction Self "not_nul_terminated" not_nul_terminated.
+      Smpl Add apply AssociatedFunction_not_nul_terminated : is_associated.
     End Impl_core_ffi_c_str_FromBytesWithNulError.
     
     Module Impl_core_error_Error_for_core_ffi_c_str_FromBytesWithNulError.
@@ -1599,6 +1601,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
           pub const fn from_bytes_until_nul(bytes: &[u8]) -> Result<&CStr, FromBytesUntilNulError> {
@@ -1715,6 +1718,7 @@ Module ffi.
       
       Axiom AssociatedFunction_from_bytes_until_nul :
         M.IsAssociatedFunction Self "from_bytes_until_nul" from_bytes_until_nul.
+      Smpl Add apply AssociatedFunction_from_bytes_until_nul : is_associated.
       
       (*
           pub const fn from_bytes_with_nul(bytes: &[u8]) -> Result<&Self, FromBytesWithNulError> {
@@ -1852,6 +1856,7 @@ Module ffi.
       
       Axiom AssociatedFunction_from_bytes_with_nul :
         M.IsAssociatedFunction Self "from_bytes_with_nul" from_bytes_with_nul.
+      Smpl Add apply AssociatedFunction_from_bytes_with_nul : is_associated.
       
       (*
           pub const unsafe fn from_bytes_with_nul_unchecked(bytes: &[u8]) -> &CStr {
@@ -1954,6 +1959,7 @@ Module ffi.
       
       Axiom AssociatedFunction_from_bytes_with_nul_unchecked :
         M.IsAssociatedFunction Self "from_bytes_with_nul_unchecked" from_bytes_with_nul_unchecked.
+      Smpl Add apply AssociatedFunction_from_bytes_with_nul_unchecked : is_associated.
       
       (*
           pub const fn as_ptr(&self) -> *const c_char {
@@ -1987,6 +1993,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
       
       (*
           const fn as_non_null_ptr(&self) -> NonNull<c_char> {
@@ -2055,6 +2062,7 @@ Module ffi.
       
       Axiom AssociatedFunction_as_non_null_ptr :
         M.IsAssociatedFunction Self "as_non_null_ptr" as_non_null_ptr.
+      Smpl Add apply AssociatedFunction_as_non_null_ptr : is_associated.
       
       (*
           pub const fn count_bytes(&self) -> usize {
@@ -2091,6 +2099,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_count_bytes : M.IsAssociatedFunction Self "count_bytes" count_bytes.
+      Smpl Add apply AssociatedFunction_count_bytes : is_associated.
       
       (*
           pub const fn is_empty(&self) -> bool {
@@ -2134,6 +2143,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
       
       (*
           pub const fn to_bytes(&self) -> &[u8] {
@@ -2199,6 +2209,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_to_bytes : M.IsAssociatedFunction Self "to_bytes" to_bytes.
+      Smpl Add apply AssociatedFunction_to_bytes : is_associated.
       
       (*
           pub const fn to_bytes_with_nul(&self) -> &[u8] {
@@ -2240,6 +2251,7 @@ Module ffi.
       
       Axiom AssociatedFunction_to_bytes_with_nul :
         M.IsAssociatedFunction Self "to_bytes_with_nul" to_bytes_with_nul.
+      Smpl Add apply AssociatedFunction_to_bytes_with_nul : is_associated.
       
       (*
           pub fn bytes(&self) -> Bytes<'_> {
@@ -2259,6 +2271,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_bytes : M.IsAssociatedFunction Self "bytes" bytes.
+      Smpl Add apply AssociatedFunction_bytes : is_associated.
       
       (*
           pub const fn to_str(&self) -> Result<&str, str::Utf8Error> {
@@ -2297,6 +2310,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_to_str : M.IsAssociatedFunction Self "to_str" to_str.
+      Smpl Add apply AssociatedFunction_to_str : is_associated.
     End Impl_core_ffi_c_str_CStr.
     
     Module Impl_core_cmp_PartialOrd_for_core_ffi_c_str_CStr.
@@ -3133,6 +3147,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           fn is_empty(&self) -> bool {
@@ -3171,6 +3186,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
     End Impl_core_ffi_c_str_Bytes.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_ffi_c_str_Bytes.

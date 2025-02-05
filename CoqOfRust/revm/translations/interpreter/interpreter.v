@@ -677,6 +677,7 @@ Module interpreter.
     Axiom AssociatedFunction_new :
       forall (EXT MG : Ty.t),
       M.IsAssociatedFunction (Self EXT MG) "new" (new EXT MG).
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_revm_interpreter_interpreter_Interpreter_revm_interpreter_interpreter_EthInterpreter_EXT_MG.
   
   (* StructRecord
@@ -1238,6 +1239,7 @@ Module interpreter.
     Axiom AssociatedFunction_step :
       forall (IW : Ty.t),
       M.IsAssociatedFunction (Self IW) "step" (step IW).
+    Smpl Add apply AssociatedFunction_step : is_associated.
     
     (*
         pub fn run<FN, H: Host>(
@@ -1536,6 +1538,7 @@ Module interpreter.
     Axiom AssociatedFunction_run :
       forall (IW : Ty.t),
       M.IsAssociatedFunction (Self IW) "run" (run IW).
+    Smpl Add apply AssociatedFunction_run : is_associated.
   End Impl_revm_interpreter_interpreter_Interpreter_IW.
   
   (* StructRecord
@@ -1939,6 +1942,7 @@ Module interpreter.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub const fn is_ok(&self) -> bool {
@@ -1971,6 +1975,7 @@ Module interpreter.
       end.
     
     Axiom AssociatedFunction_is_ok : M.IsAssociatedFunction Self "is_ok" is_ok.
+    Smpl Add apply AssociatedFunction_is_ok : is_associated.
     
     (*
         pub const fn is_revert(&self) -> bool {
@@ -2003,6 +2008,7 @@ Module interpreter.
       end.
     
     Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
+    Smpl Add apply AssociatedFunction_is_revert : is_associated.
     
     (*
         pub const fn is_error(&self) -> bool {
@@ -2035,5 +2041,6 @@ Module interpreter.
       end.
     
     Axiom AssociatedFunction_is_error : M.IsAssociatedFunction Self "is_error" is_error.
+    Smpl Add apply AssociatedFunction_is_error : is_associated.
   End Impl_revm_interpreter_interpreter_InterpreterResult.
 End interpreter.

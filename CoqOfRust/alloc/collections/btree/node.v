@@ -215,6 +215,7 @@ Module collections.
         Axiom AssociatedFunction_init :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "init" (init K V).
+        Smpl Add apply AssociatedFunction_init : is_associated.
         
         (*
             fn new<A: Allocator + Clone>(alloc: A) -> Box<Self, A> {
@@ -315,6 +316,7 @@ Module collections.
         Axiom AssociatedFunction_new :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "new" (new K V).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_alloc_collections_btree_node_LeafNode_K_V.
       
       (* StructRecord
@@ -470,6 +472,7 @@ Module collections.
         Axiom AssociatedFunction_new :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "new" (new K V).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_alloc_collections_btree_node_InternalNode_K_V.
       
       Axiom BoxedNode :
@@ -723,6 +726,7 @@ Module collections.
         Axiom AssociatedFunction_new_leaf :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "new_leaf" (new_leaf K V).
+        Smpl Add apply AssociatedFunction_new_leaf : is_associated.
         
         (*
             fn from_new_leaf<A: Allocator + Clone>(leaf: Box<LeafNode<K, V>, A>) -> Self {
@@ -802,6 +806,7 @@ Module collections.
         Axiom AssociatedFunction_from_new_leaf :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "from_new_leaf" (from_new_leaf K V).
+        Smpl Add apply AssociatedFunction_from_new_leaf : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_Leaf.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_Internal.
@@ -933,6 +938,7 @@ Module collections.
         Axiom AssociatedFunction_new_internal :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "new_internal" (new_internal K V).
+        Smpl Add apply AssociatedFunction_new_internal : is_associated.
         
         (*
             unsafe fn from_new_internal<A: Allocator + Clone>(
@@ -1137,6 +1143,7 @@ Module collections.
         Axiom AssociatedFunction_from_new_internal :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "from_new_internal" (from_new_internal K V).
+        Smpl Add apply AssociatedFunction_from_new_internal : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_Internal.
       
       Module Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Internal.
@@ -1252,6 +1259,7 @@ Module collections.
             (Self BorrowType K V)
             "from_internal"
             (from_internal BorrowType K V).
+        Smpl Add apply AssociatedFunction_from_internal : is_associated.
         (*
             fn as_internal_ptr(this: &Self) -> *mut InternalNode<K, V> {
                 // SAFETY: the static node type is `Internal`.
@@ -1305,6 +1313,7 @@ Module collections.
             (Self BorrowType K V)
             "as_internal_ptr"
             (as_internal_ptr BorrowType K V).
+        Smpl Add apply AssociatedFunction_as_internal_ptr : is_associated.
         (*
             pub fn forget_type(self) -> NodeRef<BorrowType, K, V, marker::LeafOrInternal> {
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
@@ -1348,6 +1357,7 @@ Module collections.
         Axiom AssociatedFunction_forget_type :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "forget_type" (forget_type BorrowType K V).
+        Smpl Add apply AssociatedFunction_forget_type : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Internal.
       
       
@@ -1426,6 +1436,7 @@ Module collections.
         Axiom AssociatedFunction_as_internal_mut :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "as_internal_mut" (as_internal_mut K V).
+        Smpl Add apply AssociatedFunction_as_internal_mut : is_associated.
         (*
             unsafe fn edge_area_mut<I, Output: ?Sized>(&mut self, index: I) -> &mut Output
             where
@@ -1567,6 +1578,7 @@ Module collections.
         Axiom AssociatedFunction_edge_area_mut :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "edge_area_mut" (edge_area_mut K V).
+        Smpl Add apply AssociatedFunction_edge_area_mut : is_associated.
         (*
             unsafe fn correct_childrens_parent_links<R: Iterator<Item = usize>>(&mut self, range: R) {
                 for i in range {
@@ -1838,6 +1850,7 @@ Module collections.
             (Self K V)
             "correct_childrens_parent_links"
             (correct_childrens_parent_links K V).
+        Smpl Add apply AssociatedFunction_correct_childrens_parent_links : is_associated.
         
         (*
             fn correct_all_childrens_parent_links(&mut self) {
@@ -1927,6 +1940,7 @@ Module collections.
             (Self K V)
             "correct_all_childrens_parent_links"
             (correct_all_childrens_parent_links K V).
+        Smpl Add apply AssociatedFunction_correct_all_childrens_parent_links : is_associated.
         (*
             pub fn push(&mut self, key: K, val: V, edge: Root<K, V>) {
                 assert!(edge.height == self.height - 1);
@@ -2312,6 +2326,7 @@ Module collections.
         Axiom AssociatedFunction_push :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "push" (push K V).
+        Smpl Add apply AssociatedFunction_push : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal.
       
       Module Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_Type_.
@@ -2378,6 +2393,7 @@ Module collections.
         Axiom AssociatedFunction_len :
           forall (BorrowType K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V Type_) "len" (len BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_len : is_associated.
         
         (*
             pub fn height(&self) -> usize {
@@ -2408,6 +2424,7 @@ Module collections.
         Axiom AssociatedFunction_height :
           forall (BorrowType K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V Type_) "height" (height BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_height : is_associated.
         
         (*
             pub fn reborrow(&self) -> NodeRef<marker::Immut<'_>, K, V, Type> {
@@ -2455,6 +2472,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "reborrow"
             (reborrow BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_reborrow : is_associated.
         
         (*
             fn as_leaf_ptr(this: &Self) -> *mut LeafNode<K, V> {
@@ -2504,6 +2522,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "as_leaf_ptr"
             (as_leaf_ptr BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_as_leaf_ptr : is_associated.
         (*
             pub fn ascend(
                 self,
@@ -2806,6 +2825,7 @@ Module collections.
         Axiom AssociatedFunction_ascend :
           forall (BorrowType K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V Type_) "ascend" (ascend BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_ascend : is_associated.
         
         (*
             pub fn first_edge(self) -> Handle<Self, marker::Edge> {
@@ -2850,6 +2870,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "first_edge"
             (first_edge BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_first_edge : is_associated.
         
         (*
             pub fn last_edge(self) -> Handle<Self, marker::Edge> {
@@ -2914,6 +2935,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "last_edge"
             (last_edge BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_last_edge : is_associated.
         
         (*
             pub fn first_kv(self) -> Handle<Self, marker::KV> {
@@ -3005,6 +3027,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "first_kv"
             (first_kv BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_first_kv : is_associated.
         
         (*
             pub fn last_kv(self) -> Handle<Self, marker::KV> {
@@ -3099,6 +3122,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "last_kv"
             (last_kv BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_last_kv : is_associated.
         (*
             fn eq(&self, other: &Self) -> bool {
                 let Self { node, height, _marker } = self;
@@ -3362,6 +3386,7 @@ Module collections.
         Axiom AssociatedFunction_eq :
           forall (BorrowType K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V Type_) "eq" (eq BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_eq : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_Type_.
       
       
@@ -3425,6 +3450,7 @@ Module collections.
         Axiom AssociatedFunction_into_leaf :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "into_leaf" (into_leaf K V Type_).
+        Smpl Add apply AssociatedFunction_into_leaf : is_associated.
         
         (*
             pub fn keys(&self) -> &[K] {
@@ -3546,6 +3572,7 @@ Module collections.
         Axiom AssociatedFunction_keys :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "keys" (keys K V Type_).
+        Smpl Add apply AssociatedFunction_keys : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_Type_.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -3769,6 +3796,7 @@ Module collections.
         Axiom AssociatedFunction_deallocate_and_ascend :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "deallocate_and_ascend" (deallocate_and_ascend K V).
+        Smpl Add apply AssociatedFunction_deallocate_and_ascend : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_Type_.
@@ -3821,6 +3849,7 @@ Module collections.
         Axiom AssociatedFunction_reborrow_mut :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "reborrow_mut" (reborrow_mut K V Type_).
+        Smpl Add apply AssociatedFunction_reborrow_mut : is_associated.
         
         (*
             fn as_leaf_mut(&mut self) -> &mut LeafNode<K, V> {
@@ -3882,6 +3911,7 @@ Module collections.
         Axiom AssociatedFunction_as_leaf_mut :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "as_leaf_mut" (as_leaf_mut K V Type_).
+        Smpl Add apply AssociatedFunction_as_leaf_mut : is_associated.
         
         (*
             fn into_leaf_mut(mut self) -> &'a mut LeafNode<K, V> {
@@ -3948,6 +3978,7 @@ Module collections.
         Axiom AssociatedFunction_into_leaf_mut :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "into_leaf_mut" (into_leaf_mut K V Type_).
+        Smpl Add apply AssociatedFunction_into_leaf_mut : is_associated.
         
         (*
             pub fn dormant(&self) -> NodeRef<marker::DormantMut, K, V, Type> {
@@ -3992,6 +4023,7 @@ Module collections.
         Axiom AssociatedFunction_dormant :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "dormant" (dormant K V Type_).
+        Smpl Add apply AssociatedFunction_dormant : is_associated.
         (*
             unsafe fn key_area_mut<I, Output: ?Sized>(&mut self, index: I) -> &mut Output
             where
@@ -4107,6 +4139,7 @@ Module collections.
         Axiom AssociatedFunction_key_area_mut :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "key_area_mut" (key_area_mut K V Type_).
+        Smpl Add apply AssociatedFunction_key_area_mut : is_associated.
         
         (*
             unsafe fn val_area_mut<I, Output: ?Sized>(&mut self, index: I) -> &mut Output
@@ -4223,6 +4256,7 @@ Module collections.
         Axiom AssociatedFunction_val_area_mut :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "val_area_mut" (val_area_mut K V Type_).
+        Smpl Add apply AssociatedFunction_val_area_mut : is_associated.
         (*
             pub fn len_mut(&mut self) -> &mut u16 {
                 &mut self.as_leaf_mut().len
@@ -4282,6 +4316,7 @@ Module collections.
         Axiom AssociatedFunction_len_mut :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "len_mut" (len_mut K V Type_).
+        Smpl Add apply AssociatedFunction_len_mut : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_Type_.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_DormantMut_K_V_Type_.
@@ -4334,6 +4369,7 @@ Module collections.
         Axiom AssociatedFunction_awaken :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "awaken" (awaken K V Type_).
+        Smpl Add apply AssociatedFunction_awaken : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_DormantMut_K_V_Type_.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_Type_.
@@ -4407,6 +4443,7 @@ Module collections.
         Axiom AssociatedFunction_as_leaf_dying :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "as_leaf_dying" (as_leaf_dying K V Type_).
+        Smpl Add apply AssociatedFunction_as_leaf_dying : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_Type_.
       
       
@@ -4604,6 +4641,7 @@ Module collections.
             (Self K V Type_)
             "into_key_val_mut_at"
             (into_key_val_mut_at K V Type_).
+        Smpl Add apply AssociatedFunction_into_key_val_mut_at : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_Type_.
       
       
@@ -4703,6 +4741,7 @@ Module collections.
         Axiom AssociatedFunction_set_parent_link :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "set_parent_link" (set_parent_link K V).
+        Smpl Add apply AssociatedFunction_set_parent_link : is_associated.
         (*
             unsafe fn cast_to_leaf_unchecked(self) -> NodeRef<marker::Mut<'a>, K, V, marker::Leaf> {
                 debug_assert!(self.height == 0);
@@ -4806,6 +4845,7 @@ Module collections.
         Axiom AssociatedFunction_cast_to_leaf_unchecked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "cast_to_leaf_unchecked" (cast_to_leaf_unchecked K V).
+        Smpl Add apply AssociatedFunction_cast_to_leaf_unchecked : is_associated.
         
         (*
             unsafe fn cast_to_internal_unchecked(self) -> NodeRef<marker::Mut<'a>, K, V, marker::Internal> {
@@ -4913,6 +4953,7 @@ Module collections.
             (Self K V)
             "cast_to_internal_unchecked"
             (cast_to_internal_unchecked K V).
+        Smpl Add apply AssociatedFunction_cast_to_internal_unchecked : is_associated.
         (*
             pub fn choose_parent_kv(self) -> Result<LeftOrRight<BalancingContext<'a, K, V>>, Self> {
                 match unsafe { ptr::read(&self) }.ascend() {
@@ -5402,6 +5443,7 @@ Module collections.
         Axiom AssociatedFunction_choose_parent_kv :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "choose_parent_kv" (choose_parent_kv K V).
+        Smpl Add apply AssociatedFunction_choose_parent_kv : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -5492,6 +5534,7 @@ Module collections.
         Axiom AssociatedFunction_clear_parent_link :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "clear_parent_link" (clear_parent_link K V).
+        Smpl Add apply AssociatedFunction_clear_parent_link : is_associated.
         (*
             pub fn new<A: Allocator + Clone>(alloc: A) -> Self {
                 NodeRef::new_leaf(alloc).forget_type()
@@ -5544,6 +5587,7 @@ Module collections.
         Axiom AssociatedFunction_new :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "new" (new K V).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             pub fn push_internal_level<A: Allocator + Clone>(
@@ -5703,6 +5747,7 @@ Module collections.
         Axiom AssociatedFunction_push_internal_level :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "push_internal_level" (push_internal_level K V).
+        Smpl Add apply AssociatedFunction_push_internal_level : is_associated.
         
         (*
             pub fn pop_internal_level<A: Allocator + Clone>(&mut self, alloc: A) {
@@ -5982,6 +6027,7 @@ Module collections.
         Axiom AssociatedFunction_pop_internal_level :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "pop_internal_level" (pop_internal_level K V).
+        Smpl Add apply AssociatedFunction_pop_internal_level : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       
@@ -6035,6 +6081,7 @@ Module collections.
         Axiom AssociatedFunction_borrow_mut :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "borrow_mut" (borrow_mut K V Type_).
+        Smpl Add apply AssociatedFunction_borrow_mut : is_associated.
         
         (*
             pub fn borrow_valmut(&mut self) -> NodeRef<marker::ValMut<'_>, K, V, Type> {
@@ -6079,6 +6126,7 @@ Module collections.
         Axiom AssociatedFunction_borrow_valmut :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "borrow_valmut" (borrow_valmut K V Type_).
+        Smpl Add apply AssociatedFunction_borrow_valmut : is_associated.
         
         (*
             pub fn into_dying(self) -> NodeRef<marker::Dying, K, V, Type> {
@@ -6123,6 +6171,7 @@ Module collections.
         Axiom AssociatedFunction_into_dying :
           forall (K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self K V Type_) "into_dying" (into_dying K V Type_).
+        Smpl Add apply AssociatedFunction_into_dying : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_Type_.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf.
@@ -6382,6 +6431,7 @@ Module collections.
         Axiom AssociatedFunction_push_with_handle :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "push_with_handle" (push_with_handle K V).
+        Smpl Add apply AssociatedFunction_push_with_handle : is_associated.
         
         (*
             pub fn push(&mut self, key: K, val: V) -> *mut V {
@@ -6453,6 +6503,7 @@ Module collections.
         Axiom AssociatedFunction_push :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "push" (push K V).
+        Smpl Add apply AssociatedFunction_push : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf.
       
       
@@ -6506,6 +6557,7 @@ Module collections.
         Axiom AssociatedFunction_forget_type :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "forget_type" (forget_type BorrowType K V).
+        Smpl Add apply AssociatedFunction_forget_type : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Leaf.
       
       
@@ -6636,6 +6688,7 @@ Module collections.
         Axiom AssociatedFunction_force :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "force" (force BorrowType K V).
+        Smpl Add apply AssociatedFunction_force : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       
@@ -6731,6 +6784,7 @@ Module collections.
         Axiom AssociatedFunction_into_node :
           forall (Node Type_ : Ty.t),
           M.IsAssociatedFunction (Self Node Type_) "into_node" (into_node Node Type_).
+        Smpl Add apply AssociatedFunction_into_node : is_associated.
         
         (*
             pub fn idx(&self) -> usize {
@@ -6761,6 +6815,7 @@ Module collections.
         Axiom AssociatedFunction_idx :
           forall (Node Type_ : Ty.t),
           M.IsAssociatedFunction (Self Node Type_) "idx" (idx Node Type_).
+        Smpl Add apply AssociatedFunction_idx : is_associated.
       End Impl_alloc_collections_btree_node_Handle_Node_Type_.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_alloc_collections_btree_node_marker_KV.
@@ -6876,6 +6931,7 @@ Module collections.
             (Self BorrowType K V NodeType)
             "new_kv"
             (new_kv BorrowType K V NodeType).
+        Smpl Add apply AssociatedFunction_new_kv : is_associated.
         
         (*
             pub fn left_edge(self) -> Handle<NodeRef<BorrowType, K, V, NodeType>, marker::Edge> {
@@ -6935,6 +6991,7 @@ Module collections.
             (Self BorrowType K V NodeType)
             "left_edge"
             (left_edge BorrowType K V NodeType).
+        Smpl Add apply AssociatedFunction_left_edge : is_associated.
         
         (*
             pub fn right_edge(self) -> Handle<NodeRef<BorrowType, K, V, NodeType>, marker::Edge> {
@@ -6997,6 +7054,7 @@ Module collections.
             (Self BorrowType K V NodeType)
             "right_edge"
             (right_edge BorrowType K V NodeType).
+        Smpl Add apply AssociatedFunction_right_edge : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_alloc_collections_btree_node_marker_KV.
       
       Module Impl_core_cmp_PartialEq_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
@@ -7189,6 +7247,7 @@ Module collections.
             (Self BorrowType K V NodeType HandleType)
             "reborrow"
             (reborrow BorrowType K V NodeType HandleType).
+        Smpl Add apply AssociatedFunction_reborrow : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_NodeType_HandleType.
@@ -7268,6 +7327,7 @@ Module collections.
             (Self K V NodeType HandleType)
             "reborrow_mut"
             (reborrow_mut K V NodeType HandleType).
+        Smpl Add apply AssociatedFunction_reborrow_mut : is_associated.
         
         (*
             pub fn dormant(&self) -> Handle<NodeRef<marker::DormantMut, K, V, NodeType>, HandleType> {
@@ -7330,6 +7390,7 @@ Module collections.
             (Self K V NodeType HandleType)
             "dormant"
             (dormant K V NodeType HandleType).
+        Smpl Add apply AssociatedFunction_dormant : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_NodeType_HandleType.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_DormantMut_K_V_NodeType_HandleType.
@@ -7409,6 +7470,7 @@ Module collections.
             (Self K V NodeType HandleType)
             "awaken"
             (awaken K V NodeType HandleType).
+        Smpl Add apply AssociatedFunction_awaken : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_DormantMut_K_V_NodeType_HandleType.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_alloc_collections_btree_node_marker_Edge.
@@ -7524,6 +7586,7 @@ Module collections.
             (Self BorrowType K V NodeType)
             "new_edge"
             (new_edge BorrowType K V NodeType).
+        Smpl Add apply AssociatedFunction_new_edge : is_associated.
         
         (*
             pub fn left_kv(self) -> Result<Handle<NodeRef<BorrowType, K, V, NodeType>, marker::KV>, Self> {
@@ -7626,6 +7689,7 @@ Module collections.
             (Self BorrowType K V NodeType)
             "left_kv"
             (left_kv BorrowType K V NodeType).
+        Smpl Add apply AssociatedFunction_left_kv : is_associated.
         
         (*
             pub fn right_kv(self) -> Result<Handle<NodeRef<BorrowType, K, V, NodeType>, marker::KV>, Self> {
@@ -7745,6 +7809,7 @@ Module collections.
             (Self BorrowType K V NodeType)
             "right_kv"
             (right_kv BorrowType K V NodeType).
+        Smpl Add apply AssociatedFunction_right_kv : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_alloc_collections_btree_node_marker_Edge.
       
       (*
@@ -8310,6 +8375,7 @@ Module collections.
         Axiom AssociatedFunction_insert_fit :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "insert_fit" (insert_fit K V).
+        Smpl Add apply AssociatedFunction_insert_fit : is_associated.
         (*
             fn insert<A: Allocator + Clone>(
                 self,
@@ -8777,6 +8843,7 @@ Module collections.
         Axiom AssociatedFunction_insert :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "insert" (insert K V).
+        Smpl Add apply AssociatedFunction_insert : is_associated.
         (*
             pub fn insert_recursing<A: Allocator + Clone>(
                 self,
@@ -9264,6 +9331,7 @@ Module collections.
         Axiom AssociatedFunction_insert_recursing :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "insert_recursing" (insert_recursing K V).
+        Smpl Add apply AssociatedFunction_insert_recursing : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       
@@ -9424,6 +9492,7 @@ Module collections.
         Axiom AssociatedFunction_correct_parent_link :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "correct_parent_link" (correct_parent_link K V).
+        Smpl Add apply AssociatedFunction_correct_parent_link : is_associated.
         (*
             fn insert_fit(&mut self, key: K, val: V, edge: Root<K, V>) {
                 debug_assert!(self.node.len() < CAPACITY);
@@ -9966,6 +10035,7 @@ Module collections.
         Axiom AssociatedFunction_insert_fit :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "insert_fit" (insert_fit K V).
+        Smpl Add apply AssociatedFunction_insert_fit : is_associated.
         
         (*
             fn insert<A: Allocator + Clone>(
@@ -10425,6 +10495,7 @@ Module collections.
         Axiom AssociatedFunction_insert :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "insert" (insert K V).
+        Smpl Add apply AssociatedFunction_insert : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_Edge.
       
       
@@ -10611,6 +10682,7 @@ Module collections.
         Axiom AssociatedFunction_descend :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "descend" (descend BorrowType K V).
+        Smpl Add apply AssociatedFunction_descend : is_associated.
         (*
             pub fn forget_node_type(
                 self,
@@ -10694,6 +10766,7 @@ Module collections.
             (Self BorrowType K V)
             "forget_node_type"
             (forget_node_type BorrowType K V).
+        Smpl Add apply AssociatedFunction_forget_node_type : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_Edge.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_NodeType_alloc_collections_btree_node_marker_KV.
@@ -10953,6 +11026,7 @@ Module collections.
         Axiom AssociatedFunction_into_kv :
           forall (K V NodeType : Ty.t),
           M.IsAssociatedFunction (Self K V NodeType) "into_kv" (into_kv K V NodeType).
+        Smpl Add apply AssociatedFunction_into_kv : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_NodeType_alloc_collections_btree_node_marker_KV.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_NodeType_alloc_collections_btree_node_marker_KV.
@@ -11059,6 +11133,7 @@ Module collections.
         Axiom AssociatedFunction_key_mut :
           forall (K V NodeType : Ty.t),
           M.IsAssociatedFunction (Self K V NodeType) "key_mut" (key_mut K V NodeType).
+        Smpl Add apply AssociatedFunction_key_mut : is_associated.
         
         (*
             pub fn into_val_mut(self) -> &'a mut V {
@@ -11268,6 +11343,7 @@ Module collections.
         Axiom AssociatedFunction_into_val_mut :
           forall (K V NodeType : Ty.t),
           M.IsAssociatedFunction (Self K V NodeType) "into_val_mut" (into_val_mut K V NodeType).
+        Smpl Add apply AssociatedFunction_into_val_mut : is_associated.
         
         (*
             pub fn into_kv_mut(self) -> (&'a mut K, &'a mut V) {
@@ -11523,6 +11599,7 @@ Module collections.
         Axiom AssociatedFunction_into_kv_mut :
           forall (K V NodeType : Ty.t),
           M.IsAssociatedFunction (Self K V NodeType) "into_kv_mut" (into_kv_mut K V NodeType).
+        Smpl Add apply AssociatedFunction_into_kv_mut : is_associated.
         (*
             pub fn kv_mut(&mut self) -> (&mut K, &mut V) {
                 debug_assert!(self.idx < self.node.len());
@@ -11772,6 +11849,7 @@ Module collections.
         Axiom AssociatedFunction_kv_mut :
           forall (K V NodeType : Ty.t),
           M.IsAssociatedFunction (Self K V NodeType) "kv_mut" (kv_mut K V NodeType).
+        Smpl Add apply AssociatedFunction_kv_mut : is_associated.
         
         (*
             pub fn replace_kv(&mut self, k: K, v: V) -> (K, V) {
@@ -11860,6 +11938,7 @@ Module collections.
         Axiom AssociatedFunction_replace_kv :
           forall (K V NodeType : Ty.t),
           M.IsAssociatedFunction (Self K V NodeType) "replace_kv" (replace_kv K V NodeType).
+        Smpl Add apply AssociatedFunction_replace_kv : is_associated.
         (*
             fn split_leaf_data(&mut self, new_node: &mut LeafNode<K, V>) -> (K, V) {
                 debug_assert!(self.idx < self.node.len());
@@ -12425,6 +12504,7 @@ Module collections.
             (Self K V NodeType)
             "split_leaf_data"
             (split_leaf_data K V NodeType).
+        Smpl Add apply AssociatedFunction_split_leaf_data : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_NodeType_alloc_collections_btree_node_marker_KV.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_NodeType_alloc_collections_btree_node_marker_KV.
@@ -12489,6 +12569,7 @@ Module collections.
         Axiom AssociatedFunction_into_kv_valmut :
           forall (K V NodeType : Ty.t),
           M.IsAssociatedFunction (Self K V NodeType) "into_kv_valmut" (into_kv_valmut K V NodeType).
+        Smpl Add apply AssociatedFunction_into_kv_valmut : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_NodeType_alloc_collections_btree_node_marker_KV.
       
       
@@ -12746,6 +12827,7 @@ Module collections.
         Axiom AssociatedFunction_into_key_val :
           forall (K V NodeType : Ty.t),
           M.IsAssociatedFunction (Self K V NodeType) "into_key_val" (into_key_val K V NodeType).
+        Smpl Add apply AssociatedFunction_into_key_val : is_associated.
         
         (*
             pub unsafe fn drop_key_val(mut self) {
@@ -12987,6 +13069,7 @@ Module collections.
         Axiom AssociatedFunction_drop_key_val :
           forall (K V NodeType : Ty.t),
           M.IsAssociatedFunction (Self K V NodeType) "drop_key_val" (drop_key_val K V NodeType).
+        Smpl Add apply AssociatedFunction_drop_key_val : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_NodeType_alloc_collections_btree_node_marker_KV.
       
       
@@ -13115,6 +13198,7 @@ Module collections.
         Axiom AssociatedFunction_split :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "split" (split K V).
+        Smpl Add apply AssociatedFunction_split : is_associated.
         
         (*
             pub fn remove(
@@ -13369,6 +13453,7 @@ Module collections.
         Axiom AssociatedFunction_remove :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "remove" (remove K V).
+        Smpl Add apply AssociatedFunction_remove : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_KV.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.
@@ -13748,6 +13833,7 @@ Module collections.
         Axiom AssociatedFunction_split :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "split" (split K V).
+        Smpl Add apply AssociatedFunction_split : is_associated.
         (*
             pub fn consider_for_balancing(self) -> BalancingContext<'a, K, V> {
                 let self1 = unsafe { ptr::read(&self) };
@@ -13945,6 +14031,7 @@ Module collections.
         Axiom AssociatedFunction_consider_for_balancing :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "consider_for_balancing" (consider_for_balancing K V).
+        Smpl Add apply AssociatedFunction_consider_for_balancing : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.
       
       (* StructRecord
@@ -14047,6 +14134,7 @@ Module collections.
         Axiom AssociatedFunction_left_child_len :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "left_child_len" (left_child_len K V).
+        Smpl Add apply AssociatedFunction_left_child_len : is_associated.
         
         (*
             pub fn right_child_len(&self) -> usize {
@@ -14096,6 +14184,7 @@ Module collections.
         Axiom AssociatedFunction_right_child_len :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "right_child_len" (right_child_len K V).
+        Smpl Add apply AssociatedFunction_right_child_len : is_associated.
         
         (*
             pub fn into_left_child(self) -> NodeRef<marker::Mut<'a>, K, V, marker::LeafOrInternal> {
@@ -14126,6 +14215,7 @@ Module collections.
         Axiom AssociatedFunction_into_left_child :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "into_left_child" (into_left_child K V).
+        Smpl Add apply AssociatedFunction_into_left_child : is_associated.
         
         (*
             pub fn into_right_child(self) -> NodeRef<marker::Mut<'a>, K, V, marker::LeafOrInternal> {
@@ -14156,6 +14246,7 @@ Module collections.
         Axiom AssociatedFunction_into_right_child :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "into_right_child" (into_right_child K V).
+        Smpl Add apply AssociatedFunction_into_right_child : is_associated.
         
         (*
             pub fn can_merge(&self) -> bool {
@@ -14239,6 +14330,7 @@ Module collections.
         Axiom AssociatedFunction_can_merge :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "can_merge" (can_merge K V).
+        Smpl Add apply AssociatedFunction_can_merge : is_associated.
         (*
             fn do_merge<
                 F: FnOnce(
@@ -15538,6 +15630,7 @@ Module collections.
         Axiom AssociatedFunction_do_merge :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "do_merge" (do_merge K V).
+        Smpl Add apply AssociatedFunction_do_merge : is_associated.
         
         (*
             pub fn merge_tracking_parent<A: Allocator + Clone>(
@@ -15649,6 +15742,7 @@ Module collections.
         Axiom AssociatedFunction_merge_tracking_parent :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "merge_tracking_parent" (merge_tracking_parent K V).
+        Smpl Add apply AssociatedFunction_merge_tracking_parent : is_associated.
         
         (*
             pub fn merge_tracking_child<A: Allocator + Clone>(
@@ -15760,6 +15854,7 @@ Module collections.
         Axiom AssociatedFunction_merge_tracking_child :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "merge_tracking_child" (merge_tracking_child K V).
+        Smpl Add apply AssociatedFunction_merge_tracking_child : is_associated.
         
         (*
             pub fn merge_tracking_child_edge<A: Allocator + Clone>(
@@ -16009,6 +16104,7 @@ Module collections.
             (Self K V)
             "merge_tracking_child_edge"
             (merge_tracking_child_edge K V).
+        Smpl Add apply AssociatedFunction_merge_tracking_child_edge : is_associated.
         
         (*
             pub fn steal_left(
@@ -16092,6 +16188,7 @@ Module collections.
         Axiom AssociatedFunction_steal_left :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "steal_left" (steal_left K V).
+        Smpl Add apply AssociatedFunction_steal_left : is_associated.
         
         (*
             pub fn steal_right(
@@ -16172,6 +16269,7 @@ Module collections.
         Axiom AssociatedFunction_steal_right :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "steal_right" (steal_right K V).
+        Smpl Add apply AssociatedFunction_steal_right : is_associated.
         
         (*
             pub fn bulk_steal_left(&mut self, count: usize) {
@@ -17469,6 +17567,7 @@ Module collections.
         Axiom AssociatedFunction_bulk_steal_left :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "bulk_steal_left" (bulk_steal_left K V).
+        Smpl Add apply AssociatedFunction_bulk_steal_left : is_associated.
         
         (*
             pub fn bulk_steal_right(&mut self, count: usize) {
@@ -18814,6 +18913,7 @@ Module collections.
         Axiom AssociatedFunction_bulk_steal_right :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "bulk_steal_right" (bulk_steal_right K V).
+        Smpl Add apply AssociatedFunction_bulk_steal_right : is_associated.
       End Impl_alloc_collections_btree_node_BalancingContext_K_V.
       
       
@@ -18909,6 +19009,7 @@ Module collections.
             (Self BorrowType K V)
             "forget_node_type"
             (forget_node_type BorrowType K V).
+        Smpl Add apply AssociatedFunction_forget_node_type : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       
@@ -19004,6 +19105,7 @@ Module collections.
             (Self BorrowType K V)
             "forget_node_type"
             (forget_node_type BorrowType K V).
+        Smpl Add apply AssociatedFunction_forget_node_type : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_KV.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal_Type_.
@@ -19149,6 +19251,7 @@ Module collections.
         Axiom AssociatedFunction_force :
           forall (BorrowType K V Type_ : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V Type_) "force" (force BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_force : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal_Type_.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_Type_.
@@ -19243,6 +19346,7 @@ Module collections.
             (Self K V Type_)
             "cast_to_leaf_unchecked"
             (cast_to_leaf_unchecked K V Type_).
+        Smpl Add apply AssociatedFunction_cast_to_leaf_unchecked : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_Type_.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_Edge.
@@ -20075,6 +20179,7 @@ Module collections.
         Axiom AssociatedFunction_move_suffix :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "move_suffix" (move_suffix K V).
+        Smpl Add apply AssociatedFunction_move_suffix : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_Edge.
       
       (*
@@ -20212,6 +20317,7 @@ Module collections.
         Axiom AssociatedFunction_forget_node_type :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "forget_node_type" (forget_node_type K V).
+        Smpl Add apply AssociatedFunction_forget_node_type : is_associated.
       End Impl_alloc_collections_btree_node_SplitResult_K_V_alloc_collections_btree_node_marker_Leaf.
       
       Module Impl_alloc_collections_btree_node_SplitResult_K_V_alloc_collections_btree_node_marker_Internal.
@@ -20307,6 +20413,7 @@ Module collections.
         Axiom AssociatedFunction_forget_node_type :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "forget_node_type" (forget_node_type K V).
+        Smpl Add apply AssociatedFunction_forget_node_type : is_associated.
       End Impl_alloc_collections_btree_node_SplitResult_K_V_alloc_collections_btree_node_marker_Internal.
       
       Module marker.

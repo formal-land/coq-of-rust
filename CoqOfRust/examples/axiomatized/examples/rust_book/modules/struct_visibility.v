@@ -25,6 +25,7 @@ Module my.
     Parameter new : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 

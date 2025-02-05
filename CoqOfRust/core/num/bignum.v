@@ -520,6 +520,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_small : M.IsAssociatedFunction Self "from_small" from_small.
+      Smpl Add apply AssociatedFunction_from_small : is_associated.
       
       (*
                   pub fn from_u64(mut v: u64) -> $name {
@@ -607,6 +608,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_u64 : M.IsAssociatedFunction Self "from_u64" from_u64.
+      Smpl Add apply AssociatedFunction_from_u64 : is_associated.
       
       (*
                   pub fn digits(&self) -> &[$ty] {
@@ -668,6 +670,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_digits : M.IsAssociatedFunction Self "digits" digits.
+      Smpl Add apply AssociatedFunction_digits : is_associated.
       
       (*
                   pub fn get_bit(&self, i: usize) -> u8 {
@@ -714,6 +717,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_get_bit : M.IsAssociatedFunction Self "get_bit" get_bit.
+      Smpl Add apply AssociatedFunction_get_bit : is_associated.
       
       (*
                   pub fn is_zero(&self) -> bool {
@@ -793,6 +797,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_zero : M.IsAssociatedFunction Self "is_zero" is_zero.
+      Smpl Add apply AssociatedFunction_is_zero : is_associated.
       
       (*
                   pub fn bit_length(&self) -> usize {
@@ -925,6 +930,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_bit_length : M.IsAssociatedFunction Self "bit_length" bit_length.
+      Smpl Add apply AssociatedFunction_bit_length : is_associated.
       
       (*
                   pub fn add<'a>(&'a mut self, other: &$name) -> &'a mut $name {
@@ -1252,6 +1258,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_add : M.IsAssociatedFunction Self "add" add.
+      Smpl Add apply AssociatedFunction_add : is_associated.
       
       (*
                   pub fn add_small(&mut self, other: $ty) -> &mut $name {
@@ -1459,6 +1466,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_add_small : M.IsAssociatedFunction Self "add_small" add_small.
+      Smpl Add apply AssociatedFunction_add_small : is_associated.
       
       (*
                   pub fn sub<'a>(&'a mut self, other: &$name) -> &'a mut $name {
@@ -1772,6 +1780,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_sub : M.IsAssociatedFunction Self "sub" sub.
+      Smpl Add apply AssociatedFunction_sub : is_associated.
       
       (*
                   pub fn mul_small(&mut self, other: $ty) -> &mut $name {
@@ -2012,6 +2021,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_mul_small : M.IsAssociatedFunction Self "mul_small" mul_small.
+      Smpl Add apply AssociatedFunction_mul_small : is_associated.
       
       (*
                   pub fn mul_pow2(&mut self, bits: usize) -> &mut $name {
@@ -2879,6 +2889,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_mul_pow2 : M.IsAssociatedFunction Self "mul_pow2" mul_pow2.
+      Smpl Add apply AssociatedFunction_mul_pow2 : is_associated.
       
       (*
                   pub fn mul_pow5(&mut self, mut e: usize) -> &mut $name {
@@ -3132,6 +3143,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_mul_pow5 : M.IsAssociatedFunction Self "mul_pow5" mul_pow5.
+      Smpl Add apply AssociatedFunction_mul_pow5 : is_associated.
       
       (*
                   pub fn mul_digits<'a>(&'a mut self, other: &[$ty]) -> &'a mut $name {
@@ -3356,6 +3368,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_mul_digits : M.IsAssociatedFunction Self "mul_digits" mul_digits.
+      Smpl Add apply AssociatedFunction_mul_digits : is_associated.
       
       (*
                   pub fn div_rem_small(&mut self, other: $ty) -> (&mut $name, $ty) {
@@ -3605,6 +3618,7 @@ Module num.
       
       Axiom AssociatedFunction_div_rem_small :
         M.IsAssociatedFunction Self "div_rem_small" div_rem_small.
+      Smpl Add apply AssociatedFunction_div_rem_small : is_associated.
       
       (*
                   pub fn div_rem(&self, d: &$name, q: &mut $name, r: &mut $name) {
@@ -4571,6 +4585,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_div_rem : M.IsAssociatedFunction Self "div_rem" div_rem.
+      Smpl Add apply AssociatedFunction_div_rem : is_associated.
     End Impl_core_num_bignum_Big32x40.
     
     Module Impl_core_cmp_PartialEq_for_core_num_bignum_Big32x40.
@@ -5710,6 +5725,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_from_small : M.IsAssociatedFunction Self "from_small" from_small.
+        Smpl Add apply AssociatedFunction_from_small : is_associated.
         
         (*
                     pub fn from_u64(mut v: u64) -> $name {
@@ -5802,6 +5818,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_from_u64 : M.IsAssociatedFunction Self "from_u64" from_u64.
+        Smpl Add apply AssociatedFunction_from_u64 : is_associated.
         
         (*
                     pub fn digits(&self) -> &[$ty] {
@@ -5863,6 +5880,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_digits : M.IsAssociatedFunction Self "digits" digits.
+        Smpl Add apply AssociatedFunction_digits : is_associated.
         
         (*
                     pub fn get_bit(&self, i: usize) -> u8 {
@@ -5910,6 +5928,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_get_bit : M.IsAssociatedFunction Self "get_bit" get_bit.
+        Smpl Add apply AssociatedFunction_get_bit : is_associated.
         
         (*
                     pub fn is_zero(&self) -> bool {
@@ -5989,6 +6008,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_is_zero : M.IsAssociatedFunction Self "is_zero" is_zero.
+        Smpl Add apply AssociatedFunction_is_zero : is_associated.
         
         (*
                     pub fn bit_length(&self) -> usize {
@@ -6121,6 +6141,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_bit_length : M.IsAssociatedFunction Self "bit_length" bit_length.
+        Smpl Add apply AssociatedFunction_bit_length : is_associated.
         
         (*
                     pub fn add<'a>(&'a mut self, other: &$name) -> &'a mut $name {
@@ -6456,6 +6477,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_add : M.IsAssociatedFunction Self "add" add.
+        Smpl Add apply AssociatedFunction_add : is_associated.
         
         (*
                     pub fn add_small(&mut self, other: $ty) -> &mut $name {
@@ -6663,6 +6685,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_add_small : M.IsAssociatedFunction Self "add_small" add_small.
+        Smpl Add apply AssociatedFunction_add_small : is_associated.
         
         (*
                     pub fn sub<'a>(&'a mut self, other: &$name) -> &'a mut $name {
@@ -6984,6 +7007,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_sub : M.IsAssociatedFunction Self "sub" sub.
+        Smpl Add apply AssociatedFunction_sub : is_associated.
         
         (*
                     pub fn mul_small(&mut self, other: $ty) -> &mut $name {
@@ -7235,6 +7259,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_mul_small : M.IsAssociatedFunction Self "mul_small" mul_small.
+        Smpl Add apply AssociatedFunction_mul_small : is_associated.
         
         (*
                     pub fn mul_pow2(&mut self, bits: usize) -> &mut $name {
@@ -8128,6 +8153,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_mul_pow2 : M.IsAssociatedFunction Self "mul_pow2" mul_pow2.
+        Smpl Add apply AssociatedFunction_mul_pow2 : is_associated.
         
         (*
                     pub fn mul_pow5(&mut self, mut e: usize) -> &mut $name {
@@ -8388,6 +8414,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_mul_pow5 : M.IsAssociatedFunction Self "mul_pow5" mul_pow5.
+        Smpl Add apply AssociatedFunction_mul_pow5 : is_associated.
         
         (*
                     pub fn mul_digits<'a>(&'a mut self, other: &[$ty]) -> &'a mut $name {
@@ -8614,6 +8641,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_mul_digits : M.IsAssociatedFunction Self "mul_digits" mul_digits.
+        Smpl Add apply AssociatedFunction_mul_digits : is_associated.
         
         (*
                     pub fn div_rem_small(&mut self, other: $ty) -> (&mut $name, $ty) {
@@ -8866,6 +8894,7 @@ Module num.
         
         Axiom AssociatedFunction_div_rem_small :
           M.IsAssociatedFunction Self "div_rem_small" div_rem_small.
+        Smpl Add apply AssociatedFunction_div_rem_small : is_associated.
         
         (*
                     pub fn div_rem(&self, d: &$name, q: &mut $name, r: &mut $name) {
@@ -9862,6 +9891,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_div_rem : M.IsAssociatedFunction Self "div_rem" div_rem.
+        Smpl Add apply AssociatedFunction_div_rem : is_associated.
       End Impl_core_num_bignum_tests_Big8x3.
       
       Module Impl_core_cmp_PartialEq_for_core_num_bignum_tests_Big8x3.

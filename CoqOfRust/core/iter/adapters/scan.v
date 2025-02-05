@@ -128,6 +128,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I St F : Ty.t),
           M.IsAssociatedFunction (Self I St F) "new" (new I St F).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_scan_Scan_I_St_F.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_fmt_Debug_St_for_core_iter_adapters_scan_Scan_I_St_F.

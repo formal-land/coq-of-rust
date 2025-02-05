@@ -90,6 +90,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
   
   Axiom AssociatedFunction_work_phone_area_code :
     M.IsAssociatedFunction Self "work_phone_area_code" work_phone_area_code.
+  Smpl Add apply AssociatedFunction_work_phone_area_code : is_associated.
 End Impl_unpacking_options_via_question_mark_Person.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.

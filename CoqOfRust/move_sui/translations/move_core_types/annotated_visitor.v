@@ -1442,6 +1442,7 @@ Module annotated_visitor.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn element_layout(&self) -> &'l MoveTypeLayout {
@@ -1465,6 +1466,7 @@ Module annotated_visitor.
     
     Axiom AssociatedFunction_element_layout :
       M.IsAssociatedFunction Self "element_layout" element_layout.
+    Smpl Add apply AssociatedFunction_element_layout : is_associated.
     
     (*
         pub fn len(&self) -> u64 {
@@ -1487,6 +1489,7 @@ Module annotated_visitor.
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub fn has_element(&self) -> bool {
@@ -1518,6 +1521,7 @@ Module annotated_visitor.
       end.
     
     Axiom AssociatedFunction_has_element : M.IsAssociatedFunction Self "has_element" has_element.
+    Smpl Add apply AssociatedFunction_has_element : is_associated.
     
     (*
         pub fn next_element<V: Visitor + ?Sized>(
@@ -1716,6 +1720,7 @@ Module annotated_visitor.
       end.
     
     Axiom AssociatedFunction_next_element : M.IsAssociatedFunction Self "next_element" next_element.
+    Smpl Add apply AssociatedFunction_next_element : is_associated.
     
     (*
         pub fn skip_element(&mut self) -> Result<bool, Error> {
@@ -1799,6 +1804,7 @@ Module annotated_visitor.
       end.
     
     Axiom AssociatedFunction_skip_element : M.IsAssociatedFunction Self "skip_element" skip_element.
+    Smpl Add apply AssociatedFunction_skip_element : is_associated.
   End Impl_move_core_types_annotated_visitor_VecDriver.
   
   Module Impl_move_core_types_annotated_visitor_StructDriver.
@@ -1830,6 +1836,7 @@ Module annotated_visitor.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn struct_layout(&self) -> &'l MoveStructLayout {
@@ -1853,6 +1860,7 @@ Module annotated_visitor.
     
     Axiom AssociatedFunction_struct_layout :
       M.IsAssociatedFunction Self "struct_layout" struct_layout.
+    Smpl Add apply AssociatedFunction_struct_layout : is_associated.
     
     (*
         pub fn peek_field(&self) -> Option<&'l MoveFieldLayout> {
@@ -1928,6 +1936,7 @@ Module annotated_visitor.
       end.
     
     Axiom AssociatedFunction_peek_field : M.IsAssociatedFunction Self "peek_field" peek_field.
+    Smpl Add apply AssociatedFunction_peek_field : is_associated.
     
     (*
         pub fn next_field<V: Visitor + ?Sized>(
@@ -2142,6 +2151,7 @@ Module annotated_visitor.
       end.
     
     Axiom AssociatedFunction_next_field : M.IsAssociatedFunction Self "next_field" next_field.
+    Smpl Add apply AssociatedFunction_next_field : is_associated.
     
     (*
         pub fn skip_field(&mut self) -> Result<Option<&'l MoveFieldLayout>, Error> {
@@ -2341,6 +2351,7 @@ Module annotated_visitor.
       end.
     
     Axiom AssociatedFunction_skip_field : M.IsAssociatedFunction Self "skip_field" skip_field.
+    Smpl Add apply AssociatedFunction_skip_field : is_associated.
   End Impl_move_core_types_annotated_visitor_StructDriver.
   
   (*

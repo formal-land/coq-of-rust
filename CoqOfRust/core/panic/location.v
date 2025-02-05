@@ -757,6 +757,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
+      Smpl Add apply AssociatedFunction_caller : is_associated.
       
       (*
           pub const fn file(&self) -> &str {
@@ -784,6 +785,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_file : M.IsAssociatedFunction Self "file" file.
+      Smpl Add apply AssociatedFunction_file : is_associated.
       
       (*
           pub const fn line(&self) -> u32 {
@@ -806,6 +808,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_line : M.IsAssociatedFunction Self "line" line.
+      Smpl Add apply AssociatedFunction_line : is_associated.
       
       (*
           pub const fn column(&self) -> u32 {
@@ -828,6 +831,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_column : M.IsAssociatedFunction Self "column" column.
+      Smpl Add apply AssociatedFunction_column : is_associated.
       (*
           pub const fn internal_constructor(file: &'a str, line: u32, col: u32) -> Self {
               Location { file, line, col }
@@ -852,6 +856,7 @@ Module panic.
       
       Axiom AssociatedFunction_internal_constructor :
         M.IsAssociatedFunction Self "internal_constructor" internal_constructor.
+      Smpl Add apply AssociatedFunction_internal_constructor : is_associated.
     End Impl_core_panic_location_Location.
     
     

@@ -678,6 +678,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_zero_pow2 : M.IsAssociatedFunction Self "zero_pow2" zero_pow2.
+        Smpl Add apply AssociatedFunction_zero_pow2 : is_associated.
       End Impl_core_num_dec2flt_common_BiasedFp.
     End common.
   End dec2flt.

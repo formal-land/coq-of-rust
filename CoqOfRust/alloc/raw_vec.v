@@ -78,6 +78,7 @@ Module raw_vec.
           |))).
     
     Axiom AssociatedConstant_value_ZERO : M.IsAssociatedConstant Self "value_ZERO" value_ZERO.
+    Smpl Add apply AssociatedConstant_value_ZERO : is_associated.
     
     (*
         unsafe fn new<T>(cap: usize) -> Self {
@@ -108,6 +109,7 @@ Module raw_vec.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_alloc_raw_vec_Cap.
   
   (* StructRecord
@@ -162,6 +164,7 @@ Module raw_vec.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn with_capacity(capacity: usize) -> Self {
@@ -201,6 +204,7 @@ Module raw_vec.
     Axiom AssociatedFunction_with_capacity :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "with_capacity" (with_capacity T).
+    Smpl Add apply AssociatedFunction_with_capacity : is_associated.
     
     (*
         pub fn with_capacity_zeroed(capacity: usize) -> Self {
@@ -249,6 +253,7 @@ Module raw_vec.
     Axiom AssociatedFunction_with_capacity_zeroed :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "with_capacity_zeroed" (with_capacity_zeroed T).
+    Smpl Add apply AssociatedFunction_with_capacity_zeroed : is_associated.
   End Impl_alloc_raw_vec_RawVec_T_alloc_alloc_Global.
   
   Module Impl_alloc_raw_vec_RawVecInner_alloc_alloc_Global.
@@ -318,6 +323,7 @@ Module raw_vec.
     
     Axiom AssociatedFunction_with_capacity :
       M.IsAssociatedFunction Self "with_capacity" with_capacity.
+    Smpl Add apply AssociatedFunction_with_capacity : is_associated.
   End Impl_alloc_raw_vec_RawVecInner_alloc_alloc_Global.
   
   (*
@@ -398,6 +404,7 @@ Module raw_vec.
     Axiom AssociatedConstant_value_MIN_NON_ZERO_CAP :
       forall (T A : Ty.t),
       M.IsAssociatedConstant (Self T A) "value_MIN_NON_ZERO_CAP" (value_MIN_NON_ZERO_CAP T A).
+    Smpl Add apply AssociatedConstant_value_MIN_NON_ZERO_CAP : is_associated.
     
     (*
         pub const fn new_in(alloc: A) -> Self {
@@ -434,6 +441,7 @@ Module raw_vec.
     Axiom AssociatedFunction_new_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
+    Smpl Add apply AssociatedFunction_new_in : is_associated.
     
     (*
         pub fn with_capacity_in(capacity: usize, alloc: A) -> Self {
@@ -480,6 +488,7 @@ Module raw_vec.
     Axiom AssociatedFunction_with_capacity_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "with_capacity_in" (with_capacity_in T A).
+    Smpl Add apply AssociatedFunction_with_capacity_in : is_associated.
     
     (*
         pub fn try_with_capacity_in(capacity: usize, alloc: A) -> Result<Self, TryReserveError> {
@@ -551,6 +560,7 @@ Module raw_vec.
     Axiom AssociatedFunction_try_with_capacity_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_with_capacity_in" (try_with_capacity_in T A).
+    Smpl Add apply AssociatedFunction_try_with_capacity_in : is_associated.
     
     (*
         pub fn with_capacity_zeroed_in(capacity: usize, alloc: A) -> Self {
@@ -597,6 +607,7 @@ Module raw_vec.
     Axiom AssociatedFunction_with_capacity_zeroed_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "with_capacity_zeroed_in" (with_capacity_zeroed_in T A).
+    Smpl Add apply AssociatedFunction_with_capacity_zeroed_in : is_associated.
     
     (*
         pub unsafe fn into_box(self, len: usize) -> Box<[MaybeUninit<T>], A> {
@@ -834,6 +845,7 @@ Module raw_vec.
     Axiom AssociatedFunction_into_box :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_box" (into_box T A).
+    Smpl Add apply AssociatedFunction_into_box : is_associated.
     
     (*
         pub unsafe fn from_raw_parts_in(ptr: *mut T, capacity: usize, alloc: A) -> Self {
@@ -905,6 +917,7 @@ Module raw_vec.
     Axiom AssociatedFunction_from_raw_parts_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "from_raw_parts_in" (from_raw_parts_in T A).
+    Smpl Add apply AssociatedFunction_from_raw_parts_in : is_associated.
     
     (*
         pub unsafe fn from_nonnull_in(ptr: NonNull<T>, capacity: usize, alloc: A) -> Self {
@@ -973,6 +986,7 @@ Module raw_vec.
     Axiom AssociatedFunction_from_nonnull_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "from_nonnull_in" (from_nonnull_in T A).
+    Smpl Add apply AssociatedFunction_from_nonnull_in : is_associated.
     
     (*
         pub fn ptr(&self) -> *mut T {
@@ -1009,6 +1023,7 @@ Module raw_vec.
     Axiom AssociatedFunction_ptr :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "ptr" (ptr T A).
+    Smpl Add apply AssociatedFunction_ptr : is_associated.
     
     (*
         pub fn non_null(&self) -> NonNull<T> {
@@ -1045,6 +1060,7 @@ Module raw_vec.
     Axiom AssociatedFunction_non_null :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "non_null" (non_null T A).
+    Smpl Add apply AssociatedFunction_non_null : is_associated.
     
     (*
         pub fn capacity(&self) -> usize {
@@ -1082,6 +1098,7 @@ Module raw_vec.
     Axiom AssociatedFunction_capacity :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "capacity" (capacity T A).
+    Smpl Add apply AssociatedFunction_capacity : is_associated.
     
     (*
         pub fn allocator(&self) -> &A {
@@ -1123,6 +1140,7 @@ Module raw_vec.
     Axiom AssociatedFunction_allocator :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
+    Smpl Add apply AssociatedFunction_allocator : is_associated.
     
     (*
         pub fn reserve(&mut self, len: usize, additional: usize) {
@@ -1164,6 +1182,7 @@ Module raw_vec.
     Axiom AssociatedFunction_reserve :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "reserve" (reserve T A).
+    Smpl Add apply AssociatedFunction_reserve : is_associated.
     
     (*
         pub fn grow_one(&mut self) {
@@ -1201,6 +1220,7 @@ Module raw_vec.
     Axiom AssociatedFunction_grow_one :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "grow_one" (grow_one T A).
+    Smpl Add apply AssociatedFunction_grow_one : is_associated.
     
     (*
         pub fn try_reserve(&mut self, len: usize, additional: usize) -> Result<(), TryReserveError> {
@@ -1242,6 +1262,7 @@ Module raw_vec.
     Axiom AssociatedFunction_try_reserve :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_reserve" (try_reserve T A).
+    Smpl Add apply AssociatedFunction_try_reserve : is_associated.
     
     (*
         pub fn reserve_exact(&mut self, len: usize, additional: usize) {
@@ -1288,6 +1309,7 @@ Module raw_vec.
     Axiom AssociatedFunction_reserve_exact :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "reserve_exact" (reserve_exact T A).
+    Smpl Add apply AssociatedFunction_reserve_exact : is_associated.
     
     (*
         pub fn try_reserve_exact(
@@ -1338,6 +1360,7 @@ Module raw_vec.
     Axiom AssociatedFunction_try_reserve_exact :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_reserve_exact" (try_reserve_exact T A).
+    Smpl Add apply AssociatedFunction_try_reserve_exact : is_associated.
     
     (*
         pub fn shrink_to_fit(&mut self, cap: usize) {
@@ -1382,6 +1405,7 @@ Module raw_vec.
     Axiom AssociatedFunction_shrink_to_fit :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "shrink_to_fit" (shrink_to_fit T A).
+    Smpl Add apply AssociatedFunction_shrink_to_fit : is_associated.
   End Impl_alloc_raw_vec_RawVec_T_A.
   
   Module Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_raw_vec_RawVec_T_A.
@@ -1478,6 +1502,7 @@ Module raw_vec.
     Axiom AssociatedFunction_new_in :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "new_in" (new_in A).
+    Smpl Add apply AssociatedFunction_new_in : is_associated.
     
     (*
         fn with_capacity_in(capacity: usize, alloc: A, elem_layout: Layout) -> Self {
@@ -1579,6 +1604,7 @@ Module raw_vec.
     Axiom AssociatedFunction_with_capacity_in :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "with_capacity_in" (with_capacity_in A).
+    Smpl Add apply AssociatedFunction_with_capacity_in : is_associated.
     
     (*
         fn try_with_capacity_in(
@@ -1622,6 +1648,7 @@ Module raw_vec.
     Axiom AssociatedFunction_try_with_capacity_in :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "try_with_capacity_in" (try_with_capacity_in A).
+    Smpl Add apply AssociatedFunction_try_with_capacity_in : is_associated.
     
     (*
         fn with_capacity_zeroed_in(capacity: usize, alloc: A, elem_layout: Layout) -> Self {
@@ -1691,6 +1718,7 @@ Module raw_vec.
     Axiom AssociatedFunction_with_capacity_zeroed_in :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "with_capacity_zeroed_in" (with_capacity_zeroed_in A).
+    Smpl Add apply AssociatedFunction_with_capacity_zeroed_in : is_associated.
     
     (*
         fn try_allocate_in(
@@ -2064,6 +2092,7 @@ Module raw_vec.
     Axiom AssociatedFunction_try_allocate_in :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "try_allocate_in" (try_allocate_in A).
+    Smpl Add apply AssociatedFunction_try_allocate_in : is_associated.
     
     (*
         unsafe fn from_raw_parts_in(ptr: *mut u8, cap: Cap, alloc: A) -> Self {
@@ -2105,6 +2134,7 @@ Module raw_vec.
     Axiom AssociatedFunction_from_raw_parts_in :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "from_raw_parts_in" (from_raw_parts_in A).
+    Smpl Add apply AssociatedFunction_from_raw_parts_in : is_associated.
     
     (*
         unsafe fn from_nonnull_in(ptr: NonNull<u8>, cap: Cap, alloc: A) -> Self {
@@ -2149,6 +2179,7 @@ Module raw_vec.
     Axiom AssociatedFunction_from_nonnull_in :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "from_nonnull_in" (from_nonnull_in A).
+    Smpl Add apply AssociatedFunction_from_nonnull_in : is_associated.
     
     (*
         fn ptr<T>(&self) -> *mut T {
@@ -2184,6 +2215,7 @@ Module raw_vec.
       end.
     
     Axiom AssociatedFunction_ptr : forall (A : Ty.t), M.IsAssociatedFunction (Self A) "ptr" (ptr A).
+    Smpl Add apply AssociatedFunction_ptr : is_associated.
     
     (*
         fn non_null<T>(&self) -> NonNull<T> {
@@ -2232,6 +2264,7 @@ Module raw_vec.
     Axiom AssociatedFunction_non_null :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "non_null" (non_null A).
+    Smpl Add apply AssociatedFunction_non_null : is_associated.
     
     (*
         fn capacity(&self, elem_size: usize) -> usize {
@@ -2278,6 +2311,7 @@ Module raw_vec.
     Axiom AssociatedFunction_capacity :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "capacity" (capacity A).
+    Smpl Add apply AssociatedFunction_capacity : is_associated.
     
     (*
         fn allocator(&self) -> &A {
@@ -2309,6 +2343,7 @@ Module raw_vec.
     Axiom AssociatedFunction_allocator :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "allocator" (allocator A).
+    Smpl Add apply AssociatedFunction_allocator : is_associated.
     
     (*
         fn current_memory(&self, elem_layout: Layout) -> Option<(NonNull<u8>, Layout)> {
@@ -2480,6 +2515,7 @@ Module raw_vec.
     Axiom AssociatedFunction_current_memory :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "current_memory" (current_memory A).
+    Smpl Add apply AssociatedFunction_current_memory : is_associated.
     
     (*
         fn reserve(&mut self, len: usize, additional: usize, elem_layout: Layout) {
@@ -2566,6 +2602,7 @@ Module raw_vec.
     Axiom AssociatedFunction_reserve :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "reserve" (reserve A).
+    Smpl Add apply AssociatedFunction_reserve : is_associated.
     
     (*
         fn grow_one(&mut self, elem_layout: Layout) {
@@ -2635,6 +2672,7 @@ Module raw_vec.
     Axiom AssociatedFunction_grow_one :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "grow_one" (grow_one A).
+    Smpl Add apply AssociatedFunction_grow_one : is_associated.
     
     (*
         fn try_reserve(
@@ -2827,6 +2865,7 @@ Module raw_vec.
     Axiom AssociatedFunction_try_reserve :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "try_reserve" (try_reserve A).
+    Smpl Add apply AssociatedFunction_try_reserve : is_associated.
     
     (*
         fn reserve_exact(&mut self, len: usize, additional: usize, elem_layout: Layout) {
@@ -2888,6 +2927,7 @@ Module raw_vec.
     Axiom AssociatedFunction_reserve_exact :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "reserve_exact" (reserve_exact A).
+    Smpl Add apply AssociatedFunction_reserve_exact : is_associated.
     
     (*
         fn try_reserve_exact(
@@ -3085,6 +3125,7 @@ Module raw_vec.
     Axiom AssociatedFunction_try_reserve_exact :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "try_reserve_exact" (try_reserve_exact A).
+    Smpl Add apply AssociatedFunction_try_reserve_exact : is_associated.
     
     (*
         fn shrink_to_fit(&mut self, cap: usize, elem_layout: Layout) {
@@ -3144,6 +3185,7 @@ Module raw_vec.
     Axiom AssociatedFunction_shrink_to_fit :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "shrink_to_fit" (shrink_to_fit A).
+    Smpl Add apply AssociatedFunction_shrink_to_fit : is_associated.
     
     (*
         fn needs_to_grow(&self, len: usize, additional: usize, elem_layout: Layout) -> bool {
@@ -3194,6 +3236,7 @@ Module raw_vec.
     Axiom AssociatedFunction_needs_to_grow :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "needs_to_grow" (needs_to_grow A).
+    Smpl Add apply AssociatedFunction_needs_to_grow : is_associated.
     
     (*
         unsafe fn set_ptr_and_cap(&mut self, ptr: NonNull<[u8]>, cap: usize) {
@@ -3268,6 +3311,7 @@ Module raw_vec.
     Axiom AssociatedFunction_set_ptr_and_cap :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "set_ptr_and_cap" (set_ptr_and_cap A).
+    Smpl Add apply AssociatedFunction_set_ptr_and_cap : is_associated.
     
     (*
         fn grow_amortized(
@@ -3798,6 +3842,7 @@ Module raw_vec.
     Axiom AssociatedFunction_grow_amortized :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "grow_amortized" (grow_amortized A).
+    Smpl Add apply AssociatedFunction_grow_amortized : is_associated.
     
     (*
         fn grow_exact(
@@ -4221,6 +4266,7 @@ Module raw_vec.
     Axiom AssociatedFunction_grow_exact :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "grow_exact" (grow_exact A).
+    Smpl Add apply AssociatedFunction_grow_exact : is_associated.
     
     (*
         fn shrink(&mut self, cap: usize, elem_layout: Layout) -> Result<(), TryReserveError> {
@@ -4337,6 +4383,7 @@ Module raw_vec.
     Axiom AssociatedFunction_shrink :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "shrink" (shrink A).
+    Smpl Add apply AssociatedFunction_shrink : is_associated.
     
     (*
         unsafe fn shrink_unchecked(
@@ -4784,6 +4831,7 @@ Module raw_vec.
     Axiom AssociatedFunction_shrink_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "shrink_unchecked" (shrink_unchecked A).
+    Smpl Add apply AssociatedFunction_shrink_unchecked : is_associated.
     
     (*
         unsafe fn deallocate(&mut self, elem_layout: Layout) {
@@ -4869,6 +4917,7 @@ Module raw_vec.
     Axiom AssociatedFunction_deallocate :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "deallocate" (deallocate A).
+    Smpl Add apply AssociatedFunction_deallocate : is_associated.
   End Impl_alloc_raw_vec_RawVecInner_A.
   
   (*

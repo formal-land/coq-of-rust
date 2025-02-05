@@ -730,6 +730,7 @@ Module clone.
       Axiom AssociatedFunction_from_fully_uninit :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "from_fully_uninit" (from_fully_uninit T).
+      Smpl Add apply AssociatedFunction_from_fully_uninit : is_associated.
       
       (*
           fn push(&mut self, value: T) {
@@ -802,6 +803,7 @@ Module clone.
       Axiom AssociatedFunction_push :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "push" (push T).
+      Smpl Add apply AssociatedFunction_push : is_associated.
     End Impl_core_clone_uninit_InitializingSlice_T.
     
     Module Impl_core_ops_drop_Drop_for_core_clone_uninit_InitializingSlice_T.

@@ -795,6 +795,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           fn read_atomically<T, F>(&mut self, inner: F) -> Option<T>
@@ -887,6 +888,7 @@ Module net.
       
       Axiom AssociatedFunction_read_atomically :
         M.IsAssociatedFunction Self "read_atomically" read_atomically.
+      Smpl Add apply AssociatedFunction_read_atomically : is_associated.
       
       (*
           fn parse_with<T, F>(&mut self, inner: F, kind: AddrKind) -> Result<T, AddrParseError>
@@ -989,6 +991,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_parse_with : M.IsAssociatedFunction Self "parse_with" parse_with.
+      Smpl Add apply AssociatedFunction_parse_with : is_associated.
       
       (*
           fn peek_char(&self) -> Option<char> {
@@ -1073,6 +1076,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_peek_char : M.IsAssociatedFunction Self "peek_char" peek_char.
+      Smpl Add apply AssociatedFunction_peek_char : is_associated.
       
       (*
           fn read_char(&mut self) -> Option<char> {
@@ -1197,6 +1201,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_read_char : M.IsAssociatedFunction Self "read_char" read_char.
+      Smpl Add apply AssociatedFunction_read_char : is_associated.
       
       (*
           fn read_given_char(&mut self, target: char) -> Option<()> {
@@ -1336,6 +1341,7 @@ Module net.
       
       Axiom AssociatedFunction_read_given_char :
         M.IsAssociatedFunction Self "read_given_char" read_given_char.
+      Smpl Add apply AssociatedFunction_read_given_char : is_associated.
       
       (*
           fn read_separator<T, F>(&mut self, sep: char, index: usize, inner: F) -> Option<T>
@@ -1544,6 +1550,7 @@ Module net.
       
       Axiom AssociatedFunction_read_separator :
         M.IsAssociatedFunction Self "read_separator" read_separator.
+      Smpl Add apply AssociatedFunction_read_separator : is_associated.
       
       (*
           fn read_number<T: ReadNumberHelper + TryFrom<u32>>(
@@ -2624,6 +2631,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_read_number : M.IsAssociatedFunction Self "read_number" read_number.
+      Smpl Add apply AssociatedFunction_read_number : is_associated.
       
       (*
           fn read_ipv4_addr(&mut self) -> Option<Ipv4Addr> {
@@ -3048,6 +3056,7 @@ Module net.
       
       Axiom AssociatedFunction_read_ipv4_addr :
         M.IsAssociatedFunction Self "read_ipv4_addr" read_ipv4_addr.
+      Smpl Add apply AssociatedFunction_read_ipv4_addr : is_associated.
       
       (*
           fn read_ipv6_addr(&mut self) -> Option<Ipv6Addr> {
@@ -3697,6 +3706,7 @@ Module net.
       
       Axiom AssociatedFunction_read_ipv6_addr :
         M.IsAssociatedFunction Self "read_ipv6_addr" read_ipv6_addr.
+      Smpl Add apply AssociatedFunction_read_ipv6_addr : is_associated.
       
       (*
           fn read_ip_addr(&mut self) -> Option<IpAddr> {
@@ -3809,6 +3819,7 @@ Module net.
       
       Axiom AssociatedFunction_read_ip_addr :
         M.IsAssociatedFunction Self "read_ip_addr" read_ip_addr.
+      Smpl Add apply AssociatedFunction_read_ip_addr : is_associated.
       
       (*
           fn read_port(&mut self) -> Option<u16> {
@@ -3969,6 +3980,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_read_port : M.IsAssociatedFunction Self "read_port" read_port.
+      Smpl Add apply AssociatedFunction_read_port : is_associated.
       
       (*
           fn read_scope_id(&mut self) -> Option<u32> {
@@ -4130,6 +4142,7 @@ Module net.
       
       Axiom AssociatedFunction_read_scope_id :
         M.IsAssociatedFunction Self "read_scope_id" read_scope_id.
+      Smpl Add apply AssociatedFunction_read_scope_id : is_associated.
       
       (*
           fn read_socket_addr_v4(&mut self) -> Option<SocketAddrV4> {
@@ -4389,6 +4402,7 @@ Module net.
       
       Axiom AssociatedFunction_read_socket_addr_v4 :
         M.IsAssociatedFunction Self "read_socket_addr_v4" read_socket_addr_v4.
+      Smpl Add apply AssociatedFunction_read_socket_addr_v4 : is_associated.
       
       (*
           fn read_socket_addr_v6(&mut self) -> Option<SocketAddrV6> {
@@ -4866,6 +4880,7 @@ Module net.
       
       Axiom AssociatedFunction_read_socket_addr_v6 :
         M.IsAssociatedFunction Self "read_socket_addr_v6" read_socket_addr_v6.
+      Smpl Add apply AssociatedFunction_read_socket_addr_v6 : is_associated.
       
       (*
           fn read_socket_addr(&mut self) -> Option<SocketAddr> {
@@ -4981,6 +4996,7 @@ Module net.
       
       Axiom AssociatedFunction_read_socket_addr :
         M.IsAssociatedFunction Self "read_socket_addr" read_socket_addr.
+      Smpl Add apply AssociatedFunction_read_socket_addr : is_associated.
     End Impl_core_net_parser_Parser.
     
     Module Impl_core_net_ip_addr_IpAddr.
@@ -5066,6 +5082,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
+      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
     End Impl_core_net_ip_addr_IpAddr.
     
     Module Impl_core_str_traits_FromStr_for_core_net_ip_addr_IpAddr.
@@ -5247,6 +5264,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
+      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
     End Impl_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_str_traits_FromStr_for_core_net_ip_addr_Ipv4Addr.
@@ -5379,6 +5397,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
+      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
     End Impl_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_str_traits_FromStr_for_core_net_ip_addr_Ipv6Addr.
@@ -5511,6 +5530,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
+      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
     End Impl_core_net_socket_addr_SocketAddrV4.
     
     Module Impl_core_str_traits_FromStr_for_core_net_socket_addr_SocketAddrV4.
@@ -5643,6 +5663,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
+      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
     End Impl_core_net_socket_addr_SocketAddrV6.
     
     Module Impl_core_str_traits_FromStr_for_core_net_socket_addr_SocketAddrV6.
@@ -5775,6 +5796,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
+      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
     End Impl_core_net_socket_addr_SocketAddr.
     
     Module Impl_core_str_traits_FromStr_for_core_net_socket_addr_SocketAddr.

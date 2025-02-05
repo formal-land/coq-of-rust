@@ -135,6 +135,7 @@ Module code_unit_verifier.
     
     Axiom AssociatedFunction_verify_module :
       M.IsAssociatedFunction Self "verify_module" verify_module.
+    Smpl Add apply AssociatedFunction_verify_module : is_associated.
     
     (*
         fn verify_module_impl(
@@ -839,6 +840,7 @@ Module code_unit_verifier.
     
     Axiom AssociatedFunction_verify_module_impl :
       M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
+    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
     
     (*
         fn verify_function(
@@ -1693,6 +1695,7 @@ Module code_unit_verifier.
     
     Axiom AssociatedFunction_verify_function :
       M.IsAssociatedFunction Self "verify_function" verify_function.
+    Smpl Add apply AssociatedFunction_verify_function : is_associated.
     
     (*
         fn verify_common(
@@ -2116,5 +2119,6 @@ Module code_unit_verifier.
     
     Axiom AssociatedFunction_verify_common :
       M.IsAssociatedFunction Self "verify_common" verify_common.
+    Smpl Add apply AssociatedFunction_verify_common : is_associated.
   End Impl_move_bytecode_verifier_code_unit_verifier_CodeUnitVerifier.
 End code_unit_verifier.

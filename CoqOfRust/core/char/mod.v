@@ -297,6 +297,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_core_char_EscapeUnicode.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeUnicode.
@@ -811,6 +812,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
+    Smpl Add apply AssociatedFunction_printable : is_associated.
     
     (*
         const fn backslash(c: ascii::Char) -> Self {
@@ -842,6 +844,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
+    Smpl Add apply AssociatedFunction_backslash : is_associated.
     
     (*
         const fn unicode(c: char) -> Self {
@@ -873,6 +876,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
+    Smpl Add apply AssociatedFunction_unicode : is_associated.
   End Impl_core_char_EscapeDefault.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeDefault.
@@ -1559,6 +1563,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
+    Smpl Add apply AssociatedFunction_printable : is_associated.
     
     (*
         const fn backslash(c: ascii::Char) -> Self {
@@ -1594,6 +1599,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
+    Smpl Add apply AssociatedFunction_backslash : is_associated.
     
     (*
         const fn unicode(c: char) -> Self {
@@ -1629,6 +1635,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
+    Smpl Add apply AssociatedFunction_unicode : is_associated.
     
     (*
         fn clear(&mut self) {
@@ -1671,6 +1678,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
+    Smpl Add apply AssociatedFunction_clear : is_associated.
   End Impl_core_char_EscapeDebug.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeDebug.
@@ -3655,6 +3663,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_core_char_CaseMappingIter.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_CaseMappingIter.

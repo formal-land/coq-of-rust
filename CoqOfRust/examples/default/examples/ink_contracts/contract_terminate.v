@@ -109,6 +109,7 @@ Module Impl_contract_terminate_Env.
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
+  Smpl Add apply AssociatedFunction_caller : is_associated.
   
   (*
       fn terminate_contract(&self, _account: AccountId) {
@@ -119,6 +120,7 @@ Module Impl_contract_terminate_Env.
   
   Axiom AssociatedFunction_terminate_contract :
     M.IsAssociatedFunction Self "terminate_contract" terminate_contract.
+  Smpl Add apply AssociatedFunction_terminate_contract : is_associated.
 End Impl_contract_terminate_Env.
 
 (* StructTuple
@@ -140,6 +142,7 @@ Module Impl_contract_terminate_JustTerminate.
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
+  Smpl Add apply AssociatedFunction_init_env : is_associated.
   
   (*
       fn env(&self) -> Env {
@@ -164,6 +167,7 @@ Module Impl_contract_terminate_JustTerminate.
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
+  Smpl Add apply AssociatedFunction_env : is_associated.
   
   (*
       pub fn new() -> Self {
@@ -177,6 +181,7 @@ Module Impl_contract_terminate_JustTerminate.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn terminate_me(&mut self) {
@@ -246,4 +251,5 @@ Module Impl_contract_terminate_JustTerminate.
     end.
   
   Axiom AssociatedFunction_terminate_me : M.IsAssociatedFunction Self "terminate_me" terminate_me.
+  Smpl Add apply AssociatedFunction_terminate_me : is_associated.
 End Impl_contract_terminate_JustTerminate.

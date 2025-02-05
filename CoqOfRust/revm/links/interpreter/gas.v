@@ -400,9 +400,6 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.new [] [] [φ limit] 🔽 Self }}.
   Proof.
     run_symbolic.
-    eapply CallPrimitiveGetAssociatedFunction. {
-      apply gas.Impl_revm_interpreter_gas_MemoryGas.AssociatedFunction_new.
-    }
     eapply Run.CallClosure. {
       apply Impl_MemoryGas.run_new.
     }
@@ -424,9 +421,6 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.new_spent [] [] [φ limit] 🔽 Self }}.
   Proof.
     run_symbolic.
-    eapply CallPrimitiveGetAssociatedFunction. {
-      apply gas.Impl_revm_interpreter_gas_MemoryGas.AssociatedFunction_new.
-    }
     eapply Run.CallClosure. {
       apply Impl_MemoryGas.run_new.
     }
@@ -601,20 +595,14 @@ Module Impl_revm_interpreter_gas_Gas.
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_min.
       }
-      eapply Run.CallPrimitiveGetAssociatedFunction. {
-        apply gas.Impl_revm_interpreter_gas_Gas.AssociatedFunction_refunded.
-      }
       run_symbolic.
       eapply Run.CallClosure. {
-        apply (run_refunded (Ref.cast self)).
+        apply run_refunded.
       }
       intros []; cbn; [|run_symbolic].
-      eapply Run.CallPrimitiveGetAssociatedFunction. {
-        apply gas.Impl_revm_interpreter_gas_Gas.AssociatedFunction_spent.
-      }
       run_symbolic.
       eapply Run.CallClosure. {
-        apply (run_spent (Ref.cast self)).
+        apply run_spent.
       }
       intros []; cbn; run_symbolic.
       eapply Run.Rewrite. {

@@ -48,6 +48,7 @@ Module Impl_generics_new_type_idiom_Years.
     end.
   
   Axiom AssociatedFunction_to_days : M.IsAssociatedFunction Self "to_days" to_days.
+  Smpl Add apply AssociatedFunction_to_days : is_associated.
 End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
@@ -81,6 +82,7 @@ Module Impl_generics_new_type_idiom_Days.
     end.
   
   Axiom AssociatedFunction_to_years : M.IsAssociatedFunction Self "to_years" to_years.
+  Smpl Add apply AssociatedFunction_to_years : is_associated.
 End Impl_generics_new_type_idiom_Days.
 
 (*

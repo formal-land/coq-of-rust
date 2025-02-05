@@ -1766,8 +1766,9 @@ impl TopLevelItem {
                         },
                     },
                 )),
-                coq::TopLevelItem::HintRewrite {
-                    hint: format!("Constant_{name}"),
+                coq::TopLevelItem::Hint {
+                    kind: "Global Hint Rewrite".to_string(),
+                    name: format!("Constant_{name}"),
                     database: "constant_rewrites".to_string(),
                 },
             ],
@@ -1939,6 +1940,17 @@ impl TopLevelItem {
                             snippet,
                             kind,
                         } = item.as_ref();
+                        let axiom_name = match kind.as_ref() {
+                            ImplItemKind::Const { .. } => {
+                                format!("AssociatedConstant_{name}")
+                            }
+                            ImplItemKind::Definition { .. } => {
+                                format!("AssociatedFunction_{name}")
+                            }
+                            ImplItemKind::Type { .. } => {
+                                format!("AssociatedType_{name}")
+                            }
+                        };
                         [
                             vec![coq::TopLevelItem::Line],
                             match snippet {
@@ -1949,17 +1961,7 @@ impl TopLevelItem {
                             vec![
                                 coq::TopLevelItem::Line,
                                 coq::TopLevelItem::Definition(coq::Definition::new(
-                                    &match kind.as_ref() {
-                                        ImplItemKind::Const { .. } => {
-                                            format!("AssociatedConstant_{name}")
-                                        }
-                                        ImplItemKind::Definition { .. } => {
-                                            format!("AssociatedFunction_{name}")
-                                        }
-                                        ImplItemKind::Type { .. } => {
-                                            format!("AssociatedType_{name}")
-                                        }
-                                    },
+                                    &axiom_name,
                                     &coq::DefinitionKind::Axiom {
                                         ty: coq::Expression::PiType {
                                             args: coq::ArgDecl::of_const_ty_params(
@@ -2002,6 +2004,11 @@ impl TopLevelItem {
                                         },
                                     },
                                 )),
+                                coq::TopLevelItem::Hint {
+                                    kind: "Smpl Add".to_string(),
+                                    name: format!("apply {axiom_name}"),
+                                    database: "is_associated".to_string(),
+                                },
                             ],
                         ]
                         .concat()

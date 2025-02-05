@@ -8490,6 +8490,7 @@ Module vm_status.
       end.
     
     Axiom AssociatedFunction_status_type : M.IsAssociatedFunction Self "status_type" status_type.
+    Smpl Add apply AssociatedFunction_status_type : is_associated.
   End Impl_move_core_types_vm_status_StatusCode.
   
   Module Impl_serde_ser_Serialize_for_move_core_types_vm_status_StatusCode.

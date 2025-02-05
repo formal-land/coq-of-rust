@@ -199,6 +199,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (A B : Ty.t),
           M.IsAssociatedFunction (Self A B) "new" (new A B).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             fn super_nth(&mut self, mut n: usize) -> Option<(A::Item, B::Item)> {
@@ -332,6 +333,7 @@ Module iter.
         Axiom AssociatedFunction_super_nth :
           forall (A B : Ty.t),
           M.IsAssociatedFunction (Self A B) "super_nth" (super_nth A B).
+        Smpl Add apply AssociatedFunction_super_nth : is_associated.
       End Impl_core_iter_adapters_zip_Zip_A_B.
       
       (*

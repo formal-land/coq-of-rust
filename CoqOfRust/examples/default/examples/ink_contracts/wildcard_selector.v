@@ -33,6 +33,7 @@ Module Impl_wildcard_selector_WildcardSelector.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn wildcard(&mut self) {
@@ -191,6 +192,7 @@ Module Impl_wildcard_selector_WildcardSelector.
     end.
   
   Axiom AssociatedFunction_wildcard : M.IsAssociatedFunction Self "wildcard" wildcard.
+  Smpl Add apply AssociatedFunction_wildcard : is_associated.
   
   (*
       pub fn wildcard_complement(&mut self, _message: String) {
@@ -274,4 +276,5 @@ Module Impl_wildcard_selector_WildcardSelector.
   
   Axiom AssociatedFunction_wildcard_complement :
     M.IsAssociatedFunction Self "wildcard_complement" wildcard_complement.
+  Smpl Add apply AssociatedFunction_wildcard_complement : is_associated.
 End Impl_wildcard_selector_WildcardSelector.

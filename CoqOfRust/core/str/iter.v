@@ -1625,6 +1625,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+      Smpl Add apply AssociatedFunction_as_str : is_associated.
     End Impl_core_str_iter_Chars.
     
     (* StructRecord
@@ -2221,6 +2222,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+      Smpl Add apply AssociatedFunction_as_str : is_associated.
       
       (*
           pub fn offset(&self) -> usize {
@@ -2243,6 +2245,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_offset : M.IsAssociatedFunction Self "offset" offset.
+      Smpl Add apply AssociatedFunction_offset : is_associated.
     End Impl_core_str_iter_CharIndices.
     
     (* StructTuple
@@ -3596,6 +3599,7 @@ Module str.
       Axiom AssociatedFunction_get_end :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "get_end" (get_end P).
+      Smpl Add apply AssociatedFunction_get_end : is_associated.
       
       (*
           fn next(&mut self) -> Option<&'a str> {
@@ -3784,6 +3788,7 @@ Module str.
       Axiom AssociatedFunction_next :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next" (next P).
+      Smpl Add apply AssociatedFunction_next : is_associated.
       
       (*
           fn next_inclusive(&mut self) -> Option<&'a str> {
@@ -3978,6 +3983,7 @@ Module str.
       Axiom AssociatedFunction_next_inclusive :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next_inclusive" (next_inclusive P).
+      Smpl Add apply AssociatedFunction_next_inclusive : is_associated.
       
       (*
           fn next_back(&mut self) -> Option<&'a str>
@@ -4367,6 +4373,7 @@ Module str.
       Axiom AssociatedFunction_next_back :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next_back" (next_back P).
+      Smpl Add apply AssociatedFunction_next_back : is_associated.
       
       (*
           fn next_back_inclusive(&mut self) -> Option<&'a str>
@@ -4766,6 +4773,7 @@ Module str.
       Axiom AssociatedFunction_next_back_inclusive :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next_back_inclusive" (next_back_inclusive P).
+      Smpl Add apply AssociatedFunction_next_back_inclusive : is_associated.
       
       (*
           fn remainder(&self) -> Option<&'a str> {
@@ -4892,6 +4900,7 @@ Module str.
       Axiom AssociatedFunction_remainder :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "remainder" (remainder P).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_SplitInternal_P.
     
     (* StructTuple
@@ -5432,6 +5441,7 @@ Module str.
       Axiom AssociatedFunction_remainder :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "remainder" (remainder P).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_Split_P.
     
     Module Impl_core_str_iter_RSplit_P.
@@ -5472,6 +5482,7 @@ Module str.
       Axiom AssociatedFunction_remainder :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "remainder" (remainder P).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_RSplit_P.
     
     (* StructTuple
@@ -6023,6 +6034,7 @@ Module str.
       Axiom AssociatedFunction_remainder :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "remainder" (remainder P).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_SplitTerminator_P.
     
     Module Impl_core_str_iter_RSplitTerminator_P.
@@ -6064,6 +6076,7 @@ Module str.
       Axiom AssociatedFunction_remainder :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "remainder" (remainder P).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_RSplitTerminator_P.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitNInternal_P.
@@ -6384,6 +6397,7 @@ Module str.
       Axiom AssociatedFunction_next :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next" (next P).
+      Smpl Add apply AssociatedFunction_next : is_associated.
       
       (*
           fn next_back(&mut self) -> Option<&'a str>
@@ -6503,6 +6517,7 @@ Module str.
       Axiom AssociatedFunction_next_back :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next_back" (next_back P).
+      Smpl Add apply AssociatedFunction_next_back : is_associated.
       
       (*
           fn remainder(&self) -> Option<&'a str> {
@@ -6539,6 +6554,7 @@ Module str.
       Axiom AssociatedFunction_remainder :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "remainder" (remainder P).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_SplitNInternal_P.
     
     (* StructTuple
@@ -6991,6 +7007,7 @@ Module str.
       Axiom AssociatedFunction_remainder :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "remainder" (remainder P).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_SplitN_P.
     
     Module Impl_core_str_iter_RSplitN_P.
@@ -7031,6 +7048,7 @@ Module str.
       Axiom AssociatedFunction_remainder :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "remainder" (remainder P).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_RSplitN_P.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndicesInternal_P.
@@ -7318,6 +7336,7 @@ Module str.
       Axiom AssociatedFunction_next :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next" (next P).
+      Smpl Add apply AssociatedFunction_next : is_associated.
       
       (*
           fn next_back(&mut self) -> Option<(usize, &'a str)>
@@ -7451,6 +7470,7 @@ Module str.
       Axiom AssociatedFunction_next_back :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next_back" (next_back P).
+      Smpl Add apply AssociatedFunction_next_back : is_associated.
     End Impl_core_str_iter_MatchIndicesInternal_P.
     
     (* StructTuple
@@ -8244,6 +8264,7 @@ Module str.
       Axiom AssociatedFunction_next :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next" (next P).
+      Smpl Add apply AssociatedFunction_next : is_associated.
       
       (*
           fn next_back(&mut self) -> Option<&'a str>
@@ -8371,6 +8392,7 @@ Module str.
       Axiom AssociatedFunction_next_back :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "next_back" (next_back P).
+      Smpl Add apply AssociatedFunction_next_back : is_associated.
     End Impl_core_str_iter_MatchesInternal_P.
     
     (* StructTuple
@@ -9223,6 +9245,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_remainder : M.IsAssociatedFunction Self "remainder" remainder.
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_Lines.
     
     (* StructTuple
@@ -10007,6 +10030,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_remainder : M.IsAssociatedFunction Self "remainder" remainder.
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_SplitWhitespace.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_str_iter_SplitAsciiWhitespace.
@@ -10336,6 +10360,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_remainder : M.IsAssociatedFunction Self "remainder" remainder.
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_SplitAsciiWhitespace.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
@@ -10626,6 +10651,7 @@ Module str.
       Axiom AssociatedFunction_remainder :
         forall (P : Ty.t),
         M.IsAssociatedFunction (Self P) "remainder" (remainder P).
+      Smpl Add apply AssociatedFunction_remainder : is_associated.
     End Impl_core_str_iter_SplitInclusive_P.
     
     (* StructRecord

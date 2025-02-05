@@ -23,10 +23,12 @@ Module Impl_functions_order_SomeType.
   Parameter meth1 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
+  Smpl Add apply AssociatedFunction_meth1 : is_associated.
   
   Parameter meth2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
+  Smpl Add apply AssociatedFunction_meth2 : is_associated.
 End Impl_functions_order_SomeType.
 
 Parameter depends_on_trait_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.

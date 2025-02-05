@@ -27,6 +27,7 @@ Module Impl_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn new_default() -> Self {
@@ -58,6 +59,7 @@ Module Impl_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
+  Smpl Add apply AssociatedFunction_new_default : is_associated.
   
   (*
       pub fn inc(&mut self, by: i32) {
@@ -85,6 +87,7 @@ Module Impl_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
+  Smpl Add apply AssociatedFunction_inc : is_associated.
   
   (*
       pub fn get(&self) -> i32 {
@@ -107,4 +110,5 @@ Module Impl_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
+  Smpl Add apply AssociatedFunction_get : is_associated.
 End Impl_incrementer_Incrementer.

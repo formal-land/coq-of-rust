@@ -4075,6 +4075,7 @@ Module str.
     
     Axiom AssociatedFunction_into_boxed_bytes :
       M.IsAssociatedFunction Self "into_boxed_bytes" into_boxed_bytes.
+    Smpl Add apply AssociatedFunction_into_boxed_bytes : is_associated.
     
     (*
         pub fn replace<P: Pattern>(&self, from: P, to: &str) -> String {
@@ -4318,6 +4319,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_replace : M.IsAssociatedFunction Self "replace" replace.
+    Smpl Add apply AssociatedFunction_replace : is_associated.
     
     (*
         pub fn replacen<P: Pattern>(&self, pat: P, to: &str, count: usize) -> String {
@@ -4598,6 +4600,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_replacen : M.IsAssociatedFunction Self "replacen" replacen.
+    Smpl Add apply AssociatedFunction_replacen : is_associated.
     
     (*
         pub fn to_lowercase(&self) -> String {
@@ -5056,6 +5059,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_to_lowercase : M.IsAssociatedFunction Self "to_lowercase" to_lowercase.
+    Smpl Add apply AssociatedFunction_to_lowercase : is_associated.
     
     (*
         pub fn to_uppercase(&self) -> String {
@@ -5334,6 +5338,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_to_uppercase : M.IsAssociatedFunction Self "to_uppercase" to_uppercase.
+    Smpl Add apply AssociatedFunction_to_uppercase : is_associated.
     
     (*
         pub fn into_string(self: Box<str>) -> String {
@@ -5399,6 +5404,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
+    Smpl Add apply AssociatedFunction_into_string : is_associated.
     
     (*
         pub fn repeat(&self, n: usize) -> String {
@@ -5445,6 +5451,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_repeat : M.IsAssociatedFunction Self "repeat" repeat.
+    Smpl Add apply AssociatedFunction_repeat : is_associated.
     
     (*
         pub fn to_ascii_uppercase(&self) -> String {
@@ -5506,6 +5513,7 @@ Module str.
     
     Axiom AssociatedFunction_to_ascii_uppercase :
       M.IsAssociatedFunction Self "to_ascii_uppercase" to_ascii_uppercase.
+    Smpl Add apply AssociatedFunction_to_ascii_uppercase : is_associated.
     
     (*
         pub fn to_ascii_lowercase(&self) -> String {
@@ -5567,6 +5575,7 @@ Module str.
     
     Axiom AssociatedFunction_to_ascii_lowercase :
       M.IsAssociatedFunction Self "to_ascii_lowercase" to_ascii_lowercase.
+    Smpl Add apply AssociatedFunction_to_ascii_lowercase : is_associated.
   End Impl_str.
   
   (*

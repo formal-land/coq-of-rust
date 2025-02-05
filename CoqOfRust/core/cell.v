@@ -582,6 +582,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn set(&self, val: T) {
@@ -617,6 +618,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_set : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "set" (set T).
+    Smpl Add apply AssociatedFunction_set : is_associated.
     
     (*
         pub fn swap(&self, other: &Self) {
@@ -836,6 +838,7 @@ Module cell.
     Axiom AssociatedFunction_swap :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "swap" (swap T).
+    Smpl Add apply AssociatedFunction_swap : is_associated.
     
     (*
         pub fn replace(&self, val: T) -> T {
@@ -896,6 +899,7 @@ Module cell.
     Axiom AssociatedFunction_replace :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "replace" (replace T).
+    Smpl Add apply AssociatedFunction_replace : is_associated.
     
     (*
         pub const fn into_inner(self) -> T {
@@ -927,6 +931,7 @@ Module cell.
     Axiom AssociatedFunction_into_inner :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     (*
         pub fn get(&self) -> T {
             // SAFETY: This can cause data races if called from a separate thread,
@@ -966,6 +971,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
+    Smpl Add apply AssociatedFunction_get : is_associated.
     
     (*
         pub fn update<F>(&self, f: F) -> T
@@ -1036,6 +1042,7 @@ Module cell.
     Axiom AssociatedFunction_update :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "update" (update T).
+    Smpl Add apply AssociatedFunction_update : is_associated.
     (*
         pub const fn as_ptr(&self) -> *mut T {
             self.value.get()
@@ -1071,6 +1078,7 @@ Module cell.
     Axiom AssociatedFunction_as_ptr :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
+    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     
     (*
         pub fn get_mut(&mut self) -> &mut T {
@@ -1117,6 +1125,7 @@ Module cell.
     Axiom AssociatedFunction_get_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
+    Smpl Add apply AssociatedFunction_get_mut : is_associated.
     
     (*
         pub fn from_mut(t: &mut T) -> &Cell<T> {
@@ -1157,6 +1166,7 @@ Module cell.
     Axiom AssociatedFunction_from_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_mut" (from_mut T).
+    Smpl Add apply AssociatedFunction_from_mut : is_associated.
     (*
         pub fn take(&self) -> T {
             self.replace(Default::default())
@@ -1189,6 +1199,7 @@ Module cell.
     Axiom AssociatedFunction_take :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take" (take T).
+    Smpl Add apply AssociatedFunction_take : is_associated.
   End Impl_core_cell_Cell_T.
   
   
@@ -1271,6 +1282,7 @@ Module cell.
     Axiom AssociatedFunction_as_slice_of_cells :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_slice_of_cells" (as_slice_of_cells T).
+    Smpl Add apply AssociatedFunction_as_slice_of_cells : is_associated.
   End Impl_core_cell_Cell_slice_T.
   
   Module Impl_core_cell_Cell_array_N_T.
@@ -1327,6 +1339,7 @@ Module cell.
     Axiom AssociatedFunction_as_array_of_cells :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "as_array_of_cells" (as_array_of_cells N T).
+    Smpl Add apply AssociatedFunction_as_array_of_cells : is_associated.
   End Impl_core_cell_Cell_array_N_T.
   
   (* StructRecord
@@ -1766,6 +1779,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub const fn into_inner(self) -> T {
@@ -1799,6 +1813,7 @@ Module cell.
     Axiom AssociatedFunction_into_inner :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     
     (*
         pub fn replace(&self, t: T) -> T {
@@ -1861,6 +1876,7 @@ Module cell.
     Axiom AssociatedFunction_replace :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "replace" (replace T).
+    Smpl Add apply AssociatedFunction_replace : is_associated.
     
     (*
         pub fn replace_with<F: FnOnce(&mut T) -> T>(&self, f: F) -> T {
@@ -1947,6 +1963,7 @@ Module cell.
     Axiom AssociatedFunction_replace_with :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "replace_with" (replace_with T).
+    Smpl Add apply AssociatedFunction_replace_with : is_associated.
     
     (*
         pub fn swap(&self, other: &Self) {
@@ -2046,6 +2063,7 @@ Module cell.
     Axiom AssociatedFunction_swap :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "swap" (swap T).
+    Smpl Add apply AssociatedFunction_swap : is_associated.
     (*
         pub fn borrow(&self) -> Ref<'_, T> {
             match self.try_borrow() {
@@ -2102,6 +2120,7 @@ Module cell.
     Axiom AssociatedFunction_borrow :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "borrow" (borrow T).
+    Smpl Add apply AssociatedFunction_borrow : is_associated.
     
     (*
         pub fn try_borrow(&self) -> Result<Ref<'_, T>, BorrowError> {
@@ -2224,6 +2243,7 @@ Module cell.
     Axiom AssociatedFunction_try_borrow :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_borrow" (try_borrow T).
+    Smpl Add apply AssociatedFunction_try_borrow : is_associated.
     
     (*
         pub fn borrow_mut(&self) -> RefMut<'_, T> {
@@ -2281,6 +2301,7 @@ Module cell.
     Axiom AssociatedFunction_borrow_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "borrow_mut" (borrow_mut T).
+    Smpl Add apply AssociatedFunction_borrow_mut : is_associated.
     
     (*
         pub fn try_borrow_mut(&self) -> Result<RefMut<'_, T>, BorrowMutError> {
@@ -2408,6 +2429,7 @@ Module cell.
     Axiom AssociatedFunction_try_borrow_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_borrow_mut" (try_borrow_mut T).
+    Smpl Add apply AssociatedFunction_try_borrow_mut : is_associated.
     
     (*
         pub fn as_ptr(&self) -> *mut T {
@@ -2444,6 +2466,7 @@ Module cell.
     Axiom AssociatedFunction_as_ptr :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
+    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     
     (*
         pub fn get_mut(&mut self) -> &mut T {
@@ -2490,6 +2513,7 @@ Module cell.
     Axiom AssociatedFunction_get_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
+    Smpl Add apply AssociatedFunction_get_mut : is_associated.
     
     (*
         pub fn undo_leak(&mut self) -> &mut T {
@@ -2556,6 +2580,7 @@ Module cell.
     Axiom AssociatedFunction_undo_leak :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "undo_leak" (undo_leak T).
+    Smpl Add apply AssociatedFunction_undo_leak : is_associated.
     
     (*
         pub unsafe fn try_borrow_unguarded(&self) -> Result<&T, BorrowError> {
@@ -2673,6 +2698,7 @@ Module cell.
     Axiom AssociatedFunction_try_borrow_unguarded :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_borrow_unguarded" (try_borrow_unguarded T).
+    Smpl Add apply AssociatedFunction_try_borrow_unguarded : is_associated.
     (*
         pub fn take(&self) -> T {
             self.replace(Default::default())
@@ -2705,6 +2731,7 @@ Module cell.
     Axiom AssociatedFunction_take :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take" (take T).
+    Smpl Add apply AssociatedFunction_take : is_associated.
   End Impl_core_cell_RefCell_T.
   
   
@@ -3737,6 +3764,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_core_cell_BorrowRef.
   
   Module Impl_core_ops_drop_Drop_for_core_cell_BorrowRef.
@@ -4183,6 +4211,7 @@ Module cell.
     Axiom AssociatedFunction_clone :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "clone" (clone T).
+    Smpl Add apply AssociatedFunction_clone : is_associated.
     
     (*
         pub fn map<U: ?Sized, F>(orig: Ref<'b, T>, f: F) -> Ref<'b, U>
@@ -4264,6 +4293,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
+    Smpl Add apply AssociatedFunction_map : is_associated.
     
     (*
         pub fn filter_map<U: ?Sized, F>(orig: Ref<'b, T>, f: F) -> Result<Ref<'b, U>, Self>
@@ -4382,6 +4412,7 @@ Module cell.
     Axiom AssociatedFunction_filter_map :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "filter_map" (filter_map T).
+    Smpl Add apply AssociatedFunction_filter_map : is_associated.
     
     (*
         pub fn map_split<U: ?Sized, V: ?Sized, F>(orig: Ref<'b, T>, f: F) -> (Ref<'b, U>, Ref<'b, V>)
@@ -4534,6 +4565,7 @@ Module cell.
     Axiom AssociatedFunction_map_split :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "map_split" (map_split T).
+    Smpl Add apply AssociatedFunction_map_split : is_associated.
     
     (*
         pub fn leak(orig: Ref<'b, T>) -> &'b T {
@@ -4592,6 +4624,7 @@ Module cell.
     Axiom AssociatedFunction_leak :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "leak" (leak T).
+    Smpl Add apply AssociatedFunction_leak : is_associated.
   End Impl_core_cell_Ref_T.
   
   Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_core_cell_Ref_U_for_core_cell_Ref_T.
@@ -4752,6 +4785,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
+    Smpl Add apply AssociatedFunction_map : is_associated.
     
     (*
         pub fn filter_map<U: ?Sized, F>(mut orig: RefMut<'b, T>, f: F) -> Result<RefMut<'b, U>, Self>
@@ -4877,6 +4911,7 @@ Module cell.
     Axiom AssociatedFunction_filter_map :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "filter_map" (filter_map T).
+    Smpl Add apply AssociatedFunction_filter_map : is_associated.
     
     (*
         pub fn map_split<U: ?Sized, V: ?Sized, F>(
@@ -5032,6 +5067,7 @@ Module cell.
     Axiom AssociatedFunction_map_split :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "map_split" (map_split T).
+    Smpl Add apply AssociatedFunction_map_split : is_associated.
     
     (*
         pub fn leak(mut orig: RefMut<'b, T>) -> &'b mut T {
@@ -5113,6 +5149,7 @@ Module cell.
     Axiom AssociatedFunction_leak :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "leak" (leak T).
+    Smpl Add apply AssociatedFunction_leak : is_associated.
   End Impl_core_cell_RefMut_T.
   
   (* StructRecord
@@ -5341,6 +5378,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn clone(&self) -> BorrowRefMut<'b> {
@@ -5513,6 +5551,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_clone : M.IsAssociatedFunction Self "clone" clone.
+    Smpl Add apply AssociatedFunction_clone : is_associated.
   End Impl_core_cell_BorrowRefMut.
   
   (* StructRecord
@@ -5759,6 +5798,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub const fn into_inner(self) -> T {
@@ -5780,6 +5820,7 @@ Module cell.
     Axiom AssociatedFunction_into_inner :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     (*
         pub const fn from_mut(value: &mut T) -> &mut UnsafeCell<T> {
             // SAFETY: `UnsafeCell<T>` has the same memory layout as `T` due to #[repr(transparent)].
@@ -5832,6 +5873,7 @@ Module cell.
     Axiom AssociatedFunction_from_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_mut" (from_mut T).
+    Smpl Add apply AssociatedFunction_from_mut : is_associated.
     
     (*
         pub const fn get(&self) -> *mut T {
@@ -5861,6 +5903,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
+    Smpl Add apply AssociatedFunction_get : is_associated.
     
     (*
         pub const fn get_mut(&mut self) -> &mut T {
@@ -5897,6 +5940,7 @@ Module cell.
     Axiom AssociatedFunction_get_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
+    Smpl Add apply AssociatedFunction_get_mut : is_associated.
     
     (*
         pub const fn raw_get(this: *const Self) -> *mut T {
@@ -5921,6 +5965,7 @@ Module cell.
     Axiom AssociatedFunction_raw_get :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "raw_get" (raw_get T).
+    Smpl Add apply AssociatedFunction_raw_get : is_associated.
   End Impl_core_cell_UnsafeCell_T.
   
   
@@ -6068,6 +6113,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub const fn into_inner(self) -> T {
@@ -6103,6 +6149,7 @@ Module cell.
     Axiom AssociatedFunction_into_inner :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     (*
         pub const fn get(&self) -> *mut T {
             self.value.get()
@@ -6136,6 +6183,7 @@ Module cell.
       end.
     
     Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
+    Smpl Add apply AssociatedFunction_get : is_associated.
     
     (*
         pub const fn get_mut(&mut self) -> &mut T {
@@ -6182,6 +6230,7 @@ Module cell.
     Axiom AssociatedFunction_get_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
+    Smpl Add apply AssociatedFunction_get_mut : is_associated.
     
     (*
         pub const fn raw_get(this: *const Self) -> *mut T {
@@ -6206,6 +6255,7 @@ Module cell.
     Axiom AssociatedFunction_raw_get :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "raw_get" (raw_get T).
+    Smpl Add apply AssociatedFunction_raw_get : is_associated.
   End Impl_core_cell_SyncUnsafeCell_T.
   
   

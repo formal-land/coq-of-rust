@@ -1921,6 +1921,7 @@ Module slice.
             end.
           
           Axiom AssociatedFunction_new_sorted : M.IsAssociatedFunction Self "new_sorted" new_sorted.
+          Smpl Add apply AssociatedFunction_new_sorted : is_associated.
           
           (*
               fn new_unsorted(length: usize) -> Self {
@@ -1940,6 +1941,7 @@ Module slice.
           
           Axiom AssociatedFunction_new_unsorted :
             M.IsAssociatedFunction Self "new_unsorted" new_unsorted.
+          Smpl Add apply AssociatedFunction_new_unsorted : is_associated.
           
           (*
               fn sorted(self) -> bool {
@@ -1967,6 +1969,7 @@ Module slice.
             end.
           
           Axiom AssociatedFunction_sorted : M.IsAssociatedFunction Self "sorted" sorted.
+          Smpl Add apply AssociatedFunction_sorted : is_associated.
           
           (*
               fn len(self) -> usize {
@@ -1992,6 +1995,7 @@ Module slice.
             end.
           
           Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+          Smpl Add apply AssociatedFunction_len : is_associated.
         End Impl_core_slice_sort_stable_drift_DriftsortRun.
       End drift.
     End stable.

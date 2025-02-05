@@ -280,6 +280,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (N : Value.t) (I : Ty.t),
           M.IsAssociatedFunction (Self N I) "new" (new N I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             pub fn into_remainder(mut self) -> Option<array::IntoIter<I::Item, N>> {
@@ -404,6 +405,7 @@ Module iter.
         Axiom AssociatedFunction_into_remainder :
           forall (N : Value.t) (I : Ty.t),
           M.IsAssociatedFunction (Self N I) "into_remainder" (into_remainder N I).
+        Smpl Add apply AssociatedFunction_into_remainder : is_associated.
         (*
             fn next_back_remainder(&mut self) {
                 // Make sure to not override `self.remainder` with an empty array
@@ -667,6 +669,7 @@ Module iter.
         Axiom AssociatedFunction_next_back_remainder :
           forall (N : Value.t) (I : Ty.t),
           M.IsAssociatedFunction (Self N I) "next_back_remainder" (next_back_remainder N I).
+        Smpl Add apply AssociatedFunction_next_back_remainder : is_associated.
       End Impl_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.

@@ -580,6 +580,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub const fn new_spent(limit: u64) -> Self {
@@ -617,6 +618,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_new_spent : M.IsAssociatedFunction Self "new_spent" new_spent.
+    Smpl Add apply AssociatedFunction_new_spent : is_associated.
     
     (*
         pub const fn limit(&self) -> u64 {
@@ -639,6 +641,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_limit : M.IsAssociatedFunction Self "limit" limit.
+    Smpl Add apply AssociatedFunction_limit : is_associated.
     
     (*
         pub const fn memory(&self) -> u64 {
@@ -655,6 +658,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_memory : M.IsAssociatedFunction Self "memory" memory.
+    Smpl Add apply AssociatedFunction_memory : is_associated.
     
     (*
         pub const fn refunded(&self) -> i64 {
@@ -677,6 +681,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_refunded : M.IsAssociatedFunction Self "refunded" refunded.
+    Smpl Add apply AssociatedFunction_refunded : is_associated.
     
     (*
         pub const fn spent(&self) -> u64 {
@@ -708,6 +713,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_spent : M.IsAssociatedFunction Self "spent" spent.
+    Smpl Add apply AssociatedFunction_spent : is_associated.
     
     (*
         pub const fn remaining(&self) -> u64 {
@@ -730,6 +736,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_remaining : M.IsAssociatedFunction Self "remaining" remaining.
+    Smpl Add apply AssociatedFunction_remaining : is_associated.
     
     (*
         pub const fn remaining_63_of_64_parts(&self) -> u64 {
@@ -765,6 +772,7 @@ Module gas.
     
     Axiom AssociatedFunction_remaining_63_of_64_parts :
       M.IsAssociatedFunction Self "remaining_63_of_64_parts" remaining_63_of_64_parts.
+    Smpl Add apply AssociatedFunction_remaining_63_of_64_parts : is_associated.
     
     (*
         pub fn erase_cost(&mut self, returned: u64) {
@@ -792,6 +800,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_erase_cost : M.IsAssociatedFunction Self "erase_cost" erase_cost.
+    Smpl Add apply AssociatedFunction_erase_cost : is_associated.
     
     (*
         pub fn spend_all(&mut self) {
@@ -819,6 +828,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_spend_all : M.IsAssociatedFunction Self "spend_all" spend_all.
+    Smpl Add apply AssociatedFunction_spend_all : is_associated.
     
     (*
         pub fn record_refund(&mut self, refund: i64) {
@@ -847,6 +857,7 @@ Module gas.
     
     Axiom AssociatedFunction_record_refund :
       M.IsAssociatedFunction Self "record_refund" record_refund.
+    Smpl Add apply AssociatedFunction_record_refund : is_associated.
     
     (*
         pub fn set_final_refund(&mut self, is_london: bool) {
@@ -921,6 +932,7 @@ Module gas.
     
     Axiom AssociatedFunction_set_final_refund :
       M.IsAssociatedFunction Self "set_final_refund" set_final_refund.
+    Smpl Add apply AssociatedFunction_set_final_refund : is_associated.
     
     (*
         pub fn set_refund(&mut self, refund: i64) {
@@ -949,6 +961,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_set_refund : M.IsAssociatedFunction Self "set_refund" set_refund.
+    Smpl Add apply AssociatedFunction_set_refund : is_associated.
     
     (*
         pub fn record_cost(&mut self, cost: u64) -> bool {
@@ -1024,6 +1037,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_record_cost : M.IsAssociatedFunction Self "record_cost" record_cost.
+    Smpl Add apply AssociatedFunction_record_cost : is_associated.
     
     (*
         pub fn record_memory_expansion(&mut self, new_len: usize) -> MemoryExtensionResult {
@@ -1139,6 +1153,7 @@ Module gas.
     
     Axiom AssociatedFunction_record_memory_expansion :
       M.IsAssociatedFunction Self "record_memory_expansion" record_memory_expansion.
+    Smpl Add apply AssociatedFunction_record_memory_expansion : is_associated.
   End Impl_revm_interpreter_gas_Gas.
   
   (*
@@ -1549,6 +1564,7 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn record_new_len(&mut self, new_num: usize) -> Option<u64> {
@@ -1668,5 +1684,6 @@ Module gas.
     
     Axiom AssociatedFunction_record_new_len :
       M.IsAssociatedFunction Self "record_new_len" record_new_len.
+    Smpl Add apply AssociatedFunction_record_new_len : is_associated.
   End Impl_revm_interpreter_gas_MemoryGas.
 End gas.

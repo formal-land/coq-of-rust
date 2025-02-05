@@ -445,6 +445,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn homestead() -> &'static Self {
@@ -582,6 +583,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_homestead : M.IsAssociatedFunction Self "homestead" homestead.
+  Smpl Add apply AssociatedFunction_homestead : is_associated.
   
   (*
       pub fn inner(&self) -> &HashMap<Address, PrecompileFn> {
@@ -610,6 +612,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_inner : M.IsAssociatedFunction Self "inner" inner.
+  Smpl Add apply AssociatedFunction_inner : is_associated.
   
   (*
       pub fn byzantium() -> &'static Self {
@@ -768,6 +771,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_byzantium : M.IsAssociatedFunction Self "byzantium" byzantium.
+  Smpl Add apply AssociatedFunction_byzantium : is_associated.
   
   (*
       pub fn istanbul() -> &'static Self {
@@ -924,6 +928,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_istanbul : M.IsAssociatedFunction Self "istanbul" istanbul.
+  Smpl Add apply AssociatedFunction_istanbul : is_associated.
   
   (*
       pub fn berlin() -> &'static Self {
@@ -1064,6 +1069,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_berlin : M.IsAssociatedFunction Self "berlin" berlin.
+  Smpl Add apply AssociatedFunction_berlin : is_associated.
   
   (*
       pub fn cancun() -> &'static Self {
@@ -1231,6 +1237,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_cancun : M.IsAssociatedFunction Self "cancun" cancun.
+  Smpl Add apply AssociatedFunction_cancun : is_associated.
   
   (*
       pub fn prague() -> &'static Self {
@@ -1378,6 +1385,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_prague : M.IsAssociatedFunction Self "prague" prague.
+  Smpl Add apply AssociatedFunction_prague : is_associated.
   
   (*
       pub fn latest() -> &'static Self {
@@ -1396,6 +1404,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_latest : M.IsAssociatedFunction Self "latest" latest.
+  Smpl Add apply AssociatedFunction_latest : is_associated.
   
   (*
       pub fn addresses(&self) -> impl ExactSizeIterator<Item = &Address> {
@@ -1447,6 +1456,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_addresses : M.IsAssociatedFunction Self "addresses" addresses.
+  Smpl Add apply AssociatedFunction_addresses : is_associated.
   
   (*
       pub fn into_addresses(self) -> impl ExactSizeIterator<Item = Address> {
@@ -1498,6 +1508,7 @@ Module Impl_revm_precompile_Precompiles.
   
   Axiom AssociatedFunction_into_addresses :
     M.IsAssociatedFunction Self "into_addresses" into_addresses.
+  Smpl Add apply AssociatedFunction_into_addresses : is_associated.
   
   (*
       pub fn contains(&self, address: &Address) -> bool {
@@ -1551,6 +1562,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_contains : M.IsAssociatedFunction Self "contains" contains.
+  Smpl Add apply AssociatedFunction_contains : is_associated.
   
   (*
       pub fn get(&self, address: &Address) -> Option<&PrecompileFn> {
@@ -1604,6 +1616,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
+  Smpl Add apply AssociatedFunction_get : is_associated.
   
   (*
       pub fn get_mut(&mut self, address: &Address) -> Option<&mut PrecompileFn> {
@@ -1657,6 +1670,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+  Smpl Add apply AssociatedFunction_get_mut : is_associated.
   
   (*
       pub fn is_empty(&self) -> bool {
@@ -1711,6 +1725,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+  Smpl Add apply AssociatedFunction_is_empty : is_associated.
   
   (*
       pub fn len(&self) -> usize {
@@ -1762,6 +1777,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+  Smpl Add apply AssociatedFunction_len : is_associated.
   
   (*
       pub fn addresses_set(&self) -> &HashSet<Address> {
@@ -1791,6 +1807,7 @@ Module Impl_revm_precompile_Precompiles.
   
   Axiom AssociatedFunction_addresses_set :
     M.IsAssociatedFunction Self "addresses_set" addresses_set.
+  Smpl Add apply AssociatedFunction_addresses_set : is_associated.
   
   (*
       pub fn extend(&mut self, other: impl IntoIterator<Item = PrecompileWithAddress>) {
@@ -2202,6 +2219,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
+  Smpl Add apply AssociatedFunction_extend : is_associated.
 End Impl_revm_precompile_Precompiles.
 
 (* StructTuple
@@ -2511,6 +2529,7 @@ Module Impl_revm_precompile_PrecompileWithAddress.
     end.
   
   Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
+  Smpl Add apply AssociatedFunction_address : is_associated.
   
   (*
       pub fn precompile(&self) -> &PrecompileFn {
@@ -2539,6 +2558,7 @@ Module Impl_revm_precompile_PrecompileWithAddress.
     end.
   
   Axiom AssociatedFunction_precompile : M.IsAssociatedFunction Self "precompile" precompile.
+  Smpl Add apply AssociatedFunction_precompile : is_associated.
 End Impl_revm_precompile_PrecompileWithAddress.
 
 (*
@@ -3306,6 +3326,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
     end.
   
   Axiom AssociatedFunction_from_spec_id : M.IsAssociatedFunction Self "from_spec_id" from_spec_id.
+  Smpl Add apply AssociatedFunction_from_spec_id : is_associated.
 End Impl_revm_precompile_PrecompileSpecId.
 
 (*

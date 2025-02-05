@@ -1051,6 +1051,7 @@ Module hardfork.
       end.
     
     Axiom AssociatedFunction_n : M.IsAssociatedFunction Self "n" n.
+    Smpl Add apply AssociatedFunction_n : is_associated.
     (*
         pub fn try_from_u8(spec_id: u8) -> Option<Self> {
             Self::n(spec_id)
@@ -1074,6 +1075,7 @@ Module hardfork.
       end.
     
     Axiom AssociatedFunction_try_from_u8 : M.IsAssociatedFunction Self "try_from_u8" try_from_u8.
+    Smpl Add apply AssociatedFunction_try_from_u8 : is_associated.
     
     (*
         pub const fn is_enabled_in(self, other: Self) -> bool {
@@ -1095,6 +1097,7 @@ Module hardfork.
     
     Axiom AssociatedFunction_is_enabled_in :
       M.IsAssociatedFunction Self "is_enabled_in" is_enabled_in.
+    Smpl Add apply AssociatedFunction_is_enabled_in : is_associated.
   End Impl_revm_specification_hardfork_SpecId.
   
   

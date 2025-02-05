@@ -1,5 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Export smpl.Smpl.
 
 Import List.ListNotations.
 
@@ -306,16 +305,25 @@ Module Ref.
   Definition immediate (kind : Pointer.Kind.t) {A : Set} `{Link A} (value : A) : t kind A :=
     {| core := Core.Immediate value |}.
 
-  Definition deref {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
-      t Pointer.Kind.Raw A :=
-    {| core := ref.(core) |}.
-
-  Definition cast {kind1 kind2 : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind1 A) :
-      t kind2 A :=
+  Definition cast_to {A : Set} `{Link A} {kind_source : Pointer.Kind.t}
+      (kind_target : Pointer.Kind.t) (ref : t kind_source A) :
+      t kind_target A :=
     {| core := ref.(core) |}.
 
   Lemma deref_eq {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
-    M.deref (φ ref) = M.pure (φ (deref ref)).
+    M.deref (φ ref) = M.pure (φ (cast_to Pointer.Kind.Raw ref)).
+  Proof.
+    reflexivity.
+  Qed.
+
+  Lemma borrow_eq {A : Set} `{Link A} (kind : Pointer.Kind.t) (ref : t Pointer.Kind.Raw A) :
+    M.borrow kind (φ ref) = M.pure (φ (cast_to kind ref)).
+  Proof.
+    reflexivity.
+  Qed.
+
+  Lemma cast_cast_eq {A : Set} `{Link A} (kind1 kind2 kind3 : Pointer.Kind.t) (ref : t kind1 A) :
+    cast_to kind3 (cast_to kind2 ref) = cast_to kind3 ref.
   Proof.
     reflexivity.
   Qed.
@@ -812,9 +820,16 @@ Ltac run_symbolic_state_read_immediate :=
 Ltac run_symbolic_state_write :=
   eapply Run.CallPrimitiveStateWrite; [smpl of_value |].
 
-Ltac run_rewrite_deref :=
+Ltac run_symbolic_get_associated_function :=
+  eapply Run.CallPrimitiveGetAssociatedFunction; [smpl is_associated |].
+
+Ltac run_rewrite_deref_borrow :=
   eapply Run.Rewrite; [
-    rewrite Ref.deref_eq;
+    (
+      rewrite Ref.deref_eq ||
+      rewrite Ref.borrow_eq ||
+      rewrite Ref.cast_cast_eq
+    );
     reflexivity
   |].
 
@@ -826,7 +841,8 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_state_read_immediate ||
     run_symbolic_state_read ||
     run_symbolic_state_write ||
-    run_rewrite_deref ||
+    run_symbolic_get_associated_function ||
+    run_rewrite_deref_borrow ||
     fold @LowM.let_ ||
     cbn
   end.
@@ -835,10 +851,10 @@ Smpl Create run_symbolic.
 
 (** We should use this tactic instead of the ones above, as this one calls all the others. *)
 Ltac run_symbolic :=
-  repeat (
+  progress (repeat (
     run_symbolic_one_step_immediate ||
     smpl run_symbolic
-  ).
+  )).
 
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
     validity statement for the index that we access. *)

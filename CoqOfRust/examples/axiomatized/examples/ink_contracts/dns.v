@@ -35,42 +35,49 @@ Module Impl_dns_Mapping_K_V.
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
+  Smpl Add apply AssociatedFunction_contains : is_associated.
   
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
+  Smpl Add apply AssociatedFunction_get : is_associated.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
+  Smpl Add apply AssociatedFunction_insert : is_associated.
   
   Parameter new : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "new" (new K V).
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
+  Smpl Add apply AssociatedFunction_remove : is_associated.
   
   Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
+  Smpl Add apply AssociatedFunction_size : is_associated.
   
   Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "take" (take K V).
+  Smpl Add apply AssociatedFunction_take : is_associated.
 End Impl_dns_Mapping_K_V.
 
 (* StructTuple
@@ -241,10 +248,12 @@ Module Impl_dns_Env.
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
+  Smpl Add apply AssociatedFunction_caller : is_associated.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
+  Smpl Add apply AssociatedFunction_emit_event : is_associated.
 End Impl_dns_Env.
 
 (* StructRecord
@@ -361,42 +370,52 @@ Module Impl_dns_DomainNameService.
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
+  Smpl Add apply AssociatedFunction_init_env : is_associated.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
+  Smpl Add apply AssociatedFunction_env : is_associated.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   Parameter register : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_register : M.IsAssociatedFunction Self "register" register.
+  Smpl Add apply AssociatedFunction_register : is_associated.
   
   Parameter get_owner_or_default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_owner_or_default :
     M.IsAssociatedFunction Self "get_owner_or_default" get_owner_or_default.
+  Smpl Add apply AssociatedFunction_get_owner_or_default : is_associated.
   
   Parameter set_address : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_address : M.IsAssociatedFunction Self "set_address" set_address.
+  Smpl Add apply AssociatedFunction_set_address : is_associated.
   
   Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
+  Smpl Add apply AssociatedFunction_transfer : is_associated.
   
   Parameter get_address_or_default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_address_or_default :
     M.IsAssociatedFunction Self "get_address_or_default" get_address_or_default.
+  Smpl Add apply AssociatedFunction_get_address_or_default : is_associated.
   
   Parameter get_address : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_address : M.IsAssociatedFunction Self "get_address" get_address.
+  Smpl Add apply AssociatedFunction_get_address : is_associated.
   
   Parameter get_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_owner : M.IsAssociatedFunction Self "get_owner" get_owner.
+  Smpl Add apply AssociatedFunction_get_owner : is_associated.
 End Impl_dns_DomainNameService.

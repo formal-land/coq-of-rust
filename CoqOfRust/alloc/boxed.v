@@ -41,6 +41,7 @@ Module boxed.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn new_uninit() -> Box<mem::MaybeUninit<T>> {
@@ -67,6 +68,7 @@ Module boxed.
     Axiom AssociatedFunction_new_uninit :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "new_uninit" (new_uninit T).
+    Smpl Add apply AssociatedFunction_new_uninit : is_associated.
     
     (*
         pub fn new_zeroed() -> Box<mem::MaybeUninit<T>> {
@@ -93,6 +95,7 @@ Module boxed.
     Axiom AssociatedFunction_new_zeroed :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "new_zeroed" (new_zeroed T).
+    Smpl Add apply AssociatedFunction_new_zeroed : is_associated.
     
     (*
         pub fn pin(x: T) -> Pin<Box<T>> {
@@ -137,6 +140,7 @@ Module boxed.
       end.
     
     Axiom AssociatedFunction_pin : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "pin" (pin T).
+    Smpl Add apply AssociatedFunction_pin : is_associated.
     
     (*
         pub fn try_new(x: T) -> Result<Self, AllocError> {
@@ -164,6 +168,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_new" (try_new T).
+    Smpl Add apply AssociatedFunction_try_new : is_associated.
     
     (*
         pub fn try_new_uninit() -> Result<Box<mem::MaybeUninit<T>>, AllocError> {
@@ -195,6 +200,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new_uninit :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_new_uninit" (try_new_uninit T).
+    Smpl Add apply AssociatedFunction_try_new_uninit : is_associated.
     
     (*
         pub fn try_new_zeroed() -> Result<Box<mem::MaybeUninit<T>>, AllocError> {
@@ -226,6 +232,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new_zeroed :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_new_zeroed" (try_new_zeroed T).
+    Smpl Add apply AssociatedFunction_try_new_zeroed : is_associated.
     (*
         pub unsafe fn from_raw(raw: *mut T) -> Self {
             unsafe { Self::from_raw_in(raw, Global) }
@@ -252,6 +259,7 @@ Module boxed.
     Axiom AssociatedFunction_from_raw :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_raw" (from_raw T).
+    Smpl Add apply AssociatedFunction_from_raw : is_associated.
     
     (*
         pub unsafe fn from_non_null(ptr: NonNull<T>) -> Self {
@@ -289,6 +297,7 @@ Module boxed.
     Axiom AssociatedFunction_from_non_null :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_non_null" (from_non_null T).
+    Smpl Add apply AssociatedFunction_from_non_null : is_associated.
   End Impl_alloc_boxed_Box_T_alloc_alloc_Global.
   
   Module Impl_alloc_boxed_Box_T_A.
@@ -370,6 +379,7 @@ Module boxed.
     Axiom AssociatedFunction_new_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
+    Smpl Add apply AssociatedFunction_new_in : is_associated.
     
     (*
         pub fn try_new_in(x: T, alloc: A) -> Result<Self, AllocError>
@@ -542,6 +552,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_new_in" (try_new_in T A).
+    Smpl Add apply AssociatedFunction_try_new_in : is_associated.
     
     (*
         pub fn new_uninit_in(alloc: A) -> Box<mem::MaybeUninit<T>, A>
@@ -621,6 +632,7 @@ Module boxed.
     Axiom AssociatedFunction_new_uninit_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_uninit_in" (new_uninit_in T A).
+    Smpl Add apply AssociatedFunction_new_uninit_in : is_associated.
     
     (*
         pub fn try_new_uninit_in(alloc: A) -> Result<Box<mem::MaybeUninit<T>, A>, AllocError>
@@ -873,6 +885,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new_uninit_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
+    Smpl Add apply AssociatedFunction_try_new_uninit_in : is_associated.
     
     (*
         pub fn new_zeroed_in(alloc: A) -> Box<mem::MaybeUninit<T>, A>
@@ -952,6 +965,7 @@ Module boxed.
     Axiom AssociatedFunction_new_zeroed_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_zeroed_in" (new_zeroed_in T A).
+    Smpl Add apply AssociatedFunction_new_zeroed_in : is_associated.
     
     (*
         pub fn try_new_zeroed_in(alloc: A) -> Result<Box<mem::MaybeUninit<T>, A>, AllocError>
@@ -1204,6 +1218,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new_zeroed_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
+    Smpl Add apply AssociatedFunction_try_new_zeroed_in : is_associated.
     
     (*
         pub fn pin_in(x: T, alloc: A) -> Pin<Self>
@@ -1245,6 +1260,7 @@ Module boxed.
     Axiom AssociatedFunction_pin_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "pin_in" (pin_in T A).
+    Smpl Add apply AssociatedFunction_pin_in : is_associated.
     
     (*
         pub fn into_boxed_slice(boxed: Self) -> Box<[T], A> {
@@ -1319,6 +1335,7 @@ Module boxed.
     Axiom AssociatedFunction_into_boxed_slice :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_boxed_slice" (into_boxed_slice T A).
+    Smpl Add apply AssociatedFunction_into_boxed_slice : is_associated.
     
     (*
         pub fn into_inner(boxed: Self) -> T {
@@ -1338,6 +1355,7 @@ Module boxed.
     Axiom AssociatedFunction_into_inner :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_inner" (into_inner T A).
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     (*
         pub const unsafe fn from_raw_in(raw: *mut T, alloc: A) -> Self {
             Box(unsafe { Unique::new_unchecked(raw) }, alloc)
@@ -1370,6 +1388,7 @@ Module boxed.
     Axiom AssociatedFunction_from_raw_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "from_raw_in" (from_raw_in T A).
+    Smpl Add apply AssociatedFunction_from_raw_in : is_associated.
     
     (*
         pub const unsafe fn from_non_null_in(raw: NonNull<T>, alloc: A) -> Self {
@@ -1415,6 +1434,7 @@ Module boxed.
     Axiom AssociatedFunction_from_non_null_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "from_non_null_in" (from_non_null_in T A).
+    Smpl Add apply AssociatedFunction_from_non_null_in : is_associated.
     
     (*
         pub fn into_raw(b: Self) -> *mut T {
@@ -1460,6 +1480,7 @@ Module boxed.
     Axiom AssociatedFunction_into_raw :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_raw" (into_raw T A).
+    Smpl Add apply AssociatedFunction_into_raw : is_associated.
     
     (*
         pub fn into_non_null(b: Self) -> NonNull<T> {
@@ -1503,6 +1524,7 @@ Module boxed.
     Axiom AssociatedFunction_into_non_null :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_non_null" (into_non_null T A).
+    Smpl Add apply AssociatedFunction_into_non_null : is_associated.
     
     (*
         pub fn into_raw_with_allocator(b: Self) -> ( *mut T, A) {
@@ -1616,6 +1638,7 @@ Module boxed.
     Axiom AssociatedFunction_into_raw_with_allocator :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
+    Smpl Add apply AssociatedFunction_into_raw_with_allocator : is_associated.
     
     (*
         pub fn into_non_null_with_allocator(b: Self) -> (NonNull<T>, A) {
@@ -1682,6 +1705,7 @@ Module boxed.
         (Self T A)
         "into_non_null_with_allocator"
         (into_non_null_with_allocator T A).
+    Smpl Add apply AssociatedFunction_into_non_null_with_allocator : is_associated.
     
     (*
         pub fn into_unique(b: Self) -> (Unique<T>, A) {
@@ -1742,6 +1766,7 @@ Module boxed.
     Axiom AssociatedFunction_into_unique :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_unique" (into_unique T A).
+    Smpl Add apply AssociatedFunction_into_unique : is_associated.
     
     (*
         pub fn as_mut_ptr(b: &mut Self) -> *mut T {
@@ -1766,6 +1791,7 @@ Module boxed.
     Axiom AssociatedFunction_as_mut_ptr :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "as_mut_ptr" (as_mut_ptr T A).
+    Smpl Add apply AssociatedFunction_as_mut_ptr : is_associated.
     
     (*
         pub fn as_ptr(b: &Self) -> *const T {
@@ -1790,6 +1816,7 @@ Module boxed.
     Axiom AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "as_ptr" (as_ptr T A).
+    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     
     (*
         pub const fn allocator(b: &Self) -> &A {
@@ -1821,6 +1848,7 @@ Module boxed.
     Axiom AssociatedFunction_allocator :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
+    Smpl Add apply AssociatedFunction_allocator : is_associated.
     
     (*
         pub fn leak<'a>(b: Self) -> &'a mut T
@@ -1871,6 +1899,7 @@ Module boxed.
     Axiom AssociatedFunction_leak :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "leak" (leak T A).
+    Smpl Add apply AssociatedFunction_leak : is_associated.
     
     (*
         pub const fn into_pin(boxed: Self) -> Pin<Self>
@@ -1907,6 +1936,7 @@ Module boxed.
     Axiom AssociatedFunction_into_pin :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_pin" (into_pin T A).
+    Smpl Add apply AssociatedFunction_into_pin : is_associated.
   End Impl_alloc_boxed_Box_T_A.
   
   Module Impl_alloc_boxed_Box_slice_T_alloc_alloc_Global.
@@ -1961,6 +1991,7 @@ Module boxed.
     Axiom AssociatedFunction_new_uninit_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "new_uninit_slice" (new_uninit_slice T).
+    Smpl Add apply AssociatedFunction_new_uninit_slice : is_associated.
     
     (*
         pub fn new_zeroed_slice(len: usize) -> Box<[mem::MaybeUninit<T>]> {
@@ -2007,6 +2038,7 @@ Module boxed.
     Axiom AssociatedFunction_new_zeroed_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "new_zeroed_slice" (new_zeroed_slice T).
+    Smpl Add apply AssociatedFunction_new_zeroed_slice : is_associated.
     
     (*
         pub fn try_new_uninit_slice(len: usize) -> Result<Box<[mem::MaybeUninit<T>]>, AllocError> {
@@ -2313,6 +2345,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new_uninit_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_new_uninit_slice" (try_new_uninit_slice T).
+    Smpl Add apply AssociatedFunction_try_new_uninit_slice : is_associated.
     
     (*
         pub fn try_new_zeroed_slice(len: usize) -> Result<Box<[mem::MaybeUninit<T>]>, AllocError> {
@@ -2619,6 +2652,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new_zeroed_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_new_zeroed_slice" (try_new_zeroed_slice T).
+    Smpl Add apply AssociatedFunction_try_new_zeroed_slice : is_associated.
   End Impl_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
   Module Impl_alloc_boxed_Box_slice_T_A.
@@ -2668,6 +2702,7 @@ Module boxed.
     Axiom AssociatedFunction_new_uninit_slice_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
+    Smpl Add apply AssociatedFunction_new_uninit_slice_in : is_associated.
     
     (*
         pub fn new_zeroed_slice_in(len: usize, alloc: A) -> Box<[mem::MaybeUninit<T>], A> {
@@ -2712,6 +2747,7 @@ Module boxed.
     Axiom AssociatedFunction_new_zeroed_slice_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
+    Smpl Add apply AssociatedFunction_new_zeroed_slice_in : is_associated.
     
     (*
         pub fn try_new_uninit_slice_in(
@@ -3011,6 +3047,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new_uninit_slice_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_new_uninit_slice_in" (try_new_uninit_slice_in T A).
+    Smpl Add apply AssociatedFunction_try_new_uninit_slice_in : is_associated.
     
     (*
         pub fn try_new_zeroed_slice_in(
@@ -3310,6 +3347,7 @@ Module boxed.
     Axiom AssociatedFunction_try_new_zeroed_slice_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_new_zeroed_slice_in" (try_new_zeroed_slice_in T A).
+    Smpl Add apply AssociatedFunction_try_new_zeroed_slice_in : is_associated.
   End Impl_alloc_boxed_Box_slice_T_A.
   
   Module Impl_alloc_boxed_Box_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -3377,6 +3415,7 @@ Module boxed.
     Axiom AssociatedFunction_assume_init :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "assume_init" (assume_init T A).
+    Smpl Add apply AssociatedFunction_assume_init : is_associated.
     
     (*
         pub fn write(mut boxed: Self, value: T) -> Box<T, A> {
@@ -3430,6 +3469,7 @@ Module boxed.
     Axiom AssociatedFunction_write :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "write" (write T A).
+    Smpl Add apply AssociatedFunction_write : is_associated.
   End Impl_alloc_boxed_Box_core_mem_maybe_uninit_MaybeUninit_T_A.
   
   Module Impl_alloc_boxed_Box_slice_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -3514,6 +3554,7 @@ Module boxed.
     Axiom AssociatedFunction_assume_init :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "assume_init" (assume_init T A).
+    Smpl Add apply AssociatedFunction_assume_init : is_associated.
   End Impl_alloc_boxed_Box_slice_core_mem_maybe_uninit_MaybeUninit_T_A.
   
   
@@ -6035,6 +6076,7 @@ Module boxed.
     Axiom AssociatedFunction_downcast :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast" (downcast A).
+    Smpl Add apply AssociatedFunction_downcast : is_associated.
     
     (*
         pub unsafe fn downcast_unchecked<T: Any>(self) -> Box<T, A> {
@@ -6157,6 +6199,7 @@ Module boxed.
     Axiom AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
+    Smpl Add apply AssociatedFunction_downcast_unchecked : is_associated.
   End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_A.
   
   Module Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_A.
@@ -6240,6 +6283,7 @@ Module boxed.
     Axiom AssociatedFunction_downcast :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast" (downcast A).
+    Smpl Add apply AssociatedFunction_downcast : is_associated.
     
     (*
         pub unsafe fn downcast_unchecked<T: Any>(self) -> Box<T, A> {
@@ -6370,6 +6414,7 @@ Module boxed.
     Axiom AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
+    Smpl Add apply AssociatedFunction_downcast_unchecked : is_associated.
   End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_A.
   
   Module Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_A.
@@ -6463,6 +6508,7 @@ Module boxed.
     Axiom AssociatedFunction_downcast :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast" (downcast A).
+    Smpl Add apply AssociatedFunction_downcast : is_associated.
     
     (*
         pub unsafe fn downcast_unchecked<T: Any>(self) -> Box<T, A> {
@@ -6599,6 +6645,7 @@ Module boxed.
     Axiom AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
+    Smpl Add apply AssociatedFunction_downcast_unchecked : is_associated.
   End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_A.
   
   Module Impl_core_fmt_Display_where_core_fmt_Display_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
@@ -8999,6 +9046,7 @@ Module boxed.
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
+    Smpl Add apply AssociatedFunction_downcast : is_associated.
   End Impl_Dyn_core_error_Error_Trait.
   
   Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
@@ -9139,6 +9187,7 @@ Module boxed.
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
+    Smpl Add apply AssociatedFunction_downcast : is_associated.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
   
   Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
@@ -9289,6 +9338,7 @@ Module boxed.
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
+    Smpl Add apply AssociatedFunction_downcast : is_associated.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
   
   Module Impl_core_convert_From_where_core_error_Error_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.

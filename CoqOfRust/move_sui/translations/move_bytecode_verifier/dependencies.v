@@ -110,6 +110,7 @@ Module dependencies.
       end.
     
     Axiom AssociatedFunction_module : M.IsAssociatedFunction Self "module" module.
+    Smpl Add apply AssociatedFunction_module : is_associated.
     
     (*
         fn new(
@@ -2618,6 +2619,7 @@ Module dependencies.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_bytecode_verifier_dependencies_Context.
   
   (*

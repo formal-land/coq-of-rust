@@ -38,6 +38,7 @@ Module vec.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub(super) fn increment_len(&mut self, increment: usize) {
@@ -66,6 +67,7 @@ Module vec.
       
       Axiom AssociatedFunction_increment_len :
         M.IsAssociatedFunction Self "increment_len" increment_len.
+      Smpl Add apply AssociatedFunction_increment_len : is_associated.
       
       (*
           pub(super) fn current_len(&self) -> usize {
@@ -88,6 +90,7 @@ Module vec.
         end.
       
       Axiom AssociatedFunction_current_len : M.IsAssociatedFunction Self "current_len" current_len.
+      Smpl Add apply AssociatedFunction_current_len : is_associated.
     End Impl_alloc_vec_set_len_on_drop_SetLenOnDrop.
     
     Module Impl_core_ops_drop_Drop_for_alloc_vec_set_len_on_drop_SetLenOnDrop.

@@ -161,6 +161,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn message(&self) -> PanicMessage<'_> {
@@ -193,6 +194,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_message : M.IsAssociatedFunction Self "message" message.
+      Smpl Add apply AssociatedFunction_message : is_associated.
       
       (*
           pub fn location(&self) -> Option<&Location<'_>> {
@@ -231,6 +233,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_location : M.IsAssociatedFunction Self "location" location.
+      Smpl Add apply AssociatedFunction_location : is_associated.
       
       (*
           pub fn payload(&self) -> &(dyn crate::any::Any + Send) {
@@ -263,6 +266,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_payload : M.IsAssociatedFunction Self "payload" payload.
+      Smpl Add apply AssociatedFunction_payload : is_associated.
       
       (*
           pub fn can_unwind(&self) -> bool {
@@ -285,6 +289,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_can_unwind : M.IsAssociatedFunction Self "can_unwind" can_unwind.
+      Smpl Add apply AssociatedFunction_can_unwind : is_associated.
       
       (*
           pub fn force_no_backtrace(&self) -> bool {
@@ -308,6 +313,7 @@ Module panic.
       
       Axiom AssociatedFunction_force_no_backtrace :
         M.IsAssociatedFunction Self "force_no_backtrace" force_no_backtrace.
+      Smpl Add apply AssociatedFunction_force_no_backtrace : is_associated.
     End Impl_core_panic_panic_info_PanicInfo.
     
     Module Impl_core_fmt_Display_for_core_panic_panic_info_PanicInfo.
@@ -762,6 +768,7 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+      Smpl Add apply AssociatedFunction_as_str : is_associated.
     End Impl_core_panic_panic_info_PanicMessage.
     
     Module Impl_core_fmt_Display_for_core_panic_panic_info_PanicMessage.

@@ -62,6 +62,7 @@ Module slice.
       Axiom AssociatedFunction_next_back_unchecked :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "next_back_unchecked" (next_back_unchecked T).
+      Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
       
       (*
                   fn make_slice(&self) -> &'a [T] {
@@ -198,6 +199,7 @@ Module slice.
       Axiom AssociatedFunction_make_slice :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "make_slice" (make_slice T).
+      Smpl Add apply AssociatedFunction_make_slice : is_associated.
       
       (*
                   unsafe fn post_inc_start(&mut self, offset: usize) -> NonNull<T> {
@@ -369,6 +371,7 @@ Module slice.
       Axiom AssociatedFunction_post_inc_start :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "post_inc_start" (post_inc_start T).
+      Smpl Add apply AssociatedFunction_post_inc_start : is_associated.
       
       (*
                   unsafe fn pre_dec_end(&mut self, offset: usize) -> NonNull<T> {
@@ -515,6 +518,7 @@ Module slice.
       Axiom AssociatedFunction_pre_dec_end :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "pre_dec_end" (pre_dec_end T).
+      Smpl Add apply AssociatedFunction_pre_dec_end : is_associated.
     End Impl_core_slice_iter_Iter_T.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_Iter_T.
@@ -4142,6 +4146,7 @@ Module slice.
       Axiom AssociatedFunction_next_back_unchecked :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "next_back_unchecked" (next_back_unchecked T).
+      Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
       
       (*
                   fn make_slice(&self) -> &'a [T] {
@@ -4278,6 +4283,7 @@ Module slice.
       Axiom AssociatedFunction_make_slice :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "make_slice" (make_slice T).
+      Smpl Add apply AssociatedFunction_make_slice : is_associated.
       
       (*
                   unsafe fn post_inc_start(&mut self, offset: usize) -> NonNull<T> {
@@ -4449,6 +4455,7 @@ Module slice.
       Axiom AssociatedFunction_post_inc_start :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "post_inc_start" (post_inc_start T).
+      Smpl Add apply AssociatedFunction_post_inc_start : is_associated.
       
       (*
                   unsafe fn pre_dec_end(&mut self, offset: usize) -> NonNull<T> {
@@ -4595,6 +4602,7 @@ Module slice.
       Axiom AssociatedFunction_pre_dec_end :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "pre_dec_end" (pre_dec_end T).
+      Smpl Add apply AssociatedFunction_pre_dec_end : is_associated.
     End Impl_core_slice_iter_IterMut_T.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_IterMut_T.

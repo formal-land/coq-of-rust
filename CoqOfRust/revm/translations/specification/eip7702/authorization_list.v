@@ -685,6 +685,7 @@ Module eip7702.
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub fn empty() -> Self {
@@ -719,6 +720,7 @@ Module eip7702.
         end.
       
       Axiom AssociatedFunction_empty : M.IsAssociatedFunction Self "empty" empty.
+      Smpl Add apply AssociatedFunction_empty : is_associated.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -746,6 +748,7 @@ Module eip7702.
         end.
       
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
       
       (*
           pub fn recovered_iter<'a>(&'a self) -> Box<dyn Iterator<Item = RecoveredAuthorization> + 'a> {
@@ -1029,6 +1032,7 @@ Module eip7702.
       
       Axiom AssociatedFunction_recovered_iter :
         M.IsAssociatedFunction Self "recovered_iter" recovered_iter.
+      Smpl Add apply AssociatedFunction_recovered_iter : is_associated.
       
       (*
           pub fn into_recovered(self) -> Self {
@@ -1193,6 +1197,7 @@ Module eip7702.
       
       Axiom AssociatedFunction_into_recovered :
         M.IsAssociatedFunction Self "into_recovered" into_recovered.
+      Smpl Add apply AssociatedFunction_into_recovered : is_associated.
     End Impl_revm_specification_eip7702_authorization_list_AuthorizationList.
     
     (*

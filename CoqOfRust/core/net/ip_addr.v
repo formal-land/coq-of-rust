@@ -1549,6 +1549,7 @@ Module net.
       
       Axiom AssociatedFunction_is_unspecified :
         M.IsAssociatedFunction Self "is_unspecified" is_unspecified.
+      Smpl Add apply AssociatedFunction_is_unspecified : is_associated.
       
       (*
           pub const fn is_loopback(&self) -> bool {
@@ -1616,6 +1617,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_loopback : M.IsAssociatedFunction Self "is_loopback" is_loopback.
+      Smpl Add apply AssociatedFunction_is_loopback : is_associated.
       
       (*
           pub const fn is_global(&self) -> bool {
@@ -1683,6 +1685,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_global : M.IsAssociatedFunction Self "is_global" is_global.
+      Smpl Add apply AssociatedFunction_is_global : is_associated.
       
       (*
           pub const fn is_multicast(&self) -> bool {
@@ -1751,6 +1754,7 @@ Module net.
       
       Axiom AssociatedFunction_is_multicast :
         M.IsAssociatedFunction Self "is_multicast" is_multicast.
+      Smpl Add apply AssociatedFunction_is_multicast : is_associated.
       
       (*
           pub const fn is_documentation(&self) -> bool {
@@ -1819,6 +1823,7 @@ Module net.
       
       Axiom AssociatedFunction_is_documentation :
         M.IsAssociatedFunction Self "is_documentation" is_documentation.
+      Smpl Add apply AssociatedFunction_is_documentation : is_associated.
       
       (*
           pub const fn is_benchmarking(&self) -> bool {
@@ -1887,6 +1892,7 @@ Module net.
       
       Axiom AssociatedFunction_is_benchmarking :
         M.IsAssociatedFunction Self "is_benchmarking" is_benchmarking.
+      Smpl Add apply AssociatedFunction_is_benchmarking : is_associated.
       
       (*
           pub const fn is_ipv4(&self) -> bool {
@@ -1920,6 +1926,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_ipv4 : M.IsAssociatedFunction Self "is_ipv4" is_ipv4.
+      Smpl Add apply AssociatedFunction_is_ipv4 : is_associated.
       
       (*
           pub const fn is_ipv6(&self) -> bool {
@@ -1953,6 +1960,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_ipv6 : M.IsAssociatedFunction Self "is_ipv6" is_ipv6.
+      Smpl Add apply AssociatedFunction_is_ipv6 : is_associated.
       
       (*
           pub const fn to_canonical(&self) -> IpAddr {
@@ -2010,6 +2018,7 @@ Module net.
       
       Axiom AssociatedFunction_to_canonical :
         M.IsAssociatedFunction Self "to_canonical" to_canonical.
+      Smpl Add apply AssociatedFunction_to_canonical : is_associated.
     End Impl_core_net_ip_addr_IpAddr.
     
     Module Impl_core_net_ip_addr_Ipv4Addr.
@@ -2038,6 +2047,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*     pub const BITS: u32 = 32; *)
       (* Ty.path "u32" *)
@@ -2045,6 +2055,7 @@ Module net.
         M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 32 |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
           pub const fn to_bits(self) -> u32 {
@@ -2072,6 +2083,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
+      Smpl Add apply AssociatedFunction_to_bits : is_associated.
       
       (*
           pub const fn from_bits(bits: u32) -> Ipv4Addr {
@@ -2096,6 +2108,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
+      Smpl Add apply AssociatedFunction_from_bits : is_associated.
       
       (*     pub const LOCALHOST: Self = Ipv4Addr::new(127, 0, 0, 1); *)
       (* Ty.path "core::net::ip_addr::Ipv4Addr" *)
@@ -2121,6 +2134,7 @@ Module net.
       
       Axiom AssociatedConstant_value_LOCALHOST :
         M.IsAssociatedConstant Self "value_LOCALHOST" value_LOCALHOST.
+      Smpl Add apply AssociatedConstant_value_LOCALHOST : is_associated.
       
       (*     pub const UNSPECIFIED: Self = Ipv4Addr::new(0, 0, 0, 0); *)
       (* Ty.path "core::net::ip_addr::Ipv4Addr" *)
@@ -2146,6 +2160,7 @@ Module net.
       
       Axiom AssociatedConstant_value_UNSPECIFIED :
         M.IsAssociatedConstant Self "value_UNSPECIFIED" value_UNSPECIFIED.
+      Smpl Add apply AssociatedConstant_value_UNSPECIFIED : is_associated.
       
       (*     pub const BROADCAST: Self = Ipv4Addr::new(255, 255, 255, 255); *)
       (* Ty.path "core::net::ip_addr::Ipv4Addr" *)
@@ -2171,6 +2186,7 @@ Module net.
       
       Axiom AssociatedConstant_value_BROADCAST :
         M.IsAssociatedConstant Self "value_BROADCAST" value_BROADCAST.
+      Smpl Add apply AssociatedConstant_value_BROADCAST : is_associated.
       
       (*
           pub const fn octets(&self) -> [u8; 4] {
@@ -2193,6 +2209,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_octets : M.IsAssociatedFunction Self "octets" octets.
+      Smpl Add apply AssociatedFunction_octets : is_associated.
       
       (*
           pub const fn is_unspecified(&self) -> bool {
@@ -2224,6 +2241,7 @@ Module net.
       
       Axiom AssociatedFunction_is_unspecified :
         M.IsAssociatedFunction Self "is_unspecified" is_unspecified.
+      Smpl Add apply AssociatedFunction_is_unspecified : is_associated.
       
       (*
           pub const fn is_loopback(&self) -> bool {
@@ -2258,6 +2276,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_loopback : M.IsAssociatedFunction Self "is_loopback" is_loopback.
+      Smpl Add apply AssociatedFunction_is_loopback : is_associated.
       
       (*
           pub const fn is_private(&self) -> bool {
@@ -2344,6 +2363,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_private : M.IsAssociatedFunction Self "is_private" is_private.
+      Smpl Add apply AssociatedFunction_is_private : is_associated.
       
       (*
           pub const fn is_link_local(&self) -> bool {
@@ -2394,6 +2414,7 @@ Module net.
       
       Axiom AssociatedFunction_is_link_local :
         M.IsAssociatedFunction Self "is_link_local" is_link_local.
+      Smpl Add apply AssociatedFunction_is_link_local : is_associated.
       
       (*
           pub const fn is_global(&self) -> bool {
@@ -2686,6 +2707,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_global : M.IsAssociatedFunction Self "is_global" is_global.
+      Smpl Add apply AssociatedFunction_is_global : is_associated.
       
       (*
           pub const fn is_shared(&self) -> bool {
@@ -2744,6 +2766,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_shared : M.IsAssociatedFunction Self "is_shared" is_shared.
+      Smpl Add apply AssociatedFunction_is_shared : is_associated.
       
       (*
           pub const fn is_benchmarking(&self) -> bool {
@@ -2803,6 +2826,7 @@ Module net.
       
       Axiom AssociatedFunction_is_benchmarking :
         M.IsAssociatedFunction Self "is_benchmarking" is_benchmarking.
+      Smpl Add apply AssociatedFunction_is_benchmarking : is_associated.
       
       (*
           pub const fn is_reserved(&self) -> bool {
@@ -2853,6 +2877,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_reserved : M.IsAssociatedFunction Self "is_reserved" is_reserved.
+      Smpl Add apply AssociatedFunction_is_reserved : is_associated.
       
       (*
           pub const fn is_multicast(&self) -> bool {
@@ -2910,6 +2935,7 @@ Module net.
       
       Axiom AssociatedFunction_is_multicast :
         M.IsAssociatedFunction Self "is_multicast" is_multicast.
+      Smpl Add apply AssociatedFunction_is_multicast : is_associated.
       
       (*
           pub const fn is_broadcast(&self) -> bool {
@@ -2961,6 +2987,7 @@ Module net.
       
       Axiom AssociatedFunction_is_broadcast :
         M.IsAssociatedFunction Self "is_broadcast" is_broadcast.
+      Smpl Add apply AssociatedFunction_is_broadcast : is_associated.
       
       (*
           pub const fn is_documentation(&self) -> bool {
@@ -3074,6 +3101,7 @@ Module net.
       
       Axiom AssociatedFunction_is_documentation :
         M.IsAssociatedFunction Self "is_documentation" is_documentation.
+      Smpl Add apply AssociatedFunction_is_documentation : is_associated.
       
       (*
           pub const fn to_ipv6_compatible(&self) -> Ipv6Addr {
@@ -3144,6 +3172,7 @@ Module net.
       
       Axiom AssociatedFunction_to_ipv6_compatible :
         M.IsAssociatedFunction Self "to_ipv6_compatible" to_ipv6_compatible.
+      Smpl Add apply AssociatedFunction_to_ipv6_compatible : is_associated.
       
       (*
           pub const fn to_ipv6_mapped(&self) -> Ipv6Addr {
@@ -3214,6 +3243,7 @@ Module net.
       
       Axiom AssociatedFunction_to_ipv6_mapped :
         M.IsAssociatedFunction Self "to_ipv6_mapped" to_ipv6_mapped.
+      Smpl Add apply AssociatedFunction_to_ipv6_mapped : is_associated.
     End Impl_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_fmt_Display_for_core_net_ip_addr_IpAddr.
@@ -4576,6 +4606,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*     pub const BITS: u32 = 128; *)
       (* Ty.path "u32" *)
@@ -4583,6 +4614,7 @@ Module net.
         M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
           pub const fn to_bits(self) -> u128 {
@@ -4610,6 +4642,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
+      Smpl Add apply AssociatedFunction_to_bits : is_associated.
       
       (*
           pub const fn from_bits(bits: u128) -> Ipv6Addr {
@@ -4634,6 +4667,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
+      Smpl Add apply AssociatedFunction_from_bits : is_associated.
       
       (*     pub const LOCALHOST: Self = Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 1); *)
       (* Ty.path "core::net::ip_addr::Ipv6Addr" *)
@@ -4663,6 +4697,7 @@ Module net.
       
       Axiom AssociatedConstant_value_LOCALHOST :
         M.IsAssociatedConstant Self "value_LOCALHOST" value_LOCALHOST.
+      Smpl Add apply AssociatedConstant_value_LOCALHOST : is_associated.
       
       (*     pub const UNSPECIFIED: Self = Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 0); *)
       (* Ty.path "core::net::ip_addr::Ipv6Addr" *)
@@ -4692,6 +4727,7 @@ Module net.
       
       Axiom AssociatedConstant_value_UNSPECIFIED :
         M.IsAssociatedConstant Self "value_UNSPECIFIED" value_UNSPECIFIED.
+      Smpl Add apply AssociatedConstant_value_UNSPECIFIED : is_associated.
       
       (*
           pub const fn segments(&self) -> [u16; 8] {
@@ -4808,6 +4844,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_segments : M.IsAssociatedFunction Self "segments" segments.
+      Smpl Add apply AssociatedFunction_segments : is_associated.
       
       (*
           pub const fn is_unspecified(&self) -> bool {
@@ -4859,6 +4896,7 @@ Module net.
       
       Axiom AssociatedFunction_is_unspecified :
         M.IsAssociatedFunction Self "is_unspecified" is_unspecified.
+      Smpl Add apply AssociatedFunction_is_unspecified : is_associated.
       
       (*
           pub const fn is_loopback(&self) -> bool {
@@ -4909,6 +4947,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_loopback : M.IsAssociatedFunction Self "is_loopback" is_loopback.
+      Smpl Add apply AssociatedFunction_is_loopback : is_associated.
       
       (*
           pub const fn is_global(&self) -> bool {
@@ -5536,6 +5575,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_global : M.IsAssociatedFunction Self "is_global" is_global.
+      Smpl Add apply AssociatedFunction_is_global : is_associated.
       
       (*
           pub const fn is_unique_local(&self) -> bool {
@@ -5573,6 +5613,7 @@ Module net.
       
       Axiom AssociatedFunction_is_unique_local :
         M.IsAssociatedFunction Self "is_unique_local" is_unique_local.
+      Smpl Add apply AssociatedFunction_is_unique_local : is_associated.
       
       (*
           pub const fn is_unicast(&self) -> bool {
@@ -5599,6 +5640,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_is_unicast : M.IsAssociatedFunction Self "is_unicast" is_unicast.
+      Smpl Add apply AssociatedFunction_is_unicast : is_associated.
       
       (*
           pub const fn is_unicast_link_local(&self) -> bool {
@@ -5636,6 +5678,7 @@ Module net.
       
       Axiom AssociatedFunction_is_unicast_link_local :
         M.IsAssociatedFunction Self "is_unicast_link_local" is_unicast_link_local.
+      Smpl Add apply AssociatedFunction_is_unicast_link_local : is_associated.
       
       (*
           pub const fn is_documentation(&self) -> bool {
@@ -5693,6 +5736,7 @@ Module net.
       
       Axiom AssociatedFunction_is_documentation :
         M.IsAssociatedFunction Self "is_documentation" is_documentation.
+      Smpl Add apply AssociatedFunction_is_documentation : is_associated.
       
       (*
           pub const fn is_benchmarking(&self) -> bool {
@@ -5772,6 +5816,7 @@ Module net.
       
       Axiom AssociatedFunction_is_benchmarking :
         M.IsAssociatedFunction Self "is_benchmarking" is_benchmarking.
+      Smpl Add apply AssociatedFunction_is_benchmarking : is_associated.
       
       (*
           pub const fn is_unicast_global(&self) -> bool {
@@ -5887,6 +5932,7 @@ Module net.
       
       Axiom AssociatedFunction_is_unicast_global :
         M.IsAssociatedFunction Self "is_unicast_global" is_unicast_global.
+      Smpl Add apply AssociatedFunction_is_unicast_global : is_associated.
       
       (*
           pub const fn multicast_scope(&self) -> Option<Ipv6MulticastScope> {
@@ -6086,6 +6132,7 @@ Module net.
       
       Axiom AssociatedFunction_multicast_scope :
         M.IsAssociatedFunction Self "multicast_scope" multicast_scope.
+      Smpl Add apply AssociatedFunction_multicast_scope : is_associated.
       
       (*
           pub const fn is_multicast(&self) -> bool {
@@ -6123,6 +6170,7 @@ Module net.
       
       Axiom AssociatedFunction_is_multicast :
         M.IsAssociatedFunction Self "is_multicast" is_multicast.
+      Smpl Add apply AssociatedFunction_is_multicast : is_associated.
       
       (*
           pub const fn is_ipv4_mapped(&self) -> bool {
@@ -6198,6 +6246,7 @@ Module net.
       
       Axiom AssociatedFunction_is_ipv4_mapped :
         M.IsAssociatedFunction Self "is_ipv4_mapped" is_ipv4_mapped.
+      Smpl Add apply AssociatedFunction_is_ipv4_mapped : is_associated.
       
       (*
           pub const fn to_ipv4_mapped(&self) -> Option<Ipv4Addr> {
@@ -6336,6 +6385,7 @@ Module net.
       
       Axiom AssociatedFunction_to_ipv4_mapped :
         M.IsAssociatedFunction Self "to_ipv4_mapped" to_ipv4_mapped.
+      Smpl Add apply AssociatedFunction_to_ipv4_mapped : is_associated.
       
       (*
           pub const fn to_ipv4(&self) -> Option<Ipv4Addr> {
@@ -6508,6 +6558,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_to_ipv4 : M.IsAssociatedFunction Self "to_ipv4" to_ipv4.
+      Smpl Add apply AssociatedFunction_to_ipv4 : is_associated.
       
       (*
           pub const fn to_canonical(&self) -> IpAddr {
@@ -6577,6 +6628,7 @@ Module net.
       
       Axiom AssociatedFunction_to_canonical :
         M.IsAssociatedFunction Self "to_canonical" to_canonical.
+      Smpl Add apply AssociatedFunction_to_canonical : is_associated.
       
       (*
           pub const fn octets(&self) -> [u8; 16] {
@@ -6599,6 +6651,7 @@ Module net.
         end.
       
       Axiom AssociatedFunction_octets : M.IsAssociatedFunction Self "octets" octets.
+      Smpl Add apply AssociatedFunction_octets : is_associated.
     End Impl_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_fmt_Display_for_core_net_ip_addr_Ipv6Addr.

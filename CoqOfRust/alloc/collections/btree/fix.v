@@ -388,6 +388,7 @@ Module collections.
         Axiom AssociatedFunction_fix_node_through_parent :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "fix_node_through_parent" (fix_node_through_parent K V).
+        Smpl Add apply AssociatedFunction_fix_node_through_parent : is_associated.
         (*
             pub fn fix_node_and_affected_ancestors<A: Allocator + Clone>(mut self, alloc: A) -> bool {
                 loop {
@@ -532,6 +533,7 @@ Module collections.
             (Self K V)
             "fix_node_and_affected_ancestors"
             (fix_node_and_affected_ancestors K V).
+        Smpl Add apply AssociatedFunction_fix_node_and_affected_ancestors : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       
@@ -692,6 +694,7 @@ Module collections.
         Axiom AssociatedFunction_fix_top :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "fix_top" (fix_top K V).
+        Smpl Add apply AssociatedFunction_fix_top : is_associated.
         
         (*
             pub fn fix_right_border<A: Allocator + Clone>(&mut self, alloc: A) {
@@ -892,6 +895,7 @@ Module collections.
         Axiom AssociatedFunction_fix_right_border :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "fix_right_border" (fix_right_border K V).
+        Smpl Add apply AssociatedFunction_fix_right_border : is_associated.
         
         (*
             pub fn fix_left_border<A: Allocator + Clone>(&mut self, alloc: A) {
@@ -1092,6 +1096,7 @@ Module collections.
         Axiom AssociatedFunction_fix_left_border :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "fix_left_border" (fix_left_border K V).
+        Smpl Add apply AssociatedFunction_fix_left_border : is_associated.
         
         (*
             pub fn fix_right_border_of_plentiful(&mut self) {
@@ -1411,6 +1416,7 @@ Module collections.
             (Self K V)
             "fix_right_border_of_plentiful"
             (fix_right_border_of_plentiful K V).
+        Smpl Add apply AssociatedFunction_fix_right_border_of_plentiful : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_KV.
@@ -1727,6 +1733,7 @@ Module collections.
             (Self K V)
             "fix_left_border_of_left_edge"
             (fix_left_border_of_left_edge K V).
+        Smpl Add apply AssociatedFunction_fix_left_border_of_left_edge : is_associated.
         
         (*
             fn fix_right_border_of_right_edge<A: Allocator + Clone>(mut self, alloc: A) {
@@ -2024,6 +2031,7 @@ Module collections.
             (Self K V)
             "fix_right_border_of_right_edge"
             (fix_right_border_of_right_edge K V).
+        Smpl Add apply AssociatedFunction_fix_right_border_of_right_edge : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_KV.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.
@@ -2307,6 +2315,7 @@ Module collections.
         Axiom AssociatedFunction_fix_left_child :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "fix_left_child" (fix_left_child K V).
+        Smpl Add apply AssociatedFunction_fix_left_child : is_associated.
         
         (*
             fn fix_right_child<A: Allocator + Clone>(
@@ -2571,6 +2580,7 @@ Module collections.
         Axiom AssociatedFunction_fix_right_child :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "fix_right_child" (fix_right_child K V).
+        Smpl Add apply AssociatedFunction_fix_right_child : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.
     End fix_.
   End btree.

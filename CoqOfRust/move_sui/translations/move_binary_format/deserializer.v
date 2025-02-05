@@ -54,6 +54,7 @@ Module deserializer.
     
     Axiom AssociatedFunction_deserialize_with_defaults :
       M.IsAssociatedFunction Self "deserialize_with_defaults" deserialize_with_defaults.
+    Smpl Add apply AssociatedFunction_deserialize_with_defaults : is_associated.
     
     (*
         pub fn deserialize_with_config(
@@ -268,6 +269,7 @@ Module deserializer.
     
     Axiom AssociatedFunction_deserialize_with_config :
       M.IsAssociatedFunction Self "deserialize_with_config" deserialize_with_config.
+    Smpl Add apply AssociatedFunction_deserialize_with_config : is_associated.
     
     (*
         pub fn deserialize_no_check_bounds(binary: &[u8]) -> BinaryLoaderResult<Self> {
@@ -317,6 +319,7 @@ Module deserializer.
     
     Axiom AssociatedFunction_deserialize_no_check_bounds :
       M.IsAssociatedFunction Self "deserialize_no_check_bounds" deserialize_no_check_bounds.
+    Smpl Add apply AssociatedFunction_deserialize_no_check_bounds : is_associated.
   End Impl_move_binary_format_file_format_CompiledModule.
   
   (* StructRecord
@@ -547,6 +550,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_deserializer_Table.
   
   (*
@@ -21128,6 +21132,7 @@ Module deserializer.
         end.
       
       Axiom AssociatedFunction_apply : M.IsAssociatedFunction Self "apply" apply.
+      Smpl Add apply AssociatedFunction_apply : is_associated.
       
       (*
               fn is_saturated(&self) -> bool {
@@ -21162,6 +21167,7 @@ Module deserializer.
       
       Axiom AssociatedFunction_is_saturated :
         M.IsAssociatedFunction Self "is_saturated" is_saturated.
+      Smpl Add apply AssociatedFunction_is_saturated : is_associated.
       
       (*
               fn unwrap_saturated(self) -> SignatureToken {
@@ -21255,6 +21261,7 @@ Module deserializer.
       
       Axiom AssociatedFunction_unwrap_saturated :
         M.IsAssociatedFunction Self "unwrap_saturated" unwrap_saturated.
+      Smpl Add apply AssociatedFunction_unwrap_saturated : is_associated.
     End Impl_move_binary_format_deserializer_load_signature_token_TypeBuilder.
   End load_signature_token.
   
@@ -34638,6 +34645,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
+    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
   End Impl_move_binary_format_file_format_common_TableType.
   
   Module Impl_move_binary_format_file_format_common_SerializedType.
@@ -34942,6 +34950,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
+    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
   End Impl_move_binary_format_file_format_common_SerializedType.
   
   (*
@@ -35144,6 +35153,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
+    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
   End Impl_move_binary_format_deserializer_DeprecatedNominalResourceFlag.
   
   (*
@@ -35270,6 +35280,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
+    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
   End Impl_move_binary_format_deserializer_DeprecatedKind.
   
   Module Impl_move_binary_format_file_format_common_SerializedNativeStructFlag.
@@ -35354,6 +35365,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
+    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
   End Impl_move_binary_format_file_format_common_SerializedNativeStructFlag.
   
   Module Impl_move_binary_format_file_format_common_Opcodes.
@@ -36694,6 +36706,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
+    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
   End Impl_move_binary_format_file_format_common_Opcodes.
   
   (* StructRecord
@@ -38043,6 +38056,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_initialize : M.IsAssociatedFunction Self "initialize" initialize.
+    Smpl Add apply AssociatedFunction_initialize : is_associated.
     
     (*
         fn version(&self) -> u32 {
@@ -38065,6 +38079,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_version : M.IsAssociatedFunction Self "version" version.
+    Smpl Add apply AssociatedFunction_version : is_associated.
     
     (*
         fn module_idx(&self) -> ModuleHandleIndex {
@@ -38087,6 +38102,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_module_idx : M.IsAssociatedFunction Self "module_idx" module_idx.
+    Smpl Add apply AssociatedFunction_module_idx : is_associated.
     
     (*
         fn binary_end_offset(&self) -> usize {
@@ -38110,6 +38126,7 @@ Module deserializer.
     
     Axiom AssociatedFunction_binary_end_offset :
       M.IsAssociatedFunction Self "binary_end_offset" binary_end_offset.
+    Smpl Add apply AssociatedFunction_binary_end_offset : is_associated.
     
     (*
         fn new_cursor(&self, start: usize, end: usize) -> VersionedCursor<'a> {
@@ -38225,6 +38242,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_new_cursor : M.IsAssociatedFunction Self "new_cursor" new_cursor.
+    Smpl Add apply AssociatedFunction_new_cursor : is_associated.
     
     (*
         fn slice(&self, start: usize, end: usize) -> &'a [u8] {
@@ -38303,6 +38321,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_slice : M.IsAssociatedFunction Self "slice" slice.
+    Smpl Add apply AssociatedFunction_slice : is_associated.
     
     (*
         fn check_no_extraneous_bytes(&self) -> bool {
@@ -38338,6 +38357,7 @@ Module deserializer.
     
     Axiom AssociatedFunction_check_no_extraneous_bytes :
       M.IsAssociatedFunction Self "check_no_extraneous_bytes" check_no_extraneous_bytes.
+    Smpl Add apply AssociatedFunction_check_no_extraneous_bytes : is_associated.
   End Impl_move_binary_format_deserializer_VersionedBinary.
   
   Module Impl_move_binary_format_deserializer_VersionedCursor.
@@ -38364,6 +38384,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_version : M.IsAssociatedFunction Self "version" version.
+    Smpl Add apply AssociatedFunction_version : is_associated.
     
     (*
         fn position(&self) -> u64 {
@@ -38400,6 +38421,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_position : M.IsAssociatedFunction Self "position" position.
+    Smpl Add apply AssociatedFunction_position : is_associated.
     
     (*
         fn read_u8(&mut self) -> anyhow::Result<u8> {
@@ -38433,6 +38455,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_read_u8 : M.IsAssociatedFunction Self "read_u8" read_u8.
+    Smpl Add apply AssociatedFunction_read_u8 : is_associated.
     
     (*
         fn set_position(&mut self, pos: u64) {
@@ -38478,6 +38501,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_set_position : M.IsAssociatedFunction Self "set_position" set_position.
+    Smpl Add apply AssociatedFunction_set_position : is_associated.
     
     (*
         fn read_u32(&mut self) -> anyhow::Result<u32> {
@@ -38511,6 +38535,7 @@ Module deserializer.
       end.
     
     Axiom AssociatedFunction_read_u32 : M.IsAssociatedFunction Self "read_u32" read_u32.
+    Smpl Add apply AssociatedFunction_read_u32 : is_associated.
     
     (*
         fn read_uleb128_as_u64(&mut self) -> anyhow::Result<u64> {
@@ -38549,6 +38574,7 @@ Module deserializer.
     
     Axiom AssociatedFunction_read_uleb128_as_u64 :
       M.IsAssociatedFunction Self "read_uleb128_as_u64" read_uleb128_as_u64.
+    Smpl Add apply AssociatedFunction_read_uleb128_as_u64 : is_associated.
   End Impl_move_binary_format_deserializer_VersionedCursor.
   
   Module Impl_std_io_Read_for_move_binary_format_deserializer_VersionedCursor.

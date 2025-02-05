@@ -47,6 +47,7 @@ Module Impl_generics_implementation_Val.
     end.
   
   Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value.
+  Smpl Add apply AssociatedFunction_value : is_associated.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
@@ -83,6 +84,7 @@ Module Impl_generics_implementation_GenVal_T.
   Axiom AssociatedFunction_value :
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "value" (value T).
+  Smpl Add apply AssociatedFunction_value : is_associated.
 End Impl_generics_implementation_GenVal_T.
 
 (*

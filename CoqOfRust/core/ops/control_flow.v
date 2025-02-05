@@ -763,6 +763,7 @@ Module ops.
       Axiom AssociatedFunction_is_break :
         forall (B C : Ty.t),
         M.IsAssociatedFunction (Self B C) "is_break" (is_break B C).
+      Smpl Add apply AssociatedFunction_is_break : is_associated.
       
       (*
           pub fn is_continue(&self) -> bool {
@@ -803,6 +804,7 @@ Module ops.
       Axiom AssociatedFunction_is_continue :
         forall (B C : Ty.t),
         M.IsAssociatedFunction (Self B C) "is_continue" (is_continue B C).
+      Smpl Add apply AssociatedFunction_is_continue : is_associated.
       
       (*
           pub fn break_value(self) -> Option<B> {
@@ -856,6 +858,7 @@ Module ops.
       Axiom AssociatedFunction_break_value :
         forall (B C : Ty.t),
         M.IsAssociatedFunction (Self B C) "break_value" (break_value B C).
+      Smpl Add apply AssociatedFunction_break_value : is_associated.
       
       (*
           pub fn map_break<T, F>(self, f: F) -> ControlFlow<T, C>
@@ -929,6 +932,7 @@ Module ops.
       Axiom AssociatedFunction_map_break :
         forall (B C : Ty.t),
         M.IsAssociatedFunction (Self B C) "map_break" (map_break B C).
+      Smpl Add apply AssociatedFunction_map_break : is_associated.
       
       (*
           pub fn continue_value(self) -> Option<C> {
@@ -979,6 +983,7 @@ Module ops.
       Axiom AssociatedFunction_continue_value :
         forall (B C : Ty.t),
         M.IsAssociatedFunction (Self B C) "continue_value" (continue_value B C).
+      Smpl Add apply AssociatedFunction_continue_value : is_associated.
       
       (*
           pub fn map_continue<T, F>(self, f: F) -> ControlFlow<B, T>
@@ -1057,6 +1062,7 @@ Module ops.
       Axiom AssociatedFunction_map_continue :
         forall (B C : Ty.t),
         M.IsAssociatedFunction (Self B C) "map_continue" (map_continue B C).
+      Smpl Add apply AssociatedFunction_map_continue : is_associated.
     End Impl_core_ops_control_flow_ControlFlow_B_C.
     
     Module Impl_core_ops_control_flow_ControlFlow_R_associated_type.
@@ -1144,6 +1150,7 @@ Module ops.
       Axiom AssociatedFunction_from_try :
         forall (R : Ty.t),
         M.IsAssociatedFunction (Self R) "from_try" (from_try R).
+      Smpl Add apply AssociatedFunction_from_try : is_associated.
       
       (*
           pub(crate) fn into_try(self) -> R {
@@ -1205,6 +1212,7 @@ Module ops.
       Axiom AssociatedFunction_into_try :
         forall (R : Ty.t),
         M.IsAssociatedFunction (Self R) "into_try" (into_try R).
+      Smpl Add apply AssociatedFunction_into_try : is_associated.
     End Impl_core_ops_control_flow_ControlFlow_R_associated_type.
   End control_flow.
 End ops.

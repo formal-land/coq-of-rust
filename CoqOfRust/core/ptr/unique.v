@@ -74,6 +74,7 @@ Module ptr.
       Axiom AssociatedFunction_dangling :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "dangling" (dangling T).
+      Smpl Add apply AssociatedFunction_dangling : is_associated.
       (*
           pub const unsafe fn new_unchecked(ptr: *mut T) -> Self {
               // SAFETY: the caller must guarantee that `ptr` is non-null.
@@ -112,6 +113,7 @@ Module ptr.
       Axiom AssociatedFunction_new_unchecked :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new_unchecked" (new_unchecked T).
+      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
       
       (*
           pub const fn new(ptr: *mut T) -> Option<Self> {
@@ -177,6 +179,7 @@ Module ptr.
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const fn as_ptr(self) -> *mut T {
@@ -212,6 +215,7 @@ Module ptr.
       Axiom AssociatedFunction_as_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
       
       (*
           pub const fn as_non_null_ptr(self) -> NonNull<T> {
@@ -242,6 +246,7 @@ Module ptr.
       Axiom AssociatedFunction_as_non_null_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_non_null_ptr" (as_non_null_ptr T).
+      Smpl Add apply AssociatedFunction_as_non_null_ptr : is_associated.
       
       (*
           pub const unsafe fn as_ref(&self) -> &T {
@@ -285,6 +290,7 @@ Module ptr.
       Axiom AssociatedFunction_as_ref :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
+      Smpl Add apply AssociatedFunction_as_ref : is_associated.
       
       (*
           pub const unsafe fn as_mut(&mut self) -> &mut T {
@@ -338,6 +344,7 @@ Module ptr.
       Axiom AssociatedFunction_as_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_mut" (as_mut T).
+      Smpl Add apply AssociatedFunction_as_mut : is_associated.
       
       (*
           pub const fn cast<U>(self) -> Unique<U> {
@@ -381,6 +388,7 @@ Module ptr.
       Axiom AssociatedFunction_cast :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "cast" (cast T).
+      Smpl Add apply AssociatedFunction_cast : is_associated.
     End Impl_core_ptr_unique_Unique_T.
     
     

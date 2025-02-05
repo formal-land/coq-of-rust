@@ -2151,6 +2151,7 @@ Module absint.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn index(&self) -> Option<FunctionDefinitionIndex> {
@@ -2173,6 +2174,7 @@ Module absint.
       end.
     
     Axiom AssociatedFunction_index : M.IsAssociatedFunction Self "index" index.
+    Smpl Add apply AssociatedFunction_index : is_associated.
     
     (*
         pub fn code(&self) -> &CodeUnit {
@@ -2200,6 +2202,7 @@ Module absint.
       end.
     
     Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
+    Smpl Add apply AssociatedFunction_code : is_associated.
     
     (*
         pub fn parameters(&self) -> &Signature {
@@ -2227,6 +2230,7 @@ Module absint.
       end.
     
     Axiom AssociatedFunction_parameters : M.IsAssociatedFunction Self "parameters" parameters.
+    Smpl Add apply AssociatedFunction_parameters : is_associated.
     
     (*
         pub fn return_(&self) -> &Signature {
@@ -2254,6 +2258,7 @@ Module absint.
       end.
     
     Axiom AssociatedFunction_return_ : M.IsAssociatedFunction Self "return_" return_.
+    Smpl Add apply AssociatedFunction_return_ : is_associated.
     
     (*
         pub fn locals(&self) -> &Signature {
@@ -2281,6 +2286,7 @@ Module absint.
       end.
     
     Axiom AssociatedFunction_locals : M.IsAssociatedFunction Self "locals" locals.
+    Smpl Add apply AssociatedFunction_locals : is_associated.
     
     (*
         pub fn type_parameters(&self) -> &[AbilitySet] {
@@ -2309,6 +2315,7 @@ Module absint.
     
     Axiom AssociatedFunction_type_parameters :
       M.IsAssociatedFunction Self "type_parameters" type_parameters.
+    Smpl Add apply AssociatedFunction_type_parameters : is_associated.
     
     (*
         pub fn cfg(&self) -> &VMControlFlowGraph {
@@ -2337,5 +2344,6 @@ Module absint.
       end.
     
     Axiom AssociatedFunction_cfg : M.IsAssociatedFunction Self "cfg" cfg.
+    Smpl Add apply AssociatedFunction_cfg : is_associated.
   End Impl_move_bytecode_verifier_absint_FunctionContext.
 End absint.

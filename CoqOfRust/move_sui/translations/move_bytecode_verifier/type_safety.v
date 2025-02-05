@@ -62,6 +62,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn local_at(&self, i: LocalIndex) -> &SignatureToken {
@@ -215,6 +216,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_local_at : M.IsAssociatedFunction Self "local_at" local_at.
+    Smpl Add apply AssociatedFunction_local_at : is_associated.
   End Impl_move_bytecode_verifier_type_safety_Locals.
   
   (* StructRecord
@@ -342,6 +344,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn local_at(&self, i: LocalIndex) -> &SignatureToken {
@@ -382,6 +385,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_local_at : M.IsAssociatedFunction Self "local_at" local_at.
+    Smpl Add apply AssociatedFunction_local_at : is_associated.
     
     (*
         fn abilities(&self, t: &SignatureToken) -> PartialVMResult<AbilitySet> {
@@ -449,6 +453,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_abilities : M.IsAssociatedFunction Self "abilities" abilities.
+    Smpl Add apply AssociatedFunction_abilities : is_associated.
     
     (*
         fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -529,6 +534,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
+    Smpl Add apply AssociatedFunction_error : is_associated.
     
     (*
         fn push(
@@ -945,6 +951,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
+    Smpl Add apply AssociatedFunction_push : is_associated.
     
     (*
         fn push_n(
@@ -1364,6 +1371,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_push_n : M.IsAssociatedFunction Self "push_n" push_n.
+    Smpl Add apply AssociatedFunction_push_n : is_associated.
     
     (*
         fn charge_ty(
@@ -1399,6 +1407,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_charge_ty : M.IsAssociatedFunction Self "charge_ty" charge_ty.
+    Smpl Add apply AssociatedFunction_charge_ty : is_associated.
     
     (*
         fn charge_ty_(
@@ -1467,6 +1476,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_charge_ty_ : M.IsAssociatedFunction Self "charge_ty_" charge_ty_.
+    Smpl Add apply AssociatedFunction_charge_ty_ : is_associated.
     
     (*
         fn charge_tys(
@@ -1686,6 +1696,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_charge_tys : M.IsAssociatedFunction Self "charge_tys" charge_tys.
+    Smpl Add apply AssociatedFunction_charge_tys : is_associated.
   End Impl_move_bytecode_verifier_type_safety_TypeSafetyChecker.
   
   (*

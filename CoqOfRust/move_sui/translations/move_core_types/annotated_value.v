@@ -2903,6 +2903,7 @@ Module annotated_value.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_core_types_annotated_value_MoveFieldLayout.
   
   (* StructRecord
@@ -3786,6 +3787,7 @@ Module annotated_value.
     
     Axiom AssociatedFunction_simple_deserialize :
       M.IsAssociatedFunction Self "simple_deserialize" simple_deserialize.
+    Smpl Add apply AssociatedFunction_simple_deserialize : is_associated.
     
     (*
         pub fn visit_deserialize<V: Visitor>(
@@ -3975,6 +3977,7 @@ Module annotated_value.
     
     Axiom AssociatedFunction_visit_deserialize :
       M.IsAssociatedFunction Self "visit_deserialize" visit_deserialize.
+    Smpl Add apply AssociatedFunction_visit_deserialize : is_associated.
     
     (*
         pub fn simple_serialize(&self) -> Option<Vec<u8>> {
@@ -4018,6 +4021,7 @@ Module annotated_value.
     
     Axiom AssociatedFunction_simple_serialize :
       M.IsAssociatedFunction Self "simple_serialize" simple_serialize.
+    Smpl Add apply AssociatedFunction_simple_serialize : is_associated.
     
     (*
         pub fn undecorate(self) -> R::MoveValue {
@@ -4302,6 +4306,7 @@ Module annotated_value.
       end.
     
     Axiom AssociatedFunction_undecorate : M.IsAssociatedFunction Self "undecorate" undecorate.
+    Smpl Add apply AssociatedFunction_undecorate : is_associated.
   End Impl_move_core_types_annotated_value_MoveValue.
   
   (*
@@ -4490,6 +4495,7 @@ Module annotated_value.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn simple_deserialize(blob: &[u8], ty: &MoveStructLayout) -> AResult<Self> {
@@ -4610,6 +4616,7 @@ Module annotated_value.
     
     Axiom AssociatedFunction_simple_deserialize :
       M.IsAssociatedFunction Self "simple_deserialize" simple_deserialize.
+    Smpl Add apply AssociatedFunction_simple_deserialize : is_associated.
     
     (*
         pub fn visit_deserialize<V: Visitor>(
@@ -4799,6 +4806,7 @@ Module annotated_value.
     
     Axiom AssociatedFunction_visit_deserialize :
       M.IsAssociatedFunction Self "visit_deserialize" visit_deserialize.
+    Smpl Add apply AssociatedFunction_visit_deserialize : is_associated.
     
     (*
         pub fn into_fields(self) -> Vec<MoveValue> {
@@ -4948,6 +4956,7 @@ Module annotated_value.
       end.
     
     Axiom AssociatedFunction_into_fields : M.IsAssociatedFunction Self "into_fields" into_fields.
+    Smpl Add apply AssociatedFunction_into_fields : is_associated.
     
     (*
         pub fn undecorate(self) -> R::MoveStruct {
@@ -5065,6 +5074,7 @@ Module annotated_value.
       end.
     
     Axiom AssociatedFunction_undecorate : M.IsAssociatedFunction Self "undecorate" undecorate.
+    Smpl Add apply AssociatedFunction_undecorate : is_associated.
   End Impl_move_core_types_annotated_value_MoveStruct.
   
   Module Impl_move_core_types_annotated_value_MoveStructLayout.
@@ -5088,6 +5098,7 @@ Module annotated_value.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn into_fields(self) -> Vec<MoveTypeLayout> {
@@ -5211,6 +5222,7 @@ Module annotated_value.
       end.
     
     Axiom AssociatedFunction_into_fields : M.IsAssociatedFunction Self "into_fields" into_fields.
+    Smpl Add apply AssociatedFunction_into_fields : is_associated.
   End Impl_move_core_types_annotated_value_MoveStructLayout.
   
   Module Impl_serde_de_DeserializeSeed_for_ref__move_core_types_annotated_value_MoveTypeLayout.

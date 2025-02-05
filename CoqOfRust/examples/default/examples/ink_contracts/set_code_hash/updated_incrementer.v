@@ -110,6 +110,7 @@ Module Impl_updated_incrementer_Env.
   
   Axiom AssociatedFunction_set_code_hash :
     M.IsAssociatedFunction Self "set_code_hash" set_code_hash.
+  Smpl Add apply AssociatedFunction_set_code_hash : is_associated.
 End Impl_updated_incrementer_Env.
 
 (* StructRecord
@@ -131,6 +132,7 @@ Module Impl_updated_incrementer_Incrementer.
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
+  Smpl Add apply AssociatedFunction_init_env : is_associated.
   
   (*
       fn env(&self) -> Env {
@@ -155,6 +157,7 @@ Module Impl_updated_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
+  Smpl Add apply AssociatedFunction_env : is_associated.
   
   (*
       pub fn new() -> Self {
@@ -189,6 +192,7 @@ Module Impl_updated_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn inc(&mut self) {
@@ -294,6 +298,7 @@ Module Impl_updated_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
+  Smpl Add apply AssociatedFunction_inc : is_associated.
   
   (*
       pub fn get(&self) -> u32 {
@@ -316,6 +321,7 @@ Module Impl_updated_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
+  Smpl Add apply AssociatedFunction_get : is_associated.
   
   (*
       pub fn set_code(&mut self, code_hash: Hash) {
@@ -487,4 +493,5 @@ Module Impl_updated_incrementer_Incrementer.
     end.
   
   Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
+  Smpl Add apply AssociatedFunction_set_code : is_associated.
 End Impl_updated_incrementer_Incrementer.

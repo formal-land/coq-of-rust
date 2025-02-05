@@ -804,6 +804,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub const fn is_empty(&self) -> bool {
@@ -826,6 +827,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
     
     (*
         pub fn is_char_boundary(&self, index: usize) -> bool {
@@ -947,6 +949,7 @@ Module str.
     
     Axiom AssociatedFunction_is_char_boundary :
       M.IsAssociatedFunction Self "is_char_boundary" is_char_boundary.
+    Smpl Add apply AssociatedFunction_is_char_boundary : is_associated.
     
     (*
         pub fn floor_char_boundary(&self, index: usize) -> usize {
@@ -1138,6 +1141,7 @@ Module str.
     
     Axiom AssociatedFunction_floor_char_boundary :
       M.IsAssociatedFunction Self "floor_char_boundary" floor_char_boundary.
+    Smpl Add apply AssociatedFunction_floor_char_boundary : is_associated.
     
     (*
         pub fn ceil_char_boundary(&self, index: usize) -> usize {
@@ -1357,6 +1361,7 @@ Module str.
     
     Axiom AssociatedFunction_ceil_char_boundary :
       M.IsAssociatedFunction Self "ceil_char_boundary" ceil_char_boundary.
+    Smpl Add apply AssociatedFunction_ceil_char_boundary : is_associated.
     
     (*
         pub const fn as_bytes(&self) -> &[u8] {
@@ -1384,6 +1389,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
+    Smpl Add apply AssociatedFunction_as_bytes : is_associated.
     
     (*
         pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
@@ -1437,6 +1443,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_as_bytes_mut : M.IsAssociatedFunction Self "as_bytes_mut" as_bytes_mut.
+    Smpl Add apply AssociatedFunction_as_bytes_mut : is_associated.
     
     (*
         pub const fn as_ptr(&self) -> *const u8 {
@@ -1460,6 +1467,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     
     (*
         pub const fn as_mut_ptr(&mut self) -> *mut u8 {
@@ -1483,6 +1491,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_as_mut_ptr : M.IsAssociatedFunction Self "as_mut_ptr" as_mut_ptr.
+    Smpl Add apply AssociatedFunction_as_mut_ptr : is_associated.
     
     (*
         pub fn get<I: SliceIndex<str>>(&self, i: I) -> Option<&I::Output> {
@@ -1511,6 +1520,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
+    Smpl Add apply AssociatedFunction_get : is_associated.
     
     (*
         pub fn get_mut<I: SliceIndex<str>>(&mut self, i: I) -> Option<&mut I::Output> {
@@ -1539,6 +1549,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+    Smpl Add apply AssociatedFunction_get_mut : is_associated.
     
     (*
         pub unsafe fn get_unchecked<I: SliceIndex<str>>(&self, i: I) -> &I::Output {
@@ -1584,6 +1595,7 @@ Module str.
     
     Axiom AssociatedFunction_get_unchecked :
       M.IsAssociatedFunction Self "get_unchecked" get_unchecked.
+    Smpl Add apply AssociatedFunction_get_unchecked : is_associated.
     
     (*
         pub unsafe fn get_unchecked_mut<I: SliceIndex<str>>(&mut self, i: I) -> &mut I::Output {
@@ -1642,6 +1654,7 @@ Module str.
     
     Axiom AssociatedFunction_get_unchecked_mut :
       M.IsAssociatedFunction Self "get_unchecked_mut" get_unchecked_mut.
+    Smpl Add apply AssociatedFunction_get_unchecked_mut : is_associated.
     
     (*
         pub unsafe fn slice_unchecked(&self, begin: usize, end: usize) -> &str {
@@ -1690,6 +1703,7 @@ Module str.
     
     Axiom AssociatedFunction_slice_unchecked :
       M.IsAssociatedFunction Self "slice_unchecked" slice_unchecked.
+    Smpl Add apply AssociatedFunction_slice_unchecked : is_associated.
     
     (*
         pub unsafe fn slice_mut_unchecked(&mut self, begin: usize, end: usize) -> &mut str {
@@ -1751,6 +1765,7 @@ Module str.
     
     Axiom AssociatedFunction_slice_mut_unchecked :
       M.IsAssociatedFunction Self "slice_mut_unchecked" slice_mut_unchecked.
+    Smpl Add apply AssociatedFunction_slice_mut_unchecked : is_associated.
     
     (*
         pub fn split_at(&self, mid: usize) -> (&str, &str) {
@@ -1810,6 +1825,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_split_at : M.IsAssociatedFunction Self "split_at" split_at.
+    Smpl Add apply AssociatedFunction_split_at : is_associated.
     
     (*
         pub fn split_at_mut(&mut self, mid: usize) -> (&mut str, &mut str) {
@@ -1886,6 +1902,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_split_at_mut : M.IsAssociatedFunction Self "split_at_mut" split_at_mut.
+    Smpl Add apply AssociatedFunction_split_at_mut : is_associated.
     
     (*
         pub fn split_at_checked(&self, mid: usize) -> Option<(&str, &str)> {
@@ -2020,6 +2037,7 @@ Module str.
     
     Axiom AssociatedFunction_split_at_checked :
       M.IsAssociatedFunction Self "split_at_checked" split_at_checked.
+    Smpl Add apply AssociatedFunction_split_at_checked : is_associated.
     
     (*
         pub fn split_at_mut_checked(&mut self, mid: usize) -> Option<(&mut str, &mut str)> {
@@ -2089,6 +2107,7 @@ Module str.
     
     Axiom AssociatedFunction_split_at_mut_checked :
       M.IsAssociatedFunction Self "split_at_mut_checked" split_at_mut_checked.
+    Smpl Add apply AssociatedFunction_split_at_mut_checked : is_associated.
     
     (*
         unsafe fn split_at_mut_unchecked(&mut self, mid: usize) -> (&mut str, &mut str) {
@@ -2192,6 +2211,7 @@ Module str.
     
     Axiom AssociatedFunction_split_at_mut_unchecked :
       M.IsAssociatedFunction Self "split_at_mut_unchecked" split_at_mut_unchecked.
+    Smpl Add apply AssociatedFunction_split_at_mut_unchecked : is_associated.
     
     (*
         pub fn chars(&self) -> Chars<'_> {
@@ -2231,6 +2251,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_chars : M.IsAssociatedFunction Self "chars" chars.
+    Smpl Add apply AssociatedFunction_chars : is_associated.
     
     (*
         pub fn char_indices(&self) -> CharIndices<'_> {
@@ -2256,6 +2277,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_char_indices : M.IsAssociatedFunction Self "char_indices" char_indices.
+    Smpl Add apply AssociatedFunction_char_indices : is_associated.
     
     (*
         pub fn bytes(&self) -> Bytes<'_> {
@@ -2307,6 +2329,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_bytes : M.IsAssociatedFunction Self "bytes" bytes.
+    Smpl Add apply AssociatedFunction_bytes : is_associated.
     
     (*
         pub fn split_whitespace(&self) -> SplitWhitespace<'_> {
@@ -2357,6 +2380,7 @@ Module str.
     
     Axiom AssociatedFunction_split_whitespace :
       M.IsAssociatedFunction Self "split_whitespace" split_whitespace.
+    Smpl Add apply AssociatedFunction_split_whitespace : is_associated.
     
     (*
         pub fn split_ascii_whitespace(&self) -> SplitAsciiWhitespace<'_> {
@@ -2449,6 +2473,7 @@ Module str.
     
     Axiom AssociatedFunction_split_ascii_whitespace :
       M.IsAssociatedFunction Self "split_ascii_whitespace" split_ascii_whitespace.
+    Smpl Add apply AssociatedFunction_split_ascii_whitespace : is_associated.
     
     (*
         pub fn lines(&self) -> Lines<'_> {
@@ -2494,6 +2519,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_lines : M.IsAssociatedFunction Self "lines" lines.
+    Smpl Add apply AssociatedFunction_lines : is_associated.
     
     (*
         pub fn lines_any(&self) -> LinesAny<'_> {
@@ -2517,6 +2543,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_lines_any : M.IsAssociatedFunction Self "lines_any" lines_any.
+    Smpl Add apply AssociatedFunction_lines_any : is_associated.
     
     (*
         pub fn encode_utf16(&self) -> EncodeUtf16<'_> {
@@ -2542,6 +2569,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_encode_utf16 : M.IsAssociatedFunction Self "encode_utf16" encode_utf16.
+    Smpl Add apply AssociatedFunction_encode_utf16 : is_associated.
     
     (*
         pub fn contains<P: Pattern>(&self, pat: P) -> bool {
@@ -2570,6 +2598,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_contains : M.IsAssociatedFunction Self "contains" contains.
+    Smpl Add apply AssociatedFunction_contains : is_associated.
     
     (*
         pub fn starts_with<P: Pattern>(&self, pat: P) -> bool {
@@ -2598,6 +2627,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_starts_with : M.IsAssociatedFunction Self "starts_with" starts_with.
+    Smpl Add apply AssociatedFunction_starts_with : is_associated.
     
     (*
         pub fn ends_with<P: Pattern>(&self, pat: P) -> bool
@@ -2629,6 +2659,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_ends_with : M.IsAssociatedFunction Self "ends_with" ends_with.
+    Smpl Add apply AssociatedFunction_ends_with : is_associated.
     
     (*
         pub fn find<P: Pattern>(&self, pat: P) -> Option<usize> {
@@ -2715,6 +2746,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_find : M.IsAssociatedFunction Self "find" find.
+    Smpl Add apply AssociatedFunction_find : is_associated.
     
     (*
         pub fn rfind<P: Pattern>(&self, pat: P) -> Option<usize>
@@ -2804,6 +2836,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_rfind : M.IsAssociatedFunction Self "rfind" rfind.
+    Smpl Add apply AssociatedFunction_rfind : is_associated.
     
     (*
         pub fn split<P: Pattern>(&self, pat: P) -> Split<'_, P> {
@@ -2858,6 +2891,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_split : M.IsAssociatedFunction Self "split" split.
+    Smpl Add apply AssociatedFunction_split : is_associated.
     
     (*
         pub fn split_inclusive<P: Pattern>(&self, pat: P) -> SplitInclusive<'_, P> {
@@ -2913,6 +2947,7 @@ Module str.
     
     Axiom AssociatedFunction_split_inclusive :
       M.IsAssociatedFunction Self "split_inclusive" split_inclusive.
+    Smpl Add apply AssociatedFunction_split_inclusive : is_associated.
     
     (*
         pub fn rsplit<P: Pattern>(&self, pat: P) -> RSplit<'_, P>
@@ -2951,6 +2986,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_rsplit : M.IsAssociatedFunction Self "rsplit" rsplit.
+    Smpl Add apply AssociatedFunction_rsplit : is_associated.
     
     (*
         pub fn split_terminator<P: Pattern>(&self, pat: P) -> SplitTerminator<'_, P> {
@@ -2989,6 +3025,7 @@ Module str.
     
     Axiom AssociatedFunction_split_terminator :
       M.IsAssociatedFunction Self "split_terminator" split_terminator.
+    Smpl Add apply AssociatedFunction_split_terminator : is_associated.
     
     (*
         pub fn rsplit_terminator<P: Pattern>(&self, pat: P) -> RSplitTerminator<'_, P>
@@ -3028,6 +3065,7 @@ Module str.
     
     Axiom AssociatedFunction_rsplit_terminator :
       M.IsAssociatedFunction Self "rsplit_terminator" rsplit_terminator.
+    Smpl Add apply AssociatedFunction_rsplit_terminator : is_associated.
     
     (*
         pub fn splitn<P: Pattern>(&self, n: usize, pat: P) -> SplitN<'_, P> {
@@ -3070,6 +3108,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_splitn : M.IsAssociatedFunction Self "splitn" splitn.
+    Smpl Add apply AssociatedFunction_splitn : is_associated.
     
     (*
         pub fn rsplitn<P: Pattern>(&self, n: usize, pat: P) -> RSplitN<'_, P>
@@ -3110,6 +3149,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_rsplitn : M.IsAssociatedFunction Self "rsplitn" rsplitn.
+    Smpl Add apply AssociatedFunction_rsplitn : is_associated.
     
     (*
         pub fn split_once<P: Pattern>(&self, delimiter: P) -> Option<(&'_ str, &'_ str)> {
@@ -3317,6 +3357,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_split_once : M.IsAssociatedFunction Self "split_once" split_once.
+    Smpl Add apply AssociatedFunction_split_once : is_associated.
     
     (*
         pub fn rsplit_once<P: Pattern>(&self, delimiter: P) -> Option<(&'_ str, &'_ str)>
@@ -3527,6 +3568,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_rsplit_once : M.IsAssociatedFunction Self "rsplit_once" rsplit_once.
+    Smpl Add apply AssociatedFunction_rsplit_once : is_associated.
     
     (*
         pub fn matches<P: Pattern>(&self, pat: P) -> Matches<'_, P> {
@@ -3566,6 +3608,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_matches : M.IsAssociatedFunction Self "matches" matches.
+    Smpl Add apply AssociatedFunction_matches : is_associated.
     
     (*
         pub fn rmatches<P: Pattern>(&self, pat: P) -> RMatches<'_, P>
@@ -3604,6 +3647,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_rmatches : M.IsAssociatedFunction Self "rmatches" rmatches.
+    Smpl Add apply AssociatedFunction_rmatches : is_associated.
     
     (*
         pub fn match_indices<P: Pattern>(&self, pat: P) -> MatchIndices<'_, P> {
@@ -3644,6 +3688,7 @@ Module str.
     
     Axiom AssociatedFunction_match_indices :
       M.IsAssociatedFunction Self "match_indices" match_indices.
+    Smpl Add apply AssociatedFunction_match_indices : is_associated.
     
     (*
         pub fn rmatch_indices<P: Pattern>(&self, pat: P) -> RMatchIndices<'_, P>
@@ -3683,6 +3728,7 @@ Module str.
     
     Axiom AssociatedFunction_rmatch_indices :
       M.IsAssociatedFunction Self "rmatch_indices" rmatch_indices.
+    Smpl Add apply AssociatedFunction_rmatch_indices : is_associated.
     
     (*
         pub fn trim(&self) -> &str {
@@ -3739,6 +3785,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_trim : M.IsAssociatedFunction Self "trim" trim.
+    Smpl Add apply AssociatedFunction_trim : is_associated.
     
     (*
         pub fn trim_start(&self) -> &str {
@@ -3795,6 +3842,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_trim_start : M.IsAssociatedFunction Self "trim_start" trim_start.
+    Smpl Add apply AssociatedFunction_trim_start : is_associated.
     
     (*
         pub fn trim_end(&self) -> &str {
@@ -3851,6 +3899,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_trim_end : M.IsAssociatedFunction Self "trim_end" trim_end.
+    Smpl Add apply AssociatedFunction_trim_end : is_associated.
     
     (*
         pub fn trim_left(&self) -> &str {
@@ -3875,6 +3924,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_trim_left : M.IsAssociatedFunction Self "trim_left" trim_left.
+    Smpl Add apply AssociatedFunction_trim_left : is_associated.
     
     (*
         pub fn trim_right(&self) -> &str {
@@ -3899,6 +3949,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_trim_right : M.IsAssociatedFunction Self "trim_right" trim_right.
+    Smpl Add apply AssociatedFunction_trim_right : is_associated.
     
     (*
         pub fn trim_matches<P: Pattern>(&self, pat: P) -> &str
@@ -4045,6 +4096,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_trim_matches : M.IsAssociatedFunction Self "trim_matches" trim_matches.
+    Smpl Add apply AssociatedFunction_trim_matches : is_associated.
     
     (*
         pub fn trim_start_matches<P: Pattern>(&self, pat: P) -> &str {
@@ -4158,6 +4210,7 @@ Module str.
     
     Axiom AssociatedFunction_trim_start_matches :
       M.IsAssociatedFunction Self "trim_start_matches" trim_start_matches.
+    Smpl Add apply AssociatedFunction_trim_start_matches : is_associated.
     
     (*
         pub fn strip_prefix<P: Pattern>(&self, prefix: P) -> Option<&str> {
@@ -4187,6 +4240,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_strip_prefix : M.IsAssociatedFunction Self "strip_prefix" strip_prefix.
+    Smpl Add apply AssociatedFunction_strip_prefix : is_associated.
     
     (*
         pub fn strip_suffix<P: Pattern>(&self, suffix: P) -> Option<&str>
@@ -4219,6 +4273,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_strip_suffix : M.IsAssociatedFunction Self "strip_suffix" strip_suffix.
+    Smpl Add apply AssociatedFunction_strip_suffix : is_associated.
     
     (*
         pub fn trim_end_matches<P: Pattern>(&self, pat: P) -> &str
@@ -4322,6 +4377,7 @@ Module str.
     
     Axiom AssociatedFunction_trim_end_matches :
       M.IsAssociatedFunction Self "trim_end_matches" trim_end_matches.
+    Smpl Add apply AssociatedFunction_trim_end_matches : is_associated.
     
     (*
         pub fn trim_left_matches<P: Pattern>(&self, pat: P) -> &str {
@@ -4349,6 +4405,7 @@ Module str.
     
     Axiom AssociatedFunction_trim_left_matches :
       M.IsAssociatedFunction Self "trim_left_matches" trim_left_matches.
+    Smpl Add apply AssociatedFunction_trim_left_matches : is_associated.
     
     (*
         pub fn trim_right_matches<P: Pattern>(&self, pat: P) -> &str
@@ -4379,6 +4436,7 @@ Module str.
     
     Axiom AssociatedFunction_trim_right_matches :
       M.IsAssociatedFunction Self "trim_right_matches" trim_right_matches.
+    Smpl Add apply AssociatedFunction_trim_right_matches : is_associated.
     
     (*
         pub fn parse<F: FromStr>(&self) -> Result<F, F::Err> {
@@ -4398,6 +4456,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_parse : M.IsAssociatedFunction Self "parse" parse.
+    Smpl Add apply AssociatedFunction_parse : is_associated.
     
     (*
         pub const fn is_ascii(&self) -> bool {
@@ -4435,6 +4494,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
+    Smpl Add apply AssociatedFunction_is_ascii : is_associated.
     
     (*
         pub const fn as_ascii(&self) -> Option<&[ascii::Char]> {
@@ -4470,6 +4530,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
+    Smpl Add apply AssociatedFunction_as_ascii : is_associated.
     
     (*
         pub fn eq_ignore_ascii_case(&self, other: &str) -> bool {
@@ -4515,6 +4576,7 @@ Module str.
     
     Axiom AssociatedFunction_eq_ignore_ascii_case :
       M.IsAssociatedFunction Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
+    Smpl Add apply AssociatedFunction_eq_ignore_ascii_case : is_associated.
     
     (*
         pub const fn make_ascii_uppercase(&mut self) {
@@ -4558,6 +4620,7 @@ Module str.
     
     Axiom AssociatedFunction_make_ascii_uppercase :
       M.IsAssociatedFunction Self "make_ascii_uppercase" make_ascii_uppercase.
+    Smpl Add apply AssociatedFunction_make_ascii_uppercase : is_associated.
     
     (*
         pub const fn make_ascii_lowercase(&mut self) {
@@ -4601,6 +4664,7 @@ Module str.
     
     Axiom AssociatedFunction_make_ascii_lowercase :
       M.IsAssociatedFunction Self "make_ascii_lowercase" make_ascii_lowercase.
+    Smpl Add apply AssociatedFunction_make_ascii_lowercase : is_associated.
     
     (*
         pub const fn trim_ascii_start(&self) -> &str {
@@ -4653,6 +4717,7 @@ Module str.
     
     Axiom AssociatedFunction_trim_ascii_start :
       M.IsAssociatedFunction Self "trim_ascii_start" trim_ascii_start.
+    Smpl Add apply AssociatedFunction_trim_ascii_start : is_associated.
     
     (*
         pub const fn trim_ascii_end(&self) -> &str {
@@ -4705,6 +4770,7 @@ Module str.
     
     Axiom AssociatedFunction_trim_ascii_end :
       M.IsAssociatedFunction Self "trim_ascii_end" trim_ascii_end.
+    Smpl Add apply AssociatedFunction_trim_ascii_end : is_associated.
     
     (*
         pub const fn trim_ascii(&self) -> &str {
@@ -4756,6 +4822,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_trim_ascii : M.IsAssociatedFunction Self "trim_ascii" trim_ascii.
+    Smpl Add apply AssociatedFunction_trim_ascii : is_associated.
     
     (*
         pub fn escape_debug(&self) -> EscapeDebug<'_> {
@@ -4933,6 +5000,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_escape_debug : M.IsAssociatedFunction Self "escape_debug" escape_debug.
+    Smpl Add apply AssociatedFunction_escape_debug : is_associated.
     
     (*
         pub fn escape_default(&self) -> EscapeDefault<'_> {
@@ -4972,6 +5040,7 @@ Module str.
     
     Axiom AssociatedFunction_escape_default :
       M.IsAssociatedFunction Self "escape_default" escape_default.
+    Smpl Add apply AssociatedFunction_escape_default : is_associated.
     
     (*
         pub fn escape_unicode(&self) -> EscapeUnicode<'_> {
@@ -5011,6 +5080,7 @@ Module str.
     
     Axiom AssociatedFunction_escape_unicode :
       M.IsAssociatedFunction Self "escape_unicode" escape_unicode.
+    Smpl Add apply AssociatedFunction_escape_unicode : is_associated.
     
     (*
         pub fn substr_range(&self, substr: &str) -> Option<Range<usize>> {
@@ -5055,6 +5125,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_substr_range : M.IsAssociatedFunction Self "substr_range" substr_range.
+    Smpl Add apply AssociatedFunction_substr_range : is_associated.
     
     (*
         pub fn as_str(&self) -> &str {
@@ -5071,6 +5142,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+    Smpl Add apply AssociatedFunction_as_str : is_associated.
   End Impl_str.
   
   Module Impl_core_convert_AsRef_slice_u8_for_str.

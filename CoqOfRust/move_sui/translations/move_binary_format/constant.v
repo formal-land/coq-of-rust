@@ -978,6 +978,7 @@ Module constant.
     
     Axiom AssociatedFunction_serialize_constant :
       M.IsAssociatedFunction Self "serialize_constant" serialize_constant.
+    Smpl Add apply AssociatedFunction_serialize_constant : is_associated.
     
     (*
         pub fn deserialize_constant(&self) -> Option<MoveValue> {
@@ -1160,5 +1161,6 @@ Module constant.
     
     Axiom AssociatedFunction_deserialize_constant :
       M.IsAssociatedFunction Self "deserialize_constant" deserialize_constant.
+    Smpl Add apply AssociatedFunction_deserialize_constant : is_associated.
   End Impl_move_binary_format_file_format_Constant.
 End constant.

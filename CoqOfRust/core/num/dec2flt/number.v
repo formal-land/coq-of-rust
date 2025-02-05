@@ -505,6 +505,7 @@ Module num.
         
         Axiom AssociatedFunction_is_fast_path :
           M.IsAssociatedFunction Self "is_fast_path" is_fast_path.
+        Smpl Add apply AssociatedFunction_is_fast_path : is_associated.
         
         (*
             pub fn try_fast_path<F: RawFloat>(&self) -> Option<F> {
@@ -1005,6 +1006,7 @@ Module num.
         
         Axiom AssociatedFunction_try_fast_path :
           M.IsAssociatedFunction Self "try_fast_path" try_fast_path.
+        Smpl Add apply AssociatedFunction_try_fast_path : is_associated.
       End Impl_core_num_dec2flt_number_Number.
     End number.
   End dec2flt.

@@ -91,6 +91,7 @@ Module collections.
         Axiom AssociatedFunction_new :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "new" (new T A).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             pub(super) fn into_vecdeque(self) -> VecDeque<T, A> {
@@ -121,6 +122,7 @@ Module collections.
         Axiom AssociatedFunction_into_vecdeque :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "into_vecdeque" (into_vecdeque T A).
+        Smpl Add apply AssociatedFunction_into_vecdeque : is_associated.
       End Impl_alloc_collections_vec_deque_into_iter_IntoIter_T_A.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_into_iter_IntoIter_T_A.

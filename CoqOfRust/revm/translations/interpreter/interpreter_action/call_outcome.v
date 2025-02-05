@@ -326,6 +326,7 @@ Module interpreter_action.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn instruction_result(&self) -> &InstructionResult {
@@ -359,6 +360,7 @@ Module interpreter_action.
       
       Axiom AssociatedFunction_instruction_result :
         M.IsAssociatedFunction Self "instruction_result" instruction_result.
+      Smpl Add apply AssociatedFunction_instruction_result : is_associated.
       
       (*
           pub fn gas(&self) -> Gas {
@@ -385,6 +387,7 @@ Module interpreter_action.
         end.
       
       Axiom AssociatedFunction_gas : M.IsAssociatedFunction Self "gas" gas.
+      Smpl Add apply AssociatedFunction_gas : is_associated.
       
       (*
           pub fn output(&self) -> &Bytes {
@@ -417,6 +420,7 @@ Module interpreter_action.
         end.
       
       Axiom AssociatedFunction_output : M.IsAssociatedFunction Self "output" output.
+      Smpl Add apply AssociatedFunction_output : is_associated.
       
       (*
           pub fn memory_start(&self) -> usize {
@@ -444,6 +448,7 @@ Module interpreter_action.
       
       Axiom AssociatedFunction_memory_start :
         M.IsAssociatedFunction Self "memory_start" memory_start.
+      Smpl Add apply AssociatedFunction_memory_start : is_associated.
       
       (*
           pub fn memory_length(&self) -> usize {
@@ -481,6 +486,7 @@ Module interpreter_action.
       
       Axiom AssociatedFunction_memory_length :
         M.IsAssociatedFunction Self "memory_length" memory_length.
+      Smpl Add apply AssociatedFunction_memory_length : is_associated.
     End Impl_revm_interpreter_interpreter_action_call_outcome_CallOutcome.
   End call_outcome.
 End interpreter_action.

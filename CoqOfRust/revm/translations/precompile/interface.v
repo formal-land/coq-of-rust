@@ -389,6 +389,7 @@ Module interface.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_revm_precompile_interface_PrecompileOutput.
   
   Axiom PrecompileFn :
@@ -1976,6 +1977,7 @@ Module interface.
       end.
     
     Axiom AssociatedFunction_other : M.IsAssociatedFunction Self "other" other.
+    Smpl Add apply AssociatedFunction_other : is_associated.
     
     (*
         pub fn is_oog(&self) -> bool {
@@ -2008,6 +2010,7 @@ Module interface.
       end.
     
     Axiom AssociatedFunction_is_oog : M.IsAssociatedFunction Self "is_oog" is_oog.
+    Smpl Add apply AssociatedFunction_is_oog : is_associated.
   End Impl_revm_precompile_interface_PrecompileError.
   
   Module Impl_core_convert_From_revm_precompile_interface_PrecompileError_for_revm_precompile_interface_PrecompileErrors.

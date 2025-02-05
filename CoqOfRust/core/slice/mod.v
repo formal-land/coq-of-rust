@@ -384,6 +384,7 @@ Module slice.
       end.
     
     Axiom AssociatedFunction_len : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "len" (len T).
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub const fn is_empty(&self) -> bool {
@@ -409,6 +410,7 @@ Module slice.
     Axiom AssociatedFunction_is_empty :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "is_empty" (is_empty T).
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
     
     (*
         pub const fn first(&self) -> Option<&T> {
@@ -448,6 +450,7 @@ Module slice.
     Axiom AssociatedFunction_first :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "first" (first T).
+    Smpl Add apply AssociatedFunction_first : is_associated.
     
     (*
         pub const fn first_mut(&mut self) -> Option<&mut T> {
@@ -487,6 +490,7 @@ Module slice.
     Axiom AssociatedFunction_first_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "first_mut" (first_mut T).
+    Smpl Add apply AssociatedFunction_first_mut : is_associated.
     
     (*
         pub const fn split_first(&self) -> Option<(&T, &[T])> {
@@ -533,6 +537,7 @@ Module slice.
     Axiom AssociatedFunction_split_first :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_first" (split_first T).
+    Smpl Add apply AssociatedFunction_split_first : is_associated.
     
     (*
         pub const fn split_first_mut(&mut self) -> Option<(&mut T, &mut [T])> {
@@ -584,6 +589,7 @@ Module slice.
     Axiom AssociatedFunction_split_first_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_first_mut" (split_first_mut T).
+    Smpl Add apply AssociatedFunction_split_first_mut : is_associated.
     
     (*
         pub const fn split_last(&self) -> Option<(&T, &[T])> {
@@ -630,6 +636,7 @@ Module slice.
     Axiom AssociatedFunction_split_last :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_last" (split_last T).
+    Smpl Add apply AssociatedFunction_split_last : is_associated.
     
     (*
         pub const fn split_last_mut(&mut self) -> Option<(&mut T, &mut [T])> {
@@ -681,6 +688,7 @@ Module slice.
     Axiom AssociatedFunction_split_last_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_last_mut" (split_last_mut T).
+    Smpl Add apply AssociatedFunction_split_last_mut : is_associated.
     
     (*
         pub const fn last(&self) -> Option<&T> {
@@ -720,6 +728,7 @@ Module slice.
     Axiom AssociatedFunction_last :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "last" (last T).
+    Smpl Add apply AssociatedFunction_last : is_associated.
     
     (*
         pub const fn last_mut(&mut self) -> Option<&mut T> {
@@ -759,6 +768,7 @@ Module slice.
     Axiom AssociatedFunction_last_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "last_mut" (last_mut T).
+    Smpl Add apply AssociatedFunction_last_mut : is_associated.
     
     (*
         pub const fn first_chunk<const N: usize>(&self) -> Option<&[T; N]> {
@@ -852,6 +862,7 @@ Module slice.
     Axiom AssociatedFunction_first_chunk :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "first_chunk" (first_chunk T).
+    Smpl Add apply AssociatedFunction_first_chunk : is_associated.
     
     (*
         pub const fn first_chunk_mut<const N: usize>(&mut self) -> Option<&mut [T; N]> {
@@ -956,6 +967,7 @@ Module slice.
     Axiom AssociatedFunction_first_chunk_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "first_chunk_mut" (first_chunk_mut T).
+    Smpl Add apply AssociatedFunction_first_chunk_mut : is_associated.
     
     (*
         pub const fn split_first_chunk<const N: usize>(&self) -> Option<(&[T; N], &[T])> {
@@ -1088,6 +1100,7 @@ Module slice.
     Axiom AssociatedFunction_split_first_chunk :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_first_chunk" (split_first_chunk T).
+    Smpl Add apply AssociatedFunction_split_first_chunk : is_associated.
     
     (*
         pub const fn split_first_chunk_mut<const N: usize>(
@@ -1228,6 +1241,7 @@ Module slice.
     Axiom AssociatedFunction_split_first_chunk_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_first_chunk_mut" (split_first_chunk_mut T).
+    Smpl Add apply AssociatedFunction_split_first_chunk_mut : is_associated.
     
     (*
         pub const fn split_last_chunk<const N: usize>(&self) -> Option<(&[T], &[T; N])> {
@@ -1371,6 +1385,7 @@ Module slice.
     Axiom AssociatedFunction_split_last_chunk :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_last_chunk" (split_last_chunk T).
+    Smpl Add apply AssociatedFunction_split_last_chunk : is_associated.
     
     (*
         pub const fn split_last_chunk_mut<const N: usize>(
@@ -1522,6 +1537,7 @@ Module slice.
     Axiom AssociatedFunction_split_last_chunk_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_last_chunk_mut" (split_last_chunk_mut T).
+    Smpl Add apply AssociatedFunction_split_last_chunk_mut : is_associated.
     
     (*
         pub const fn last_chunk<const N: usize>(&self) -> Option<&[T; N]> {
@@ -1655,6 +1671,7 @@ Module slice.
     Axiom AssociatedFunction_last_chunk :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "last_chunk" (last_chunk T).
+    Smpl Add apply AssociatedFunction_last_chunk : is_associated.
     
     (*
         pub const fn last_chunk_mut<const N: usize>(&mut self) -> Option<&mut [T; N]> {
@@ -1809,6 +1826,7 @@ Module slice.
     Axiom AssociatedFunction_last_chunk_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "last_chunk_mut" (last_chunk_mut T).
+    Smpl Add apply AssociatedFunction_last_chunk_mut : is_associated.
     
     (*
         pub fn get<I>(&self, index: I) -> Option<&I::Output>
@@ -1841,6 +1859,7 @@ Module slice.
       end.
     
     Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
+    Smpl Add apply AssociatedFunction_get : is_associated.
     
     (*
         pub fn get_mut<I>(&mut self, index: I) -> Option<&mut I::Output>
@@ -1878,6 +1897,7 @@ Module slice.
     Axiom AssociatedFunction_get_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
+    Smpl Add apply AssociatedFunction_get_mut : is_associated.
     
     (*
         pub unsafe fn get_unchecked<I>(&self, index: I) -> &I::Output
@@ -1928,6 +1948,7 @@ Module slice.
     Axiom AssociatedFunction_get_unchecked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_unchecked" (get_unchecked T).
+    Smpl Add apply AssociatedFunction_get_unchecked : is_associated.
     
     (*
         pub unsafe fn get_unchecked_mut<I>(&mut self, index: I) -> &mut I::Output
@@ -1996,6 +2017,7 @@ Module slice.
     Axiom AssociatedFunction_get_unchecked_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_unchecked_mut" (get_unchecked_mut T).
+    Smpl Add apply AssociatedFunction_get_unchecked_mut : is_associated.
     
     (*
         pub const fn as_ptr(&self) -> *const T {
@@ -2022,6 +2044,7 @@ Module slice.
     Axiom AssociatedFunction_as_ptr :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
+    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     
     (*
         pub const fn as_mut_ptr(&mut self) -> *mut T {
@@ -2048,6 +2071,7 @@ Module slice.
     Axiom AssociatedFunction_as_mut_ptr :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_mut_ptr" (as_mut_ptr T).
+    Smpl Add apply AssociatedFunction_as_mut_ptr : is_associated.
     
     (*
         pub const fn as_ptr_range(&self) -> Range<*const T> {
@@ -2127,6 +2151,7 @@ Module slice.
     Axiom AssociatedFunction_as_ptr_range :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_ptr_range" (as_ptr_range T).
+    Smpl Add apply AssociatedFunction_as_ptr_range : is_associated.
     
     (*
         pub const fn as_mut_ptr_range(&mut self) -> Range<*mut T> {
@@ -2190,6 +2215,7 @@ Module slice.
     Axiom AssociatedFunction_as_mut_ptr_range :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_mut_ptr_range" (as_mut_ptr_range T).
+    Smpl Add apply AssociatedFunction_as_mut_ptr_range : is_associated.
     
     (*
         pub const fn swap(&mut self, a: usize, b: usize) {
@@ -2244,6 +2270,7 @@ Module slice.
     Axiom AssociatedFunction_swap :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "swap" (swap T).
+    Smpl Add apply AssociatedFunction_swap : is_associated.
     
     (*
         pub const unsafe fn swap_unchecked(&mut self, a: usize, b: usize) {
@@ -2367,6 +2394,7 @@ Module slice.
     Axiom AssociatedFunction_swap_unchecked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "swap_unchecked" (swap_unchecked T).
+    Smpl Add apply AssociatedFunction_swap_unchecked : is_associated.
     
     (*
         pub fn reverse(&mut self) {
@@ -2530,6 +2558,7 @@ Module slice.
     Axiom AssociatedFunction_reverse :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "reverse" (reverse T).
+    Smpl Add apply AssociatedFunction_reverse : is_associated.
     
     (*
         pub fn iter(&self) -> Iter<'_, T> {
@@ -2557,6 +2586,7 @@ Module slice.
     Axiom AssociatedFunction_iter :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "iter" (iter T).
+    Smpl Add apply AssociatedFunction_iter : is_associated.
     
     (*
         pub fn iter_mut(&mut self) -> IterMut<'_, T> {
@@ -2584,6 +2614,7 @@ Module slice.
     Axiom AssociatedFunction_iter_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "iter_mut" (iter_mut T).
+    Smpl Add apply AssociatedFunction_iter_mut : is_associated.
     
     (*
         pub fn windows(&self, size: usize) -> Windows<'_, T> {
@@ -2649,6 +2680,7 @@ Module slice.
     Axiom AssociatedFunction_windows :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "windows" (windows T).
+    Smpl Add apply AssociatedFunction_windows : is_associated.
     
     (*
         pub fn chunks(&self, chunk_size: usize) -> Chunks<'_, T> {
@@ -2740,6 +2772,7 @@ Module slice.
     Axiom AssociatedFunction_chunks :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "chunks" (chunks T).
+    Smpl Add apply AssociatedFunction_chunks : is_associated.
     
     (*
         pub fn chunks_mut(&mut self, chunk_size: usize) -> ChunksMut<'_, T> {
@@ -2831,6 +2864,7 @@ Module slice.
     Axiom AssociatedFunction_chunks_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "chunks_mut" (chunks_mut T).
+    Smpl Add apply AssociatedFunction_chunks_mut : is_associated.
     
     (*
         pub fn chunks_exact(&self, chunk_size: usize) -> ChunksExact<'_, T> {
@@ -2922,6 +2956,7 @@ Module slice.
     Axiom AssociatedFunction_chunks_exact :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "chunks_exact" (chunks_exact T).
+    Smpl Add apply AssociatedFunction_chunks_exact : is_associated.
     
     (*
         pub fn chunks_exact_mut(&mut self, chunk_size: usize) -> ChunksExactMut<'_, T> {
@@ -3018,6 +3053,7 @@ Module slice.
     Axiom AssociatedFunction_chunks_exact_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "chunks_exact_mut" (chunks_exact_mut T).
+    Smpl Add apply AssociatedFunction_chunks_exact_mut : is_associated.
     
     (*
         pub const unsafe fn as_chunks_unchecked<const N: usize>(&self) -> &[[T; N]] {
@@ -3148,6 +3184,7 @@ Module slice.
     Axiom AssociatedFunction_as_chunks_unchecked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_chunks_unchecked" (as_chunks_unchecked T).
+    Smpl Add apply AssociatedFunction_as_chunks_unchecked : is_associated.
     
     (*
         pub const fn as_chunks<const N: usize>(&self) -> (&[[T; N]], &[T]) {
@@ -3297,6 +3334,7 @@ Module slice.
     Axiom AssociatedFunction_as_chunks :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_chunks" (as_chunks T).
+    Smpl Add apply AssociatedFunction_as_chunks : is_associated.
     
     (*
         pub const fn as_rchunks<const N: usize>(&self) -> (&[T], &[[T; N]]) {
@@ -3455,6 +3493,7 @@ Module slice.
     Axiom AssociatedFunction_as_rchunks :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_rchunks" (as_rchunks T).
+    Smpl Add apply AssociatedFunction_as_rchunks : is_associated.
     
     (*
         pub fn array_chunks<const N: usize>(&self) -> ArrayChunks<'_, T, N> {
@@ -3542,6 +3581,7 @@ Module slice.
     Axiom AssociatedFunction_array_chunks :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "array_chunks" (array_chunks T).
+    Smpl Add apply AssociatedFunction_array_chunks : is_associated.
     
     (*
         pub const unsafe fn as_chunks_unchecked_mut<const N: usize>(&mut self) -> &mut [[T; N]] {
@@ -3695,6 +3735,7 @@ Module slice.
     Axiom AssociatedFunction_as_chunks_unchecked_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_chunks_unchecked_mut" (as_chunks_unchecked_mut T).
+    Smpl Add apply AssociatedFunction_as_chunks_unchecked_mut : is_associated.
     
     (*
         pub const fn as_chunks_mut<const N: usize>(&mut self) -> (&mut [[T; N]], &mut [T]) {
@@ -3852,6 +3893,7 @@ Module slice.
     Axiom AssociatedFunction_as_chunks_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_chunks_mut" (as_chunks_mut T).
+    Smpl Add apply AssociatedFunction_as_chunks_mut : is_associated.
     
     (*
         pub const fn as_rchunks_mut<const N: usize>(&mut self) -> (&mut [T], &mut [[T; N]]) {
@@ -4020,6 +4062,7 @@ Module slice.
     Axiom AssociatedFunction_as_rchunks_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_rchunks_mut" (as_rchunks_mut T).
+    Smpl Add apply AssociatedFunction_as_rchunks_mut : is_associated.
     
     (*
         pub fn array_chunks_mut<const N: usize>(&mut self) -> ArrayChunksMut<'_, T, N> {
@@ -4112,6 +4155,7 @@ Module slice.
     Axiom AssociatedFunction_array_chunks_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "array_chunks_mut" (array_chunks_mut T).
+    Smpl Add apply AssociatedFunction_array_chunks_mut : is_associated.
     
     (*
         pub fn array_windows<const N: usize>(&self) -> ArrayWindows<'_, T, N> {
@@ -4199,6 +4243,7 @@ Module slice.
     Axiom AssociatedFunction_array_windows :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "array_windows" (array_windows T).
+    Smpl Add apply AssociatedFunction_array_windows : is_associated.
     
     (*
         pub fn rchunks(&self, chunk_size: usize) -> RChunks<'_, T> {
@@ -4290,6 +4335,7 @@ Module slice.
     Axiom AssociatedFunction_rchunks :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rchunks" (rchunks T).
+    Smpl Add apply AssociatedFunction_rchunks : is_associated.
     
     (*
         pub fn rchunks_mut(&mut self, chunk_size: usize) -> RChunksMut<'_, T> {
@@ -4381,6 +4427,7 @@ Module slice.
     Axiom AssociatedFunction_rchunks_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rchunks_mut" (rchunks_mut T).
+    Smpl Add apply AssociatedFunction_rchunks_mut : is_associated.
     
     (*
         pub fn rchunks_exact(&self, chunk_size: usize) -> RChunksExact<'_, T> {
@@ -4472,6 +4519,7 @@ Module slice.
     Axiom AssociatedFunction_rchunks_exact :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rchunks_exact" (rchunks_exact T).
+    Smpl Add apply AssociatedFunction_rchunks_exact : is_associated.
     
     (*
         pub fn rchunks_exact_mut(&mut self, chunk_size: usize) -> RChunksExactMut<'_, T> {
@@ -4568,6 +4616,7 @@ Module slice.
     Axiom AssociatedFunction_rchunks_exact_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rchunks_exact_mut" (rchunks_exact_mut T).
+    Smpl Add apply AssociatedFunction_rchunks_exact_mut : is_associated.
     
     (*
         pub fn chunk_by<F>(&self, pred: F) -> ChunkBy<'_, T, F>
@@ -4599,6 +4648,7 @@ Module slice.
     Axiom AssociatedFunction_chunk_by :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "chunk_by" (chunk_by T).
+    Smpl Add apply AssociatedFunction_chunk_by : is_associated.
     
     (*
         pub fn chunk_by_mut<F>(&mut self, pred: F) -> ChunkByMut<'_, T, F>
@@ -4631,6 +4681,7 @@ Module slice.
     Axiom AssociatedFunction_chunk_by_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "chunk_by_mut" (chunk_by_mut T).
+    Smpl Add apply AssociatedFunction_chunk_by_mut : is_associated.
     
     (*
         pub const fn split_at(&self, mid: usize) -> (&[T], &[T]) {
@@ -4716,6 +4767,7 @@ Module slice.
     Axiom AssociatedFunction_split_at :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_at" (split_at T).
+    Smpl Add apply AssociatedFunction_split_at : is_associated.
     
     (*
         pub const fn split_at_mut(&mut self, mid: usize) -> (&mut [T], &mut [T]) {
@@ -4801,6 +4853,7 @@ Module slice.
     Axiom AssociatedFunction_split_at_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_at_mut" (split_at_mut T).
+    Smpl Add apply AssociatedFunction_split_at_mut : is_associated.
     
     (*
         pub const unsafe fn split_at_unchecked(&self, mid: usize) -> (&[T], &[T]) {
@@ -4937,6 +4990,7 @@ Module slice.
     Axiom AssociatedFunction_split_at_unchecked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_at_unchecked" (split_at_unchecked T).
+    Smpl Add apply AssociatedFunction_split_at_unchecked : is_associated.
     
     (*
         pub const unsafe fn split_at_mut_unchecked(&mut self, mid: usize) -> (&mut [T], &mut [T]) {
@@ -5077,6 +5131,7 @@ Module slice.
     Axiom AssociatedFunction_split_at_mut_unchecked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_at_mut_unchecked" (split_at_mut_unchecked T).
+    Smpl Add apply AssociatedFunction_split_at_mut_unchecked : is_associated.
     
     (*
         pub const fn split_at_checked(&self, mid: usize) -> Option<(&[T], &[T])> {
@@ -5153,6 +5208,7 @@ Module slice.
     Axiom AssociatedFunction_split_at_checked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_at_checked" (split_at_checked T).
+    Smpl Add apply AssociatedFunction_split_at_checked : is_associated.
     
     (*
         pub const fn split_at_mut_checked(&mut self, mid: usize) -> Option<(&mut [T], &mut [T])> {
@@ -5229,6 +5285,7 @@ Module slice.
     Axiom AssociatedFunction_split_at_mut_checked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_at_mut_checked" (split_at_mut_checked T).
+    Smpl Add apply AssociatedFunction_split_at_mut_checked : is_associated.
     
     (*
         pub fn split<F>(&self, pred: F) -> Split<'_, T, F>
@@ -5260,6 +5317,7 @@ Module slice.
     Axiom AssociatedFunction_split :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split" (split T).
+    Smpl Add apply AssociatedFunction_split : is_associated.
     
     (*
         pub fn split_mut<F>(&mut self, pred: F) -> SplitMut<'_, T, F>
@@ -5292,6 +5350,7 @@ Module slice.
     Axiom AssociatedFunction_split_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_mut" (split_mut T).
+    Smpl Add apply AssociatedFunction_split_mut : is_associated.
     
     (*
         pub fn split_inclusive<F>(&self, pred: F) -> SplitInclusive<'_, T, F>
@@ -5328,6 +5387,7 @@ Module slice.
     Axiom AssociatedFunction_split_inclusive :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_inclusive" (split_inclusive T).
+    Smpl Add apply AssociatedFunction_split_inclusive : is_associated.
     
     (*
         pub fn split_inclusive_mut<F>(&mut self, pred: F) -> SplitInclusiveMut<'_, T, F>
@@ -5365,6 +5425,7 @@ Module slice.
     Axiom AssociatedFunction_split_inclusive_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_inclusive_mut" (split_inclusive_mut T).
+    Smpl Add apply AssociatedFunction_split_inclusive_mut : is_associated.
     
     (*
         pub fn rsplit<F>(&self, pred: F) -> RSplit<'_, T, F>
@@ -5396,6 +5457,7 @@ Module slice.
     Axiom AssociatedFunction_rsplit :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rsplit" (rsplit T).
+    Smpl Add apply AssociatedFunction_rsplit : is_associated.
     
     (*
         pub fn rsplit_mut<F>(&mut self, pred: F) -> RSplitMut<'_, T, F>
@@ -5428,6 +5490,7 @@ Module slice.
     Axiom AssociatedFunction_rsplit_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rsplit_mut" (rsplit_mut T).
+    Smpl Add apply AssociatedFunction_rsplit_mut : is_associated.
     
     (*
         pub fn splitn<F>(&self, n: usize, pred: F) -> SplitN<'_, T, F>
@@ -5474,6 +5537,7 @@ Module slice.
     Axiom AssociatedFunction_splitn :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "splitn" (splitn T).
+    Smpl Add apply AssociatedFunction_splitn : is_associated.
     
     (*
         pub fn splitn_mut<F>(&mut self, n: usize, pred: F) -> SplitNMut<'_, T, F>
@@ -5520,6 +5584,7 @@ Module slice.
     Axiom AssociatedFunction_splitn_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "splitn_mut" (splitn_mut T).
+    Smpl Add apply AssociatedFunction_splitn_mut : is_associated.
     
     (*
         pub fn rsplitn<F>(&self, n: usize, pred: F) -> RSplitN<'_, T, F>
@@ -5566,6 +5631,7 @@ Module slice.
     Axiom AssociatedFunction_rsplitn :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rsplitn" (rsplitn T).
+    Smpl Add apply AssociatedFunction_rsplitn : is_associated.
     
     (*
         pub fn rsplitn_mut<F>(&mut self, n: usize, pred: F) -> RSplitNMut<'_, T, F>
@@ -5612,6 +5678,7 @@ Module slice.
     Axiom AssociatedFunction_rsplitn_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rsplitn_mut" (rsplitn_mut T).
+    Smpl Add apply AssociatedFunction_rsplitn_mut : is_associated.
     
     (*
         pub fn split_once<F>(&self, pred: F) -> Option<(&[T], &[T])>
@@ -5839,6 +5906,7 @@ Module slice.
     Axiom AssociatedFunction_split_once :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "split_once" (split_once T).
+    Smpl Add apply AssociatedFunction_split_once : is_associated.
     
     (*
         pub fn rsplit_once<F>(&self, pred: F) -> Option<(&[T], &[T])>
@@ -6066,6 +6134,7 @@ Module slice.
     Axiom AssociatedFunction_rsplit_once :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rsplit_once" (rsplit_once T).
+    Smpl Add apply AssociatedFunction_rsplit_once : is_associated.
     
     (*
         pub fn contains(&self, x: &T) -> bool
@@ -6103,6 +6172,7 @@ Module slice.
     Axiom AssociatedFunction_contains :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "contains" (contains T).
+    Smpl Add apply AssociatedFunction_contains : is_associated.
     
     (*
         pub fn starts_with(&self, needle: &[T]) -> bool
@@ -6203,6 +6273,7 @@ Module slice.
     Axiom AssociatedFunction_starts_with :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "starts_with" (starts_with T).
+    Smpl Add apply AssociatedFunction_starts_with : is_associated.
     
     (*
         pub fn ends_with(&self, needle: &[T]) -> bool
@@ -6319,6 +6390,7 @@ Module slice.
     Axiom AssociatedFunction_ends_with :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "ends_with" (ends_with T).
+    Smpl Add apply AssociatedFunction_ends_with : is_associated.
     
     (*
         pub fn strip_prefix<P: SlicePattern<Item = T> + ?Sized>(&self, prefix: &P) -> Option<&[T]>
@@ -6495,6 +6567,7 @@ Module slice.
     Axiom AssociatedFunction_strip_prefix :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "strip_prefix" (strip_prefix T).
+    Smpl Add apply AssociatedFunction_strip_prefix : is_associated.
     
     (*
         pub fn strip_suffix<P: SlicePattern<Item = T> + ?Sized>(&self, suffix: &P) -> Option<&[T]>
@@ -6689,6 +6762,7 @@ Module slice.
     Axiom AssociatedFunction_strip_suffix :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "strip_suffix" (strip_suffix T).
+    Smpl Add apply AssociatedFunction_strip_suffix : is_associated.
     
     (*
         pub fn binary_search(&self, x: &T) -> Result<usize, usize>
@@ -6757,6 +6831,7 @@ Module slice.
     Axiom AssociatedFunction_binary_search :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "binary_search" (binary_search T).
+    Smpl Add apply AssociatedFunction_binary_search : is_associated.
     
     (*
         pub fn binary_search_by<'a, F>(&'a self, mut f: F) -> Result<usize, usize>
@@ -7161,6 +7236,7 @@ Module slice.
     Axiom AssociatedFunction_binary_search_by :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "binary_search_by" (binary_search_by T).
+    Smpl Add apply AssociatedFunction_binary_search_by : is_associated.
     
     (*
         pub fn binary_search_by_key<'a, B, F>(&'a self, b: &B, mut f: F) -> Result<usize, usize>
@@ -7261,6 +7337,7 @@ Module slice.
     Axiom AssociatedFunction_binary_search_by_key :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "binary_search_by_key" (binary_search_by_key T).
+    Smpl Add apply AssociatedFunction_binary_search_by_key : is_associated.
     
     (*
         pub fn sort_unstable(&mut self)
@@ -7322,6 +7399,7 @@ Module slice.
     Axiom AssociatedFunction_sort_unstable :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "sort_unstable" (sort_unstable T).
+    Smpl Add apply AssociatedFunction_sort_unstable : is_associated.
     
     (*
         pub fn sort_unstable_by<F>(&mut self, mut compare: F)
@@ -7473,6 +7551,7 @@ Module slice.
     Axiom AssociatedFunction_sort_unstable_by :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "sort_unstable_by" (sort_unstable_by T).
+    Smpl Add apply AssociatedFunction_sort_unstable_by : is_associated.
     
     (*
         pub fn sort_unstable_by_key<K, F>(&mut self, mut f: F)
@@ -7653,6 +7732,7 @@ Module slice.
     Axiom AssociatedFunction_sort_unstable_by_key :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "sort_unstable_by_key" (sort_unstable_by_key T).
+    Smpl Add apply AssociatedFunction_sort_unstable_by_key : is_associated.
     
     (*
         pub fn select_nth_unstable(&mut self, index: usize) -> (&mut [T], &mut T, &mut [T])
@@ -7697,6 +7777,7 @@ Module slice.
     Axiom AssociatedFunction_select_nth_unstable :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "select_nth_unstable" (select_nth_unstable T).
+    Smpl Add apply AssociatedFunction_select_nth_unstable : is_associated.
     
     (*
         pub fn select_nth_unstable_by<F>(
@@ -7824,6 +7905,7 @@ Module slice.
     Axiom AssociatedFunction_select_nth_unstable_by :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "select_nth_unstable_by" (select_nth_unstable_by T).
+    Smpl Add apply AssociatedFunction_select_nth_unstable_by : is_associated.
     
     (*
         pub fn select_nth_unstable_by_key<K, F>(
@@ -7971,6 +8053,7 @@ Module slice.
     Axiom AssociatedFunction_select_nth_unstable_by_key :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "select_nth_unstable_by_key" (select_nth_unstable_by_key T).
+    Smpl Add apply AssociatedFunction_select_nth_unstable_by_key : is_associated.
     
     (*
         pub fn partition_dedup(&mut self) -> (&mut [T], &mut [T])
@@ -8054,6 +8137,7 @@ Module slice.
     Axiom AssociatedFunction_partition_dedup :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "partition_dedup" (partition_dedup T).
+    Smpl Add apply AssociatedFunction_partition_dedup : is_associated.
     
     (*
         pub fn partition_dedup_by<F>(&mut self, mut same_bucket: F) -> (&mut [T], &mut [T])
@@ -8479,6 +8563,7 @@ Module slice.
     Axiom AssociatedFunction_partition_dedup_by :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "partition_dedup_by" (partition_dedup_by T).
+    Smpl Add apply AssociatedFunction_partition_dedup_by : is_associated.
     
     (*
         pub fn partition_dedup_by_key<K, F>(&mut self, mut key: F) -> (&mut [T], &mut [T])
@@ -8620,6 +8705,7 @@ Module slice.
     Axiom AssociatedFunction_partition_dedup_by_key :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "partition_dedup_by_key" (partition_dedup_by_key T).
+    Smpl Add apply AssociatedFunction_partition_dedup_by_key : is_associated.
     
     (*
         pub fn rotate_left(&mut self, mid: usize) {
@@ -8733,6 +8819,7 @@ Module slice.
     Axiom AssociatedFunction_rotate_left :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rotate_left" (rotate_left T).
+    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
     
     (*
         pub fn rotate_right(&mut self, k: usize) {
@@ -8846,6 +8933,7 @@ Module slice.
     Axiom AssociatedFunction_rotate_right :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "rotate_right" (rotate_right T).
+    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
     
     (*
         pub fn fill(&mut self, value: T)
@@ -8889,6 +8977,7 @@ Module slice.
     Axiom AssociatedFunction_fill :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "fill" (fill T).
+    Smpl Add apply AssociatedFunction_fill : is_associated.
     
     (*
         pub fn fill_with<F>(&mut self, mut f: F)
@@ -8996,6 +9085,7 @@ Module slice.
     Axiom AssociatedFunction_fill_with :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "fill_with" (fill_with T).
+    Smpl Add apply AssociatedFunction_fill_with : is_associated.
     
     (*
         pub fn clone_from_slice(&mut self, src: &[T])
@@ -9044,6 +9134,7 @@ Module slice.
     Axiom AssociatedFunction_clone_from_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "clone_from_slice" (clone_from_slice T).
+    Smpl Add apply AssociatedFunction_clone_from_slice : is_associated.
     
     (*
         pub fn copy_from_slice(&mut self, src: &[T])
@@ -9196,6 +9287,7 @@ Module slice.
     Axiom AssociatedFunction_copy_from_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "copy_from_slice" (copy_from_slice T).
+    Smpl Add apply AssociatedFunction_copy_from_slice : is_associated.
     
     (*
         pub fn copy_within<R: RangeBounds<usize>>(&mut self, src: R, dest: usize)
@@ -9401,6 +9493,7 @@ Module slice.
     Axiom AssociatedFunction_copy_within :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "copy_within" (copy_within T).
+    Smpl Add apply AssociatedFunction_copy_within : is_associated.
     
     (*
         pub fn swap_with_slice(&mut self, other: &mut [T]) {
@@ -9547,6 +9640,7 @@ Module slice.
     Axiom AssociatedFunction_swap_with_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "swap_with_slice" (swap_with_slice T).
+    Smpl Add apply AssociatedFunction_swap_with_slice : is_associated.
     
     (*
         fn align_to_offsets<U>(&self) -> (usize, usize) {
@@ -9653,6 +9747,7 @@ Module slice.
     Axiom AssociatedFunction_align_to_offsets :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "align_to_offsets" (align_to_offsets T).
+    Smpl Add apply AssociatedFunction_align_to_offsets : is_associated.
     
     (*
         pub unsafe fn align_to<U>(&self) -> (&[T], &[U], &[T]) {
@@ -9978,6 +10073,7 @@ Module slice.
     Axiom AssociatedFunction_align_to :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "align_to" (align_to T).
+    Smpl Add apply AssociatedFunction_align_to : is_associated.
     
     (*
         pub unsafe fn align_to_mut<U>(&mut self) -> (&mut [T], &mut [U], &mut [T]) {
@@ -10309,6 +10405,7 @@ Module slice.
     Axiom AssociatedFunction_align_to_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "align_to_mut" (align_to_mut T).
+    Smpl Add apply AssociatedFunction_align_to_mut : is_associated.
     
     (*
         pub fn as_simd<const LANES: usize>(&self) -> (&[T], &[Simd<T, LANES>], &[T])
@@ -10458,6 +10555,7 @@ Module slice.
     Axiom AssociatedFunction_as_simd :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_simd" (as_simd T).
+    Smpl Add apply AssociatedFunction_as_simd : is_associated.
     
     (*
         pub fn as_simd_mut<const LANES: usize>(&mut self) -> (&mut [T], &mut [Simd<T, LANES>], &mut [T])
@@ -10607,6 +10705,7 @@ Module slice.
     Axiom AssociatedFunction_as_simd_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_simd_mut" (as_simd_mut T).
+    Smpl Add apply AssociatedFunction_as_simd_mut : is_associated.
     
     (*
         pub fn is_sorted(&self) -> bool
@@ -10690,6 +10789,7 @@ Module slice.
     Axiom AssociatedFunction_is_sorted :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "is_sorted" (is_sorted T).
+    Smpl Add apply AssociatedFunction_is_sorted : is_associated.
     
     (*
         pub fn is_sorted_by<'a, F>(&'a self, mut compare: F) -> bool
@@ -10805,6 +10905,7 @@ Module slice.
     Axiom AssociatedFunction_is_sorted_by :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "is_sorted_by" (is_sorted_by T).
+    Smpl Add apply AssociatedFunction_is_sorted_by : is_associated.
     
     (*
         pub fn is_sorted_by_key<'a, F, K>(&'a self, f: F) -> bool
@@ -10851,6 +10952,7 @@ Module slice.
     Axiom AssociatedFunction_is_sorted_by_key :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "is_sorted_by_key" (is_sorted_by_key T).
+    Smpl Add apply AssociatedFunction_is_sorted_by_key : is_associated.
     
     (*
         pub fn partition_point<P>(&self, mut pred: P) -> usize
@@ -10986,6 +11088,7 @@ Module slice.
     Axiom AssociatedFunction_partition_point :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "partition_point" (partition_point T).
+    Smpl Add apply AssociatedFunction_partition_point : is_associated.
     
     (*
         pub fn take<'a, R: OneSidedRange<usize>>(self: &mut &'a Self, range: R) -> Option<&'a Self> {
@@ -11240,6 +11343,7 @@ Module slice.
     Axiom AssociatedFunction_take :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take" (take T).
+    Smpl Add apply AssociatedFunction_take : is_associated.
     
     (*
         pub fn take_mut<'a, R: OneSidedRange<usize>>(
@@ -11516,6 +11620,7 @@ Module slice.
     Axiom AssociatedFunction_take_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take_mut" (take_mut T).
+    Smpl Add apply AssociatedFunction_take_mut : is_associated.
     
     (*
         pub fn take_first<'a>(self: &mut &'a Self) -> Option<&'a T> {
@@ -11650,6 +11755,7 @@ Module slice.
     Axiom AssociatedFunction_take_first :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take_first" (take_first T).
+    Smpl Add apply AssociatedFunction_take_first : is_associated.
     
     (*
         pub fn take_first_mut<'a>(self: &mut &'a mut Self) -> Option<&'a mut T> {
@@ -11811,6 +11917,7 @@ Module slice.
     Axiom AssociatedFunction_take_first_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take_first_mut" (take_first_mut T).
+    Smpl Add apply AssociatedFunction_take_first_mut : is_associated.
     
     (*
         pub fn take_last<'a>(self: &mut &'a Self) -> Option<&'a T> {
@@ -11945,6 +12052,7 @@ Module slice.
     Axiom AssociatedFunction_take_last :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take_last" (take_last T).
+    Smpl Add apply AssociatedFunction_take_last : is_associated.
     
     (*
         pub fn take_last_mut<'a>(self: &mut &'a mut Self) -> Option<&'a mut T> {
@@ -12101,6 +12209,7 @@ Module slice.
     Axiom AssociatedFunction_take_last_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take_last_mut" (take_last_mut T).
+    Smpl Add apply AssociatedFunction_take_last_mut : is_associated.
     
     (*
         pub unsafe fn get_many_unchecked_mut<const N: usize>(
@@ -12335,6 +12444,7 @@ Module slice.
     Axiom AssociatedFunction_get_many_unchecked_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_many_unchecked_mut" (get_many_unchecked_mut T).
+    Smpl Add apply AssociatedFunction_get_many_unchecked_mut : is_associated.
     
     (*
         pub fn get_many_mut<const N: usize>(
@@ -12444,6 +12554,7 @@ Module slice.
     Axiom AssociatedFunction_get_many_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_many_mut" (get_many_mut T).
+    Smpl Add apply AssociatedFunction_get_many_mut : is_associated.
     
     (*
         pub fn elem_offset(&self, element: &T) -> Option<usize> {
@@ -12637,6 +12748,7 @@ Module slice.
     Axiom AssociatedFunction_elem_offset :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "elem_offset" (elem_offset T).
+    Smpl Add apply AssociatedFunction_elem_offset : is_associated.
     
     (*
         pub fn subslice_range(&self, subslice: &[T]) -> Option<Range<usize>> {
@@ -12884,6 +12996,7 @@ Module slice.
     Axiom AssociatedFunction_subslice_range :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "subslice_range" (subslice_range T).
+    Smpl Add apply AssociatedFunction_subslice_range : is_associated.
   End Impl_slice_T.
   
   Module Impl_slice_array_N_T.
@@ -13042,6 +13155,7 @@ Module slice.
     Axiom AssociatedFunction_as_flattened :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "as_flattened" (as_flattened N T).
+    Smpl Add apply AssociatedFunction_as_flattened : is_associated.
     
     (*
         pub fn as_flattened_mut(&mut self) -> &mut [T] {
@@ -13219,6 +13333,7 @@ Module slice.
     Axiom AssociatedFunction_as_flattened_mut :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "as_flattened_mut" (as_flattened_mut N T).
+    Smpl Add apply AssociatedFunction_as_flattened_mut : is_associated.
   End Impl_slice_array_N_T.
   
   Module Impl_slice_f32.
@@ -13263,6 +13378,7 @@ Module slice.
       end.
     
     Axiom AssociatedFunction_sort_floats : M.IsAssociatedFunction Self "sort_floats" sort_floats.
+    Smpl Add apply AssociatedFunction_sort_floats : is_associated.
   End Impl_slice_f32.
   
   Module Impl_slice_f64.
@@ -13307,6 +13423,7 @@ Module slice.
       end.
     
     Axiom AssociatedFunction_sort_floats : M.IsAssociatedFunction Self "sort_floats" sort_floats.
+    Smpl Add apply AssociatedFunction_sort_floats : is_associated.
   End Impl_slice_f64.
   
   (* Trait *)

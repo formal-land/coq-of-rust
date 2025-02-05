@@ -102,6 +102,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I P : Ty.t),
           M.IsAssociatedFunction (Self I P) "new" (new I P).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         (*
             fn next_chunk_dropless<const N: usize>(
                 &mut self,
@@ -413,6 +414,7 @@ Module iter.
         Axiom AssociatedFunction_next_chunk_dropless :
           forall (I P : Ty.t),
           M.IsAssociatedFunction (Self I P) "next_chunk_dropless" (next_chunk_dropless I P).
+        Smpl Add apply AssociatedFunction_next_chunk_dropless : is_associated.
       End Impl_core_iter_adapters_filter_Filter_I_P.
       
       

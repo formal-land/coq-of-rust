@@ -117,6 +117,7 @@ Module future.
       Axiom AssociatedFunction_take_output :
         forall (F : Ty.t),
         M.IsAssociatedFunction (Self F) "take_output" (take_output F).
+      Smpl Add apply AssociatedFunction_take_output : is_associated.
     End Impl_core_future_join_MaybeDone_F.
     
     Module Impl_core_future_future_Future_where_core_future_future_Future_F_for_core_future_join_MaybeDone_F.

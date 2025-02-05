@@ -37,6 +37,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     end.
   
   Axiom AssociatedFunction_add_one : M.IsAssociatedFunction Self "add_one" add_one.
+  Smpl Add apply AssociatedFunction_add_one : is_associated.
   
   (*
       fn print<'a>(&'a self) {
@@ -127,6 +128,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     end.
   
   Axiom AssociatedFunction_print : M.IsAssociatedFunction Self "print" print.
+  Smpl Add apply AssociatedFunction_print : is_associated.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (*

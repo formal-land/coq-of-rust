@@ -662,6 +662,7 @@ Module interpreter_action.
       
       Axiom AssociatedFunction_created_address :
         M.IsAssociatedFunction Self "created_address" created_address.
+      Smpl Add apply AssociatedFunction_created_address : is_associated.
     End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
     
     Module Impl_core_default_Default_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
@@ -1319,6 +1320,7 @@ Module interpreter_action.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn new_opcode(
@@ -1375,6 +1377,7 @@ Module interpreter_action.
         end.
       
       Axiom AssociatedFunction_new_opcode : M.IsAssociatedFunction Self "new_opcode" new_opcode.
+      Smpl Add apply AssociatedFunction_new_opcode : is_associated.
     End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
   End eof_create_inputs.
 End interpreter_action.

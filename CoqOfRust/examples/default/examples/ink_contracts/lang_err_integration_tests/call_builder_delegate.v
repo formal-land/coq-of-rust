@@ -85,6 +85,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn delegate(&mut self, code_hash: Hash, selector: [u8; 4]) -> Option<LangError> {
@@ -117,6 +118,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     end.
   
   Axiom AssociatedFunction_delegate : M.IsAssociatedFunction Self "delegate" delegate.
+  Smpl Add apply AssociatedFunction_delegate : is_associated.
   
   (*
       pub fn invoke(&mut self, code_hash: Hash, selector: [u8; 4]) -> i32 {
@@ -142,4 +144,5 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     end.
   
   Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
+  Smpl Add apply AssociatedFunction_invoke : is_associated.
 End Impl_call_builder_delegate_CallBuilderDelegateTest.

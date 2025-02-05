@@ -776,6 +776,7 @@ Module collections.
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           fn into_element<A: Allocator>(self: Box<Self, A>) -> T {
@@ -806,6 +807,7 @@ Module collections.
       Axiom AssociatedFunction_into_element :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "into_element" (into_element T).
+      Smpl Add apply AssociatedFunction_into_element : is_associated.
     End Impl_alloc_collections_linked_list_Node_T.
     
     Module Impl_alloc_collections_linked_list_LinkedList_T_A.
@@ -983,6 +985,7 @@ Module collections.
       Axiom AssociatedFunction_push_front_node :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "push_front_node" (push_front_node T A).
+      Smpl Add apply AssociatedFunction_push_front_node : is_associated.
       
       (*
           fn pop_front_node(&mut self) -> Option<Box<Node<T>, &A>> {
@@ -1227,6 +1230,7 @@ Module collections.
       Axiom AssociatedFunction_pop_front_node :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "pop_front_node" (pop_front_node T A).
+      Smpl Add apply AssociatedFunction_pop_front_node : is_associated.
       
       (*
           unsafe fn push_back_node(&mut self, node: NonNull<Node<T>>) {
@@ -1399,6 +1403,7 @@ Module collections.
       Axiom AssociatedFunction_push_back_node :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "push_back_node" (push_back_node T A).
+      Smpl Add apply AssociatedFunction_push_back_node : is_associated.
       
       (*
           fn pop_back_node(&mut self) -> Option<Box<Node<T>, &A>> {
@@ -1643,6 +1648,7 @@ Module collections.
       Axiom AssociatedFunction_pop_back_node :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "pop_back_node" (pop_back_node T A).
+      Smpl Add apply AssociatedFunction_pop_back_node : is_associated.
       
       (*
           unsafe fn unlink_node(&mut self, mut node: NonNull<Node<T>>) {
@@ -1852,6 +1858,7 @@ Module collections.
       Axiom AssociatedFunction_unlink_node :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "unlink_node" (unlink_node T A).
+      Smpl Add apply AssociatedFunction_unlink_node : is_associated.
       
       (*
           unsafe fn splice_nodes(
@@ -2087,6 +2094,7 @@ Module collections.
       Axiom AssociatedFunction_splice_nodes :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "splice_nodes" (splice_nodes T A).
+      Smpl Add apply AssociatedFunction_splice_nodes : is_associated.
       
       (*
           fn detach_all_nodes(mut self) -> Option<(NonNull<Node<T>>, NonNull<Node<T>>, usize)> {
@@ -2251,6 +2259,7 @@ Module collections.
       Axiom AssociatedFunction_detach_all_nodes :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "detach_all_nodes" (detach_all_nodes T A).
+      Smpl Add apply AssociatedFunction_detach_all_nodes : is_associated.
       
       (*
           unsafe fn split_off_before_node(
@@ -2568,6 +2577,7 @@ Module collections.
       Axiom AssociatedFunction_split_off_before_node :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "split_off_before_node" (split_off_before_node T A).
+      Smpl Add apply AssociatedFunction_split_off_before_node : is_associated.
       
       (*
           unsafe fn split_off_after_node(
@@ -2887,6 +2897,7 @@ Module collections.
       Axiom AssociatedFunction_split_off_after_node :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "split_off_after_node" (split_off_after_node T A).
+      Smpl Add apply AssociatedFunction_split_off_after_node : is_associated.
       (*
           pub const fn new_in(alloc: A) -> Self {
               LinkedList { head: None, tail: None, len: 0, alloc, marker: PhantomData }
@@ -2913,6 +2924,7 @@ Module collections.
       Axiom AssociatedFunction_new_in :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
+      Smpl Add apply AssociatedFunction_new_in : is_associated.
       
       (*
           pub fn iter(&self) -> Iter<'_, T> {
@@ -2960,6 +2972,7 @@ Module collections.
       Axiom AssociatedFunction_iter :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "iter" (iter T A).
+      Smpl Add apply AssociatedFunction_iter : is_associated.
       
       (*
           pub fn iter_mut(&mut self) -> IterMut<'_, T> {
@@ -3007,6 +3020,7 @@ Module collections.
       Axiom AssociatedFunction_iter_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "iter_mut" (iter_mut T A).
+      Smpl Add apply AssociatedFunction_iter_mut : is_associated.
       
       (*
           pub fn cursor_front(&self) -> Cursor<'_, T, A> {
@@ -3044,6 +3058,7 @@ Module collections.
       Axiom AssociatedFunction_cursor_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "cursor_front" (cursor_front T A).
+      Smpl Add apply AssociatedFunction_cursor_front : is_associated.
       
       (*
           pub fn cursor_front_mut(&mut self) -> CursorMut<'_, T, A> {
@@ -3081,6 +3096,7 @@ Module collections.
       Axiom AssociatedFunction_cursor_front_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "cursor_front_mut" (cursor_front_mut T A).
+      Smpl Add apply AssociatedFunction_cursor_front_mut : is_associated.
       
       (*
           pub fn cursor_back(&self) -> Cursor<'_, T, A> {
@@ -3142,6 +3158,7 @@ Module collections.
       Axiom AssociatedFunction_cursor_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "cursor_back" (cursor_back T A).
+      Smpl Add apply AssociatedFunction_cursor_back : is_associated.
       
       (*
           pub fn cursor_back_mut(&mut self) -> CursorMut<'_, T, A> {
@@ -3203,6 +3220,7 @@ Module collections.
       Axiom AssociatedFunction_cursor_back_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "cursor_back_mut" (cursor_back_mut T A).
+      Smpl Add apply AssociatedFunction_cursor_back_mut : is_associated.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -3247,6 +3265,7 @@ Module collections.
       Axiom AssociatedFunction_is_empty :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "is_empty" (is_empty T A).
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
       
       (*
           pub fn len(&self) -> usize {
@@ -3272,6 +3291,7 @@ Module collections.
       Axiom AssociatedFunction_len :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "len" (len T A).
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub fn clear(&mut self) {
@@ -3415,6 +3435,7 @@ Module collections.
       Axiom AssociatedFunction_clear :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "clear" (clear T A).
+      Smpl Add apply AssociatedFunction_clear : is_associated.
       
       (*
           pub fn contains(&self, x: &T) -> bool
@@ -3498,6 +3519,7 @@ Module collections.
       Axiom AssociatedFunction_contains :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "contains" (contains T A).
+      Smpl Add apply AssociatedFunction_contains : is_associated.
       
       (*
           pub fn front(&self) -> Option<&T> {
@@ -3635,6 +3657,7 @@ Module collections.
       Axiom AssociatedFunction_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "front" (front T A).
+      Smpl Add apply AssociatedFunction_front : is_associated.
       
       (*
           pub fn front_mut(&mut self) -> Option<&mut T> {
@@ -3772,6 +3795,7 @@ Module collections.
       Axiom AssociatedFunction_front_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "front_mut" (front_mut T A).
+      Smpl Add apply AssociatedFunction_front_mut : is_associated.
       
       (*
           pub fn back(&self) -> Option<&T> {
@@ -3909,6 +3933,7 @@ Module collections.
       Axiom AssociatedFunction_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "back" (back T A).
+      Smpl Add apply AssociatedFunction_back : is_associated.
       
       (*
           pub fn back_mut(&mut self) -> Option<&mut T> {
@@ -4046,6 +4071,7 @@ Module collections.
       Axiom AssociatedFunction_back_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "back_mut" (back_mut T A).
+      Smpl Add apply AssociatedFunction_back_mut : is_associated.
       
       (*
           pub fn push_front(&mut self, elt: T) {
@@ -4168,6 +4194,7 @@ Module collections.
       Axiom AssociatedFunction_push_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "push_front" (push_front T A).
+      Smpl Add apply AssociatedFunction_push_front : is_associated.
       
       (*
           pub fn pop_front(&mut self) -> Option<T> {
@@ -4235,6 +4262,7 @@ Module collections.
       Axiom AssociatedFunction_pop_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "pop_front" (pop_front T A).
+      Smpl Add apply AssociatedFunction_pop_front : is_associated.
       
       (*
           pub fn push_back(&mut self, elt: T) {
@@ -4352,6 +4380,7 @@ Module collections.
       Axiom AssociatedFunction_push_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "push_back" (push_back T A).
+      Smpl Add apply AssociatedFunction_push_back : is_associated.
       
       (*
           pub fn pop_back(&mut self) -> Option<T> {
@@ -4419,6 +4448,7 @@ Module collections.
       Axiom AssociatedFunction_pop_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "pop_back" (pop_back T A).
+      Smpl Add apply AssociatedFunction_pop_back : is_associated.
       
       (*
           pub fn split_off(&mut self, at: usize) -> LinkedList<T, A>
@@ -5020,6 +5050,7 @@ Module collections.
       Axiom AssociatedFunction_split_off :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "split_off" (split_off T A).
+      Smpl Add apply AssociatedFunction_split_off : is_associated.
       
       (*
           pub fn remove(&mut self, at: usize) -> T {
@@ -5425,6 +5456,7 @@ Module collections.
       Axiom AssociatedFunction_remove :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "remove" (remove T A).
+      Smpl Add apply AssociatedFunction_remove : is_associated.
       
       (*
           pub fn retain<F>(&mut self, mut f: F)
@@ -5505,6 +5537,7 @@ Module collections.
       Axiom AssociatedFunction_retain :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "retain" (retain T A).
+      Smpl Add apply AssociatedFunction_retain : is_associated.
       
       (*
           pub fn retain_mut<F>(&mut self, mut f: F)
@@ -5680,6 +5713,7 @@ Module collections.
       Axiom AssociatedFunction_retain_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "retain_mut" (retain_mut T A).
+      Smpl Add apply AssociatedFunction_retain_mut : is_associated.
       
       (*
           pub fn extract_if<F>(&mut self, filter: F) -> ExtractIf<'_, T, F, A>
@@ -5740,6 +5774,7 @@ Module collections.
       Axiom AssociatedFunction_extract_if :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "extract_if" (extract_if T A).
+      Smpl Add apply AssociatedFunction_extract_if : is_associated.
     End Impl_alloc_collections_linked_list_LinkedList_T_A.
     
     Module Impl_core_default_Default_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
@@ -5815,6 +5850,7 @@ Module collections.
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn append(&mut self, other: &mut Self) {
@@ -6075,6 +6111,7 @@ Module collections.
       Axiom AssociatedFunction_append :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "append" (append T).
+      Smpl Add apply AssociatedFunction_append : is_associated.
     End Impl_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
     
     
@@ -7835,6 +7872,7 @@ Module collections.
       Axiom AssociatedFunction_index :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "index" (index T A).
+      Smpl Add apply AssociatedFunction_index : is_associated.
       
       (*
           pub fn move_next(&mut self) {
@@ -7989,6 +8027,7 @@ Module collections.
       Axiom AssociatedFunction_move_next :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "move_next" (move_next T A).
+      Smpl Add apply AssociatedFunction_move_next : is_associated.
       
       (*
           pub fn move_prev(&mut self) {
@@ -8254,6 +8293,7 @@ Module collections.
       Axiom AssociatedFunction_move_prev :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "move_prev" (move_prev T A).
+      Smpl Add apply AssociatedFunction_move_prev : is_associated.
       
       (*
           pub fn current(&self) -> Option<&'a T> {
@@ -8352,6 +8392,7 @@ Module collections.
       Axiom AssociatedFunction_current :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "current" (current T A).
+      Smpl Add apply AssociatedFunction_current : is_associated.
       
       (*
           pub fn peek_next(&self) -> Option<&'a T> {
@@ -8520,6 +8561,7 @@ Module collections.
       Axiom AssociatedFunction_peek_next :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "peek_next" (peek_next T A).
+      Smpl Add apply AssociatedFunction_peek_next : is_associated.
       
       (*
           pub fn peek_prev(&self) -> Option<&'a T> {
@@ -8688,6 +8730,7 @@ Module collections.
       Axiom AssociatedFunction_peek_prev :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "peek_prev" (peek_prev T A).
+      Smpl Add apply AssociatedFunction_peek_prev : is_associated.
       
       (*
           pub fn front(&self) -> Option<&'a T> {
@@ -8728,6 +8771,7 @@ Module collections.
       Axiom AssociatedFunction_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "front" (front T A).
+      Smpl Add apply AssociatedFunction_front : is_associated.
       
       (*
           pub fn back(&self) -> Option<&'a T> {
@@ -8768,6 +8812,7 @@ Module collections.
       Axiom AssociatedFunction_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "back" (back T A).
+      Smpl Add apply AssociatedFunction_back : is_associated.
       
       (*
           pub fn as_list(&self) -> &'a LinkedList<T, A> {
@@ -8793,6 +8838,7 @@ Module collections.
       Axiom AssociatedFunction_as_list :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_list" (as_list T A).
+      Smpl Add apply AssociatedFunction_as_list : is_associated.
     End Impl_alloc_collections_linked_list_Cursor_T_A.
     
     Module Impl_alloc_collections_linked_list_CursorMut_T_A.
@@ -8927,6 +8973,7 @@ Module collections.
       Axiom AssociatedFunction_index :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "index" (index T A).
+      Smpl Add apply AssociatedFunction_index : is_associated.
       
       (*
           pub fn move_next(&mut self) {
@@ -9081,6 +9128,7 @@ Module collections.
       Axiom AssociatedFunction_move_next :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "move_next" (move_next T A).
+      Smpl Add apply AssociatedFunction_move_next : is_associated.
       
       (*
           pub fn move_prev(&mut self) {
@@ -9346,6 +9394,7 @@ Module collections.
       Axiom AssociatedFunction_move_prev :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "move_prev" (move_prev T A).
+      Smpl Add apply AssociatedFunction_move_prev : is_associated.
       
       (*
           pub fn current(&mut self) -> Option<&mut T> {
@@ -9444,6 +9493,7 @@ Module collections.
       Axiom AssociatedFunction_current :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "current" (current T A).
+      Smpl Add apply AssociatedFunction_current : is_associated.
       
       (*
           pub fn peek_next(&mut self) -> Option<&mut T> {
@@ -9612,6 +9662,7 @@ Module collections.
       Axiom AssociatedFunction_peek_next :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "peek_next" (peek_next T A).
+      Smpl Add apply AssociatedFunction_peek_next : is_associated.
       
       (*
           pub fn peek_prev(&mut self) -> Option<&mut T> {
@@ -9780,6 +9831,7 @@ Module collections.
       Axiom AssociatedFunction_peek_prev :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "peek_prev" (peek_prev T A).
+      Smpl Add apply AssociatedFunction_peek_prev : is_associated.
       
       (*
           pub fn as_cursor(&self) -> Cursor<'_, T, A> {
@@ -9831,6 +9883,7 @@ Module collections.
       Axiom AssociatedFunction_as_cursor :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_cursor" (as_cursor T A).
+      Smpl Add apply AssociatedFunction_as_cursor : is_associated.
       
       (*
           pub fn as_list(&self) -> &LinkedList<T, A> {
@@ -9861,6 +9914,7 @@ Module collections.
       Axiom AssociatedFunction_as_list :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_list" (as_list T A).
+      Smpl Add apply AssociatedFunction_as_list : is_associated.
       (*
           pub fn insert_after(&mut self, item: T) {
               unsafe {
@@ -10156,6 +10210,7 @@ Module collections.
       Axiom AssociatedFunction_insert_after :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "insert_after" (insert_after T A).
+      Smpl Add apply AssociatedFunction_insert_after : is_associated.
       
       (*
           pub fn insert_before(&mut self, item: T) {
@@ -10393,6 +10448,7 @@ Module collections.
       Axiom AssociatedFunction_insert_before :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "insert_before" (insert_before T A).
+      Smpl Add apply AssociatedFunction_insert_before : is_associated.
       
       (*
           pub fn remove_current(&mut self) -> Option<T> {
@@ -10640,6 +10696,7 @@ Module collections.
       Axiom AssociatedFunction_remove_current :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "remove_current" (remove_current T A).
+      Smpl Add apply AssociatedFunction_remove_current : is_associated.
       
       (*
           pub fn remove_current_as_list(&mut self) -> Option<LinkedList<T, A>>
@@ -10946,6 +11003,7 @@ Module collections.
       Axiom AssociatedFunction_remove_current_as_list :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "remove_current_as_list" (remove_current_as_list T A).
+      Smpl Add apply AssociatedFunction_remove_current_as_list : is_associated.
       
       (*
           pub fn split_after(&mut self) -> LinkedList<T, A>
@@ -11115,6 +11173,7 @@ Module collections.
       Axiom AssociatedFunction_split_after :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "split_after" (split_after T A).
+      Smpl Add apply AssociatedFunction_split_after : is_associated.
       
       (*
           pub fn split_before(&mut self) -> LinkedList<T, A>
@@ -11194,6 +11253,7 @@ Module collections.
       Axiom AssociatedFunction_split_before :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "split_before" (split_before T A).
+      Smpl Add apply AssociatedFunction_split_before : is_associated.
       
       (*
           pub fn push_front(&mut self, elt: T) {
@@ -11262,6 +11322,7 @@ Module collections.
       Axiom AssociatedFunction_push_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "push_front" (push_front T A).
+      Smpl Add apply AssociatedFunction_push_front : is_associated.
       
       (*
           pub fn push_back(&mut self, elt: T) {
@@ -11377,6 +11438,7 @@ Module collections.
       Axiom AssociatedFunction_push_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "push_back" (push_back T A).
+      Smpl Add apply AssociatedFunction_push_back : is_associated.
       
       (*
           pub fn pop_front(&mut self) -> Option<T> {
@@ -11602,6 +11664,7 @@ Module collections.
       Axiom AssociatedFunction_pop_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "pop_front" (pop_front T A).
+      Smpl Add apply AssociatedFunction_pop_front : is_associated.
       
       (*
           pub fn pop_back(&mut self) -> Option<T> {
@@ -11873,6 +11936,7 @@ Module collections.
       Axiom AssociatedFunction_pop_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "pop_back" (pop_back T A).
+      Smpl Add apply AssociatedFunction_pop_back : is_associated.
       
       (*
           pub fn front(&self) -> Option<&T> {
@@ -11913,6 +11977,7 @@ Module collections.
       Axiom AssociatedFunction_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "front" (front T A).
+      Smpl Add apply AssociatedFunction_front : is_associated.
       
       (*
           pub fn front_mut(&mut self) -> Option<&mut T> {
@@ -11953,6 +12018,7 @@ Module collections.
       Axiom AssociatedFunction_front_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "front_mut" (front_mut T A).
+      Smpl Add apply AssociatedFunction_front_mut : is_associated.
       
       (*
           pub fn back(&self) -> Option<&T> {
@@ -11993,6 +12059,7 @@ Module collections.
       Axiom AssociatedFunction_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "back" (back T A).
+      Smpl Add apply AssociatedFunction_back : is_associated.
       
       (*
           pub fn back_mut(&mut self) -> Option<&mut T> {
@@ -12033,6 +12100,7 @@ Module collections.
       Axiom AssociatedFunction_back_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "back_mut" (back_mut T A).
+      Smpl Add apply AssociatedFunction_back_mut : is_associated.
     End Impl_alloc_collections_linked_list_CursorMut_T_A.
     
     Module Impl_alloc_collections_linked_list_CursorMut_T_alloc_alloc_Global.
@@ -12303,6 +12371,7 @@ Module collections.
       Axiom AssociatedFunction_splice_after :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "splice_after" (splice_after T).
+      Smpl Add apply AssociatedFunction_splice_after : is_associated.
       
       (*
           pub fn splice_before(&mut self, list: LinkedList<T>) {
@@ -12501,6 +12570,7 @@ Module collections.
       Axiom AssociatedFunction_splice_before :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "splice_before" (splice_before T).
+      Smpl Add apply AssociatedFunction_splice_before : is_associated.
     End Impl_alloc_collections_linked_list_CursorMut_T_alloc_alloc_Global.
     
     

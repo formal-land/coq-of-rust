@@ -282,6 +282,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             fn original_step(&self) -> NonZero<usize> {
@@ -330,6 +331,7 @@ Module iter.
         Axiom AssociatedFunction_original_step :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "original_step" (original_step I).
+        Smpl Add apply AssociatedFunction_original_step : is_associated.
         (*
             fn next_back_index(&self) -> usize {
                 let rem = self.iter.len() % self.original_step();
@@ -451,6 +453,7 @@ Module iter.
         Axiom AssociatedFunction_next_back_index :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "next_back_index" (next_back_index I).
+        Smpl Add apply AssociatedFunction_next_back_index : is_associated.
       End Impl_core_iter_adapters_step_by_StepBy_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_step_by_StepBy_I.

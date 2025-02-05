@@ -517,6 +517,7 @@ Module slice.
         Axiom AssociatedFunction_new :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "new" (new N T).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             fn as_uninit_slice_mut(&mut self) -> &mut [MaybeUninit<T>] {
@@ -637,6 +638,7 @@ Module slice.
         Axiom AssociatedFunction_as_uninit_slice_mut :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "as_uninit_slice_mut" (as_uninit_slice_mut N T).
+        Smpl Add apply AssociatedFunction_as_uninit_slice_mut : is_associated.
       End Impl_core_slice_sort_stable_AlignedStorage_N_T.
     End stable.
   End sort.

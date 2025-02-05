@@ -93,6 +93,7 @@ Module reference_safety.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn push(&mut self, v: AbstractValue) -> PartialVMResult<()> {
@@ -414,6 +415,7 @@ Module reference_safety.
       end.
     
     Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
+    Smpl Add apply AssociatedFunction_push : is_associated.
     
     (*
         fn push_n(&mut self, v: AbstractValue, n: u64) -> PartialVMResult<()> {
@@ -737,6 +739,7 @@ Module reference_safety.
       end.
     
     Axiom AssociatedFunction_push_n : M.IsAssociatedFunction Self "push_n" push_n.
+    Smpl Add apply AssociatedFunction_push_n : is_associated.
   End Impl_move_bytecode_verifier_reference_safety_ReferenceSafetyAnalysis.
   
   (*

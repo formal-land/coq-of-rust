@@ -75,6 +75,7 @@ Module array.
       Axiom AssociatedFunction_as_ascii :
         forall (N : Value.t),
         M.IsAssociatedFunction (Self N) "as_ascii" (as_ascii N).
+      Smpl Add apply AssociatedFunction_as_ascii : is_associated.
       
       (*
           pub const unsafe fn as_ascii_unchecked(&self) -> &[ascii::Char; N] {
@@ -129,6 +130,7 @@ Module array.
       Axiom AssociatedFunction_as_ascii_unchecked :
         forall (N : Value.t),
         M.IsAssociatedFunction (Self N) "as_ascii_unchecked" (as_ascii_unchecked N).
+      Smpl Add apply AssociatedFunction_as_ascii_unchecked : is_associated.
     End Impl_array_N_u8.
   End ascii.
 End array.

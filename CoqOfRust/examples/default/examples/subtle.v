@@ -117,6 +117,7 @@ Module Impl_subtle_Choice.
     end.
   
   Axiom AssociatedFunction_unwrap_u8 : M.IsAssociatedFunction Self "unwrap_u8" unwrap_u8.
+  Smpl Add apply AssociatedFunction_unwrap_u8 : is_associated.
 End Impl_subtle_Choice.
 
 Module Impl_core_convert_From_subtle_Choice_for_bool.
@@ -3703,6 +3704,7 @@ Module Impl_subtle_CtOption_T.
     end.
   
   Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn expect(self, msg: &str) -> T {
@@ -3889,6 +3891,7 @@ Module Impl_subtle_CtOption_T.
   Axiom AssociatedFunction_expect :
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "expect" (expect T).
+  Smpl Add apply AssociatedFunction_expect : is_associated.
   
   (*
       pub fn unwrap(self) -> T {
@@ -4013,6 +4016,7 @@ Module Impl_subtle_CtOption_T.
   Axiom AssociatedFunction_unwrap :
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "unwrap" (unwrap T).
+  Smpl Add apply AssociatedFunction_unwrap : is_associated.
   
   (*
       pub fn unwrap_or(self, def: T) -> T
@@ -4061,6 +4065,7 @@ Module Impl_subtle_CtOption_T.
   Axiom AssociatedFunction_unwrap_or :
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "unwrap_or" (unwrap_or T).
+  Smpl Add apply AssociatedFunction_unwrap_or : is_associated.
   
   (*
       pub fn unwrap_or_else<F>(self, f: F) -> T
@@ -4131,6 +4136,7 @@ Module Impl_subtle_CtOption_T.
   Axiom AssociatedFunction_unwrap_or_else :
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "unwrap_or_else" (unwrap_or_else T).
+  Smpl Add apply AssociatedFunction_unwrap_or_else : is_associated.
   
   (*
       pub fn is_some(&self) -> Choice {
@@ -4156,6 +4162,7 @@ Module Impl_subtle_CtOption_T.
   Axiom AssociatedFunction_is_some :
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "is_some" (is_some T).
+  Smpl Add apply AssociatedFunction_is_some : is_associated.
   
   (*
       pub fn is_none(&self) -> Choice {
@@ -4194,6 +4201,7 @@ Module Impl_subtle_CtOption_T.
   Axiom AssociatedFunction_is_none :
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "is_none" (is_none T).
+  Smpl Add apply AssociatedFunction_is_none : is_associated.
   
   (*
       pub fn map<U, F>(self, f: F) -> CtOption<U>
@@ -4307,6 +4315,7 @@ Module Impl_subtle_CtOption_T.
     end.
   
   Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
+  Smpl Add apply AssociatedFunction_map : is_associated.
   
   (*
       pub fn and_then<U, F>(self, f: F) -> CtOption<U>
@@ -4438,6 +4447,7 @@ Module Impl_subtle_CtOption_T.
   Axiom AssociatedFunction_and_then :
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "and_then" (and_then T).
+  Smpl Add apply AssociatedFunction_and_then : is_associated.
   
   (*
       pub fn or_else<F>(self, f: F) -> CtOption<T>
@@ -4514,6 +4524,7 @@ Module Impl_subtle_CtOption_T.
   Axiom AssociatedFunction_or_else :
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "or_else" (or_else T).
+  Smpl Add apply AssociatedFunction_or_else : is_associated.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.

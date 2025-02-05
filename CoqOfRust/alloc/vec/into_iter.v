@@ -177,6 +177,7 @@ Module vec.
       Axiom AssociatedFunction_as_slice :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_slice" (as_slice T A).
+      Smpl Add apply AssociatedFunction_as_slice : is_associated.
       
       (*
           pub fn as_mut_slice(&mut self) -> &mut [T] {
@@ -230,6 +231,7 @@ Module vec.
       Axiom AssociatedFunction_as_mut_slice :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_mut_slice" (as_mut_slice T A).
+      Smpl Add apply AssociatedFunction_as_mut_slice : is_associated.
       
       (*
           pub fn allocator(&self) -> &A {
@@ -279,6 +281,7 @@ Module vec.
       Axiom AssociatedFunction_allocator :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
+      Smpl Add apply AssociatedFunction_allocator : is_associated.
       
       (*
           fn as_raw_mut_slice(&mut self) -> *mut [T] {
@@ -339,6 +342,7 @@ Module vec.
       Axiom AssociatedFunction_as_raw_mut_slice :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_raw_mut_slice" (as_raw_mut_slice T A).
+      Smpl Add apply AssociatedFunction_as_raw_mut_slice : is_associated.
       
       (*
           pub(super) fn forget_allocation_drop_remaining(&mut self) {
@@ -494,6 +498,7 @@ Module vec.
           (Self T A)
           "forget_allocation_drop_remaining"
           (forget_allocation_drop_remaining T A).
+      Smpl Add apply AssociatedFunction_forget_allocation_drop_remaining : is_associated.
       
       (*
           pub(crate) fn forget_remaining_elements(&mut self) {
@@ -552,6 +557,7 @@ Module vec.
           (Self T A)
           "forget_remaining_elements"
           (forget_remaining_elements T A).
+      Smpl Add apply AssociatedFunction_forget_remaining_elements : is_associated.
       
       (*
           pub(crate) fn into_vecdeque(self) -> VecDeque<T, A> {
@@ -911,6 +917,7 @@ Module vec.
       Axiom AssociatedFunction_into_vecdeque :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "into_vecdeque" (into_vecdeque T A).
+      Smpl Add apply AssociatedFunction_into_vecdeque : is_associated.
     End Impl_alloc_vec_into_iter_IntoIter_T_A.
     
     Module Impl_core_convert_AsRef_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_into_iter_IntoIter_T_A.

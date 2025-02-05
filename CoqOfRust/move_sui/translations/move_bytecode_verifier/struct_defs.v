@@ -106,6 +106,7 @@ Module struct_defs.
     
     Axiom AssociatedFunction_verify_module :
       M.IsAssociatedFunction Self "verify_module" verify_module.
+    Smpl Add apply AssociatedFunction_verify_module : is_associated.
     
     (*
         fn verify_module_impl(module: &'a CompiledModule) -> PartialVMResult<()> {
@@ -371,6 +372,7 @@ Module struct_defs.
     
     Axiom AssociatedFunction_verify_module_impl :
       M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
+    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
   End Impl_move_bytecode_verifier_struct_defs_RecursiveStructDefChecker.
   
   (* StructRecord
@@ -625,6 +627,7 @@ Module struct_defs.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn build(self) -> PartialVMResult<DiGraphMap<StructDefinitionIndex, ()>> {
@@ -1280,6 +1283,7 @@ Module struct_defs.
       end.
     
     Axiom AssociatedFunction_build : M.IsAssociatedFunction Self "build" build.
+    Smpl Add apply AssociatedFunction_build : is_associated.
     
     (*
         fn add_struct_defs(
@@ -1644,6 +1648,7 @@ Module struct_defs.
     
     Axiom AssociatedFunction_add_struct_defs :
       M.IsAssociatedFunction Self "add_struct_defs" add_struct_defs.
+    Smpl Add apply AssociatedFunction_add_struct_defs : is_associated.
     
     (*
         fn add_signature_token(
@@ -2560,5 +2565,6 @@ Module struct_defs.
     
     Axiom AssociatedFunction_add_signature_token :
       M.IsAssociatedFunction Self "add_signature_token" add_signature_token.
+    Smpl Add apply AssociatedFunction_add_signature_token : is_associated.
   End Impl_move_bytecode_verifier_struct_defs_StructDefGraphBuilder.
 End struct_defs.

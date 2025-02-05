@@ -24,12 +24,6 @@ Proof.
     run_symbolic.
   }
   intros []; run_symbolic.
-  eapply Run.CallPrimitiveGetAssociatedFunction. {
-    apply num.Impl_u64.AssociatedFunction_saturating_add.
-  }
-  eapply Run.CallPrimitiveGetAssociatedFunction. {
-    apply num.Impl_u64.AssociatedFunction_saturating_mul.
-  }
   eapply Run.Rewrite. {
     rewrite gas.constants.MEMORY_eq.
     reflexivity.
@@ -39,10 +33,6 @@ Proof.
     apply num.links.mod.Impl_u64.run_saturating_mul.
   }
   intros []; run_symbolic.
-  eapply Run.CallPrimitiveGetAssociatedFunction. {
-    apply num.Impl_u64.AssociatedFunction_saturating_mul.
-  }
-  run_symbolic.
   eapply Run.CallClosure. {
     apply num.links.mod.Impl_u64.run_saturating_mul.
   }

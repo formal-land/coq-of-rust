@@ -651,6 +651,7 @@ Module control_flow_v5.
       end.
     
     Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
+    Smpl Add apply AssociatedFunction_code : is_associated.
     
     (*
         fn labeled_code<'b: 'a>(
@@ -797,6 +798,7 @@ Module control_flow_v5.
       end.
     
     Axiom AssociatedFunction_labeled_code : M.IsAssociatedFunction Self "labeled_code" labeled_code.
+    Smpl Add apply AssociatedFunction_labeled_code : is_associated.
     
     (*
         fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -841,6 +843,7 @@ Module control_flow_v5.
       end.
     
     Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
+    Smpl Add apply AssociatedFunction_error : is_associated.
   End Impl_move_bytecode_verifier_control_flow_v5_ControlFlowVerifier.
   
   (*

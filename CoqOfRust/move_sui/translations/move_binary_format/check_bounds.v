@@ -181,6 +181,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_verify_module :
       M.IsAssociatedFunction Self "verify_module" verify_module.
+    Smpl Add apply AssociatedFunction_verify_module : is_associated.
     
     (*
         fn verify_impl(&mut self) -> PartialVMResult<()> {
@@ -1244,6 +1245,7 @@ Module check_bounds.
       end.
     
     Axiom AssociatedFunction_verify_impl : M.IsAssociatedFunction Self "verify_impl" verify_impl.
+    Smpl Add apply AssociatedFunction_verify_impl : is_associated.
     
     (*
         fn check_signatures(&self) -> PartialVMResult<()> {
@@ -1475,6 +1477,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_signatures :
       M.IsAssociatedFunction Self "check_signatures" check_signatures.
+    Smpl Add apply AssociatedFunction_check_signatures : is_associated.
     
     (*
         fn check_constants(&self) -> PartialVMResult<()> {
@@ -1705,6 +1708,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_constants :
       M.IsAssociatedFunction Self "check_constants" check_constants.
+    Smpl Add apply AssociatedFunction_check_constants : is_associated.
     
     (*
         fn check_module_handles(&self) -> PartialVMResult<()> {
@@ -1938,6 +1942,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_module_handles :
       M.IsAssociatedFunction Self "check_module_handles" check_module_handles.
+    Smpl Add apply AssociatedFunction_check_module_handles : is_associated.
     
     (*
         fn check_struct_handles(&self) -> PartialVMResult<()> {
@@ -2171,6 +2176,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_struct_handles :
       M.IsAssociatedFunction Self "check_struct_handles" check_struct_handles.
+    Smpl Add apply AssociatedFunction_check_struct_handles : is_associated.
     
     (*
         fn check_function_handles(&self) -> PartialVMResult<()> {
@@ -2404,6 +2410,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_function_handles :
       M.IsAssociatedFunction Self "check_function_handles" check_function_handles.
+    Smpl Add apply AssociatedFunction_check_function_handles : is_associated.
     
     (*
         fn check_field_handles(&self) -> PartialVMResult<()> {
@@ -2635,6 +2642,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_field_handles :
       M.IsAssociatedFunction Self "check_field_handles" check_field_handles.
+    Smpl Add apply AssociatedFunction_check_field_handles : is_associated.
     
     (*
         fn check_friend_decls(&self) -> PartialVMResult<()> {
@@ -2868,6 +2876,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_friend_decls :
       M.IsAssociatedFunction Self "check_friend_decls" check_friend_decls.
+    Smpl Add apply AssociatedFunction_check_friend_decls : is_associated.
     
     (*
         fn check_struct_instantiations(&self) -> PartialVMResult<()> {
@@ -3110,6 +3119,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_struct_instantiations :
       M.IsAssociatedFunction Self "check_struct_instantiations" check_struct_instantiations.
+    Smpl Add apply AssociatedFunction_check_struct_instantiations : is_associated.
     
     (*
         fn check_function_instantiations(&self) -> PartialVMResult<()> {
@@ -3350,6 +3360,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_function_instantiations :
       M.IsAssociatedFunction Self "check_function_instantiations" check_function_instantiations.
+    Smpl Add apply AssociatedFunction_check_function_instantiations : is_associated.
     
     (*
         fn check_field_instantiations(&self) -> PartialVMResult<()> {
@@ -3589,6 +3600,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_field_instantiations :
       M.IsAssociatedFunction Self "check_field_instantiations" check_field_instantiations.
+    Smpl Add apply AssociatedFunction_check_field_instantiations : is_associated.
     
     (*
         fn check_struct_defs(&self) -> PartialVMResult<()> {
@@ -3822,6 +3834,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_struct_defs :
       M.IsAssociatedFunction Self "check_struct_defs" check_struct_defs.
+    Smpl Add apply AssociatedFunction_check_struct_defs : is_associated.
     
     (*
         fn check_function_defs(&mut self) -> PartialVMResult<()> {
@@ -4102,6 +4115,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_function_defs :
       M.IsAssociatedFunction Self "check_function_defs" check_function_defs.
+    Smpl Add apply AssociatedFunction_check_function_defs : is_associated.
     
     (*
         fn check_module_handle(&self, module_handle: &ModuleHandle) -> PartialVMResult<()> {
@@ -4295,6 +4309,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_module_handle :
       M.IsAssociatedFunction Self "check_module_handle" check_module_handle.
+    Smpl Add apply AssociatedFunction_check_module_handle : is_associated.
     
     (*
         fn check_self_module_handle(&self) -> PartialVMResult<()> {
@@ -4372,6 +4387,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_self_module_handle :
       M.IsAssociatedFunction Self "check_self_module_handle" check_self_module_handle.
+    Smpl Add apply AssociatedFunction_check_self_module_handle : is_associated.
     
     (*
         fn check_struct_handle(&self, struct_handle: &StructHandle) -> PartialVMResult<()> {
@@ -4565,6 +4581,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_struct_handle :
       M.IsAssociatedFunction Self "check_struct_handle" check_struct_handle.
+    Smpl Add apply AssociatedFunction_check_struct_handle : is_associated.
     
     (*
         fn check_function_handle(&self, function_handle: &FunctionHandle) -> PartialVMResult<()> {
@@ -5689,6 +5706,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_function_handle :
       M.IsAssociatedFunction Self "check_function_handle" check_function_handle.
+    Smpl Add apply AssociatedFunction_check_function_handle : is_associated.
     
     (*
         fn check_field_handle(&self, field_handle: &FieldHandle) -> PartialVMResult<()> {
@@ -6069,6 +6087,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_field_handle :
       M.IsAssociatedFunction Self "check_field_handle" check_field_handle.
+    Smpl Add apply AssociatedFunction_check_field_handle : is_associated.
     
     (*
         fn check_struct_instantiation(
@@ -6272,6 +6291,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_struct_instantiation :
       M.IsAssociatedFunction Self "check_struct_instantiation" check_struct_instantiation.
+    Smpl Add apply AssociatedFunction_check_struct_instantiation : is_associated.
     
     (*
         fn check_function_instantiation(
@@ -6478,6 +6498,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_function_instantiation :
       M.IsAssociatedFunction Self "check_function_instantiation" check_function_instantiation.
+    Smpl Add apply AssociatedFunction_check_function_instantiation : is_associated.
     
     (*
         fn check_field_instantiation(
@@ -6681,6 +6702,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_field_instantiation :
       M.IsAssociatedFunction Self "check_field_instantiation" check_field_instantiation.
+    Smpl Add apply AssociatedFunction_check_field_instantiation : is_associated.
     
     (*
         fn check_signature(&self, signature: &Signature) -> PartialVMResult<()> {
@@ -6904,6 +6926,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_signature :
       M.IsAssociatedFunction Self "check_signature" check_signature.
+    Smpl Add apply AssociatedFunction_check_signature : is_associated.
     
     (*
         fn check_constant(&self, constant: &Constant) -> PartialVMResult<()> {
@@ -6945,6 +6968,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_constant :
       M.IsAssociatedFunction Self "check_constant" check_constant.
+    Smpl Add apply AssociatedFunction_check_constant : is_associated.
     
     (*
         fn check_struct_def(&self, struct_def: &StructDefinition) -> PartialVMResult<()> {
@@ -7741,6 +7765,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_struct_def :
       M.IsAssociatedFunction Self "check_struct_def" check_struct_def.
+    Smpl Add apply AssociatedFunction_check_struct_def : is_associated.
     
     (*
         fn check_function_def(
@@ -8582,6 +8607,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_function_def :
       M.IsAssociatedFunction Self "check_function_def" check_function_def.
+    Smpl Add apply AssociatedFunction_check_function_def : is_associated.
     
     (*
         fn check_code(
@@ -13399,6 +13425,7 @@ Module check_bounds.
       end.
     
     Axiom AssociatedFunction_check_code : M.IsAssociatedFunction Self "check_code" check_code.
+    Smpl Add apply AssociatedFunction_check_code : is_associated.
     
     (*
         fn check_type(&self, ty: &SignatureToken) -> PartialVMResult<()> {
@@ -14691,6 +14718,7 @@ Module check_bounds.
       end.
     
     Axiom AssociatedFunction_check_type : M.IsAssociatedFunction Self "check_type" check_type.
+    Smpl Add apply AssociatedFunction_check_type : is_associated.
     
     (*
         fn check_type_parameter(
@@ -15056,6 +15084,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_type_parameter :
       M.IsAssociatedFunction Self "check_type_parameter" check_type_parameter.
+    Smpl Add apply AssociatedFunction_check_type_parameter : is_associated.
     
     (*
         fn check_code_unit_bounds_impl<T, I>(
@@ -15167,6 +15196,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_check_code_unit_bounds_impl :
       M.IsAssociatedFunction Self "check_code_unit_bounds_impl" check_code_unit_bounds_impl.
+    Smpl Add apply AssociatedFunction_check_code_unit_bounds_impl : is_associated.
     
     (*
         fn get_locals(&self, code_unit: &CodeUnit) -> PartialVMResult<&[SignatureToken]> {
@@ -15391,6 +15421,7 @@ Module check_bounds.
       end.
     
     Axiom AssociatedFunction_get_locals : M.IsAssociatedFunction Self "get_locals" get_locals.
+    Smpl Add apply AssociatedFunction_get_locals : is_associated.
     
     (*
         fn offset_out_of_bounds(
@@ -15589,6 +15620,7 @@ Module check_bounds.
     
     Axiom AssociatedFunction_offset_out_of_bounds :
       M.IsAssociatedFunction Self "offset_out_of_bounds" offset_out_of_bounds.
+    Smpl Add apply AssociatedFunction_offset_out_of_bounds : is_associated.
   End Impl_move_binary_format_check_bounds_BoundsChecker.
   
   (*
