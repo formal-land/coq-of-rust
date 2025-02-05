@@ -29,22 +29,11 @@ Proof.
     reflexivity.
   }
   run_symbolic.
-  eapply Run.CallClosure. {
-    apply num.links.mod.Impl_u64.run_saturating_mul.
-  }
-  intros []; run_symbolic.
-  eapply Run.CallClosure. {
-    apply num.links.mod.Impl_u64.run_saturating_mul.
-  }
-  intros []; run_symbolic.
   eapply Run.Rewrite. {
     unfold BinOp.Wrap.div.
     erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64) by smpl of_value.
     reflexivity.
   }
   run_symbolic.
-  eapply Run.CallClosure. {
-    apply num.links.mod.Impl_u64.run_saturating_add.
-  }
-  intros []; run_symbolic.
 Defined.
+Smpl Add apply run_memory_gas : run_closure.

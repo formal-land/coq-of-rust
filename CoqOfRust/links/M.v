@@ -823,6 +823,26 @@ Ltac run_symbolic_state_write :=
 Ltac run_symbolic_get_associated_function :=
   eapply Run.CallPrimitiveGetAssociatedFunction; [smpl is_associated |].
 
+Ltac run_symbolic_get_trait_method :=
+  eapply Run.CallPrimitiveGetTraitMethod; [
+    match goal with
+    | H : _ |- _ => apply H
+    end
+  |].
+
+Smpl Create run_closure.
+
+Ltac run_symbolic_closure :=
+  eapply Run.CallClosure; [
+    now (
+      smpl run_closure ||
+      match goal with
+      | H : _ |- _ => apply H
+      end
+    ) |
+    intros []
+  ].
+
 Ltac run_rewrite_deref_borrow :=
   eapply Run.Rewrite; [
     (
@@ -842,6 +862,8 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_state_read ||
     run_symbolic_state_write ||
     run_symbolic_get_associated_function ||
+    run_symbolic_get_trait_method ||
+    run_symbolic_closure ||
     run_rewrite_deref_borrow ||
     fold @LowM.let_ ||
     cbn

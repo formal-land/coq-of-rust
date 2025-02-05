@@ -105,13 +105,6 @@ Module Impl_Default_for_MemoryGas.
         apply run_default_usize.
       }
       intros []; run_symbolic.
-      eapply Run.CallPrimitiveGetTraitMethod. {
-        apply H_default_u64.
-      }
-      eapply Run.CallClosure. {
-        apply run_default_u64.
-      }
-      intros []; run_symbolic.
     }
   Defined.
 
@@ -139,6 +132,7 @@ Module Impl_MemoryGas.
   Proof.
     run_symbolic.
   Defined.
+  Smpl Add apply run_new : run_closure.
 
   (*
   pub fn record_new_len(&mut self, new_num: usize) -> Option<u64> {
@@ -177,6 +171,7 @@ Module Impl_MemoryGas.
     }
     admit.
   Admitted.
+  Smpl Add apply run_record_new_len : run_closure.
 End Impl_MemoryGas.
 
 (*
@@ -307,7 +302,7 @@ Module Gas.
   End SubPointer.
 End Gas.
 
-Module Impl_Clone.
+Module Impl_Clone_for_Gas.
   Definition run_clone : clone.Clone.Run_clone Gas.t.
   Proof.
     eexists; split.
@@ -327,9 +322,9 @@ Module Impl_Clone.
       exact run_clone.
     }
   Defined.
-End Impl_Clone.
+End Impl_Clone_for_Gas.
 
-Module Impl_Default.
+Module Impl_Default_for_Gas.
   Definition run_default : default.Default.Run_default Gas.t.
   Proof.
     eexists; split.
@@ -342,36 +337,11 @@ Module Impl_Default.
         as [default_u64 [H_default_u64 run_default_u64]].
       destruct (default.Impl_Default_for_integer.run_default IntegerKind.I64)
         as [default_i64 [H_default_i64 run_default_i64]].
-      destruct (Impl_Default_for_MemoryGas.run_default)
+      destruct Impl_Default_for_MemoryGas.run_default
         as [default_memory_gas [H_default_memory_gas run_default_memory_gas]].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
-      eapply Run.CallClosure. {
-        apply run_default_u64.
-      }
-      intros []; cbn; [|run_symbolic].
-      eapply Run.CallPrimitiveGetTraitMethod. {
-        apply H_default_u64.
-      }
-      eapply Run.CallClosure. {
-        apply run_default_u64.
-      }
-      intros []; cbn; [|run_symbolic].
-      eapply Run.CallPrimitiveGetTraitMethod. {
-        apply H_default_i64.
-      }
-      eapply Run.CallClosure. {
-        apply run_default_i64.
-      }
-      intros []; cbn; [|run_symbolic].
-      eapply Run.CallPrimitiveGetTraitMethod. {
-        apply H_default_memory_gas.
-      }
-      eapply Run.CallClosure. {
-        apply run_default_memory_gas.
-      }
-      intros []; cbn; [|run_symbolic].
       run_symbolic.
     }
   Defined.
@@ -383,7 +353,7 @@ Module Impl_Default.
       exact run_default.
     }
   Defined.
-End Impl_Default.
+End Impl_Default_for_Gas.
 
 Module Impl_revm_interpreter_gas_Gas.
   Definition Self : Set := Gas.t.
@@ -402,12 +372,8 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.new [] [] [φ limit] 🔽 Self }}.
   Proof.
     run_symbolic.
-    eapply Run.CallClosure. {
-      apply Impl_MemoryGas.run_new.
-    }
-    intros []; cbn; [|run_symbolic].
-    run_symbolic.
   Defined.
+  Smpl Add apply run_new : run_closure.
 
   (*
       pub const fn new_spent(limit: u64) -> Self {
@@ -423,12 +389,8 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.new_spent [] [] [φ limit] 🔽 Self }}.
   Proof.
     run_symbolic.
-    eapply Run.CallClosure. {
-      apply Impl_MemoryGas.run_new.
-    }
-    intros []; cbn; [|run_symbolic].
-    run_symbolic.
   Defined.
+  Smpl Add apply run_new_spent : run_closure.
 
   (*
       pub const fn limit(&self) -> u64 {
@@ -440,6 +402,7 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     run_symbolic.
   Defined.
+  Smpl Add apply run_limit : run_closure.
 
   (*
       pub const fn memory(&self) -> u64 {
@@ -451,6 +414,8 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     run_symbolic.
   Defined.
+  Smpl Add apply run_memory : run_closure.
+
 
   (*
       pub const fn refunded(&self) -> i64 {
@@ -462,6 +427,7 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     run_symbolic.
   Defined.
+  Smpl Add apply run_refunded : run_closure.
 
   (*
       pub const fn spent(&self) -> u64 {
@@ -473,6 +439,7 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     run_symbolic.
   Defined.
+  Smpl Add apply run_spent : run_closure.
 
   (*
       pub const fn remaining(&self) -> u64 {
@@ -484,6 +451,8 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     run_symbolic.
   Defined.
+  Smpl Add apply run_remaining : run_closure.
+
 
   (*
       pub const fn remaining_63_of_64_parts(&self) -> u64 {
@@ -495,19 +464,7 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     run_symbolic.
   Defined.
-
-  (* Module OfValue.
-    Inductive t (value' : Value.t) : Set :=
-    | Make {A : Set} `{Link A} (value : A) :
-      value' = φ value ->
-      t value'.
-
-    Definition Unit : t (Value.Tuple []).
-    Proof.
-      eapply Make with (A := unit).
-      smpl of_value.
-    Defined.
-  End OfValue. *)
+  Smpl Add apply run_remaining_63_of_64_parts : run_closure.
 
   (*
       pub fn erase_cost(&mut self, returned: u64) {
@@ -523,6 +480,8 @@ Module Impl_revm_interpreter_gas_Gas.
     }
     intros []; run_symbolic.
   Defined.
+  Smpl Add apply run_erase_cost : run_closure.
+
 
   (*
       pub fn spend_all(&mut self) {
@@ -538,6 +497,7 @@ Module Impl_revm_interpreter_gas_Gas.
     }
     intros []; run_symbolic.
   Defined.
+  Smpl Add apply run_spend_all : run_closure.
 
   (*
       pub fn record_refund(&mut self, refund: i64) {
@@ -553,6 +513,7 @@ Module Impl_revm_interpreter_gas_Gas.
     }
     intros []; run_symbolic.
   Defined.
+  Smpl Add apply run_record_refund : run_closure.
 
   (*
       pub fn set_final_refund(&mut self, is_london: bool) {
@@ -567,9 +528,9 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.Let. {
       run_symbolic.
       eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
-      intros []; cbn; run_symbolic.
+      intros []; run_symbolic.
     }
-    cbn; intros []; [|run_symbolic].
+    cbn; intros []; run_symbolic.
     eapply Run.Let. {
       run_symbolic.
       destruct cmp.Impl_Ord_for_u64.run_min as [min [H_min run_min]].
@@ -577,25 +538,12 @@ Module Impl_revm_interpreter_gas_Gas.
         apply H_min.
       }
       run_symbolic.
-      eapply Run.CallClosure. {
-        apply run_refunded.
-      }
-      intros []; cbn; [|run_symbolic].
-      run_symbolic.
-      eapply Run.CallClosure. {
-        apply run_spent.
-      }
-      intros []; cbn; run_symbolic.
       eapply Run.Rewrite. {
         unfold BinOp.Wrap.div.
         erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64) by smpl of_value.
         reflexivity.
       }
       run_symbolic.
-      eapply Run.CallClosure. {
-        apply run_min.
-      }
-      cbn; intros []; run_symbolic.
     }
     intros []; run_symbolic.
   Defined.

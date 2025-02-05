@@ -9,6 +9,7 @@ Lemma run_three_way_compare (integer_kind : IntegerKind.t) (x y : Integer.t inte
   {{ intrinsics.three_way_compare [] [ Φ (Integer.t integer_kind) ] [ φ x; φ y ] 🔽 Ordering.t }}.
 Proof.
 Admitted.
+Smpl Add apply run_three_way_compare : run_closure.
 
 Lemma run_saturating_add (integer_kind : IntegerKind.t) (x y : Integer.t integer_kind) :
   {{
@@ -17,3 +18,4 @@ Lemma run_saturating_add (integer_kind : IntegerKind.t) (x y : Integer.t integer
   }}.
 Proof.
 Admitted.
+Smpl Add apply run_saturating_add : run_closure.
