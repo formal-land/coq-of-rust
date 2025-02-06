@@ -382,6 +382,7 @@ Module num.
         end.
       
       Axiom Function_is_8digits : M.IsFunction "core::num::dec2flt::common::is_8digits" is_8digits.
+      Smpl Add apply Function_is_8digits : is_function.
       
       (* StructRecord
         {

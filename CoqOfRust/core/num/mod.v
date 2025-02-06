@@ -86015,6 +86015,7 @@ Module num.
     end.
   
   Axiom Function_can_not_overflow : M.IsFunction "core::num::can_not_overflow" can_not_overflow.
+  Smpl Add apply Function_can_not_overflow : is_function.
   
   (*
   const fn from_str_radix_panic_ct(_radix: u32) -> ! {
@@ -86057,6 +86058,7 @@ Module num.
   
   Axiom Function_from_str_radix_panic_ct :
     M.IsFunction "core::num::from_str_radix_panic_ct" from_str_radix_panic_ct.
+  Smpl Add apply Function_from_str_radix_panic_ct : is_function.
   
   (*
   fn from_str_radix_panic_rt(radix: u32) -> ! {
@@ -86127,6 +86129,7 @@ Module num.
   
   Axiom Function_from_str_radix_panic_rt :
     M.IsFunction "core::num::from_str_radix_panic_rt" from_str_radix_panic_rt.
+  Smpl Add apply Function_from_str_radix_panic_rt : is_function.
   
   (*
   const fn from_str_radix_panic(radix: u32) {
@@ -86163,6 +86166,7 @@ Module num.
   
   Axiom Function_from_str_radix_panic :
     M.IsFunction "core::num::from_str_radix_panic" from_str_radix_panic.
+  Smpl Add apply Function_from_str_radix_panic : is_function.
   
   
   

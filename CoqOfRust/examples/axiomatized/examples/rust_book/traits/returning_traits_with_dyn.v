@@ -50,7 +50,9 @@ Parameter random_animal : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_random_animal :
   M.IsFunction "returning_traits_with_dyn::random_animal" random_animal.
+Smpl Add apply Function_random_animal : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "returning_traits_with_dyn::main" main.
+Smpl Add apply Function_main : is_function.

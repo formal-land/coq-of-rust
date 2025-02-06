@@ -860,6 +860,7 @@ Module slice.
           end.
         
         Axiom Function_sort : M.IsFunction "core::slice::sort::stable::drift::sort" sort.
+        Smpl Add apply Function_sort : is_function.
         
         Module sort.
           Definition value_MIN_SQRT_RUN_LEN : Value.t :=
@@ -964,6 +965,7 @@ Module slice.
           M.IsFunction
             "core::slice::sort::stable::drift::merge_tree_scale_factor"
             merge_tree_scale_factor.
+        Smpl Add apply Function_merge_tree_scale_factor : is_function.
         
         (*
         fn merge_tree_depth(left: usize, mid: usize, right: usize, scale_factor: u64) -> u8 {
@@ -1013,6 +1015,7 @@ Module slice.
         
         Axiom Function_merge_tree_depth :
           M.IsFunction "core::slice::sort::stable::drift::merge_tree_depth" merge_tree_depth.
+        Smpl Add apply Function_merge_tree_depth : is_function.
         
         (*
         fn sqrt_approx(n: usize) -> usize {
@@ -1066,6 +1069,7 @@ Module slice.
         
         Axiom Function_sqrt_approx :
           M.IsFunction "core::slice::sort::stable::drift::sqrt_approx" sqrt_approx.
+        Smpl Add apply Function_sqrt_approx : is_function.
         
         (*
         fn logical_merge<T, F: FnMut(&T, &T) -> bool>(
@@ -1430,6 +1434,7 @@ Module slice.
         
         Axiom Function_logical_merge :
           M.IsFunction "core::slice::sort::stable::drift::logical_merge" logical_merge.
+        Smpl Add apply Function_logical_merge : is_function.
         
         (*
         fn create_run<T, F: FnMut(&T, &T) -> bool>(
@@ -1784,6 +1789,7 @@ Module slice.
         
         Axiom Function_create_run :
           M.IsFunction "core::slice::sort::stable::drift::create_run" create_run.
+        Smpl Add apply Function_create_run : is_function.
         
         (*
         fn stable_quicksort<T, F: FnMut(&T, &T) -> bool>(
@@ -1851,6 +1857,7 @@ Module slice.
         
         Axiom Function_stable_quicksort :
           M.IsFunction "core::slice::sort::stable::drift::stable_quicksort" stable_quicksort.
+        Smpl Add apply Function_stable_quicksort : is_function.
         
         (* StructTuple
           {

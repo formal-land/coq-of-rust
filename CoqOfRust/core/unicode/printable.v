@@ -586,6 +586,7 @@ Module unicode.
       end.
     
     Axiom Function_check : M.IsFunction "core::unicode::printable::check" check.
+    Smpl Add apply Function_check : is_function.
     
     (*
     pub(crate) fn is_printable(x: char) -> bool {
@@ -1237,6 +1238,7 @@ Module unicode.
     
     Axiom Function_is_printable :
       M.IsFunction "core::unicode::printable::is_printable" is_printable.
+    Smpl Add apply Function_is_printable : is_function.
     
     Definition value_SINGLETONS0U : Value.t :=
       M.run_constant

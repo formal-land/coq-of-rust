@@ -4077,6 +4077,7 @@ Module runtime_value.
   
   Axiom Function_serialize_values :
     M.IsFunction "move_core_types::runtime_value::serialize_values" serialize_values.
+  Smpl Add apply Function_serialize_values : is_function.
   
   Module Impl_move_core_types_runtime_value_MoveStruct.
     Definition Self : Ty.t := Ty.path "move_core_types::runtime_value::MoveStruct".

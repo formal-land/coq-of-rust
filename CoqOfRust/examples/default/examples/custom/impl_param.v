@@ -78,3 +78,4 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_with_impls : M.IsFunction "impl_param::with_impls" with_impls.
+Smpl Add apply Function_with_impls : is_function.

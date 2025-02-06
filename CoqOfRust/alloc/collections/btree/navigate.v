@@ -5575,6 +5575,7 @@ Module collections.
       
       Axiom Function_full_range :
         M.IsFunction "alloc::collections::btree::navigate::full_range" full_range.
+      Smpl Add apply Function_full_range : is_function.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
         Definition Self (K V : Ty.t) : Ty.t :=

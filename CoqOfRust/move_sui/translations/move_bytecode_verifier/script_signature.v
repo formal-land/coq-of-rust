@@ -472,6 +472,7 @@ Module script_signature.
   
   Axiom Function_verify_module :
     M.IsFunction "move_bytecode_verifier::script_signature::verify_module" verify_module.
+  Smpl Add apply Function_verify_module : is_function.
   
   (*
   pub fn verify_module_function_signature_by_name(
@@ -948,6 +949,7 @@ Module script_signature.
     M.IsFunction
       "move_bytecode_verifier::script_signature::verify_module_function_signature_by_name"
       verify_module_function_signature_by_name.
+  Smpl Add apply Function_verify_module_function_signature_by_name : is_function.
   
   (*
   fn verify_module_function_signature(
@@ -1151,6 +1153,7 @@ Module script_signature.
     M.IsFunction
       "move_bytecode_verifier::script_signature::verify_module_function_signature"
       verify_module_function_signature.
+  Smpl Add apply Function_verify_module_function_signature : is_function.
   
   (*
   fn verify_main_signature_impl(
@@ -1330,6 +1333,7 @@ Module script_signature.
     M.IsFunction
       "move_bytecode_verifier::script_signature::verify_main_signature_impl"
       verify_main_signature_impl.
+  Smpl Add apply Function_verify_main_signature_impl : is_function.
   
   (*
   pub fn no_additional_script_signature_checks(
@@ -1361,6 +1365,7 @@ Module script_signature.
     M.IsFunction
       "move_bytecode_verifier::script_signature::no_additional_script_signature_checks"
       no_additional_script_signature_checks.
+  Smpl Add apply Function_no_additional_script_signature_checks : is_function.
   
   (*
   pub fn legacy_script_signature_checks(
@@ -2124,4 +2129,5 @@ Module script_signature.
     M.IsFunction
       "move_bytecode_verifier::script_signature::legacy_script_signature_checks"
       legacy_script_signature_checks.
+  Smpl Add apply Function_legacy_script_signature_checks : is_function.
 End script_signature.

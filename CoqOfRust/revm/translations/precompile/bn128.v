@@ -823,6 +823,7 @@ Module bn128.
     end.
   
   Axiom Function_read_fq : M.IsFunction "revm_precompile::bn128::read_fq" read_fq.
+  Smpl Add apply Function_read_fq : is_function.
   
   (*
   pub fn read_point(input: &[u8]) -> Result<G1, PrecompileError> {
@@ -1099,6 +1100,7 @@ Module bn128.
     end.
   
   Axiom Function_read_point : M.IsFunction "revm_precompile::bn128::read_point" read_point.
+  Smpl Add apply Function_read_point : is_function.
   
   (*
   pub fn new_g1_point(px: Fq, py: Fq) -> Result<G1, PrecompileError> {
@@ -1291,6 +1293,7 @@ Module bn128.
     end.
   
   Axiom Function_new_g1_point : M.IsFunction "revm_precompile::bn128::new_g1_point" new_g1_point.
+  Smpl Add apply Function_new_g1_point : is_function.
   
   (*
   pub fn run_add(input: &[u8], gas_cost: u64, gas_limit: u64) -> PrecompileResult {
@@ -1900,6 +1903,7 @@ Module bn128.
     end.
   
   Axiom Function_run_add : M.IsFunction "revm_precompile::bn128::run_add" run_add.
+  Smpl Add apply Function_run_add : is_function.
   
   (*
   pub fn run_mul(input: &[u8], gas_cost: u64, gas_limit: u64) -> PrecompileResult {
@@ -2454,6 +2458,7 @@ Module bn128.
     end.
   
   Axiom Function_run_mul : M.IsFunction "revm_precompile::bn128::run_mul" run_mul.
+  Smpl Add apply Function_run_mul : is_function.
   
   (*
   pub fn run_pair(
@@ -4347,4 +4352,5 @@ Module bn128.
     end.
   
   Axiom Function_run_pair : M.IsFunction "revm_precompile::bn128::run_pair" run_pair.
+  Smpl Add apply Function_run_pair : is_function.
 End bn128.

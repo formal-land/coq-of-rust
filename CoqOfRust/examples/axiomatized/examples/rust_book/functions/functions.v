@@ -4,15 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter is_divisible_by : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_is_divisible_by : M.IsFunction "functions::is_divisible_by" is_divisible_by.
+Smpl Add apply Function_is_divisible_by : is_function.
 
 Parameter fizzbuzz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_fizzbuzz : M.IsFunction "functions::fizzbuzz" fizzbuzz.
+Smpl Add apply Function_fizzbuzz : is_function.
 
 Parameter fizzbuzz_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_fizzbuzz_to : M.IsFunction "functions::fizzbuzz_to" fizzbuzz_to.
+Smpl Add apply Function_fizzbuzz_to : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "functions::main" main.
+Smpl Add apply Function_main : is_function.

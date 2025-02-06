@@ -311,6 +311,7 @@ Module state.
     end.
   
   Axiom Function_set_state : M.IsFunction "move_core_types::state::set_state" set_state.
+  Smpl Add apply Function_set_state : is_function.
   
   (*
   pub fn get_state() -> VMState {
@@ -420,4 +421,5 @@ Module state.
     end.
   
   Axiom Function_get_state : M.IsFunction "move_core_types::state::get_state" get_state.
+  Smpl Add apply Function_get_state : is_function.
 End state.

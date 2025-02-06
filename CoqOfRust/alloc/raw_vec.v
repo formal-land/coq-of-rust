@@ -35,6 +35,7 @@ Module raw_vec.
   
   Axiom Function_capacity_overflow :
     M.IsFunction "alloc::raw_vec::capacity_overflow" capacity_overflow.
+  Smpl Add apply Function_capacity_overflow : is_function.
   
   (*
   Enum AllocInit
@@ -384,6 +385,7 @@ Module raw_vec.
   
   Axiom Function_min_non_zero_cap :
     M.IsFunction "alloc::raw_vec::min_non_zero_cap" min_non_zero_cap.
+  Smpl Add apply Function_min_non_zero_cap : is_function.
   
   Module Impl_alloc_raw_vec_RawVec_T_A.
     Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ].
@@ -5345,6 +5347,7 @@ Module raw_vec.
     end.
   
   Axiom Function_finish_grow : M.IsFunction "alloc::raw_vec::finish_grow" finish_grow.
+  Smpl Add apply Function_finish_grow : is_function.
   
   (*
   fn handle_error(e: TryReserveError) -> ! {
@@ -5408,6 +5411,7 @@ Module raw_vec.
     end.
   
   Axiom Function_handle_error : M.IsFunction "alloc::raw_vec::handle_error" handle_error.
+  Smpl Add apply Function_handle_error : is_function.
   
   (*
   fn alloc_guard(alloc_size: usize) -> Result<(), TryReserveError> {
@@ -5479,6 +5483,7 @@ Module raw_vec.
     end.
   
   Axiom Function_alloc_guard : M.IsFunction "alloc::raw_vec::alloc_guard" alloc_guard.
+  Smpl Add apply Function_alloc_guard : is_function.
   
   (*
   fn layout_array(cap: usize, elem_layout: Layout) -> Result<Layout, TryReserveError> {
@@ -5597,4 +5602,5 @@ Module raw_vec.
     end.
   
   Axiom Function_layout_array : M.IsFunction "alloc::raw_vec::layout_array" layout_array.
+  Smpl Add apply Function_layout_array : is_function.
 End raw_vec.

@@ -26,3 +26,4 @@ End Impl_polymorphic_constants_Foo_N_A.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "polymorphic_constants::main" main.
+Smpl Add apply Function_main : is_function.

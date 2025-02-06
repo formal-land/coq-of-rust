@@ -83,23 +83,29 @@ Parameter have_ingredients : (list Value.t) -> (list Ty.t) -> (list Value.t) -> 
 
 Axiom Function_have_ingredients :
   M.IsFunction "combinators_and_then::have_ingredients" have_ingredients.
+Smpl Add apply Function_have_ingredients : is_function.
 
 Parameter have_recipe : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_have_recipe : M.IsFunction "combinators_and_then::have_recipe" have_recipe.
+Smpl Add apply Function_have_recipe : is_function.
 
 Parameter cookable_v1 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_cookable_v1 : M.IsFunction "combinators_and_then::cookable_v1" cookable_v1.
+Smpl Add apply Function_cookable_v1 : is_function.
 
 Parameter cookable_v2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_cookable_v2 : M.IsFunction "combinators_and_then::cookable_v2" cookable_v2.
+Smpl Add apply Function_cookable_v2 : is_function.
 
 Parameter eat : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_eat : M.IsFunction "combinators_and_then::eat" eat.
+Smpl Add apply Function_eat : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "combinators_and_then::main" main.
+Smpl Add apply Function_main : is_function.

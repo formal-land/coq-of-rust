@@ -3426,6 +3426,7 @@ Module transaction_argument.
   
   Axiom Function_convert_txn_args :
     M.IsFunction "move_core_types::transaction_argument::convert_txn_args" convert_txn_args.
+  Smpl Add apply Function_convert_txn_args : is_function.
   
   (* StructTuple
     {

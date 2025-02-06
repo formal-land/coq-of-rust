@@ -4,3 +4,4 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter add_one : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_add_one : M.IsFunction "add_one::add_one" add_one.
+Smpl Add apply Function_add_one : is_function.

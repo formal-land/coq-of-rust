@@ -171,4 +171,5 @@ Module identity.
     end.
   
   Axiom Function_identity_run : M.IsFunction "revm_precompile::identity::identity_run" identity_run.
+  Smpl Add apply Function_identity_run : is_function.
 End identity.

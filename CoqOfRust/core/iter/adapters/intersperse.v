@@ -1643,6 +1643,7 @@ Module iter.
         M.IsFunction
           "core::iter::adapters::intersperse::intersperse_size_hint"
           intersperse_size_hint.
+      Smpl Add apply Function_intersperse_size_hint : is_function.
       
       (*
       fn intersperse_fold<I, B, F, G>(
@@ -1871,6 +1872,7 @@ Module iter.
       
       Axiom Function_intersperse_fold :
         M.IsFunction "core::iter::adapters::intersperse::intersperse_fold" intersperse_fold.
+      Smpl Add apply Function_intersperse_fold : is_function.
     End intersperse.
   End adapters.
 End iter.

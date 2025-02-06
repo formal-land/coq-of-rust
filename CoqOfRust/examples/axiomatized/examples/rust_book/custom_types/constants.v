@@ -14,7 +14,9 @@ Global Hint Rewrite Constant_value_THRESHOLD : constant_rewrites.
 Parameter is_big : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_is_big : M.IsFunction "constants::is_big" is_big.
+Smpl Add apply Function_is_big : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "constants::main" main.
+Smpl Add apply Function_main : is_function.

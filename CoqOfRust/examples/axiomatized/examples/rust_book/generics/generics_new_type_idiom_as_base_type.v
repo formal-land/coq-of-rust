@@ -12,3 +12,4 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "generics_new_type_idiom_as_base_type::main" main.
+Smpl Add apply Function_main : is_function.

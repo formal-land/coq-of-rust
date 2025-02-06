@@ -568,6 +568,7 @@ Module error.
     end.
   
   Axiom Function_request_value : M.IsFunction "core::error::request_value" request_value.
+  Smpl Add apply Function_request_value : is_function.
   
   (*
   pub fn request_ref<'a, T>(err: &'a (impl Error + ?Sized)) -> Option<&'a T>
@@ -600,6 +601,7 @@ Module error.
     end.
   
   Axiom Function_request_ref : M.IsFunction "core::error::request_ref" request_ref.
+  Smpl Add apply Function_request_ref : is_function.
   
   (*
   fn request_by_type_tag<'a, I>(err: &'a (impl Error + ?Sized)) -> Option<I::Reified>
@@ -678,6 +680,7 @@ Module error.
   
   Axiom Function_request_by_type_tag :
     M.IsFunction "core::error::request_by_type_tag" request_by_type_tag.
+  Smpl Add apply Function_request_by_type_tag : is_function.
   
   (* StructTuple
     {

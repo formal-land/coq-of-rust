@@ -17,6 +17,7 @@ Module convert.
     end.
   
   Axiom Function_identity : M.IsFunction "core::convert::identity" identity.
+  Smpl Add apply Function_identity : is_function.
   
   (* Trait *)
   (* Empty module 'AsRef' *)

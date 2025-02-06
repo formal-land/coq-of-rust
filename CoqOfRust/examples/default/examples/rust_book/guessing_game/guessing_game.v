@@ -20,6 +20,7 @@ Definition gen_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   end.
 
 Axiom Function_gen_range : M.IsFunction "guessing_game::gen_range" gen_range.
+Smpl Add apply Function_gen_range : is_function.
 
 (*
 fn main() {
@@ -437,3 +438,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "guessing_game::main" main.
+Smpl Add apply Function_main : is_function.

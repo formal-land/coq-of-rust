@@ -5,6 +5,7 @@ Parameter create_fn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_create_fn :
   M.IsFunction "functions_closures_as_output_parameters::create_fn" create_fn.
+Smpl Add apply Function_create_fn : is_function.
 
 Module create_fn.
   (* Error OpaqueTy *)
@@ -14,6 +15,7 @@ Parameter create_fnmut : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_create_fnmut :
   M.IsFunction "functions_closures_as_output_parameters::create_fnmut" create_fnmut.
+Smpl Add apply Function_create_fnmut : is_function.
 
 Module create_fnmut.
   (* Error OpaqueTy *)
@@ -23,6 +25,7 @@ Parameter create_fnonce : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_create_fnonce :
   M.IsFunction "functions_closures_as_output_parameters::create_fnonce" create_fnonce.
+Smpl Add apply Function_create_fnonce : is_function.
 
 Module create_fnonce.
   (* Error OpaqueTy *)
@@ -31,3 +34,4 @@ End create_fnonce.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "functions_closures_as_output_parameters::main" main.
+Smpl Add apply Function_main : is_function.

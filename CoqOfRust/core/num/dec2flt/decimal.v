@@ -3462,6 +3462,7 @@ Module num.
       
       Axiom Function_parse_decimal :
         M.IsFunction "core::num::dec2flt::decimal::parse_decimal" parse_decimal.
+      Smpl Add apply Function_parse_decimal : is_function.
       
       (*
       fn number_of_digits_decimal_left_shift(d: &Decimal, mut shift: usize) -> usize {
@@ -3939,6 +3940,7 @@ Module num.
         M.IsFunction
           "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift"
           number_of_digits_decimal_left_shift.
+      Smpl Add apply Function_number_of_digits_decimal_left_shift : is_function.
       
       Module number_of_digits_decimal_left_shift.
         Definition value_TABLE : Value.t :=

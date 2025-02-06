@@ -219,6 +219,7 @@ Module serializer.
   
   Axiom Function_write_as_uleb128 :
     M.IsFunction "move_binary_format::serializer::write_as_uleb128" write_as_uleb128.
+  Smpl Add apply Function_write_as_uleb128 : is_function.
   
   (*
   fn serialize_signature_index(binary: &mut BinaryData, idx: &SignatureIndex) -> Result<()> {
@@ -258,6 +259,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_signature_index"
       serialize_signature_index.
+  Smpl Add apply Function_serialize_signature_index : is_function.
   
   (*
   fn serialize_module_handle_index(binary: &mut BinaryData, idx: &ModuleHandleIndex) -> Result<()> {
@@ -301,6 +303,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_module_handle_index"
       serialize_module_handle_index.
+  Smpl Add apply Function_serialize_module_handle_index : is_function.
   
   (*
   fn serialize_identifier_index(binary: &mut BinaryData, idx: &IdentifierIndex) -> Result<()> {
@@ -340,6 +343,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_identifier_index"
       serialize_identifier_index.
+  Smpl Add apply Function_serialize_identifier_index : is_function.
   
   (*
   fn serialize_struct_handle_index(binary: &mut BinaryData, idx: &StructHandleIndex) -> Result<()> {
@@ -383,6 +387,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_struct_handle_index"
       serialize_struct_handle_index.
+  Smpl Add apply Function_serialize_struct_handle_index : is_function.
   
   (*
   fn serialize_address_identifier_index(
@@ -427,6 +432,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_address_identifier_index"
       serialize_address_identifier_index.
+  Smpl Add apply Function_serialize_address_identifier_index : is_function.
   
   (*
   fn serialize_struct_def_index(binary: &mut BinaryData, idx: &StructDefinitionIndex) -> Result<()> {
@@ -466,6 +472,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_struct_def_index"
       serialize_struct_def_index.
+  Smpl Add apply Function_serialize_struct_def_index : is_function.
   
   (*
   fn serialize_function_handle_index(
@@ -512,6 +519,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_function_handle_index"
       serialize_function_handle_index.
+  Smpl Add apply Function_serialize_function_handle_index : is_function.
   
   (*
   fn serialize_field_handle_index(binary: &mut BinaryData, idx: &FieldHandleIndex) -> Result<()> {
@@ -555,6 +563,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_field_handle_index"
       serialize_field_handle_index.
+  Smpl Add apply Function_serialize_field_handle_index : is_function.
   
   (*
   fn serialize_field_inst_index(
@@ -597,6 +606,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_field_inst_index"
       serialize_field_inst_index.
+  Smpl Add apply Function_serialize_field_inst_index : is_function.
   
   (*
   fn serialize_function_inst_index(
@@ -643,6 +653,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_function_inst_index"
       serialize_function_inst_index.
+  Smpl Add apply Function_serialize_function_inst_index : is_function.
   
   (*
   fn serialize_struct_def_inst_index(
@@ -689,6 +700,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_struct_def_inst_index"
       serialize_struct_def_inst_index.
+  Smpl Add apply Function_serialize_struct_def_inst_index : is_function.
   
   (*
   fn seiralize_table_offset(binary: &mut BinaryData, offset: u32) -> Result<()> {
@@ -718,6 +730,7 @@ Module serializer.
   
   Axiom Function_seiralize_table_offset :
     M.IsFunction "move_binary_format::serializer::seiralize_table_offset" seiralize_table_offset.
+  Smpl Add apply Function_seiralize_table_offset : is_function.
   
   (*
   fn serialize_table_size(binary: &mut BinaryData, size: u32) -> Result<()> {
@@ -747,6 +760,7 @@ Module serializer.
   
   Axiom Function_serialize_table_size :
     M.IsFunction "move_binary_format::serializer::serialize_table_size" serialize_table_size.
+  Smpl Add apply Function_serialize_table_size : is_function.
   
   (*
   fn serialize_constant_pool_index(binary: &mut BinaryData, idx: &ConstantPoolIndex) -> Result<()> {
@@ -788,6 +802,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_constant_pool_index"
       serialize_constant_pool_index.
+  Smpl Add apply Function_serialize_constant_pool_index : is_function.
   
   (*
   fn serialize_bytecode_count(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -819,6 +834,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_bytecode_count"
       serialize_bytecode_count.
+  Smpl Add apply Function_serialize_bytecode_count : is_function.
   
   (*
   fn serialize_identifier_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -852,6 +868,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_identifier_size"
       serialize_identifier_size.
+  Smpl Add apply Function_serialize_identifier_size : is_function.
   
   (*
   fn serialize_constant_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -881,6 +898,7 @@ Module serializer.
   
   Axiom Function_serialize_constant_size :
     M.IsFunction "move_binary_format::serializer::serialize_constant_size" serialize_constant_size.
+  Smpl Add apply Function_serialize_constant_size : is_function.
   
   (*
   fn serialize_metadata_key_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -918,6 +936,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_metadata_key_size"
       serialize_metadata_key_size.
+  Smpl Add apply Function_serialize_metadata_key_size : is_function.
   
   (*
   fn serialize_metadata_value_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -955,6 +974,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_metadata_value_size"
       serialize_metadata_value_size.
+  Smpl Add apply Function_serialize_metadata_value_size : is_function.
   
   (*
   fn serialize_field_count(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -984,6 +1004,7 @@ Module serializer.
   
   Axiom Function_serialize_field_count :
     M.IsFunction "move_binary_format::serializer::serialize_field_count" serialize_field_count.
+  Smpl Add apply Function_serialize_field_count : is_function.
   
   (*
   fn serialize_field_offset(binary: &mut BinaryData, offset: u16) -> Result<()> {
@@ -1013,6 +1034,7 @@ Module serializer.
   
   Axiom Function_serialize_field_offset :
     M.IsFunction "move_binary_format::serializer::serialize_field_offset" serialize_field_offset.
+  Smpl Add apply Function_serialize_field_offset : is_function.
   
   (*
   fn serialize_acquires_count(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -1044,6 +1066,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_acquires_count"
       serialize_acquires_count.
+  Smpl Add apply Function_serialize_acquires_count : is_function.
   
   (*
   fn serialize_signature_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -1075,6 +1098,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_signature_size"
       serialize_signature_size.
+  Smpl Add apply Function_serialize_signature_size : is_function.
   
   (*
   fn serialize_type_parameter_index(binary: &mut BinaryData, idx: u16) -> Result<()> {
@@ -1112,6 +1136,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_type_parameter_index"
       serialize_type_parameter_index.
+  Smpl Add apply Function_serialize_type_parameter_index : is_function.
   
   (*
   fn serialize_type_parameter_count(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -1149,6 +1174,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_type_parameter_count"
       serialize_type_parameter_count.
+  Smpl Add apply Function_serialize_type_parameter_count : is_function.
   
   (*
   fn serialize_bytecode_offset(binary: &mut BinaryData, offset: u16) -> Result<()> {
@@ -1180,6 +1206,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_bytecode_offset"
       serialize_bytecode_offset.
+  Smpl Add apply Function_serialize_bytecode_offset : is_function.
   
   (*
   fn serialize_table_count(binary: &mut BinaryData, len: u8) -> Result<()> {
@@ -1209,6 +1236,7 @@ Module serializer.
   
   Axiom Function_serialize_table_count :
     M.IsFunction "move_binary_format::serializer::serialize_table_count" serialize_table_count.
+  Smpl Add apply Function_serialize_table_count : is_function.
   
   (*
   fn serialize_local_index(binary: &mut BinaryData, idx: u8) -> Result<()> {
@@ -1238,6 +1266,7 @@ Module serializer.
   
   Axiom Function_serialize_local_index :
     M.IsFunction "move_binary_format::serializer::serialize_local_index" serialize_local_index.
+  Smpl Add apply Function_serialize_local_index : is_function.
   
   (*
   fn validate_version(version: u32) -> Result<()> {
@@ -1484,6 +1513,7 @@ Module serializer.
   
   Axiom Function_validate_version :
     M.IsFunction "move_binary_format::serializer::validate_version" validate_version.
+  Smpl Add apply Function_validate_version : is_function.
   
   Module Impl_move_binary_format_file_format_CompiledModule.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::CompiledModule".
@@ -3103,6 +3133,7 @@ Module serializer.
   
   Axiom Function_check_index_in_binary :
     M.IsFunction "move_binary_format::serializer::check_index_in_binary" check_index_in_binary.
+  Smpl Add apply Function_check_index_in_binary : is_function.
   
   (*
   fn serialize_table_index(
@@ -3417,6 +3448,7 @@ Module serializer.
   
   Axiom Function_serialize_table_index :
     M.IsFunction "move_binary_format::serializer::serialize_table_index" serialize_table_index.
+  Smpl Add apply Function_serialize_table_index : is_function.
   
   (*
   fn serialize_magic(binary: &mut BinaryData) -> Result<()> {
@@ -3619,6 +3651,7 @@ Module serializer.
   
   Axiom Function_serialize_magic :
     M.IsFunction "move_binary_format::serializer::serialize_magic" serialize_magic.
+  Smpl Add apply Function_serialize_magic : is_function.
   
   (* Trait *)
   (* Empty module 'CommonTables' *)
@@ -4313,6 +4346,7 @@ Module serializer.
   
   Axiom Function_serialize_module_handle :
     M.IsFunction "move_binary_format::serializer::serialize_module_handle" serialize_module_handle.
+  Smpl Add apply Function_serialize_module_handle : is_function.
   
   (*
   fn serialize_struct_handle(binary: &mut BinaryData, struct_handle: &StructHandle) -> Result<()> {
@@ -4669,6 +4703,7 @@ Module serializer.
   
   Axiom Function_serialize_struct_handle :
     M.IsFunction "move_binary_format::serializer::serialize_struct_handle" serialize_struct_handle.
+  Smpl Add apply Function_serialize_struct_handle : is_function.
   
   (*
   fn serialize_type_parameters(
@@ -4978,6 +5013,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_type_parameters"
       serialize_type_parameters.
+  Smpl Add apply Function_serialize_type_parameters : is_function.
   
   (*
   fn serialize_type_parameter(
@@ -5118,6 +5154,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_type_parameter"
       serialize_type_parameter.
+  Smpl Add apply Function_serialize_type_parameter : is_function.
   
   (*
   fn serialize_function_handle(
@@ -5582,6 +5619,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_function_handle"
       serialize_function_handle.
+  Smpl Add apply Function_serialize_function_handle : is_function.
   
   (*
   fn serialize_function_instantiation(
@@ -5808,6 +5846,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_function_instantiation"
       serialize_function_instantiation.
+  Smpl Add apply Function_serialize_function_instantiation : is_function.
   
   (*
   fn serialize_identifier(binary: &mut BinaryData, string: &str) -> Result<()> {
@@ -6102,6 +6141,7 @@ Module serializer.
   
   Axiom Function_serialize_identifier :
     M.IsFunction "move_binary_format::serializer::serialize_identifier" serialize_identifier.
+  Smpl Add apply Function_serialize_identifier : is_function.
   
   (*
   fn serialize_address(binary: &mut BinaryData, address: &AccountAddress) -> Result<()> {
@@ -6308,6 +6348,7 @@ Module serializer.
   
   Axiom Function_serialize_address :
     M.IsFunction "move_binary_format::serializer::serialize_address" serialize_address.
+  Smpl Add apply Function_serialize_address : is_function.
   
   (*
   fn serialize_constant(binary: &mut BinaryData, constant: &Constant) -> Result<()> {
@@ -6491,6 +6532,7 @@ Module serializer.
   
   Axiom Function_serialize_constant :
     M.IsFunction "move_binary_format::serializer::serialize_constant" serialize_constant.
+  Smpl Add apply Function_serialize_constant : is_function.
   
   (*
   fn serialize_metadata_entry(binary: &mut BinaryData, metadata: &Metadata) -> Result<()> {
@@ -6716,6 +6758,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_metadata_entry"
       serialize_metadata_entry.
+  Smpl Add apply Function_serialize_metadata_entry : is_function.
   
   (*
   fn serialize_byte_blob(
@@ -7029,6 +7072,7 @@ Module serializer.
   
   Axiom Function_serialize_byte_blob :
     M.IsFunction "move_binary_format::serializer::serialize_byte_blob" serialize_byte_blob.
+  Smpl Add apply Function_serialize_byte_blob : is_function.
   
   (*
   fn serialize_struct_definition(
@@ -7349,6 +7393,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_struct_definition"
       serialize_struct_definition.
+  Smpl Add apply Function_serialize_struct_definition : is_function.
   
   (*
   fn serialize_struct_def_instantiation(
@@ -7575,6 +7620,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_struct_def_instantiation"
       serialize_struct_def_instantiation.
+  Smpl Add apply Function_serialize_struct_def_instantiation : is_function.
   
   (*
   fn serialize_field_definitions(binary: &mut BinaryData, fields: &[FieldDefinition]) -> Result<()> {
@@ -7879,6 +7925,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_field_definitions"
       serialize_field_definitions.
+  Smpl Add apply Function_serialize_field_definitions : is_function.
   
   (*
   fn serialize_field_definition(
@@ -8032,6 +8079,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_field_definition"
       serialize_field_definition.
+  Smpl Add apply Function_serialize_field_definition : is_function.
   
   (*
   fn serialize_field_handle(binary: &mut BinaryData, field_handle: &FieldHandle) -> Result<()> {
@@ -8243,6 +8291,7 @@ Module serializer.
   
   Axiom Function_serialize_field_handle :
     M.IsFunction "move_binary_format::serializer::serialize_field_handle" serialize_field_handle.
+  Smpl Add apply Function_serialize_field_handle : is_function.
   
   (*
   fn serialize_field_instantiation(
@@ -8469,6 +8518,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_field_instantiation"
       serialize_field_instantiation.
+  Smpl Add apply Function_serialize_field_instantiation : is_function.
   
   (*
   fn serialize_acquires(binary: &mut BinaryData, indices: &[StructDefinitionIndex]) -> Result<()> {
@@ -8769,6 +8819,7 @@ Module serializer.
   
   Axiom Function_serialize_acquires :
     M.IsFunction "move_binary_format::serializer::serialize_acquires" serialize_acquires.
+  Smpl Add apply Function_serialize_acquires : is_function.
   
   (*
   fn serialize_signature(binary: &mut BinaryData, signature: &Signature) -> Result<()> {
@@ -8829,6 +8880,7 @@ Module serializer.
   
   Axiom Function_serialize_signature :
     M.IsFunction "move_binary_format::serializer::serialize_signature" serialize_signature.
+  Smpl Add apply Function_serialize_signature : is_function.
   
   (*
   fn serialize_signature_tokens(binary: &mut BinaryData, tokens: &[SignatureToken]) -> Result<()> {
@@ -9129,6 +9181,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_signature_tokens"
       serialize_signature_tokens.
+  Smpl Add apply Function_serialize_signature_tokens : is_function.
   
   (*
   fn serialize_signature_token_single_node_impl(
@@ -11129,6 +11182,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_signature_token_single_node_impl"
       serialize_signature_token_single_node_impl.
+  Smpl Add apply Function_serialize_signature_token_single_node_impl : is_function.
   
   (*
   pub(crate) fn serialize_signature_token(
@@ -11422,6 +11476,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_signature_token"
       serialize_signature_token.
+  Smpl Add apply Function_serialize_signature_token : is_function.
   
   (*
   fn serialize_ability_set(binary: &mut BinaryData, set: AbilitySet) -> Result<()> {
@@ -11547,6 +11602,7 @@ Module serializer.
   
   Axiom Function_serialize_ability_set :
     M.IsFunction "move_binary_format::serializer::serialize_ability_set" serialize_ability_set.
+  Smpl Add apply Function_serialize_ability_set : is_function.
   
   (*
   fn serialize_ability_sets(binary: &mut BinaryData, sets: &[AbilitySet]) -> Result<()> {
@@ -11839,6 +11895,7 @@ Module serializer.
   
   Axiom Function_serialize_ability_sets :
     M.IsFunction "move_binary_format::serializer::serialize_ability_sets" serialize_ability_sets.
+  Smpl Add apply Function_serialize_ability_sets : is_function.
   
   (*
   fn serialize_code_unit(major_version: u32, binary: &mut BinaryData, code: &CodeUnit) -> Result<()> {
@@ -12005,6 +12062,7 @@ Module serializer.
   
   Axiom Function_serialize_code_unit :
     M.IsFunction "move_binary_format::serializer::serialize_code_unit" serialize_code_unit.
+  Smpl Add apply Function_serialize_code_unit : is_function.
   
   (*
   fn serialize_instruction_inner(
@@ -19066,6 +19124,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::serialize_instruction_inner"
       serialize_instruction_inner.
+  Smpl Add apply Function_serialize_instruction_inner : is_function.
   
   (*
   fn serialize_code(major_version: u32, binary: &mut BinaryData, code: &[Bytecode]) -> Result<()> {
@@ -19363,6 +19422,7 @@ Module serializer.
   
   Axiom Function_serialize_code :
     M.IsFunction "move_binary_format::serializer::serialize_code" serialize_code.
+  Smpl Add apply Function_serialize_code : is_function.
   
   (*
   fn checked_calculate_table_size(binary: &mut BinaryData, start: u32) -> Result<u32> {
@@ -19543,6 +19603,7 @@ Module serializer.
     M.IsFunction
       "move_binary_format::serializer::checked_calculate_table_size"
       checked_calculate_table_size.
+  Smpl Add apply Function_checked_calculate_table_size : is_function.
   
   Module Impl_move_binary_format_serializer_CommonSerializer.
     Definition Self : Ty.t := Ty.path "move_binary_format::serializer::CommonSerializer".

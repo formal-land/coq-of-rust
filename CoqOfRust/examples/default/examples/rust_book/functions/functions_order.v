@@ -125,6 +125,7 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
 
 Axiom Function_depends_on_trait_impl :
   M.IsFunction "functions_order::depends_on_trait_impl" depends_on_trait_impl.
+Smpl Add apply Function_depends_on_trait_impl : is_function.
 
 (* Trait *)
 (* Empty module 'SomeTrait' *)
@@ -239,6 +240,7 @@ Module inner_mod.
     end.
   
   Axiom Function_bar : M.IsFunction "functions_order::inner_mod::bar" bar.
+  Smpl Add apply Function_bar : is_function.
   
   (*     fn tar() {} *)
   Definition tar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -248,6 +250,7 @@ Module inner_mod.
     end.
   
   Axiom Function_tar : M.IsFunction "functions_order::inner_mod::tar" tar.
+  Smpl Add apply Function_tar : is_function.
   
   Module nested_mod.
     (*
@@ -273,6 +276,7 @@ Module inner_mod.
       end.
     
     Axiom Function_tick : M.IsFunction "functions_order::inner_mod::nested_mod::tick" tick.
+    Smpl Add apply Function_tick : is_function.
     
     (*         fn tack() {} *)
     Definition tack (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -282,6 +286,7 @@ Module inner_mod.
       end.
     
     Axiom Function_tack : M.IsFunction "functions_order::inner_mod::nested_mod::tack" tack.
+    Smpl Add apply Function_tack : is_function.
   End nested_mod.
 End inner_mod.
 
@@ -319,6 +324,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "functions_order::main" main.
+Smpl Add apply Function_main : is_function.
 
 (* fn foo() {} *)
 Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -328,3 +334,4 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_foo : M.IsFunction "functions_order::foo" foo.
+Smpl Add apply Function_foo : is_function.

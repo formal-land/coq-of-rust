@@ -720,6 +720,7 @@ Module num.
         
         Axiom Function_mul_pow10 :
           M.IsFunction "core::num::flt2dec::strategy::dragon::mul_pow10" mul_pow10.
+        Smpl Add apply Function_mul_pow10 : is_function.
         
         (*
         fn div_2pow10(x: &mut Big, mut n: usize) -> &mut Big {
@@ -871,6 +872,7 @@ Module num.
         
         Axiom Function_div_2pow10 :
           M.IsFunction "core::num::flt2dec::strategy::dragon::div_2pow10" div_2pow10.
+        Smpl Add apply Function_div_2pow10 : is_function.
         
         (*
         fn div_rem_upto_16<'a>(
@@ -1211,6 +1213,7 @@ Module num.
         
         Axiom Function_div_rem_upto_16 :
           M.IsFunction "core::num::flt2dec::strategy::dragon::div_rem_upto_16" div_rem_upto_16.
+        Smpl Add apply Function_div_rem_upto_16 : is_function.
         
         (*
         pub fn format_shortest<'a>(
@@ -2833,6 +2836,7 @@ Module num.
         
         Axiom Function_format_shortest :
           M.IsFunction "core::num::flt2dec::strategy::dragon::format_shortest" format_shortest.
+        Smpl Add apply Function_format_shortest : is_function.
         
         (*
         pub fn format_exact<'a>(
@@ -5154,6 +5158,7 @@ Module num.
         
         Axiom Function_format_exact :
           M.IsFunction "core::num::flt2dec::strategy::dragon::format_exact" format_exact.
+        Smpl Add apply Function_format_exact : is_function.
       End dragon.
     End strategy.
   End flt2dec.

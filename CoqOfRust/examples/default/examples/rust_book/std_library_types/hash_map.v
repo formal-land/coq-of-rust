@@ -72,6 +72,7 @@ Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_call : M.IsFunction "hash_map::call" call.
+Smpl Add apply Function_call : is_function.
 
 (*
 fn main() {
@@ -791,3 +792,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "hash_map::main" main.
+Smpl Add apply Function_main : is_function.

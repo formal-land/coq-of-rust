@@ -395,6 +395,7 @@ Module iter.
         end.
       
       Axiom Function_zip : M.IsFunction "core::iter::adapters::zip::zip" zip.
+      Smpl Add apply Function_zip : is_function.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_A_where_core_iter_traits_iterator_Iterator_B_for_core_iter_adapters_zip_Zip_A_B.
         Definition Self (A B : Ty.t) : Ty.t :=
@@ -4770,6 +4771,7 @@ Module iter.
       
       Axiom Function_try_get_unchecked :
         M.IsFunction "core::iter::adapters::zip::try_get_unchecked" try_get_unchecked.
+      Smpl Add apply Function_try_get_unchecked : is_function.
       
       (* Trait *)
       (* Empty module 'SpecTrustedRandomAccess' *)

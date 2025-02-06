@@ -4051,6 +4051,7 @@ Module annotated_visitor.
   
   Axiom Function_visit_value :
     M.IsFunction "move_core_types::annotated_visitor::visit_value" visit_value.
+  Smpl Add apply Function_visit_value : is_function.
   
   (*
   pub(crate) fn visit_struct<V: Visitor + ?Sized>(
@@ -4342,6 +4343,7 @@ Module annotated_visitor.
   
   Axiom Function_visit_struct :
     M.IsFunction "move_core_types::annotated_visitor::visit_struct" visit_struct.
+  Smpl Add apply Function_visit_struct : is_function.
   
   (*
   fn read_exact<const N: usize>(bytes: &mut &[u8]) -> Result<[u8; N], Error> {
@@ -4505,4 +4507,5 @@ Module annotated_visitor.
   
   Axiom Function_read_exact :
     M.IsFunction "move_core_types::annotated_visitor::read_exact" read_exact.
+  Smpl Add apply Function_read_exact : is_function.
 End annotated_visitor.

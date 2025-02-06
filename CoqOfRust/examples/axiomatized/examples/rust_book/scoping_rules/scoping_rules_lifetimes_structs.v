@@ -84,3 +84,4 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_structs::main" main.
+Smpl Add apply Function_main : is_function.

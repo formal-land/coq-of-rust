@@ -336,6 +336,7 @@ Module slice.
     end.
   
   Axiom Function_split_point_of : M.IsFunction "core::slice::split_point_of" split_point_of.
+  Smpl Add apply Function_split_point_of : is_function.
   
   (*
   Enum Direction
@@ -14146,6 +14147,7 @@ Module slice.
   
   Axiom Function_get_many_check_valid :
     M.IsFunction "core::slice::get_many_check_valid" get_many_check_valid.
+  Smpl Add apply Function_get_many_check_valid : is_function.
   
   (* StructRecord
     {

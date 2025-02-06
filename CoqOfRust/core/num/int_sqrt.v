@@ -161,6 +161,7 @@ Module num.
       end.
     
     Axiom Function_u8 : M.IsFunction "core::num::int_sqrt::u8" u8.
+    Smpl Add apply Function_u8 : is_function.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -259,6 +260,7 @@ Module num.
       end.
     
     Axiom Function_i8 : M.IsFunction "core::num::int_sqrt::i8" i8.
+    Smpl Add apply Function_i8 : is_function.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -357,6 +359,7 @@ Module num.
       end.
     
     Axiom Function_i16 : M.IsFunction "core::num::int_sqrt::i16" i16.
+    Smpl Add apply Function_i16 : is_function.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -455,6 +458,7 @@ Module num.
       end.
     
     Axiom Function_i32 : M.IsFunction "core::num::int_sqrt::i32" i32.
+    Smpl Add apply Function_i32 : is_function.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -553,6 +557,7 @@ Module num.
       end.
     
     Axiom Function_i64 : M.IsFunction "core::num::int_sqrt::i64" i64.
+    Smpl Add apply Function_i64 : is_function.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -651,6 +656,7 @@ Module num.
       end.
     
     Axiom Function_i128 : M.IsFunction "core::num::int_sqrt::i128" i128.
+    Smpl Add apply Function_i128 : is_function.
     
     (*
     const fn u16_stages(n: u16) -> u16 {
@@ -963,6 +969,7 @@ Module num.
       end.
     
     Axiom Function_u16_stages : M.IsFunction "core::num::int_sqrt::u16_stages" u16_stages.
+    Smpl Add apply Function_u16_stages : is_function.
     
     Module u16_stages.
       Definition value_N_SHIFT : Value.t :=
@@ -1593,6 +1600,7 @@ Module num.
       end.
     
     Axiom Function_u32_stages : M.IsFunction "core::num::int_sqrt::u32_stages" u32_stages.
+    Smpl Add apply Function_u32_stages : is_function.
     
     Module u32_stages.
       Definition value_N_SHIFT : Value.t :=
@@ -2571,6 +2579,7 @@ Module num.
       end.
     
     Axiom Function_u64_stages : M.IsFunction "core::num::int_sqrt::u64_stages" u64_stages.
+    Smpl Add apply Function_u64_stages : is_function.
     
     Module u64_stages.
       Definition value_N_SHIFT : Value.t :=
@@ -3910,6 +3919,7 @@ Module num.
       end.
     
     Axiom Function_u128_stages : M.IsFunction "core::num::int_sqrt::u128_stages" u128_stages.
+    Smpl Add apply Function_u128_stages : is_function.
     
     Module u128_stages.
       Definition value_N_SHIFT : Value.t :=
@@ -4324,6 +4334,7 @@ Module num.
       end.
     
     Axiom Function_u16 : M.IsFunction "core::num::int_sqrt::u16" u16.
+    Smpl Add apply Function_u16 : is_function.
     
     Module u16.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
@@ -4453,6 +4464,7 @@ Module num.
       end.
     
     Axiom Function_u32 : M.IsFunction "core::num::int_sqrt::u32" u32.
+    Smpl Add apply Function_u32 : is_function.
     
     Module u32.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
@@ -4582,6 +4594,7 @@ Module num.
       end.
     
     Axiom Function_u64 : M.IsFunction "core::num::int_sqrt::u64" u64.
+    Smpl Add apply Function_u64 : is_function.
     
     Module u64.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
@@ -4711,6 +4724,7 @@ Module num.
       end.
     
     Axiom Function_u128 : M.IsFunction "core::num::int_sqrt::u128" u128.
+    Smpl Add apply Function_u128 : is_function.
     
     Module u128.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
@@ -4767,5 +4781,6 @@ Module num.
     
     Axiom Function_panic_for_negative_argument :
       M.IsFunction "core::num::int_sqrt::panic_for_negative_argument" panic_for_negative_argument.
+    Smpl Add apply Function_panic_for_negative_argument : is_function.
   End int_sqrt.
 End num.

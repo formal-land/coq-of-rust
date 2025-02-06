@@ -83,6 +83,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_foo : M.IsFunction "macro_rules_designators::foo" foo.
+Smpl Add apply Function_foo : is_function.
 
 (*
         fn $func_name() {
@@ -166,6 +167,7 @@ Definition bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_bar : M.IsFunction "macro_rules_designators::bar" bar.
+Smpl Add apply Function_bar : is_function.
 
 (*
 fn main() {
@@ -395,3 +397,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "macro_rules_designators::main" main.
+Smpl Add apply Function_main : is_function.

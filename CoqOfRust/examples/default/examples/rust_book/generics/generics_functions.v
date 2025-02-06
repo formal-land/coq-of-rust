@@ -36,6 +36,7 @@ Definition reg_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   end.
 
 Axiom Function_reg_fn : M.IsFunction "generics_functions::reg_fn" reg_fn.
+Smpl Add apply Function_reg_fn : is_function.
 
 (* fn gen_spec_t(_s: SGen<A>) {} *)
 Definition gen_spec_t (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -48,6 +49,7 @@ Definition gen_spec_t (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_gen_spec_t : M.IsFunction "generics_functions::gen_spec_t" gen_spec_t.
+Smpl Add apply Function_gen_spec_t : is_function.
 
 (* fn gen_spec_i32(_s: SGen<i32>) {} *)
 Definition gen_spec_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -60,6 +62,7 @@ Definition gen_spec_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_gen_spec_i32 : M.IsFunction "generics_functions::gen_spec_i32" gen_spec_i32.
+Smpl Add apply Function_gen_spec_i32 : is_function.
 
 (* fn generic<T>(_s: SGen<T>) {} *)
 Definition generic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -72,6 +75,7 @@ Definition generic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Axiom Function_generic : M.IsFunction "generics_functions::generic" generic.
+Smpl Add apply Function_generic : is_function.
 
 (*
 fn main() {
@@ -141,3 +145,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "generics_functions::main" main.
+Smpl Add apply Function_main : is_function.

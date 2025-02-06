@@ -175,6 +175,7 @@ Module slice.
         end.
       
       Axiom Function_sort : M.IsFunction "core::slice::sort::unstable::sort" sort.
+      Smpl Add apply Function_sort : is_function.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
@@ -364,6 +365,7 @@ Module slice.
         end.
       
       Axiom Function_ipnsort : M.IsFunction "core::slice::sort::unstable::ipnsort" ipnsort.
+      Smpl Add apply Function_ipnsort : is_function.
     End unstable.
   End sort.
 End slice.

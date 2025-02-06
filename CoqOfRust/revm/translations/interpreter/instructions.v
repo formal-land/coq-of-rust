@@ -37,6 +37,7 @@ Module instructions.
   
   Axiom Function_instruction :
     M.IsFunction "revm_interpreter::instructions::instruction" instruction.
+  Smpl Add apply Function_instruction : is_function.
   
   (*
   pub const fn instruction_table<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3309,4 +3310,5 @@ Module instructions.
   
   Axiom Function_instruction_table :
     M.IsFunction "revm_interpreter::instructions::instruction_table" instruction_table.
+  Smpl Add apply Function_instruction_table : is_function.
 End instructions.

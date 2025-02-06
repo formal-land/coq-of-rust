@@ -415,6 +415,7 @@ Module constant.
     end.
   
   Axiom Function_sig_to_ty : M.IsFunction "move_binary_format::constant::sig_to_ty" sig_to_ty.
+  Smpl Add apply Function_sig_to_ty : is_function.
   
   (*
   fn ty_to_sig(ty: &MoveTypeLayout) -> Option<SignatureToken> {
@@ -770,6 +771,7 @@ Module constant.
     end.
   
   Axiom Function_ty_to_sig : M.IsFunction "move_binary_format::constant::ty_to_sig" ty_to_sig.
+  Smpl Add apply Function_ty_to_sig : is_function.
   
   Module Impl_move_binary_format_file_format_Constant.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Constant".

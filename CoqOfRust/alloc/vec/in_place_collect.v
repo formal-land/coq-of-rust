@@ -126,6 +126,7 @@ Module vec.
     
     Axiom Function_in_place_collectible :
       M.IsFunction "alloc::vec::in_place_collect::in_place_collectible" in_place_collectible.
+    Smpl Add apply Function_in_place_collectible : is_function.
     
     (*
     const fn needs_realloc<SRC, DEST>(src_cap: usize, dst_cap: usize) -> bool {
@@ -257,6 +258,7 @@ Module vec.
     
     Axiom Function_needs_realloc :
       M.IsFunction "alloc::vec::in_place_collect::needs_realloc" needs_realloc.
+    Smpl Add apply Function_needs_realloc : is_function.
     
     (* Trait *)
     (* Empty module 'InPlaceCollect' *)
@@ -1584,6 +1586,7 @@ Module vec.
     
     Axiom Function_from_iter_in_place :
       M.IsFunction "alloc::vec::in_place_collect::from_iter_in_place" from_iter_in_place.
+    Smpl Add apply Function_from_iter_in_place : is_function.
     
     (*
     fn write_in_place_with_drop<T>(
@@ -1788,6 +1791,7 @@ Module vec.
       M.IsFunction
         "alloc::vec::in_place_collect::write_in_place_with_drop"
         write_in_place_with_drop.
+    Smpl Add apply Function_write_in_place_with_drop : is_function.
     
     Module write_in_place_with_drop.
       (* Error OpaqueTy *)

@@ -385,6 +385,8 @@ Parameter IsFunction :
     (function : PolymorphicFunction.t),
   Prop.
 
+Smpl Create is_function.
+
 Parameter IsAssociatedFunction :
   forall
     (Self : Ty.t)

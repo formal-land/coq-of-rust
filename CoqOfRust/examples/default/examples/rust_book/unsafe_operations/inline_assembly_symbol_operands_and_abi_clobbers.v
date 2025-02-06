@@ -37,6 +37,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
+Smpl Add apply Function_main : is_function.
 
 Module main.
   (*
@@ -121,6 +122,7 @@ Module main.
   
   Axiom Function_foo :
     M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::foo" foo.
+  Smpl Add apply Function_foo : is_function.
   
   (*
       fn call_foo(arg: i32) -> i32 {
@@ -157,4 +159,5 @@ Module main.
   
   Axiom Function_call_foo :
     M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo" call_foo.
+  Smpl Add apply Function_call_foo : is_function.
 End main.

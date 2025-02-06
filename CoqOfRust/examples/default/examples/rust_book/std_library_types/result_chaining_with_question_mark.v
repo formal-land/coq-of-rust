@@ -161,6 +161,7 @@ Module checked.
     end.
   
   Axiom Function_div : M.IsFunction "result_chaining_with_question_mark::checked::div" div.
+  Smpl Add apply Function_div : is_function.
   
   (*
       fn sqrt(x: f64) -> MathResult {
@@ -216,6 +217,7 @@ Module checked.
     end.
   
   Axiom Function_sqrt : M.IsFunction "result_chaining_with_question_mark::checked::sqrt" sqrt.
+  Smpl Add apply Function_sqrt : is_function.
   
   (*
       fn ln(x: f64) -> MathResult {
@@ -271,6 +273,7 @@ Module checked.
     end.
   
   Axiom Function_ln : M.IsFunction "result_chaining_with_question_mark::checked::ln" ln.
+  Smpl Add apply Function_ln : is_function.
   
   (*
       fn op_(x: f64, y: f64) -> MathResult {
@@ -486,6 +489,7 @@ Module checked.
     end.
   
   Axiom Function_op_ : M.IsFunction "result_chaining_with_question_mark::checked::op_" op_.
+  Smpl Add apply Function_op_ : is_function.
   
   (*
       pub fn op(x: f64, y: f64) {
@@ -662,6 +666,7 @@ Module checked.
     end.
   
   Axiom Function_op : M.IsFunction "result_chaining_with_question_mark::checked::op" op.
+  Smpl Add apply Function_op : is_function.
 End checked.
 
 (*
@@ -687,3 +692,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "result_chaining_with_question_mark::main" main.
+Smpl Add apply Function_main : is_function.

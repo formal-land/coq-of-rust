@@ -7,3 +7,4 @@ Axiom Function_main :
   M.IsFunction
     "iterating_over_results_collect_valid_values_and_failures_via_partition_unwrapped::main"
     main.
+Smpl Add apply Function_main : is_function.

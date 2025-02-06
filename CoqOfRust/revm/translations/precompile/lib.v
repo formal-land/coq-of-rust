@@ -28,6 +28,7 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
 
 Axiom Function_calc_linear_cost_u32 :
   M.IsFunction "revm_precompile::calc_linear_cost_u32" calc_linear_cost_u32.
+Smpl Add apply Function_calc_linear_cost_u32 : is_function.
 
 (* StructRecord
   {
@@ -3430,3 +3431,4 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   end.
 
 Axiom Function_u64_to_address : M.IsFunction "revm_precompile::u64_to_address" u64_to_address.
+Smpl Add apply Function_u64_to_address : is_function.

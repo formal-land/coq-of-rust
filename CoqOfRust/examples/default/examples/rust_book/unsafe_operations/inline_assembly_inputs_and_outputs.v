@@ -106,3 +106,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_inputs_and_outputs::main" main.
+Smpl Add apply Function_main : is_function.

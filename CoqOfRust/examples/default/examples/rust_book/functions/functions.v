@@ -51,6 +51,7 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
   end.
 
 Axiom Function_is_divisible_by : M.IsFunction "functions::is_divisible_by" is_divisible_by.
+Smpl Add apply Function_is_divisible_by : is_function.
 
 (*
 fn fizzbuzz(n: u32) -> () {
@@ -301,6 +302,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Axiom Function_fizzbuzz : M.IsFunction "functions::fizzbuzz" fizzbuzz.
+Smpl Add apply Function_fizzbuzz : is_function.
 
 (*
 fn fizzbuzz_to(n: u32) {
@@ -404,6 +406,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Axiom Function_fizzbuzz_to : M.IsFunction "functions::fizzbuzz_to" fizzbuzz_to.
+Smpl Add apply Function_fizzbuzz_to : is_function.
 
 (*
 fn main() {
@@ -429,3 +432,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "functions::main" main.
+Smpl Add apply Function_main : is_function.

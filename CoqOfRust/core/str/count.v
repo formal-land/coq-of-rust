@@ -98,6 +98,7 @@ Module str.
       end.
     
     Axiom Function_count_chars : M.IsFunction "core::str::count::count_chars" count_chars.
+    Smpl Add apply Function_count_chars : is_function.
     
     (*
     fn do_count_chars(s: &str) -> usize {
@@ -1020,6 +1021,7 @@ Module str.
       end.
     
     Axiom Function_do_count_chars : M.IsFunction "core::str::count::do_count_chars" do_count_chars.
+    Smpl Add apply Function_do_count_chars : is_function.
     
     Module do_count_chars.
       Definition value_CHUNK_SIZE : Value.t :=
@@ -1057,6 +1059,7 @@ Module str.
       M.IsFunction
         "core::str::count::contains_non_continuation_byte"
         contains_non_continuation_byte.
+    Smpl Add apply Function_contains_non_continuation_byte : is_function.
     
     Module contains_non_continuation_byte.
       Definition value_LSB : Value.t :=
@@ -1126,6 +1129,7 @@ Module str.
     
     Axiom Function_sum_bytes_in_usize :
       M.IsFunction "core::str::count::sum_bytes_in_usize" sum_bytes_in_usize.
+    Smpl Add apply Function_sum_bytes_in_usize : is_function.
     
     Module sum_bytes_in_usize.
       Definition value_LSB_SHORTS : Value.t :=
@@ -1254,5 +1258,6 @@ Module str.
     
     Axiom Function_char_count_general_case :
       M.IsFunction "core::str::count::char_count_general_case" char_count_general_case.
+    Smpl Add apply Function_char_count_general_case : is_function.
   End count.
 End str.

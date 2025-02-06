@@ -32,6 +32,7 @@ Definition reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Axiom Function_reverse : M.IsFunction "tuples::reverse" reverse.
+Smpl Add apply Function_reverse : is_function.
 
 (* StructTuple
   {
@@ -911,3 +912,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "tuples::main" main.
+Smpl Add apply Function_main : is_function.

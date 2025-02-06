@@ -245,6 +245,7 @@ Module instructions.
       end.
     
     Axiom Function_rjump : M.IsFunction "revm_interpreter::instructions::control::rjump" rjump.
+    Smpl Add apply Function_rjump : is_function.
     
     (*
     pub fn rjumpi<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -576,6 +577,7 @@ Module instructions.
       end.
     
     Axiom Function_rjumpi : M.IsFunction "revm_interpreter::instructions::control::rjumpi" rjumpi.
+    Smpl Add apply Function_rjumpi : is_function.
     
     (*
     pub fn rjumpv<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1061,6 +1063,7 @@ Module instructions.
       end.
     
     Axiom Function_rjumpv : M.IsFunction "revm_interpreter::instructions::control::rjumpv" rjumpv.
+    Smpl Add apply Function_rjumpv : is_function.
     
     (*
     pub fn jump<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1232,6 +1235,7 @@ Module instructions.
       end.
     
     Axiom Function_jump : M.IsFunction "revm_interpreter::instructions::control::jump" jump.
+    Smpl Add apply Function_jump : is_function.
     
     (*
     pub fn jumpi<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1445,6 +1449,7 @@ Module instructions.
       end.
     
     Axiom Function_jumpi : M.IsFunction "revm_interpreter::instructions::control::jumpi" jumpi.
+    Smpl Add apply Function_jumpi : is_function.
     
     (*
     fn jump_inner<WIRE: InterpreterTypes>(interpreter: &mut Interpreter<WIRE>, target: U256) {
@@ -1711,6 +1716,7 @@ Module instructions.
     
     Axiom Function_jump_inner :
       M.IsFunction "revm_interpreter::instructions::control::jump_inner" jump_inner.
+    Smpl Add apply Function_jump_inner : is_function.
     
     (*
     pub fn jumpdest_or_nop<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1827,6 +1833,7 @@ Module instructions.
     
     Axiom Function_jumpdest_or_nop :
       M.IsFunction "revm_interpreter::instructions::control::jumpdest_or_nop" jumpdest_or_nop.
+    Smpl Add apply Function_jumpdest_or_nop : is_function.
     
     (*
     pub fn callf<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2375,6 +2382,7 @@ Module instructions.
       end.
     
     Axiom Function_callf : M.IsFunction "revm_interpreter::instructions::control::callf" callf.
+    Smpl Add apply Function_callf : is_function.
     
     (*
     pub fn retf<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2630,6 +2638,7 @@ Module instructions.
       end.
     
     Axiom Function_retf : M.IsFunction "revm_interpreter::instructions::control::retf" retf.
+    Smpl Add apply Function_retf : is_function.
     
     (*
     pub fn jumpf<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3098,6 +3107,7 @@ Module instructions.
       end.
     
     Axiom Function_jumpf : M.IsFunction "revm_interpreter::instructions::control::jumpf" jumpf.
+    Smpl Add apply Function_jumpf : is_function.
     
     (*
     pub fn pc<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3330,6 +3340,7 @@ Module instructions.
       end.
     
     Axiom Function_pc : M.IsFunction "revm_interpreter::instructions::control::pc" pc.
+    Smpl Add apply Function_pc : is_function.
     
     (*
     fn return_inner(
@@ -4057,6 +4068,7 @@ Module instructions.
     
     Axiom Function_return_inner :
       M.IsFunction "revm_interpreter::instructions::control::return_inner" return_inner.
+    Smpl Add apply Function_return_inner : is_function.
     
     (*
     pub fn ret<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4095,6 +4107,7 @@ Module instructions.
       end.
     
     Axiom Function_ret : M.IsFunction "revm_interpreter::instructions::control::ret" ret.
+    Smpl Add apply Function_ret : is_function.
     
     (*
     pub fn revert<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4222,6 +4235,7 @@ Module instructions.
       end.
     
     Axiom Function_revert : M.IsFunction "revm_interpreter::instructions::control::revert" revert.
+    Smpl Add apply Function_revert : is_function.
     
     (*
     pub fn stop<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4273,6 +4287,7 @@ Module instructions.
       end.
     
     Axiom Function_stop : M.IsFunction "revm_interpreter::instructions::control::stop" stop.
+    Smpl Add apply Function_stop : is_function.
     
     (*
     pub fn invalid<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4325,6 +4340,7 @@ Module instructions.
     
     Axiom Function_invalid :
       M.IsFunction "revm_interpreter::instructions::control::invalid" invalid.
+    Smpl Add apply Function_invalid : is_function.
     
     (*
     pub fn unknown<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4377,5 +4393,6 @@ Module instructions.
     
     Axiom Function_unknown :
       M.IsFunction "revm_interpreter::instructions::control::unknown" unknown.
+    Smpl Add apply Function_unknown : is_function.
   End control.
 End instructions.

@@ -18248,6 +18248,7 @@ Module str.
       end.
     
     Axiom Function_simd_contains : M.IsFunction "core::str::pattern::simd_contains" simd_contains.
+    Smpl Add apply Function_simd_contains : is_function.
     
     Module simd_contains.
       Definition value_UNROLL : Value.t :=
@@ -18983,5 +18984,6 @@ Module str.
     
     Axiom Function_small_slice_eq :
       M.IsFunction "core::str::pattern::small_slice_eq" small_slice_eq.
+    Smpl Add apply Function_small_slice_eq : is_function.
   End pattern.
 End str.

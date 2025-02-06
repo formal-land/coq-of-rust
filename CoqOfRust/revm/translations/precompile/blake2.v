@@ -1353,6 +1353,7 @@ Module blake2.
     end.
   
   Axiom Function_run : M.IsFunction "revm_precompile::blake2::run" run.
+  Smpl Add apply Function_run : is_function.
   
   Module algo.
     Definition value_SIGMA : Value.t :=
@@ -1740,6 +1741,7 @@ Module blake2.
       end.
     
     Axiom Function_g : M.IsFunction "revm_precompile::blake2::algo::g" g.
+    Smpl Add apply Function_g : is_function.
     
     (*
         pub fn compress(rounds: usize, h: &mut [u64; 8], m: [u64; 16], t: [u64; 2], f: bool) {
@@ -2462,5 +2464,6 @@ Module blake2.
       end.
     
     Axiom Function_compress : M.IsFunction "revm_precompile::blake2::algo::compress" compress.
+    Smpl Add apply Function_compress : is_function.
   End algo.
 End blake2.

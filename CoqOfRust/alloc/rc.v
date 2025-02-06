@@ -97,6 +97,7 @@ Module rc.
   
   Axiom Function_rcbox_layout_for_value_layout :
     M.IsFunction "alloc::rc::rcbox_layout_for_value_layout" rcbox_layout_for_value_layout.
+  Smpl Add apply Function_rcbox_layout_for_value_layout : is_function.
   
   (* StructRecord
     {
@@ -12251,6 +12252,7 @@ Module rc.
     end.
   
   Axiom Function_is_dangling : M.IsFunction "alloc::rc::is_dangling" is_dangling.
+  Smpl Add apply Function_is_dangling : is_function.
   
   (* StructRecord
     {
@@ -13299,6 +13301,7 @@ Module rc.
     end.
   
   Axiom Function_data_offset : M.IsFunction "alloc::rc::data_offset" data_offset.
+  Smpl Add apply Function_data_offset : is_function.
   
   (*
   fn data_offset_align(align: usize) -> usize {
@@ -13351,6 +13354,7 @@ Module rc.
     end.
   
   Axiom Function_data_offset_align : M.IsFunction "alloc::rc::data_offset_align" data_offset_align.
+  Smpl Add apply Function_data_offset_align : is_function.
   
   (* StructRecord
     {

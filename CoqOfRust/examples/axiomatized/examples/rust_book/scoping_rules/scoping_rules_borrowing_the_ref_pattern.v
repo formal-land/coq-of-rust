@@ -32,3 +32,4 @@ End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing_the_ref_pattern::main" main.
+Smpl Add apply Function_main : is_function.

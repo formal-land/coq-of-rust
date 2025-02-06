@@ -58,3 +58,4 @@ End Impl_traits_Animal_for_traits_Sheep.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "traits::main" main.
+Smpl Add apply Function_main : is_function.

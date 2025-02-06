@@ -82,6 +82,7 @@ Module char.
     end.
   
   Axiom Function_decode_utf16 : M.IsFunction "core::char::decode_utf16" decode_utf16.
+  Smpl Add apply Function_decode_utf16 : is_function.
   
   (*
   pub const fn from_u32(i: u32) -> Option<char> {
@@ -101,6 +102,7 @@ Module char.
     end.
   
   Axiom Function_from_u32 : M.IsFunction "core::char::from_u32" from_u32.
+  Smpl Add apply Function_from_u32 : is_function.
   
   (*
   pub const unsafe fn from_u32_unchecked(i: u32) -> char {
@@ -122,6 +124,7 @@ Module char.
   
   Axiom Function_from_u32_unchecked :
     M.IsFunction "core::char::from_u32_unchecked" from_u32_unchecked.
+  Smpl Add apply Function_from_u32_unchecked : is_function.
   
   (*
   pub const fn from_digit(num: u32, radix: u32) -> Option<char> {
@@ -142,6 +145,7 @@ Module char.
     end.
   
   Axiom Function_from_digit : M.IsFunction "core::char::from_digit" from_digit.
+  Smpl Add apply Function_from_digit : is_function.
   
   (* StructTuple
     {

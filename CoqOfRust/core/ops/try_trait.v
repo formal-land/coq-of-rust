@@ -38,6 +38,7 @@ Module ops.
       end.
     
     Axiom Function_from_yeet : M.IsFunction "core::ops::try_trait::from_yeet" from_yeet.
+    Smpl Add apply Function_from_yeet : is_function.
     
     (* Trait *)
     (* Empty module 'Residual' *)

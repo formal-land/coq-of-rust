@@ -838,6 +838,7 @@ Module fmt.
     
     Axiom Function_debug_struct_new :
       M.IsFunction "core::fmt::builders::debug_struct_new" debug_struct_new.
+    Smpl Add apply Function_debug_struct_new : is_function.
     
     Module Impl_core_fmt_builders_DebugStruct.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugStruct".
@@ -2810,6 +2811,7 @@ Module fmt.
     
     Axiom Function_debug_tuple_new :
       M.IsFunction "core::fmt::builders::debug_tuple_new" debug_tuple_new.
+    Smpl Add apply Function_debug_tuple_new : is_function.
     
     Module Impl_core_fmt_builders_DebugTuple.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugTuple".
@@ -5217,6 +5219,7 @@ Module fmt.
       end.
     
     Axiom Function_debug_set_new : M.IsFunction "core::fmt::builders::debug_set_new" debug_set_new.
+    Smpl Add apply Function_debug_set_new : is_function.
     
     Module Impl_core_fmt_builders_DebugSet.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugSet".
@@ -6128,6 +6131,7 @@ Module fmt.
     
     Axiom Function_debug_list_new :
       M.IsFunction "core::fmt::builders::debug_list_new" debug_list_new.
+    Smpl Add apply Function_debug_list_new : is_function.
     
     Module Impl_core_fmt_builders_DebugList.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugList".
@@ -7017,6 +7021,7 @@ Module fmt.
       end.
     
     Axiom Function_debug_map_new : M.IsFunction "core::fmt::builders::debug_map_new" debug_map_new.
+    Smpl Add apply Function_debug_map_new : is_function.
     
     Module Impl_core_fmt_builders_DebugMap.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugMap".
@@ -9865,6 +9870,7 @@ Module fmt.
       end.
     
     Axiom Function_from_fn : M.IsFunction "core::fmt::builders::from_fn" from_fn.
+    Smpl Add apply Function_from_fn : is_function.
     
     (* StructTuple
       {

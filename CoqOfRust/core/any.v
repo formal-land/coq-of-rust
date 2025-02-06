@@ -1495,6 +1495,7 @@ Module any.
     end.
   
   Axiom Function_type_name : M.IsFunction "core::any::type_name" type_name.
+  Smpl Add apply Function_type_name : is_function.
   
   (*
   pub const fn type_name_of_val<T: ?Sized>(_val: &T) -> &'static str {
@@ -1511,4 +1512,5 @@ Module any.
     end.
   
   Axiom Function_type_name_of_val : M.IsFunction "core::any::type_name_of_val" type_name_of_val.
+  Smpl Add apply Function_type_name_of_val : is_function.
 End any.

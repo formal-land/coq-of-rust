@@ -363,6 +363,7 @@ Module iter.
       
       Axiom Function_inspect_fold :
         M.IsFunction "core::iter::adapters::inspect::inspect_fold" inspect_fold.
+      Smpl Add apply Function_inspect_fold : is_function.
       
       Module inspect_fold.
         (* Error OpaqueTy *)
@@ -462,6 +463,7 @@ Module iter.
       
       Axiom Function_inspect_try_fold :
         M.IsFunction "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
+      Smpl Add apply Function_inspect_try_fold : is_function.
       
       Module inspect_try_fold.
         (* Error OpaqueTy *)

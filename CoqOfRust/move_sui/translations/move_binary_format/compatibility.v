@@ -2530,6 +2530,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::struct_abilities_compatible"
       struct_abilities_compatible.
+  Smpl Add apply Function_struct_abilities_compatible : is_function.
   
   (*
   fn fun_type_parameters_compatible(
@@ -2722,6 +2723,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::fun_type_parameters_compatible"
       fun_type_parameters_compatible.
+  Smpl Add apply Function_fun_type_parameters_compatible : is_function.
   
   (*
   fn struct_type_parameters_compatible(
@@ -2950,6 +2952,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::struct_type_parameters_compatible"
       struct_type_parameters_compatible.
+  Smpl Add apply Function_struct_type_parameters_compatible : is_function.
   
   (*
   fn type_parameter_constraints_compatible(
@@ -3024,6 +3027,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::type_parameter_constraints_compatible"
       type_parameter_constraints_compatible.
+  Smpl Add apply Function_type_parameter_constraints_compatible : is_function.
   
   (*
   fn type_parameter_phantom_decl_compatible(
@@ -3111,6 +3115,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::type_parameter_phantom_decl_compatible"
       type_parameter_phantom_decl_compatible.
+  Smpl Add apply Function_type_parameter_phantom_decl_compatible : is_function.
   
   (*
   Enum InclusionCheck

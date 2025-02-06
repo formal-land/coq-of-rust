@@ -84,6 +84,7 @@ Module constants.
   
   Axiom Function_verify_module :
     M.IsFunction "move_bytecode_verifier::constants::verify_module" verify_module.
+  Smpl Add apply Function_verify_module : is_function.
   
   (*
   fn verify_module_impl(module: &CompiledModule) -> PartialVMResult<()> {
@@ -341,6 +342,7 @@ Module constants.
   
   Axiom Function_verify_module_impl :
     M.IsFunction "move_bytecode_verifier::constants::verify_module_impl" verify_module_impl.
+  Smpl Add apply Function_verify_module_impl : is_function.
   
   (*
   fn verify_constant(idx: usize, constant: &Constant) -> PartialVMResult<()> {
@@ -476,6 +478,7 @@ Module constants.
   
   Axiom Function_verify_constant :
     M.IsFunction "move_bytecode_verifier::constants::verify_constant" verify_constant.
+  Smpl Add apply Function_verify_constant : is_function.
   
   (*
   fn verify_constant_type(idx: usize, type_: &SignatureToken) -> PartialVMResult<()> {
@@ -547,6 +550,7 @@ Module constants.
   
   Axiom Function_verify_constant_type :
     M.IsFunction "move_bytecode_verifier::constants::verify_constant_type" verify_constant_type.
+  Smpl Add apply Function_verify_constant_type : is_function.
   
   (*
   fn verify_constant_data(idx: usize, constant: &Constant) -> PartialVMResult<()> {
@@ -616,4 +620,5 @@ Module constants.
   
   Axiom Function_verify_constant_data :
     M.IsFunction "move_bytecode_verifier::constants::verify_constant_data" verify_constant_data.
+  Smpl Add apply Function_verify_constant_data : is_function.
 End constants.

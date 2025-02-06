@@ -1,42 +1,43 @@
 use crate::path::Path;
 use crate::render::{
-    self, concat, curly_brackets, group, hardline, intersperse, line, list, nest, nil,
-    optional_insert, optional_insert_with, paren, text, Doc,
+    curly_brackets, enclose, group, list, nest, optional_insert, optional_insert_with, paren,
+    round_brackets,
 };
+use pretty::{DocAllocator, DocBuilder};
 use std::rc::Rc;
 
 #[derive(Clone)]
 /// a list of coq top level items
 pub(crate) struct TopLevel {
-    pub(crate) items: Vec<TopLevelItem>,
+    pub(crate) items: Vec<Rc<TopLevelItem>>,
 }
 
 #[derive(Clone)]
 /// any coq top level item
 pub(crate) enum TopLevelItem {
-    Comment(Vec<Expression>),
-    Definition(Definition),
+    Comment(Vec<Rc<Expression>>),
+    Definition(Rc<Definition>),
     Hint {
         kind: String,
         name: String,
         database: String,
     },
     Line,
-    Module(Module),
+    Module(Rc<Module>),
 }
 
 #[derive(Clone)]
 /// a coq module
 pub(crate) struct Module {
     name: String,
-    items: TopLevel,
+    items: Rc<TopLevel>,
 }
 
 #[derive(Clone)]
 /// a coq constant definition
 pub(crate) struct Definition {
     name: String,
-    kind: DefinitionKind,
+    kind: Rc<DefinitionKind>,
 }
 
 #[derive(Clone)]
@@ -45,19 +46,22 @@ pub(crate) enum DefinitionKind {
     /// an alias for an expression
     /// (using `Definition`)
     Alias {
-        args: Vec<ArgDecl>,
-        ty: Option<Expression>,
-        body: Expression,
+        args: Vec<Rc<ArgDecl>>,
+        ty: Option<Rc<Expression>>,
+        body: Rc<Expression>,
     },
     /// an opaque constant
     /// (using `Parameter`)
-    Assumption { ty: Expression },
+    Assumption { ty: Rc<Expression> },
     /// an axiom
     /// (using `Axiom`)
-    Axiom { ty: Expression },
+    Axiom { ty: Rc<Expression> },
     /// a definition with an `exact` tactic
     #[allow(dead_code)]
-    Ltac { args: Vec<String>, body: Expression },
+    Ltac {
+        args: Vec<String>,
+        body: Rc<Expression>,
+    },
 }
 
 #[derive(Clone)]
@@ -72,15 +76,15 @@ pub(crate) enum Expression {
         /// a nonempty list of arguments
         /// (we accept many arguments to control their indentation better,
         ///     the application is curried when it gets printed)
-        args: Vec<(Option<String>, Expression)>,
+        args: Vec<(Option<String>, Rc<Expression>)>,
     },
     MonadicApplication {
         func: Rc<Expression>,
-        args: Vec<(Option<String>, Expression)>,
+        args: Vec<(Option<String>, Rc<Expression>)>,
     },
     /// a (curried) function
     Function {
-        parameters: Vec<Expression>,
+        parameters: Vec<Rc<Expression>>,
         body: Rc<Expression>,
     },
     Let {
@@ -91,15 +95,15 @@ pub(crate) enum Expression {
         body: Rc<Expression>,
     },
     Match {
-        scrutinees: Vec<Expression>,
-        arms: Vec<(Vec<Expression>, Expression)>,
+        scrutinees: Vec<Rc<Expression>>,
+        arms: Vec<(Vec<Rc<Expression>>, Rc<Expression>)>,
     },
     /// a (curried) function type
     FunctionType {
         /// a nonempty list of domains
         /// (we accept many domains to control their indentation in the type better,
         ///     the type is curried when it gets printed)
-        domains: Vec<Expression>,
+        domains: Vec<Rc<Expression>>,
         /// the image (range, co-domain) of functions of the type
         image: Rc<Expression>,
     },
@@ -107,7 +111,7 @@ pub(crate) enum Expression {
     /// (like `forall (x : A), B(x)`)
     PiType {
         /// a list of arguments of `forall`
-        args: Vec<ArgDecl>,
+        args: Vec<Rc<ArgDecl>>,
         /// the expression for the resulting type
         image: Rc<Expression>,
     },
@@ -124,9 +128,9 @@ pub(crate) enum Expression {
         rhs: Rc<Expression>,
     },
     /// A tuple of expressions `(e1, e2, ...)`
-    Tuple(Vec<Expression>),
+    Tuple(Vec<Rc<Expression>>),
     Record {
-        fields: Vec<Field>,
+        fields: Vec<Rc<Field>>,
     },
     #[allow(dead_code)]
     RecordField {
@@ -140,7 +144,7 @@ pub(crate) enum Expression {
         update: Rc<Expression>,
     },
     List {
-        exprs: Vec<Expression>,
+        exprs: Vec<Rc<Expression>>,
     },
     /// For example ltac:(...) or constr:(...)
     ModeWrapper {
@@ -172,14 +176,14 @@ pub(crate) enum Expression {
 #[derive(Clone)]
 pub(crate) struct Field {
     pub(crate) name: String,
-    pub(crate) args: Vec<ArgDecl>,
-    pub(crate) body: Expression,
+    pub(crate) args: Vec<Rc<ArgDecl>>,
+    pub(crate) body: Rc<Expression>,
 }
 
 #[derive(Clone)]
 /// a declaration of an argument of a coq construction
 pub(crate) struct ArgDecl {
-    decl: ArgDeclVar,
+    decl: Rc<ArgDeclVar>,
     kind: ArgSpecKind,
 }
 
@@ -192,7 +196,7 @@ pub(crate) enum ArgDeclVar {
         /// a non-empty vector of identifiers
         idents: Vec<String>,
         /// a type of the identifiers
-        ty: Option<Expression>,
+        ty: Option<Rc<Expression>>,
     },
     /// a generalized declaration (preceded by `` ` ``)
     #[allow(dead_code)]
@@ -200,11 +204,11 @@ pub(crate) enum ArgDeclVar {
         /// a possibly empty vector of identifiers
         idents: Vec<String>,
         /// a type of the identifiers
-        ty: Expression,
+        ty: Rc<Expression>,
     },
     /// a destructured argument
     #[allow(dead_code)]
-    Destructured { pattern: Expression },
+    Destructured { pattern: Rc<Expression> },
 }
 
 #[derive(Clone)]
@@ -220,24 +224,24 @@ pub(crate) enum ArgSpecKind {
     Implicit,
 }
 
-impl<'a> TopLevel {
+impl TopLevel {
     /// produces a new list of coq items
-    pub(crate) fn new(items: &[TopLevelItem]) -> Self {
-        TopLevel {
+    pub(crate) fn new(items: &[Rc<TopLevelItem>]) -> Rc<Self> {
+        Rc::new(TopLevel {
             items: items.to_vec(),
-        }
+        })
     }
 
     /// Get the list of modules that have a given name, as well as the remaining items once we
     /// remove those.
     fn get_modules_of_name(
-        top_level_items: &[TopLevelItem],
+        top_level_items: &[Rc<TopLevelItem>],
         name: &str,
-    ) -> (Vec<Module>, Vec<TopLevelItem>) {
+    ) -> (Vec<Rc<Module>>, Vec<Rc<TopLevelItem>>) {
         top_level_items.iter().fold(
             (vec![], vec![]),
             |(mut matching_modules, mut other_items), item| {
-                match item {
+                match item.as_ref() {
                     TopLevelItem::Module(module) if module.name == name => {
                         matching_modules.push(module.clone());
                     }
@@ -253,261 +257,352 @@ impl<'a> TopLevel {
 
     /// Remove a potential leading `Self` in the module, as this would collide with previous
     /// definitions.
-    fn remove_self_ty(&self) -> Self {
-        match self.items.as_slice() {
-            [TopLevelItem::Definition(definition), TopLevelItem::Line, rest @ ..]
-                if definition.name == "Self" =>
+    fn remove_self_ty(self: Rc<Self>) -> Rc<Self> {
+        if let [first, second, rest @ ..] = self.items.as_slice() {
+            if let (TopLevelItem::Definition(definition), TopLevelItem::Line) =
+                (first.as_ref(), second.as_ref())
             {
-                TopLevel {
-                    items: rest.to_vec(),
+                if definition.name == "Self" {
+                    return Rc::new(TopLevel {
+                        items: rest.to_vec(),
+                    });
                 }
             }
-            _ => self.clone(),
         }
+
+        self
     }
 
     /// A same module can be implemented in many small bits, for example with the `impl` of a same
     /// type but split in many places in a file. With this method we group the modules with the same
     /// name together. We take care of de-duplicating the `Self` definition if there is one.
     /// We do so because in Coq we cannot have two separate modules with the same name.
-    fn group_modules(top_level_items: &[TopLevelItem]) -> Vec<TopLevelItem> {
+    fn group_modules(top_level_items: &[Rc<TopLevelItem>]) -> Vec<Rc<TopLevelItem>> {
         match top_level_items {
             [] => vec![],
-            [TopLevelItem::Module(module), rest @ ..] => {
-                let (matching_modules, other_items) = Self::get_modules_of_name(rest, &module.name);
+            [item, rest @ ..] => match item.as_ref() {
+                TopLevelItem::Module(module) => {
+                    let (matching_modules, other_items) =
+                        Self::get_modules_of_name(rest, &module.name);
 
-                [
-                    vec![TopLevelItem::Module(Module::new(
-                        &module.name,
-                        Self::concat(
-                            &[
-                                vec![module.items.clone()],
-                                matching_modules
-                                    .into_iter()
-                                    .map(|matching_module| matching_module.items.remove_self_ty())
-                                    .collect(),
-                            ]
-                            .concat(),
-                        ),
-                    ))],
-                    Self::group_modules(&other_items),
-                ]
-                .concat()
-            }
-            [item, rest @ ..] => [vec![item.clone()], Self::group_modules(rest)].concat(),
+                    [
+                        vec![Rc::new(TopLevelItem::Module(Module::new(
+                            &module.name,
+                            Self::concat(
+                                &[
+                                    vec![module.items.clone()],
+                                    matching_modules
+                                        .into_iter()
+                                        .map(|matching_module| {
+                                            matching_module.items.clone().remove_self_ty()
+                                        })
+                                        .collect(),
+                                ]
+                                .concat(),
+                            ),
+                        )))],
+                        Self::group_modules(&other_items),
+                    ]
+                    .concat()
+                }
+                _ => [vec![item.clone()], Self::group_modules(rest)].concat(),
+            },
         }
     }
 
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        intersperse(
+    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D) -> DocBuilder<'a, D>
+    where
+        D: DocAllocator<'a>,
+        D::Doc: Clone,
+    {
+        ψ.intersperse(
             Self::group_modules(&self.items)
                 .iter()
-                .map(|item| item.to_doc()),
-            [hardline()],
+                .map(|item| item.to_doc(ψ)),
+            ψ.hardline(),
         )
     }
 
     /// joins a list of lists of items into one list
-    pub(crate) fn concat(tls: &[Self]) -> Self {
-        TopLevel {
-            items: tls.iter().flat_map(|tl| tl.items.to_owned()).collect(),
-        }
+    pub(crate) fn concat(tls: &[Rc<Self>]) -> Rc<Self> {
+        Rc::new(TopLevel {
+            items: tls.iter().flat_map(|tl| tl.items.clone()).collect(),
+        })
     }
 }
 
-impl<'a> TopLevelItem {
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
+impl TopLevelItem {
+    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D) -> DocBuilder<'a, D>
+    where
+        D: DocAllocator<'a>,
+        D::Doc: Clone,
+    {
         match self {
             TopLevelItem::Comment(expression) => {
-                let expression: Vec<_> = expression.iter().map(|e| e.to_doc(false)).collect();
+                let expression: Vec<_> = expression.iter().map(|e| e.to_doc(ψ, false)).collect();
                 if expression.len() <= 1 {
-                    concat([vec![text("(* ")], expression, vec![text(" *)")]].concat())
+                    ψ.concat([vec![ψ.text("(* ")], expression, vec![ψ.text(" *)")]].concat())
                 } else {
-                    intersperse(
-                        [vec![text("(*")], expression, vec![text("*)")]].concat(),
-                        [hardline()],
+                    ψ.intersperse(
+                        [vec![ψ.text("(*")], expression, vec![ψ.text("*)")]].concat(),
+                        ψ.hardline(),
                     )
                 }
             }
-            TopLevelItem::Definition(definition) => definition.to_doc(),
+            TopLevelItem::Definition(definition) => definition.to_doc(ψ),
             TopLevelItem::Hint {
                 kind,
                 name,
                 database,
-            } => nest([
-                text(kind.to_owned()),
-                text(" "),
-                text(name.to_owned()),
-                text(" :"),
-                line(),
-                text(database.to_owned()),
-                text("."),
-            ]),
-            TopLevelItem::Line => nil(),
-            TopLevelItem::Module(module) => module.to_doc(),
+            } => nest(
+                ψ,
+                [
+                    ψ.text(kind.to_owned()),
+                    ψ.text(" "),
+                    ψ.text(name.to_owned()),
+                    ψ.text(" :"),
+                    ψ.line(),
+                    ψ.text(database.to_owned()),
+                    ψ.text("."),
+                ],
+            ),
+            TopLevelItem::Line => ψ.nil(),
+            TopLevelItem::Module(module) => module.to_doc(ψ),
         }
     }
 }
 
-impl<'a> Module {
+impl Module {
     /// produces a new coq module
-    pub(crate) fn new(name: &str, items: TopLevel) -> Self {
-        Module {
+    pub(crate) fn new(name: &str, items: Rc<TopLevel>) -> Rc<Self> {
+        Rc::new(Module {
             name: name.to_string(),
             items,
-        }
+        })
     }
 
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
+    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D) -> DocBuilder<'a, D>
+    where
+        D: DocAllocator<'a>,
+        D::Doc: Clone,
+    {
         if self.items.items.is_empty() {
-            return text(format!("(* Empty module '{}' *)", self.name));
+            return ψ.text(format!("(* Empty module '{}' *)", self.name));
         }
 
-        render::enclose("Module", self.name.clone(), true, self.items.to_doc())
+        enclose(ψ, "Module", self.name.clone(), true, self.items.to_doc(ψ))
     }
 }
 
-impl<'a> Definition {
+impl Definition {
     /// produces a new coq definition
-    pub(crate) fn new(name: &str, kind: &DefinitionKind) -> Self {
-        Definition {
+    pub(crate) fn new(name: &str, kind: Rc<DefinitionKind>) -> Rc<Self> {
+        Rc::new(Definition {
             name: name.to_owned(),
-            kind: kind.to_owned(),
-        }
+            kind,
+        })
     }
 
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        match self.kind.to_owned() {
-            DefinitionKind::Alias { args, ty, body } => nest([
-                nest([
-                    group([text("Definition"), line(), text(self.name.to_owned())]),
-                    group([
-                        concat(args.iter().filter_map(|arg| {
-                            if arg.is_empty() {
-                                None
-                            } else {
-                                Some(concat([line(), arg.to_doc()]))
-                            }
-                        })),
-                        match ty {
-                            Some(ty) => {
-                                concat([line(), nest([text(":"), line(), ty.to_doc(false)])])
-                            }
-                            None => nil(),
-                        },
-                        text(" :="),
-                    ]),
-                ]),
-                line(),
-                body.to_doc(false),
-                text("."),
-            ]),
-            DefinitionKind::Assumption { ty } => nest([
-                nest([
-                    text("Parameter"),
-                    line(),
-                    text(self.name.to_owned()),
-                    line(),
-                ]),
-                nest([text(":"), line(), ty.to_doc(false)]),
-                text("."),
-            ]),
-            DefinitionKind::Axiom { ty } => nest([
-                nest([
-                    text("Axiom"),
-                    line(),
-                    text(self.name.to_owned()),
-                    text(" :"),
-                ]),
-                line(),
-                ty.to_doc(false),
-                text("."),
-            ]),
-            DefinitionKind::Ltac { args, body } => nest([
-                nest([
-                    nest([text("Ltac"), line(), text(self.name.to_owned())]),
-                    concat(args.iter().map(|arg| concat([line(), text(arg.clone())]))),
-                    text(" :="),
-                ]),
-                line(),
-                nest([text("exact"), line(), body.to_doc(true)]),
-                text("."),
-            ]),
+    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D) -> DocBuilder<'a, D>
+    where
+        D: DocAllocator<'a>,
+        D::Doc: Clone,
+    {
+        match self.kind.as_ref() {
+            DefinitionKind::Alias { args, ty, body } => nest(
+                ψ,
+                [
+                    nest(
+                        ψ,
+                        [
+                            group(
+                                ψ,
+                                [ψ.text("Definition"), ψ.line(), ψ.text(self.name.to_owned())],
+                            ),
+                            group(
+                                ψ,
+                                [
+                                    ψ.concat(args.iter().filter_map(|arg| {
+                                        if arg.is_empty() {
+                                            None
+                                        } else {
+                                            Some(ψ.concat([ψ.line(), arg.to_doc(ψ)]))
+                                        }
+                                    })),
+                                    match ty {
+                                        Some(ty) => ψ.concat([
+                                            ψ.line(),
+                                            nest(ψ, [ψ.text(":"), ψ.line(), ty.to_doc(ψ, false)]),
+                                        ]),
+                                        None => ψ.nil(),
+                                    },
+                                    ψ.text(" :="),
+                                ],
+                            ),
+                        ],
+                    ),
+                    ψ.line(),
+                    body.to_doc(ψ, false),
+                    ψ.text("."),
+                ],
+            ),
+            DefinitionKind::Assumption { ty } => nest(
+                ψ,
+                [
+                    nest(
+                        ψ,
+                        [
+                            ψ.text("Parameter"),
+                            ψ.line(),
+                            ψ.text(self.name.to_owned()),
+                            ψ.line(),
+                        ],
+                    ),
+                    nest(ψ, [ψ.text(":"), ψ.line(), ty.to_doc(ψ, false)]),
+                    ψ.text("."),
+                ],
+            ),
+            DefinitionKind::Axiom { ty } => nest(
+                ψ,
+                [
+                    nest(
+                        ψ,
+                        [
+                            ψ.text("Axiom"),
+                            ψ.line(),
+                            ψ.text(self.name.to_owned()),
+                            ψ.text(" :"),
+                        ],
+                    ),
+                    ψ.line(),
+                    ty.to_doc(ψ, false),
+                    ψ.text("."),
+                ],
+            ),
+            DefinitionKind::Ltac { args, body } => nest(
+                ψ,
+                [
+                    nest(
+                        ψ,
+                        [
+                            nest(ψ, [ψ.text("Ltac"), ψ.line(), ψ.text(self.name.to_owned())]),
+                            ψ.concat(
+                                args.iter()
+                                    .map(|arg| ψ.concat([ψ.line(), ψ.text(arg.clone())])),
+                            ),
+                            ψ.text(" :="),
+                        ],
+                    ),
+                    ψ.line(),
+                    nest(ψ, [ψ.text("exact"), ψ.line(), body.to_doc(ψ, true)]),
+                    ψ.text("."),
+                ],
+            ),
         }
     }
 }
 
-impl<'a> Expression {
-    pub(crate) fn to_doc(&self, with_paren: bool) -> Doc<'a> {
+impl Expression {
+    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D, with_paren: bool) -> DocBuilder<'a, D>
+    where
+        D: DocAllocator<'a>,
+        D::Doc: Clone,
+    {
         match self {
             Self::Application { func, args } => paren(
+                ψ,
                 with_paren,
-                nest([
-                    func.to_doc(false),
-                    optional_insert(args.is_empty(), line()),
-                    intersperse(
-                        args.iter().map(|(param, arg)| match param {
-                            Some(param) => render::round_brackets(group([
-                                text(param.to_owned()),
-                                text(" := "),
-                                arg.to_doc(false),
-                            ])),
-                            None => arg.to_doc(true),
-                        }),
-                        [line()],
-                    ),
-                ]),
+                nest(
+                    ψ,
+                    [
+                        func.to_doc(ψ, false),
+                        optional_insert(ψ, args.is_empty(), ψ.line()),
+                        ψ.intersperse(
+                            args.iter().map(|(param, arg)| match param {
+                                Some(param) => round_brackets(
+                                    ψ,
+                                    group(
+                                        ψ,
+                                        [
+                                            ψ.text(param.to_owned()),
+                                            ψ.text(" := "),
+                                            arg.to_doc(ψ, false),
+                                        ],
+                                    ),
+                                ),
+                                None => arg.to_doc(ψ, true),
+                            }),
+                            ψ.line(),
+                        ),
+                    ],
+                ),
             ),
             Self::MonadicApplication { func, args } => paren(
+                ψ,
                 with_paren,
-                group([
-                    func.to_doc(false),
-                    text(" "),
-                    optional_insert(!args.is_empty(), text("(||)")),
-                    optional_insert(
-                        args.is_empty(),
-                        concat([
-                            text("(|"),
-                            concat([
-                                line(),
-                                intersperse(
-                                    args.iter().map(|(param, arg)| match param {
-                                        Some(param) => render::round_brackets(nest([
-                                            text(param.to_owned()),
-                                            text(" := "),
-                                            arg.to_doc(false),
-                                        ])),
-                                        None => arg.to_doc(false),
-                                    }),
-                                    [text(","), line()],
-                                ),
-                            ])
-                            .nest(2),
-                            line(),
-                            text("|)"),
-                        ]),
-                    ),
-                ]),
+                group(
+                    ψ,
+                    [
+                        func.to_doc(ψ, false),
+                        ψ.text(" "),
+                        optional_insert(ψ, !args.is_empty(), ψ.text("(||)")),
+                        optional_insert(
+                            ψ,
+                            args.is_empty(),
+                            ψ.concat([
+                                ψ.text("(|"),
+                                ψ.concat([
+                                    ψ.line(),
+                                    ψ.intersperse(
+                                        args.iter().map(|(param, arg)| match param {
+                                            Some(param) => round_brackets(
+                                                ψ,
+                                                nest(
+                                                    ψ,
+                                                    [
+                                                        ψ.text(param.to_owned()),
+                                                        ψ.text(" := "),
+                                                        arg.to_doc(ψ, false),
+                                                    ],
+                                                ),
+                                            ),
+                                            None => arg.to_doc(ψ, false),
+                                        }),
+                                        ψ.concat([ψ.text(","), ψ.line()]),
+                                    ),
+                                ])
+                                .nest(2),
+                                ψ.line(),
+                                ψ.text("|)"),
+                            ]),
+                        ),
+                    ],
+                ),
             ),
             Self::Function { parameters, body } => {
                 if parameters.is_empty() {
-                    body.to_doc(with_paren)
+                    body.to_doc(ψ, with_paren)
                 } else {
                     paren(
+                        ψ,
                         with_paren,
-                        nest([
-                            nest([
-                                text("fun"),
-                                concat(
-                                    parameters
-                                        .iter()
-                                        .map(|parameter| concat([line(), parameter.to_doc(true)])),
+                        nest(
+                            ψ,
+                            [
+                                nest(
+                                    ψ,
+                                    [
+                                        ψ.text("fun"),
+                                        ψ.concat(parameters.iter().map(|parameter| {
+                                            ψ.concat([ψ.line(), parameter.to_doc(ψ, true)])
+                                        })),
+                                        ψ.text(" =>"),
+                                    ],
                                 ),
-                                text(" =>"),
-                            ]),
-                            line(),
-                            body.to_doc(false),
-                        ]),
+                                ψ.line(),
+                                body.to_doc(ψ, false),
+                            ],
+                        ),
                     )
                 }
             }
@@ -526,213 +621,308 @@ impl<'a> Expression {
                 }
                 .to_string();
                 paren(
+                    ψ,
                     with_paren,
-                    group([
-                        nest([
-                            nest([
-                                nest([
-                                    text("let"),
-                                    optional_insert(!*is_user, text("~")),
-                                    line(),
-                                    text(name),
-                                ]),
-                                match ty {
-                                    None => nil(),
-                                    Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
-                                },
-                                text(" :="),
-                            ]),
-                            line(),
-                            init.to_doc(false),
-                            text(" in"),
-                        ]),
-                        hardline(),
-                        body.to_doc(false),
-                    ]),
+                    group(
+                        ψ,
+                        [
+                            nest(
+                                ψ,
+                                [
+                                    nest(
+                                        ψ,
+                                        [
+                                            nest(
+                                                ψ,
+                                                [
+                                                    ψ.text("let"),
+                                                    optional_insert(ψ, !*is_user, ψ.text("~")),
+                                                    ψ.line(),
+                                                    ψ.text(name),
+                                                ],
+                                            ),
+                                            match ty {
+                                                None => ψ.nil(),
+                                                Some(ty) => ψ.concat([
+                                                    ψ.text(" :"),
+                                                    ψ.line(),
+                                                    ty.to_doc(ψ, false),
+                                                ]),
+                                            },
+                                            ψ.text(" :="),
+                                        ],
+                                    ),
+                                    ψ.line(),
+                                    init.to_doc(ψ, false),
+                                    ψ.text(" in"),
+                                ],
+                            ),
+                            ψ.hardline(),
+                            body.to_doc(ψ, false),
+                        ],
+                    ),
                 )
             }
-            Self::Match { scrutinees, arms } => group([
-                group([
-                    nest([
-                        text("match"),
-                        line(),
-                        intersperse(
-                            scrutinees.iter().map(|scrutinee| scrutinee.to_doc(false)),
-                            [text(","), line()],
-                        ),
-                    ]),
-                    line(),
-                    text("with"),
-                ]),
-                concat(arms.iter().map(|(patterns, body)| {
-                    concat([
-                        line(),
-                        nest([
-                            nest([
-                                text("| "),
-                                intersperse(
-                                    patterns.iter().map(|pattern| pattern.to_doc(false)),
-                                    [text(","), line()],
-                                ),
-                                text(" =>"),
-                            ]),
-                            line(),
-                            body.to_doc(false),
-                        ]),
-                    ])
-                })),
-                line(),
-                text("end"),
-            ]),
-            Self::FunctionType { domains, image } => paren(
-                with_paren,
-                nest([
-                    intersperse(
-                        domains
-                            .iter()
-                            .map(|domain| group([domain.to_doc(true), line(), text("->")])),
-                        [line()],
+            Self::Match { scrutinees, arms } => group(
+                ψ,
+                [
+                    group(
+                        ψ,
+                        [
+                            nest(
+                                ψ,
+                                [
+                                    ψ.text("match"),
+                                    ψ.line(),
+                                    ψ.intersperse(
+                                        scrutinees
+                                            .iter()
+                                            .map(|scrutinee| scrutinee.to_doc(ψ, false)),
+                                        ψ.concat([ψ.text(","), ψ.line()]),
+                                    ),
+                                ],
+                            ),
+                            ψ.line(),
+                            ψ.text("with"),
+                        ],
                     ),
-                    optional_insert(domains.is_empty(), line()),
-                    image.to_doc(false),
-                ]),
+                    ψ.concat(arms.iter().map(|(patterns, body)| {
+                        ψ.concat([
+                            ψ.line(),
+                            nest(
+                                ψ,
+                                [
+                                    nest(
+                                        ψ,
+                                        [
+                                            ψ.text("| "),
+                                            ψ.intersperse(
+                                                patterns
+                                                    .iter()
+                                                    .map(|pattern| pattern.to_doc(ψ, false)),
+                                                ψ.concat([ψ.text(","), ψ.line()]),
+                                            ),
+                                            ψ.text(" =>"),
+                                        ],
+                                    ),
+                                    ψ.line(),
+                                    body.to_doc(ψ, false),
+                                ],
+                            ),
+                        ])
+                    })),
+                    ψ.line(),
+                    ψ.text("end"),
+                ],
+            ),
+            Self::FunctionType { domains, image } => paren(
+                ψ,
+                with_paren,
+                nest(
+                    ψ,
+                    [
+                        ψ.intersperse(
+                            domains.iter().map(|domain| {
+                                group(ψ, [domain.to_doc(ψ, true), ψ.line(), ψ.text("->")])
+                            }),
+                            ψ.line(),
+                        ),
+                        optional_insert(ψ, domains.is_empty(), ψ.line()),
+                        image.to_doc(ψ, false),
+                    ],
+                ),
             ),
             Self::PiType { args, image } => optional_insert_with(
                 args.iter().all(|arg| arg.is_empty()),
-                image.to_doc(with_paren),
+                image.to_doc(ψ, with_paren),
                 paren(
+                    ψ,
                     with_paren,
-                    concat([
-                        nest([
-                            text("forall"),
-                            line(),
-                            intersperse(
-                                args.iter()
-                                    .filter(|arg| !arg.is_empty())
-                                    .map(|arg| arg.to_doc()),
-                                [line()],
-                            ),
-                            text(","),
-                        ]),
-                        line(),
-                        image.to_doc(false),
+                    ψ.concat([
+                        nest(
+                            ψ,
+                            [
+                                ψ.text("forall"),
+                                ψ.line(),
+                                ψ.intersperse(
+                                    args.iter()
+                                        .filter(|arg| !arg.is_empty())
+                                        .map(|arg| arg.to_doc(ψ)),
+                                    ψ.line(),
+                                ),
+                                ψ.text(","),
+                            ],
+                        ),
+                        ψ.line(),
+                        image.to_doc(ψ, false),
                     ]),
                 ),
             ),
             Self::Equality { lhs, rhs } => paren(
+                ψ,
                 with_paren,
-                nest([lhs.to_doc(true), text(" ="), line(), rhs.to_doc(true)]),
+                nest(
+                    ψ,
+                    [
+                        lhs.to_doc(ψ, true),
+                        ψ.text(" ="),
+                        ψ.line(),
+                        rhs.to_doc(ψ, true),
+                    ],
+                ),
             ),
             Self::Product { lhs, rhs } => paren(
+                ψ,
                 with_paren,
-                group([
-                    lhs.to_doc(true),
-                    line(),
-                    text("*"),
-                    line(),
-                    rhs.to_doc(true),
-                ]),
-            ),
-            Self::Tuple(es) => nest([
-                text("("),
-                intersperse(es.iter().map(|e| e.to_doc(false)), [text(","), line()]),
-                text(")"),
-            ]),
-            Self::Record { fields } => concat([curly_brackets(concat([
-                optional_insert(
-                    fields.is_empty(),
-                    nest([
-                        hardline(),
-                        intersperse(fields.iter().map(|field| field.to_doc()), [hardline()]),
-                    ]),
+                group(
+                    ψ,
+                    [
+                        lhs.to_doc(ψ, true),
+                        ψ.line(),
+                        ψ.text("*"),
+                        ψ.line(),
+                        rhs.to_doc(ψ, true),
+                    ],
                 ),
-                hardline(),
-            ]))]),
-            Self::RecordField { record, field } => concat([
-                record.to_doc(true),
-                text(".("),
-                text(field.to_owned()),
-                text(")"),
+            ),
+            Self::Tuple(es) => nest(
+                ψ,
+                [
+                    ψ.text("("),
+                    ψ.intersperse(
+                        es.iter().map(|e| e.to_doc(ψ, false)),
+                        ψ.concat([ψ.text(","), ψ.line()]),
+                    ),
+                    ψ.text(")"),
+                ],
+            ),
+            Self::Record { fields } => ψ.concat([curly_brackets(
+                ψ,
+                ψ.concat([
+                    optional_insert(
+                        ψ,
+                        fields.is_empty(),
+                        nest(
+                            ψ,
+                            [
+                                ψ.hardline(),
+                                ψ.intersperse(
+                                    fields.iter().map(|field| field.to_doc(ψ)),
+                                    ψ.hardline(),
+                                ),
+                            ],
+                        ),
+                    ),
+                    ψ.hardline(),
+                ]),
+            )]),
+            Self::RecordField { record, field } => ψ.concat([
+                record.to_doc(ψ, true),
+                ψ.text(".("),
+                ψ.text(field.to_owned()),
+                ψ.text(")"),
             ]),
             Self::RecordUpdate {
                 record,
                 field,
                 update,
             } => paren(
+                ψ,
                 with_paren,
-                nest([
-                    record.to_doc(true),
-                    line(),
-                    nest([
-                        text("<| "),
-                        text(field.to_owned()),
-                        text(" :="),
-                        line(),
-                        update.to_doc(false),
-                        text(" |>"),
-                    ]),
-                ]),
+                nest(
+                    ψ,
+                    [
+                        record.to_doc(ψ, true),
+                        ψ.line(),
+                        nest(
+                            ψ,
+                            [
+                                ψ.text("<| "),
+                                ψ.text(field.to_owned()),
+                                ψ.text(" :="),
+                                ψ.line(),
+                                update.to_doc(ψ, false),
+                                ψ.text(" |>"),
+                            ],
+                        ),
+                    ],
+                ),
             ),
-            Self::List { exprs } => list(exprs.iter().map(|expr| expr.to_doc(false)).collect()),
-            Self::ModeWrapper { mode, expr } => concat([
-                text(mode.to_owned()),
-                text(":("),
-                expr.to_doc(false),
-                text(")"),
-            ]),
-            Self::Comment(comment, expr) => group([
-                text(format!("(* {comment} *)")),
-                line(),
-                expr.to_doc(with_paren),
-            ]),
-            Self::As(expr, ty) => paren(
-                with_paren,
-                nest([expr.to_doc(true), text(" as"), line(), ty.to_doc(true)]),
-            ),
-            Self::U128(u) => text(u.to_string()),
-            Self::String(string) => text(format!("\"{string}\"")),
-            Self::Message(string) => text(string.clone()),
-            Self::Variable { ident, no_implicit } => {
-                concat([optional_insert(!*no_implicit, text("@")), ident.to_doc()])
+            Self::List { exprs } => {
+                list(ψ, exprs.iter().map(|expr| expr.to_doc(ψ, false)).collect())
             }
-            Self::Wild => text("_"),
+            Self::ModeWrapper { mode, expr } => ψ.concat([
+                ψ.text(mode.to_owned()),
+                ψ.text(":("),
+                expr.to_doc(ψ, false),
+                ψ.text(")"),
+            ]),
+            Self::Comment(comment, expr) => group(
+                ψ,
+                [
+                    ψ.text(format!("(* {comment} *)")),
+                    ψ.line(),
+                    expr.to_doc(ψ, with_paren),
+                ],
+            ),
+            Self::As(expr, ty) => paren(
+                ψ,
+                with_paren,
+                nest(
+                    ψ,
+                    [
+                        expr.to_doc(ψ, true),
+                        ψ.text(" as"),
+                        ψ.line(),
+                        ty.to_doc(ψ, true),
+                    ],
+                ),
+            ),
+            Self::U128(u) => ψ.text(u.to_string()),
+            Self::String(string) => ψ.text(format!("\"{string}\"")),
+            Self::Message(string) => ψ.text(string.clone()),
+            Self::Variable { ident, no_implicit } => ψ.concat([
+                optional_insert(ψ, !*no_implicit, ψ.text("@")),
+                ident.to_doc(ψ),
+            ]),
+            Self::Wild => ψ.text("_"),
         }
     }
 
-    pub(crate) fn just_name(name: &str) -> Self {
-        Expression::Variable {
+    pub(crate) fn just_name(name: &str) -> Rc<Self> {
+        Rc::new(Expression::Variable {
             ident: Path::new(&[name]),
             no_implicit: false,
-        }
+        })
     }
 
     /// apply the expression as a function to one argument
-    pub(crate) fn apply_arg(&self, name: &Option<String>, arg: &Self) -> Self {
-        Expression::Application {
-            func: Rc::new(self.clone()),
+    pub(crate) fn apply_arg(self: Rc<Self>, name: &Option<String>, arg: Rc<Self>) -> Rc<Self> {
+        Rc::new(Expression::Application {
+            func: self,
             args: vec![(name.clone(), arg.clone())],
-        }
+        })
     }
 
     /// apply the expression as a function to one argument
-    pub(crate) fn apply(&self, arg: &Self) -> Self {
+    pub(crate) fn apply(self: Rc<Self>, arg: Rc<Self>) -> Rc<Self> {
         self.apply_arg(&None, arg)
     }
 
     /// apply the expression as a function to many arguments
-    pub(crate) fn apply_many_args(&self, args: &[(Option<String>, Self)]) -> Self {
+    pub(crate) fn apply_many_args(self: Rc<Self>, args: &[(Option<String>, Rc<Self>)]) -> Rc<Self> {
         if args.is_empty() {
             return self.to_owned();
         }
 
-        Expression::Application {
-            func: Rc::new(self.to_owned()),
+        Rc::new(Expression::Application {
+            func: self,
             args: args.to_vec(),
-        }
+        })
     }
 
     /// apply the expression as a function to many arguments
-    pub(crate) fn apply_many(&self, args: &[Self]) -> Self {
+    pub(crate) fn apply_many(self: Rc<Self>, args: &[Rc<Self>]) -> Rc<Self> {
         self.apply_many_args(
             &args
                 .iter()
@@ -741,40 +931,47 @@ impl<'a> Expression {
         )
     }
 
-    pub(crate) fn monadic_apply_empty(&self) -> Self {
-        Expression::MonadicApplication {
-            func: Rc::new(self.clone()),
+    pub(crate) fn monadic_apply_empty(self: Rc<Self>) -> Rc<Self> {
+        Rc::new(Expression::MonadicApplication {
+            func: self,
             args: vec![],
-        }
+        })
     }
 
     /// apply the expression as a function to one argument
-    pub(crate) fn monadic_apply_arg(&self, name: &Option<String>, arg: &Self) -> Self {
-        Expression::MonadicApplication {
-            func: Rc::new(self.clone()),
-            args: vec![(name.clone(), arg.clone())],
-        }
+    pub(crate) fn monadic_apply_arg(
+        self: Rc<Self>,
+        name: &Option<String>,
+        arg: Rc<Self>,
+    ) -> Rc<Self> {
+        Rc::new(Expression::MonadicApplication {
+            func: self,
+            args: vec![(name.clone(), arg)],
+        })
     }
 
     /// apply the expression as a function to one argument
-    pub(crate) fn monadic_apply(&self, arg: &Self) -> Self {
+    pub(crate) fn monadic_apply(self: Rc<Self>, arg: Rc<Self>) -> Rc<Self> {
         self.monadic_apply_arg(&None, arg)
     }
 
     /// apply the expression as a function to many arguments
-    pub(crate) fn monadic_apply_many_args(&self, args: &[(Option<String>, Self)]) -> Self {
+    pub(crate) fn monadic_apply_many_args(
+        self: Rc<Self>,
+        args: &[(Option<String>, Rc<Self>)],
+    ) -> Rc<Self> {
         if args.is_empty() {
-            return self.to_owned();
+            return self;
         }
 
-        Expression::MonadicApplication {
-            func: Rc::new(self.to_owned()),
+        Rc::new(Expression::MonadicApplication {
+            func: self,
             args: args.to_vec(),
-        }
+        })
     }
 
     /// apply the expression as a function to many arguments
-    pub(crate) fn monadic_apply_many(&self, args: &[Self]) -> Self {
+    pub(crate) fn monadic_apply_many(self: Rc<Self>, args: &[Rc<Self>]) -> Rc<Self> {
         self.monadic_apply_many_args(
             &args
                 .iter()
@@ -783,38 +980,35 @@ impl<'a> Expression {
         )
     }
 
-    pub(crate) fn monadic(&self) -> Self {
-        Expression::ModeWrapper {
+    pub(crate) fn monadic(self: Rc<Self>) -> Rc<Self> {
+        Rc::new(Expression::ModeWrapper {
             mode: "ltac".to_string(),
             expr: Rc::new(Expression::Application {
-                func: Rc::new(Expression::just_name("M.monadic")),
+                func: Expression::just_name("M.monadic"),
                 args: vec![(None, self.to_owned())],
             }),
-        }
+        })
     }
 
     #[allow(dead_code)]
-    pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
+    pub(crate) fn arrows_from(self: Rc<Self>, domains: &[Rc<Self>]) -> Rc<Self> {
         if domains.is_empty() {
             return self.to_owned();
         }
 
-        Expression::FunctionType {
+        Rc::new(Expression::FunctionType {
             domains: domains.to_owned(),
-            image: Rc::new(self.to_owned()),
-        }
+            image: self,
+        })
     }
 
     #[allow(dead_code)]
-    pub(crate) fn multiply(lhs: Self, rhs: Self) -> Self {
-        Expression::Product {
-            lhs: Rc::new(lhs),
-            rhs: Rc::new(rhs),
-        }
+    pub(crate) fn multiply(lhs: Rc<Self>, rhs: Rc<Self>) -> Rc<Self> {
+        Rc::new(Expression::Product { lhs, rhs })
     }
 
     #[allow(dead_code)]
-    pub(crate) fn multiply_many(exprs: &[Self]) -> Self {
+    pub(crate) fn multiply_many(exprs: &[Rc<Self>]) -> Rc<Self> {
         let product = exprs
             .iter()
             .map(|e| e.to_owned())
@@ -825,62 +1019,79 @@ impl<'a> Expression {
         }
     }
 
-    pub(crate) fn of_option<'b, A>(expr: &'b Option<A>, to_coq: fn(&'b A) -> Self) -> Self {
+    pub(crate) fn of_option<'b, A>(expr: &'b Option<A>, to_coq: fn(&'b A) -> Rc<Self>) -> Rc<Self> {
         match expr {
             None => Expression::just_name("None"),
-            Some(expr) => Expression::just_name("Some").apply(&to_coq(expr)),
+            Some(expr) => Expression::just_name("Some").apply(to_coq(expr)),
         }
     }
 
     /// A pattern for a name, taking into account names that are known
     /// constructors in Coq.
-    pub(crate) fn name_pattern(name: &str) -> Self {
+    pub(crate) fn name_pattern(name: &str) -> Rc<Self> {
         let known_constructors = ["I", "inl", "inr", "left", "None", "O", "right", "Some", "S"];
 
         if known_constructors.contains(&name) {
-            Expression::As(
+            Rc::new(Expression::As(
                 Rc::new(Expression::Wild),
-                Rc::new(Expression::just_name(name)),
-            )
+                Expression::just_name(name),
+            ))
         } else {
             Expression::just_name(name)
         }
     }
 }
 
-impl<'a> Field {
+impl Field {
     #[allow(dead_code)]
-    pub(crate) fn new(name: &str, args: &[ArgDecl], body: &Expression) -> Self {
-        Field {
+    pub(crate) fn new(name: &str, args: &[Rc<ArgDecl>], body: Rc<Expression>) -> Rc<Self> {
+        Rc::new(Field {
             name: name.to_owned(),
             args: args.to_owned(),
-            body: body.to_owned(),
-        }
+            body,
+        })
     }
 
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        nest([
-            group([
-                text(self.name.clone()),
-                optional_insert(
-                    self.args.is_empty(),
-                    group([
-                        line(),
-                        intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
-                    ]),
+    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D) -> DocBuilder<'a, D>
+    where
+        D: DocAllocator<'a>,
+        D::Doc: Clone,
+    {
+        nest(
+            ψ,
+            [
+                group(
+                    ψ,
+                    [
+                        ψ.text(self.name.clone()),
+                        optional_insert(
+                            ψ,
+                            self.args.is_empty(),
+                            group(
+                                ψ,
+                                [
+                                    ψ.line(),
+                                    ψ.intersperse(
+                                        self.args.iter().map(|param| param.to_doc(ψ)),
+                                        ψ.line(),
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ],
                 ),
-            ]),
-            text(" :="),
-            line(),
-            self.body.to_doc(false),
-            text(";"),
-        ])
+                ψ.text(" :="),
+                ψ.line(),
+                self.body.to_doc(ψ, false),
+                ψ.text(";"),
+            ],
+        )
     }
 }
 
-impl<'a> ArgDecl {
+impl ArgDecl {
     pub(crate) fn is_empty(&self) -> bool {
-        match self.decl.to_owned() {
+        match self.decl.as_ref() {
             ArgDeclVar::Simple { idents, .. } => idents.is_empty(),
             ArgDeclVar::Generalized { .. } => false, // ty would always be exist
             ArgDeclVar::Destructured { .. } => false,
@@ -888,45 +1099,66 @@ impl<'a> ArgDecl {
     }
 
     /// produces a new coq argument
-    pub(crate) fn new(decl: &ArgDeclVar, kind: ArgSpecKind) -> Self {
-        ArgDecl {
-            decl: decl.to_owned(),
-            kind,
-        }
+    pub(crate) fn new(decl: Rc<ArgDeclVar>, kind: ArgSpecKind) -> Rc<Self> {
+        Rc::new(ArgDecl { decl, kind })
     }
 
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
+    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D) -> DocBuilder<'a, D>
+    where
+        D: DocAllocator<'a>,
+        D::Doc: Clone,
+    {
         let brackets = match self.kind {
-            ArgSpecKind::Explicit => render::round_brackets,
-            ArgSpecKind::Implicit => render::curly_brackets,
+            ArgSpecKind::Explicit => round_brackets,
+            ArgSpecKind::Implicit => curly_brackets,
         };
-        match self.decl.to_owned() {
+        match self.decl.as_ref() {
             ArgDeclVar::Simple { idents, ty } => {
-                let arg_decl = nest([
-                    intersperse(idents, [line()]),
-                    match &ty {
-                        Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
-                        None => nil(),
-                    },
-                ]);
+                let arg_decl = nest(
+                    ψ,
+                    [
+                        ψ.intersperse(idents.clone(), ψ.line()),
+                        match &ty {
+                            Some(ty) => {
+                                ψ.concat([ψ.line(), ψ.text(":"), ψ.line(), ty.to_doc(ψ, false)])
+                            }
+                            None => ψ.nil(),
+                        },
+                    ],
+                );
                 if let (ArgSpecKind::Explicit, None) = (&self.kind, ty) {
                     arg_decl
                 } else {
-                    brackets(arg_decl)
+                    brackets(ψ, arg_decl)
                 }
             }
-            ArgDeclVar::Generalized { idents, ty } => group([
-                text("`"),
-                brackets(nest([
-                    optional_insert(
-                        idents.is_empty(),
-                        concat([intersperse(idents, [line()]), line(), text(":"), line()]),
+            ArgDeclVar::Generalized { idents, ty } => group(
+                ψ,
+                [
+                    ψ.text("`"),
+                    brackets(
+                        ψ,
+                        nest(
+                            ψ,
+                            [
+                                optional_insert(
+                                    ψ,
+                                    idents.is_empty(),
+                                    ψ.concat([
+                                        ψ.intersperse(idents.clone(), ψ.line()),
+                                        ψ.line(),
+                                        ψ.text(":"),
+                                        ψ.line(),
+                                    ]),
+                                ),
+                                ty.to_doc(ψ, false),
+                            ],
+                        ),
                     ),
-                    ty.to_doc(false),
-                ])),
-            ]),
+                ],
+            ),
             ArgDeclVar::Destructured { pattern } => {
-                group([text("'"), brackets(pattern.to_doc(false))])
+                group(ψ, [ψ.text("'"), brackets(ψ, pattern.to_doc(ψ, false))])
             }
         }
     }
@@ -935,22 +1167,22 @@ impl<'a> ArgDecl {
         const_params: &[String],
         ty_params: &[String],
         kind: ArgSpecKind,
-    ) -> Vec<Self> {
+    ) -> Vec<Rc<Self>> {
         vec![
-            ArgDecl {
-                decl: ArgDeclVar::Simple {
+            Rc::new(ArgDecl {
+                decl: Rc::new(ArgDeclVar::Simple {
                     idents: const_params.to_owned(),
                     ty: Some(Expression::just_name("Value.t")),
-                },
+                }),
                 kind: kind.clone(),
-            },
-            ArgDecl {
-                decl: ArgDeclVar::Simple {
+            }),
+            Rc::new(ArgDecl {
+                decl: Rc::new(ArgDeclVar::Simple {
                     idents: ty_params.to_owned(),
                     ty: Some(Expression::just_name("Ty.t")),
-                },
+                }),
                 kind,
-            },
+            }),
         ]
     }
 }

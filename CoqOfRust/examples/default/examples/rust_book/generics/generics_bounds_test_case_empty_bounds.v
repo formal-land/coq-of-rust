@@ -68,6 +68,7 @@ Definition red (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_red : M.IsFunction "generics_bounds_test_case_empty_bounds::red" red.
+Smpl Add apply Function_red : is_function.
 
 (*
 fn blue<T: Blue>(_: &T) -> &'static str {
@@ -84,6 +85,7 @@ Definition blue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_blue : M.IsFunction "generics_bounds_test_case_empty_bounds::blue" blue.
+Smpl Add apply Function_blue : is_function.
 
 (*
 fn main() {
@@ -290,3 +292,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "generics_bounds_test_case_empty_bounds::main" main.
+Smpl Add apply Function_main : is_function.

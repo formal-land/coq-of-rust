@@ -816,6 +816,7 @@ Module reference_safety.
     end.
   
   Axiom Function_verify : M.IsFunction "move_bytecode_verifier::reference_safety::verify" verify.
+  Smpl Add apply Function_verify : is_function.
   
   (*
   fn call(
@@ -1755,6 +1756,7 @@ Module reference_safety.
     end.
   
   Axiom Function_call : M.IsFunction "move_bytecode_verifier::reference_safety::call" call.
+  Smpl Add apply Function_call : is_function.
   
   (*
   fn num_fields(struct_def: &StructDefinition) -> usize {
@@ -1826,6 +1828,7 @@ Module reference_safety.
   
   Axiom Function_num_fields :
     M.IsFunction "move_bytecode_verifier::reference_safety::num_fields" num_fields.
+  Smpl Add apply Function_num_fields : is_function.
   
   (*
   fn pack(
@@ -2606,6 +2609,7 @@ Module reference_safety.
     end.
   
   Axiom Function_pack : M.IsFunction "move_bytecode_verifier::reference_safety::pack" pack.
+  Smpl Add apply Function_pack : is_function.
   
   (*
   fn unpack(
@@ -3269,6 +3273,7 @@ Module reference_safety.
     end.
   
   Axiom Function_unpack : M.IsFunction "move_bytecode_verifier::reference_safety::unpack" unpack.
+  Smpl Add apply Function_unpack : is_function.
   
   (*
   fn vec_element_type(
@@ -3416,6 +3421,7 @@ Module reference_safety.
   
   Axiom Function_vec_element_type :
     M.IsFunction "move_bytecode_verifier::reference_safety::vec_element_type" vec_element_type.
+  Smpl Add apply Function_vec_element_type : is_function.
   
   (*
   fn execute_inner(
@@ -30128,6 +30134,7 @@ Module reference_safety.
   
   Axiom Function_execute_inner :
     M.IsFunction "move_bytecode_verifier::reference_safety::execute_inner" execute_inner.
+  Smpl Add apply Function_execute_inner : is_function.
   
   Module Impl_move_bytecode_verifier_absint_TransferFunctions_for_move_bytecode_verifier_reference_safety_ReferenceSafetyAnalysis.
     Definition Self : Ty.t :=

@@ -86,6 +86,7 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Axiom Function_eat_box_i32 : M.IsFunction "scoping_rules_borrowing::eat_box_i32" eat_box_i32.
+Smpl Add apply Function_eat_box_i32 : is_function.
 
 (*
 fn borrow_i32(borrowed_i32: &i32) {
@@ -167,6 +168,7 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_borrow_i32 : M.IsFunction "scoping_rules_borrowing::borrow_i32" borrow_i32.
+Smpl Add apply Function_borrow_i32 : is_function.
 
 (*
 fn main() {
@@ -273,3 +275,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing::main" main.
+Smpl Add apply Function_main : is_function.

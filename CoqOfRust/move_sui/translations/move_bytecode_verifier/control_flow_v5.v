@@ -209,6 +209,7 @@ Module control_flow_v5.
     end.
   
   Axiom Function_verify : M.IsFunction "move_bytecode_verifier::control_flow_v5::verify" verify.
+  Smpl Add apply Function_verify : is_function.
   
   (*
   fn verify_fallthrough(
@@ -379,6 +380,7 @@ Module control_flow_v5.
   
   Axiom Function_verify_fallthrough :
     M.IsFunction "move_bytecode_verifier::control_flow_v5::verify_fallthrough" verify_fallthrough.
+  Smpl Add apply Function_verify_fallthrough : is_function.
   
   (*
   Enum Label
@@ -1225,6 +1227,7 @@ Module control_flow_v5.
   
   Axiom Function_instruction_labels :
     M.IsFunction "move_bytecode_verifier::control_flow_v5::instruction_labels" instruction_labels.
+  Smpl Add apply Function_instruction_labels : is_function.
   
   (*
   fn check_jumps(
@@ -1735,6 +1738,7 @@ Module control_flow_v5.
   
   Axiom Function_check_jumps :
     M.IsFunction "move_bytecode_verifier::control_flow_v5::check_jumps" check_jumps.
+  Smpl Add apply Function_check_jumps : is_function.
   
   (*
   fn check_code<
@@ -2538,6 +2542,7 @@ Module control_flow_v5.
   
   Axiom Function_check_code :
     M.IsFunction "move_bytecode_verifier::control_flow_v5::check_code" check_code.
+  Smpl Add apply Function_check_code : is_function.
   
   (*
   fn is_back_edge(cur_instr: CodeOffset, target_instr: CodeOffset) -> bool {
@@ -2556,6 +2561,7 @@ Module control_flow_v5.
   
   Axiom Function_is_back_edge :
     M.IsFunction "move_bytecode_verifier::control_flow_v5::is_back_edge" is_back_edge.
+  Smpl Add apply Function_is_back_edge : is_function.
   
   (*
   fn check_continues(context: &ControlFlowVerifier, labels: &[Label]) -> PartialVMResult<()> {
@@ -3171,6 +3177,7 @@ Module control_flow_v5.
   
   Axiom Function_check_continues :
     M.IsFunction "move_bytecode_verifier::control_flow_v5::check_continues" check_continues.
+  Smpl Add apply Function_check_continues : is_function.
   
   (*
   fn check_breaks(context: &ControlFlowVerifier, labels: &[Label]) -> PartialVMResult<()> {
@@ -3586,6 +3593,7 @@ Module control_flow_v5.
   
   Axiom Function_check_breaks :
     M.IsFunction "move_bytecode_verifier::control_flow_v5::check_breaks" check_breaks.
+  Smpl Add apply Function_check_breaks : is_function.
   
   (*
   fn check_no_loop_splits(
@@ -4172,6 +4180,7 @@ Module control_flow_v5.
     M.IsFunction
       "move_bytecode_verifier::control_flow_v5::check_no_loop_splits"
       check_no_loop_splits.
+  Smpl Add apply Function_check_no_loop_splits : is_function.
   
   (*
   fn check_loop_depth(
@@ -4396,6 +4405,7 @@ Module control_flow_v5.
   
   Axiom Function_check_loop_depth :
     M.IsFunction "move_bytecode_verifier::control_flow_v5::check_loop_depth" check_loop_depth.
+  Smpl Add apply Function_check_loop_depth : is_function.
   
   (*
   fn count_loop_depth(labels: &[Label]) -> Vec<usize> {
@@ -4828,4 +4838,5 @@ Module control_flow_v5.
   
   Axiom Function_count_loop_depth :
     M.IsFunction "move_bytecode_verifier::control_flow_v5::count_loop_depth" count_loop_depth.
+  Smpl Add apply Function_count_loop_depth : is_function.
 End control_flow_v5.

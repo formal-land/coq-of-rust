@@ -5,6 +5,10 @@ Require core.links.clone.
 Require core.links.cmp.
 Require core.links.default.
 Require core.links.option.
+Require core.mem.links.mod.
+Require core.mem.mod.
+Require Import revm.translations.interpreter.gas.calc.
+Require revm.links.interpreter.gas.calc.
 Require Import revm.translations.interpreter.gas.
 
 Import Run.
@@ -157,9 +161,14 @@ Module Impl_MemoryGas.
     }
     intros [|[]]; run_symbolic.
     eapply Run.Let. {
-      admit.
+      run_symbolic.
+      eapply Run.CallClosure. {
+        epose proof (core.mem.links.mod.run_swap (T := _) _ (Ref.cast_to _ output1)).
+        apply H.
+      }
+      intros []; run_symbolic.
     }
-    admit.
+    intros []; run_symbolic.
   Admitted.
   Smpl Add apply run_record_new_len : run_closure.
 End Impl_MemoryGas.

@@ -109,6 +109,7 @@ Definition old_enough (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_old_enough : M.IsFunction "generics_new_type_idiom::old_enough" old_enough.
+Smpl Add apply Function_old_enough : is_function.
 
 (*
 fn main() {
@@ -333,3 +334,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "generics_new_type_idiom::main" main.
+Smpl Add apply Function_main : is_function.

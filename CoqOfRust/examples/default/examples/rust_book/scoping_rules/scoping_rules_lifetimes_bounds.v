@@ -146,6 +146,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_print : M.IsFunction "scoping_rules_lifetimes_bounds::print" print.
+Smpl Add apply Function_print : is_function.
 
 (*
 fn print_ref<'a, T>(t: &'a T)
@@ -230,6 +231,7 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   end.
 
 Axiom Function_print_ref : M.IsFunction "scoping_rules_lifetimes_bounds::print_ref" print_ref.
+Smpl Add apply Function_print_ref : is_function.
 
 (*
 fn main() {
@@ -285,3 +287,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_bounds::main" main.
+Smpl Add apply Function_main : is_function.

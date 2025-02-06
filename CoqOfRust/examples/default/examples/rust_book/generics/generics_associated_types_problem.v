@@ -183,6 +183,7 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_difference : M.IsFunction "generics_associated_types_problem::difference" difference.
+Smpl Add apply Function_difference : is_function.
 
 (*
 fn main() {
@@ -611,3 +612,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "generics_associated_types_problem::main" main.
+Smpl Add apply Function_main : is_function.

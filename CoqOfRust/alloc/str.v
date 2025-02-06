@@ -3829,6 +3829,7 @@ Module str.
     end.
   
   Axiom Function_join_generic_copy : M.IsFunction "alloc::str::join_generic_copy" join_generic_copy.
+  Smpl Add apply Function_join_generic_copy : is_function.
   
   Module Impl_core_borrow_Borrow_str_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -5621,6 +5622,7 @@ Module str.
   
   Axiom Function_from_boxed_utf8_unchecked :
     M.IsFunction "alloc::str::from_boxed_utf8_unchecked" from_boxed_utf8_unchecked.
+  Smpl Add apply Function_from_boxed_utf8_unchecked : is_function.
   
   (*
   pub fn convert_while_ascii(s: &str, convert: fn(&u8) -> u8) -> (String, &str) {
@@ -6574,6 +6576,7 @@ Module str.
   
   Axiom Function_convert_while_ascii :
     M.IsFunction "alloc::str::convert_while_ascii" convert_while_ascii.
+  Smpl Add apply Function_convert_while_ascii : is_function.
   
   Module convert_while_ascii.
     Definition value_N : Value.t :=

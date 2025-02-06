@@ -467,6 +467,7 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_zero_address : M.IsFunction "dns::zero_address" zero_address.
+Smpl Add apply Function_zero_address : is_function.
 
 Module Impl_core_default_Default_for_dns_DomainNameService.
   Definition Self : Ty.t := Ty.path "dns::DomainNameService".

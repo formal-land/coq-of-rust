@@ -34712,6 +34712,7 @@ Module normalized.
   
   Axiom Function_struct_instantiation :
     M.IsFunction "move_binary_format::normalized::struct_instantiation" struct_instantiation.
+  Smpl Add apply Function_struct_instantiation : is_function.
   
   (*
   fn field_instantiation(m: &CompiledModule, idx: &FieldInstantiationIndex) -> (FieldRef, Vec<Type>) {
@@ -34984,6 +34985,7 @@ Module normalized.
   
   Axiom Function_field_instantiation :
     M.IsFunction "move_binary_format::normalized::field_instantiation" field_instantiation.
+  Smpl Add apply Function_field_instantiation : is_function.
   
   (*
   fn signature_to_single_type(m: &CompiledModule, sig_idx: &SignatureIndex) -> Type {
@@ -35065,4 +35067,5 @@ Module normalized.
     M.IsFunction
       "move_binary_format::normalized::signature_to_single_type"
       signature_to_single_type.
+  Smpl Add apply Function_signature_to_single_type : is_function.
 End normalized.

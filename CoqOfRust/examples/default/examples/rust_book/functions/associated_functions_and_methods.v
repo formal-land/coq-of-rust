@@ -807,3 +807,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "associated_functions_and_methods::main" main.
+Smpl Add apply Function_main : is_function.

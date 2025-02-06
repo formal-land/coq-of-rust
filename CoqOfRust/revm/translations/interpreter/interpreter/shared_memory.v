@@ -3504,5 +3504,6 @@ Module interpreter.
     
     Axiom Function_num_words :
       M.IsFunction "revm_interpreter::interpreter::shared_memory::num_words" num_words.
+    Smpl Add apply Function_num_words : is_function.
   End shared_memory.
 End interpreter.

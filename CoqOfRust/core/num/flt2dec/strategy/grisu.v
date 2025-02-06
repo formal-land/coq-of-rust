@@ -716,6 +716,7 @@ Module num.
         
         Axiom Function_cached_power :
           M.IsFunction "core::num::flt2dec::strategy::grisu::cached_power" cached_power.
+        Smpl Add apply Function_cached_power : is_function.
         
         (*
         pub fn max_pow10_no_more_than(x: u32) -> (u8, u32) {
@@ -1130,6 +1131,7 @@ Module num.
           M.IsFunction
             "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than"
             max_pow10_no_more_than.
+        Smpl Add apply Function_max_pow10_no_more_than : is_function.
         
         Module max_pow10_no_more_than.
           Definition value_X9 : Value.t :=
@@ -3328,6 +3330,7 @@ Module num.
           M.IsFunction
             "core::num::flt2dec::strategy::grisu::format_shortest_opt"
             format_shortest_opt.
+        Smpl Add apply Function_format_shortest_opt : is_function.
         
         Module format_shortest_opt.
           (*
@@ -3800,6 +3803,7 @@ Module num.
             M.IsFunction
               "core::num::flt2dec::strategy::grisu::format_shortest_opt::round_and_weed"
               round_and_weed.
+          Smpl Add apply Function_round_and_weed : is_function.
         End format_shortest_opt.
         
         (*
@@ -3896,6 +3900,7 @@ Module num.
         
         Axiom Function_format_shortest :
           M.IsFunction "core::num::flt2dec::strategy::grisu::format_shortest" format_shortest.
+        Smpl Add apply Function_format_shortest : is_function.
         
         (*
         pub fn format_exact_opt<'a>(
@@ -5673,6 +5678,7 @@ Module num.
         
         Axiom Function_format_exact_opt :
           M.IsFunction "core::num::flt2dec::strategy::grisu::format_exact_opt" format_exact_opt.
+        Smpl Add apply Function_format_exact_opt : is_function.
         
         Module format_exact_opt.
           Definition value_POW10_UP_TO_9 : Value.t :=
@@ -6392,6 +6398,7 @@ Module num.
             M.IsFunction
               "core::num::flt2dec::strategy::grisu::format_exact_opt::possibly_round"
               possibly_round.
+          Smpl Add apply Function_possibly_round : is_function.
         End format_exact_opt.
         
         (*
@@ -6492,6 +6499,7 @@ Module num.
         
         Axiom Function_format_exact :
           M.IsFunction "core::num::flt2dec::strategy::grisu::format_exact" format_exact.
+        Smpl Add apply Function_format_exact : is_function.
       End grisu.
     End strategy.
   End flt2dec.

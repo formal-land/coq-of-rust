@@ -178,6 +178,7 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
 
 Axiom Function_borrow_book :
   M.IsFunction "scoping_rules_borrowing_mutablity::borrow_book" borrow_book.
+Smpl Add apply Function_borrow_book : is_function.
 
 (*
 fn new_edition(book: &mut Book) {
@@ -303,6 +304,7 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
 
 Axiom Function_new_edition :
   M.IsFunction "scoping_rules_borrowing_mutablity::new_edition" new_edition.
+Smpl Add apply Function_new_edition : is_function.
 
 (*
 fn main() {
@@ -390,3 +392,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.
+Smpl Add apply Function_main : is_function.

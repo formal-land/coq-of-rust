@@ -73,6 +73,7 @@ Module intrinsics.
     
     Axiom Function_value_UnwindContinue :
       M.IsFunction "core::intrinsics::mir::UnwindContinue" value_UnwindContinue.
+    Smpl Add apply Function_value_UnwindContinue : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindUnreachable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -94,6 +95,7 @@ Module intrinsics.
     
     Axiom Function_value_UnwindUnreachable :
       M.IsFunction "core::intrinsics::mir::UnwindUnreachable" value_UnwindUnreachable.
+    Smpl Add apply Function_value_UnwindUnreachable : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindTerminate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -116,6 +118,7 @@ Module intrinsics.
     
     Axiom Function_value_UnwindTerminate :
       M.IsFunction "core::intrinsics::mir::UnwindTerminate" value_UnwindTerminate.
+    Smpl Add apply Function_value_UnwindTerminate : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindCleanup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -138,6 +141,7 @@ Module intrinsics.
     
     Axiom Function_value_UnwindCleanup :
       M.IsFunction "core::intrinsics::mir::UnwindCleanup" value_UnwindCleanup.
+    Smpl Add apply Function_value_UnwindCleanup : is_function.
     
     (* StructTuple
       {
@@ -163,6 +167,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_ReturnTo : M.IsFunction "core::intrinsics::mir::ReturnTo" value_ReturnTo.
+    Smpl Add apply Function_value_ReturnTo : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Return (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -179,6 +184,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Return : M.IsFunction "core::intrinsics::mir::Return" value_Return.
+    Smpl Add apply Function_value_Return : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Goto (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -196,6 +202,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Goto : M.IsFunction "core::intrinsics::mir::Goto" value_Goto.
+    Smpl Add apply Function_value_Goto : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Unreachable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -213,6 +220,7 @@ Module intrinsics.
     
     Axiom Function_value_Unreachable :
       M.IsFunction "core::intrinsics::mir::Unreachable" value_Unreachable.
+    Smpl Add apply Function_value_Unreachable : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -232,6 +240,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Drop : M.IsFunction "core::intrinsics::mir::Drop" value_Drop.
+    Smpl Add apply Function_value_Drop : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -251,6 +260,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Call : M.IsFunction "core::intrinsics::mir::Call" value_Call.
+    Smpl Add apply Function_value_Call : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_TailCall (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -268,6 +278,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_TailCall : M.IsFunction "core::intrinsics::mir::TailCall" value_TailCall.
+    Smpl Add apply Function_value_TailCall : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindResume (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -289,6 +300,7 @@ Module intrinsics.
     
     Axiom Function_value_UnwindResume :
       M.IsFunction "core::intrinsics::mir::UnwindResume" value_UnwindResume.
+    Smpl Add apply Function_value_UnwindResume : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_StorageLive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -307,6 +319,7 @@ Module intrinsics.
     
     Axiom Function_value_StorageLive :
       M.IsFunction "core::intrinsics::mir::StorageLive" value_StorageLive.
+    Smpl Add apply Function_value_StorageLive : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_StorageDead (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -325,6 +338,7 @@ Module intrinsics.
     
     Axiom Function_value_StorageDead :
       M.IsFunction "core::intrinsics::mir::StorageDead" value_StorageDead.
+    Smpl Add apply Function_value_StorageDead : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Assume (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -342,6 +356,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Assume : M.IsFunction "core::intrinsics::mir::Assume" value_Assume.
+    Smpl Add apply Function_value_Assume : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Deinit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -359,6 +374,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Deinit : M.IsFunction "core::intrinsics::mir::Deinit" value_Deinit.
+    Smpl Add apply Function_value_Deinit : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Checked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -376,6 +392,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Checked : M.IsFunction "core::intrinsics::mir::Checked" value_Checked.
+    Smpl Add apply Function_value_Checked : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -393,6 +410,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Len : M.IsFunction "core::intrinsics::mir::Len" value_Len.
+    Smpl Add apply Function_value_Len : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_PtrMetadata (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -411,6 +429,7 @@ Module intrinsics.
     
     Axiom Function_value_PtrMetadata :
       M.IsFunction "core::intrinsics::mir::PtrMetadata" value_PtrMetadata.
+    Smpl Add apply Function_value_PtrMetadata : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_CopyForDeref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -433,6 +452,7 @@ Module intrinsics.
     
     Axiom Function_value_CopyForDeref :
       M.IsFunction "core::intrinsics::mir::CopyForDeref" value_CopyForDeref.
+    Smpl Add apply Function_value_CopyForDeref : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Retag (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -450,6 +470,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Retag : M.IsFunction "core::intrinsics::mir::Retag" value_Retag.
+    Smpl Add apply Function_value_Retag : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Move (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -467,6 +488,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Move : M.IsFunction "core::intrinsics::mir::Move" value_Move.
+    Smpl Add apply Function_value_Move : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Static (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -484,6 +506,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Static : M.IsFunction "core::intrinsics::mir::Static" value_Static.
+    Smpl Add apply Function_value_Static : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_StaticMut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -502,6 +525,7 @@ Module intrinsics.
     
     Axiom Function_value_StaticMut :
       M.IsFunction "core::intrinsics::mir::StaticMut" value_StaticMut.
+    Smpl Add apply Function_value_StaticMut : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Discriminant (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -524,6 +548,7 @@ Module intrinsics.
     
     Axiom Function_value_Discriminant :
       M.IsFunction "core::intrinsics::mir::Discriminant" value_Discriminant.
+    Smpl Add apply Function_value_Discriminant : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_SetDiscriminant (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -547,6 +572,7 @@ Module intrinsics.
     
     Axiom Function_value_SetDiscriminant :
       M.IsFunction "core::intrinsics::mir::SetDiscriminant" value_SetDiscriminant.
+    Smpl Add apply Function_value_SetDiscriminant : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Offset (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -565,6 +591,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Offset : M.IsFunction "core::intrinsics::mir::Offset" value_Offset.
+    Smpl Add apply Function_value_Offset : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Field (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -583,6 +610,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Field : M.IsFunction "core::intrinsics::mir::Field" value_Field.
+    Smpl Add apply Function_value_Field : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Variant (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -601,6 +629,7 @@ Module intrinsics.
       end.
     
     Axiom Function_value_Variant : M.IsFunction "core::intrinsics::mir::Variant" value_Variant.
+    Smpl Add apply Function_value_Variant : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_CastTransmute (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -623,6 +652,7 @@ Module intrinsics.
     
     Axiom Function_value_CastTransmute :
       M.IsFunction "core::intrinsics::mir::CastTransmute" value_CastTransmute.
+    Smpl Add apply Function_value_CastTransmute : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_CastPtrToPtr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -645,6 +675,7 @@ Module intrinsics.
     
     Axiom Function_value_CastPtrToPtr :
       M.IsFunction "core::intrinsics::mir::CastPtrToPtr" value_CastPtrToPtr.
+    Smpl Add apply Function_value_CastPtrToPtr : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition __internal_make_place (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -667,6 +698,7 @@ Module intrinsics.
     
     Axiom Function___internal_make_place :
       M.IsFunction "core::intrinsics::mir::__internal_make_place" __internal_make_place.
+    Smpl Add apply Function___internal_make_place : is_function.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition __debuginfo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -685,5 +717,6 @@ Module intrinsics.
       end.
     
     Axiom Function___debuginfo : M.IsFunction "core::intrinsics::mir::__debuginfo" __debuginfo.
+    Smpl Add apply Function___debuginfo : is_function.
   End mir.
 End intrinsics.

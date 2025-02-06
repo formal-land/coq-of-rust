@@ -169,6 +169,7 @@ End Impl_core_ops_bit_Not_for_subtle_Choice.
 Parameter black_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_black_box : M.IsFunction "subtle::black_box" black_box.
+Smpl Add apply Function_black_box : is_function.
 
 Module Impl_core_convert_From_u8_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".

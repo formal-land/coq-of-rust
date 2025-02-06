@@ -26,3 +26,4 @@ End Impl_scoping_rules_lifetimes_methods_Owner.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_methods::main" main.
+Smpl Add apply Function_main : is_function.

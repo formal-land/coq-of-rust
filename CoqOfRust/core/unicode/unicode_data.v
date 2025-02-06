@@ -348,6 +348,7 @@ Module unicode.
     
     Axiom Function_bitset_search :
       M.IsFunction "core::unicode::unicode_data::bitset_search" bitset_search.
+    Smpl Add apply Function_bitset_search : is_function.
     
     (*
     fn decode_prefix_sum(short_offset_run_header: u32) -> u32 {
@@ -373,6 +374,7 @@ Module unicode.
     
     Axiom Function_decode_prefix_sum :
       M.IsFunction "core::unicode::unicode_data::decode_prefix_sum" decode_prefix_sum.
+    Smpl Add apply Function_decode_prefix_sum : is_function.
     
     (*
     fn decode_length(short_offset_run_header: u32) -> usize {
@@ -395,6 +397,7 @@ Module unicode.
     
     Axiom Function_decode_length :
       M.IsFunction "core::unicode::unicode_data::decode_length" decode_length.
+    Smpl Add apply Function_decode_length : is_function.
     
     (*
     fn skip_search<const SOR: usize, const OFFSETS: usize>(
@@ -828,6 +831,7 @@ Module unicode.
     
     Axiom Function_skip_search :
       M.IsFunction "core::unicode::unicode_data::skip_search" skip_search.
+    Smpl Add apply Function_skip_search : is_function.
     
     Definition value_UNICODE_VERSION : Value.t :=
       M.run_constant
@@ -2500,6 +2504,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::alphabetic::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End alphabetic.
     
     Module case_ignorable.
@@ -3532,6 +3537,7 @@ Module unicode.
       
       Axiom Function_lookup :
         M.IsFunction "core::unicode::unicode_data::case_ignorable::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End case_ignorable.
     
     Module cased.
@@ -3959,6 +3965,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cased::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End cased.
     
     Module cc.
@@ -4044,6 +4051,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cc::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End cc.
     
     Module grapheme_extend.
@@ -4893,6 +4901,7 @@ Module unicode.
       
       Axiom Function_lookup :
         M.IsFunction "core::unicode::unicode_data::grapheme_extend::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
       
       (*
           fn lookup_slow(c: char) -> bool {
@@ -4950,6 +4959,7 @@ Module unicode.
       
       Axiom Function_lookup_slow :
         M.IsFunction "core::unicode::unicode_data::grapheme_extend::lookup_slow" lookup_slow.
+      Smpl Add apply Function_lookup_slow : is_function.
     End grapheme_extend.
     
     Module lowercase.
@@ -5741,6 +5751,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::lowercase::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End lowercase.
     
     Module n.
@@ -6158,6 +6169,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::n::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End n.
     
     Module uppercase.
@@ -6888,6 +6900,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::uppercase::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End uppercase.
     
     Module white_space.
@@ -7281,6 +7294,7 @@ Module unicode.
       
       Axiom Function_lookup :
         M.IsFunction "core::unicode::unicode_data::white_space::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End white_space.
     
     Module conversions.
@@ -7701,6 +7715,7 @@ Module unicode.
       
       Axiom Function_to_lower :
         M.IsFunction "core::unicode::unicode_data::conversions::to_lower" to_lower.
+      Smpl Add apply Function_to_lower : is_function.
       
       (*
           pub fn to_upper(c: char) -> [char; 3] {
@@ -8112,6 +8127,7 @@ Module unicode.
       
       Axiom Function_to_upper :
         M.IsFunction "core::unicode::unicode_data::conversions::to_upper" to_upper.
+      Smpl Add apply Function_to_upper : is_function.
       
       Definition value_LOWERCASE_TABLE : Value.t :=
         M.run_constant

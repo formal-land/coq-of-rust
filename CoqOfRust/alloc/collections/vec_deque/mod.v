@@ -14301,6 +14301,7 @@ Module collections.
       end.
     
     Axiom Function_wrap_index : M.IsFunction "alloc::collections::vec_deque::wrap_index" wrap_index.
+    Smpl Add apply Function_wrap_index : is_function.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=

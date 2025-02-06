@@ -49,6 +49,7 @@ Module identifier.
   
   Axiom Function_is_valid_identifier_char :
     M.IsFunction "move_core_types::identifier::is_valid_identifier_char" is_valid_identifier_char.
+  Smpl Add apply Function_is_valid_identifier_char : is_function.
   
   (*
   const fn all_bytes_valid(b: &[u8], start_offset: usize) -> bool {
@@ -178,6 +179,7 @@ Module identifier.
   
   Axiom Function_all_bytes_valid :
     M.IsFunction "move_core_types::identifier::all_bytes_valid" all_bytes_valid.
+  Smpl Add apply Function_all_bytes_valid : is_function.
   
   (*
   pub const fn is_valid(s: &str) -> bool {
@@ -331,6 +333,7 @@ Module identifier.
     end.
   
   Axiom Function_is_valid : M.IsFunction "move_core_types::identifier::is_valid" is_valid.
+  Smpl Add apply Function_is_valid : is_function.
   
   (* StructTuple
     {

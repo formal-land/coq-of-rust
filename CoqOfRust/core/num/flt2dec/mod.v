@@ -375,6 +375,7 @@ Module num.
       end.
     
     Axiom Function_round_up : M.IsFunction "core::num::flt2dec::round_up" round_up.
+    Smpl Add apply Function_round_up : is_function.
     
     (*
     fn digits_to_dec_str<'a>(
@@ -1575,6 +1576,7 @@ Module num.
     
     Axiom Function_digits_to_dec_str :
       M.IsFunction "core::num::flt2dec::digits_to_dec_str" digits_to_dec_str.
+    Smpl Add apply Function_digits_to_dec_str : is_function.
     
     (*
     fn digits_to_exp_str<'a>(
@@ -2262,6 +2264,7 @@ Module num.
     
     Axiom Function_digits_to_exp_str :
       M.IsFunction "core::num::flt2dec::digits_to_exp_str" digits_to_exp_str.
+    Smpl Add apply Function_digits_to_exp_str : is_function.
     
     (*
     Enum Sign
@@ -2540,6 +2543,7 @@ Module num.
     
     Axiom Function_determine_sign :
       M.IsFunction "core::num::flt2dec::determine_sign" determine_sign.
+    Smpl Add apply Function_determine_sign : is_function.
     
     (*
     pub fn to_shortest_str<'a, T, F>(
@@ -3350,6 +3354,7 @@ Module num.
     
     Axiom Function_to_shortest_str :
       M.IsFunction "core::num::flt2dec::to_shortest_str" to_shortest_str.
+    Smpl Add apply Function_to_shortest_str : is_function.
     
     (*
     pub fn to_shortest_exp_str<'a, T, F>(
@@ -4203,6 +4208,7 @@ Module num.
     
     Axiom Function_to_shortest_exp_str :
       M.IsFunction "core::num::flt2dec::to_shortest_exp_str" to_shortest_exp_str.
+    Smpl Add apply Function_to_shortest_exp_str : is_function.
     
     (*
     fn estimate_max_buf_len(exp: i16) -> usize {
@@ -4248,6 +4254,7 @@ Module num.
     
     Axiom Function_estimate_max_buf_len :
       M.IsFunction "core::num::flt2dec::estimate_max_buf_len" estimate_max_buf_len.
+    Smpl Add apply Function_estimate_max_buf_len : is_function.
     
     (*
     pub fn to_exact_exp_str<'a, T, F>(
@@ -5307,6 +5314,7 @@ Module num.
     
     Axiom Function_to_exact_exp_str :
       M.IsFunction "core::num::flt2dec::to_exact_exp_str" to_exact_exp_str.
+    Smpl Add apply Function_to_exact_exp_str : is_function.
     
     (*
     pub fn to_exact_fixed_str<'a, T, F>(
@@ -6744,5 +6752,6 @@ Module num.
     
     Axiom Function_to_exact_fixed_str :
       M.IsFunction "core::num::flt2dec::to_exact_fixed_str" to_exact_fixed_str.
+    Smpl Add apply Function_to_exact_fixed_str : is_function.
   End flt2dec.
 End num.

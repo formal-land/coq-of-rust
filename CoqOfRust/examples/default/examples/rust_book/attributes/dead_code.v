@@ -9,6 +9,7 @@ Definition used_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   end.
 
 Axiom Function_used_function : M.IsFunction "dead_code::used_function" used_function.
+Smpl Add apply Function_used_function : is_function.
 
 (* fn unused_function() {} *)
 Definition unused_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -18,6 +19,7 @@ Definition unused_function (ε : list Value.t) (τ : list Ty.t) (α : list Value
   end.
 
 Axiom Function_unused_function : M.IsFunction "dead_code::unused_function" unused_function.
+Smpl Add apply Function_unused_function : is_function.
 
 (* fn noisy_unused_function() {} *)
 Definition noisy_unused_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -28,6 +30,7 @@ Definition noisy_unused_function (ε : list Value.t) (τ : list Ty.t) (α : list
 
 Axiom Function_noisy_unused_function :
   M.IsFunction "dead_code::noisy_unused_function" noisy_unused_function.
+Smpl Add apply Function_noisy_unused_function : is_function.
 
 (*
 fn main() {
@@ -49,3 +52,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "dead_code::main" main.
+Smpl Add apply Function_main : is_function.

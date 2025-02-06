@@ -93,6 +93,7 @@ Module array.
     
     Axiom Function_drain_array_with :
       M.IsFunction "core::array::drain::drain_array_with" drain_array_with.
+    Smpl Add apply Function_drain_array_with : is_function.
     
     (* StructTuple
       {

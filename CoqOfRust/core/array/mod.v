@@ -29,6 +29,7 @@ Module array.
     end.
   
   Axiom Function_repeat : M.IsFunction "core::array::repeat" repeat.
+  Smpl Add apply Function_repeat : is_function.
   
   (*
   pub fn from_fn<T, const N: usize, F>(cb: F) -> [T; N]
@@ -76,6 +77,7 @@ Module array.
     end.
   
   Axiom Function_from_fn : M.IsFunction "core::array::from_fn" from_fn.
+  Smpl Add apply Function_from_fn : is_function.
   
   (*
   pub fn try_from_fn<R, const N: usize, F>(cb: F) -> ChangeOutputType<R, [R::Output; N]>
@@ -183,6 +185,7 @@ Module array.
     end.
   
   Axiom Function_try_from_fn : M.IsFunction "core::array::try_from_fn" try_from_fn.
+  Smpl Add apply Function_try_from_fn : is_function.
   
   (*
   pub const fn from_ref<T>(s: &T) -> &[T; 1] {
@@ -225,6 +228,7 @@ Module array.
     end.
   
   Axiom Function_from_ref : M.IsFunction "core::array::from_ref" from_ref.
+  Smpl Add apply Function_from_ref : is_function.
   
   (*
   pub const fn from_mut<T>(s: &mut T) -> &mut [T; 1] {
@@ -281,6 +285,7 @@ Module array.
     end.
   
   Axiom Function_from_mut : M.IsFunction "core::array::from_mut" from_mut.
+  Smpl Add apply Function_from_mut : is_function.
   
   (* StructTuple
     {
@@ -5765,6 +5770,7 @@ Module array.
   
   Axiom Function_from_trusted_iterator :
     M.IsFunction "core::array::from_trusted_iterator" from_trusted_iterator.
+  Smpl Add apply Function_from_trusted_iterator : is_function.
   
   (*
   fn try_from_trusted_iterator<T, R, const N: usize>(
@@ -5857,6 +5863,7 @@ Module array.
   
   Axiom Function_try_from_trusted_iterator :
     M.IsFunction "core::array::try_from_trusted_iterator" try_from_trusted_iterator.
+  Smpl Add apply Function_try_from_trusted_iterator : is_function.
   
   Module try_from_trusted_iterator.
     (*
@@ -5904,6 +5911,7 @@ Module array.
       end.
     
     Axiom Function_next : M.IsFunction "core::array::try_from_trusted_iterator::next" next.
+    Smpl Add apply Function_next : is_function.
     
     Module next.
       (* Error OpaqueTy *)
@@ -6167,6 +6175,7 @@ Module array.
   
   Axiom Function_try_from_fn_erased :
     M.IsFunction "core::array::try_from_fn_erased" try_from_fn_erased.
+  Smpl Add apply Function_try_from_fn_erased : is_function.
   
   (* StructRecord
     {
@@ -6604,6 +6613,7 @@ Module array.
     end.
   
   Axiom Function_iter_next_chunk : M.IsFunction "core::array::iter_next_chunk" iter_next_chunk.
+  Smpl Add apply Function_iter_next_chunk : is_function.
   
   (*
   fn iter_next_chunk_erased<T>(
@@ -6772,4 +6782,5 @@ Module array.
   
   Axiom Function_iter_next_chunk_erased :
     M.IsFunction "core::array::iter_next_chunk_erased" iter_next_chunk_erased.
+  Smpl Add apply Function_iter_next_chunk_erased : is_function.
 End array.

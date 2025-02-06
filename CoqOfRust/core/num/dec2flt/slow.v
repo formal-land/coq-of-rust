@@ -986,6 +986,7 @@ Module num.
       
       Axiom Function_parse_long_mantissa :
         M.IsFunction "core::num::dec2flt::slow::parse_long_mantissa" parse_long_mantissa.
+      Smpl Add apply Function_parse_long_mantissa : is_function.
       
       Module parse_long_mantissa.
         Definition value_MAX_SHIFT : Value.t :=

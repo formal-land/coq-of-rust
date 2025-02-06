@@ -388,3 +388,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "for_and_range_completely_inclusive::main" main.
+Smpl Add apply Function_main : is_function.

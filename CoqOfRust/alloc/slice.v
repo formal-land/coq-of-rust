@@ -75,6 +75,7 @@ Module slice.
       end.
     
     Axiom Function_into_vec : M.IsFunction "alloc::slice::hack::into_vec" into_vec.
+    Smpl Add apply Function_into_vec : is_function.
     
     (*
         pub fn to_vec<T: ConvertVec, A: Allocator>(s: &[T], alloc: A) -> Vec<T, A> {
@@ -103,6 +104,7 @@ Module slice.
       end.
     
     Axiom Function_to_vec : M.IsFunction "alloc::slice::hack::to_vec" to_vec.
+    Smpl Add apply Function_to_vec : is_function.
     
     (* Trait *)
     (* Empty module 'ConvertVec' *)
@@ -4288,6 +4290,7 @@ Module slice.
     end.
   
   Axiom Function_stable_sort : M.IsFunction "alloc::slice::stable_sort" stable_sort.
+  Smpl Add apply Function_stable_sort : is_function.
   
   Module Impl_core_slice_sort_stable_BufGuard_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=

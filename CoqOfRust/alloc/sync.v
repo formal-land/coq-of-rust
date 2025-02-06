@@ -7685,6 +7685,7 @@ Module sync.
   
   Axiom Function_arcinner_layout_for_value_layout :
     M.IsFunction "alloc::sync::arcinner_layout_for_value_layout" arcinner_layout_for_value_layout.
+  Smpl Add apply Function_arcinner_layout_for_value_layout : is_function.
   
   Module Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_for_alloc_sync_ArcInner_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ].
@@ -15123,6 +15124,7 @@ Module sync.
     end.
   
   Axiom Function_data_offset : M.IsFunction "alloc::sync::data_offset" data_offset.
+  Smpl Add apply Function_data_offset : is_function.
   
   (*
   fn data_offset_align(align: usize) -> usize {
@@ -15176,6 +15178,7 @@ Module sync.
   
   Axiom Function_data_offset_align :
     M.IsFunction "alloc::sync::data_offset_align" data_offset_align.
+  Smpl Add apply Function_data_offset_align : is_function.
   
   (* StructRecord
     {

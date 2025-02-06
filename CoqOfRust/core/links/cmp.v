@@ -92,10 +92,6 @@ Module Ord.
   Proof.
     destruct H_cmp as [cmp [H_cmp run_cmp]].
     run_symbolic.
-    eapply Run.CallPrimitiveGetFunction. {
-      apply cmp.Function_max_by.
-    }
-    run_symbolic.
     eapply Run.CallClosure. {
       apply (
         run_max_by
@@ -131,10 +127,6 @@ Module Impl_Ord_for_u64.
       { reflexivity. }
     }
     { intros.
-      run_symbolic.
-      eapply Run.CallPrimitiveGetFunction. {
-        apply intrinsics.Function_three_way_compare.
-      }
       run_symbolic.
       eapply Run.CallClosure. {
         apply (intrinsics.run_three_way_compare IntegerKind.U64).

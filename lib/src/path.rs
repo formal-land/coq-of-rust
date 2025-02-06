@@ -1,5 +1,6 @@
 use crate::env::*;
-use crate::render::*;
+use pretty::DocAllocator;
+use pretty::DocBuilder;
 use rustc_hir::{
     def::{DefKind, Res},
     definitions::DefPathData,
@@ -31,11 +32,15 @@ impl Path {
         })
     }
 
-    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D) -> DocBuilder<'a, D>
+    where
+        D: DocAllocator<'a>,
+        D::Doc: Clone,
+    {
         // clone to be able to consume
         let segments = self.segments.clone();
         // consume (by into_iter) to let the result live arbitrarily long
-        intersperse(segments, [text(".")])
+        ψ.intersperse(segments, ψ.text("."))
     }
 
     pub(crate) fn to_name(&self) -> String {

@@ -1309,5 +1309,6 @@ Module bls12_381.
       end.
     
     Axiom Function_g2_msm : M.IsFunction "revm_precompile::bls12_381::g2_msm::g2_msm" g2_msm.
+    Smpl Add apply Function_g2_msm : is_function.
   End g2_msm.
 End bls12_381.

@@ -14976,6 +14976,7 @@ Module collections.
     
     Axiom Function_assert_covariance :
       M.IsFunction "alloc::collections::linked_list::assert_covariance" assert_covariance.
+    Smpl Add apply Function_assert_covariance : is_function.
     
     Module assert_covariance.
       (*
@@ -14993,6 +14994,7 @@ Module collections.
         end.
       
       Axiom Function_a : M.IsFunction "alloc::collections::linked_list::assert_covariance::a" a.
+      Smpl Add apply Function_a : is_function.
       
       (*
           fn b<'i, 'a>(x: Iter<'i, &'static str>) -> Iter<'i, &'a str> {
@@ -15009,6 +15011,7 @@ Module collections.
         end.
       
       Axiom Function_b : M.IsFunction "alloc::collections::linked_list::assert_covariance::b" b.
+      Smpl Add apply Function_b : is_function.
       
       (*
           fn c<'a>(x: IntoIter<&'static str>) -> IntoIter<&'a str> {
@@ -15025,6 +15028,7 @@ Module collections.
         end.
       
       Axiom Function_c : M.IsFunction "alloc::collections::linked_list::assert_covariance::c" c.
+      Smpl Add apply Function_c : is_function.
     End assert_covariance.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_collections_linked_list_LinkedList_T_A.

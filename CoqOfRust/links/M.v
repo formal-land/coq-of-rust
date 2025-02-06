@@ -43,6 +43,12 @@ Module OfValue.
     reflexivity.
   Defined.
   Smpl Add apply of_value : of_value.
+
+  Lemma get_value_of_value_eq {A : Set} `{Link A} (value : A) :
+    get_value (of_value value) = value.
+  Proof.
+    reflexivity.
+  Qed.
 End OfValue.
 
 Module Bool.
@@ -820,6 +826,9 @@ Ltac run_symbolic_state_read_immediate :=
 Ltac run_symbolic_state_write :=
   eapply Run.CallPrimitiveStateWrite; [smpl of_value |].
 
+Ltac run_symbolic_get_function :=
+  eapply Run.CallPrimitiveGetFunction; [smpl is_function |].
+
 Ltac run_symbolic_get_associated_function :=
   eapply Run.CallPrimitiveGetAssociatedFunction; [smpl is_associated |].
 
@@ -846,6 +855,7 @@ Ltac run_symbolic_closure :=
 Ltac run_rewrites :=
   eapply Run.Rewrite; [
     (repeat (
+      rewrite OfValue.get_value_of_value_eq ||
       rewrite Ref.deref_eq ||
       rewrite Ref.borrow_eq ||
       rewrite Ref.cast_cast_eq ||
@@ -857,17 +867,18 @@ Ltac run_rewrites :=
 Ltac run_symbolic_one_step_immediate :=
   match goal with
   | |- {{ _ 🔽 _, _ }} =>
+    cbn ||
     run_symbolic_pure ||
     run_symbolic_state_alloc_immediate ||
     run_symbolic_state_read_immediate ||
     run_symbolic_state_read ||
     run_symbolic_state_write ||
+    run_symbolic_get_function ||
     run_symbolic_get_associated_function ||
     run_symbolic_get_trait_method ||
     run_symbolic_closure ||
     run_rewrites ||
-    fold @LowM.let_ ||
-    cbn
+    fold @LowM.let_
   end.
 
 Smpl Create run_symbolic.

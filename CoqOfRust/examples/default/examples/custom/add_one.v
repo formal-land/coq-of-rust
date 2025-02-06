@@ -16,3 +16,4 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Axiom Function_add_one : M.IsFunction "add_one::add_one" add_one.
+Smpl Add apply Function_add_one : is_function.

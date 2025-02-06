@@ -22,6 +22,7 @@ Module iter.
         end.
       
       Axiom Function_from_fn : M.IsFunction "core::iter::sources::from_fn::from_fn" from_fn.
+      Smpl Add apply Function_from_fn : is_function.
       
       (* StructTuple
         {

@@ -66,7 +66,7 @@ jobs:
             cp ../../../../rust-toolchain ./
             time cargo build
             touch src/lib.rs
-            cargo coq-of-rust
+            time cargo coq-of-rust
             rsync -acv src/ ../../../../CoqOfRust/alloc/ --include='*/' --include='*.v' --exclude='*'
             cd ../../../..
           endGroup
@@ -75,7 +75,8 @@ jobs:
             cp ../../../../rust-toolchain ./
             time cargo build
             touch src/lib.rs
-            cargo coq-of-rust
+            export RUST_MIN_STACK=800000000
+            time cargo coq-of-rust
             rsync -acv src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --exclude='*'
             cd ../../../..
           endGroup

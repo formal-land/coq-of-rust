@@ -241,6 +241,7 @@ Module slice.
         
         Axiom Function_choose_pivot :
           M.IsFunction "core::slice::sort::shared::pivot::choose_pivot" choose_pivot.
+        Smpl Add apply Function_choose_pivot : is_function.
         
         (*
         unsafe fn median3_rec<T, F: FnMut(&T, &T) -> bool>(
@@ -476,6 +477,7 @@ Module slice.
         
         Axiom Function_median3_rec :
           M.IsFunction "core::slice::sort::shared::pivot::median3_rec" median3_rec.
+        Smpl Add apply Function_median3_rec : is_function.
         
         (*
         fn median3<T, F: FnMut(&T, &T) -> bool>(a: &T, b: &T, c: &T, is_less: &mut F) -> *const T {
@@ -637,6 +639,7 @@ Module slice.
           end.
         
         Axiom Function_median3 : M.IsFunction "core::slice::sort::shared::pivot::median3" median3.
+        Smpl Add apply Function_median3 : is_function.
       End pivot.
     End shared.
   End sort.

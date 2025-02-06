@@ -216,6 +216,7 @@ Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Valu
 
 Axiom Function_have_ingredients :
   M.IsFunction "combinators_and_then::have_ingredients" have_ingredients.
+Smpl Add apply Function_have_ingredients : is_function.
 
 (*
 fn have_recipe(food: Food) -> Option<Food> {
@@ -250,6 +251,7 @@ Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Axiom Function_have_recipe : M.IsFunction "combinators_and_then::have_recipe" have_recipe.
+Smpl Add apply Function_have_recipe : is_function.
 
 (*
 fn cookable_v1(food: Food) -> Option<Food> {
@@ -318,6 +320,7 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Axiom Function_cookable_v1 : M.IsFunction "combinators_and_then::cookable_v1" cookable_v1.
+Smpl Add apply Function_cookable_v1 : is_function.
 
 (*
 fn cookable_v2(food: Food) -> Option<Food> {
@@ -356,6 +359,7 @@ Definition cookable_v2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Axiom Function_cookable_v2 : M.IsFunction "combinators_and_then::cookable_v2" cookable_v2.
+Smpl Add apply Function_cookable_v2 : is_function.
 
 (*
 fn eat(food: Food, day: Day) {
@@ -534,6 +538,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_eat : M.IsFunction "combinators_and_then::eat" eat.
+Smpl Add apply Function_eat : is_function.
 
 (*
 fn main() {
@@ -605,3 +610,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "combinators_and_then::main" main.
+Smpl Add apply Function_main : is_function.

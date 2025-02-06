@@ -95,6 +95,7 @@ Module cyclic_dependencies.
   
   Axiom Function_verify_module :
     M.IsFunction "move_bytecode_verifier::cyclic_dependencies::verify_module" verify_module.
+  Smpl Add apply Function_verify_module : is_function.
   
   (*
   fn verify_module_impl<D>(module: &CompiledModule, imm_deps: D) -> PartialVMResult<()>
@@ -444,6 +445,7 @@ Module cyclic_dependencies.
     M.IsFunction
       "move_bytecode_verifier::cyclic_dependencies::verify_module_impl"
       verify_module_impl.
+  Smpl Add apply Function_verify_module_impl : is_function.
   
   Module verify_module_impl.
     (*
@@ -959,5 +961,6 @@ Module cyclic_dependencies.
       M.IsFunction
         "move_bytecode_verifier::cyclic_dependencies::verify_module_impl::detect_cycles"
         detect_cycles.
+    Smpl Add apply Function_detect_cycles : is_function.
   End verify_module_impl.
 End cyclic_dependencies.

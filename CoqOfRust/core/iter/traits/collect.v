@@ -741,6 +741,7 @@ Module iter.
       
       Axiom Function_default_extend_tuple :
         M.IsFunction "core::iter::traits::collect::default_extend_tuple" default_extend_tuple.
+      Smpl Add apply Function_default_extend_tuple : is_function.
       
       Module default_extend_tuple.
         (*
@@ -836,6 +837,7 @@ Module iter.
         
         Axiom Function_extend :
           M.IsFunction "core::iter::traits::collect::default_extend_tuple::extend" extend.
+        Smpl Add apply Function_extend : is_function.
         
         Module extend.
           (* Error OpaqueTy *)

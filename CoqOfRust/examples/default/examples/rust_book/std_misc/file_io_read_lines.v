@@ -80,6 +80,7 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_read_lines : M.IsFunction "file_io_read_lines::read_lines" read_lines.
+Smpl Add apply Function_read_lines : is_function.
 
 (*
 fn main() {
@@ -293,3 +294,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "file_io_read_lines::main" main.
+Smpl Add apply Function_main : is_function.

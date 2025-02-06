@@ -461,6 +461,7 @@ Module secp256k1.
     
     Axiom Function_ecrecover :
       M.IsFunction "revm_precompile::secp256k1::secp256k1::ecrecover" ecrecover.
+    Smpl Add apply Function_ecrecover : is_function.
   End secp256k1.
   
   (*
@@ -1242,6 +1243,7 @@ Module secp256k1.
   
   Axiom Function_ec_recover_run :
     M.IsFunction "revm_precompile::secp256k1::ec_recover_run" ec_recover_run.
+  Smpl Add apply Function_ec_recover_run : is_function.
   
   Module ec_recover_run.
     Definition value_ECRECOVER_BASE : Value.t :=

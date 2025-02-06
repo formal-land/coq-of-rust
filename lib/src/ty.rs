@@ -145,53 +145,53 @@ pub(crate) fn compile_path_ty_params<'a>(
 }
 
 impl CoqType {
-    pub(crate) fn to_coq(&self) -> coq::Expression {
+    pub(crate) fn to_coq(&self) -> Rc<coq::Expression> {
         match self {
             CoqType::Var { name } => coq::Expression::just_name(name),
             CoqType::Path { path } => coq::Expression::just_name("Ty.path")
-                .apply(&coq::Expression::String(path.to_string())),
+                .apply(Rc::new(coq::Expression::String(path.to_string()))),
             CoqType::Application { func, consts, tys } => {
                 if consts.is_empty() && tys.is_empty() {
                     func.to_coq()
                 } else {
                     coq::Expression::just_name("Ty.apply").apply_many(&[
                         func.to_coq(),
-                        coq::Expression::List {
+                        Rc::new(coq::Expression::List {
                             exprs: consts.iter().map(|const_| const_.to_coq()).collect(),
-                        },
-                        coq::Expression::List {
+                        }),
+                        Rc::new(coq::Expression::List {
                             exprs: tys.iter().map(|ty| ty.to_coq()).collect(),
-                        },
+                        }),
                     ])
                 }
             }
             CoqType::Function { args, ret } => coq::Expression::just_name("Ty.function")
                 .apply_many(&[
-                    coq::Expression::List {
+                    Rc::new(coq::Expression::List {
                         exprs: args.iter().map(|arg| arg.to_coq()).collect(),
-                    },
+                    }),
                     ret.to_coq(),
                 ]),
             CoqType::Tuple { tys } => {
-                coq::Expression::just_name("Ty.tuple").apply(&coq::Expression::List {
+                coq::Expression::just_name("Ty.tuple").apply(Rc::new(coq::Expression::List {
                     exprs: tys.iter().map(|ty| ty.to_coq()).collect(),
-                })
+                }))
             }
             CoqType::Dyn { traits } => {
-                coq::Expression::just_name("Ty.dyn").apply(&coq::Expression::List {
+                coq::Expression::just_name("Ty.dyn").apply(Rc::new(coq::Expression::List {
                     exprs: traits
                         .iter()
                         .map(|trait_name| {
-                            coq::Expression::Tuple(vec![
-                                coq::Expression::String(trait_name.to_string()),
-                                coq::Expression::List { exprs: vec![] },
-                            ])
+                            Rc::new(coq::Expression::Tuple(vec![
+                                Rc::new(coq::Expression::String(trait_name.to_string())),
+                                Rc::new(coq::Expression::List { exprs: vec![] }),
+                            ]))
                         })
                         .collect(),
-                })
+                }))
             }
             CoqType::Associated => coq::Expression::just_name("Ty.associated"),
-            CoqType::Infer => coq::Expression::Wild,
+            CoqType::Infer => Rc::new(coq::Expression::Wild),
         }
     }
 

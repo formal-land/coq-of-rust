@@ -428,6 +428,7 @@ Module slice.
       
       Axiom Function_find_existing_run :
         M.IsFunction "core::slice::sort::shared::find_existing_run" find_existing_run.
+      Smpl Add apply Function_find_existing_run : is_function.
     End shared.
   End sort.
 End slice.

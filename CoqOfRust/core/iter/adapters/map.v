@@ -301,6 +301,7 @@ Module iter.
         end.
       
       Axiom Function_map_fold : M.IsFunction "core::iter::adapters::map::map_fold" map_fold.
+      Smpl Add apply Function_map_fold : is_function.
       
       Module map_fold.
         (* Error OpaqueTy *)
@@ -387,6 +388,7 @@ Module iter.
       
       Axiom Function_map_try_fold :
         M.IsFunction "core::iter::adapters::map::map_try_fold" map_try_fold.
+      Smpl Add apply Function_map_try_fold : is_function.
       
       Module map_try_fold.
         (* Error OpaqueTy *)

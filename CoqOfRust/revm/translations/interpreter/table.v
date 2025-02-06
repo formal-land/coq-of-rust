@@ -693,6 +693,7 @@ Module table.
   
   Axiom Function_make_instruction_table :
     M.IsFunction "revm_interpreter::table::make_instruction_table" make_instruction_table.
+  Smpl Add apply Function_make_instruction_table : is_function.
   
   (*
   pub fn make_custom_instruction_table<W, H, FN, CI: CustomInstruction<Wire = W, Host = H>>(
@@ -791,4 +792,5 @@ Module table.
     M.IsFunction
       "revm_interpreter::table::make_custom_instruction_table"
       make_custom_instruction_table.
+  Smpl Add apply Function_make_custom_instruction_table : is_function.
 End table.

@@ -734,5 +734,6 @@ Module bls12_381.
     
     Axiom Function_map_fp_to_g1 :
       M.IsFunction "revm_precompile::bls12_381::map_fp_to_g1::map_fp_to_g1" map_fp_to_g1.
+    Smpl Add apply Function_map_fp_to_g1 : is_function.
   End map_fp_to_g1.
 End bls12_381.

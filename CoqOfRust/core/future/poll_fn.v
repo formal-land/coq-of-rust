@@ -21,6 +21,7 @@ Module future.
       end.
     
     Axiom Function_poll_fn : M.IsFunction "core::future::poll_fn::poll_fn" poll_fn.
+    Smpl Add apply Function_poll_fn : is_function.
     
     (* StructRecord
       {

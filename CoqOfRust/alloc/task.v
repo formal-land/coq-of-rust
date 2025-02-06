@@ -216,6 +216,7 @@ Module task.
     end.
   
   Axiom Function_raw_waker : M.IsFunction "alloc::task::raw_waker" raw_waker.
+  Smpl Add apply Function_raw_waker : is_function.
   
   Module raw_waker.
     (*
@@ -290,6 +291,7 @@ Module task.
       end.
     
     Axiom Function_clone_waker : M.IsFunction "alloc::task::raw_waker::clone_waker" clone_waker.
+    Smpl Add apply Function_clone_waker : is_function.
     
     (*
         unsafe fn wake<W: Wake + Send + Sync + 'static>(waker: *const ()) {
@@ -328,6 +330,7 @@ Module task.
       end.
     
     Axiom Function_wake : M.IsFunction "alloc::task::raw_waker::wake" wake.
+    Smpl Add apply Function_wake : is_function.
     
     (*
         unsafe fn wake_by_ref<W: Wake + Send + Sync + 'static>(waker: *const ()) {
@@ -418,6 +421,7 @@ Module task.
       end.
     
     Axiom Function_wake_by_ref : M.IsFunction "alloc::task::raw_waker::wake_by_ref" wake_by_ref.
+    Smpl Add apply Function_wake_by_ref : is_function.
     
     (*
         unsafe fn drop_waker<W: Wake + Send + Sync + 'static>(waker: *const ()) {
@@ -448,6 +452,7 @@ Module task.
       end.
     
     Axiom Function_drop_waker : M.IsFunction "alloc::task::raw_waker::drop_waker" drop_waker.
+    Smpl Add apply Function_drop_waker : is_function.
   End raw_waker.
   
   (* Trait *)
@@ -664,6 +669,7 @@ Module task.
     end.
   
   Axiom Function_local_raw_waker : M.IsFunction "alloc::task::local_raw_waker" local_raw_waker.
+  Smpl Add apply Function_local_raw_waker : is_function.
   
   Module local_raw_waker.
     (*
@@ -751,6 +757,7 @@ Module task.
     
     Axiom Function_clone_waker :
       M.IsFunction "alloc::task::local_raw_waker::clone_waker" clone_waker.
+    Smpl Add apply Function_clone_waker : is_function.
     
     (*
         unsafe fn wake<W: LocalWake + 'static>(waker: *const ()) {
@@ -789,6 +796,7 @@ Module task.
       end.
     
     Axiom Function_wake : M.IsFunction "alloc::task::local_raw_waker::wake" wake.
+    Smpl Add apply Function_wake : is_function.
     
     (*
         unsafe fn wake_by_ref<W: LocalWake + 'static>(waker: *const ()) {
@@ -881,6 +889,7 @@ Module task.
     
     Axiom Function_wake_by_ref :
       M.IsFunction "alloc::task::local_raw_waker::wake_by_ref" wake_by_ref.
+    Smpl Add apply Function_wake_by_ref : is_function.
     
     (*
         unsafe fn drop_waker<W: LocalWake + 'static>(waker: *const ()) {
@@ -911,5 +920,6 @@ Module task.
       end.
     
     Axiom Function_drop_waker : M.IsFunction "alloc::task::local_raw_waker::drop_waker" drop_waker.
+    Smpl Add apply Function_drop_waker : is_function.
   End local_raw_waker.
 End task.

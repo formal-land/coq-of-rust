@@ -92,3 +92,4 @@ End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Ba
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "operator_overloading::main" main.
+Smpl Add apply Function_main : is_function.

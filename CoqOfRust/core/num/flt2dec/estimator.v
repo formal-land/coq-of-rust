@@ -58,6 +58,7 @@ Module num.
         M.IsFunction
           "core::num::flt2dec::estimator::estimate_scaling_factor"
           estimate_scaling_factor.
+      Smpl Add apply Function_estimate_scaling_factor : is_function.
     End estimator.
   End flt2dec.
 End num.

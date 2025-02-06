@@ -24,3 +24,4 @@ End Impl_polymorphic_associated_function_Foo_A.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "polymorphic_associated_function::main" main.
+Smpl Add apply Function_main : is_function.

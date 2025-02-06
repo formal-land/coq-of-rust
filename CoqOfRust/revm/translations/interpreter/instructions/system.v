@@ -832,6 +832,7 @@ Module instructions.
     
     Axiom Function_keccak256 :
       M.IsFunction "revm_interpreter::instructions::system::keccak256" keccak256.
+    Smpl Add apply Function_keccak256 : is_function.
     
     (*
     pub fn address<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1083,6 +1084,7 @@ Module instructions.
       end.
     
     Axiom Function_address : M.IsFunction "revm_interpreter::instructions::system::address" address.
+    Smpl Add apply Function_address : is_function.
     
     (*
     pub fn caller<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1334,6 +1336,7 @@ Module instructions.
       end.
     
     Axiom Function_caller : M.IsFunction "revm_interpreter::instructions::system::caller" caller.
+    Smpl Add apply Function_caller : is_function.
     
     (*
     pub fn codesize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1563,6 +1566,7 @@ Module instructions.
     
     Axiom Function_codesize :
       M.IsFunction "revm_interpreter::instructions::system::codesize" codesize.
+    Smpl Add apply Function_codesize : is_function.
     
     (*
     pub fn codecopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2011,6 +2015,7 @@ Module instructions.
     
     Axiom Function_codecopy :
       M.IsFunction "revm_interpreter::instructions::system::codecopy" codecopy.
+    Smpl Add apply Function_codecopy : is_function.
     
     (*
     pub fn calldataload<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2554,6 +2559,7 @@ Module instructions.
     
     Axiom Function_calldataload :
       M.IsFunction "revm_interpreter::instructions::system::calldataload" calldataload.
+    Smpl Add apply Function_calldataload : is_function.
     
     (*
     pub fn calldatasize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2798,6 +2804,7 @@ Module instructions.
     
     Axiom Function_calldatasize :
       M.IsFunction "revm_interpreter::instructions::system::calldatasize" calldatasize.
+    Smpl Add apply Function_calldatasize : is_function.
     
     (*
     pub fn callvalue<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3008,6 +3015,7 @@ Module instructions.
     
     Axiom Function_callvalue :
       M.IsFunction "revm_interpreter::instructions::system::callvalue" callvalue.
+    Smpl Add apply Function_callvalue : is_function.
     
     (*
     pub fn calldatacopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3453,6 +3461,7 @@ Module instructions.
     
     Axiom Function_calldatacopy :
       M.IsFunction "revm_interpreter::instructions::system::calldatacopy" calldatacopy.
+    Smpl Add apply Function_calldatacopy : is_function.
     
     (*
     pub fn returndatasize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3786,6 +3795,7 @@ Module instructions.
     
     Axiom Function_returndatasize :
       M.IsFunction "revm_interpreter::instructions::system::returndatasize" returndatasize.
+    Smpl Add apply Function_returndatasize : is_function.
     
     (*
     pub fn returndatacopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4446,6 +4456,7 @@ Module instructions.
     
     Axiom Function_returndatacopy :
       M.IsFunction "revm_interpreter::instructions::system::returndatacopy" returndatacopy.
+    Smpl Add apply Function_returndatacopy : is_function.
     
     (*
     pub fn returndataload<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -5070,6 +5081,7 @@ Module instructions.
     
     Axiom Function_returndataload :
       M.IsFunction "revm_interpreter::instructions::system::returndataload" returndataload.
+    Smpl Add apply Function_returndataload : is_function.
     
     (*
     pub fn gas<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -5316,6 +5328,7 @@ Module instructions.
       end.
     
     Axiom Function_gas : M.IsFunction "revm_interpreter::instructions::system::gas" gas.
+    Smpl Add apply Function_gas : is_function.
     
     (*
     pub fn memory_resize(
@@ -5814,5 +5827,6 @@ Module instructions.
     
     Axiom Function_memory_resize :
       M.IsFunction "revm_interpreter::instructions::system::memory_resize" memory_resize.
+    Smpl Add apply Function_memory_resize : is_function.
   End system.
 End instructions.

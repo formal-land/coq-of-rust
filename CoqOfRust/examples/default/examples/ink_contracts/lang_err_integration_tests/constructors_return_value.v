@@ -211,6 +211,7 @@ Definition return_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_return_value : M.IsFunction "constructors_return_value::return_value" return_value.
+Smpl Add apply Function_return_value : is_function.
 
 Module Impl_constructors_return_value_ConstructorsReturnValue.
   Definition Self : Ty.t := Ty.path "constructors_return_value::ConstructorsReturnValue".

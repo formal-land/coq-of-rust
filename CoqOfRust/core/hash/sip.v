@@ -1404,6 +1404,7 @@ Module hash.
       end.
     
     Axiom Function_u8to64_le : M.IsFunction "core::hash::sip::u8to64_le" u8to64_le.
+    Smpl Add apply Function_u8to64_le : is_function.
     
     Module Impl_core_hash_sip_SipHasher.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher".

@@ -7217,6 +7217,7 @@ Module vec.
     end.
   
   Axiom Function_from_elem : M.IsFunction "alloc::vec::from_elem" from_elem.
+  Smpl Add apply Function_from_elem : is_function.
   
   (*
   pub fn from_elem_in<T: Clone, A: Allocator>(elem: T, n: usize, alloc: A) -> Vec<T, A> {
@@ -7246,6 +7247,7 @@ Module vec.
     end.
   
   Axiom Function_from_elem_in : M.IsFunction "alloc::vec::from_elem_in" from_elem_in.
+  Smpl Add apply Function_from_elem_in : is_function.
   
   (* Trait *)
   (* Empty module 'ExtendFromWithinSpec' *)

@@ -2289,6 +2289,7 @@ Module effects.
     end.
   
   Axiom Function_squash : M.IsFunction "move_core_types::effects::squash" squash.
+  Smpl Add apply Function_squash : is_function.
   
   Module Impl_move_core_types_effects_AccountChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::AccountChangeSet".

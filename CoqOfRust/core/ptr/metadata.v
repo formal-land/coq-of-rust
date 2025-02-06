@@ -26,6 +26,7 @@ Module ptr.
       end.
     
     Axiom Function_metadata : M.IsFunction "core::ptr::metadata::metadata" metadata.
+    Smpl Add apply Function_metadata : is_function.
     
     (*
     pub const fn from_raw_parts<T: ?Sized>(
@@ -58,6 +59,7 @@ Module ptr.
     
     Axiom Function_from_raw_parts :
       M.IsFunction "core::ptr::metadata::from_raw_parts" from_raw_parts.
+    Smpl Add apply Function_from_raw_parts : is_function.
     
     (*
     pub const fn from_raw_parts_mut<T: ?Sized>(
@@ -90,6 +92,7 @@ Module ptr.
     
     Axiom Function_from_raw_parts_mut :
       M.IsFunction "core::ptr::metadata::from_raw_parts_mut" from_raw_parts_mut.
+    Smpl Add apply Function_from_raw_parts_mut : is_function.
     
     (* StructRecord
       {

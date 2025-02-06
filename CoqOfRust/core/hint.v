@@ -58,6 +58,7 @@ Module hint.
   
   Axiom Function_unreachable_unchecked :
     M.IsFunction "core::hint::unreachable_unchecked" unreachable_unchecked.
+  Smpl Add apply Function_unreachable_unchecked : is_function.
   
   (*
   pub const unsafe fn assert_unchecked(cond: bool) {
@@ -121,6 +122,7 @@ Module hint.
     end.
   
   Axiom Function_assert_unchecked : M.IsFunction "core::hint::assert_unchecked" assert_unchecked.
+  Smpl Add apply Function_assert_unchecked : is_function.
   
   (*
   pub fn spin_loop() {
@@ -178,6 +180,7 @@ Module hint.
     end.
   
   Axiom Function_spin_loop : M.IsFunction "core::hint::spin_loop" spin_loop.
+  Smpl Add apply Function_spin_loop : is_function.
   
   (*
   pub const fn black_box<T>(dummy: T) -> T {
@@ -197,6 +200,7 @@ Module hint.
     end.
   
   Axiom Function_black_box : M.IsFunction "core::hint::black_box" black_box.
+  Smpl Add apply Function_black_box : is_function.
   
   (*
   pub const fn must_use<T>(value: T) -> T {
@@ -213,4 +217,5 @@ Module hint.
     end.
   
   Axiom Function_must_use : M.IsFunction "core::hint::must_use" must_use.
+  Smpl Add apply Function_must_use : is_function.
 End hint.

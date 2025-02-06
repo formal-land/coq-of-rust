@@ -203,6 +203,7 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Axiom Function_print_debug : M.IsFunction "generics_bounds::print_debug" print_debug.
+Smpl Add apply Function_print_debug : is_function.
 
 (*
 fn area<T: HasArea>(t: &T) -> f64 {
@@ -222,6 +223,7 @@ Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_area : M.IsFunction "generics_bounds::area" area.
+Smpl Add apply Function_area : is_function.
 
 (*
 fn main() {
@@ -367,3 +369,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "generics_bounds::main" main.
+Smpl Add apply Function_main : is_function.

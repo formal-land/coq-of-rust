@@ -261,5 +261,6 @@ Module bls12_381.
     
     Axiom Function_msm_required_gas :
       M.IsFunction "revm_precompile::bls12_381::msm::msm_required_gas" msm_required_gas.
+    Smpl Add apply Function_msm_required_gas : is_function.
   End msm.
 End bls12_381.

@@ -2801,6 +2801,7 @@ Module ffi.
       end.
     
     Axiom Function_strlen : M.IsFunction "core::ffi::c_str::strlen" strlen.
+    Smpl Add apply Function_strlen : is_function.
     
     Module strlen.
       (*
@@ -2882,6 +2883,7 @@ Module ffi.
         end.
       
       Axiom Function_strlen_ct : M.IsFunction "core::ffi::c_str::strlen::strlen_ct" strlen_ct.
+      Smpl Add apply Function_strlen_ct : is_function.
       
       (*
           fn strlen_rt(s: *const c_char) -> usize {
@@ -2907,11 +2909,13 @@ Module ffi.
         end.
       
       Axiom Function_strlen_rt : M.IsFunction "core::ffi::c_str::strlen::strlen_rt" strlen_rt.
+      Smpl Add apply Function_strlen_rt : is_function.
       
       Module strlen_rt.
         Parameter strlen : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
         
         Axiom Function_strlen : M.IsFunction "core::ffi::c_str::strlen::strlen_rt::strlen" strlen.
+        Smpl Add apply Function_strlen : is_function.
       End strlen_rt.
     End strlen.
     

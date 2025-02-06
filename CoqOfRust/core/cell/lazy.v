@@ -1111,5 +1111,6 @@ Module cell.
       end.
     
     Axiom Function_panic_poisoned : M.IsFunction "core::cell::lazy::panic_poisoned" panic_poisoned.
+    Smpl Add apply Function_panic_poisoned : is_function.
   End lazy.
 End cell.

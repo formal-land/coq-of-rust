@@ -9,3 +9,4 @@ Global Hint Rewrite Constant_message : constant_rewrites.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "hello_world::main" main.
+Smpl Add apply Function_main : is_function.

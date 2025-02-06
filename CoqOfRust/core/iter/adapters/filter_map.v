@@ -301,6 +301,7 @@ Module iter.
       
       Axiom Function_filter_map_fold :
         M.IsFunction "core::iter::adapters::filter_map::filter_map_fold" filter_map_fold.
+      Smpl Add apply Function_filter_map_fold : is_function.
       
       Module filter_map_fold.
         (* Error OpaqueTy *)
@@ -428,6 +429,7 @@ Module iter.
       
       Axiom Function_filter_map_try_fold :
         M.IsFunction "core::iter::adapters::filter_map::filter_map_try_fold" filter_map_try_fold.
+      Smpl Add apply Function_filter_map_try_fold : is_function.
       
       Module filter_map_try_fold.
         (* Error OpaqueTy *)

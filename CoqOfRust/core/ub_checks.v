@@ -46,6 +46,7 @@ Module hint.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::hint::unreachable_unchecked::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End unreachable_unchecked.
   
   Module assert_unchecked.
@@ -93,6 +94,7 @@ Module hint.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::hint::assert_unchecked::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End assert_unchecked.
 End hint.
 
@@ -185,6 +187,7 @@ Module intrinsics.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::intrinsics::copy_nonoverlapping::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End copy_nonoverlapping.
   
   Module copy.
@@ -261,6 +264,7 @@ Module intrinsics.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::intrinsics::copy::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End copy.
   
   Module write_bytes.
@@ -322,6 +326,7 @@ Module intrinsics.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::intrinsics::write_bytes::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End write_bytes.
 End intrinsics.
 
@@ -417,6 +422,7 @@ Module ptr.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::ptr::swap_nonoverlapping::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End swap_nonoverlapping.
   
   Module replace.
@@ -478,6 +484,7 @@ Module ptr.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::ptr::replace::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End replace.
   
   Module read.
@@ -539,6 +546,7 @@ Module ptr.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::ptr::read::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End read.
   
   Module write.
@@ -603,6 +611,7 @@ Module ptr.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::ptr::write::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End write.
   
   Module read_volatile.
@@ -664,6 +673,7 @@ Module ptr.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::ptr::read_volatile::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End read_volatile.
   
   Module write_volatile.
@@ -728,6 +738,7 @@ Module ptr.
     
     Axiom Function_precondition_check :
       M.IsFunction "core::ptr::write_volatile::precondition_check" precondition_check.
+    Smpl Add apply Function_precondition_check : is_function.
   End write_volatile.
 End ptr.
 
@@ -780,6 +791,7 @@ Module ub_checks.
   
   Axiom Function_check_language_ub :
     M.IsFunction "core::ub_checks::check_language_ub" check_language_ub.
+  Smpl Add apply Function_check_language_ub : is_function.
   
   Module check_language_ub.
     (*
@@ -795,6 +807,7 @@ Module ub_checks.
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ub_checks::check_language_ub::runtime" runtime.
+    Smpl Add apply Function_runtime : is_function.
     
     (*
         const fn comptime() -> bool {
@@ -809,6 +822,7 @@ Module ub_checks.
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ub_checks::check_language_ub::comptime" comptime.
+    Smpl Add apply Function_comptime : is_function.
   End check_language_ub.
   
   (*
@@ -850,6 +864,7 @@ Module ub_checks.
   
   Axiom Function_is_aligned_and_not_null :
     M.IsFunction "core::ub_checks::is_aligned_and_not_null" is_aligned_and_not_null.
+  Smpl Add apply Function_is_aligned_and_not_null : is_function.
   
   (*
   pub(crate) const fn is_valid_allocation_size(size: usize, len: usize) -> bool {
@@ -896,6 +911,7 @@ Module ub_checks.
   
   Axiom Function_is_valid_allocation_size :
     M.IsFunction "core::ub_checks::is_valid_allocation_size" is_valid_allocation_size.
+  Smpl Add apply Function_is_valid_allocation_size : is_function.
   
   (*
   pub(crate) const fn is_nonoverlapping(
@@ -979,6 +995,7 @@ Module ub_checks.
   
   Axiom Function_is_nonoverlapping :
     M.IsFunction "core::ub_checks::is_nonoverlapping" is_nonoverlapping.
+  Smpl Add apply Function_is_nonoverlapping : is_function.
   
   Module is_nonoverlapping.
     (*
@@ -1061,6 +1078,7 @@ Module ub_checks.
       end.
     
     Axiom Function_runtime : M.IsFunction "core::ub_checks::is_nonoverlapping::runtime" runtime.
+    Smpl Add apply Function_runtime : is_function.
     
     (*
         const fn comptime(_: *const (), _: *const (), _: usize, _: usize) -> bool {
@@ -1104,6 +1122,7 @@ Module ub_checks.
       end.
     
     Axiom Function_comptime : M.IsFunction "core::ub_checks::is_nonoverlapping::comptime" comptime.
+    Smpl Add apply Function_comptime : is_function.
   End is_nonoverlapping.
 End ub_checks.
 
@@ -1190,6 +1209,7 @@ Module char.
         M.IsFunction
           "core::char::convert::from_u32_unchecked::precondition_check"
           precondition_check.
+      Smpl Add apply Function_precondition_check : is_function.
     End from_u32_unchecked.
   End convert.
 End char.
@@ -1271,6 +1291,7 @@ Module slice.
       
       Axiom Function_precondition_check :
         M.IsFunction "core::slice::raw::from_raw_parts::precondition_check" precondition_check.
+      Smpl Add apply Function_precondition_check : is_function.
     End from_raw_parts.
     
     Module from_raw_parts_mut.
@@ -1348,6 +1369,7 @@ Module slice.
       
       Axiom Function_precondition_check :
         M.IsFunction "core::slice::raw::from_raw_parts_mut::precondition_check" precondition_check.
+      Smpl Add apply Function_precondition_check : is_function.
     End from_raw_parts_mut.
   End raw.
 End slice.

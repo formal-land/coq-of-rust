@@ -132,6 +132,7 @@ End Impl_constructors_return_value_ReturnFlags.
 Parameter return_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_return_value : M.IsFunction "constructors_return_value::return_value" return_value.
+Smpl Add apply Function_return_value : is_function.
 
 Module Impl_constructors_return_value_ConstructorsReturnValue.
   Definition Self : Ty.t := Ty.path "constructors_return_value::ConstructorsReturnValue".

@@ -374,6 +374,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_double_first : M.IsFunction "other_uses_of_question_mark::double_first" double_first.
+Smpl Add apply Function_double_first : is_function.
 
 (*
 fn print(result: Result<i32>) {
@@ -541,6 +542,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_print : M.IsFunction "other_uses_of_question_mark::print" print.
+Smpl Add apply Function_print : is_function.
 
 (*
 fn main() {
@@ -711,3 +713,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "other_uses_of_question_mark::main" main.
+Smpl Add apply Function_main : is_function.

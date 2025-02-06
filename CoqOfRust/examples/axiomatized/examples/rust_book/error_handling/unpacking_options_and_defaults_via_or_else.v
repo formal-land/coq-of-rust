@@ -53,3 +53,4 @@ End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "unpacking_options_and_defaults_via_or_else::main" main.
+Smpl Add apply Function_main : is_function.

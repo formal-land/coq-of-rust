@@ -300,6 +300,7 @@ Module hash.
     end.
   
   Axiom Function_sha256_run : M.IsFunction "revm_precompile::hash::sha256_run" sha256_run.
+  Smpl Add apply Function_sha256_run : is_function.
   
   (*
   pub fn ripemd160_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -597,4 +598,5 @@ Module hash.
     end.
   
   Axiom Function_ripemd160_run : M.IsFunction "revm_precompile::hash::ripemd160_run" ripemd160_run.
+  Smpl Add apply Function_ripemd160_run : is_function.
 End hash.

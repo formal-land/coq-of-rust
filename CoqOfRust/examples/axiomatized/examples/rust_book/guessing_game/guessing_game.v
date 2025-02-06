@@ -4,7 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter gen_range : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_gen_range : M.IsFunction "guessing_game::gen_range" gen_range.
+Smpl Add apply Function_gen_range : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "guessing_game::main" main.
+Smpl Add apply Function_main : is_function.

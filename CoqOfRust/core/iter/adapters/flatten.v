@@ -5911,6 +5911,7 @@ Module iter.
       
       Axiom Function_and_then_or_clear :
         M.IsFunction "core::iter::adapters::flatten::and_then_or_clear" and_then_or_clear.
+      Smpl Add apply Function_and_then_or_clear : is_function.
       
       (* Trait *)
       (* Empty module 'OneShot' *)
@@ -6182,6 +6183,7 @@ Module iter.
         end.
       
       Axiom Function_into_item : M.IsFunction "core::iter::adapters::flatten::into_item" into_item.
+      Smpl Add apply Function_into_item : is_function.
       
       (*
       fn flatten_one<I: IntoIterator<IntoIter: OneShot>, Acc>(
@@ -6300,6 +6302,7 @@ Module iter.
       
       Axiom Function_flatten_one :
         M.IsFunction "core::iter::adapters::flatten::flatten_one" flatten_one.
+      Smpl Add apply Function_flatten_one : is_function.
       
       Module flatten_one.
         (* Error OpaqueTy *)
@@ -6435,6 +6438,7 @@ Module iter.
       
       Axiom Function_try_flatten_one :
         M.IsFunction "core::iter::adapters::flatten::try_flatten_one" try_flatten_one.
+      Smpl Add apply Function_try_flatten_one : is_function.
       
       Module try_flatten_one.
         (* Error OpaqueTy *)
@@ -6541,6 +6545,7 @@ Module iter.
       
       Axiom Function_advance_by_one :
         M.IsFunction "core::iter::adapters::flatten::advance_by_one" advance_by_one.
+      Smpl Add apply Function_advance_by_one : is_function.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_iterator_Iterator_U_where_core_iter_adapters_flatten_OneShot_U_for_core_iter_adapters_flatten_FlattenCompat_I_U.
         Definition Self (I U : Ty.t) : Ty.t :=

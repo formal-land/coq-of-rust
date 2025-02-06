@@ -279,10 +279,12 @@ End Impl_payment_channel_Env.
 Parameter hash_encoded : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_hash_encoded : M.IsFunction "payment_channel::hash_encoded" hash_encoded.
+Smpl Add apply Function_hash_encoded : is_function.
 
 Parameter ecdsa_recover : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_ecdsa_recover : M.IsFunction "payment_channel::ecdsa_recover" ecdsa_recover.
+Smpl Add apply Function_ecdsa_recover : is_function.
 
 (*
 Enum Sha2x256

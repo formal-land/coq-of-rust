@@ -74,6 +74,7 @@ Module iter.
         end.
       
       Axiom Function_repeat_n : M.IsFunction "core::iter::sources::repeat_n::repeat_n" repeat_n.
+      Smpl Add apply Function_repeat_n : is_function.
       
       (* StructRecord
         {

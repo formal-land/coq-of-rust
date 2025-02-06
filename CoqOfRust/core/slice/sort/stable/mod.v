@@ -200,6 +200,7 @@ Module slice.
         end.
       
       Axiom Function_sort : M.IsFunction "core::slice::sort::stable::sort" sort.
+      Smpl Add apply Function_sort : is_function.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
@@ -451,6 +452,7 @@ Module slice.
       
       Axiom Function_driftsort_main :
         M.IsFunction "core::slice::sort::stable::driftsort_main" driftsort_main.
+      Smpl Add apply Function_driftsort_main : is_function.
       
       Module driftsort_main.
         Definition value_MAX_FULL_ALLOC_BYTES : Value.t :=

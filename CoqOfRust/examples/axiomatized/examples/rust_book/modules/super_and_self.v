@@ -4,29 +4,35 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_function : M.IsFunction "super_and_self::function" function.
+Smpl Add apply Function_function : is_function.
 
 Module cool.
   Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_function : M.IsFunction "super_and_self::cool::function" function.
+  Smpl Add apply Function_function : is_function.
 End cool.
 
 Module my.
   Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_function : M.IsFunction "super_and_self::my::function" function.
+  Smpl Add apply Function_function : is_function.
   
   Module cool.
     Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_function : M.IsFunction "super_and_self::my::cool::function" function.
+    Smpl Add apply Function_function : is_function.
   End cool.
   
   Parameter indirect_call : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_indirect_call : M.IsFunction "super_and_self::my::indirect_call" indirect_call.
+  Smpl Add apply Function_indirect_call : is_function.
 End my.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "super_and_self::main" main.
+Smpl Add apply Function_main : is_function.

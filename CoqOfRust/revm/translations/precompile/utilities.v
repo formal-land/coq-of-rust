@@ -56,6 +56,7 @@ Module utilities.
   
   Axiom Function_right_pad_with_offset :
     M.IsFunction "revm_precompile::utilities::right_pad_with_offset" right_pad_with_offset.
+  Smpl Add apply Function_right_pad_with_offset : is_function.
   
   (*
   pub fn right_pad_with_offset_vec(data: &[u8], offset: usize, len: usize) -> Cow<'_, [u8]> {
@@ -113,6 +114,7 @@ Module utilities.
   
   Axiom Function_right_pad_with_offset_vec :
     M.IsFunction "revm_precompile::utilities::right_pad_with_offset_vec" right_pad_with_offset_vec.
+  Smpl Add apply Function_right_pad_with_offset_vec : is_function.
   
   (*
   pub fn right_pad<const LEN: usize>(data: &[u8]) -> Cow<'_, [u8; LEN]> {
@@ -276,6 +278,7 @@ Module utilities.
     end.
   
   Axiom Function_right_pad : M.IsFunction "revm_precompile::utilities::right_pad" right_pad.
+  Smpl Add apply Function_right_pad : is_function.
   
   (*
   pub fn right_pad_vec(data: &[u8], len: usize) -> Cow<'_, [u8]> {
@@ -405,6 +408,7 @@ Module utilities.
   
   Axiom Function_right_pad_vec :
     M.IsFunction "revm_precompile::utilities::right_pad_vec" right_pad_vec.
+  Smpl Add apply Function_right_pad_vec : is_function.
   
   (*
   pub fn left_pad<const LEN: usize>(data: &[u8]) -> Cow<'_, [u8; LEN]> {
@@ -574,6 +578,7 @@ Module utilities.
     end.
   
   Axiom Function_left_pad : M.IsFunction "revm_precompile::utilities::left_pad" left_pad.
+  Smpl Add apply Function_left_pad : is_function.
   
   (*
   pub fn left_pad_vec(data: &[u8], len: usize) -> Cow<'_, [u8]> {
@@ -706,6 +711,7 @@ Module utilities.
   
   Axiom Function_left_pad_vec :
     M.IsFunction "revm_precompile::utilities::left_pad_vec" left_pad_vec.
+  Smpl Add apply Function_left_pad_vec : is_function.
   
   (*
   pub const fn bool_to_bytes32(value: bool) -> Bytes {
@@ -750,6 +756,7 @@ Module utilities.
   
   Axiom Function_bool_to_bytes32 :
     M.IsFunction "revm_precompile::utilities::bool_to_bytes32" bool_to_bytes32.
+  Smpl Add apply Function_bool_to_bytes32 : is_function.
   
   (*
   pub const fn bool_to_b256(value: bool) -> &'static B256 {
@@ -786,6 +793,7 @@ Module utilities.
   
   Axiom Function_bool_to_b256 :
     M.IsFunction "revm_precompile::utilities::bool_to_b256" bool_to_b256.
+  Smpl Add apply Function_bool_to_b256 : is_function.
   
   Module bool_to_b256.
     Definition value_TRUE : Value.t :=

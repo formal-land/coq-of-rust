@@ -40,6 +40,7 @@ Module str.
     end.
   
   Axiom Function_slice_error_fail : M.IsFunction "core::str::slice_error_fail" slice_error_fail.
+  Smpl Add apply Function_slice_error_fail : is_function.
   
   (*
   const fn slice_error_fail_ct(_: &str, _: usize, _: usize) -> ! {
@@ -110,6 +111,7 @@ Module str.
   
   Axiom Function_slice_error_fail_ct :
     M.IsFunction "core::str::slice_error_fail_ct" slice_error_fail_ct.
+  Smpl Add apply Function_slice_error_fail_ct : is_function.
   
   (*
   fn slice_error_fail_rt(s: &str, begin: usize, end: usize) -> ! {
@@ -757,6 +759,7 @@ Module str.
   
   Axiom Function_slice_error_fail_rt :
     M.IsFunction "core::str::slice_error_fail_rt" slice_error_fail_rt.
+  Smpl Add apply Function_slice_error_fail_rt : is_function.
   
   Module slice_error_fail_rt.
     Definition value_MAX_DISPLAY_LENGTH : Value.t :=

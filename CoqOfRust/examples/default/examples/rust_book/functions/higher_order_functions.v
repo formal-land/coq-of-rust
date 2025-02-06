@@ -19,6 +19,7 @@ Definition is_odd (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   end.
 
 Axiom Function_is_odd : M.IsFunction "higher_order_functions::is_odd" is_odd.
+Smpl Add apply Function_is_odd : is_function.
 
 (*
 fn main() {
@@ -545,3 +546,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "higher_order_functions::main" main.
+Smpl Add apply Function_main : is_function.

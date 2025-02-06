@@ -735,6 +735,7 @@ Module deserializer.
   
   Axiom Function_read_u16_internal :
     M.IsFunction "move_binary_format::deserializer::read_u16_internal" read_u16_internal.
+  Smpl Add apply Function_read_u16_internal : is_function.
   
   (*
   fn read_u32_internal(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u32> {
@@ -918,6 +919,7 @@ Module deserializer.
   
   Axiom Function_read_u32_internal :
     M.IsFunction "move_binary_format::deserializer::read_u32_internal" read_u32_internal.
+  Smpl Add apply Function_read_u32_internal : is_function.
   
   (*
   fn read_u64_internal(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u64> {
@@ -1101,6 +1103,7 @@ Module deserializer.
   
   Axiom Function_read_u64_internal :
     M.IsFunction "move_binary_format::deserializer::read_u64_internal" read_u64_internal.
+  Smpl Add apply Function_read_u64_internal : is_function.
   
   (*
   fn read_u128_internal(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u128> {
@@ -1284,6 +1287,7 @@ Module deserializer.
   
   Axiom Function_read_u128_internal :
     M.IsFunction "move_binary_format::deserializer::read_u128_internal" read_u128_internal.
+  Smpl Add apply Function_read_u128_internal : is_function.
   
   (*
   fn read_u256_internal(
@@ -1479,6 +1483,7 @@ Module deserializer.
   
   Axiom Function_read_u256_internal :
     M.IsFunction "move_binary_format::deserializer::read_u256_internal" read_u256_internal.
+  Smpl Add apply Function_read_u256_internal : is_function.
   
   (*
   fn read_uleb_internal<T>(cursor: &mut VersionedCursor, max: u64) -> BinaryLoaderResult<T>
@@ -1849,6 +1854,7 @@ Module deserializer.
   
   Axiom Function_read_uleb_internal :
     M.IsFunction "move_binary_format::deserializer::read_uleb_internal" read_uleb_internal.
+  Smpl Add apply Function_read_uleb_internal : is_function.
   
   (*
   fn load_signature_index(cursor: &mut VersionedCursor) -> BinaryLoaderResult<SignatureIndex> {
@@ -1977,6 +1983,7 @@ Module deserializer.
   
   Axiom Function_load_signature_index :
     M.IsFunction "move_binary_format::deserializer::load_signature_index" load_signature_index.
+  Smpl Add apply Function_load_signature_index : is_function.
   
   (*
   fn load_module_handle_index(cursor: &mut VersionedCursor) -> BinaryLoaderResult<ModuleHandleIndex> {
@@ -2107,6 +2114,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_module_handle_index"
       load_module_handle_index.
+  Smpl Add apply Function_load_module_handle_index : is_function.
   
   (*
   fn load_identifier_index(cursor: &mut VersionedCursor) -> BinaryLoaderResult<IdentifierIndex> {
@@ -2235,6 +2243,7 @@ Module deserializer.
   
   Axiom Function_load_identifier_index :
     M.IsFunction "move_binary_format::deserializer::load_identifier_index" load_identifier_index.
+  Smpl Add apply Function_load_identifier_index : is_function.
   
   (*
   fn load_struct_handle_index(cursor: &mut VersionedCursor) -> BinaryLoaderResult<StructHandleIndex> {
@@ -2365,6 +2374,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_struct_handle_index"
       load_struct_handle_index.
+  Smpl Add apply Function_load_struct_handle_index : is_function.
   
   (*
   fn load_address_identifier_index(
@@ -2501,6 +2511,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_address_identifier_index"
       load_address_identifier_index.
+  Smpl Add apply Function_load_address_identifier_index : is_function.
   
   (*
   fn load_struct_def_index(
@@ -2631,6 +2642,7 @@ Module deserializer.
   
   Axiom Function_load_struct_def_index :
     M.IsFunction "move_binary_format::deserializer::load_struct_def_index" load_struct_def_index.
+  Smpl Add apply Function_load_struct_def_index : is_function.
   
   (*
   fn load_function_handle_index(
@@ -2763,6 +2775,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_function_handle_index"
       load_function_handle_index.
+  Smpl Add apply Function_load_function_handle_index : is_function.
   
   (*
   fn load_field_handle_index(cursor: &mut VersionedCursor) -> BinaryLoaderResult<FieldHandleIndex> {
@@ -2893,6 +2906,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_field_handle_index"
       load_field_handle_index.
+  Smpl Add apply Function_load_field_handle_index : is_function.
   
   (*
   fn load_field_inst_index(
@@ -3023,6 +3037,7 @@ Module deserializer.
   
   Axiom Function_load_field_inst_index :
     M.IsFunction "move_binary_format::deserializer::load_field_inst_index" load_field_inst_index.
+  Smpl Add apply Function_load_field_inst_index : is_function.
   
   (*
   fn load_function_inst_index(
@@ -3155,6 +3170,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_function_inst_index"
       load_function_inst_index.
+  Smpl Add apply Function_load_function_inst_index : is_function.
   
   (*
   fn load_struct_def_inst_index(
@@ -3287,6 +3303,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_struct_def_inst_index"
       load_struct_def_inst_index.
+  Smpl Add apply Function_load_struct_def_inst_index : is_function.
   
   (*
   fn load_constant_pool_index(cursor: &mut VersionedCursor) -> BinaryLoaderResult<ConstantPoolIndex> {
@@ -3417,6 +3434,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_constant_pool_index"
       load_constant_pool_index.
+  Smpl Add apply Function_load_constant_pool_index : is_function.
   
   (*
   fn load_bytecode_count(cursor: &mut VersionedCursor) -> BinaryLoaderResult<usize> {
@@ -3444,6 +3462,7 @@ Module deserializer.
   
   Axiom Function_load_bytecode_count :
     M.IsFunction "move_binary_format::deserializer::load_bytecode_count" load_bytecode_count.
+  Smpl Add apply Function_load_bytecode_count : is_function.
   
   (*
   fn load_bytecode_index(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u16> {
@@ -3471,6 +3490,7 @@ Module deserializer.
   
   Axiom Function_load_bytecode_index :
     M.IsFunction "move_binary_format::deserializer::load_bytecode_index" load_bytecode_index.
+  Smpl Add apply Function_load_bytecode_index : is_function.
   
   (*
   fn load_acquires_count(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u64> {
@@ -3498,6 +3518,7 @@ Module deserializer.
   
   Axiom Function_load_acquires_count :
     M.IsFunction "move_binary_format::deserializer::load_acquires_count" load_acquires_count.
+  Smpl Add apply Function_load_acquires_count : is_function.
   
   (*
   fn load_field_count(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u64> {
@@ -3525,6 +3546,7 @@ Module deserializer.
   
   Axiom Function_load_field_count :
     M.IsFunction "move_binary_format::deserializer::load_field_count" load_field_count.
+  Smpl Add apply Function_load_field_count : is_function.
   
   (*
   fn load_type_parameter_count(cursor: &mut VersionedCursor) -> BinaryLoaderResult<usize> {
@@ -3556,6 +3578,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_type_parameter_count"
       load_type_parameter_count.
+  Smpl Add apply Function_load_type_parameter_count : is_function.
   
   (*
   fn load_signature_size(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u64> {
@@ -3583,6 +3606,7 @@ Module deserializer.
   
   Axiom Function_load_signature_size :
     M.IsFunction "move_binary_format::deserializer::load_signature_size" load_signature_size.
+  Smpl Add apply Function_load_signature_size : is_function.
   
   (*
   fn load_constant_size(cursor: &mut VersionedCursor) -> BinaryLoaderResult<usize> {
@@ -3610,6 +3634,7 @@ Module deserializer.
   
   Axiom Function_load_constant_size :
     M.IsFunction "move_binary_format::deserializer::load_constant_size" load_constant_size.
+  Smpl Add apply Function_load_constant_size : is_function.
   
   (*
   fn load_metadata_key_size(cursor: &mut VersionedCursor) -> BinaryLoaderResult<usize> {
@@ -3639,6 +3664,7 @@ Module deserializer.
   
   Axiom Function_load_metadata_key_size :
     M.IsFunction "move_binary_format::deserializer::load_metadata_key_size" load_metadata_key_size.
+  Smpl Add apply Function_load_metadata_key_size : is_function.
   
   (*
   fn load_metadata_value_size(cursor: &mut VersionedCursor) -> BinaryLoaderResult<usize> {
@@ -3670,6 +3696,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_metadata_value_size"
       load_metadata_value_size.
+  Smpl Add apply Function_load_metadata_value_size : is_function.
   
   (*
   fn load_identifier_size(cursor: &mut VersionedCursor) -> BinaryLoaderResult<usize> {
@@ -3699,6 +3726,7 @@ Module deserializer.
   
   Axiom Function_load_identifier_size :
     M.IsFunction "move_binary_format::deserializer::load_identifier_size" load_identifier_size.
+  Smpl Add apply Function_load_identifier_size : is_function.
   
   (*
   fn load_type_parameter_index(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u16> {
@@ -3730,6 +3758,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_type_parameter_index"
       load_type_parameter_index.
+  Smpl Add apply Function_load_type_parameter_index : is_function.
   
   (*
   fn load_field_offset(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u16> {
@@ -3757,6 +3786,7 @@ Module deserializer.
   
   Axiom Function_load_field_offset :
     M.IsFunction "move_binary_format::deserializer::load_field_offset" load_field_offset.
+  Smpl Add apply Function_load_field_offset : is_function.
   
   (*
   fn load_table_count(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u8> {
@@ -3784,6 +3814,7 @@ Module deserializer.
   
   Axiom Function_load_table_count :
     M.IsFunction "move_binary_format::deserializer::load_table_count" load_table_count.
+  Smpl Add apply Function_load_table_count : is_function.
   
   (*
   fn load_table_offset(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u32> {
@@ -3811,6 +3842,7 @@ Module deserializer.
   
   Axiom Function_load_table_offset :
     M.IsFunction "move_binary_format::deserializer::load_table_offset" load_table_offset.
+  Smpl Add apply Function_load_table_offset : is_function.
   
   (*
   fn load_table_size(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u32> {
@@ -3838,6 +3870,7 @@ Module deserializer.
   
   Axiom Function_load_table_size :
     M.IsFunction "move_binary_format::deserializer::load_table_size" load_table_size.
+  Smpl Add apply Function_load_table_size : is_function.
   
   (*
   fn load_local_index(cursor: &mut VersionedCursor) -> BinaryLoaderResult<u8> {
@@ -3865,6 +3898,7 @@ Module deserializer.
   
   Axiom Function_load_local_index :
     M.IsFunction "move_binary_format::deserializer::load_local_index" load_local_index.
+  Smpl Add apply Function_load_local_index : is_function.
   
   (*
   fn deserialize_compiled_module(
@@ -4261,6 +4295,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::deserialize_compiled_module"
       deserialize_compiled_module.
+  Smpl Add apply Function_deserialize_compiled_module : is_function.
   
   (*
   fn read_tables(
@@ -4494,6 +4529,7 @@ Module deserializer.
   
   Axiom Function_read_tables :
     M.IsFunction "move_binary_format::deserializer::read_tables" read_tables.
+  Smpl Add apply Function_read_tables : is_function.
   
   (*
   fn read_table(cursor: &mut VersionedCursor) -> BinaryLoaderResult<Table> {
@@ -4897,6 +4933,7 @@ Module deserializer.
   
   Axiom Function_read_table :
     M.IsFunction "move_binary_format::deserializer::read_table" read_table.
+  Smpl Add apply Function_read_table : is_function.
   
   (*
   fn check_tables(tables: &mut Vec<Table>, binary_len: usize) -> BinaryLoaderResult<u32> {
@@ -5466,6 +5503,7 @@ Module deserializer.
   
   Axiom Function_check_tables :
     M.IsFunction "move_binary_format::deserializer::check_tables" check_tables.
+  Smpl Add apply Function_check_tables : is_function.
   
   (* Trait *)
   (* Empty module 'CommonTables' *)
@@ -5980,6 +6018,7 @@ Module deserializer.
   
   Axiom Function_build_compiled_module :
     M.IsFunction "move_binary_format::deserializer::build_compiled_module" build_compiled_module.
+  Smpl Add apply Function_build_compiled_module : is_function.
   
   (*
   fn build_common_tables(
@@ -10233,6 +10272,7 @@ Module deserializer.
   
   Axiom Function_build_common_tables :
     M.IsFunction "move_binary_format::deserializer::build_common_tables" build_common_tables.
+  Smpl Add apply Function_build_common_tables : is_function.
   
   (*
   fn build_module_tables(
@@ -13210,6 +13250,7 @@ Module deserializer.
   
   Axiom Function_build_module_tables :
     M.IsFunction "move_binary_format::deserializer::build_module_tables" build_module_tables.
+  Smpl Add apply Function_build_module_tables : is_function.
   
   (*
   fn load_module_handles(
@@ -13565,6 +13606,7 @@ Module deserializer.
   
   Axiom Function_load_module_handles :
     M.IsFunction "move_binary_format::deserializer::load_module_handles" load_module_handles.
+  Smpl Add apply Function_load_module_handles : is_function.
   
   (*
   fn load_struct_handles(
@@ -14135,6 +14177,7 @@ Module deserializer.
   
   Axiom Function_load_struct_handles :
     M.IsFunction "move_binary_format::deserializer::load_struct_handles" load_struct_handles.
+  Smpl Add apply Function_load_struct_handles : is_function.
   
   (*
   fn load_function_handles(
@@ -14810,6 +14853,7 @@ Module deserializer.
   
   Axiom Function_load_function_handles :
     M.IsFunction "move_binary_format::deserializer::load_function_handles" load_function_handles.
+  Smpl Add apply Function_load_function_handles : is_function.
   
   (*
   fn load_struct_instantiations(
@@ -15172,6 +15216,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_struct_instantiations"
       load_struct_instantiations.
+  Smpl Add apply Function_load_struct_instantiations : is_function.
   
   (*
   fn load_function_instantiations(
@@ -15537,6 +15582,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_function_instantiations"
       load_function_instantiations.
+  Smpl Add apply Function_load_function_instantiations : is_function.
   
   (*
   fn load_identifiers(
@@ -16144,6 +16190,7 @@ Module deserializer.
   
   Axiom Function_load_identifiers :
     M.IsFunction "move_binary_format::deserializer::load_identifiers" load_identifiers.
+  Smpl Add apply Function_load_identifiers : is_function.
   
   (*
   fn load_address_identifiers(
@@ -16575,6 +16622,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_address_identifiers"
       load_address_identifiers.
+  Smpl Add apply Function_load_address_identifiers : is_function.
   
   (*
   fn load_constant_pool(
@@ -16830,6 +16878,7 @@ Module deserializer.
   
   Axiom Function_load_constant_pool :
     M.IsFunction "move_binary_format::deserializer::load_constant_pool" load_constant_pool.
+  Smpl Add apply Function_load_constant_pool : is_function.
   
   (*
   fn load_constant(cursor: &mut VersionedCursor) -> BinaryLoaderResult<Constant> {
@@ -17067,6 +17116,7 @@ Module deserializer.
   
   Axiom Function_load_constant :
     M.IsFunction "move_binary_format::deserializer::load_constant" load_constant.
+  Smpl Add apply Function_load_constant : is_function.
   
   (*
   fn load_metadata(
@@ -17322,6 +17372,7 @@ Module deserializer.
   
   Axiom Function_load_metadata :
     M.IsFunction "move_binary_format::deserializer::load_metadata" load_metadata.
+  Smpl Add apply Function_load_metadata : is_function.
   
   (*
   fn load_metadata_entry(cursor: &mut VersionedCursor) -> BinaryLoaderResult<Metadata> {
@@ -17584,6 +17635,7 @@ Module deserializer.
   
   Axiom Function_load_metadata_entry :
     M.IsFunction "move_binary_format::deserializer::load_metadata_entry" load_metadata_entry.
+  Smpl Add apply Function_load_metadata_entry : is_function.
   
   (*
   fn load_byte_blob(
@@ -18012,6 +18064,7 @@ Module deserializer.
   
   Axiom Function_load_byte_blob :
     M.IsFunction "move_binary_format::deserializer::load_byte_blob" load_byte_blob.
+  Smpl Add apply Function_load_byte_blob : is_function.
   
   (*
   fn load_signatures(
@@ -18282,6 +18335,7 @@ Module deserializer.
   
   Axiom Function_load_signatures :
     M.IsFunction "move_binary_format::deserializer::load_signatures" load_signatures.
+  Smpl Add apply Function_load_signatures : is_function.
   
   (*
   fn load_signature_tokens(cursor: &mut VersionedCursor) -> BinaryLoaderResult<Vec<SignatureToken>> {
@@ -18626,6 +18680,7 @@ Module deserializer.
   
   Axiom Function_load_signature_tokens :
     M.IsFunction "move_binary_format::deserializer::load_signature_tokens" load_signature_tokens.
+  Smpl Add apply Function_load_signature_tokens : is_function.
   
   (*
   fn load_signature_token(cursor: &mut VersionedCursor) -> BinaryLoaderResult<SignatureToken> {
@@ -20750,6 +20805,7 @@ Module deserializer.
   
   Axiom Function_load_signature_token :
     M.IsFunction "move_binary_format::deserializer::load_signature_token" load_signature_token.
+  Smpl Add apply Function_load_signature_token : is_function.
   
   Module load_signature_token.
     (*
@@ -22237,6 +22293,7 @@ Module deserializer.
   
   Axiom Function_load_ability_set :
     M.IsFunction "move_binary_format::deserializer::load_ability_set" load_ability_set.
+  Smpl Add apply Function_load_ability_set : is_function.
   
   (*
   fn load_ability_sets(
@@ -22588,6 +22645,7 @@ Module deserializer.
   
   Axiom Function_load_ability_sets :
     M.IsFunction "move_binary_format::deserializer::load_ability_sets" load_ability_sets.
+  Smpl Add apply Function_load_ability_sets : is_function.
   
   (*
   fn load_struct_type_parameters(
@@ -22945,6 +23003,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_struct_type_parameters"
       load_struct_type_parameters.
+  Smpl Add apply Function_load_struct_type_parameters : is_function.
   
   (*
   fn load_struct_type_parameter(
@@ -23227,6 +23286,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_struct_type_parameter"
       load_struct_type_parameter.
+  Smpl Add apply Function_load_struct_type_parameter : is_function.
   
   (*
   fn load_struct_defs(
@@ -23839,6 +23899,7 @@ Module deserializer.
   
   Axiom Function_load_struct_defs :
     M.IsFunction "move_binary_format::deserializer::load_struct_defs" load_struct_defs.
+  Smpl Add apply Function_load_struct_defs : is_function.
   
   (*
   fn load_field_defs(cursor: &mut VersionedCursor) -> BinaryLoaderResult<Vec<FieldDefinition>> {
@@ -24185,6 +24246,7 @@ Module deserializer.
   
   Axiom Function_load_field_defs :
     M.IsFunction "move_binary_format::deserializer::load_field_defs" load_field_defs.
+  Smpl Add apply Function_load_field_defs : is_function.
   
   (*
   fn load_field_def(cursor: &mut VersionedCursor) -> BinaryLoaderResult<FieldDefinition> {
@@ -24408,6 +24470,7 @@ Module deserializer.
   
   Axiom Function_load_field_def :
     M.IsFunction "move_binary_format::deserializer::load_field_def" load_field_def.
+  Smpl Add apply Function_load_field_def : is_function.
   
   (*
   fn load_function_defs(
@@ -24670,6 +24733,7 @@ Module deserializer.
   
   Axiom Function_load_function_defs :
     M.IsFunction "move_binary_format::deserializer::load_function_defs" load_function_defs.
+  Smpl Add apply Function_load_function_defs : is_function.
   
   (*
   fn load_field_handles(
@@ -25028,6 +25092,7 @@ Module deserializer.
   
   Axiom Function_load_field_handles :
     M.IsFunction "move_binary_format::deserializer::load_field_handles" load_field_handles.
+  Smpl Add apply Function_load_field_handles : is_function.
   
   (*
   fn load_field_instantiations(
@@ -25390,6 +25455,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_field_instantiations"
       load_field_instantiations.
+  Smpl Add apply Function_load_field_instantiations : is_function.
   
   (*
   fn load_function_def(cursor: &mut VersionedCursor) -> BinaryLoaderResult<FunctionDefinition> {
@@ -27043,6 +27109,7 @@ Module deserializer.
   
   Axiom Function_load_function_def :
     M.IsFunction "move_binary_format::deserializer::load_function_def" load_function_def.
+  Smpl Add apply Function_load_function_def : is_function.
   
   (*
   fn load_struct_definition_indices(
@@ -27395,6 +27462,7 @@ Module deserializer.
     M.IsFunction
       "move_binary_format::deserializer::load_struct_definition_indices"
       load_struct_definition_indices.
+  Smpl Add apply Function_load_struct_definition_indices : is_function.
   
   (*
   fn load_code_unit(cursor: &mut VersionedCursor) -> BinaryLoaderResult<CodeUnit> {
@@ -27638,6 +27706,7 @@ Module deserializer.
   
   Axiom Function_load_code_unit :
     M.IsFunction "move_binary_format::deserializer::load_code_unit" load_code_unit.
+  Smpl Add apply Function_load_code_unit : is_function.
   
   (*
   fn load_code(cursor: &mut VersionedCursor, code: &mut Vec<Bytecode>) -> BinaryLoaderResult<()> {
@@ -34342,6 +34411,7 @@ Module deserializer.
     end.
   
   Axiom Function_load_code : M.IsFunction "move_binary_format::deserializer::load_code" load_code.
+  Smpl Add apply Function_load_code : is_function.
   
   Module Impl_move_binary_format_file_format_common_TableType.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format_common::TableType".

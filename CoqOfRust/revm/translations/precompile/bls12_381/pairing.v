@@ -1183,5 +1183,6 @@ Module bls12_381.
       end.
     
     Axiom Function_pairing : M.IsFunction "revm_precompile::bls12_381::pairing::pairing" pairing.
+    Smpl Add apply Function_pairing : is_function.
   End pairing.
 End bls12_381.

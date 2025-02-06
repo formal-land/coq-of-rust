@@ -417,6 +417,7 @@ Module instructions.
         M.IsFunction
           "revm_interpreter::instructions::contract::call_helpers::get_memory_input_and_out_ranges"
           get_memory_input_and_out_ranges.
+      Smpl Add apply Function_get_memory_input_and_out_ranges : is_function.
       
       (*
       pub fn resize_memory(
@@ -947,6 +948,7 @@ Module instructions.
         M.IsFunction
           "revm_interpreter::instructions::contract::call_helpers::resize_memory"
           resize_memory.
+      Smpl Add apply Function_resize_memory : is_function.
       
       (*
       pub fn calc_call_gas(
@@ -1218,6 +1220,7 @@ Module instructions.
         M.IsFunction
           "revm_interpreter::instructions::contract::call_helpers::calc_call_gas"
           calc_call_gas.
+      Smpl Add apply Function_calc_call_gas : is_function.
     End call_helpers.
   End contract.
 End instructions.

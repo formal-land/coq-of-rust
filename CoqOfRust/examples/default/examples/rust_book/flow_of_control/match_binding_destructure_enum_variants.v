@@ -16,6 +16,7 @@ Definition some_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
 
 Axiom Function_some_number :
   M.IsFunction "match_binding_destructure_enum_variants::some_number" some_number.
+Smpl Add apply Function_some_number : is_function.
 
 (*
 fn main() {
@@ -190,3 +191,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "match_binding_destructure_enum_variants::main" main.
+Smpl Add apply Function_main : is_function.

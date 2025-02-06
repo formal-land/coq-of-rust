@@ -214,6 +214,7 @@ Module iter.
       
       Axiom Function_clone_try_fold :
         M.IsFunction "core::iter::adapters::cloned::clone_try_fold" clone_try_fold.
+      Smpl Add apply Function_clone_try_fold : is_function.
       
       Module clone_try_fold.
         (* Error OpaqueTy *)

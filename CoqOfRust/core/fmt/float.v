@@ -265,6 +265,7 @@ Module fmt.
     
     Axiom Function_float_to_decimal_common_exact :
       M.IsFunction "core::fmt::float::float_to_decimal_common_exact" float_to_decimal_common_exact.
+    Smpl Add apply Function_float_to_decimal_common_exact : is_function.
     
     (*
     fn float_to_decimal_common_shortest<T>(
@@ -422,6 +423,7 @@ Module fmt.
       M.IsFunction
         "core::fmt::float::float_to_decimal_common_shortest"
         float_to_decimal_common_shortest.
+    Smpl Add apply Function_float_to_decimal_common_shortest : is_function.
     
     (*
     fn float_to_decimal_display<T>(fmt: &mut Formatter<'_>, num: &T) -> Result
@@ -538,6 +540,7 @@ Module fmt.
     
     Axiom Function_float_to_decimal_display :
       M.IsFunction "core::fmt::float::float_to_decimal_display" float_to_decimal_display.
+    Smpl Add apply Function_float_to_decimal_display : is_function.
     
     (*
     fn float_to_exponential_common_exact<T>(
@@ -698,6 +701,7 @@ Module fmt.
       M.IsFunction
         "core::fmt::float::float_to_exponential_common_exact"
         float_to_exponential_common_exact.
+    Smpl Add apply Function_float_to_exponential_common_exact : is_function.
     
     (*
     fn float_to_exponential_common_shortest<T>(
@@ -858,6 +862,7 @@ Module fmt.
       M.IsFunction
         "core::fmt::float::float_to_exponential_common_shortest"
         float_to_exponential_common_shortest.
+    Smpl Add apply Function_float_to_exponential_common_shortest : is_function.
     
     (*
     fn float_to_exponential_common<T>(fmt: &mut Formatter<'_>, num: &T, upper: bool) -> Result
@@ -982,6 +987,7 @@ Module fmt.
     
     Axiom Function_float_to_exponential_common :
       M.IsFunction "core::fmt::float::float_to_exponential_common" float_to_exponential_common.
+    Smpl Add apply Function_float_to_exponential_common : is_function.
     
     (*
     fn float_to_general_debug<T>(fmt: &mut Formatter<'_>, num: &T) -> Result
@@ -1160,6 +1166,7 @@ Module fmt.
     
     Axiom Function_float_to_general_debug :
       M.IsFunction "core::fmt::float::float_to_general_debug" float_to_general_debug.
+    Smpl Add apply Function_float_to_general_debug : is_function.
     
     Module Impl_core_fmt_Debug_for_f32.
       Definition Self : Ty.t := Ty.path "f32".

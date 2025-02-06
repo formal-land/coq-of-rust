@@ -318,6 +318,7 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_zero_address : M.IsFunction "erc1155::zero_address" zero_address.
+Smpl Add apply Function_zero_address : is_function.
 
 Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
   M.run_constant

@@ -35,6 +35,7 @@ Parameter depends_on_trait_impl : (list Value.t) -> (list Ty.t) -> (list Value.t
 
 Axiom Function_depends_on_trait_impl :
   M.IsFunction "functions_order::depends_on_trait_impl" depends_on_trait_impl.
+Smpl Add apply Function_depends_on_trait_impl : is_function.
 
 (* Trait *)
 (* Empty module 'SomeTrait' *)
@@ -81,26 +82,32 @@ Module inner_mod.
   Parameter bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_bar : M.IsFunction "functions_order::inner_mod::bar" bar.
+  Smpl Add apply Function_bar : is_function.
   
   Parameter tar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_tar : M.IsFunction "functions_order::inner_mod::tar" tar.
+  Smpl Add apply Function_tar : is_function.
   
   Module nested_mod.
     Parameter tick : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_tick : M.IsFunction "functions_order::inner_mod::nested_mod::tick" tick.
+    Smpl Add apply Function_tick : is_function.
     
     Parameter tack : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_tack : M.IsFunction "functions_order::inner_mod::nested_mod::tack" tack.
+    Smpl Add apply Function_tack : is_function.
   End nested_mod.
 End inner_mod.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "functions_order::main" main.
+Smpl Add apply Function_main : is_function.
 
 Parameter foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_foo : M.IsFunction "functions_order::foo" foo.
+Smpl Add apply Function_foo : is_function.

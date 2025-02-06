@@ -2948,6 +2948,7 @@ Module result.
     end.
   
   Axiom Function_unwrap_failed : M.IsFunction "core::result::unwrap_failed" unwrap_failed.
+  Smpl Add apply Function_unwrap_failed : is_function.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_E_for_core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].

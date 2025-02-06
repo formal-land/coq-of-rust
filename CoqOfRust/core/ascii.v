@@ -87,6 +87,7 @@ Module ascii.
     end.
   
   Axiom Function_escape_default : M.IsFunction "core::ascii::escape_default" escape_default.
+  Smpl Add apply Function_escape_default : is_function.
   
   Module Impl_core_ascii_EscapeDefault.
     Definition Self : Ty.t := Ty.path "core::ascii::EscapeDefault".

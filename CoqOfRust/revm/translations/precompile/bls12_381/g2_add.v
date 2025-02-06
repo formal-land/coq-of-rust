@@ -884,5 +884,6 @@ Module bls12_381.
       end.
     
     Axiom Function_g2_add : M.IsFunction "revm_precompile::bls12_381::g2_add::g2_add" g2_add.
+    Smpl Add apply Function_g2_add : is_function.
   End g2_add.
 End bls12_381.

@@ -241,6 +241,7 @@ Module bls12_381.
     
     Axiom Function_fp_to_bytes :
       M.IsFunction "revm_precompile::bls12_381::utils::fp_to_bytes" fp_to_bytes.
+    Smpl Add apply Function_fp_to_bytes : is_function.
     
     (*
     pub(super) fn remove_padding(input: &[u8]) -> Result<&[u8; FP_LENGTH], PrecompileError> {
@@ -768,6 +769,7 @@ Module bls12_381.
     
     Axiom Function_remove_padding :
       M.IsFunction "revm_precompile::bls12_381::utils::remove_padding" remove_padding.
+    Smpl Add apply Function_remove_padding : is_function.
     
     (*
     pub(super) fn extract_scalar_input(input: &[u8]) -> Result<blst_scalar, PrecompileError> {
@@ -1058,6 +1060,7 @@ Module bls12_381.
     
     Axiom Function_extract_scalar_input :
       M.IsFunction "revm_precompile::bls12_381::utils::extract_scalar_input" extract_scalar_input.
+    Smpl Add apply Function_extract_scalar_input : is_function.
     
     (*
     fn is_valid_be(input: &[u8; 48]) -> bool {
@@ -1285,6 +1288,7 @@ Module bls12_381.
     
     Axiom Function_is_valid_be :
       M.IsFunction "revm_precompile::bls12_381::utils::is_valid_be" is_valid_be.
+    Smpl Add apply Function_is_valid_be : is_function.
     
     (*
     pub(super) fn fp_from_bendian(input: &[u8; 48]) -> Result<blst_fp, PrecompileError> {
@@ -1420,5 +1424,6 @@ Module bls12_381.
     
     Axiom Function_fp_from_bendian :
       M.IsFunction "revm_precompile::bls12_381::utils::fp_from_bendian" fp_from_bendian.
+    Smpl Add apply Function_fp_from_bendian : is_function.
   End utils.
 End bls12_381.

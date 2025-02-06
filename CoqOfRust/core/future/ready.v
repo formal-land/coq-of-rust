@@ -275,5 +275,6 @@ Module future.
       end.
     
     Axiom Function_ready : M.IsFunction "core::future::ready::ready" ready.
+    Smpl Add apply Function_ready : is_function.
   End ready.
 End future.

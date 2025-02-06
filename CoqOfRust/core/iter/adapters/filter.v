@@ -622,6 +622,7 @@ Module iter.
       
       Axiom Function_filter_fold :
         M.IsFunction "core::iter::adapters::filter::filter_fold" filter_fold.
+      Smpl Add apply Function_filter_fold : is_function.
       
       Module filter_fold.
         (* Error OpaqueTy *)
@@ -756,6 +757,7 @@ Module iter.
       
       Axiom Function_filter_try_fold :
         M.IsFunction "core::iter::adapters::filter::filter_try_fold" filter_try_fold.
+      Smpl Add apply Function_filter_try_fold : is_function.
       
       Module filter_try_fold.
         (* Error OpaqueTy *)

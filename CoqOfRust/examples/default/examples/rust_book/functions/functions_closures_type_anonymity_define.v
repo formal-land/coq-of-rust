@@ -19,6 +19,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_type_anonymity_define::main" main.
+Smpl Add apply Function_main : is_function.
 
 Module main.
   (*
@@ -56,4 +57,5 @@ Module main.
     end.
   
   Axiom Function_apply : M.IsFunction "functions_closures_type_anonymity_define::main::apply" apply.
+  Smpl Add apply Function_apply : is_function.
 End main.

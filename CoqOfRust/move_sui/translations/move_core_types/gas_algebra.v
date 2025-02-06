@@ -1984,6 +1984,7 @@ Module gas_algebra.
     end.
   
   Axiom Function_mul_impl : M.IsFunction "move_core_types::gas_algebra::mul_impl" mul_impl.
+  Smpl Add apply Function_mul_impl : is_function.
   
   Module Impl_core_ops_arith_Mul_move_core_types_gas_algebra_GasQuantity_move_core_types_gas_algebra_UnitDiv_U1_U2_for_move_core_types_gas_algebra_GasQuantity_U2.
     Definition Self (U1 U2 : Ty.t) : Ty.t :=
@@ -2279,6 +2280,7 @@ Module gas_algebra.
   
   Axiom Function_apply_ratio_round_down :
     M.IsFunction "move_core_types::gas_algebra::apply_ratio_round_down" apply_ratio_round_down.
+  Smpl Add apply Function_apply_ratio_round_down : is_function.
   
   (*
   fn apply_ratio_round_up(val: u64, nominator: u64, denominator: u64) -> u64 {
@@ -2517,6 +2519,7 @@ Module gas_algebra.
   
   Axiom Function_apply_ratio_round_up :
     M.IsFunction "move_core_types::gas_algebra::apply_ratio_round_up" apply_ratio_round_up.
+  Smpl Add apply Function_apply_ratio_round_up : is_function.
   
   (* Trait *)
   (* Empty module 'ToUnit' *)

@@ -136,6 +136,7 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
 
 Axiom Function_random_animal :
   M.IsFunction "returning_traits_with_dyn::random_animal" random_animal.
+Smpl Add apply Function_random_animal : is_function.
 
 (*
 fn main() {
@@ -258,3 +259,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "returning_traits_with_dyn::main" main.
+Smpl Add apply Function_main : is_function.

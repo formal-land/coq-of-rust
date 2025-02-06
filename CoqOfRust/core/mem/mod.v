@@ -32,6 +32,7 @@ Module mem.
     end.
   
   Axiom Function_forget : M.IsFunction "core::mem::forget" forget.
+  Smpl Add apply Function_forget : is_function.
   
   (*
   pub fn forget_unsized<T: ?Sized>(t: T) {
@@ -51,6 +52,7 @@ Module mem.
     end.
   
   Axiom Function_forget_unsized : M.IsFunction "core::mem::forget_unsized" forget_unsized.
+  Smpl Add apply Function_forget_unsized : is_function.
   
   (*
   pub const fn size_of<T>() -> usize {
@@ -66,6 +68,7 @@ Module mem.
     end.
   
   Axiom Function_size_of : M.IsFunction "core::mem::size_of" size_of.
+  Smpl Add apply Function_size_of : is_function.
   
   (*
   pub const fn size_of_val<T: ?Sized>(val: &T) -> usize {
@@ -86,6 +89,7 @@ Module mem.
     end.
   
   Axiom Function_size_of_val : M.IsFunction "core::mem::size_of_val" size_of_val.
+  Smpl Add apply Function_size_of_val : is_function.
   
   (*
   pub const unsafe fn size_of_val_raw<T: ?Sized>(val: *const T) -> usize {
@@ -106,6 +110,7 @@ Module mem.
     end.
   
   Axiom Function_size_of_val_raw : M.IsFunction "core::mem::size_of_val_raw" size_of_val_raw.
+  Smpl Add apply Function_size_of_val_raw : is_function.
   
   (*
   pub fn min_align_of<T>() -> usize {
@@ -121,6 +126,7 @@ Module mem.
     end.
   
   Axiom Function_min_align_of : M.IsFunction "core::mem::min_align_of" min_align_of.
+  Smpl Add apply Function_min_align_of : is_function.
   
   (*
   pub fn min_align_of_val<T: ?Sized>(val: &T) -> usize {
@@ -141,6 +147,7 @@ Module mem.
     end.
   
   Axiom Function_min_align_of_val : M.IsFunction "core::mem::min_align_of_val" min_align_of_val.
+  Smpl Add apply Function_min_align_of_val : is_function.
   
   (*
   pub const fn align_of<T>() -> usize {
@@ -156,6 +163,7 @@ Module mem.
     end.
   
   Axiom Function_align_of : M.IsFunction "core::mem::align_of" align_of.
+  Smpl Add apply Function_align_of : is_function.
   
   (*
   pub const fn align_of_val<T: ?Sized>(val: &T) -> usize {
@@ -176,6 +184,7 @@ Module mem.
     end.
   
   Axiom Function_align_of_val : M.IsFunction "core::mem::align_of_val" align_of_val.
+  Smpl Add apply Function_align_of_val : is_function.
   
   (*
   pub const unsafe fn align_of_val_raw<T: ?Sized>(val: *const T) -> usize {
@@ -196,6 +205,7 @@ Module mem.
     end.
   
   Axiom Function_align_of_val_raw : M.IsFunction "core::mem::align_of_val_raw" align_of_val_raw.
+  Smpl Add apply Function_align_of_val_raw : is_function.
   
   (*
   pub const fn needs_drop<T: ?Sized>() -> bool {
@@ -211,6 +221,7 @@ Module mem.
     end.
   
   Axiom Function_needs_drop : M.IsFunction "core::mem::needs_drop" needs_drop.
+  Smpl Add apply Function_needs_drop : is_function.
   
   (*
   pub const unsafe fn zeroed<T>() -> T {
@@ -259,6 +270,7 @@ Module mem.
     end.
   
   Axiom Function_zeroed : M.IsFunction "core::mem::zeroed" zeroed.
+  Smpl Add apply Function_zeroed : is_function.
   
   (*
   pub unsafe fn uninitialized<T>() -> T {
@@ -353,6 +365,7 @@ Module mem.
     end.
   
   Axiom Function_uninitialized : M.IsFunction "core::mem::uninitialized" uninitialized.
+  Smpl Add apply Function_uninitialized : is_function.
   
   (*
   pub const fn swap<T>(x: &mut T, y: &mut T) {
@@ -378,6 +391,7 @@ Module mem.
     end.
   
   Axiom Function_swap : M.IsFunction "core::mem::swap" swap.
+  Smpl Add apply Function_swap : is_function.
   
   (*
   pub fn take<T: Default>(dest: &mut T) -> T {
@@ -403,6 +417,7 @@ Module mem.
     end.
   
   Axiom Function_take : M.IsFunction "core::mem::take" take.
+  Smpl Add apply Function_take : is_function.
   
   (*
   pub const fn replace<T>(dest: &mut T, src: T) -> T {
@@ -450,6 +465,7 @@ Module mem.
     end.
   
   Axiom Function_replace : M.IsFunction "core::mem::replace" replace.
+  Smpl Add apply Function_replace : is_function.
   
   (* pub fn drop<T>(_x: T) {} *)
   Definition drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -462,6 +478,7 @@ Module mem.
     end.
   
   Axiom Function_drop : M.IsFunction "core::mem::drop" drop.
+  Smpl Add apply Function_drop : is_function.
   
   (*
   pub const fn copy<T: Copy>(x: &T) -> T {
@@ -478,6 +495,7 @@ Module mem.
     end.
   
   Axiom Function_copy : M.IsFunction "core::mem::copy" copy.
+  Smpl Add apply Function_copy : is_function.
   
   (*
   pub const unsafe fn transmute_copy<Src, Dst>(src: &Src) -> Dst {
@@ -632,6 +650,7 @@ Module mem.
     end.
   
   Axiom Function_transmute_copy : M.IsFunction "core::mem::transmute_copy" transmute_copy.
+  Smpl Add apply Function_transmute_copy : is_function.
   
   (* StructTuple
     {
@@ -906,6 +925,7 @@ Module mem.
     end.
   
   Axiom Function_discriminant : M.IsFunction "core::mem::discriminant" discriminant.
+  Smpl Add apply Function_discriminant : is_function.
   
   (*
   pub const fn variant_count<T>() -> usize {
@@ -924,6 +944,7 @@ Module mem.
     end.
   
   Axiom Function_variant_count : M.IsFunction "core::mem::variant_count" variant_count.
+  Smpl Add apply Function_variant_count : is_function.
   
   (* Trait *)
   (* Empty module 'SizedTypeProperties' *)

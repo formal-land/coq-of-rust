@@ -136,6 +136,7 @@ Definition origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   end.
 
 Axiom Function_origin : M.IsFunction "box_stack_heap::origin" origin.
+Smpl Add apply Function_origin : is_function.
 
 (*
 fn boxed_origin() -> Box<Point> {
@@ -167,6 +168,7 @@ Definition boxed_origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_boxed_origin : M.IsFunction "box_stack_heap::boxed_origin" boxed_origin.
+Smpl Add apply Function_boxed_origin : is_function.
 
 (*
 fn main() {
@@ -857,3 +859,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "box_stack_heap::main" main.
+Smpl Add apply Function_main : is_function.

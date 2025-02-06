@@ -15,6 +15,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "diverging_functions::main" main.
+Smpl Add apply Function_main : is_function.
 
 Module main.
   (*
@@ -38,4 +39,5 @@ Module main.
     end.
   
   Axiom Function_foo : M.IsFunction "diverging_functions::main::foo" foo.
+  Smpl Add apply Function_foo : is_function.
 End main.

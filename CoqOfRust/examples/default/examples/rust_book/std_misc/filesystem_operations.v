@@ -154,6 +154,7 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_cat : M.IsFunction "filesystem_operations::cat" cat.
+Smpl Add apply Function_cat : is_function.
 
 (*
 fn echo(s: &str, path: &Path) -> io::Result<()> {
@@ -286,6 +287,7 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_echo : M.IsFunction "filesystem_operations::echo" echo.
+Smpl Add apply Function_echo : is_function.
 
 (*
 fn touch(path: &Path) -> io::Result<()> {
@@ -380,6 +382,7 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_touch : M.IsFunction "filesystem_operations::touch" touch.
+Smpl Add apply Function_touch : is_function.
 
 (*
 fn main() {
@@ -2182,3 +2185,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "filesystem_operations::main" main.
+Smpl Add apply Function_main : is_function.

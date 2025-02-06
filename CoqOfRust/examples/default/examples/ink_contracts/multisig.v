@@ -1256,6 +1256,7 @@ Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α 
 
 Axiom Function_ensure_requirement_is_valid :
   M.IsFunction "multisig::ensure_requirement_is_valid" ensure_requirement_is_valid.
+Smpl Add apply Function_ensure_requirement_is_valid : is_function.
 
 Module Impl_multisig_Multisig.
   Definition Self : Ty.t := Ty.path "multisig::Multisig".

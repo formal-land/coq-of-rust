@@ -125,3 +125,4 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_start_loop : M.IsFunction "mutual_loop::start_loop" start_loop.
+Smpl Add apply Function_start_loop : is_function.

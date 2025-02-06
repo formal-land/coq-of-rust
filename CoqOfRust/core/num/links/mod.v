@@ -19,10 +19,6 @@ Module Impl_u64.
     {{ num.Impl_u64.saturating_add [] [] [ φ self; φ rhs ] 🔽 Self }}.
   Proof.
     run_symbolic.
-    eapply Run.CallPrimitiveGetFunction. {
-      eapply intrinsics.Function_saturating_add.
-    }
-    run_symbolic.
     eapply Run.CallClosure. {
       apply (intrinsics.run_saturating_add IntegerKind.U64).
     }

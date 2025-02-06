@@ -25,5 +25,6 @@ Module ops.
     
     Axiom Function_fallback_surface_drop :
       M.IsFunction "core::ops::drop::fallback_surface_drop" fallback_surface_drop.
+    Smpl Add apply Function_fallback_surface_drop : is_function.
   End drop.
 End ops.

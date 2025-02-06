@@ -56,3 +56,4 @@ Enum Color
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "enums_c_like::main" main.
+Smpl Add apply Function_main : is_function.

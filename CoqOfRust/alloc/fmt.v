@@ -74,6 +74,7 @@ Module fmt.
     end.
   
   Axiom Function_format : M.IsFunction "alloc::fmt::format" format.
+  Smpl Add apply Function_format : is_function.
   
   Module format.
     (*
@@ -159,5 +160,6 @@ Module fmt.
       end.
     
     Axiom Function_format_inner : M.IsFunction "alloc::fmt::format::format_inner" format_inner.
+    Smpl Add apply Function_format_inner : is_function.
   End format.
 End fmt.

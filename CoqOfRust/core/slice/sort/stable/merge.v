@@ -343,6 +343,7 @@ Module slice.
           end.
         
         Axiom Function_merge : M.IsFunction "core::slice::sort::stable::merge::merge" merge.
+        Smpl Add apply Function_merge : is_function.
         
         (* StructRecord
           {

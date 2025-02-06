@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter decode_input : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_decode_input : M.IsFunction "wildcard_selector::decode_input" decode_input.
+Smpl Add apply Function_decode_input : is_function.
 
 (* StructTuple
   {

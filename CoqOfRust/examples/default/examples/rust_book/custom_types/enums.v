@@ -367,6 +367,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Axiom Function_inspect : M.IsFunction "enums::inspect" inspect.
+Smpl Add apply Function_inspect : is_function.
 
 (*
 fn main() {
@@ -464,3 +465,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "enums::main" main.
+Smpl Add apply Function_main : is_function.

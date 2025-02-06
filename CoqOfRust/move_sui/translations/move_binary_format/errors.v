@@ -7952,6 +7952,7 @@ Module errors.
   
   Axiom Function_offset_out_of_bounds :
     M.IsFunction "move_binary_format::errors::offset_out_of_bounds" offset_out_of_bounds.
+  Smpl Add apply Function_offset_out_of_bounds : is_function.
   
   (*
   pub fn bounds_error(
@@ -8124,6 +8125,7 @@ Module errors.
   
   Axiom Function_bounds_error :
     M.IsFunction "move_binary_format::errors::bounds_error" bounds_error.
+  Smpl Add apply Function_bounds_error : is_function.
   
   (*
   pub fn verification_error(status: StatusCode, kind: IndexKind, idx: TableIndex) -> PartialVMError {
@@ -8163,6 +8165,7 @@ Module errors.
   
   Axiom Function_verification_error :
     M.IsFunction "move_binary_format::errors::verification_error" verification_error.
+  Smpl Add apply Function_verification_error : is_function.
   
   Module Impl_core_fmt_Debug_for_move_binary_format_errors_PartialVMError.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::PartialVMError".

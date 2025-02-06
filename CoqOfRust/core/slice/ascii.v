@@ -2351,6 +2351,7 @@ Module slice.
     
     Axiom Function_contains_nonascii :
       M.IsFunction "core::slice::ascii::contains_nonascii" contains_nonascii.
+    Smpl Add apply Function_contains_nonascii : is_function.
     
     Module contains_nonascii.
       Definition value_NONASCII_MASK : Value.t :=
@@ -2472,6 +2473,7 @@ Module slice.
     
     Axiom Function_is_ascii_simple :
       M.IsFunction "core::slice::ascii::is_ascii_simple" is_ascii_simple.
+    Smpl Add apply Function_is_ascii_simple : is_function.
     
     (*
     const fn is_ascii(s: &[u8]) -> bool {
@@ -3298,6 +3300,7 @@ Module slice.
       end.
     
     Axiom Function_is_ascii : M.IsFunction "core::slice::ascii::is_ascii" is_ascii.
+    Smpl Add apply Function_is_ascii : is_function.
     
     Module is_ascii.
       Definition value_USIZE_SIZE : Value.t :=

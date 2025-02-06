@@ -382,6 +382,7 @@ Module char.
       end.
     
     Axiom Function_decode_utf16 : M.IsFunction "core::char::decode::decode_utf16" decode_utf16.
+    Smpl Add apply Function_decode_utf16 : is_function.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_char_decode_DecodeUtf16_I.
       Definition Self (I : Ty.t) : Ty.t :=

@@ -47,11 +47,14 @@ Parameter difference : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_difference :
   M.IsFunction "generics_associated_types_solution::difference" difference.
+Smpl Add apply Function_difference : is_function.
 
 Parameter get_a : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_get_a : M.IsFunction "generics_associated_types_solution::get_a" get_a.
+Smpl Add apply Function_get_a : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "generics_associated_types_solution::main" main.
+Smpl Add apply Function_main : is_function.

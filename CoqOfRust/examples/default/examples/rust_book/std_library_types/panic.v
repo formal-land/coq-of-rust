@@ -51,6 +51,7 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Axiom Function_division : M.IsFunction "panic::division" division.
+Smpl Add apply Function_division : is_function.
 
 (*
 fn main() {
@@ -131,3 +132,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "panic::main" main.
+Smpl Add apply Function_main : is_function.

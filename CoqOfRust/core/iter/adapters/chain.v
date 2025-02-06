@@ -253,6 +253,7 @@ Module iter.
         end.
       
       Axiom Function_chain : M.IsFunction "core::iter::adapters::chain::chain" chain.
+      Smpl Add apply Function_chain : is_function.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_A_where_core_iter_traits_iterator_Iterator_B_for_core_iter_adapters_chain_Chain_A_B.
         Definition Self (A B : Ty.t) : Ty.t :=
@@ -3730,6 +3731,7 @@ Module iter.
       
       Axiom Function_and_then_or_clear :
         M.IsFunction "core::iter::adapters::chain::and_then_or_clear" and_then_or_clear.
+      Smpl Add apply Function_and_then_or_clear : is_function.
     End chain.
   End adapters.
 End iter.

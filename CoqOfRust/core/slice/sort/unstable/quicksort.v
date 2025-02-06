@@ -674,6 +674,7 @@ Module slice.
         
         Axiom Function_quicksort :
           M.IsFunction "core::slice::sort::unstable::quicksort::quicksort" quicksort.
+        Smpl Add apply Function_quicksort : is_function.
         
         (*
         pub(crate) fn partition<T, F>(v: &mut [T], pivot: usize, is_less: &mut F) -> usize
@@ -929,6 +930,7 @@ Module slice.
         
         Axiom Function_partition :
           M.IsFunction "core::slice::sort::unstable::quicksort::partition" partition.
+        Smpl Add apply Function_partition : is_function.
         
         (*
         const fn inst_partition<T, F: FnMut(&T, &T) -> bool>() -> fn(&mut [T], &T, &mut F) -> usize {
@@ -1002,6 +1004,7 @@ Module slice.
         
         Axiom Function_inst_partition :
           M.IsFunction "core::slice::sort::unstable::quicksort::inst_partition" inst_partition.
+        Smpl Add apply Function_inst_partition : is_function.
         
         Module inst_partition.
           Definition value_MAX_BRANCHLESS_PARTITION_SIZE : Value.t :=
@@ -1598,6 +1601,7 @@ Module slice.
           M.IsFunction
             "core::slice::sort::unstable::quicksort::partition_hoare_branchy_cyclic"
             partition_hoare_branchy_cyclic.
+        Smpl Add apply Function_partition_hoare_branchy_cyclic : is_function.
         
         (* StructRecord
           {
@@ -2485,6 +2489,7 @@ Module slice.
           M.IsFunction
             "core::slice::sort::unstable::quicksort::partition_lomuto_branchless_cyclic"
             partition_lomuto_branchless_cyclic.
+        Smpl Add apply Function_partition_lomuto_branchless_cyclic : is_function.
         
         (* StructRecord
           {

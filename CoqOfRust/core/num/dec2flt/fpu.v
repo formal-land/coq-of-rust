@@ -14,6 +14,7 @@ Module num.
         
         Axiom Function_set_precision :
           M.IsFunction "core::num::dec2flt::fpu::fpu_precision::set_precision" set_precision.
+        Smpl Add apply Function_set_precision : is_function.
       End fpu_precision.
     End fpu.
   End dec2flt.
