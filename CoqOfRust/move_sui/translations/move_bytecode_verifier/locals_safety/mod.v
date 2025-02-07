@@ -152,6 +152,7 @@ Module locals_safety.
     end.
   
   Axiom Function_verify : M.IsFunction "move_bytecode_verifier::locals_safety::verify" verify.
+  Smpl Add apply Function_verify : is_function.
   
   (*
   fn execute_inner(
@@ -2118,6 +2119,7 @@ Module locals_safety.
   
   Axiom Function_execute_inner :
     M.IsFunction "move_bytecode_verifier::locals_safety::execute_inner" execute_inner.
+  Smpl Add apply Function_execute_inner : is_function.
   
   (* StructTuple
     {

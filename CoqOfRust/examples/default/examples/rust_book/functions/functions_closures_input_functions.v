@@ -33,6 +33,7 @@ Definition call_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Axiom Function_call_me : M.IsFunction "functions_closures_input_functions::call_me" call_me.
+Smpl Add apply Function_call_me : is_function.
 
 (*
 fn function() {
@@ -82,6 +83,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Axiom Function_function : M.IsFunction "functions_closures_input_functions::function" function.
+Smpl Add apply Function_function : is_function.
 
 (*
 fn main() {
@@ -178,3 +180,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_input_functions::main" main.
+Smpl Add apply Function_main : is_function.

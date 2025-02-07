@@ -661,6 +661,7 @@ Module range.
     Axiom AssociatedFunction_iter :
       forall (Idx : Ty.t),
       M.IsAssociatedFunction (Self Idx) "iter" (iter Idx).
+    Smpl Add apply AssociatedFunction_iter : is_associated.
     (*
         pub fn contains<U>(&self, item: &U) -> bool
         where
@@ -698,6 +699,7 @@ Module range.
     Axiom AssociatedFunction_contains :
       forall (Idx : Ty.t),
       M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
+    Smpl Add apply AssociatedFunction_contains : is_associated.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -739,6 +741,7 @@ Module range.
     Axiom AssociatedFunction_is_empty :
       forall (Idx : Ty.t),
       M.IsAssociatedFunction (Self Idx) "is_empty" (is_empty Idx).
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
   End Impl_core_range_Range_Idx.
   
   
@@ -1607,6 +1610,7 @@ Module range.
     Axiom AssociatedFunction_contains :
       forall (Idx : Ty.t),
       M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
+    Smpl Add apply AssociatedFunction_contains : is_associated.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -1648,6 +1652,7 @@ Module range.
     Axiom AssociatedFunction_is_empty :
       forall (Idx : Ty.t),
       M.IsAssociatedFunction (Self Idx) "is_empty" (is_empty Idx).
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
     (*
         pub fn iter(&self) -> IterRangeInclusive<Idx> {
             self.clone().into_iter()
@@ -1690,6 +1695,7 @@ Module range.
     Axiom AssociatedFunction_iter :
       forall (Idx : Ty.t),
       M.IsAssociatedFunction (Self Idx) "iter" (iter Idx).
+    Smpl Add apply AssociatedFunction_iter : is_associated.
   End Impl_core_range_RangeInclusive_Idx.
   
   
@@ -1735,6 +1741,7 @@ Module range.
     
     Axiom AssociatedFunction_into_slice_range :
       M.IsAssociatedFunction Self "into_slice_range" into_slice_range.
+    Smpl Add apply AssociatedFunction_into_slice_range : is_associated.
   End Impl_core_range_RangeInclusive_usize.
   
   Module Impl_core_ops_range_RangeBounds_T_for_core_range_RangeInclusive_T.
@@ -2533,6 +2540,7 @@ Module range.
     Axiom AssociatedFunction_iter :
       forall (Idx : Ty.t),
       M.IsAssociatedFunction (Self Idx) "iter" (iter Idx).
+    Smpl Add apply AssociatedFunction_iter : is_associated.
     (*
         pub fn contains<U>(&self, item: &U) -> bool
         where
@@ -2570,6 +2578,7 @@ Module range.
     Axiom AssociatedFunction_contains :
       forall (Idx : Ty.t),
       M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
+    Smpl Add apply AssociatedFunction_contains : is_associated.
   End Impl_core_range_RangeFrom_Idx.
   
   

@@ -442,6 +442,7 @@ Module slice.
       
       Axiom Function_partition_at_index :
         M.IsFunction "core::slice::sort::select::partition_at_index" partition_at_index.
+      Smpl Add apply Function_partition_at_index : is_function.
       
       Definition value_INSERTION_SORT_THRESHOLD : Value.t :=
         M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
@@ -449,6 +450,7 @@ Module slice.
       Axiom Constant_value_INSERTION_SORT_THRESHOLD :
         (M.get_constant "core::slice::sort::select::INSERTION_SORT_THRESHOLD") =
           value_INSERTION_SORT_THRESHOLD.
+      Global Hint Rewrite Constant_value_INSERTION_SORT_THRESHOLD : constant_rewrites.
       
       (*
       fn partition_at_index_loop<'a, T, F>(
@@ -1251,6 +1253,7 @@ Module slice.
       
       Axiom Function_partition_at_index_loop :
         M.IsFunction "core::slice::sort::select::partition_at_index_loop" partition_at_index_loop.
+      Smpl Add apply Function_partition_at_index_loop : is_function.
       
       (*
       fn min_index<T, F: FnMut(&T, &T) -> bool>(slice: &[T], is_less: &mut F) -> Option<usize> {
@@ -1456,6 +1459,7 @@ Module slice.
         end.
       
       Axiom Function_min_index : M.IsFunction "core::slice::sort::select::min_index" min_index.
+      Smpl Add apply Function_min_index : is_function.
       
       (*
       fn max_index<T, F: FnMut(&T, &T) -> bool>(slice: &[T], is_less: &mut F) -> Option<usize> {
@@ -1661,6 +1665,7 @@ Module slice.
         end.
       
       Axiom Function_max_index : M.IsFunction "core::slice::sort::select::max_index" max_index.
+      Smpl Add apply Function_max_index : is_function.
       
       (*
       fn median_of_medians<T, F: FnMut(&T, &T) -> bool>(mut v: &mut [T], is_less: &mut F, mut k: usize) {
@@ -2299,6 +2304,7 @@ Module slice.
       
       Axiom Function_median_of_medians :
         M.IsFunction "core::slice::sort::select::median_of_medians" median_of_medians.
+      Smpl Add apply Function_median_of_medians : is_function.
       
       (*
       fn median_of_ninthers<T, F: FnMut(&T, &T) -> bool>(v: &mut [T], is_less: &mut F) -> usize {
@@ -2726,6 +2732,7 @@ Module slice.
       
       Axiom Function_median_of_ninthers :
         M.IsFunction "core::slice::sort::select::median_of_ninthers" median_of_ninthers.
+      Smpl Add apply Function_median_of_ninthers : is_function.
       
       (*
       fn ninther<T, F: FnMut(&T, &T) -> bool>(
@@ -3481,6 +3488,7 @@ Module slice.
         end.
       
       Axiom Function_ninther : M.IsFunction "core::slice::sort::select::ninther" ninther.
+      Smpl Add apply Function_ninther : is_function.
       
       (*
       fn median_idx<T, F: FnMut(&T, &T) -> bool>(
@@ -3739,6 +3747,7 @@ Module slice.
         end.
       
       Axiom Function_median_idx : M.IsFunction "core::slice::sort::select::median_idx" median_idx.
+      Smpl Add apply Function_median_idx : is_function.
     End select.
   End sort.
 End slice.

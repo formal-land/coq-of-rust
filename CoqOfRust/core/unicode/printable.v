@@ -586,6 +586,7 @@ Module unicode.
       end.
     
     Axiom Function_check : M.IsFunction "core::unicode::printable::check" check.
+    Smpl Add apply Function_check : is_function.
     
     (*
     pub(crate) fn is_printable(x: char) -> bool {
@@ -1237,6 +1238,7 @@ Module unicode.
     
     Axiom Function_is_printable :
       M.IsFunction "core::unicode::printable::is_printable" is_printable.
+    Smpl Add apply Function_is_printable : is_function.
     
     Definition value_SINGLETONS0U : Value.t :=
       M.run_constant
@@ -1339,6 +1341,7 @@ Module unicode.
     
     Axiom Constant_value_SINGLETONS0U :
       (M.get_constant "core::unicode::printable::SINGLETONS0U") = value_SINGLETONS0U.
+    Global Hint Rewrite Constant_value_SINGLETONS0U : constant_rewrites.
     
     Definition value_SINGLETONS0L : Value.t :=
       M.run_constant
@@ -1651,6 +1654,7 @@ Module unicode.
     
     Axiom Constant_value_SINGLETONS0L :
       (M.get_constant "core::unicode::printable::SINGLETONS0L") = value_SINGLETONS0L.
+    Global Hint Rewrite Constant_value_SINGLETONS0L : constant_rewrites.
     
     Definition value_SINGLETONS1U : Value.t :=
       M.run_constant
@@ -1761,6 +1765,7 @@ Module unicode.
     
     Axiom Constant_value_SINGLETONS1U :
       (M.get_constant "core::unicode::printable::SINGLETONS1U") = value_SINGLETONS1U.
+    Global Hint Rewrite Constant_value_SINGLETONS1U : constant_rewrites.
     
     Definition value_SINGLETONS1L : Value.t :=
       M.run_constant
@@ -1991,6 +1996,7 @@ Module unicode.
     
     Axiom Constant_value_SINGLETONS1L :
       (M.get_constant "core::unicode::printable::SINGLETONS1L") = value_SINGLETONS1L.
+    Global Hint Rewrite Constant_value_SINGLETONS1L : constant_rewrites.
     
     Definition value_NORMAL0 : Value.t :=
       M.run_constant
@@ -2310,6 +2316,7 @@ Module unicode.
     
     Axiom Constant_value_NORMAL0 :
       (M.get_constant "core::unicode::printable::NORMAL0") = value_NORMAL0.
+    Global Hint Rewrite Constant_value_NORMAL0 : constant_rewrites.
     
     Definition value_NORMAL1 : Value.t :=
       M.run_constant
@@ -2818,5 +2825,6 @@ Module unicode.
     
     Axiom Constant_value_NORMAL1 :
       (M.get_constant "core::unicode::printable::NORMAL1") = value_NORMAL1.
+    Global Hint Rewrite Constant_value_NORMAL1 : constant_rewrites.
   End printable.
 End unicode.

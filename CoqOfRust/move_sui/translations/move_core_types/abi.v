@@ -4355,6 +4355,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn name(&self) -> &str {
@@ -4401,6 +4402,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
+    Smpl Add apply AssociatedFunction_name : is_associated.
     
     (*
         pub fn doc(&self) -> &str {
@@ -4447,6 +4449,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_doc : M.IsAssociatedFunction Self "doc" doc.
+    Smpl Add apply AssociatedFunction_doc : is_associated.
     
     (*
         pub fn code(&self) -> &[u8] {
@@ -4496,6 +4499,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
+    Smpl Add apply AssociatedFunction_code : is_associated.
     
     (*
         pub fn ty_args(&self) -> &[TypeArgumentABI] {
@@ -4548,6 +4552,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_ty_args : M.IsAssociatedFunction Self "ty_args" ty_args.
+    Smpl Add apply AssociatedFunction_ty_args : is_associated.
     
     (*
         pub fn args(&self) -> &[ArgumentABI] {
@@ -4597,6 +4602,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_args : M.IsAssociatedFunction Self "args" args.
+    Smpl Add apply AssociatedFunction_args : is_associated.
   End Impl_move_core_types_abi_TransactionScriptABI.
   
   Module Impl_move_core_types_abi_ScriptFunctionABI.
@@ -4641,6 +4647,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn name(&self) -> &str {
@@ -4687,6 +4694,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
+    Smpl Add apply AssociatedFunction_name : is_associated.
     
     (*
         pub fn module_name(&self) -> &ModuleId {
@@ -4715,6 +4723,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_module_name : M.IsAssociatedFunction Self "module_name" module_name.
+    Smpl Add apply AssociatedFunction_module_name : is_associated.
     
     (*
         pub fn doc(&self) -> &str {
@@ -4761,6 +4770,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_doc : M.IsAssociatedFunction Self "doc" doc.
+    Smpl Add apply AssociatedFunction_doc : is_associated.
     
     (*
         pub fn ty_args(&self) -> &[TypeArgumentABI] {
@@ -4813,6 +4823,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_ty_args : M.IsAssociatedFunction Self "ty_args" ty_args.
+    Smpl Add apply AssociatedFunction_ty_args : is_associated.
     
     (*
         pub fn args(&self) -> &[ArgumentABI] {
@@ -4862,6 +4873,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_args : M.IsAssociatedFunction Self "args" args.
+    Smpl Add apply AssociatedFunction_args : is_associated.
   End Impl_move_core_types_abi_ScriptFunctionABI.
   
   Module Impl_move_core_types_abi_ScriptABI.
@@ -4900,6 +4912,7 @@ Module abi.
     
     Axiom AssociatedFunction_is_script_fun_abi :
       M.IsAssociatedFunction Self "is_script_fun_abi" is_script_fun_abi.
+    Smpl Add apply AssociatedFunction_is_script_fun_abi : is_associated.
     
     (*
         pub fn is_transaction_script_abi(&self) -> bool {
@@ -4938,6 +4951,7 @@ Module abi.
     
     Axiom AssociatedFunction_is_transaction_script_abi :
       M.IsAssociatedFunction Self "is_transaction_script_abi" is_transaction_script_abi.
+    Smpl Add apply AssociatedFunction_is_transaction_script_abi : is_associated.
     
     (*
         pub fn name(&self) -> &str {
@@ -5020,6 +5034,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
+    Smpl Add apply AssociatedFunction_name : is_associated.
     
     (*
         pub fn doc(&self) -> &str {
@@ -5102,6 +5117,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_doc : M.IsAssociatedFunction Self "doc" doc.
+    Smpl Add apply AssociatedFunction_doc : is_associated.
     
     (*
         pub fn ty_args(&self) -> &[TypeArgumentABI] {
@@ -5184,6 +5200,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_ty_args : M.IsAssociatedFunction Self "ty_args" ty_args.
+    Smpl Add apply AssociatedFunction_ty_args : is_associated.
     
     (*
         pub fn args(&self) -> &[ArgumentABI] {
@@ -5266,6 +5283,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_args : M.IsAssociatedFunction Self "args" args.
+    Smpl Add apply AssociatedFunction_args : is_associated.
   End Impl_move_core_types_abi_ScriptABI.
   
   Module Impl_move_core_types_abi_ArgumentABI.
@@ -5289,6 +5307,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn name(&self) -> &str {
@@ -5335,6 +5354,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
+    Smpl Add apply AssociatedFunction_name : is_associated.
     
     (*
         pub fn type_tag(&self) -> &TypeTag {
@@ -5363,6 +5383,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_type_tag : M.IsAssociatedFunction Self "type_tag" type_tag.
+    Smpl Add apply AssociatedFunction_type_tag : is_associated.
   End Impl_move_core_types_abi_ArgumentABI.
   
   Module Impl_move_core_types_abi_TypeArgumentABI.
@@ -5385,6 +5406,7 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn name(&self) -> &str {
@@ -5431,5 +5453,6 @@ Module abi.
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
+    Smpl Add apply AssociatedFunction_name : is_associated.
   End Impl_move_core_types_abi_TypeArgumentABI.
 End abi.

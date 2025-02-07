@@ -157,6 +157,7 @@ Module checked.
     end.
   
   Axiom Function_div : M.IsFunction "result::checked::div" div.
+  Smpl Add apply Function_div : is_function.
   
   (*
       pub fn sqrt(x: f64) -> MathResult {
@@ -208,6 +209,7 @@ Module checked.
     end.
   
   Axiom Function_sqrt : M.IsFunction "result::checked::sqrt" sqrt.
+  Smpl Add apply Function_sqrt : is_function.
   
   (*
       pub fn ln(x: f64) -> MathResult {
@@ -259,6 +261,7 @@ Module checked.
     end.
   
   Axiom Function_ln : M.IsFunction "result::checked::ln" ln.
+  Smpl Add apply Function_ln : is_function.
 End checked.
 
 (*
@@ -536,6 +539,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_op : M.IsFunction "result::op" op.
+Smpl Add apply Function_op : is_function.
 
 (*
 fn main() {
@@ -627,3 +631,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "result::main" main.
+Smpl Add apply Function_main : is_function.

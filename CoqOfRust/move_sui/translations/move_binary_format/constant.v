@@ -415,6 +415,7 @@ Module constant.
     end.
   
   Axiom Function_sig_to_ty : M.IsFunction "move_binary_format::constant::sig_to_ty" sig_to_ty.
+  Smpl Add apply Function_sig_to_ty : is_function.
   
   (*
   fn ty_to_sig(ty: &MoveTypeLayout) -> Option<SignatureToken> {
@@ -770,6 +771,7 @@ Module constant.
     end.
   
   Axiom Function_ty_to_sig : M.IsFunction "move_binary_format::constant::ty_to_sig" ty_to_sig.
+  Smpl Add apply Function_ty_to_sig : is_function.
   
   Module Impl_move_binary_format_file_format_Constant.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Constant".
@@ -978,6 +980,7 @@ Module constant.
     
     Axiom AssociatedFunction_serialize_constant :
       M.IsAssociatedFunction Self "serialize_constant" serialize_constant.
+    Smpl Add apply AssociatedFunction_serialize_constant : is_associated.
     
     (*
         pub fn deserialize_constant(&self) -> Option<MoveValue> {
@@ -1160,5 +1163,6 @@ Module constant.
     
     Axiom AssociatedFunction_deserialize_constant :
       M.IsAssociatedFunction Self "deserialize_constant" deserialize_constant.
+    Smpl Add apply AssociatedFunction_deserialize_constant : is_associated.
   End Impl_move_binary_format_file_format_Constant.
 End constant.

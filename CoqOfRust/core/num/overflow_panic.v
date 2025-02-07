@@ -37,6 +37,7 @@ Module num.
       end.
     
     Axiom Function_add : M.IsFunction "core::num::overflow_panic::add" add.
+    Smpl Add apply Function_add : is_function.
     
     (*
     pub const fn sub() -> ! {
@@ -73,6 +74,7 @@ Module num.
       end.
     
     Axiom Function_sub : M.IsFunction "core::num::overflow_panic::sub" sub.
+    Smpl Add apply Function_sub : is_function.
     
     (*
     pub const fn mul() -> ! {
@@ -109,6 +111,7 @@ Module num.
       end.
     
     Axiom Function_mul : M.IsFunction "core::num::overflow_panic::mul" mul.
+    Smpl Add apply Function_mul : is_function.
     
     (*
     pub const fn div() -> ! {
@@ -145,6 +148,7 @@ Module num.
       end.
     
     Axiom Function_div : M.IsFunction "core::num::overflow_panic::div" div.
+    Smpl Add apply Function_div : is_function.
     
     (*
     pub const fn rem() -> ! {
@@ -185,6 +189,7 @@ Module num.
       end.
     
     Axiom Function_rem : M.IsFunction "core::num::overflow_panic::rem" rem.
+    Smpl Add apply Function_rem : is_function.
     
     (*
     pub const fn neg() -> ! {
@@ -221,6 +226,7 @@ Module num.
       end.
     
     Axiom Function_neg : M.IsFunction "core::num::overflow_panic::neg" neg.
+    Smpl Add apply Function_neg : is_function.
     
     (*
     pub const fn shr() -> ! {
@@ -257,6 +263,7 @@ Module num.
       end.
     
     Axiom Function_shr : M.IsFunction "core::num::overflow_panic::shr" shr.
+    Smpl Add apply Function_shr : is_function.
     
     (*
     pub const fn shl() -> ! {
@@ -293,5 +300,6 @@ Module num.
       end.
     
     Axiom Function_shl : M.IsFunction "core::num::overflow_panic::shl" shl.
+    Smpl Add apply Function_shl : is_function.
   End overflow_panic.
 End num.

@@ -1,5 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Export smpl.Smpl.
 
 Import List.ListNotations.
 
@@ -44,6 +43,12 @@ Module OfValue.
     reflexivity.
   Defined.
   Smpl Add apply of_value : of_value.
+
+  Lemma get_value_of_value_eq {A : Set} `{Link A} (value : A) :
+    get_value (of_value value) = value.
+  Proof.
+    reflexivity.
+  Qed.
 End OfValue.
 
 Module Bool.
@@ -59,7 +64,9 @@ Module Bool.
 
   Definition of_value (b : bool) :
     OfValue.t (Value.Bool b).
-  Proof. eapply OfValue.Make with (A := bool); smpl of_value. Defined.
+  Proof.
+    eapply OfValue.Make with (A := bool); smpl of_value.
+  Defined.
   Smpl Add apply of_value : of_value.
 End Bool.
 
@@ -304,19 +311,53 @@ Module Ref.
   Definition immediate (kind : Pointer.Kind.t) {A : Set} `{Link A} (value : A) : t kind A :=
     {| core := Core.Immediate value |}.
 
-  Definition deref {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
-      t Pointer.Kind.Raw A :=
-    {| core := ref.(core) |}.
-
-  Definition cast {kind1 kind2 : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind1 A) :
-      t kind2 A :=
+  Definition cast_to {A : Set} `{Link A} {kind_source : Pointer.Kind.t}
+      (kind_target : Pointer.Kind.t) (ref : t kind_source A) :
+      t kind_target A :=
     {| core := ref.(core) |}.
 
   Lemma deref_eq {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
-    M.deref (φ ref) = M.pure (φ (deref ref)).
+    M.deref (φ ref) = M.pure (φ (cast_to Pointer.Kind.Raw ref)).
   Proof.
     reflexivity.
   Qed.
+
+  Lemma borrow_eq {A : Set} `{Link A} (kind : Pointer.Kind.t) (ref : t Pointer.Kind.Raw A) :
+    M.borrow kind (φ ref) = M.pure (φ (cast_to kind ref)).
+  Proof.
+    reflexivity.
+  Qed.
+
+  Lemma cast_cast_eq {A : Set} `{Link A} (kind1 kind2 kind3 : Pointer.Kind.t) (ref : t kind1 A) :
+    cast_to kind3 (cast_to kind2 ref) = cast_to kind3 ref.
+  Proof.
+    reflexivity.
+  Qed.
+
+  (** We can make the conversion of values for immediate pointers that are used in Rust `const`. *)
+  Lemma of_value_with {A : Set} `{Link A} (value : A) value' :
+    value' = φ value ->
+    Value.Pointer {|
+      Pointer.kind := Pointer.Kind.Raw;
+      Pointer.core := Pointer.Core.Immediate value';
+    |} = φ (immediate Pointer.Kind.Raw value).
+  Proof.
+    now intros; subst.
+  Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (value' : Value.t) :
+    OfValue.t value' ->
+    OfValue.t (Value.Pointer {|
+      Pointer.kind := Pointer.Kind.Raw;
+      Pointer.core := Pointer.Core.Immediate value';
+    |}).
+  Proof.
+    intros [A].
+    eapply OfValue.Make with (A := t Pointer.Kind.Raw A).
+    smpl of_value; eassumption.
+  Defined.
+  Smpl Add apply of_value : of_value.
 End Ref.
 
 Module SubPointer.
@@ -785,28 +826,76 @@ Ltac run_symbolic_state_read_immediate :=
 Ltac run_symbolic_state_write :=
   eapply Run.CallPrimitiveStateWrite; [smpl of_value |].
 
-Ltac run_rewrite_deref :=
+Ltac run_symbolic_get_function :=
+  eapply Run.CallPrimitiveGetFunction; [smpl is_function |].
+
+Ltac run_symbolic_get_associated_function :=
+  eapply Run.CallPrimitiveGetAssociatedFunction; [smpl is_associated |].
+
+Ltac run_symbolic_get_trait_method :=
+  eapply Run.CallPrimitiveGetTraitMethod; [
+    match goal with
+    | H : _ |- _ => apply H
+    end
+  |].
+
+Smpl Create run_closure.
+
+Ltac run_symbolic_closure :=
+  eapply Run.CallClosure; [
+    now (
+      smpl run_closure ||
+      match goal with
+      | H : _ |- _ => apply H
+      end
+    ) |
+    intros []
+  ].
+
+Ltac run_rewrites :=
   eapply Run.Rewrite; [
-    rewrite Ref.deref_eq;
+    (repeat (
+      rewrite OfValue.get_value_of_value_eq ||
+      rewrite Ref.deref_eq ||
+      rewrite Ref.borrow_eq ||
+      rewrite Ref.cast_cast_eq ||
+      autorewrite with run_constant
+    ));
     reflexivity
   |].
 
 Ltac run_symbolic_one_step_immediate :=
   match goal with
   | |- {{ _ 🔽 _, _ }} =>
+    cbn ||
     run_symbolic_pure ||
     run_symbolic_state_alloc_immediate ||
     run_symbolic_state_read_immediate ||
     run_symbolic_state_read ||
     run_symbolic_state_write ||
-    run_rewrite_deref ||
-    fold @LowM.let_ ||
-    cbn
+    run_symbolic_get_function ||
+    run_symbolic_get_associated_function ||
+    run_symbolic_get_trait_method ||
+    run_symbolic_closure ||
+    run_rewrites ||
+    fold @LowM.let_
   end.
+
+Smpl Create run_symbolic.
 
 (** We should use this tactic instead of the ones above, as this one calls all the others. *)
 Ltac run_symbolic :=
-  repeat run_symbolic_one_step_immediate.
+  progress (repeat (
+    run_symbolic_one_step_immediate ||
+    smpl run_symbolic ||
+    (
+      (* Automatically handle common lets *)
+      eapply Run.Let; [
+        run_symbolic
+      |];
+      intros []; run_symbolic
+    )
+  )).
 
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
     validity statement for the index that we access. *)

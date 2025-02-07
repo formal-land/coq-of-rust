@@ -146,6 +146,7 @@ Module slice.
     
     Axiom Function_slice_start_index_len_fail :
       M.IsFunction "core::slice::index::slice_start_index_len_fail" slice_start_index_len_fail.
+    Smpl Add apply Function_slice_start_index_len_fail : is_function.
     
     (*
     fn slice_start_index_len_fail_rt(index: usize, len: usize) -> ! {
@@ -235,6 +236,7 @@ Module slice.
       M.IsFunction
         "core::slice::index::slice_start_index_len_fail_rt"
         slice_start_index_len_fail_rt.
+    Smpl Add apply Function_slice_start_index_len_fail_rt : is_function.
     
     (*
     const fn slice_start_index_len_fail_ct(_: usize, _: usize) -> ! {
@@ -304,6 +306,7 @@ Module slice.
       M.IsFunction
         "core::slice::index::slice_start_index_len_fail_ct"
         slice_start_index_len_fail_ct.
+    Smpl Add apply Function_slice_start_index_len_fail_ct : is_function.
     
     (*
     const fn slice_end_index_len_fail(index: usize, len: usize) -> ! {
@@ -340,6 +343,7 @@ Module slice.
     
     Axiom Function_slice_end_index_len_fail :
       M.IsFunction "core::slice::index::slice_end_index_len_fail" slice_end_index_len_fail.
+    Smpl Add apply Function_slice_end_index_len_fail : is_function.
     
     (*
     fn slice_end_index_len_fail_rt(index: usize, len: usize) -> ! {
@@ -427,6 +431,7 @@ Module slice.
     
     Axiom Function_slice_end_index_len_fail_rt :
       M.IsFunction "core::slice::index::slice_end_index_len_fail_rt" slice_end_index_len_fail_rt.
+    Smpl Add apply Function_slice_end_index_len_fail_rt : is_function.
     
     (*
     const fn slice_end_index_len_fail_ct(_: usize, _: usize) -> ! {
@@ -494,6 +499,7 @@ Module slice.
     
     Axiom Function_slice_end_index_len_fail_ct :
       M.IsFunction "core::slice::index::slice_end_index_len_fail_ct" slice_end_index_len_fail_ct.
+    Smpl Add apply Function_slice_end_index_len_fail_ct : is_function.
     
     (*
     const fn slice_index_order_fail(index: usize, end: usize) -> ! {
@@ -530,6 +536,7 @@ Module slice.
     
     Axiom Function_slice_index_order_fail :
       M.IsFunction "core::slice::index::slice_index_order_fail" slice_index_order_fail.
+    Smpl Add apply Function_slice_index_order_fail : is_function.
     
     (*
     fn slice_index_order_fail_rt(index: usize, end: usize) -> ! {
@@ -617,6 +624,7 @@ Module slice.
     
     Axiom Function_slice_index_order_fail_rt :
       M.IsFunction "core::slice::index::slice_index_order_fail_rt" slice_index_order_fail_rt.
+    Smpl Add apply Function_slice_index_order_fail_rt : is_function.
     
     (*
     const fn slice_index_order_fail_ct(_: usize, _: usize) -> ! {
@@ -683,6 +691,7 @@ Module slice.
     
     Axiom Function_slice_index_order_fail_ct :
       M.IsFunction "core::slice::index::slice_index_order_fail_ct" slice_index_order_fail_ct.
+    Smpl Add apply Function_slice_index_order_fail_ct : is_function.
     
     (*
     const fn slice_start_index_overflow_fail() -> ! {
@@ -730,6 +739,7 @@ Module slice.
       M.IsFunction
         "core::slice::index::slice_start_index_overflow_fail"
         slice_start_index_overflow_fail.
+    Smpl Add apply Function_slice_start_index_overflow_fail : is_function.
     
     (*
     const fn slice_end_index_overflow_fail() -> ! {
@@ -777,6 +787,7 @@ Module slice.
       M.IsFunction
         "core::slice::index::slice_end_index_overflow_fail"
         slice_end_index_overflow_fail.
+    Smpl Add apply Function_slice_end_index_overflow_fail : is_function.
     
     (*
     const unsafe fn get_noubcheck<T>(ptr: *const [T], index: usize) -> *const T {
@@ -809,6 +820,7 @@ Module slice.
       end.
     
     Axiom Function_get_noubcheck : M.IsFunction "core::slice::index::get_noubcheck" get_noubcheck.
+    Smpl Add apply Function_get_noubcheck : is_function.
     
     (*
     const unsafe fn get_mut_noubcheck<T>(ptr: *mut [T], index: usize) -> *mut T {
@@ -842,6 +854,7 @@ Module slice.
     
     Axiom Function_get_mut_noubcheck :
       M.IsFunction "core::slice::index::get_mut_noubcheck" get_mut_noubcheck.
+    Smpl Add apply Function_get_mut_noubcheck : is_function.
     
     (*
     const unsafe fn get_offset_len_noubcheck<T>(
@@ -889,6 +902,7 @@ Module slice.
     
     Axiom Function_get_offset_len_noubcheck :
       M.IsFunction "core::slice::index::get_offset_len_noubcheck" get_offset_len_noubcheck.
+    Smpl Add apply Function_get_offset_len_noubcheck : is_function.
     
     (*
     const unsafe fn get_offset_len_mut_noubcheck<T>(
@@ -940,6 +954,7 @@ Module slice.
     
     Axiom Function_get_offset_len_mut_noubcheck :
       M.IsFunction "core::slice::index::get_offset_len_mut_noubcheck" get_offset_len_mut_noubcheck.
+    Smpl Add apply Function_get_offset_len_mut_noubcheck : is_function.
     
     Module private_slice_index.
       (* Trait *)
@@ -6124,6 +6139,7 @@ Module slice.
       end.
     
     Axiom Function_range : M.IsFunction "core::slice::index::range" range.
+    Smpl Add apply Function_range : is_function.
     
     (*
     pub fn try_range<R>(range: R, bounds: ops::RangeTo<usize>) -> Option<ops::Range<usize>>
@@ -6464,6 +6480,7 @@ Module slice.
       end.
     
     Axiom Function_try_range : M.IsFunction "core::slice::index::try_range" try_range.
+    Smpl Add apply Function_try_range : is_function.
     
     (*
     pub(crate) fn into_range_unchecked(
@@ -6589,6 +6606,7 @@ Module slice.
     
     Axiom Function_into_range_unchecked :
       M.IsFunction "core::slice::index::into_range_unchecked" into_range_unchecked.
+    Smpl Add apply Function_into_range_unchecked : is_function.
     
     (*
     pub(crate) fn into_range(
@@ -6889,6 +6907,7 @@ Module slice.
       end.
     
     Axiom Function_into_range : M.IsFunction "core::slice::index::into_range" into_range.
+    Smpl Add apply Function_into_range : is_function.
     
     (*
     pub(crate) fn into_slice_range(
@@ -7109,6 +7128,7 @@ Module slice.
     
     Axiom Function_into_slice_range :
       M.IsFunction "core::slice::index::into_slice_range" into_slice_range.
+    Smpl Add apply Function_into_slice_range : is_function.
     
     Module Impl_core_slice_index_SliceIndex_slice_T_for_Tuple_core_ops_range_Bound_usize_core_ops_range_Bound_usize_.
       Definition Self (T : Ty.t) : Ty.t :=

@@ -148,6 +148,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_wrap : M.IsAssociatedFunction Self "wrap" wrap.
+      Smpl Add apply AssociatedFunction_wrap : is_associated.
     End Impl_core_fmt_builders_PadAdapter.
     
     Module Impl_core_fmt_Write_for_core_fmt_builders_PadAdapter.
@@ -837,6 +838,7 @@ Module fmt.
     
     Axiom Function_debug_struct_new :
       M.IsFunction "core::fmt::builders::debug_struct_new" debug_struct_new.
+    Smpl Add apply Function_debug_struct_new : is_function.
     
     Module Impl_core_fmt_builders_DebugStruct.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugStruct".
@@ -926,6 +928,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
+      Smpl Add apply AssociatedFunction_field : is_associated.
       
       (*
           pub fn field_with<F>(&mut self, name: &str, value_fmt: F) -> &mut Self
@@ -2078,6 +2081,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
+      Smpl Add apply AssociatedFunction_field_with : is_associated.
       
       (*
           pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
@@ -2503,6 +2507,7 @@ Module fmt.
       
       Axiom AssociatedFunction_finish_non_exhaustive :
         M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      Smpl Add apply AssociatedFunction_finish_non_exhaustive : is_associated.
       
       (*
           pub fn finish(&mut self) -> fmt::Result {
@@ -2701,6 +2706,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
+      Smpl Add apply AssociatedFunction_finish : is_associated.
       
       (*
           fn is_pretty(&self) -> bool {
@@ -2733,6 +2739,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
+      Smpl Add apply AssociatedFunction_is_pretty : is_associated.
     End Impl_core_fmt_builders_DebugStruct.
     
     (* StructRecord
@@ -2804,6 +2811,7 @@ Module fmt.
     
     Axiom Function_debug_tuple_new :
       M.IsFunction "core::fmt::builders::debug_tuple_new" debug_tuple_new.
+    Smpl Add apply Function_debug_tuple_new : is_function.
     
     Module Impl_core_fmt_builders_DebugTuple.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugTuple".
@@ -2891,6 +2899,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
+      Smpl Add apply AssociatedFunction_field : is_associated.
       
       (*
           pub fn field_with<F>(&mut self, value_fmt: F) -> &mut Self
@@ -3612,6 +3621,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
+      Smpl Add apply AssociatedFunction_field_with : is_associated.
       
       (*
           pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
@@ -4044,6 +4054,7 @@ Module fmt.
       
       Axiom AssociatedFunction_finish_non_exhaustive :
         M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      Smpl Add apply AssociatedFunction_finish_non_exhaustive : is_associated.
       
       (*
           pub fn finish(&mut self) -> fmt::Result {
@@ -4379,6 +4390,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
+      Smpl Add apply AssociatedFunction_finish : is_associated.
       
       (*
           fn is_pretty(&self) -> bool {
@@ -4411,6 +4423,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
+      Smpl Add apply AssociatedFunction_is_pretty : is_associated.
     End Impl_core_fmt_builders_DebugTuple.
     
     (* StructRecord
@@ -5116,6 +5129,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
+      Smpl Add apply AssociatedFunction_entry_with : is_associated.
       
       (*
           fn is_pretty(&self) -> bool {
@@ -5148,6 +5162,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
+      Smpl Add apply AssociatedFunction_is_pretty : is_associated.
     End Impl_core_fmt_builders_DebugInner.
     
     (* StructRecord
@@ -5204,6 +5219,7 @@ Module fmt.
       end.
     
     Axiom Function_debug_set_new : M.IsFunction "core::fmt::builders::debug_set_new" debug_set_new.
+    Smpl Add apply Function_debug_set_new : is_function.
     
     Module Impl_core_fmt_builders_DebugSet.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugSet".
@@ -5301,6 +5317,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
+      Smpl Add apply AssociatedFunction_entry : is_associated.
       
       (*
           pub fn entry_with<F>(&mut self, entry_fmt: F) -> &mut Self
@@ -5351,6 +5368,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
+      Smpl Add apply AssociatedFunction_entry_with : is_associated.
       
       (*
           pub fn entries<D, I>(&mut self, entries: I) -> &mut Self
@@ -5476,6 +5494,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
+      Smpl Add apply AssociatedFunction_entries : is_associated.
       
       (*
           pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
@@ -5937,6 +5956,7 @@ Module fmt.
       
       Axiom AssociatedFunction_finish_non_exhaustive :
         M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      Smpl Add apply AssociatedFunction_finish_non_exhaustive : is_associated.
       
       (*
           pub fn finish(&mut self) -> fmt::Result {
@@ -6053,6 +6073,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
+      Smpl Add apply AssociatedFunction_finish : is_associated.
     End Impl_core_fmt_builders_DebugSet.
     
     (* StructRecord
@@ -6110,6 +6131,7 @@ Module fmt.
     
     Axiom Function_debug_list_new :
       M.IsFunction "core::fmt::builders::debug_list_new" debug_list_new.
+    Smpl Add apply Function_debug_list_new : is_function.
     
     Module Impl_core_fmt_builders_DebugList.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugList".
@@ -6207,6 +6229,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
+      Smpl Add apply AssociatedFunction_entry : is_associated.
       
       (*
           pub fn entry_with<F>(&mut self, entry_fmt: F) -> &mut Self
@@ -6257,6 +6280,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
+      Smpl Add apply AssociatedFunction_entry_with : is_associated.
       
       (*
           pub fn entries<D, I>(&mut self, entries: I) -> &mut Self
@@ -6382,6 +6406,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
+      Smpl Add apply AssociatedFunction_entries : is_associated.
       
       (*
           pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
@@ -6802,6 +6827,7 @@ Module fmt.
       
       Axiom AssociatedFunction_finish_non_exhaustive :
         M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      Smpl Add apply AssociatedFunction_finish_non_exhaustive : is_associated.
       
       (*
           pub fn finish(&mut self) -> fmt::Result {
@@ -6918,6 +6944,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
+      Smpl Add apply AssociatedFunction_finish : is_associated.
     End Impl_core_fmt_builders_DebugList.
     
     (* StructRecord
@@ -6994,6 +7021,7 @@ Module fmt.
       end.
     
     Axiom Function_debug_map_new : M.IsFunction "core::fmt::builders::debug_map_new" debug_map_new.
+    Smpl Add apply Function_debug_map_new : is_function.
     
     Module Impl_core_fmt_builders_DebugMap.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugMap".
@@ -7052,6 +7080,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
+      Smpl Add apply AssociatedFunction_entry : is_associated.
       
       (*
           pub fn key(&mut self, key: &dyn fmt::Debug) -> &mut Self {
@@ -7136,6 +7165,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_key : M.IsAssociatedFunction Self "key" key.
+      Smpl Add apply AssociatedFunction_key : is_associated.
       
       (*
           pub fn key_with<F>(&mut self, key_fmt: F) -> &mut Self
@@ -8242,6 +8272,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_key_with : M.IsAssociatedFunction Self "key_with" key_with.
+      Smpl Add apply AssociatedFunction_key_with : is_associated.
       
       (*
           pub fn value(&mut self, value: &dyn fmt::Debug) -> &mut Self {
@@ -8326,6 +8357,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value.
+      Smpl Add apply AssociatedFunction_value : is_associated.
       
       (*
           pub fn value_with<F>(&mut self, value_fmt: F) -> &mut Self
@@ -8972,6 +9004,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_value_with : M.IsAssociatedFunction Self "value_with" value_with.
+      Smpl Add apply AssociatedFunction_value_with : is_associated.
       
       (*
           pub fn entries<K, V, I>(&mut self, entries: I) -> &mut Self
@@ -9109,6 +9142,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
+      Smpl Add apply AssociatedFunction_entries : is_associated.
       
       (*
           pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
@@ -9606,6 +9640,7 @@ Module fmt.
       
       Axiom AssociatedFunction_finish_non_exhaustive :
         M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      Smpl Add apply AssociatedFunction_finish_non_exhaustive : is_associated.
       
       (*
           pub fn finish(&mut self) -> fmt::Result {
@@ -9784,6 +9819,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
+      Smpl Add apply AssociatedFunction_finish : is_associated.
       
       (*
           fn is_pretty(&self) -> bool {
@@ -9816,6 +9852,7 @@ Module fmt.
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
+      Smpl Add apply AssociatedFunction_is_pretty : is_associated.
     End Impl_core_fmt_builders_DebugMap.
     
     (*
@@ -9833,6 +9870,7 @@ Module fmt.
       end.
     
     Axiom Function_from_fn : M.IsFunction "core::fmt::builders::from_fn" from_fn.
+    Smpl Add apply Function_from_fn : is_function.
     
     (* StructTuple
       {

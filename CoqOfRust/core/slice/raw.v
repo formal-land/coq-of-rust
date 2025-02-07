@@ -94,6 +94,7 @@ Module slice.
       end.
     
     Axiom Function_from_raw_parts : M.IsFunction "core::slice::raw::from_raw_parts" from_raw_parts.
+    Smpl Add apply Function_from_raw_parts : is_function.
     
     (*
     pub const unsafe fn from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> &'a mut [T] {
@@ -209,6 +210,7 @@ Module slice.
     
     Axiom Function_from_raw_parts_mut :
       M.IsFunction "core::slice::raw::from_raw_parts_mut" from_raw_parts_mut.
+    Smpl Add apply Function_from_raw_parts_mut : is_function.
     
     (*
     pub const fn from_ref<T>(s: &T) -> &[T] {
@@ -233,6 +235,7 @@ Module slice.
       end.
     
     Axiom Function_from_ref : M.IsFunction "core::slice::raw::from_ref" from_ref.
+    Smpl Add apply Function_from_ref : is_function.
     
     (*
     pub const fn from_mut<T>(s: &mut T) -> &mut [T] {
@@ -262,6 +265,7 @@ Module slice.
       end.
     
     Axiom Function_from_mut : M.IsFunction "core::slice::raw::from_mut" from_mut.
+    Smpl Add apply Function_from_mut : is_function.
     
     (*
     pub const unsafe fn from_ptr_range<'a, T>(range: Range<*const T>) -> &'a [T] {
@@ -319,6 +323,7 @@ Module slice.
       end.
     
     Axiom Function_from_ptr_range : M.IsFunction "core::slice::raw::from_ptr_range" from_ptr_range.
+    Smpl Add apply Function_from_ptr_range : is_function.
     
     (*
     pub const unsafe fn from_mut_ptr_range<'a, T>(range: Range<*mut T>) -> &'a mut [T] {
@@ -389,5 +394,6 @@ Module slice.
     
     Axiom Function_from_mut_ptr_range :
       M.IsFunction "core::slice::raw::from_mut_ptr_range" from_mut_ptr_range.
+    Smpl Add apply Function_from_mut_ptr_range : is_function.
   End raw.
 End slice.

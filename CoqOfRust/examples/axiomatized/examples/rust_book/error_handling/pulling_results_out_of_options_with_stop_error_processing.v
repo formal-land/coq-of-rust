@@ -7,8 +7,10 @@ Axiom Function_double_first :
   M.IsFunction
     "pulling_results_out_of_options_with_stop_error_processing::double_first"
     double_first.
+Smpl Add apply Function_double_first : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main :
   M.IsFunction "pulling_results_out_of_options_with_stop_error_processing::main" main.
+Smpl Add apply Function_main : is_function.

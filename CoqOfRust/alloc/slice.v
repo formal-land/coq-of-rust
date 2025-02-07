@@ -75,6 +75,7 @@ Module slice.
       end.
     
     Axiom Function_into_vec : M.IsFunction "alloc::slice::hack::into_vec" into_vec.
+    Smpl Add apply Function_into_vec : is_function.
     
     (*
         pub fn to_vec<T: ConvertVec, A: Allocator>(s: &[T], alloc: A) -> Vec<T, A> {
@@ -103,6 +104,7 @@ Module slice.
       end.
     
     Axiom Function_to_vec : M.IsFunction "alloc::slice::hack::to_vec" to_vec.
+    Smpl Add apply Function_to_vec : is_function.
     
     (* Trait *)
     (* Empty module 'ConvertVec' *)
@@ -634,6 +636,7 @@ Module slice.
     Axiom AssociatedFunction_sort :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "sort" (sort T).
+    Smpl Add apply AssociatedFunction_sort : is_associated.
     
     (*
         pub fn sort_by<F>(&mut self, mut compare: F)
@@ -764,6 +767,7 @@ Module slice.
     Axiom AssociatedFunction_sort_by :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "sort_by" (sort_by T).
+    Smpl Add apply AssociatedFunction_sort_by : is_associated.
     
     (*
         pub fn sort_by_key<K, F>(&mut self, mut f: F)
@@ -912,6 +916,7 @@ Module slice.
     Axiom AssociatedFunction_sort_by_key :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "sort_by_key" (sort_by_key T).
+    Smpl Add apply AssociatedFunction_sort_by_key : is_associated.
     
     (*
         pub fn sort_by_cached_key<K, F>(&mut self, f: F)
@@ -1964,6 +1969,7 @@ Module slice.
     Axiom AssociatedFunction_sort_by_cached_key :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "sort_by_cached_key" (sort_by_cached_key T).
+    Smpl Add apply AssociatedFunction_sort_by_cached_key : is_associated.
     
     (*
         pub fn to_vec(&self) -> Vec<T>
@@ -1997,6 +2003,7 @@ Module slice.
     Axiom AssociatedFunction_to_vec :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "to_vec" (to_vec T).
+    Smpl Add apply AssociatedFunction_to_vec : is_associated.
     
     (*
         pub fn to_vec_in<A: Allocator>(&self, alloc: A) -> Vec<T, A>
@@ -2024,6 +2031,7 @@ Module slice.
     Axiom AssociatedFunction_to_vec_in :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "to_vec_in" (to_vec_in T).
+    Smpl Add apply AssociatedFunction_to_vec_in : is_associated.
     
     (*
         pub fn into_vec<A: Allocator>(self: Box<Self, A>) -> Vec<T, A> {
@@ -2047,6 +2055,7 @@ Module slice.
     Axiom AssociatedFunction_into_vec :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "into_vec" (into_vec T).
+    Smpl Add apply AssociatedFunction_into_vec : is_associated.
     
     (*
         pub fn repeat(&self, n: usize) -> Vec<T>
@@ -2495,6 +2504,7 @@ Module slice.
     Axiom AssociatedFunction_repeat :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "repeat" (repeat T).
+    Smpl Add apply AssociatedFunction_repeat : is_associated.
     
     (*
         pub fn concat<Item: ?Sized>(&self) -> <Self as Concat<Item>>::Output
@@ -2528,6 +2538,7 @@ Module slice.
     Axiom AssociatedFunction_concat :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "concat" (concat T).
+    Smpl Add apply AssociatedFunction_concat : is_associated.
     
     (*
         pub fn join<Separator>(&self, sep: Separator) -> <Self as Join<Separator>>::Output
@@ -2562,6 +2573,7 @@ Module slice.
     Axiom AssociatedFunction_join :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "join" (join T).
+    Smpl Add apply AssociatedFunction_join : is_associated.
     
     (*
         pub fn connect<Separator>(&self, sep: Separator) -> <Self as Join<Separator>>::Output
@@ -2596,6 +2608,7 @@ Module slice.
     Axiom AssociatedFunction_connect :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "connect" (connect T).
+    Smpl Add apply AssociatedFunction_connect : is_associated.
   End Impl_slice_T.
   
   Module Impl_slice_u8.
@@ -2666,6 +2679,7 @@ Module slice.
     
     Axiom AssociatedFunction_to_ascii_uppercase :
       M.IsAssociatedFunction Self "to_ascii_uppercase" to_ascii_uppercase.
+    Smpl Add apply AssociatedFunction_to_ascii_uppercase : is_associated.
     
     (*
         pub fn to_ascii_lowercase(&self) -> Vec<u8> {
@@ -2732,6 +2746,7 @@ Module slice.
     
     Axiom AssociatedFunction_to_ascii_lowercase :
       M.IsAssociatedFunction Self "to_ascii_lowercase" to_ascii_lowercase.
+    Smpl Add apply AssociatedFunction_to_ascii_lowercase : is_associated.
   End Impl_slice_u8.
   
   (* Trait *)
@@ -4275,6 +4290,7 @@ Module slice.
     end.
   
   Axiom Function_stable_sort : M.IsFunction "alloc::slice::stable_sort" stable_sort.
+  Smpl Add apply Function_stable_sort : is_function.
   
   Module Impl_core_slice_sort_stable_BufGuard_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=

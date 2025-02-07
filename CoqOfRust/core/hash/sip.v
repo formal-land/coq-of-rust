@@ -1404,6 +1404,7 @@ Module hash.
       end.
     
     Axiom Function_u8to64_le : M.IsFunction "core::hash::sip::u8to64_le" u8to64_le.
+    Smpl Add apply Function_u8to64_le : is_function.
     
     Module Impl_core_hash_sip_SipHasher.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher".
@@ -1430,6 +1431,7 @@ Module hash.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const fn new_with_keys(key0: u64, key1: u64) -> SipHasher {
@@ -1468,6 +1470,7 @@ Module hash.
       
       Axiom AssociatedFunction_new_with_keys :
         M.IsAssociatedFunction Self "new_with_keys" new_with_keys.
+      Smpl Add apply AssociatedFunction_new_with_keys : is_associated.
     End Impl_core_hash_sip_SipHasher.
     
     Module Impl_core_hash_sip_SipHasher13.
@@ -1495,6 +1498,7 @@ Module hash.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const fn new_with_keys(key0: u64, key1: u64) -> SipHasher13 {
@@ -1529,6 +1533,7 @@ Module hash.
       
       Axiom AssociatedFunction_new_with_keys :
         M.IsAssociatedFunction Self "new_with_keys" new_with_keys.
+      Smpl Add apply AssociatedFunction_new_with_keys : is_associated.
     End Impl_core_hash_sip_SipHasher13.
     
     Module Impl_core_hash_sip_Hasher_S.
@@ -1604,6 +1609,7 @@ Module hash.
       Axiom AssociatedFunction_new_with_keys :
         forall (S : Ty.t),
         M.IsAssociatedFunction (Self S) "new_with_keys" (new_with_keys S).
+      Smpl Add apply AssociatedFunction_new_with_keys : is_associated.
       
       (*
           const fn reset(&mut self) {
@@ -1732,6 +1738,7 @@ Module hash.
       Axiom AssociatedFunction_reset :
         forall (S : Ty.t),
         M.IsAssociatedFunction (Self S) "reset" (reset S).
+      Smpl Add apply AssociatedFunction_reset : is_associated.
     End Impl_core_hash_sip_Hasher_S.
     
     Module Impl_core_hash_Hasher_for_core_hash_sip_SipHasher.

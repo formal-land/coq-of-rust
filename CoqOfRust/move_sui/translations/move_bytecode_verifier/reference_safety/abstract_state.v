@@ -359,6 +359,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_is_reference :
         M.IsAssociatedFunction Self "is_reference" is_reference.
+      Smpl Add apply AssociatedFunction_is_reference : is_associated.
       
       (*
           pub fn is_value(&self) -> bool {
@@ -385,6 +386,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_is_value : M.IsAssociatedFunction Self "is_value" is_value.
+      Smpl Add apply AssociatedFunction_is_value : is_associated.
       
       (*
           pub fn ref_id(&self) -> Option<RefID> {
@@ -434,6 +436,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_ref_id : M.IsAssociatedFunction Self "ref_id" ref_id.
+      Smpl Add apply AssociatedFunction_ref_id : is_associated.
     End Impl_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
     
     (*
@@ -1648,6 +1651,7 @@ Module reference_safety.
     Axiom Constant_value_STEP_BASE_COST :
       (M.get_constant "move_bytecode_verifier::reference_safety::abstract_state::STEP_BASE_COST") =
         value_STEP_BASE_COST.
+    Global Hint Rewrite Constant_value_STEP_BASE_COST : constant_rewrites.
     
     Definition value_STEP_PER_LOCAL_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 20 |))).
@@ -1656,6 +1660,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_LOCAL_COST") =
         value_STEP_PER_LOCAL_COST.
+    Global Hint Rewrite Constant_value_STEP_PER_LOCAL_COST : constant_rewrites.
     
     Definition value_STEP_PER_GRAPH_ITEM_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
@@ -1664,6 +1669,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_GRAPH_ITEM_COST") =
         value_STEP_PER_GRAPH_ITEM_COST.
+    Global Hint Rewrite Constant_value_STEP_PER_GRAPH_ITEM_COST : constant_rewrites.
     
     Definition value_JOIN_BASE_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
@@ -1671,6 +1677,7 @@ Module reference_safety.
     Axiom Constant_value_JOIN_BASE_COST :
       (M.get_constant "move_bytecode_verifier::reference_safety::abstract_state::JOIN_BASE_COST") =
         value_JOIN_BASE_COST.
+    Global Hint Rewrite Constant_value_JOIN_BASE_COST : constant_rewrites.
     
     Definition value_JOIN_PER_LOCAL_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
@@ -1679,6 +1686,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_LOCAL_COST") =
         value_JOIN_PER_LOCAL_COST.
+    Global Hint Rewrite Constant_value_JOIN_PER_LOCAL_COST : constant_rewrites.
     
     Definition value_JOIN_PER_GRAPH_ITEM_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 50 |))).
@@ -1687,6 +1695,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_GRAPH_ITEM_COST") =
         value_JOIN_PER_GRAPH_ITEM_COST.
+    Global Hint Rewrite Constant_value_JOIN_PER_GRAPH_ITEM_COST : constant_rewrites.
     
     Definition value_REF_PARAM_EDGE_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
@@ -1695,6 +1704,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST") =
         value_REF_PARAM_EDGE_COST.
+    Global Hint Rewrite Constant_value_REF_PARAM_EDGE_COST : constant_rewrites.
     
     Definition value_REF_PARAM_EDGE_COST_GROWTH : Value.t :=
       M.run_constant ltac:(M.monadic UnsupportedLiteral).
@@ -1703,6 +1713,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST_GROWTH") =
         value_REF_PARAM_EDGE_COST_GROWTH.
+    Global Hint Rewrite Constant_value_REF_PARAM_EDGE_COST_GROWTH : constant_rewrites.
     
     Definition value_CALL_PER_ACQUIRES_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 100 |))).
@@ -1711,6 +1722,7 @@ Module reference_safety.
       (M.get_constant
           "move_bytecode_verifier::reference_safety::abstract_state::CALL_PER_ACQUIRES_COST") =
         value_CALL_PER_ACQUIRES_COST.
+    Global Hint Rewrite Constant_value_CALL_PER_ACQUIRES_COST : constant_rewrites.
     
     (* StructRecord
       {
@@ -2770,6 +2782,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub(crate) fn local_count(&self) -> usize {
@@ -2810,6 +2823,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_local_count : M.IsAssociatedFunction Self "local_count" local_count.
+      Smpl Add apply AssociatedFunction_local_count : is_associated.
       
       (*
           pub(crate) fn graph_size(&self) -> usize {
@@ -2849,6 +2863,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_graph_size : M.IsAssociatedFunction Self "graph_size" graph_size.
+      Smpl Add apply AssociatedFunction_graph_size : is_associated.
       
       (*
           fn frame_root(&self) -> RefID {
@@ -2899,6 +2914,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_frame_root : M.IsAssociatedFunction Self "frame_root" frame_root.
+      Smpl Add apply AssociatedFunction_frame_root : is_associated.
       
       (*
           fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -2962,6 +2978,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
+      Smpl Add apply AssociatedFunction_error : is_associated.
       
       (*
           pub fn value_for(&mut self, s: &SignatureToken) -> AbstractValue {
@@ -3052,6 +3069,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_value_for : M.IsAssociatedFunction Self "value_for" value_for.
+      Smpl Add apply AssociatedFunction_value_for : is_associated.
       
       (*
           fn new_ref(&mut self, mut_: bool) -> RefID {
@@ -3134,6 +3152,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_new_ref : M.IsAssociatedFunction Self "new_ref" new_ref.
+      Smpl Add apply AssociatedFunction_new_ref : is_associated.
       
       (*
           fn add_copy(&mut self, parent: RefID, child: RefID) {
@@ -3178,6 +3197,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_add_copy : M.IsAssociatedFunction Self "add_copy" add_copy.
+      Smpl Add apply AssociatedFunction_add_copy : is_associated.
       
       (*
           fn add_borrow(&mut self, parent: RefID, child: RefID) {
@@ -3222,6 +3242,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_add_borrow : M.IsAssociatedFunction Self "add_borrow" add_borrow.
+      Smpl Add apply AssociatedFunction_add_borrow : is_associated.
       
       (*
           fn add_field_borrow(&mut self, parent: RefID, field: FieldHandleIndex, child: RefID) {
@@ -3272,6 +3293,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_add_field_borrow :
         M.IsAssociatedFunction Self "add_field_borrow" add_field_borrow.
+      Smpl Add apply AssociatedFunction_add_field_borrow : is_associated.
       
       (*
           fn add_local_borrow(&mut self, local: LocalIndex, id: RefID) {
@@ -3330,6 +3352,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_add_local_borrow :
         M.IsAssociatedFunction Self "add_local_borrow" add_local_borrow.
+      Smpl Add apply AssociatedFunction_add_local_borrow : is_associated.
       
       (*
           fn add_resource_borrow(&mut self, resource: StructDefinitionIndex, id: RefID) {
@@ -3388,6 +3411,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_add_resource_borrow :
         M.IsAssociatedFunction Self "add_resource_borrow" add_resource_borrow.
+      Smpl Add apply AssociatedFunction_add_resource_borrow : is_associated.
       
       (*
           fn release(&mut self, id: RefID) {
@@ -3435,6 +3459,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_release : M.IsAssociatedFunction Self "release" release.
+      Smpl Add apply AssociatedFunction_release : is_associated.
       
       (*
           fn has_full_borrows(&self, id: RefID) -> bool {
@@ -3512,6 +3537,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_has_full_borrows :
         M.IsAssociatedFunction Self "has_full_borrows" has_full_borrows.
+      Smpl Add apply AssociatedFunction_has_full_borrows : is_associated.
       
       (*
           fn has_consistent_borrows(&self, id: RefID, label_opt: Option<Label>) -> bool {
@@ -3902,6 +3928,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_has_consistent_borrows :
         M.IsAssociatedFunction Self "has_consistent_borrows" has_consistent_borrows.
+      Smpl Add apply AssociatedFunction_has_consistent_borrows : is_associated.
       
       (*
           fn has_consistent_mutable_borrows(&self, id: RefID, label_opt: Option<Label>) -> bool {
@@ -4292,6 +4319,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_has_consistent_mutable_borrows :
         M.IsAssociatedFunction Self "has_consistent_mutable_borrows" has_consistent_mutable_borrows.
+      Smpl Add apply AssociatedFunction_has_consistent_mutable_borrows : is_associated.
       
       (*
           fn is_writable(&self, id: RefID) -> bool {
@@ -4384,6 +4412,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_is_writable : M.IsAssociatedFunction Self "is_writable" is_writable.
+      Smpl Add apply AssociatedFunction_is_writable : is_associated.
       
       (*
           fn is_freezable(&self, id: RefID, at_field_opt: Option<FieldHandleIndex>) -> bool {
@@ -4500,6 +4529,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_is_freezable :
         M.IsAssociatedFunction Self "is_freezable" is_freezable.
+      Smpl Add apply AssociatedFunction_is_freezable : is_associated.
       
       (*
           fn is_readable(&self, id: RefID, at_field_opt: Option<FieldHandleIndex>) -> bool {
@@ -4568,6 +4598,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_is_readable : M.IsAssociatedFunction Self "is_readable" is_readable.
+      Smpl Add apply AssociatedFunction_is_readable : is_associated.
       
       (*
           fn is_local_borrowed(&self, idx: LocalIndex) -> bool {
@@ -4613,6 +4644,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_is_local_borrowed :
         M.IsAssociatedFunction Self "is_local_borrowed" is_local_borrowed.
+      Smpl Add apply AssociatedFunction_is_local_borrowed : is_associated.
       
       (*
           fn is_local_mutably_borrowed(&self, idx: LocalIndex) -> bool {
@@ -4662,6 +4694,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_is_local_mutably_borrowed :
         M.IsAssociatedFunction Self "is_local_mutably_borrowed" is_local_mutably_borrowed.
+      Smpl Add apply AssociatedFunction_is_local_mutably_borrowed : is_associated.
       
       (*
           fn is_global_borrowed(&self, resource: StructDefinitionIndex) -> bool {
@@ -4707,6 +4740,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_is_global_borrowed :
         M.IsAssociatedFunction Self "is_global_borrowed" is_global_borrowed.
+      Smpl Add apply AssociatedFunction_is_global_borrowed : is_associated.
       
       (*
           fn is_global_mutably_borrowed(&self, resource: StructDefinitionIndex) -> bool {
@@ -4756,6 +4790,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_is_global_mutably_borrowed :
         M.IsAssociatedFunction Self "is_global_mutably_borrowed" is_global_mutably_borrowed.
+      Smpl Add apply AssociatedFunction_is_global_mutably_borrowed : is_associated.
       
       (*
           fn is_frame_safe_to_destroy(&self) -> bool {
@@ -4800,6 +4835,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_is_frame_safe_to_destroy :
         M.IsAssociatedFunction Self "is_frame_safe_to_destroy" is_frame_safe_to_destroy.
+      Smpl Add apply AssociatedFunction_is_frame_safe_to_destroy : is_associated.
       
       (*
           pub fn release_value(&mut self, value: AbstractValue) {
@@ -4859,6 +4895,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_release_value :
         M.IsAssociatedFunction Self "release_value" release_value.
+      Smpl Add apply AssociatedFunction_release_value : is_associated.
       
       (*
           pub fn copy_loc(
@@ -5304,6 +5341,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_copy_loc : M.IsAssociatedFunction Self "copy_loc" copy_loc.
+      Smpl Add apply AssociatedFunction_copy_loc : is_associated.
       
       (*
           pub fn move_loc(
@@ -5751,6 +5789,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_move_loc : M.IsAssociatedFunction Self "move_loc" move_loc.
+      Smpl Add apply AssociatedFunction_move_loc : is_associated.
       
       (*
           pub fn st_loc(
@@ -6206,6 +6245,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_st_loc : M.IsAssociatedFunction Self "st_loc" st_loc.
+      Smpl Add apply AssociatedFunction_st_loc : is_associated.
       
       (*
           pub fn freeze_ref(&mut self, offset: CodeOffset, id: RefID) -> PartialVMResult<AbstractValue> {
@@ -6358,6 +6398,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_freeze_ref : M.IsAssociatedFunction Self "freeze_ref" freeze_ref.
+      Smpl Add apply AssociatedFunction_freeze_ref : is_associated.
       
       (*
           pub fn comparison(
@@ -6658,6 +6699,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_comparison : M.IsAssociatedFunction Self "comparison" comparison.
+      Smpl Add apply AssociatedFunction_comparison : is_associated.
       
       (*
           pub fn read_ref(&mut self, offset: CodeOffset, id: RefID) -> PartialVMResult<AbstractValue> {
@@ -6775,6 +6817,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_read_ref : M.IsAssociatedFunction Self "read_ref" read_ref.
+      Smpl Add apply AssociatedFunction_read_ref : is_associated.
       
       (*
           pub fn write_ref(&mut self, offset: CodeOffset, id: RefID) -> PartialVMResult<()> {
@@ -6883,6 +6926,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_write_ref : M.IsAssociatedFunction Self "write_ref" write_ref.
+      Smpl Add apply AssociatedFunction_write_ref : is_associated.
       
       (*
           pub fn borrow_loc(
@@ -7027,6 +7071,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_borrow_loc : M.IsAssociatedFunction Self "borrow_loc" borrow_loc.
+      Smpl Add apply AssociatedFunction_borrow_loc : is_associated.
       
       (*
           pub fn borrow_field(
@@ -7297,6 +7342,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_borrow_field :
         M.IsAssociatedFunction Self "borrow_field" borrow_field.
+      Smpl Add apply AssociatedFunction_borrow_field : is_associated.
       
       (*
           pub fn borrow_global(
@@ -7460,6 +7506,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_borrow_global :
         M.IsAssociatedFunction Self "borrow_global" borrow_global.
+      Smpl Add apply AssociatedFunction_borrow_global : is_associated.
       
       (*
           pub fn move_from(
@@ -7545,6 +7592,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_move_from : M.IsAssociatedFunction Self "move_from" move_from.
+      Smpl Add apply AssociatedFunction_move_from : is_associated.
       
       (*
           pub fn vector_op(
@@ -7884,6 +7932,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_vector_op : M.IsAssociatedFunction Self "vector_op" vector_op.
+      Smpl Add apply AssociatedFunction_vector_op : is_associated.
       
       (*
           pub fn vector_element_borrow(
@@ -8272,6 +8321,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_vector_element_borrow :
         M.IsAssociatedFunction Self "vector_element_borrow" vector_element_borrow.
+      Smpl Add apply AssociatedFunction_vector_element_borrow : is_associated.
       
       (*
           pub fn call(
@@ -9885,6 +9935,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call.
+      Smpl Add apply AssociatedFunction_call : is_associated.
       
       (*
           pub fn ret(&mut self, offset: CodeOffset, values: Vec<AbstractValue>) -> PartialVMResult<()> {
@@ -10568,6 +10619,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_ret : M.IsAssociatedFunction Self "ret" ret.
+      Smpl Add apply AssociatedFunction_ret : is_associated.
       
       (*
           pub fn construct_canonical_state(&self) -> Self {
@@ -11159,6 +11211,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_construct_canonical_state :
         M.IsAssociatedFunction Self "construct_canonical_state" construct_canonical_state.
+      Smpl Add apply AssociatedFunction_construct_canonical_state : is_associated.
       
       (*
           fn all_immutable(&self, borrows: &BTreeMap<RefID, ()>) -> bool {
@@ -11269,6 +11322,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_all_immutable :
         M.IsAssociatedFunction Self "all_immutable" all_immutable.
+      Smpl Add apply AssociatedFunction_all_immutable : is_associated.
       
       (*
           fn is_canonical(&self) -> bool {
@@ -11571,6 +11625,7 @@ Module reference_safety.
       
       Axiom AssociatedFunction_is_canonical :
         M.IsAssociatedFunction Self "is_canonical" is_canonical.
+      Smpl Add apply AssociatedFunction_is_canonical : is_associated.
       
       (*
           pub fn join_(&self, other: &Self) -> Self {
@@ -12443,6 +12498,7 @@ Module reference_safety.
         end.
       
       Axiom AssociatedFunction_join_ : M.IsAssociatedFunction Self "join_" join_.
+      Smpl Add apply AssociatedFunction_join_ : is_associated.
     End Impl_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
     
     Module Impl_move_bytecode_verifier_absint_AbstractDomain_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.

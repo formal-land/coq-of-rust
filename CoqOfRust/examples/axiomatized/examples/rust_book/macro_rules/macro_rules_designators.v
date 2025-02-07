@@ -4,11 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_foo : M.IsFunction "macro_rules_designators::foo" foo.
+Smpl Add apply Function_foo : is_function.
 
 Parameter bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_bar : M.IsFunction "macro_rules_designators::bar" bar.
+Smpl Add apply Function_bar : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "macro_rules_designators::main" main.
+Smpl Add apply Function_main : is_function.

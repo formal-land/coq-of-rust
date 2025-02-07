@@ -860,6 +860,7 @@ Module slice.
           end.
         
         Axiom Function_sort : M.IsFunction "core::slice::sort::stable::drift::sort" sort.
+        Smpl Add apply Function_sort : is_function.
         
         Module sort.
           Definition value_MIN_SQRT_RUN_LEN : Value.t :=
@@ -868,6 +869,7 @@ Module slice.
           Axiom Constant_value_MIN_SQRT_RUN_LEN :
             (M.get_constant "core::slice::sort::stable::drift::sort::MIN_SQRT_RUN_LEN") =
               value_MIN_SQRT_RUN_LEN.
+          Global Hint Rewrite Constant_value_MIN_SQRT_RUN_LEN : constant_rewrites.
         End sort.
         
         (*
@@ -963,6 +965,7 @@ Module slice.
           M.IsFunction
             "core::slice::sort::stable::drift::merge_tree_scale_factor"
             merge_tree_scale_factor.
+        Smpl Add apply Function_merge_tree_scale_factor : is_function.
         
         (*
         fn merge_tree_depth(left: usize, mid: usize, right: usize, scale_factor: u64) -> u8 {
@@ -1012,6 +1015,7 @@ Module slice.
         
         Axiom Function_merge_tree_depth :
           M.IsFunction "core::slice::sort::stable::drift::merge_tree_depth" merge_tree_depth.
+        Smpl Add apply Function_merge_tree_depth : is_function.
         
         (*
         fn sqrt_approx(n: usize) -> usize {
@@ -1065,6 +1069,7 @@ Module slice.
         
         Axiom Function_sqrt_approx :
           M.IsFunction "core::slice::sort::stable::drift::sqrt_approx" sqrt_approx.
+        Smpl Add apply Function_sqrt_approx : is_function.
         
         (*
         fn logical_merge<T, F: FnMut(&T, &T) -> bool>(
@@ -1429,6 +1434,7 @@ Module slice.
         
         Axiom Function_logical_merge :
           M.IsFunction "core::slice::sort::stable::drift::logical_merge" logical_merge.
+        Smpl Add apply Function_logical_merge : is_function.
         
         (*
         fn create_run<T, F: FnMut(&T, &T) -> bool>(
@@ -1783,6 +1789,7 @@ Module slice.
         
         Axiom Function_create_run :
           M.IsFunction "core::slice::sort::stable::drift::create_run" create_run.
+        Smpl Add apply Function_create_run : is_function.
         
         (*
         fn stable_quicksort<T, F: FnMut(&T, &T) -> bool>(
@@ -1850,6 +1857,7 @@ Module slice.
         
         Axiom Function_stable_quicksort :
           M.IsFunction "core::slice::sort::stable::drift::stable_quicksort" stable_quicksort.
+        Smpl Add apply Function_stable_quicksort : is_function.
         
         (* StructTuple
           {
@@ -1920,6 +1928,7 @@ Module slice.
             end.
           
           Axiom AssociatedFunction_new_sorted : M.IsAssociatedFunction Self "new_sorted" new_sorted.
+          Smpl Add apply AssociatedFunction_new_sorted : is_associated.
           
           (*
               fn new_unsorted(length: usize) -> Self {
@@ -1939,6 +1948,7 @@ Module slice.
           
           Axiom AssociatedFunction_new_unsorted :
             M.IsAssociatedFunction Self "new_unsorted" new_unsorted.
+          Smpl Add apply AssociatedFunction_new_unsorted : is_associated.
           
           (*
               fn sorted(self) -> bool {
@@ -1966,6 +1976,7 @@ Module slice.
             end.
           
           Axiom AssociatedFunction_sorted : M.IsAssociatedFunction Self "sorted" sorted.
+          Smpl Add apply AssociatedFunction_sorted : is_associated.
           
           (*
               fn len(self) -> usize {
@@ -1991,6 +2002,7 @@ Module slice.
             end.
           
           Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+          Smpl Add apply AssociatedFunction_len : is_associated.
         End Impl_core_slice_sort_stable_drift_DriftsortRun.
       End drift.
     End stable.

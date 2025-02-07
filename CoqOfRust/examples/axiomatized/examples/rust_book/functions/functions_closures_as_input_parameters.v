@@ -4,12 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter apply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_apply : M.IsFunction "functions_closures_as_input_parameters::apply" apply.
+Smpl Add apply Function_apply : is_function.
 
 Parameter apply_to_3 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_apply_to_3 :
   M.IsFunction "functions_closures_as_input_parameters::apply_to_3" apply_to_3.
+Smpl Add apply Function_apply_to_3 : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "functions_closures_as_input_parameters::main" main.
+Smpl Add apply Function_main : is_function.

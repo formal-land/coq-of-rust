@@ -51,6 +51,7 @@ Module foo.
       end.
     
     Axiom Function_f_foo_gre : M.IsFunction "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
+    Smpl Add apply Function_f_foo_gre : is_function.
   End gre.
   
   (*
@@ -107,6 +108,7 @@ Module foo.
     end.
   
   Axiom Function_f_foo : M.IsFunction "module_duplicate::foo::f_foo" f_foo.
+  Smpl Add apply Function_f_foo : is_function.
 End foo.
 
 (*
@@ -129,3 +131,4 @@ Definition f (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_f : M.IsFunction "module_duplicate::f" f.
+Smpl Add apply Function_f : is_function.

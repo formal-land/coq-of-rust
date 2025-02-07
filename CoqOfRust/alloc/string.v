@@ -648,6 +648,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn with_capacity(capacity: usize) -> String {
@@ -681,6 +682,7 @@ Module string.
     
     Axiom AssociatedFunction_with_capacity :
       M.IsAssociatedFunction Self "with_capacity" with_capacity.
+    Smpl Add apply AssociatedFunction_with_capacity : is_associated.
     
     (*
         pub fn try_with_capacity(capacity: usize) -> Result<String, TryReserveError> {
@@ -804,6 +806,7 @@ Module string.
     
     Axiom AssociatedFunction_try_with_capacity :
       M.IsAssociatedFunction Self "try_with_capacity" try_with_capacity.
+    Smpl Add apply AssociatedFunction_try_with_capacity : is_associated.
     
     (*
         pub fn from_utf8(vec: Vec<u8>) -> Result<String, FromUtf8Error> {
@@ -882,6 +885,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_from_utf8 : M.IsAssociatedFunction Self "from_utf8" from_utf8.
+    Smpl Add apply AssociatedFunction_from_utf8 : is_associated.
     
     (*
         pub fn from_utf8_lossy(v: &[u8]) -> Cow<'_, str> {
@@ -1484,6 +1488,7 @@ Module string.
     
     Axiom AssociatedFunction_from_utf8_lossy :
       M.IsAssociatedFunction Self "from_utf8_lossy" from_utf8_lossy.
+    Smpl Add apply AssociatedFunction_from_utf8_lossy : is_associated.
     
     (*
         pub fn from_utf8_lossy_owned(v: Vec<u8>) -> String {
@@ -1573,6 +1578,7 @@ Module string.
     
     Axiom AssociatedFunction_from_utf8_lossy_owned :
       M.IsAssociatedFunction Self "from_utf8_lossy_owned" from_utf8_lossy_owned.
+    Smpl Add apply AssociatedFunction_from_utf8_lossy_owned : is_associated.
     
     (*
         pub fn from_utf16(v: &[u16]) -> Result<String, FromUtf16Error> {
@@ -1821,6 +1827,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_from_utf16 : M.IsAssociatedFunction Self "from_utf16" from_utf16.
+    Smpl Add apply AssociatedFunction_from_utf16 : is_associated.
     
     (*
         pub fn from_utf16_lossy(v: &[u16]) -> String {
@@ -1984,6 +1991,7 @@ Module string.
     
     Axiom AssociatedFunction_from_utf16_lossy :
       M.IsAssociatedFunction Self "from_utf16_lossy" from_utf16_lossy.
+    Smpl Add apply AssociatedFunction_from_utf16_lossy : is_associated.
     
     (*
         pub fn from_utf16le(v: &[u8]) -> Result<String, FromUtf16Error> {
@@ -2311,6 +2319,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_from_utf16le : M.IsAssociatedFunction Self "from_utf16le" from_utf16le.
+    Smpl Add apply AssociatedFunction_from_utf16le : is_associated.
     
     (*
         pub fn from_utf16le_lossy(v: &[u8]) -> String {
@@ -2806,6 +2815,7 @@ Module string.
     
     Axiom AssociatedFunction_from_utf16le_lossy :
       M.IsAssociatedFunction Self "from_utf16le_lossy" from_utf16le_lossy.
+    Smpl Add apply AssociatedFunction_from_utf16le_lossy : is_associated.
     
     (*
         pub fn from_utf16be(v: &[u8]) -> Result<String, FromUtf16Error> {
@@ -3133,6 +3143,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_from_utf16be : M.IsAssociatedFunction Self "from_utf16be" from_utf16be.
+    Smpl Add apply AssociatedFunction_from_utf16be : is_associated.
     
     (*
         pub fn from_utf16be_lossy(v: &[u8]) -> String {
@@ -3628,6 +3639,7 @@ Module string.
     
     Axiom AssociatedFunction_from_utf16be_lossy :
       M.IsAssociatedFunction Self "from_utf16be_lossy" from_utf16be_lossy.
+    Smpl Add apply AssociatedFunction_from_utf16be_lossy : is_associated.
     
     (*
         pub fn into_raw_parts(self) -> ( *mut u8, usize, usize) {
@@ -3660,6 +3672,7 @@ Module string.
     
     Axiom AssociatedFunction_into_raw_parts :
       M.IsAssociatedFunction Self "into_raw_parts" into_raw_parts.
+    Smpl Add apply AssociatedFunction_into_raw_parts : is_associated.
     
     (*
         pub unsafe fn from_raw_parts(buf: *mut u8, length: usize, capacity: usize) -> String {
@@ -3695,6 +3708,7 @@ Module string.
     
     Axiom AssociatedFunction_from_raw_parts :
       M.IsAssociatedFunction Self "from_raw_parts" from_raw_parts.
+    Smpl Add apply AssociatedFunction_from_raw_parts : is_associated.
     
     (*
         pub unsafe fn from_utf8_unchecked(bytes: Vec<u8>) -> String {
@@ -3712,6 +3726,7 @@ Module string.
     
     Axiom AssociatedFunction_from_utf8_unchecked :
       M.IsAssociatedFunction Self "from_utf8_unchecked" from_utf8_unchecked.
+    Smpl Add apply AssociatedFunction_from_utf8_unchecked : is_associated.
     
     (*
         pub fn into_bytes(self) -> Vec<u8> {
@@ -3730,6 +3745,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
+    Smpl Add apply AssociatedFunction_into_bytes : is_associated.
     
     (*
         pub fn as_str(&self) -> &str {
@@ -3762,6 +3778,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+    Smpl Add apply AssociatedFunction_as_str : is_associated.
     
     (*
         pub fn as_mut_str(&mut self) -> &mut str {
@@ -3799,6 +3816,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_as_mut_str : M.IsAssociatedFunction Self "as_mut_str" as_mut_str.
+    Smpl Add apply AssociatedFunction_as_mut_str : is_associated.
     
     (*
         pub fn push_str(&mut self, string: &str) {
@@ -3845,6 +3863,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_push_str : M.IsAssociatedFunction Self "push_str" push_str.
+    Smpl Add apply AssociatedFunction_push_str : is_associated.
     
     (*
         pub fn extend_from_within<R>(&mut self, src: R)
@@ -4072,6 +4091,7 @@ Module string.
     
     Axiom AssociatedFunction_extend_from_within :
       M.IsAssociatedFunction Self "extend_from_within" extend_from_within.
+    Smpl Add apply AssociatedFunction_extend_from_within : is_associated.
     
     (*
         pub fn capacity(&self) -> usize {
@@ -4108,6 +4128,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_capacity : M.IsAssociatedFunction Self "capacity" capacity.
+    Smpl Add apply AssociatedFunction_capacity : is_associated.
     
     (*
         pub fn reserve(&mut self, additional: usize) {
@@ -4146,6 +4167,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_reserve : M.IsAssociatedFunction Self "reserve" reserve.
+    Smpl Add apply AssociatedFunction_reserve : is_associated.
     
     (*
         pub fn reserve_exact(&mut self, additional: usize) {
@@ -4185,6 +4207,7 @@ Module string.
     
     Axiom AssociatedFunction_reserve_exact :
       M.IsAssociatedFunction Self "reserve_exact" reserve_exact.
+    Smpl Add apply AssociatedFunction_reserve_exact : is_associated.
     
     (*
         pub fn try_reserve(&mut self, additional: usize) -> Result<(), TryReserveError> {
@@ -4223,6 +4246,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_try_reserve : M.IsAssociatedFunction Self "try_reserve" try_reserve.
+    Smpl Add apply AssociatedFunction_try_reserve : is_associated.
     
     (*
         pub fn try_reserve_exact(&mut self, additional: usize) -> Result<(), TryReserveError> {
@@ -4262,6 +4286,7 @@ Module string.
     
     Axiom AssociatedFunction_try_reserve_exact :
       M.IsAssociatedFunction Self "try_reserve_exact" try_reserve_exact.
+    Smpl Add apply AssociatedFunction_try_reserve_exact : is_associated.
     
     (*
         pub fn shrink_to_fit(&mut self) {
@@ -4299,6 +4324,7 @@ Module string.
     
     Axiom AssociatedFunction_shrink_to_fit :
       M.IsAssociatedFunction Self "shrink_to_fit" shrink_to_fit.
+    Smpl Add apply AssociatedFunction_shrink_to_fit : is_associated.
     
     (*
         pub fn shrink_to(&mut self, min_capacity: usize) {
@@ -4337,6 +4363,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_shrink_to : M.IsAssociatedFunction Self "shrink_to" shrink_to.
+    Smpl Add apply AssociatedFunction_shrink_to : is_associated.
     
     (*
         pub fn push(&mut self, ch: char) {
@@ -4464,6 +4491,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
+    Smpl Add apply AssociatedFunction_push : is_associated.
     
     (*
         pub fn as_bytes(&self) -> &[u8] {
@@ -4513,6 +4541,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
+    Smpl Add apply AssociatedFunction_as_bytes : is_associated.
     
     (*
         pub fn truncate(&mut self, new_len: usize) {
@@ -4649,6 +4678,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_truncate : M.IsAssociatedFunction Self "truncate" truncate.
+    Smpl Add apply AssociatedFunction_truncate : is_associated.
     
     (*
         pub fn pop(&mut self) -> Option<char> {
@@ -4855,6 +4885,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_pop : M.IsAssociatedFunction Self "pop" pop.
+    Smpl Add apply AssociatedFunction_pop : is_associated.
     
     (*
         pub fn remove(&mut self, idx: usize) -> char {
@@ -5116,6 +5147,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_remove : M.IsAssociatedFunction Self "remove" remove.
+    Smpl Add apply AssociatedFunction_remove : is_associated.
     
     (*
         pub fn remove_matches<P: Pattern>(&mut self, pat: P) {
@@ -5702,6 +5734,7 @@ Module string.
     
     Axiom AssociatedFunction_remove_matches :
       M.IsAssociatedFunction Self "remove_matches" remove_matches.
+    Smpl Add apply AssociatedFunction_remove_matches : is_associated.
     
     (*
         pub fn retain<F>(&mut self, mut f: F)
@@ -6147,6 +6180,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_retain : M.IsAssociatedFunction Self "retain" retain.
+    Smpl Add apply AssociatedFunction_retain : is_associated.
     
     (*
         pub fn insert(&mut self, idx: usize, ch: char) {
@@ -6277,6 +6311,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_insert : M.IsAssociatedFunction Self "insert" insert.
+    Smpl Add apply AssociatedFunction_insert : is_associated.
     
     (*
         unsafe fn insert_bytes(&mut self, idx: usize, bytes: &[u8]) {
@@ -6501,6 +6536,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_insert_bytes : M.IsAssociatedFunction Self "insert_bytes" insert_bytes.
+    Smpl Add apply AssociatedFunction_insert_bytes : is_associated.
     
     (*
         pub fn insert_str(&mut self, idx: usize, string: &str) {
@@ -6610,6 +6646,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_insert_str : M.IsAssociatedFunction Self "insert_str" insert_str.
+    Smpl Add apply AssociatedFunction_insert_str : is_associated.
     
     (*
         pub unsafe fn as_mut_vec(&mut self) -> &mut Vec<u8> {
@@ -6643,6 +6680,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_as_mut_vec : M.IsAssociatedFunction Self "as_mut_vec" as_mut_vec.
+    Smpl Add apply AssociatedFunction_as_mut_vec : is_associated.
     
     (*
         pub fn len(&self) -> usize {
@@ -6679,6 +6717,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -6701,6 +6740,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
     
     (*
         pub fn split_off(&mut self, at: usize) -> String {
@@ -6818,6 +6858,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_split_off : M.IsAssociatedFunction Self "split_off" split_off.
+    Smpl Add apply AssociatedFunction_split_off : is_associated.
     
     (*
         pub fn clear(&mut self) {
@@ -6854,6 +6895,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
+    Smpl Add apply AssociatedFunction_clear : is_associated.
     
     (*
         pub fn drain<R>(&mut self, range: R) -> Drain<'_>
@@ -7134,6 +7176,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_drain : M.IsAssociatedFunction Self "drain" drain.
+    Smpl Add apply AssociatedFunction_drain : is_associated.
     
     (*
         pub fn replace_range<R>(&mut self, range: R, replace_with: &str)
@@ -7583,6 +7626,7 @@ Module string.
     
     Axiom AssociatedFunction_replace_range :
       M.IsAssociatedFunction Self "replace_range" replace_range.
+    Smpl Add apply AssociatedFunction_replace_range : is_associated.
     
     (*
         pub fn into_boxed_str(self) -> Box<str> {
@@ -7631,6 +7675,7 @@ Module string.
     
     Axiom AssociatedFunction_into_boxed_str :
       M.IsAssociatedFunction Self "into_boxed_str" into_boxed_str.
+    Smpl Add apply AssociatedFunction_into_boxed_str : is_associated.
     
     (*
         pub fn leak<'a>(self) -> &'a mut str {
@@ -7697,6 +7742,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_leak : M.IsAssociatedFunction Self "leak" leak.
+    Smpl Add apply AssociatedFunction_leak : is_associated.
   End Impl_alloc_string_String.
   
   Module Impl_alloc_string_FromUtf8Error.
@@ -7751,6 +7797,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
+    Smpl Add apply AssociatedFunction_as_bytes : is_associated.
     
     (*
         pub fn into_utf8_lossy(self) -> String {
@@ -8165,6 +8212,7 @@ Module string.
     
     Axiom AssociatedFunction_into_utf8_lossy :
       M.IsAssociatedFunction Self "into_utf8_lossy" into_utf8_lossy.
+    Smpl Add apply AssociatedFunction_into_utf8_lossy : is_associated.
     
     (*
         pub fn into_bytes(self) -> Vec<u8> {
@@ -8183,6 +8231,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
+    Smpl Add apply AssociatedFunction_into_bytes : is_associated.
     
     (*
         pub fn utf8_error(&self) -> Utf8Error {
@@ -8205,6 +8254,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_utf8_error : M.IsAssociatedFunction Self "utf8_error" utf8_error.
+    Smpl Add apply AssociatedFunction_utf8_error : is_associated.
   End Impl_alloc_string_FromUtf8Error.
   
   Module Impl_core_fmt_Display_for_alloc_string_FromUtf8Error.
@@ -15349,6 +15399,7 @@ Module string.
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+    Smpl Add apply AssociatedFunction_as_str : is_associated.
   End Impl_alloc_string_Drain.
   
   Module Impl_core_convert_AsRef_str_for_alloc_string_Drain.

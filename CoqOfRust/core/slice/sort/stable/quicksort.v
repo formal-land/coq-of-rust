@@ -741,6 +741,7 @@ Module slice.
         
         Axiom Function_quicksort :
           M.IsFunction "core::slice::sort::stable::quicksort::quicksort" quicksort.
+        Smpl Add apply Function_quicksort : is_function.
         
         (*
         fn stable_partition<T, F: FnMut(&T, &T) -> bool>(
@@ -1741,6 +1742,7 @@ Module slice.
         
         Axiom Function_stable_partition :
           M.IsFunction "core::slice::sort::stable::quicksort::stable_partition" stable_partition.
+        Smpl Add apply Function_stable_partition : is_function.
         
         Module stable_partition.
           Definition value_UNROLL_LEN : Value.t :=
@@ -1749,6 +1751,7 @@ Module slice.
           Axiom Constant_value_UNROLL_LEN :
             (M.get_constant "core::slice::sort::stable::quicksort::stable_partition::UNROLL_LEN") =
               value_UNROLL_LEN.
+          Global Hint Rewrite Constant_value_UNROLL_LEN : constant_rewrites.
         End stable_partition.
         
         (* StructRecord
@@ -1806,6 +1809,7 @@ Module slice.
           Axiom AssociatedFunction_new :
             forall (T : Ty.t),
             M.IsAssociatedFunction (Self T) "new" (new T).
+          Smpl Add apply AssociatedFunction_new : is_associated.
           
           (*
               unsafe fn partition_one(&mut self, towards_left: bool) -> *mut T {
@@ -1982,6 +1986,7 @@ Module slice.
           Axiom AssociatedFunction_partition_one :
             forall (T : Ty.t),
             M.IsAssociatedFunction (Self T) "partition_one" (partition_one T).
+          Smpl Add apply AssociatedFunction_partition_one : is_associated.
         End Impl_core_slice_sort_stable_quicksort_PartitionState_T.
         
         (* Trait *)
@@ -2082,6 +2087,7 @@ Module slice.
           M.IsFunction
             "core::slice::sort::stable::quicksort::has_direct_interior_mutability"
             has_direct_interior_mutability.
+        Smpl Add apply Function_has_direct_interior_mutability : is_function.
       End quicksort.
     End stable.
   End sort.

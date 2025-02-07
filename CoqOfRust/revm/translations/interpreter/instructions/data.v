@@ -485,6 +485,7 @@ Module instructions.
     
     Axiom Function_data_load :
       M.IsFunction "revm_interpreter::instructions::data::data_load" data_load.
+    Smpl Add apply Function_data_load : is_function.
     
     (*
     pub fn data_loadn<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -935,6 +936,7 @@ Module instructions.
     
     Axiom Function_data_loadn :
       M.IsFunction "revm_interpreter::instructions::data::data_loadn" data_loadn.
+    Smpl Add apply Function_data_loadn : is_function.
     
     (*
     pub fn data_size<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1238,6 +1240,7 @@ Module instructions.
     
     Axiom Function_data_size :
       M.IsFunction "revm_interpreter::instructions::data::data_size" data_size.
+    Smpl Add apply Function_data_size : is_function.
     
     (*
     pub fn data_copy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2288,5 +2291,6 @@ Module instructions.
     
     Axiom Function_data_copy :
       M.IsFunction "revm_interpreter::instructions::data::data_copy" data_copy.
+    Smpl Add apply Function_data_copy : is_function.
   End data.
 End instructions.

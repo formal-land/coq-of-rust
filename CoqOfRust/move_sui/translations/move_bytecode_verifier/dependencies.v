@@ -110,6 +110,7 @@ Module dependencies.
       end.
     
     Axiom AssociatedFunction_module : M.IsAssociatedFunction Self "module" module.
+    Smpl Add apply AssociatedFunction_module : is_associated.
     
     (*
         fn new(
@@ -2618,6 +2619,7 @@ Module dependencies.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_bytecode_verifier_dependencies_Context.
   
   (*
@@ -2714,6 +2716,7 @@ Module dependencies.
   
   Axiom Function_verify_module :
     M.IsFunction "move_bytecode_verifier::dependencies::verify_module" verify_module.
+  Smpl Add apply Function_verify_module : is_function.
   
   (*
   fn verify_module_impl<'a>(
@@ -3026,6 +3029,7 @@ Module dependencies.
   
   Axiom Function_verify_module_impl :
     M.IsFunction "move_bytecode_verifier::dependencies::verify_module_impl" verify_module_impl.
+  Smpl Add apply Function_verify_module_impl : is_function.
   
   (*
   fn verify_imported_modules(context: &Context) -> PartialVMResult<()> {
@@ -3396,6 +3400,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::verify_imported_modules"
       verify_imported_modules.
+  Smpl Add apply Function_verify_imported_modules : is_function.
   
   (*
   fn verify_imported_structs(context: &Context) -> PartialVMResult<()> {
@@ -4393,6 +4398,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::verify_imported_structs"
       verify_imported_structs.
+  Smpl Add apply Function_verify_imported_structs : is_function.
   
   (*
   fn verify_imported_functions(context: &Context) -> PartialVMResult<()> {
@@ -6284,6 +6290,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::verify_imported_functions"
       verify_imported_functions.
+  Smpl Add apply Function_verify_imported_functions : is_function.
   
   (*
   fn compatible_struct_abilities(
@@ -6320,6 +6327,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::compatible_struct_abilities"
       compatible_struct_abilities.
+  Smpl Add apply Function_compatible_struct_abilities : is_function.
   
   (*
   fn compatible_fun_type_parameters(
@@ -6527,6 +6535,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::compatible_fun_type_parameters"
       compatible_fun_type_parameters.
+  Smpl Add apply Function_compatible_fun_type_parameters : is_function.
   
   (*
   fn compatible_struct_type_parameters(
@@ -6761,6 +6770,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::compatible_struct_type_parameters"
       compatible_struct_type_parameters.
+  Smpl Add apply Function_compatible_struct_type_parameters : is_function.
   
   (*
   fn compatible_type_parameter_constraints(
@@ -6803,6 +6813,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints"
       compatible_type_parameter_constraints.
+  Smpl Add apply Function_compatible_type_parameter_constraints : is_function.
   
   (*
   fn compatible_type_parameter_phantom_decl(
@@ -6849,6 +6860,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::compatible_type_parameter_phantom_decl"
       compatible_type_parameter_phantom_decl.
+  Smpl Add apply Function_compatible_type_parameter_phantom_decl : is_function.
   
   (*
   fn compare_cross_module_signatures(
@@ -7221,6 +7233,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::compare_cross_module_signatures"
       compare_cross_module_signatures.
+  Smpl Add apply Function_compare_cross_module_signatures : is_function.
   
   (*
   fn compare_types(
@@ -8149,6 +8162,7 @@ Module dependencies.
   
   Axiom Function_compare_types :
     M.IsFunction "move_bytecode_verifier::dependencies::compare_types" compare_types.
+  Smpl Add apply Function_compare_types : is_function.
   
   (*
   fn compare_structs(
@@ -8454,6 +8468,7 @@ Module dependencies.
   
   Axiom Function_compare_structs :
     M.IsFunction "move_bytecode_verifier::dependencies::compare_structs" compare_structs.
+  Smpl Add apply Function_compare_structs : is_function.
   
   (*
   fn verify_all_script_visibility_usage(context: &Context) -> PartialVMResult<()> {
@@ -8965,6 +8980,7 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::verify_all_script_visibility_usage"
       verify_all_script_visibility_usage.
+  Smpl Add apply Function_verify_all_script_visibility_usage : is_function.
   
   (*
   fn verify_script_visibility_usage(
@@ -9360,4 +9376,5 @@ Module dependencies.
     M.IsFunction
       "move_bytecode_verifier::dependencies::verify_script_visibility_usage"
       verify_script_visibility_usage.
+  Smpl Add apply Function_verify_script_visibility_usage : is_function.
 End dependencies.

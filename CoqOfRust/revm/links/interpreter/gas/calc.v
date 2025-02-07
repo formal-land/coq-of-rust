@@ -20,48 +20,5 @@ Lemma run_memory_gas (num_words: Usize.t) :
   {{ gas.calc.memory_gas [] [] [ φ num_words ] 🔽 U64.t }}.
 Proof.
   run_symbolic.
-  eapply Run.Let. {
-    run_symbolic.
-    eapply Run.Rewrite. {
-      rewrite cast_integer_eq with
-        (kind_source := IntegerKind.Usize)
-        (kind_target := IntegerKind.U64).
-      reflexivity.
-    }
-    run_symbolic.
-  }
-  intros []; run_symbolic.
-  eapply Run.CallPrimitiveGetAssociatedFunction. {
-    apply num.Impl_u64.AssociatedFunction_saturating_add.
-  }
-  eapply Run.CallPrimitiveGetAssociatedFunction. {
-    apply num.Impl_u64.AssociatedFunction_saturating_mul.
-  }
-  eapply Run.Rewrite. {
-    rewrite gas.constants.MEMORY_eq.
-    reflexivity.
-  }
-  run_symbolic.
-  eapply Run.CallClosure. {
-    apply num.links.mod.Impl_u64.run_saturating_mul.
-  }
-  intros []; run_symbolic.
-  eapply Run.CallPrimitiveGetAssociatedFunction. {
-    apply num.Impl_u64.AssociatedFunction_saturating_mul.
-  }
-  run_symbolic.
-  eapply Run.CallClosure. {
-    apply num.links.mod.Impl_u64.run_saturating_mul.
-  }
-  intros []; run_symbolic.
-  eapply Run.Rewrite. {
-    unfold BinOp.Wrap.div.
-    erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64) by smpl of_value.
-    reflexivity.
-  }
-  run_symbolic.
-  eapply Run.CallClosure. {
-    apply num.links.mod.Impl_u64.run_saturating_add.
-  }
-  intros []; run_symbolic.
 Defined.
+Smpl Add apply run_memory_gas : run_closure.

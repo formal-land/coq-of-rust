@@ -200,6 +200,7 @@ Module slice.
         end.
       
       Axiom Function_sort : M.IsFunction "core::slice::sort::stable::sort" sort.
+      Smpl Add apply Function_sort : is_function.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
@@ -208,6 +209,7 @@ Module slice.
         Axiom Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT :
           (M.get_constant "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT") =
             value_MAX_LEN_ALWAYS_INSERTION_SORT.
+        Global Hint Rewrite Constant_value_MAX_LEN_ALWAYS_INSERTION_SORT : constant_rewrites.
       End sort.
       
       (*
@@ -450,6 +452,7 @@ Module slice.
       
       Axiom Function_driftsort_main :
         M.IsFunction "core::slice::sort::stable::driftsort_main" driftsort_main.
+      Smpl Add apply Function_driftsort_main : is_function.
       
       Module driftsort_main.
         Definition value_MAX_FULL_ALLOC_BYTES : Value.t :=
@@ -458,6 +461,7 @@ Module slice.
         Axiom Constant_value_MAX_FULL_ALLOC_BYTES :
           (M.get_constant "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES") =
             value_MAX_FULL_ALLOC_BYTES.
+        Global Hint Rewrite Constant_value_MAX_FULL_ALLOC_BYTES : constant_rewrites.
       End driftsort_main.
       
       (* Trait *)
@@ -515,6 +519,7 @@ Module slice.
         Axiom AssociatedFunction_new :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "new" (new N T).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             fn as_uninit_slice_mut(&mut self) -> &mut [MaybeUninit<T>] {
@@ -635,6 +640,7 @@ Module slice.
         Axiom AssociatedFunction_as_uninit_slice_mut :
           forall (N : Value.t) (T : Ty.t),
           M.IsAssociatedFunction (Self N T) "as_uninit_slice_mut" (as_uninit_slice_mut N T).
+        Smpl Add apply AssociatedFunction_as_uninit_slice_mut : is_associated.
       End Impl_core_slice_sort_stable_AlignedStorage_N_T.
     End stable.
   End sort.

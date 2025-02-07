@@ -255,6 +255,7 @@ Module future.
       Axiom AssociatedFunction_into_inner :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
     End Impl_core_future_ready_Ready_T.
     
     (*
@@ -274,5 +275,6 @@ Module future.
       end.
     
     Axiom Function_ready : M.IsFunction "core::future::ready::ready" ready.
+    Smpl Add apply Function_ready : is_function.
   End ready.
 End future.

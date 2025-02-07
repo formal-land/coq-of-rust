@@ -4,3 +4,4 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "functions_closures_capturing::main" main.
+Smpl Add apply Function_main : is_function.

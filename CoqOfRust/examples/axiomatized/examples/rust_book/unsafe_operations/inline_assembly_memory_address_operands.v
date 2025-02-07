@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "inline_assembly_memory_address_operands::main" main.
+Smpl Add apply Function_main : is_function.
 
 Module main.
   Parameter load_fpu_control_word : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -12,4 +13,5 @@ Module main.
     M.IsFunction
       "inline_assembly_memory_address_operands::main::load_fpu_control_word"
       load_fpu_control_word.
+  Smpl Add apply Function_load_fpu_control_word : is_function.
 End main.

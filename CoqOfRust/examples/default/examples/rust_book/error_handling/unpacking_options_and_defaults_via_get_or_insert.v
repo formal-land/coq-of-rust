@@ -331,3 +331,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "unpacking_options_and_defaults_via_get_or_insert::main" main.
+Smpl Add apply Function_main : is_function.

@@ -17,7 +17,9 @@ Parameter comp_sci_student_greeting : (list Value.t) -> (list Ty.t) -> (list Val
 
 Axiom Function_comp_sci_student_greeting :
   M.IsFunction "supertraits::comp_sci_student_greeting" comp_sci_student_greeting.
+Smpl Add apply Function_comp_sci_student_greeting : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "supertraits::main" main.
+Smpl Add apply Function_main : is_function.

@@ -7,12 +7,14 @@ Module u256.
   
   Axiom Constant_value_NUM_BITS_PER_BYTE :
     (M.get_constant "move_core_types::u256::NUM_BITS_PER_BYTE") = value_NUM_BITS_PER_BYTE.
+  Global Hint Rewrite Constant_value_NUM_BITS_PER_BYTE : constant_rewrites.
   
   Definition value_U256_NUM_BITS : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
   
   Axiom Constant_value_U256_NUM_BITS :
     (M.get_constant "move_core_types::u256::U256_NUM_BITS") = value_U256_NUM_BITS.
+  Global Hint Rewrite Constant_value_U256_NUM_BITS : constant_rewrites.
   
   Definition value_U256_NUM_BYTES : Value.t :=
     M.run_constant
@@ -26,6 +28,7 @@ Module u256.
   
   Axiom Constant_value_U256_NUM_BYTES :
     (M.get_constant "move_core_types::u256::U256_NUM_BYTES") = value_U256_NUM_BYTES.
+  Global Hint Rewrite Constant_value_U256_NUM_BYTES : constant_rewrites.
   
   (* StructTuple
     {
@@ -518,6 +521,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_core_types_u256_U256CastError.
   
   Module Impl_core_error_Error_for_move_core_types_u256_U256CastError.
@@ -2653,6 +2657,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_zero : M.IsAssociatedFunction Self "zero" zero.
+    Smpl Add apply AssociatedFunction_zero : is_associated.
     
     (*
         pub const fn one() -> Self {
@@ -2675,6 +2680,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_one : M.IsAssociatedFunction Self "one" one.
+    Smpl Add apply AssociatedFunction_one : is_associated.
     
     (*
         pub const fn max_value() -> Self {
@@ -2702,6 +2708,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
+    Smpl Add apply AssociatedFunction_max_value : is_associated.
     
     (*
         pub fn from_str_radix(src: &str, radix: u32) -> Result<Self, U256FromStrError> {
@@ -2787,6 +2794,7 @@ Module u256.
     
     Axiom AssociatedFunction_from_str_radix :
       M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
+    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
     
     (*
         pub fn from_le_bytes(slice: &[u8; U256_NUM_BYTES]) -> Self {
@@ -2816,6 +2824,7 @@ Module u256.
     
     Axiom AssociatedFunction_from_le_bytes :
       M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
+    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
     
     (*
         pub fn to_le_bytes(self) -> [u8; U256_NUM_BYTES] {
@@ -2865,6 +2874,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
+    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
     
     (*
         pub fn leading_zeros(&self) -> u32 {
@@ -2899,6 +2909,7 @@ Module u256.
     
     Axiom AssociatedFunction_leading_zeros :
       M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
     
     (*
         pub fn unchecked_as_u8(&self) -> u8 {
@@ -2930,6 +2941,7 @@ Module u256.
     
     Axiom AssociatedFunction_unchecked_as_u8 :
       M.IsAssociatedFunction Self "unchecked_as_u8" unchecked_as_u8.
+    Smpl Add apply AssociatedFunction_unchecked_as_u8 : is_associated.
     
     (*
         pub fn unchecked_as_u16(&self) -> u16 {
@@ -2961,6 +2973,7 @@ Module u256.
     
     Axiom AssociatedFunction_unchecked_as_u16 :
       M.IsAssociatedFunction Self "unchecked_as_u16" unchecked_as_u16.
+    Smpl Add apply AssociatedFunction_unchecked_as_u16 : is_associated.
     
     (*
         pub fn unchecked_as_u32(&self) -> u32 {
@@ -2992,6 +3005,7 @@ Module u256.
     
     Axiom AssociatedFunction_unchecked_as_u32 :
       M.IsAssociatedFunction Self "unchecked_as_u32" unchecked_as_u32.
+    Smpl Add apply AssociatedFunction_unchecked_as_u32 : is_associated.
     
     (*
         pub fn unchecked_as_u64(&self) -> u64 {
@@ -3023,6 +3037,7 @@ Module u256.
     
     Axiom AssociatedFunction_unchecked_as_u64 :
       M.IsAssociatedFunction Self "unchecked_as_u64" unchecked_as_u64.
+    Smpl Add apply AssociatedFunction_unchecked_as_u64 : is_associated.
     
     (*
         pub fn unchecked_as_u128(&self) -> u128 {
@@ -3052,6 +3067,7 @@ Module u256.
     
     Axiom AssociatedFunction_unchecked_as_u128 :
       M.IsAssociatedFunction Self "unchecked_as_u128" unchecked_as_u128.
+    Smpl Add apply AssociatedFunction_unchecked_as_u128 : is_associated.
     
     (*
         pub fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -3100,6 +3116,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
+    Smpl Add apply AssociatedFunction_checked_add : is_associated.
     
     (*
         pub fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -3148,6 +3165,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
+    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
     
     (*
         pub fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -3196,6 +3214,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
+    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
     
     (*
         pub fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -3244,6 +3263,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
+    Smpl Add apply AssociatedFunction_checked_div : is_associated.
     
     (*
         pub fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -3292,6 +3312,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
+    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
     
     (*
         pub fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -3377,6 +3398,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
+    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
     
     (*
         pub fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -3462,6 +3484,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
+    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
     
     (*
         pub fn down_cast_lossy<T: std::convert::TryFrom<u128>>(self) -> T {
@@ -3611,6 +3634,7 @@ Module u256.
     
     Axiom AssociatedFunction_down_cast_lossy :
       M.IsAssociatedFunction Self "down_cast_lossy" down_cast_lossy.
+    Smpl Add apply AssociatedFunction_down_cast_lossy : is_associated.
     
     (*
         pub fn wrapping_add(self, rhs: Self) -> Self {
@@ -3662,6 +3686,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
+    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
     
     (*
         pub fn wrapping_sub(self, rhs: Self) -> Self {
@@ -3713,6 +3738,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
+    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
     
     (*
         pub fn wrapping_mul(self, rhs: Self) -> Self {
@@ -3764,6 +3790,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
+    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
     
     (*
         fn wmul(self, b: Self) -> (Self, Self) {
@@ -4208,6 +4235,7 @@ Module u256.
       end.
     
     Axiom AssociatedFunction_wmul : M.IsAssociatedFunction Self "wmul" wmul.
+    Smpl Add apply AssociatedFunction_wmul : is_associated.
   End Impl_move_core_types_u256_U256.
   
   Module Impl_core_convert_From_u8_for_move_core_types_u256_U256.

@@ -706,3 +706,4 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Axiom Function_fmt_list : M.IsFunction "move_core_types::fmt_list" fmt_list.
+Smpl Add apply Function_fmt_list : is_function.

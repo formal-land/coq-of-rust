@@ -10,6 +10,7 @@ Module num.
       Axiom Constant_value_SMALLEST_POWER_OF_FIVE :
         (M.get_constant "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE") =
           value_SMALLEST_POWER_OF_FIVE.
+      Global Hint Rewrite Constant_value_SMALLEST_POWER_OF_FIVE : constant_rewrites.
       
       Definition value_LARGEST_POWER_OF_FIVE : Value.t :=
         M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
@@ -17,6 +18,7 @@ Module num.
       Axiom Constant_value_LARGEST_POWER_OF_FIVE :
         (M.get_constant "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE") =
           value_LARGEST_POWER_OF_FIVE.
+      Global Hint Rewrite Constant_value_LARGEST_POWER_OF_FIVE : constant_rewrites.
       
       Definition value_N_POWERS_OF_FIVE : Value.t :=
         M.run_constant
@@ -35,6 +37,7 @@ Module num.
       
       Axiom Constant_value_N_POWERS_OF_FIVE :
         (M.get_constant "core::num::dec2flt::table::N_POWERS_OF_FIVE") = value_N_POWERS_OF_FIVE.
+      Global Hint Rewrite Constant_value_N_POWERS_OF_FIVE : constant_rewrites.
       
       Definition value_POWER_OF_FIVE_128 : Value.t :=
         M.run_constant
@@ -3304,6 +3307,7 @@ Module num.
       
       Axiom Constant_value_POWER_OF_FIVE_128 :
         (M.get_constant "core::num::dec2flt::table::POWER_OF_FIVE_128") = value_POWER_OF_FIVE_128.
+      Global Hint Rewrite Constant_value_POWER_OF_FIVE_128 : constant_rewrites.
     End table.
   End dec2flt.
 End num.

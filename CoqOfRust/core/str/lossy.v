@@ -23,6 +23,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_utf8_chunks : M.IsAssociatedFunction Self "utf8_chunks" utf8_chunks.
+      Smpl Add apply AssociatedFunction_utf8_chunks : is_associated.
     End Impl_slice_u8.
     
     (* StructRecord
@@ -354,6 +355,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_valid : M.IsAssociatedFunction Self "valid" valid.
+      Smpl Add apply AssociatedFunction_valid : is_associated.
       
       (*
           pub fn invalid(&self) -> &'a [u8] {
@@ -376,6 +378,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_invalid : M.IsAssociatedFunction Self "invalid" invalid.
+      Smpl Add apply AssociatedFunction_invalid : is_associated.
     End Impl_core_str_lossy_Utf8Chunk.
     
     (* StructTuple
@@ -1824,6 +1827,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_debug : M.IsAssociatedFunction Self "debug" debug.
+      Smpl Add apply AssociatedFunction_debug : is_associated.
     End Impl_core_str_lossy_Utf8Chunks.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_str_lossy_Utf8Chunks.

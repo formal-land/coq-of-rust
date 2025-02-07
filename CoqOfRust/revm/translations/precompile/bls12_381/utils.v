@@ -8,12 +8,14 @@ Module bls12_381.
     
     Axiom Constant_value_NBITS :
       (M.get_constant "revm_precompile::bls12_381::utils::NBITS") = value_NBITS.
+    Global Hint Rewrite Constant_value_NBITS : constant_rewrites.
     
     Definition value_FP_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 48 |))).
     
     Axiom Constant_value_FP_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::FP_LENGTH") = value_FP_LENGTH.
+    Global Hint Rewrite Constant_value_FP_LENGTH : constant_rewrites.
     
     Definition value_PADDED_FP_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
@@ -21,6 +23,7 @@ Module bls12_381.
     Axiom Constant_value_PADDED_FP_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::PADDED_FP_LENGTH") =
         value_PADDED_FP_LENGTH.
+    Global Hint Rewrite Constant_value_PADDED_FP_LENGTH : constant_rewrites.
     
     Definition value_PADDED_FP2_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 128 |))).
@@ -28,18 +31,21 @@ Module bls12_381.
     Axiom Constant_value_PADDED_FP2_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::PADDED_FP2_LENGTH") =
         value_PADDED_FP2_LENGTH.
+    Global Hint Rewrite Constant_value_PADDED_FP2_LENGTH : constant_rewrites.
     
     Definition value_PADDING_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
     
     Axiom Constant_value_PADDING_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::PADDING_LENGTH") = value_PADDING_LENGTH.
+    Global Hint Rewrite Constant_value_PADDING_LENGTH : constant_rewrites.
     
     Definition value_SCALAR_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
     
     Axiom Constant_value_SCALAR_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::utils::SCALAR_LENGTH") = value_SCALAR_LENGTH.
+    Global Hint Rewrite Constant_value_SCALAR_LENGTH : constant_rewrites.
     
     Definition value_MODULUS_REPR : Value.t :=
       M.run_constant
@@ -100,6 +106,7 @@ Module bls12_381.
     
     Axiom Constant_value_MODULUS_REPR :
       (M.get_constant "revm_precompile::bls12_381::utils::MODULUS_REPR") = value_MODULUS_REPR.
+    Global Hint Rewrite Constant_value_MODULUS_REPR : constant_rewrites.
     
     (*
     pub(super) fn fp_to_bytes(out: &mut [u8], input: *const blst_fp) {
@@ -234,6 +241,7 @@ Module bls12_381.
     
     Axiom Function_fp_to_bytes :
       M.IsFunction "revm_precompile::bls12_381::utils::fp_to_bytes" fp_to_bytes.
+    Smpl Add apply Function_fp_to_bytes : is_function.
     
     (*
     pub(super) fn remove_padding(input: &[u8]) -> Result<&[u8; FP_LENGTH], PrecompileError> {
@@ -761,6 +769,7 @@ Module bls12_381.
     
     Axiom Function_remove_padding :
       M.IsFunction "revm_precompile::bls12_381::utils::remove_padding" remove_padding.
+    Smpl Add apply Function_remove_padding : is_function.
     
     (*
     pub(super) fn extract_scalar_input(input: &[u8]) -> Result<blst_scalar, PrecompileError> {
@@ -1051,6 +1060,7 @@ Module bls12_381.
     
     Axiom Function_extract_scalar_input :
       M.IsFunction "revm_precompile::bls12_381::utils::extract_scalar_input" extract_scalar_input.
+    Smpl Add apply Function_extract_scalar_input : is_function.
     
     (*
     fn is_valid_be(input: &[u8; 48]) -> bool {
@@ -1278,6 +1288,7 @@ Module bls12_381.
     
     Axiom Function_is_valid_be :
       M.IsFunction "revm_precompile::bls12_381::utils::is_valid_be" is_valid_be.
+    Smpl Add apply Function_is_valid_be : is_function.
     
     (*
     pub(super) fn fp_from_bendian(input: &[u8; 48]) -> Result<blst_fp, PrecompileError> {
@@ -1413,5 +1424,6 @@ Module bls12_381.
     
     Axiom Function_fp_from_bendian :
       M.IsFunction "revm_precompile::bls12_381::utils::fp_from_bendian" fp_from_bendian.
+    Smpl Add apply Function_fp_from_bendian : is_function.
   End utils.
 End bls12_381.

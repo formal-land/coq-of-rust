@@ -54,6 +54,7 @@ Module bls12_381.
     end.
   
   Axiom Function_precompiles : M.IsFunction "revm_precompile::bls12_381::precompiles" precompiles.
+  Smpl Add apply Function_precompiles : is_function.
   
   Module precompiles.
     (* Error OpaqueTy *)

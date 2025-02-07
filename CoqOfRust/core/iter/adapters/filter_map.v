@@ -102,6 +102,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I F : Ty.t),
           M.IsAssociatedFunction (Self I F) "new" (new I F).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_filter_map_FilterMap_I_F.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_filter_map_FilterMap_I_F.
@@ -300,6 +301,7 @@ Module iter.
       
       Axiom Function_filter_map_fold :
         M.IsFunction "core::iter::adapters::filter_map::filter_map_fold" filter_map_fold.
+      Smpl Add apply Function_filter_map_fold : is_function.
       
       Module filter_map_fold.
         (* Error OpaqueTy *)
@@ -427,6 +429,7 @@ Module iter.
       
       Axiom Function_filter_map_try_fold :
         M.IsFunction "core::iter::adapters::filter_map::filter_map_try_fold" filter_map_try_fold.
+      Smpl Add apply Function_filter_map_try_fold : is_function.
       
       Module filter_map_try_fold.
         (* Error OpaqueTy *)

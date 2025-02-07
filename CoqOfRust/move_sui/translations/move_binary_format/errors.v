@@ -1011,6 +1011,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn stack_trace(&self) -> &Vec<(ModuleId, FunctionDefinitionIndex, CodeOffset)> {
@@ -1039,6 +1040,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_stack_trace : M.IsAssociatedFunction Self "stack_trace" stack_trace.
+    Smpl Add apply AssociatedFunction_stack_trace : is_associated.
   End Impl_move_binary_format_errors_ExecutionState.
   
   (* StructTuple
@@ -2954,6 +2956,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_major_status : M.IsAssociatedFunction Self "major_status" major_status.
+    Smpl Add apply AssociatedFunction_major_status : is_associated.
     
     (*
         pub fn sub_status(&self) -> Option<u64> {
@@ -2984,6 +2987,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_sub_status : M.IsAssociatedFunction Self "sub_status" sub_status.
+    Smpl Add apply AssociatedFunction_sub_status : is_associated.
     
     (*
         pub fn message(&self) -> Option<&String> {
@@ -3025,6 +3029,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_message : M.IsAssociatedFunction Self "message" message.
+    Smpl Add apply AssociatedFunction_message : is_associated.
     
     (*
         pub fn exec_state(&self) -> Option<&ExecutionState> {
@@ -3069,6 +3074,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_exec_state : M.IsAssociatedFunction Self "exec_state" exec_state.
+    Smpl Add apply AssociatedFunction_exec_state : is_associated.
     
     (*
         pub fn remove_exec_state(&mut self) {
@@ -3105,6 +3111,7 @@ Module errors.
     
     Axiom AssociatedFunction_remove_exec_state :
       M.IsAssociatedFunction Self "remove_exec_state" remove_exec_state.
+    Smpl Add apply AssociatedFunction_remove_exec_state : is_associated.
     
     (*
         pub fn location(&self) -> &Location {
@@ -3141,6 +3148,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_location : M.IsAssociatedFunction Self "location" location.
+    Smpl Add apply AssociatedFunction_location : is_associated.
     
     (*
         pub fn indices(&self) -> &Vec<(IndexKind, TableIndex)> {
@@ -3177,6 +3185,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_indices : M.IsAssociatedFunction Self "indices" indices.
+    Smpl Add apply AssociatedFunction_indices : is_associated.
     
     (*
         pub fn offsets(&self) -> &Vec<(FunctionDefinitionIndex, CodeOffset)> {
@@ -3213,6 +3222,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_offsets : M.IsAssociatedFunction Self "offsets" offsets.
+    Smpl Add apply AssociatedFunction_offsets : is_associated.
     
     (*
         pub fn status_type(&self) -> StatusType {
@@ -3253,6 +3263,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_status_type : M.IsAssociatedFunction Self "status_type" status_type.
+    Smpl Add apply AssociatedFunction_status_type : is_associated.
     
     (*
         pub fn all_data(
@@ -3373,6 +3384,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_all_data : M.IsAssociatedFunction Self "all_data" all_data.
+    Smpl Add apply AssociatedFunction_all_data : is_associated.
     
     (*
         pub fn to_partial(self) -> PartialVMError {
@@ -3495,6 +3507,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_to_partial : M.IsAssociatedFunction Self "to_partial" to_partial.
+    Smpl Add apply AssociatedFunction_to_partial : is_associated.
   End Impl_move_binary_format_errors_VMError.
   
   Module Impl_core_fmt_Debug_for_move_binary_format_errors_VMError.
@@ -4331,6 +4344,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_all_data : M.IsAssociatedFunction Self "all_data" all_data.
+    Smpl Add apply AssociatedFunction_all_data : is_associated.
     
     (*
         pub fn finish(self, location: Location) -> VMError {
@@ -4455,6 +4469,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
+    Smpl Add apply AssociatedFunction_finish : is_associated.
     
     (*
         pub fn new(major_status: StatusCode) -> Self {
@@ -4542,6 +4557,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn major_status(&self) -> StatusCode {
@@ -4572,6 +4588,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_major_status : M.IsAssociatedFunction Self "major_status" major_status.
+    Smpl Add apply AssociatedFunction_major_status : is_associated.
     
     (*
         pub fn with_sub_status(mut self, sub_status: u64) -> Self {
@@ -4685,6 +4702,7 @@ Module errors.
     
     Axiom AssociatedFunction_with_sub_status :
       M.IsAssociatedFunction Self "with_sub_status" with_sub_status.
+    Smpl Add apply AssociatedFunction_with_sub_status : is_associated.
     
     (*
         pub fn with_message(mut self, message: String) -> Self {
@@ -4796,6 +4814,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_with_message : M.IsAssociatedFunction Self "with_message" with_message.
+    Smpl Add apply AssociatedFunction_with_message : is_associated.
     
     (*
         pub fn with_exec_state(mut self, exec_state: ExecutionState) -> Self {
@@ -4910,6 +4929,7 @@ Module errors.
     
     Axiom AssociatedFunction_with_exec_state :
       M.IsAssociatedFunction Self "with_exec_state" with_exec_state.
+    Smpl Add apply AssociatedFunction_with_exec_state : is_associated.
     
     (*
         pub fn at_index(mut self, kind: IndexKind, index: TableIndex) -> Self {
@@ -4967,6 +4987,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_at_index : M.IsAssociatedFunction Self "at_index" at_index.
+    Smpl Add apply AssociatedFunction_at_index : is_associated.
     
     (*
         pub fn at_indices(mut self, additional_indices: Vec<(IndexKind, TableIndex)>) -> Self {
@@ -5034,6 +5055,7 @@ Module errors.
       end.
     
     Axiom AssociatedFunction_at_indices : M.IsAssociatedFunction Self "at_indices" at_indices.
+    Smpl Add apply AssociatedFunction_at_indices : is_associated.
     
     (*
         pub fn at_code_offset(mut self, function: FunctionDefinitionIndex, offset: CodeOffset) -> Self {
@@ -5096,6 +5118,7 @@ Module errors.
     
     Axiom AssociatedFunction_at_code_offset :
       M.IsAssociatedFunction Self "at_code_offset" at_code_offset.
+    Smpl Add apply AssociatedFunction_at_code_offset : is_associated.
     
     (*
         pub fn at_code_offsets(
@@ -5181,6 +5204,7 @@ Module errors.
     
     Axiom AssociatedFunction_at_code_offsets :
       M.IsAssociatedFunction Self "at_code_offsets" at_code_offsets.
+    Smpl Add apply AssociatedFunction_at_code_offsets : is_associated.
     
     (*
         pub fn append_message_with_separator(
@@ -5377,6 +5401,7 @@ Module errors.
     
     Axiom AssociatedFunction_append_message_with_separator :
       M.IsAssociatedFunction Self "append_message_with_separator" append_message_with_separator.
+    Smpl Add apply AssociatedFunction_append_message_with_separator : is_associated.
   End Impl_move_binary_format_errors_PartialVMError.
   
   Module Impl_core_fmt_Display_for_move_binary_format_errors_Location.
@@ -7927,6 +7952,7 @@ Module errors.
   
   Axiom Function_offset_out_of_bounds :
     M.IsFunction "move_binary_format::errors::offset_out_of_bounds" offset_out_of_bounds.
+  Smpl Add apply Function_offset_out_of_bounds : is_function.
   
   (*
   pub fn bounds_error(
@@ -8099,6 +8125,7 @@ Module errors.
   
   Axiom Function_bounds_error :
     M.IsFunction "move_binary_format::errors::bounds_error" bounds_error.
+  Smpl Add apply Function_bounds_error : is_function.
   
   (*
   pub fn verification_error(status: StatusCode, kind: IndexKind, idx: TableIndex) -> PartialVMError {
@@ -8138,6 +8165,7 @@ Module errors.
   
   Axiom Function_verification_error :
     M.IsFunction "move_binary_format::errors::verification_error" verification_error.
+  Smpl Add apply Function_verification_error : is_function.
   
   Module Impl_core_fmt_Debug_for_move_binary_format_errors_PartialVMError.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::PartialVMError".

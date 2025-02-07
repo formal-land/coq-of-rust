@@ -29,3 +29,4 @@ Axiom Operations :
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "enums_type_aliases_v1::main" main.
+Smpl Add apply Function_main : is_function.

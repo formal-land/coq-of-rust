@@ -146,6 +146,7 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
 
 Axiom Function_compare_prints :
   M.IsFunction "generics_multiple_bounds::compare_prints" compare_prints.
+Smpl Add apply Function_compare_prints : is_function.
 
 (*
 fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
@@ -286,6 +287,7 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   end.
 
 Axiom Function_compare_types : M.IsFunction "generics_multiple_bounds::compare_types" compare_types.
+Smpl Add apply Function_compare_types : is_function.
 
 (*
 fn main() {
@@ -405,3 +407,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "generics_multiple_bounds::main" main.
+Smpl Add apply Function_main : is_function.

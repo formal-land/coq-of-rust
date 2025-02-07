@@ -840,6 +840,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_kind : M.IsAssociatedFunction Self "kind" kind.
+      Smpl Add apply AssociatedFunction_kind : is_associated.
     End Impl_core_num_error_ParseIntError.
     
     Module Impl_core_fmt_Display_for_core_num_error_ParseIntError.

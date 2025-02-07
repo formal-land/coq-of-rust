@@ -267,6 +267,7 @@ Module asserting.
     Axiom AssociatedFunction_new :
       forall (M_ T : Ty.t),
       M.IsAssociatedFunction (Self M_ T) "new" (new M_ T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_core_asserting_Capture_M__T.
   
   (* StructTuple

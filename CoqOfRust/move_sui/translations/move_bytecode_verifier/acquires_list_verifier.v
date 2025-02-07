@@ -1451,6 +1451,7 @@ Module acquires_list_verifier.
       end.
     
     Axiom AssociatedFunction_verify : M.IsAssociatedFunction Self "verify" verify.
+    Smpl Add apply AssociatedFunction_verify : is_associated.
     
     (*
         fn verify_instruction(
@@ -2484,6 +2485,7 @@ Module acquires_list_verifier.
     
     Axiom AssociatedFunction_verify_instruction :
       M.IsAssociatedFunction Self "verify_instruction" verify_instruction.
+    Smpl Add apply AssociatedFunction_verify_instruction : is_associated.
     
     (*
         fn call_acquire(
@@ -2770,6 +2772,7 @@ Module acquires_list_verifier.
       end.
     
     Axiom AssociatedFunction_call_acquire : M.IsAssociatedFunction Self "call_acquire" call_acquire.
+    Smpl Add apply AssociatedFunction_call_acquire : is_associated.
     
     (*
         fn struct_acquire(
@@ -2892,6 +2895,7 @@ Module acquires_list_verifier.
     
     Axiom AssociatedFunction_struct_acquire :
       M.IsAssociatedFunction Self "struct_acquire" struct_acquire.
+    Smpl Add apply AssociatedFunction_struct_acquire : is_associated.
     
     (*
         fn function_acquired_resources(
@@ -3191,6 +3195,7 @@ Module acquires_list_verifier.
     
     Axiom AssociatedFunction_function_acquired_resources :
       M.IsAssociatedFunction Self "function_acquired_resources" function_acquired_resources.
+    Smpl Add apply AssociatedFunction_function_acquired_resources : is_associated.
     
     (*
         fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -3235,5 +3240,6 @@ Module acquires_list_verifier.
       end.
     
     Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
+    Smpl Add apply AssociatedFunction_error : is_associated.
   End Impl_move_bytecode_verifier_acquires_list_verifier_AcquiresVerifier.
 End acquires_list_verifier.

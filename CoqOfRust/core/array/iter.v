@@ -152,6 +152,7 @@ Module array.
       Axiom AssociatedFunction_new :
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "new" (new N T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const unsafe fn new_unchecked(
@@ -216,6 +217,7 @@ Module array.
       Axiom AssociatedFunction_new_unchecked :
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "new_unchecked" (new_unchecked N T).
+      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
       
       (*
           pub const fn empty() -> Self {
@@ -273,6 +275,7 @@ Module array.
       Axiom AssociatedFunction_empty :
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "empty" (empty N T).
+      Smpl Add apply AssociatedFunction_empty : is_associated.
       
       (*
           pub fn as_slice(&self) -> &[T] {
@@ -364,6 +367,7 @@ Module array.
       Axiom AssociatedFunction_as_slice :
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "as_slice" (as_slice N T).
+      Smpl Add apply AssociatedFunction_as_slice : is_associated.
       
       (*
           pub fn as_mut_slice(&mut self) -> &mut [T] {
@@ -467,6 +471,7 @@ Module array.
       Axiom AssociatedFunction_as_mut_slice :
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "as_mut_slice" (as_mut_slice N T).
+      Smpl Add apply AssociatedFunction_as_mut_slice : is_associated.
     End Impl_core_array_iter_IntoIter_N_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_array_iter_IntoIter_N_T.

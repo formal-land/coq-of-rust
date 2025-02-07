@@ -4,7 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter analyze_slice : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_analyze_slice : M.IsFunction "arrays_and_slices::analyze_slice" analyze_slice.
+Smpl Add apply Function_analyze_slice : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "arrays_and_slices::main" main.
+Smpl Add apply Function_main : is_function.

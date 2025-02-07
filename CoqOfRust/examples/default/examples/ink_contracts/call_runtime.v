@@ -378,6 +378,7 @@ Module Impl_call_runtime_Env.
   Parameter call_runtime : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_call_runtime : M.IsAssociatedFunction Self "call_runtime" call_runtime.
+  Smpl Add apply AssociatedFunction_call_runtime : is_associated.
 End Impl_call_runtime_Env.
 
 Module Impl_call_runtime_RuntimeCaller.
@@ -391,6 +392,7 @@ Module Impl_call_runtime_RuntimeCaller.
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
+  Smpl Add apply AssociatedFunction_init_env : is_associated.
   
   (*
       fn env(&self) -> Env {
@@ -410,6 +412,7 @@ Module Impl_call_runtime_RuntimeCaller.
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
+  Smpl Add apply AssociatedFunction_env : is_associated.
   
   (*
       pub fn new() -> Self {
@@ -436,6 +439,7 @@ Module Impl_call_runtime_RuntimeCaller.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn transfer_through_runtime(
@@ -551,6 +555,7 @@ Module Impl_call_runtime_RuntimeCaller.
   
   Axiom AssociatedFunction_transfer_through_runtime :
     M.IsAssociatedFunction Self "transfer_through_runtime" transfer_through_runtime.
+  Smpl Add apply AssociatedFunction_transfer_through_runtime : is_associated.
   
   (*
       pub fn call_nonexistent_extrinsic(&mut self) -> Result<(), RuntimeError> {
@@ -622,4 +627,5 @@ Module Impl_call_runtime_RuntimeCaller.
   
   Axiom AssociatedFunction_call_nonexistent_extrinsic :
     M.IsAssociatedFunction Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
+  Smpl Add apply AssociatedFunction_call_nonexistent_extrinsic : is_associated.
 End Impl_call_runtime_RuntimeCaller.

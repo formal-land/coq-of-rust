@@ -165,6 +165,7 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_give_adult : M.IsFunction "option_and_unwrap::give_adult" give_adult.
+Smpl Add apply Function_give_adult : is_function.
 
 (*
 fn drink(drink: Option<&str>) {
@@ -308,6 +309,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_drink : M.IsFunction "option_and_unwrap::drink" drink.
+Smpl Add apply Function_drink : is_function.
 
 (*
 fn main() {
@@ -386,3 +388,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "option_and_unwrap::main" main.
+Smpl Add apply Function_main : is_function.

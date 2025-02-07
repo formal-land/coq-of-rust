@@ -122,6 +122,7 @@ Module collections.
         Axiom AssociatedFunction_new :
           forall (T : Ty.t),
           M.IsAssociatedFunction (Self T) "new" (new T).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             pub unsafe fn awaken(self) -> &'a mut T {
@@ -178,6 +179,7 @@ Module collections.
         Axiom AssociatedFunction_awaken :
           forall (T : Ty.t),
           M.IsAssociatedFunction (Self T) "awaken" (awaken T).
+        Smpl Add apply AssociatedFunction_awaken : is_associated.
         
         (*
             pub unsafe fn reborrow(&mut self) -> &'a mut T {
@@ -234,6 +236,7 @@ Module collections.
         Axiom AssociatedFunction_reborrow :
           forall (T : Ty.t),
           M.IsAssociatedFunction (Self T) "reborrow" (reborrow T).
+        Smpl Add apply AssociatedFunction_reborrow : is_associated.
         
         (*
             pub unsafe fn reborrow_shared(&self) -> &'a T {
@@ -285,6 +288,7 @@ Module collections.
         Axiom AssociatedFunction_reborrow_shared :
           forall (T : Ty.t),
           M.IsAssociatedFunction (Self T) "reborrow_shared" (reborrow_shared T).
+        Smpl Add apply AssociatedFunction_reborrow_shared : is_associated.
       End Impl_alloc_collections_btree_borrow_DormantMutRef_T.
     End borrow.
   End btree.

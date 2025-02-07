@@ -5,7 +5,9 @@ Parameter destroy_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_destroy_box :
   M.IsFunction "scoping_rules_ownership_and_rules::destroy_box" destroy_box.
+Smpl Add apply Function_destroy_box : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules::main" main.
+Smpl Add apply Function_main : is_function.

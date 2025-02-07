@@ -40,6 +40,7 @@ Module my.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
@@ -172,3 +173,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "struct_visibility::main" main.
+Smpl Add apply Function_main : is_function.

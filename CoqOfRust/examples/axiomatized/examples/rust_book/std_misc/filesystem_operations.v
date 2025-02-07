@@ -4,15 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter cat : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_cat : M.IsFunction "filesystem_operations::cat" cat.
+Smpl Add apply Function_cat : is_function.
 
 Parameter echo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_echo : M.IsFunction "filesystem_operations::echo" echo.
+Smpl Add apply Function_echo : is_function.
 
 Parameter touch : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_touch : M.IsFunction "filesystem_operations::touch" touch.
+Smpl Add apply Function_touch : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "filesystem_operations::main" main.
+Smpl Add apply Function_main : is_function.

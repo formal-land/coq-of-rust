@@ -192,4 +192,5 @@ Module future.
     end.
   
   Axiom Function_get_context : M.IsFunction "core::future::get_context" get_context.
+  Smpl Add apply Function_get_context : is_function.
 End future.

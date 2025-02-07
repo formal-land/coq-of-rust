@@ -6,213 +6,261 @@ Module intrinsics.
     Parameter simd_insert : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_insert : M.IsFunction "core::intrinsics::simd::simd_insert" simd_insert.
+    Smpl Add apply Function_simd_insert : is_function.
     
     Parameter simd_extract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_extract : M.IsFunction "core::intrinsics::simd::simd_extract" simd_extract.
+    Smpl Add apply Function_simd_extract : is_function.
     
     Parameter simd_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_add : M.IsFunction "core::intrinsics::simd::simd_add" simd_add.
+    Smpl Add apply Function_simd_add : is_function.
     
     Parameter simd_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_sub : M.IsFunction "core::intrinsics::simd::simd_sub" simd_sub.
+    Smpl Add apply Function_simd_sub : is_function.
     
     Parameter simd_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_mul : M.IsFunction "core::intrinsics::simd::simd_mul" simd_mul.
+    Smpl Add apply Function_simd_mul : is_function.
     
     Parameter simd_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_div : M.IsFunction "core::intrinsics::simd::simd_div" simd_div.
+    Smpl Add apply Function_simd_div : is_function.
     
     Parameter simd_rem : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_rem : M.IsFunction "core::intrinsics::simd::simd_rem" simd_rem.
+    Smpl Add apply Function_simd_rem : is_function.
     
     Parameter simd_shl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_shl : M.IsFunction "core::intrinsics::simd::simd_shl" simd_shl.
+    Smpl Add apply Function_simd_shl : is_function.
     
     Parameter simd_shr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_shr : M.IsFunction "core::intrinsics::simd::simd_shr" simd_shr.
+    Smpl Add apply Function_simd_shr : is_function.
     
     Parameter simd_and : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_and : M.IsFunction "core::intrinsics::simd::simd_and" simd_and.
+    Smpl Add apply Function_simd_and : is_function.
     
     Parameter simd_or : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_or : M.IsFunction "core::intrinsics::simd::simd_or" simd_or.
+    Smpl Add apply Function_simd_or : is_function.
     
     Parameter simd_xor : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_xor : M.IsFunction "core::intrinsics::simd::simd_xor" simd_xor.
+    Smpl Add apply Function_simd_xor : is_function.
     
     Parameter simd_cast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_cast : M.IsFunction "core::intrinsics::simd::simd_cast" simd_cast.
+    Smpl Add apply Function_simd_cast : is_function.
     
     Parameter simd_as : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_as : M.IsFunction "core::intrinsics::simd::simd_as" simd_as.
+    Smpl Add apply Function_simd_as : is_function.
     
     Parameter simd_neg : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_neg : M.IsFunction "core::intrinsics::simd::simd_neg" simd_neg.
+    Smpl Add apply Function_simd_neg : is_function.
     
     Parameter simd_fabs : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_fabs : M.IsFunction "core::intrinsics::simd::simd_fabs" simd_fabs.
+    Smpl Add apply Function_simd_fabs : is_function.
     
     Parameter simd_fmin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_fmin : M.IsFunction "core::intrinsics::simd::simd_fmin" simd_fmin.
+    Smpl Add apply Function_simd_fmin : is_function.
     
     Parameter simd_fmax : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_fmax : M.IsFunction "core::intrinsics::simd::simd_fmax" simd_fmax.
+    Smpl Add apply Function_simd_fmax : is_function.
     
     Parameter simd_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_eq : M.IsFunction "core::intrinsics::simd::simd_eq" simd_eq.
+    Smpl Add apply Function_simd_eq : is_function.
     
     Parameter simd_ne : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_ne : M.IsFunction "core::intrinsics::simd::simd_ne" simd_ne.
+    Smpl Add apply Function_simd_ne : is_function.
     
     Parameter simd_lt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_lt : M.IsFunction "core::intrinsics::simd::simd_lt" simd_lt.
+    Smpl Add apply Function_simd_lt : is_function.
     
     Parameter simd_le : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_le : M.IsFunction "core::intrinsics::simd::simd_le" simd_le.
+    Smpl Add apply Function_simd_le : is_function.
     
     Parameter simd_gt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_gt : M.IsFunction "core::intrinsics::simd::simd_gt" simd_gt.
+    Smpl Add apply Function_simd_gt : is_function.
     
     Parameter simd_ge : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_ge : M.IsFunction "core::intrinsics::simd::simd_ge" simd_ge.
+    Smpl Add apply Function_simd_ge : is_function.
     
     Parameter simd_shuffle : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_shuffle : M.IsFunction "core::intrinsics::simd::simd_shuffle" simd_shuffle.
+    Smpl Add apply Function_simd_shuffle : is_function.
     
     Parameter simd_gather : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_gather : M.IsFunction "core::intrinsics::simd::simd_gather" simd_gather.
+    Smpl Add apply Function_simd_gather : is_function.
     
     Parameter simd_scatter : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_scatter : M.IsFunction "core::intrinsics::simd::simd_scatter" simd_scatter.
+    Smpl Add apply Function_simd_scatter : is_function.
     
     Parameter simd_masked_load : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_masked_load :
       M.IsFunction "core::intrinsics::simd::simd_masked_load" simd_masked_load.
+    Smpl Add apply Function_simd_masked_load : is_function.
     
     Parameter simd_masked_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_masked_store :
       M.IsFunction "core::intrinsics::simd::simd_masked_store" simd_masked_store.
+    Smpl Add apply Function_simd_masked_store : is_function.
     
     Parameter simd_saturating_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_saturating_add :
       M.IsFunction "core::intrinsics::simd::simd_saturating_add" simd_saturating_add.
+    Smpl Add apply Function_simd_saturating_add : is_function.
     
     Parameter simd_saturating_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_saturating_sub :
       M.IsFunction "core::intrinsics::simd::simd_saturating_sub" simd_saturating_sub.
+    Smpl Add apply Function_simd_saturating_sub : is_function.
     
     Parameter simd_reduce_add_ordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_add_ordered :
       M.IsFunction "core::intrinsics::simd::simd_reduce_add_ordered" simd_reduce_add_ordered.
+    Smpl Add apply Function_simd_reduce_add_ordered : is_function.
     
     Parameter simd_reduce_add_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_add_unordered :
       M.IsFunction "core::intrinsics::simd::simd_reduce_add_unordered" simd_reduce_add_unordered.
+    Smpl Add apply Function_simd_reduce_add_unordered : is_function.
     
     Parameter simd_reduce_mul_ordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_mul_ordered :
       M.IsFunction "core::intrinsics::simd::simd_reduce_mul_ordered" simd_reduce_mul_ordered.
+    Smpl Add apply Function_simd_reduce_mul_ordered : is_function.
     
     Parameter simd_reduce_mul_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_mul_unordered :
       M.IsFunction "core::intrinsics::simd::simd_reduce_mul_unordered" simd_reduce_mul_unordered.
+    Smpl Add apply Function_simd_reduce_mul_unordered : is_function.
     
     Parameter simd_reduce_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_all :
       M.IsFunction "core::intrinsics::simd::simd_reduce_all" simd_reduce_all.
+    Smpl Add apply Function_simd_reduce_all : is_function.
     
     Parameter simd_reduce_any : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_any :
       M.IsFunction "core::intrinsics::simd::simd_reduce_any" simd_reduce_any.
+    Smpl Add apply Function_simd_reduce_any : is_function.
     
     Parameter simd_reduce_max : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_max :
       M.IsFunction "core::intrinsics::simd::simd_reduce_max" simd_reduce_max.
+    Smpl Add apply Function_simd_reduce_max : is_function.
     
     Parameter simd_reduce_min : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_min :
       M.IsFunction "core::intrinsics::simd::simd_reduce_min" simd_reduce_min.
+    Smpl Add apply Function_simd_reduce_min : is_function.
     
     Parameter simd_reduce_and : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_and :
       M.IsFunction "core::intrinsics::simd::simd_reduce_and" simd_reduce_and.
+    Smpl Add apply Function_simd_reduce_and : is_function.
     
     Parameter simd_reduce_or : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_or :
       M.IsFunction "core::intrinsics::simd::simd_reduce_or" simd_reduce_or.
+    Smpl Add apply Function_simd_reduce_or : is_function.
     
     Parameter simd_reduce_xor : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_reduce_xor :
       M.IsFunction "core::intrinsics::simd::simd_reduce_xor" simd_reduce_xor.
+    Smpl Add apply Function_simd_reduce_xor : is_function.
     
     Parameter simd_bitmask : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_bitmask : M.IsFunction "core::intrinsics::simd::simd_bitmask" simd_bitmask.
+    Smpl Add apply Function_simd_bitmask : is_function.
     
     Parameter simd_select : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_select : M.IsFunction "core::intrinsics::simd::simd_select" simd_select.
+    Smpl Add apply Function_simd_select : is_function.
     
     Parameter simd_select_bitmask : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_select_bitmask :
       M.IsFunction "core::intrinsics::simd::simd_select_bitmask" simd_select_bitmask.
+    Smpl Add apply Function_simd_select_bitmask : is_function.
     
     Parameter simd_arith_offset : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_arith_offset :
       M.IsFunction "core::intrinsics::simd::simd_arith_offset" simd_arith_offset.
+    Smpl Add apply Function_simd_arith_offset : is_function.
     
     Parameter simd_cast_ptr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_cast_ptr :
       M.IsFunction "core::intrinsics::simd::simd_cast_ptr" simd_cast_ptr.
+    Smpl Add apply Function_simd_cast_ptr : is_function.
     
     Parameter simd_expose_provenance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_expose_provenance :
       M.IsFunction "core::intrinsics::simd::simd_expose_provenance" simd_expose_provenance.
+    Smpl Add apply Function_simd_expose_provenance : is_function.
     
     Parameter simd_with_exposed_provenance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
@@ -220,78 +268,97 @@ Module intrinsics.
       M.IsFunction
         "core::intrinsics::simd::simd_with_exposed_provenance"
         simd_with_exposed_provenance.
+    Smpl Add apply Function_simd_with_exposed_provenance : is_function.
     
     Parameter simd_bswap : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_bswap : M.IsFunction "core::intrinsics::simd::simd_bswap" simd_bswap.
+    Smpl Add apply Function_simd_bswap : is_function.
     
     Parameter simd_bitreverse : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_bitreverse :
       M.IsFunction "core::intrinsics::simd::simd_bitreverse" simd_bitreverse.
+    Smpl Add apply Function_simd_bitreverse : is_function.
     
     Parameter simd_ctlz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_ctlz : M.IsFunction "core::intrinsics::simd::simd_ctlz" simd_ctlz.
+    Smpl Add apply Function_simd_ctlz : is_function.
     
     Parameter simd_ctpop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_ctpop : M.IsFunction "core::intrinsics::simd::simd_ctpop" simd_ctpop.
+    Smpl Add apply Function_simd_ctpop : is_function.
     
     Parameter simd_cttz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_cttz : M.IsFunction "core::intrinsics::simd::simd_cttz" simd_cttz.
+    Smpl Add apply Function_simd_cttz : is_function.
     
     Parameter simd_ceil : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_ceil : M.IsFunction "core::intrinsics::simd::simd_ceil" simd_ceil.
+    Smpl Add apply Function_simd_ceil : is_function.
     
     Parameter simd_floor : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_floor : M.IsFunction "core::intrinsics::simd::simd_floor" simd_floor.
+    Smpl Add apply Function_simd_floor : is_function.
     
     Parameter simd_round : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_round : M.IsFunction "core::intrinsics::simd::simd_round" simd_round.
+    Smpl Add apply Function_simd_round : is_function.
     
     Parameter simd_trunc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_trunc : M.IsFunction "core::intrinsics::simd::simd_trunc" simd_trunc.
+    Smpl Add apply Function_simd_trunc : is_function.
     
     Parameter simd_fsqrt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_fsqrt : M.IsFunction "core::intrinsics::simd::simd_fsqrt" simd_fsqrt.
+    Smpl Add apply Function_simd_fsqrt : is_function.
     
     Parameter simd_fma : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_fma : M.IsFunction "core::intrinsics::simd::simd_fma" simd_fma.
+    Smpl Add apply Function_simd_fma : is_function.
     
     Parameter simd_fsin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_fsin : M.IsFunction "core::intrinsics::simd::simd_fsin" simd_fsin.
+    Smpl Add apply Function_simd_fsin : is_function.
     
     Parameter simd_fcos : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_fcos : M.IsFunction "core::intrinsics::simd::simd_fcos" simd_fcos.
+    Smpl Add apply Function_simd_fcos : is_function.
     
     Parameter simd_fexp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_fexp : M.IsFunction "core::intrinsics::simd::simd_fexp" simd_fexp.
+    Smpl Add apply Function_simd_fexp : is_function.
     
     Parameter simd_fexp2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_fexp2 : M.IsFunction "core::intrinsics::simd::simd_fexp2" simd_fexp2.
+    Smpl Add apply Function_simd_fexp2 : is_function.
     
     Parameter simd_flog10 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_flog10 : M.IsFunction "core::intrinsics::simd::simd_flog10" simd_flog10.
+    Smpl Add apply Function_simd_flog10 : is_function.
     
     Parameter simd_flog2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_flog2 : M.IsFunction "core::intrinsics::simd::simd_flog2" simd_flog2.
+    Smpl Add apply Function_simd_flog2 : is_function.
     
     Parameter simd_flog : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_simd_flog : M.IsFunction "core::intrinsics::simd::simd_flog" simd_flog.
+    Smpl Add apply Function_simd_flog : is_function.
   End simd.
 End intrinsics.

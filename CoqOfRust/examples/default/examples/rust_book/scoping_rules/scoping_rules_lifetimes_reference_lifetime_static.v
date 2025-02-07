@@ -6,6 +6,7 @@ Definition value_NUM : Value.t :=
 
 Axiom Constant_value_NUM :
   (M.get_constant "scoping_rules_lifetimes_reference_lifetime_static::NUM") = value_NUM.
+Global Hint Rewrite Constant_value_NUM : constant_rewrites.
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
@@ -42,6 +43,7 @@ Definition coerce_static (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
 
 Axiom Function_coerce_static :
   M.IsFunction "scoping_rules_lifetimes_reference_lifetime_static::coerce_static" coerce_static.
+Smpl Add apply Function_coerce_static : is_function.
 
 (*
 fn main() {
@@ -303,3 +305,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_reference_lifetime_static::main" main.
+Smpl Add apply Function_main : is_function.

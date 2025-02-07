@@ -60,6 +60,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
     End Impl_revm_interpreter_interpreter_loop_control_LoopControl.
     
     Module Impl_revm_interpreter_interpreter_types_LoopControl_for_revm_interpreter_interpreter_loop_control_LoopControl.

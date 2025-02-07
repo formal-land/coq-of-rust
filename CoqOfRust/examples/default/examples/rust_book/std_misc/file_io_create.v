@@ -17,6 +17,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 Axiom Constant_value_LOREM_IPSUM :
   (M.get_constant "file_io_create::LOREM_IPSUM") = value_LOREM_IPSUM.
+Global Hint Rewrite Constant_value_LOREM_IPSUM : constant_rewrites.
 
 (*
 fn main() {
@@ -367,3 +368,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "file_io_create::main" main.
+Smpl Add apply Function_main : is_function.

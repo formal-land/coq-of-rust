@@ -1004,6 +1004,7 @@ Module hash.
       end.
     
     Axiom AssociatedFunction_new : forall (H : Ty.t), M.IsAssociatedFunction (Self H) "new" (new H).
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_core_hash_BuildHasherDefault_H.
   
   Module Impl_core_fmt_Debug_for_core_hash_BuildHasherDefault_H.

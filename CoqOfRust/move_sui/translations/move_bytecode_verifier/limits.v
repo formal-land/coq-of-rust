@@ -110,6 +110,7 @@ Module limits.
     
     Axiom AssociatedFunction_verify_module :
       M.IsAssociatedFunction Self "verify_module" verify_module.
+    Smpl Add apply AssociatedFunction_verify_module : is_associated.
     
     (*
         fn verify_module_impl(
@@ -601,6 +602,7 @@ Module limits.
     
     Axiom AssociatedFunction_verify_module_impl :
       M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
+    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
     
     (*
         fn verify_struct_handles(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -908,6 +910,7 @@ Module limits.
     
     Axiom AssociatedFunction_verify_struct_handles :
       M.IsAssociatedFunction Self "verify_struct_handles" verify_struct_handles.
+    Smpl Add apply AssociatedFunction_verify_struct_handles : is_associated.
     
     (*
         fn verify_function_handles(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -1369,6 +1372,7 @@ Module limits.
     
     Axiom AssociatedFunction_verify_function_handles :
       M.IsAssociatedFunction Self "verify_function_handles" verify_function_handles.
+    Smpl Add apply AssociatedFunction_verify_function_handles : is_associated.
     
     (*
         fn verify_type_nodes(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -2339,6 +2343,7 @@ Module limits.
     
     Axiom AssociatedFunction_verify_type_nodes :
       M.IsAssociatedFunction Self "verify_type_nodes" verify_type_nodes.
+    Smpl Add apply AssociatedFunction_verify_type_nodes : is_associated.
     
     (*
         fn verify_type_node(
@@ -2632,6 +2637,7 @@ Module limits.
     
     Axiom AssociatedFunction_verify_type_node :
       M.IsAssociatedFunction Self "verify_type_node" verify_type_node.
+    Smpl Add apply AssociatedFunction_verify_type_node : is_associated.
     
     (*
         fn verify_definitions(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -3132,6 +3138,7 @@ Module limits.
     
     Axiom AssociatedFunction_verify_definitions :
       M.IsAssociatedFunction Self "verify_definitions" verify_definitions.
+    Smpl Add apply AssociatedFunction_verify_definitions : is_associated.
     
     (*
         fn verify_constants(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -3779,6 +3786,7 @@ Module limits.
     
     Axiom AssociatedFunction_verify_constants :
       M.IsAssociatedFunction Self "verify_constants" verify_constants.
+    Smpl Add apply AssociatedFunction_verify_constants : is_associated.
     
     (*
         fn verify_identifiers(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -4083,5 +4091,6 @@ Module limits.
     
     Axiom AssociatedFunction_verify_identifiers :
       M.IsAssociatedFunction Self "verify_identifiers" verify_identifiers.
+    Smpl Add apply AssociatedFunction_verify_identifiers : is_associated.
   End Impl_move_bytecode_verifier_limits_LimitsVerifier.
 End limits.

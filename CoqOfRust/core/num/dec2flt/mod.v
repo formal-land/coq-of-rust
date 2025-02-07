@@ -607,6 +607,7 @@ Module num.
       end.
     
     Axiom Function_pfe_empty : M.IsFunction "core::num::dec2flt::pfe_empty" pfe_empty.
+    Smpl Add apply Function_pfe_empty : is_function.
     
     (*
     pub fn pfe_invalid() -> ParseFloatError {
@@ -624,6 +625,7 @@ Module num.
       end.
     
     Axiom Function_pfe_invalid : M.IsFunction "core::num::dec2flt::pfe_invalid" pfe_invalid.
+    Smpl Add apply Function_pfe_invalid : is_function.
     
     (*
     fn biased_fp_to_float<T: RawFloat>(x: BiasedFp) -> T {
@@ -687,6 +689,7 @@ Module num.
     
     Axiom Function_biased_fp_to_float :
       M.IsFunction "core::num::dec2flt::biased_fp_to_float" biased_fp_to_float.
+    Smpl Add apply Function_biased_fp_to_float : is_function.
     
     (*
     pub fn dec2flt<F: RawFloat>(s: &str) -> Result<F, ParseFloatError> {
@@ -1256,5 +1259,6 @@ Module num.
       end.
     
     Axiom Function_dec2flt : M.IsFunction "core::num::dec2flt::dec2flt" dec2flt.
+    Smpl Add apply Function_dec2flt : is_function.
   End dec2flt.
 End num.

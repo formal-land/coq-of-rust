@@ -7,12 +7,14 @@ Module blake2.
   
   Axiom Constant_value_F_ROUND :
     (M.get_constant "revm_precompile::blake2::F_ROUND") = value_F_ROUND.
+  Global Hint Rewrite Constant_value_F_ROUND : constant_rewrites.
   
   Definition value_INPUT_LENGTH : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 213 |))).
   
   Axiom Constant_value_INPUT_LENGTH :
     (M.get_constant "revm_precompile::blake2::INPUT_LENGTH") = value_INPUT_LENGTH.
+  Global Hint Rewrite Constant_value_INPUT_LENGTH : constant_rewrites.
   
   Definition value_FUN : Value.t :=
     M.run_constant
@@ -31,6 +33,7 @@ Module blake2.
         |))).
   
   Axiom Constant_value_FUN : (M.get_constant "revm_precompile::blake2::FUN") = value_FUN.
+  Global Hint Rewrite Constant_value_FUN : constant_rewrites.
   
   (*
   pub fn run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -1350,6 +1353,7 @@ Module blake2.
     end.
   
   Axiom Function_run : M.IsFunction "revm_precompile::blake2::run" run.
+  Smpl Add apply Function_run : is_function.
   
   Module algo.
     Definition value_SIGMA : Value.t :=
@@ -1553,6 +1557,7 @@ Module blake2.
     
     Axiom Constant_value_SIGMA :
       (M.get_constant "revm_precompile::blake2::algo::SIGMA") = value_SIGMA.
+    Global Hint Rewrite Constant_value_SIGMA : constant_rewrites.
     
     Definition value_IV : Value.t :=
       M.run_constant
@@ -1572,6 +1577,7 @@ Module blake2.
           |))).
     
     Axiom Constant_value_IV : (M.get_constant "revm_precompile::blake2::algo::IV") = value_IV.
+    Global Hint Rewrite Constant_value_IV : constant_rewrites.
     
     (*
         pub fn g(v: &mut [u64], a: usize, b: usize, c: usize, d: usize, x: u64, y: u64) {
@@ -1735,6 +1741,7 @@ Module blake2.
       end.
     
     Axiom Function_g : M.IsFunction "revm_precompile::blake2::algo::g" g.
+    Smpl Add apply Function_g : is_function.
     
     (*
         pub fn compress(rounds: usize, h: &mut [u64; 8], m: [u64; 16], t: [u64; 2], f: bool) {
@@ -2457,5 +2464,6 @@ Module blake2.
       end.
     
     Axiom Function_compress : M.IsFunction "revm_precompile::blake2::algo::compress" compress.
+    Smpl Add apply Function_compress : is_function.
   End algo.
 End blake2.

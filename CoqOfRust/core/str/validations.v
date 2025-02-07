@@ -24,6 +24,7 @@ Module str.
     
     Axiom Function_utf8_first_byte :
       M.IsFunction "core::str::validations::utf8_first_byte" utf8_first_byte.
+    Smpl Add apply Function_utf8_first_byte : is_function.
     
     (*
     const fn utf8_acc_cont_byte(ch: u32, byte: u8) -> u32 {
@@ -48,6 +49,7 @@ Module str.
     
     Axiom Function_utf8_acc_cont_byte :
       M.IsFunction "core::str::validations::utf8_acc_cont_byte" utf8_acc_cont_byte.
+    Smpl Add apply Function_utf8_acc_cont_byte : is_function.
     
     (*
     pub(super) const fn utf8_is_cont_byte(byte: u8) -> bool {
@@ -68,6 +70,7 @@ Module str.
     
     Axiom Function_utf8_is_cont_byte :
       M.IsFunction "core::str::validations::utf8_is_cont_byte" utf8_is_cont_byte.
+    Smpl Add apply Function_utf8_is_cont_byte : is_function.
     
     (*
     pub unsafe fn next_code_point<'a, I: Iterator<Item = &'a u8>>(bytes: &mut I) -> Option<u32> {
@@ -443,6 +446,7 @@ Module str.
     
     Axiom Function_next_code_point :
       M.IsFunction "core::str::validations::next_code_point" next_code_point.
+    Smpl Add apply Function_next_code_point : is_function.
     
     (*
     pub(super) unsafe fn next_code_point_reverse<'a, I>(bytes: &mut I) -> Option<u32>
@@ -837,6 +841,7 @@ Module str.
     
     Axiom Function_next_code_point_reverse :
       M.IsFunction "core::str::validations::next_code_point_reverse" next_code_point_reverse.
+    Smpl Add apply Function_next_code_point_reverse : is_function.
     
     Definition value_NONASCII_MASK : Value.t :=
       M.run_constant
@@ -850,6 +855,7 @@ Module str.
     
     Axiom Constant_value_NONASCII_MASK :
       (M.get_constant "core::str::validations::NONASCII_MASK") = value_NONASCII_MASK.
+    Global Hint Rewrite Constant_value_NONASCII_MASK : constant_rewrites.
     
     (*
     const fn contains_nonascii(x: usize) -> bool {
@@ -872,6 +878,7 @@ Module str.
     
     Axiom Function_contains_nonascii :
       M.IsFunction "core::str::validations::contains_nonascii" contains_nonascii.
+    Smpl Add apply Function_contains_nonascii : is_function.
     
     (*
     pub(super) const fn run_utf8_validation(v: &[u8]) -> Result<(), Utf8Error> {
@@ -2371,6 +2378,7 @@ Module str.
     
     Axiom Function_run_utf8_validation :
       M.IsFunction "core::str::validations::run_utf8_validation" run_utf8_validation.
+    Smpl Add apply Function_run_utf8_validation : is_function.
     
     Definition value_UTF8_CHAR_WIDTH : Value.t :=
       M.run_constant
@@ -2649,6 +2657,7 @@ Module str.
     
     Axiom Constant_value_UTF8_CHAR_WIDTH :
       (M.get_constant "core::str::validations::UTF8_CHAR_WIDTH") = value_UTF8_CHAR_WIDTH.
+    Global Hint Rewrite Constant_value_UTF8_CHAR_WIDTH : constant_rewrites.
     
     (*
     pub const fn utf8_char_width(b: u8) -> usize {
@@ -2673,11 +2682,13 @@ Module str.
     
     Axiom Function_utf8_char_width :
       M.IsFunction "core::str::validations::utf8_char_width" utf8_char_width.
+    Smpl Add apply Function_utf8_char_width : is_function.
     
     Definition value_CONT_MASK : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 63 |))).
     
     Axiom Constant_value_CONT_MASK :
       (M.get_constant "core::str::validations::CONT_MASK") = value_CONT_MASK.
+    Global Hint Rewrite Constant_value_CONT_MASK : constant_rewrites.
   End validations.
 End str.

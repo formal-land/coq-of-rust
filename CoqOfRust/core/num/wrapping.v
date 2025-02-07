@@ -18045,6 +18045,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] *)
@@ -18058,12 +18059,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -18087,6 +18090,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -18110,6 +18114,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -18134,6 +18139,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -18167,6 +18173,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -18201,6 +18208,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -18232,6 +18240,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -18264,6 +18273,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -18295,6 +18305,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -18326,6 +18337,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -18357,6 +18369,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -18388,6 +18401,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -18421,6 +18435,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -18444,6 +18459,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn is_power_of_two(self) -> bool {
@@ -18468,6 +18484,7 @@ Module num.
       
       Axiom AssociatedFunction_is_power_of_two :
         M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
+      Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
       
       (*
                   pub fn next_power_of_two(self) -> Self {
@@ -18505,6 +18522,7 @@ Module num.
       
       Axiom AssociatedFunction_next_power_of_two :
         M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
+      Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
     End Impl_core_num_wrapping_Wrapping_usize.
     
     Module Impl_core_num_wrapping_Wrapping_u8.
@@ -18523,6 +18541,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] *)
@@ -18536,12 +18555,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -18565,6 +18586,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -18588,6 +18610,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -18612,6 +18635,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -18645,6 +18669,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -18679,6 +18704,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -18710,6 +18736,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -18742,6 +18769,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -18773,6 +18801,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -18804,6 +18833,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -18835,6 +18865,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -18866,6 +18897,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -18899,6 +18931,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -18922,6 +18955,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn is_power_of_two(self) -> bool {
@@ -18946,6 +18980,7 @@ Module num.
       
       Axiom AssociatedFunction_is_power_of_two :
         M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
+      Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
       
       (*
                   pub fn next_power_of_two(self) -> Self {
@@ -18983,6 +19018,7 @@ Module num.
       
       Axiom AssociatedFunction_next_power_of_two :
         M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
+      Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
     End Impl_core_num_wrapping_Wrapping_u8.
     
     Module Impl_core_num_wrapping_Wrapping_u16.
@@ -19001,6 +19037,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] *)
@@ -19014,12 +19051,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -19043,6 +19082,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -19066,6 +19106,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -19090,6 +19131,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -19123,6 +19165,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -19157,6 +19200,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -19188,6 +19232,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -19220,6 +19265,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -19251,6 +19297,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -19282,6 +19329,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -19313,6 +19361,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -19344,6 +19393,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -19377,6 +19427,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -19400,6 +19451,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn is_power_of_two(self) -> bool {
@@ -19424,6 +19476,7 @@ Module num.
       
       Axiom AssociatedFunction_is_power_of_two :
         M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
+      Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
       
       (*
                   pub fn next_power_of_two(self) -> Self {
@@ -19461,6 +19514,7 @@ Module num.
       
       Axiom AssociatedFunction_next_power_of_two :
         M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
+      Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
     End Impl_core_num_wrapping_Wrapping_u16.
     
     Module Impl_core_num_wrapping_Wrapping_u32.
@@ -19479,6 +19533,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] *)
@@ -19492,12 +19547,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -19521,6 +19578,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -19544,6 +19602,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -19568,6 +19627,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -19601,6 +19661,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -19635,6 +19696,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -19666,6 +19728,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -19698,6 +19761,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -19729,6 +19793,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -19760,6 +19825,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -19791,6 +19857,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -19822,6 +19889,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -19855,6 +19923,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -19878,6 +19947,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn is_power_of_two(self) -> bool {
@@ -19902,6 +19972,7 @@ Module num.
       
       Axiom AssociatedFunction_is_power_of_two :
         M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
+      Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
       
       (*
                   pub fn next_power_of_two(self) -> Self {
@@ -19939,6 +20010,7 @@ Module num.
       
       Axiom AssociatedFunction_next_power_of_two :
         M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
+      Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
     End Impl_core_num_wrapping_Wrapping_u32.
     
     Module Impl_core_num_wrapping_Wrapping_u64.
@@ -19957,6 +20029,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] *)
@@ -19970,12 +20043,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -19999,6 +20074,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -20022,6 +20098,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -20046,6 +20123,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -20079,6 +20157,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -20113,6 +20192,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -20144,6 +20224,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -20176,6 +20257,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -20207,6 +20289,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -20238,6 +20321,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -20269,6 +20353,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -20300,6 +20385,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -20333,6 +20419,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -20356,6 +20443,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn is_power_of_two(self) -> bool {
@@ -20380,6 +20468,7 @@ Module num.
       
       Axiom AssociatedFunction_is_power_of_two :
         M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
+      Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
       
       (*
                   pub fn next_power_of_two(self) -> Self {
@@ -20417,6 +20506,7 @@ Module num.
       
       Axiom AssociatedFunction_next_power_of_two :
         M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
+      Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
     End Impl_core_num_wrapping_Wrapping_u64.
     
     Module Impl_core_num_wrapping_Wrapping_u128.
@@ -20435,6 +20525,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] *)
@@ -20448,12 +20539,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -20477,6 +20570,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -20500,6 +20594,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -20524,6 +20619,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -20557,6 +20653,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -20591,6 +20688,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -20622,6 +20720,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -20654,6 +20753,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -20685,6 +20785,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -20716,6 +20817,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -20747,6 +20849,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -20778,6 +20881,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -20811,6 +20915,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -20834,6 +20939,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn is_power_of_two(self) -> bool {
@@ -20858,6 +20964,7 @@ Module num.
       
       Axiom AssociatedFunction_is_power_of_two :
         M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
+      Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
       
       (*
                   pub fn next_power_of_two(self) -> Self {
@@ -20895,6 +21002,7 @@ Module num.
       
       Axiom AssociatedFunction_next_power_of_two :
         M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
+      Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
     End Impl_core_num_wrapping_Wrapping_u128.
     
     Module Impl_core_num_wrapping_Wrapping_isize.
@@ -20913,6 +21021,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] *)
@@ -20926,12 +21035,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -20955,6 +21066,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -20978,6 +21090,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -21002,6 +21115,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -21035,6 +21149,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -21069,6 +21184,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -21100,6 +21216,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -21132,6 +21249,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -21163,6 +21281,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -21194,6 +21313,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -21225,6 +21345,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -21256,6 +21377,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -21289,6 +21411,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -21312,6 +21435,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn abs(self) -> Wrapping<$t> {
@@ -21343,6 +21467,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
+      Smpl Add apply AssociatedFunction_abs : is_associated.
       
       (*
                   pub fn signum(self) -> Wrapping<$t> {
@@ -21374,6 +21499,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
+      Smpl Add apply AssociatedFunction_signum : is_associated.
       
       (*
                   pub const fn is_positive(self) -> bool {
@@ -21397,6 +21523,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
+      Smpl Add apply AssociatedFunction_is_positive : is_associated.
       
       (*
                   pub const fn is_negative(self) -> bool {
@@ -21420,6 +21547,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
+      Smpl Add apply AssociatedFunction_is_negative : is_associated.
     End Impl_core_num_wrapping_Wrapping_isize.
     
     Module Impl_core_num_wrapping_Wrapping_i8.
@@ -21438,6 +21566,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] *)
@@ -21451,12 +21580,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -21480,6 +21611,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -21503,6 +21635,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -21527,6 +21660,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -21560,6 +21694,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -21594,6 +21729,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -21625,6 +21761,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -21657,6 +21794,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -21688,6 +21826,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -21719,6 +21858,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -21750,6 +21890,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -21781,6 +21922,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -21814,6 +21956,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -21837,6 +21980,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn abs(self) -> Wrapping<$t> {
@@ -21868,6 +22012,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
+      Smpl Add apply AssociatedFunction_abs : is_associated.
       
       (*
                   pub fn signum(self) -> Wrapping<$t> {
@@ -21899,6 +22044,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
+      Smpl Add apply AssociatedFunction_signum : is_associated.
       
       (*
                   pub const fn is_positive(self) -> bool {
@@ -21922,6 +22068,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
+      Smpl Add apply AssociatedFunction_is_positive : is_associated.
       
       (*
                   pub const fn is_negative(self) -> bool {
@@ -21945,6 +22092,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
+      Smpl Add apply AssociatedFunction_is_negative : is_associated.
     End Impl_core_num_wrapping_Wrapping_i8.
     
     Module Impl_core_num_wrapping_Wrapping_i16.
@@ -21963,6 +22111,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] *)
@@ -21976,12 +22125,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -22005,6 +22156,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -22028,6 +22180,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -22052,6 +22205,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -22085,6 +22239,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -22119,6 +22274,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -22150,6 +22306,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -22182,6 +22339,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -22213,6 +22371,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -22244,6 +22403,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -22275,6 +22435,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -22306,6 +22467,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -22339,6 +22501,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -22362,6 +22525,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn abs(self) -> Wrapping<$t> {
@@ -22393,6 +22557,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
+      Smpl Add apply AssociatedFunction_abs : is_associated.
       
       (*
                   pub fn signum(self) -> Wrapping<$t> {
@@ -22424,6 +22589,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
+      Smpl Add apply AssociatedFunction_signum : is_associated.
       
       (*
                   pub const fn is_positive(self) -> bool {
@@ -22447,6 +22613,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
+      Smpl Add apply AssociatedFunction_is_positive : is_associated.
       
       (*
                   pub const fn is_negative(self) -> bool {
@@ -22470,6 +22637,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
+      Smpl Add apply AssociatedFunction_is_negative : is_associated.
     End Impl_core_num_wrapping_Wrapping_i16.
     
     Module Impl_core_num_wrapping_Wrapping_i32.
@@ -22488,6 +22656,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] *)
@@ -22501,12 +22670,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -22530,6 +22701,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -22553,6 +22725,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -22577,6 +22750,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -22610,6 +22784,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -22644,6 +22819,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -22675,6 +22851,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -22707,6 +22884,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -22738,6 +22916,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -22769,6 +22948,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -22800,6 +22980,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -22831,6 +23012,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -22864,6 +23046,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -22887,6 +23070,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn abs(self) -> Wrapping<$t> {
@@ -22918,6 +23102,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
+      Smpl Add apply AssociatedFunction_abs : is_associated.
       
       (*
                   pub fn signum(self) -> Wrapping<$t> {
@@ -22949,6 +23134,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
+      Smpl Add apply AssociatedFunction_signum : is_associated.
       
       (*
                   pub const fn is_positive(self) -> bool {
@@ -22972,6 +23158,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
+      Smpl Add apply AssociatedFunction_is_positive : is_associated.
       
       (*
                   pub const fn is_negative(self) -> bool {
@@ -22995,6 +23182,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
+      Smpl Add apply AssociatedFunction_is_negative : is_associated.
     End Impl_core_num_wrapping_Wrapping_i32.
     
     Module Impl_core_num_wrapping_Wrapping_i64.
@@ -23013,6 +23201,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] *)
@@ -23026,12 +23215,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -23055,6 +23246,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -23078,6 +23270,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -23102,6 +23295,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -23135,6 +23329,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -23169,6 +23364,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -23200,6 +23396,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -23232,6 +23429,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -23263,6 +23461,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -23294,6 +23493,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -23325,6 +23525,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -23356,6 +23557,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -23389,6 +23591,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -23412,6 +23615,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn abs(self) -> Wrapping<$t> {
@@ -23443,6 +23647,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
+      Smpl Add apply AssociatedFunction_abs : is_associated.
       
       (*
                   pub fn signum(self) -> Wrapping<$t> {
@@ -23474,6 +23679,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
+      Smpl Add apply AssociatedFunction_signum : is_associated.
       
       (*
                   pub const fn is_positive(self) -> bool {
@@ -23497,6 +23703,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
+      Smpl Add apply AssociatedFunction_is_positive : is_associated.
       
       (*
                   pub const fn is_negative(self) -> bool {
@@ -23520,6 +23727,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
+      Smpl Add apply AssociatedFunction_is_negative : is_associated.
     End Impl_core_num_wrapping_Wrapping_i64.
     
     Module Impl_core_num_wrapping_Wrapping_i128.
@@ -23538,6 +23746,7 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] *)
@@ -23551,12 +23760,14 @@ Module num.
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
       Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
+      Smpl Add apply AssociatedConstant_value_BITS : is_associated.
       
       (*
                   pub const fn count_ones(self) -> u32 {
@@ -23580,6 +23791,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
+      Smpl Add apply AssociatedFunction_count_ones : is_associated.
       
       (*
                   pub const fn count_zeros(self) -> u32 {
@@ -23603,6 +23815,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
+      Smpl Add apply AssociatedFunction_count_zeros : is_associated.
       
       (*
                   pub const fn trailing_zeros(self) -> u32 {
@@ -23627,6 +23840,7 @@ Module num.
       
       Axiom AssociatedFunction_trailing_zeros :
         M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
+      Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
       
       (*
                   pub const fn rotate_left(self, n: u32) -> Self {
@@ -23660,6 +23874,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
                   pub const fn rotate_right(self, n: u32) -> Self {
@@ -23694,6 +23909,7 @@ Module num.
       
       Axiom AssociatedFunction_rotate_right :
         M.IsAssociatedFunction Self "rotate_right" rotate_right.
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
                   pub const fn swap_bytes(self) -> Self {
@@ -23725,6 +23941,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
+      Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
       
       (*
                   pub const fn reverse_bits(self) -> Self {
@@ -23757,6 +23974,7 @@ Module num.
       
       Axiom AssociatedFunction_reverse_bits :
         M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
+      Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
       
       (*
                   pub const fn from_be(x: Self) -> Self {
@@ -23788,6 +24006,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
+      Smpl Add apply AssociatedFunction_from_be : is_associated.
       
       (*
                   pub const fn from_le(x: Self) -> Self {
@@ -23819,6 +24038,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
+      Smpl Add apply AssociatedFunction_from_le : is_associated.
       
       (*
                   pub const fn to_be(self) -> Self {
@@ -23850,6 +24070,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
+      Smpl Add apply AssociatedFunction_to_be : is_associated.
       
       (*
                   pub const fn to_le(self) -> Self {
@@ -23881,6 +24102,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
+      Smpl Add apply AssociatedFunction_to_le : is_associated.
       
       (*
                   pub fn pow(self, exp: u32) -> Self {
@@ -23914,6 +24136,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
+      Smpl Add apply AssociatedFunction_pow : is_associated.
       (*
                   pub const fn leading_zeros(self) -> u32 {
                       self.0.leading_zeros()
@@ -23937,6 +24160,7 @@ Module num.
       
       Axiom AssociatedFunction_leading_zeros :
         M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
+      Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
       
       (*
                   pub fn abs(self) -> Wrapping<$t> {
@@ -23968,6 +24192,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
+      Smpl Add apply AssociatedFunction_abs : is_associated.
       
       (*
                   pub fn signum(self) -> Wrapping<$t> {
@@ -23999,6 +24224,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
+      Smpl Add apply AssociatedFunction_signum : is_associated.
       
       (*
                   pub const fn is_positive(self) -> bool {
@@ -24022,6 +24248,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
+      Smpl Add apply AssociatedFunction_is_positive : is_associated.
       
       (*
                   pub const fn is_negative(self) -> bool {
@@ -24045,6 +24272,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
+      Smpl Add apply AssociatedFunction_is_negative : is_associated.
     End Impl_core_num_wrapping_Wrapping_i128.
     
     
@@ -24066,12 +24294,14 @@ Module num.
         
         Axiom Constant_usize :
           (M.get_constant "core::num::wrapping::shift_max::platform::usize") = usize.
+        Global Hint Rewrite Constant_usize : constant_rewrites.
         
         Definition isize : Value.t :=
           M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i64")).
         
         Axiom Constant_isize :
           (M.get_constant "core::num::wrapping::shift_max::platform::isize") = isize.
+        Global Hint Rewrite Constant_isize : constant_rewrites.
       End platform.
       
       Definition i8 : Value.t :=
@@ -24088,6 +24318,7 @@ Module num.
             |))).
       
       Axiom Constant_i8 : (M.get_constant "core::num::wrapping::shift_max::i8") = i8.
+      Global Hint Rewrite Constant_i8 : constant_rewrites.
       
       Definition i16 : Value.t :=
         M.run_constant
@@ -24103,6 +24334,7 @@ Module num.
             |))).
       
       Axiom Constant_i16 : (M.get_constant "core::num::wrapping::shift_max::i16") = i16.
+      Global Hint Rewrite Constant_i16 : constant_rewrites.
       
       Definition i32 : Value.t :=
         M.run_constant
@@ -24118,6 +24350,7 @@ Module num.
             |))).
       
       Axiom Constant_i32 : (M.get_constant "core::num::wrapping::shift_max::i32") = i32.
+      Global Hint Rewrite Constant_i32 : constant_rewrites.
       
       Definition i64 : Value.t :=
         M.run_constant
@@ -24133,6 +24366,7 @@ Module num.
             |))).
       
       Axiom Constant_i64 : (M.get_constant "core::num::wrapping::shift_max::i64") = i64.
+      Global Hint Rewrite Constant_i64 : constant_rewrites.
       
       Definition i128 : Value.t :=
         M.run_constant
@@ -24148,31 +24382,37 @@ Module num.
             |))).
       
       Axiom Constant_i128 : (M.get_constant "core::num::wrapping::shift_max::i128") = i128.
+      Global Hint Rewrite Constant_i128 : constant_rewrites.
       
       Definition u8 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i8")).
       
       Axiom Constant_u8 : (M.get_constant "core::num::wrapping::shift_max::u8") = u8.
+      Global Hint Rewrite Constant_u8 : constant_rewrites.
       
       Definition u16 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i16")).
       
       Axiom Constant_u16 : (M.get_constant "core::num::wrapping::shift_max::u16") = u16.
+      Global Hint Rewrite Constant_u16 : constant_rewrites.
       
       Definition u32 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i32")).
       
       Axiom Constant_u32 : (M.get_constant "core::num::wrapping::shift_max::u32") = u32.
+      Global Hint Rewrite Constant_u32 : constant_rewrites.
       
       Definition u64 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i64")).
       
       Axiom Constant_u64 : (M.get_constant "core::num::wrapping::shift_max::u64") = u64.
+      Global Hint Rewrite Constant_u64 : constant_rewrites.
       
       Definition u128 : Value.t :=
         M.run_constant ltac:(M.monadic (M.get_constant "core::num::wrapping::shift_max::i128")).
       
       Axiom Constant_u128 : (M.get_constant "core::num::wrapping::shift_max::u128") = u128.
+      Global Hint Rewrite Constant_u128 : constant_rewrites.
     End shift_max.
   End wrapping.
 End num.

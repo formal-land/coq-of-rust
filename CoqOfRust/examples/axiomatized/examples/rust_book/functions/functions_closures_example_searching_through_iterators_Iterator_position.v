@@ -7,3 +7,4 @@ Axiom Function_main :
   M.IsFunction
     "functions_closures_example_searching_through_iterators_Iterator_position::main"
     main.
+Smpl Add apply Function_main : is_function.

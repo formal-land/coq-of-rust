@@ -22,12 +22,14 @@ Module bls12_381.
     
     Axiom Constant_value_PRECOMPILE :
       (M.get_constant "revm_precompile::bls12_381::g2_msm::PRECOMPILE") = value_PRECOMPILE.
+    Global Hint Rewrite Constant_value_PRECOMPILE : constant_rewrites.
     
     Definition value_ADDRESS : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 16 |))).
     
     Axiom Constant_value_ADDRESS :
       (M.get_constant "revm_precompile::bls12_381::g2_msm::ADDRESS") = value_ADDRESS.
+    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
     
     (*
     pub(super) fn g2_msm(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -1307,5 +1309,6 @@ Module bls12_381.
       end.
     
     Axiom Function_g2_msm : M.IsFunction "revm_precompile::bls12_381::g2_msm::g2_msm" g2_msm.
+    Smpl Add apply Function_g2_msm : is_function.
   End g2_msm.
 End bls12_381.

@@ -116,6 +116,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "diverging_functions_example_sum_odd_numbers::main" main.
+Smpl Add apply Function_main : is_function.
 
 Module main.
   (*
@@ -266,4 +267,5 @@ Module main.
     M.IsFunction
       "diverging_functions_example_sum_odd_numbers::main::sum_odd_numbers"
       sum_odd_numbers.
+  Smpl Add apply Function_sum_odd_numbers : is_function.
 End main.

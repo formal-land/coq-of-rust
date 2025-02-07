@@ -5,7 +5,9 @@ Parameter read_lines : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_read_lines :
   M.IsFunction "file_io_read_lines_efficient_method::read_lines" read_lines.
+Smpl Add apply Function_read_lines : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "file_io_read_lines_efficient_method::main" main.
+Smpl Add apply Function_main : is_function.

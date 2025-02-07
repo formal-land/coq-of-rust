@@ -16,6 +16,7 @@ Module iter.
       
       Axiom Function__assert_is_object_safe :
         M.IsFunction "core::iter::traits::iterator::_assert_is_object_safe" _assert_is_object_safe.
+      Smpl Add apply Function__assert_is_object_safe : is_function.
       
       (* Trait *)
       Module Iterator.
@@ -4296,6 +4297,7 @@ Module iter.
       
       Axiom Function_iter_compare :
         M.IsFunction "core::iter::traits::iterator::iter_compare" iter_compare.
+      Smpl Add apply Function_iter_compare : is_function.
       
       Module iter_compare.
         (*
@@ -4437,6 +4439,7 @@ Module iter.
         
         Axiom Function_compare :
           M.IsFunction "core::iter::traits::iterator::iter_compare::compare" compare.
+        Smpl Add apply Function_compare : is_function.
         
         Module compare.
           (* Error OpaqueTy *)

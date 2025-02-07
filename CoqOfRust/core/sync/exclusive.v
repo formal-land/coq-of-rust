@@ -135,6 +135,7 @@ Module sync.
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const fn into_inner(self) -> T {
@@ -160,6 +161,7 @@ Module sync.
       Axiom AssociatedFunction_into_inner :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       (*
           pub const fn get_mut(&mut self) -> &mut T {
               &mut self.inner
@@ -195,6 +197,7 @@ Module sync.
       Axiom AssociatedFunction_get_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
           pub const fn get_pin_mut(self: Pin<&mut Self>) -> Pin<&mut T> {
@@ -257,6 +260,7 @@ Module sync.
       Axiom AssociatedFunction_get_pin_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_pin_mut" (get_pin_mut T).
+      Smpl Add apply AssociatedFunction_get_pin_mut : is_associated.
       
       (*
           pub const fn from_mut(r: &'_ mut T) -> &'_ mut Exclusive<T> {
@@ -310,6 +314,7 @@ Module sync.
       Axiom AssociatedFunction_from_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "from_mut" (from_mut T).
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
           pub const fn from_pin_mut(r: Pin<&'_ mut T>) -> Pin<&'_ mut Exclusive<T>> {
@@ -385,6 +390,7 @@ Module sync.
       Axiom AssociatedFunction_from_pin_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "from_pin_mut" (from_pin_mut T).
+      Smpl Add apply AssociatedFunction_from_pin_mut : is_associated.
     End Impl_core_sync_exclusive_Exclusive_T.
     
     

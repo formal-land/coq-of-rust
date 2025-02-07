@@ -20,6 +20,7 @@ Module iter.
         end.
       
       Axiom Function_empty : M.IsFunction "core::iter::sources::empty::empty" empty.
+      Smpl Add apply Function_empty : is_function.
       
       (* StructTuple
         {

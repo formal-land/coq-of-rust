@@ -22,6 +22,7 @@ Module iter.
       
       Axiom Function_from_coroutine :
         M.IsFunction "core::iter::sources::from_coroutine::from_coroutine" from_coroutine.
+      Smpl Add apply Function_from_coroutine : is_function.
       
       (* StructTuple
         {

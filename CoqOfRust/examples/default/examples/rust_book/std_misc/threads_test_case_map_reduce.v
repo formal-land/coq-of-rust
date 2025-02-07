@@ -817,3 +817,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "threads_test_case_map_reduce::main" main.
+Smpl Add apply Function_main : is_function.

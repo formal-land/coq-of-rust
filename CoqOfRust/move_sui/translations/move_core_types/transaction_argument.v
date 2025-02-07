@@ -3426,6 +3426,7 @@ Module transaction_argument.
   
   Axiom Function_convert_txn_args :
     M.IsFunction "move_core_types::transaction_argument::convert_txn_args" convert_txn_args.
+  Smpl Add apply Function_convert_txn_args : is_function.
   
   (* StructTuple
     {
@@ -3776,6 +3777,7 @@ Module transaction_argument.
       end.
     
     Axiom AssociatedFunction_from : M.IsAssociatedFunction Self "from" from.
+    Smpl Add apply AssociatedFunction_from : is_associated.
     
     (*
         pub fn into_vec(self) -> Vec<Vec<u8>> {
@@ -3907,5 +3909,6 @@ Module transaction_argument.
       end.
     
     Axiom AssociatedFunction_into_vec : M.IsAssociatedFunction Self "into_vec" into_vec.
+    Smpl Add apply AssociatedFunction_into_vec : is_associated.
   End Impl_move_core_types_transaction_argument_VecBytes.
 End transaction_argument.

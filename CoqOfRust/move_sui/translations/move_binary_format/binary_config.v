@@ -791,6 +791,7 @@ Module binary_config.
       end.
     
     Axiom AssociatedFunction_legacy : M.IsAssociatedFunction Self "legacy" legacy.
+    Smpl Add apply AssociatedFunction_legacy : is_associated.
   End Impl_move_binary_format_binary_config_TableConfig.
   
   (* StructRecord
@@ -1037,6 +1038,7 @@ Module binary_config.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn legacy(max_binary_format_version: u32, check_no_extraneous_bytes: bool) -> Self {
@@ -1073,6 +1075,7 @@ Module binary_config.
       end.
     
     Axiom AssociatedFunction_legacy : M.IsAssociatedFunction Self "legacy" legacy.
+    Smpl Add apply AssociatedFunction_legacy : is_associated.
     
     (*
         pub fn with_extraneous_bytes_check(check_no_extraneous_bytes: bool) -> Self {
@@ -1114,6 +1117,7 @@ Module binary_config.
     
     Axiom AssociatedFunction_with_extraneous_bytes_check :
       M.IsAssociatedFunction Self "with_extraneous_bytes_check" with_extraneous_bytes_check.
+    Smpl Add apply AssociatedFunction_with_extraneous_bytes_check : is_associated.
     
     (*
         pub fn standard() -> Self {
@@ -1149,5 +1153,6 @@ Module binary_config.
       end.
     
     Axiom AssociatedFunction_standard : M.IsAssociatedFunction Self "standard" standard.
+    Smpl Add apply AssociatedFunction_standard : is_associated.
   End Impl_move_binary_format_binary_config_BinaryConfig.
 End binary_config.

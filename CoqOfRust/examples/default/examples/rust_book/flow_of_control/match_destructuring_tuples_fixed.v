@@ -375,3 +375,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "match_destructuring_tuples_fixed::main" main.
+Smpl Add apply Function_main : is_function.

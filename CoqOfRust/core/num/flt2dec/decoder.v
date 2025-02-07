@@ -1009,6 +1009,7 @@ Module num.
         end.
       
       Axiom Function_decode : M.IsFunction "core::num::flt2dec::decoder::decode" decode.
+      Smpl Add apply Function_decode : is_function.
     End decoder.
   End flt2dec.
 End num.

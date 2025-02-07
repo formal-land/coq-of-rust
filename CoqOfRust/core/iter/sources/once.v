@@ -35,6 +35,7 @@ Module iter.
         end.
       
       Axiom Function_once : M.IsFunction "core::iter::sources::once::once" once.
+      Smpl Add apply Function_once : is_function.
       
       (* StructRecord
         {

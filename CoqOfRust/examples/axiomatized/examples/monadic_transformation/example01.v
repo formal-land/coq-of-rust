@@ -4,11 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_id : M.IsFunction "example01::id" id.
+Smpl Add apply Function_id : is_function.
 
 Parameter tri : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_tri : M.IsFunction "example01::tri" tri.
+Smpl Add apply Function_tri : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "example01::main" main.
+Smpl Add apply Function_main : is_function.

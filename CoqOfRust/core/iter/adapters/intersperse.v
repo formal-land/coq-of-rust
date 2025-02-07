@@ -317,6 +317,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_intersperse_Intersperse_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_intersperse_Intersperse_I.
@@ -1097,6 +1098,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I G : Ty.t),
           M.IsAssociatedFunction (Self I G) "new" (new I G).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_intersperse_IntersperseWith_I_G.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_G_Tuple__for_core_iter_adapters_intersperse_IntersperseWith_I_G.
@@ -1641,6 +1643,7 @@ Module iter.
         M.IsFunction
           "core::iter::adapters::intersperse::intersperse_size_hint"
           intersperse_size_hint.
+      Smpl Add apply Function_intersperse_size_hint : is_function.
       
       (*
       fn intersperse_fold<I, B, F, G>(
@@ -1869,6 +1872,7 @@ Module iter.
       
       Axiom Function_intersperse_fold :
         M.IsFunction "core::iter::adapters::intersperse::intersperse_fold" intersperse_fold.
+      Smpl Add apply Function_intersperse_fold : is_function.
     End intersperse.
   End adapters.
 End iter.

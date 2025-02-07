@@ -160,6 +160,7 @@ Module collections.
         Axiom AssociatedFunction_remove_kv_tracking :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "remove_kv_tracking" (remove_kv_tracking K V).
+        Smpl Add apply AssociatedFunction_remove_kv_tracking : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_KV.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_KV.
@@ -1334,6 +1335,7 @@ Module collections.
         Axiom AssociatedFunction_remove_leaf_kv :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "remove_leaf_kv" (remove_leaf_kv K V).
+        Smpl Add apply AssociatedFunction_remove_leaf_kv : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_KV.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.
@@ -1761,6 +1763,7 @@ Module collections.
         Axiom AssociatedFunction_remove_internal_kv :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "remove_internal_kv" (remove_internal_kv K V).
+        Smpl Add apply AssociatedFunction_remove_internal_kv : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.
     End remove.
   End btree.

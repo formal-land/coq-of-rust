@@ -471,6 +471,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_eq : M.IsAssociatedFunction Self "is_eq" is_eq.
+    Smpl Add apply AssociatedFunction_is_eq : is_associated.
     
     (*
         pub const fn is_ne(self) -> bool {
@@ -500,6 +501,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_ne : M.IsAssociatedFunction Self "is_ne" is_ne.
+    Smpl Add apply AssociatedFunction_is_ne : is_associated.
     
     (*
         pub const fn is_lt(self) -> bool {
@@ -527,6 +529,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_lt : M.IsAssociatedFunction Self "is_lt" is_lt.
+    Smpl Add apply AssociatedFunction_is_lt : is_associated.
     
     (*
         pub const fn is_gt(self) -> bool {
@@ -554,6 +557,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_gt : M.IsAssociatedFunction Self "is_gt" is_gt.
+    Smpl Add apply AssociatedFunction_is_gt : is_associated.
     
     (*
         pub const fn is_le(self) -> bool {
@@ -583,6 +587,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_le : M.IsAssociatedFunction Self "is_le" is_le.
+    Smpl Add apply AssociatedFunction_is_le : is_associated.
     
     (*
         pub const fn is_ge(self) -> bool {
@@ -612,6 +617,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_is_ge : M.IsAssociatedFunction Self "is_ge" is_ge.
+    Smpl Add apply AssociatedFunction_is_ge : is_associated.
     
     (*
         pub const fn reverse(self) -> Ordering {
@@ -650,6 +656,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_reverse : M.IsAssociatedFunction Self "reverse" reverse.
+    Smpl Add apply AssociatedFunction_reverse : is_associated.
     
     (*
         pub const fn then(self, other: Ordering) -> Ordering {
@@ -681,6 +688,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_then_ : M.IsAssociatedFunction Self "then_" then_.
+    Smpl Add apply AssociatedFunction_then_ : is_associated.
     
     (*
         pub fn then_with<F: FnOnce() -> Ordering>(self, f: F) -> Ordering {
@@ -725,6 +733,7 @@ Module cmp.
       end.
     
     Axiom AssociatedFunction_then_with : M.IsAssociatedFunction Self "then_with" then_with.
+    Smpl Add apply AssociatedFunction_then_with : is_associated.
   End Impl_core_cmp_Ordering.
   
   (* StructTuple
@@ -1717,6 +1726,7 @@ Module cmp.
     end.
   
   Axiom Function_min : M.IsFunction "core::cmp::min" min.
+  Smpl Add apply Function_min : is_function.
   
   (*
   pub fn min_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
@@ -1795,6 +1805,7 @@ Module cmp.
     end.
   
   Axiom Function_min_by : M.IsFunction "core::cmp::min_by" min_by.
+  Smpl Add apply Function_min_by : is_function.
   
   (*
   pub fn min_by_key<T, F: FnMut(&T) -> K, K: Ord>(v1: T, v2: T, mut f: F) -> T {
@@ -1923,6 +1934,7 @@ Module cmp.
     end.
   
   Axiom Function_min_by_key : M.IsFunction "core::cmp::min_by_key" min_by_key.
+  Smpl Add apply Function_min_by_key : is_function.
   
   (*
   pub fn max<T: Ord>(v1: T, v2: T) -> T {
@@ -1943,6 +1955,7 @@ Module cmp.
     end.
   
   Axiom Function_max : M.IsFunction "core::cmp::max" max.
+  Smpl Add apply Function_max : is_function.
   
   (*
   pub fn max_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
@@ -2021,6 +2034,7 @@ Module cmp.
     end.
   
   Axiom Function_max_by : M.IsFunction "core::cmp::max_by" max_by.
+  Smpl Add apply Function_max_by : is_function.
   
   (*
   pub fn max_by_key<T, F: FnMut(&T) -> K, K: Ord>(v1: T, v2: T, mut f: F) -> T {
@@ -2149,6 +2163,7 @@ Module cmp.
     end.
   
   Axiom Function_max_by_key : M.IsFunction "core::cmp::max_by_key" max_by_key.
+  Smpl Add apply Function_max_by_key : is_function.
   
   (*
   pub fn minmax<T>(v1: T, v2: T) -> [T; 2]
@@ -2198,6 +2213,7 @@ Module cmp.
     end.
   
   Axiom Function_minmax : M.IsFunction "core::cmp::minmax" minmax.
+  Smpl Add apply Function_minmax : is_function.
   
   (*
   pub fn minmax_by<T, F>(v1: T, v2: T, compare: F) -> [T; 2]
@@ -2276,6 +2292,7 @@ Module cmp.
     end.
   
   Axiom Function_minmax_by : M.IsFunction "core::cmp::minmax_by" minmax_by.
+  Smpl Add apply Function_minmax_by : is_function.
   
   (*
   pub fn minmax_by_key<T, F, K>(v1: T, v2: T, mut f: F) -> [T; 2]
@@ -2408,6 +2425,7 @@ Module cmp.
     end.
   
   Axiom Function_minmax_by_key : M.IsFunction "core::cmp::minmax_by_key" minmax_by_key.
+  Smpl Add apply Function_minmax_by_key : is_function.
   
   Module impls.
     Module Impl_core_cmp_PartialEq_for_Tuple_.

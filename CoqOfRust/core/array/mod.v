@@ -29,6 +29,7 @@ Module array.
     end.
   
   Axiom Function_repeat : M.IsFunction "core::array::repeat" repeat.
+  Smpl Add apply Function_repeat : is_function.
   
   (*
   pub fn from_fn<T, const N: usize, F>(cb: F) -> [T; N]
@@ -76,6 +77,7 @@ Module array.
     end.
   
   Axiom Function_from_fn : M.IsFunction "core::array::from_fn" from_fn.
+  Smpl Add apply Function_from_fn : is_function.
   
   (*
   pub fn try_from_fn<R, const N: usize, F>(cb: F) -> ChangeOutputType<R, [R::Output; N]>
@@ -183,6 +185,7 @@ Module array.
     end.
   
   Axiom Function_try_from_fn : M.IsFunction "core::array::try_from_fn" try_from_fn.
+  Smpl Add apply Function_try_from_fn : is_function.
   
   (*
   pub const fn from_ref<T>(s: &T) -> &[T; 1] {
@@ -225,6 +228,7 @@ Module array.
     end.
   
   Axiom Function_from_ref : M.IsFunction "core::array::from_ref" from_ref.
+  Smpl Add apply Function_from_ref : is_function.
   
   (*
   pub const fn from_mut<T>(s: &mut T) -> &mut [T; 1] {
@@ -281,6 +285,7 @@ Module array.
     end.
   
   Axiom Function_from_mut : M.IsFunction "core::array::from_mut" from_mut.
+  Smpl Add apply Function_from_mut : is_function.
   
   (* StructTuple
     {
@@ -5148,6 +5153,7 @@ Module array.
     Axiom AssociatedFunction_map :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "map" (map N T).
+    Smpl Add apply AssociatedFunction_map : is_associated.
     
     (*
         pub fn try_map<R>(self, f: impl FnMut(T) -> R) -> ChangeOutputType<R, [R::Output; N]>
@@ -5239,6 +5245,7 @@ Module array.
     Axiom AssociatedFunction_try_map :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "try_map" (try_map N T).
+    Smpl Add apply AssociatedFunction_try_map : is_associated.
     
     (*
         pub const fn as_slice(&self) -> &[T] {
@@ -5264,6 +5271,7 @@ Module array.
     Axiom AssociatedFunction_as_slice :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "as_slice" (as_slice N T).
+    Smpl Add apply AssociatedFunction_as_slice : is_associated.
     
     (*
         pub fn as_mut_slice(&mut self) -> &mut [T] {
@@ -5292,6 +5300,7 @@ Module array.
     Axiom AssociatedFunction_as_mut_slice :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "as_mut_slice" (as_mut_slice N T).
+    Smpl Add apply AssociatedFunction_as_mut_slice : is_associated.
     
     (*
         pub fn each_ref(&self) -> [&T; N] {
@@ -5332,6 +5341,7 @@ Module array.
     Axiom AssociatedFunction_each_ref :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "each_ref" (each_ref N T).
+    Smpl Add apply AssociatedFunction_each_ref : is_associated.
     
     (*
         pub fn each_mut(&mut self) -> [&mut T; N] {
@@ -5377,6 +5387,7 @@ Module array.
     Axiom AssociatedFunction_each_mut :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "each_mut" (each_mut N T).
+    Smpl Add apply AssociatedFunction_each_mut : is_associated.
     
     (*
         pub fn split_array_ref<const M: usize>(&self) -> (&[T; M], &[T]) {
@@ -5455,6 +5466,7 @@ Module array.
     Axiom AssociatedFunction_split_array_ref :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "split_array_ref" (split_array_ref N T).
+    Smpl Add apply AssociatedFunction_split_array_ref : is_associated.
     
     (*
         pub fn split_array_mut<const M: usize>(&mut self) -> (&mut [T; M], &mut [T]) {
@@ -5533,6 +5545,7 @@ Module array.
     Axiom AssociatedFunction_split_array_mut :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "split_array_mut" (split_array_mut N T).
+    Smpl Add apply AssociatedFunction_split_array_mut : is_associated.
     
     (*
         pub fn rsplit_array_ref<const M: usize>(&self) -> (&[T], &[T; M]) {
@@ -5611,6 +5624,7 @@ Module array.
     Axiom AssociatedFunction_rsplit_array_ref :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "rsplit_array_ref" (rsplit_array_ref N T).
+    Smpl Add apply AssociatedFunction_rsplit_array_ref : is_associated.
     
     (*
         pub fn rsplit_array_mut<const M: usize>(&mut self) -> (&mut [T], &mut [T; M]) {
@@ -5689,6 +5703,7 @@ Module array.
     Axiom AssociatedFunction_rsplit_array_mut :
       forall (N : Value.t) (T : Ty.t),
       M.IsAssociatedFunction (Self N T) "rsplit_array_mut" (rsplit_array_mut N T).
+    Smpl Add apply AssociatedFunction_rsplit_array_mut : is_associated.
   End Impl_array_N_T.
   
   (*
@@ -5755,6 +5770,7 @@ Module array.
   
   Axiom Function_from_trusted_iterator :
     M.IsFunction "core::array::from_trusted_iterator" from_trusted_iterator.
+  Smpl Add apply Function_from_trusted_iterator : is_function.
   
   (*
   fn try_from_trusted_iterator<T, R, const N: usize>(
@@ -5847,6 +5863,7 @@ Module array.
   
   Axiom Function_try_from_trusted_iterator :
     M.IsFunction "core::array::try_from_trusted_iterator" try_from_trusted_iterator.
+  Smpl Add apply Function_try_from_trusted_iterator : is_function.
   
   Module try_from_trusted_iterator.
     (*
@@ -5894,6 +5911,7 @@ Module array.
       end.
     
     Axiom Function_next : M.IsFunction "core::array::try_from_trusted_iterator::next" next.
+    Smpl Add apply Function_next : is_function.
     
     Module next.
       (* Error OpaqueTy *)
@@ -6157,6 +6175,7 @@ Module array.
   
   Axiom Function_try_from_fn_erased :
     M.IsFunction "core::array::try_from_fn_erased" try_from_fn_erased.
+  Smpl Add apply Function_try_from_fn_erased : is_function.
   
   (* StructRecord
     {
@@ -6287,6 +6306,7 @@ Module array.
     Axiom AssociatedFunction_push_unchecked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "push_unchecked" (push_unchecked T).
+    Smpl Add apply AssociatedFunction_push_unchecked : is_associated.
   End Impl_core_array_Guard_T.
   
   Module Impl_core_ops_drop_Drop_for_core_array_Guard_T.
@@ -6593,6 +6613,7 @@ Module array.
     end.
   
   Axiom Function_iter_next_chunk : M.IsFunction "core::array::iter_next_chunk" iter_next_chunk.
+  Smpl Add apply Function_iter_next_chunk : is_function.
   
   (*
   fn iter_next_chunk_erased<T>(
@@ -6761,4 +6782,5 @@ Module array.
   
   Axiom Function_iter_next_chunk_erased :
     M.IsFunction "core::array::iter_next_chunk_erased" iter_next_chunk_erased.
+  Smpl Add apply Function_iter_next_chunk_erased : is_function.
 End array.

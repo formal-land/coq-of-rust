@@ -5,6 +5,7 @@ Definition value_NTHREADS : Value.t :=
   M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10 |))).
 
 Axiom Constant_value_NTHREADS : (M.get_constant "threads::NTHREADS") = value_NTHREADS.
+Global Hint Rewrite Constant_value_NTHREADS : constant_rewrites.
 
 (*
 fn main() {
@@ -353,3 +354,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "threads::main" main.
+Smpl Add apply Function_main : is_function.

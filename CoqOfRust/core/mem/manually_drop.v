@@ -429,6 +429,7 @@ Module mem.
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const fn into_inner(slot: ManuallyDrop<T>) -> T {
@@ -454,6 +455,7 @@ Module mem.
       Axiom AssociatedFunction_into_inner :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
           pub unsafe fn take(slot: &mut ManuallyDrop<T>) -> T {
@@ -492,6 +494,7 @@ Module mem.
       Axiom AssociatedFunction_take :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "take" (take T).
+      Smpl Add apply AssociatedFunction_take : is_associated.
       (*
           pub unsafe fn drop(slot: &mut ManuallyDrop<T>) {
               // SAFETY: we are dropping the value pointed to by a mutable reference
@@ -530,6 +533,7 @@ Module mem.
       Axiom AssociatedFunction_drop :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "drop" (drop T).
+      Smpl Add apply AssociatedFunction_drop : is_associated.
     End Impl_core_mem_manually_drop_ManuallyDrop_T.
     
     

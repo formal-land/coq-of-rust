@@ -425,6 +425,7 @@ Module eip7702.
       
       Axiom AssociatedFunction_new_unchecked :
         M.IsAssociatedFunction Self "new_unchecked" new_unchecked.
+      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
       
       (*
           pub fn inner(&self) -> &SignedAuthorization {
@@ -453,6 +454,7 @@ Module eip7702.
         end.
       
       Axiom AssociatedFunction_inner : M.IsAssociatedFunction Self "inner" inner.
+      Smpl Add apply AssociatedFunction_inner : is_associated.
       
       (*
           pub const fn authority(&self) -> Option<Address> {
@@ -475,6 +477,7 @@ Module eip7702.
         end.
       
       Axiom AssociatedFunction_authority : M.IsAssociatedFunction Self "authority" authority.
+      Smpl Add apply AssociatedFunction_authority : is_associated.
       
       (*
           pub const fn into_parts(self) -> (SignedAuthorization, Option<Address>) {
@@ -507,6 +510,7 @@ Module eip7702.
         end.
       
       Axiom AssociatedFunction_into_parts : M.IsAssociatedFunction Self "into_parts" into_parts.
+      Smpl Add apply AssociatedFunction_into_parts : is_associated.
     End Impl_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.
     
     Module Impl_core_convert_From_alloy_eip7702_auth_list_SignedAuthorization_for_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.

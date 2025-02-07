@@ -186,6 +186,7 @@ Module vec.
       Axiom AssociatedFunction_allocator :
         forall (T F A : Ty.t),
         M.IsAssociatedFunction (Self T F A) "allocator" (allocator T F A).
+      Smpl Add apply AssociatedFunction_allocator : is_associated.
     End Impl_alloc_vec_extract_if_ExtractIf_T_F_A.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_where_core_ops_function_FnMut_F_Tuple_ref_mut_T__for_alloc_vec_extract_if_ExtractIf_T_F_A.

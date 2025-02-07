@@ -857,6 +857,7 @@ Module interpreter_action.
       
       Axiom AssociatedFunction_created_address :
         M.IsAssociatedFunction Self "created_address" created_address.
+      Smpl Add apply AssociatedFunction_created_address : is_associated.
     End Impl_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
   End create_inputs.
 End interpreter_action.

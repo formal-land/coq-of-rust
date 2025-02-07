@@ -8,6 +8,7 @@ Module sync.
     
     Axiom Constant_value_EMULATE_ATOMIC_BOOL :
       (M.get_constant "core::sync::atomic::EMULATE_ATOMIC_BOOL") = value_EMULATE_ATOMIC_BOOL.
+    Global Hint Rewrite Constant_value_EMULATE_ATOMIC_BOOL : constant_rewrites.
     
     (* StructRecord
       {
@@ -444,6 +445,7 @@ Module sync.
     
     Axiom Constant_value_ATOMIC_BOOL_INIT :
       (M.get_constant "core::sync::atomic::ATOMIC_BOOL_INIT") = value_ATOMIC_BOOL_INIT.
+    Global Hint Rewrite Constant_value_ATOMIC_BOOL_INIT : constant_rewrites.
     
     Module Impl_core_sync_atomic_AtomicBool.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicBool".
@@ -476,6 +478,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const unsafe fn from_ptr<'a>(ptr: *mut bool) -> &'a AtomicBool {
@@ -511,6 +514,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
           pub fn get_mut(&mut self) -> &mut bool {
@@ -567,6 +571,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
           pub fn from_mut(v: &mut bool) -> &mut Self {
@@ -618,6 +623,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
           pub fn get_mut_slice(this: &mut [Self]) -> &mut [bool] {
@@ -669,6 +675,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
           pub fn from_mut_slice(v: &mut [bool]) -> &mut [Self] {
@@ -726,6 +733,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
           pub const fn into_inner(self) -> bool {
@@ -761,6 +769,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
           pub fn load(&self, order: Ordering) -> bool {
@@ -808,6 +817,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
           pub fn store(&self, val: bool, order: Ordering) {
@@ -860,6 +870,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
           pub fn swap(&self, val: bool, order: Ordering) -> bool {
@@ -980,6 +991,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
           pub fn compare_and_swap(&self, current: bool, new: bool, order: Ordering) -> bool {
@@ -1052,6 +1064,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
           pub fn compare_exchange(
@@ -1483,6 +1496,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
           pub fn compare_exchange_weak(
@@ -1628,6 +1642,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
           pub fn fetch_and(&self, val: bool, order: Ordering) -> bool {
@@ -1674,6 +1689,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
           pub fn fetch_nand(&self, val: bool, order: Ordering) -> bool {
@@ -1746,6 +1762,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
           pub fn fetch_or(&self, val: bool, order: Ordering) -> bool {
@@ -1792,6 +1809,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
           pub fn fetch_xor(&self, val: bool, order: Ordering) -> bool {
@@ -1838,6 +1856,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
           pub fn fetch_not(&self, order: Ordering) -> bool {
@@ -1867,6 +1886,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_not : M.IsAssociatedFunction Self "fetch_not" fetch_not.
+      Smpl Add apply AssociatedFunction_fetch_not : is_associated.
       
       (*
           pub const fn as_ptr(&self) -> *mut bool {
@@ -1910,6 +1930,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
       
       (*
           pub fn fetch_update<F>(
@@ -2062,6 +2083,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
     End Impl_core_sync_atomic_AtomicBool.
     
     Module Impl_core_sync_atomic_AtomicPtr_T.
@@ -2102,6 +2124,7 @@ Module sync.
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const unsafe fn from_ptr<'a>(ptr: *mut *mut T) -> &'a AtomicPtr<T> {
@@ -2140,6 +2163,7 @@ Module sync.
       Axiom AssociatedFunction_from_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "from_ptr" (from_ptr T).
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
           pub fn get_mut(&mut self) -> &mut *mut T {
@@ -2189,6 +2213,7 @@ Module sync.
       Axiom AssociatedFunction_get_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
           pub fn from_mut(v: &mut *mut T) -> &mut Self {
@@ -2262,6 +2287,7 @@ Module sync.
       Axiom AssociatedFunction_from_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "from_mut" (from_mut T).
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
           pub fn get_mut_slice(this: &mut [Self]) -> &mut [*mut T] {
@@ -2325,6 +2351,7 @@ Module sync.
       Axiom AssociatedFunction_get_mut_slice :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "get_mut_slice" (get_mut_slice T).
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
           pub fn from_mut_slice(v: &mut [*mut T]) -> &mut [Self] {
@@ -2391,6 +2418,7 @@ Module sync.
       Axiom AssociatedFunction_from_mut_slice :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "from_mut_slice" (from_mut_slice T).
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
           pub const fn into_inner(self) -> *mut T {
@@ -2429,6 +2457,7 @@ Module sync.
       Axiom AssociatedFunction_into_inner :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
           pub fn load(&self, order: Ordering) -> *mut T {
@@ -2482,6 +2511,7 @@ Module sync.
       Axiom AssociatedFunction_load :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "load" (load T).
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
           pub fn store(&self, ptr: *mut T, order: Ordering) {
@@ -2543,6 +2573,7 @@ Module sync.
       Axiom AssociatedFunction_store :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "store" (store T).
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
           pub fn swap(&self, ptr: *mut T, order: Ordering) -> *mut T {
@@ -2596,6 +2627,7 @@ Module sync.
       Axiom AssociatedFunction_swap :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "swap" (swap T).
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
           pub fn compare_and_swap(&self, current: *mut T, new: *mut T, order: Ordering) -> *mut T {
@@ -2675,6 +2707,7 @@ Module sync.
       Axiom AssociatedFunction_compare_and_swap :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "compare_and_swap" (compare_and_swap T).
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
           pub fn compare_exchange(
@@ -2743,6 +2776,7 @@ Module sync.
       Axiom AssociatedFunction_compare_exchange :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "compare_exchange" (compare_exchange T).
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
           pub fn compare_exchange_weak(
@@ -2814,6 +2848,7 @@ Module sync.
       Axiom AssociatedFunction_compare_exchange_weak :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "compare_exchange_weak" (compare_exchange_weak T).
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
           pub fn fetch_update<F>(
@@ -2973,6 +3008,7 @@ Module sync.
       Axiom AssociatedFunction_fetch_update :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fetch_update" (fetch_update T).
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
           pub fn fetch_ptr_add(&self, val: usize, order: Ordering) -> *mut T {
@@ -3017,6 +3053,7 @@ Module sync.
       Axiom AssociatedFunction_fetch_ptr_add :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fetch_ptr_add" (fetch_ptr_add T).
+      Smpl Add apply AssociatedFunction_fetch_ptr_add : is_associated.
       
       (*
           pub fn fetch_ptr_sub(&self, val: usize, order: Ordering) -> *mut T {
@@ -3061,6 +3098,7 @@ Module sync.
       Axiom AssociatedFunction_fetch_ptr_sub :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fetch_ptr_sub" (fetch_ptr_sub T).
+      Smpl Add apply AssociatedFunction_fetch_ptr_sub : is_associated.
       
       (*
           pub fn fetch_byte_add(&self, val: usize, order: Ordering) -> *mut T {
@@ -3127,6 +3165,7 @@ Module sync.
       Axiom AssociatedFunction_fetch_byte_add :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fetch_byte_add" (fetch_byte_add T).
+      Smpl Add apply AssociatedFunction_fetch_byte_add : is_associated.
       
       (*
           pub fn fetch_byte_sub(&self, val: usize, order: Ordering) -> *mut T {
@@ -3193,6 +3232,7 @@ Module sync.
       Axiom AssociatedFunction_fetch_byte_sub :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fetch_byte_sub" (fetch_byte_sub T).
+      Smpl Add apply AssociatedFunction_fetch_byte_sub : is_associated.
       
       (*
           pub fn fetch_or(&self, val: usize, order: Ordering) -> *mut T {
@@ -3254,6 +3294,7 @@ Module sync.
       Axiom AssociatedFunction_fetch_or :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fetch_or" (fetch_or T).
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
           pub fn fetch_and(&self, val: usize, order: Ordering) -> *mut T {
@@ -3315,6 +3356,7 @@ Module sync.
       Axiom AssociatedFunction_fetch_and :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fetch_and" (fetch_and T).
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
           pub fn fetch_xor(&self, val: usize, order: Ordering) -> *mut T {
@@ -3376,6 +3418,7 @@ Module sync.
       Axiom AssociatedFunction_fetch_xor :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fetch_xor" (fetch_xor T).
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
           pub const fn as_ptr(&self) -> *mut *mut T {
@@ -3415,6 +3458,7 @@ Module sync.
       Axiom AssociatedFunction_as_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicPtr_T.
     
     Module Impl_core_convert_From_bool_for_core_sync_atomic_AtomicBool.
@@ -3653,6 +3697,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -3688,6 +3733,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -3731,6 +3777,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -3796,6 +3843,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -3847,6 +3895,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -3918,6 +3967,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -3950,6 +4000,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -3993,6 +4044,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -4042,6 +4094,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4085,6 +4138,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -4163,6 +4217,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -4219,6 +4274,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -4277,6 +4333,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4320,6 +4377,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4363,6 +4421,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4406,6 +4465,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4449,6 +4509,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4492,6 +4553,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4535,6 +4597,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -4683,6 +4746,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4726,6 +4790,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4769,6 +4834,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -4802,6 +4868,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicI8.
     
     (* StructRecord
@@ -4971,6 +5038,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -5006,6 +5074,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -5049,6 +5118,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -5114,6 +5184,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -5165,6 +5236,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -5236,6 +5308,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -5268,6 +5341,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -5311,6 +5385,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -5360,6 +5435,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5403,6 +5479,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -5481,6 +5558,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -5537,6 +5615,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -5595,6 +5674,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5638,6 +5718,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5681,6 +5762,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5724,6 +5806,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5767,6 +5850,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5810,6 +5894,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5853,6 +5938,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -6001,6 +6087,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6044,6 +6131,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6087,6 +6175,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -6120,6 +6209,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicU8.
     
     (* StructRecord
@@ -6299,6 +6389,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -6334,6 +6425,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -6377,6 +6469,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -6442,6 +6535,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -6493,6 +6587,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -6564,6 +6659,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -6596,6 +6692,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -6639,6 +6736,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -6688,6 +6786,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6731,6 +6830,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -6809,6 +6909,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -6865,6 +6966,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -6923,6 +7025,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6966,6 +7069,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7009,6 +7113,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7052,6 +7157,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7095,6 +7201,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7138,6 +7245,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7181,6 +7289,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -7329,6 +7438,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7372,6 +7482,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7415,6 +7526,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -7448,6 +7560,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicI16.
     
     (* StructRecord
@@ -7627,6 +7740,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -7662,6 +7776,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -7705,6 +7820,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -7770,6 +7886,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -7821,6 +7938,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -7892,6 +8010,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -7924,6 +8043,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -7967,6 +8087,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -8016,6 +8137,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8059,6 +8181,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -8137,6 +8260,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -8193,6 +8317,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -8251,6 +8376,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8294,6 +8420,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8337,6 +8464,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8380,6 +8508,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8423,6 +8552,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8466,6 +8596,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8509,6 +8640,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -8657,6 +8789,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8700,6 +8833,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8743,6 +8877,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -8776,6 +8911,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicU16.
     
     (* StructRecord
@@ -8955,6 +9091,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -8990,6 +9127,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -9033,6 +9171,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -9098,6 +9237,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -9149,6 +9289,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -9220,6 +9361,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -9252,6 +9394,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -9295,6 +9438,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -9344,6 +9488,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9387,6 +9532,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -9465,6 +9611,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -9521,6 +9668,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -9579,6 +9727,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9622,6 +9771,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9665,6 +9815,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9708,6 +9859,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9751,6 +9903,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9794,6 +9947,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9837,6 +9991,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -9985,6 +10140,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10028,6 +10184,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10071,6 +10228,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -10104,6 +10262,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicI32.
     
     (* StructRecord
@@ -10283,6 +10442,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -10318,6 +10478,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -10361,6 +10522,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -10426,6 +10588,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -10477,6 +10640,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -10548,6 +10712,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -10580,6 +10745,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -10623,6 +10789,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -10672,6 +10839,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10715,6 +10883,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -10793,6 +10962,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -10849,6 +11019,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -10907,6 +11078,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10950,6 +11122,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10993,6 +11166,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11036,6 +11210,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11079,6 +11254,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11122,6 +11298,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11165,6 +11342,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -11313,6 +11491,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11356,6 +11535,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11399,6 +11579,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -11432,6 +11613,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicU32.
     
     (* StructRecord
@@ -11611,6 +11793,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -11646,6 +11829,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -11689,6 +11873,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -11754,6 +11939,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -11805,6 +11991,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -11876,6 +12063,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -11908,6 +12096,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -11951,6 +12140,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -12000,6 +12190,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12043,6 +12234,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -12121,6 +12313,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -12177,6 +12370,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -12235,6 +12429,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12278,6 +12473,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12321,6 +12517,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12364,6 +12561,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12407,6 +12605,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12450,6 +12649,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12493,6 +12693,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -12641,6 +12842,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12684,6 +12886,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12727,6 +12930,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -12760,6 +12964,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicI64.
     
     (* StructRecord
@@ -12939,6 +13144,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -12974,6 +13180,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -13017,6 +13224,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -13082,6 +13290,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -13133,6 +13342,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -13204,6 +13414,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -13236,6 +13447,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -13279,6 +13491,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -13328,6 +13541,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13371,6 +13585,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -13449,6 +13664,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -13505,6 +13721,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -13563,6 +13780,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13606,6 +13824,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13649,6 +13868,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13692,6 +13912,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13735,6 +13956,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13778,6 +14000,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13821,6 +14044,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -13969,6 +14193,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14012,6 +14237,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14055,6 +14281,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -14088,6 +14315,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicU64.
     
     (* StructRecord
@@ -14267,6 +14495,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -14302,6 +14531,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -14345,6 +14575,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -14410,6 +14641,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -14461,6 +14693,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -14532,6 +14765,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -14564,6 +14798,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -14607,6 +14842,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -14660,6 +14896,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14703,6 +14940,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -14781,6 +15019,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -14837,6 +15076,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -14895,6 +15135,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14938,6 +15179,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14981,6 +15223,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15024,6 +15267,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15067,6 +15311,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15110,6 +15355,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15153,6 +15399,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -15301,6 +15548,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15344,6 +15592,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15387,6 +15636,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -15420,6 +15670,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicIsize.
     
     (* StructRecord
@@ -15599,6 +15850,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -15634,6 +15886,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
+      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -15677,6 +15930,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -15742,6 +15996,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
+      Smpl Add apply AssociatedFunction_from_mut : is_associated.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -15793,6 +16048,7 @@ Module sync.
       
       Axiom AssociatedFunction_get_mut_slice :
         M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
+      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -15864,6 +16120,7 @@ Module sync.
       
       Axiom AssociatedFunction_from_mut_slice :
         M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
+      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -15896,6 +16153,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -15939,6 +16197,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
+      Smpl Add apply AssociatedFunction_load : is_associated.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -15992,6 +16251,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
+      Smpl Add apply AssociatedFunction_store : is_associated.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16035,6 +16295,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -16113,6 +16374,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_and_swap :
         M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
+      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
       
       (*
                   pub fn compare_exchange(&self,
@@ -16169,6 +16431,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange :
         M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
+      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -16227,6 +16490,7 @@ Module sync.
       
       Axiom AssociatedFunction_compare_exchange_weak :
         M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
+      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16270,6 +16534,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
+      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16313,6 +16578,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
+      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16356,6 +16622,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
+      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16399,6 +16666,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
+      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16442,6 +16710,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
+      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16485,6 +16754,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
+      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -16633,6 +16903,7 @@ Module sync.
       
       Axiom AssociatedFunction_fetch_update :
         M.IsAssociatedFunction Self "fetch_update" fetch_update.
+      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16676,6 +16947,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
+      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16719,6 +16991,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
+      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -16752,6 +17025,7 @@ Module sync.
         end.
       
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     End Impl_core_sync_atomic_AtomicUsize.
     
     Definition value_ATOMIC_ISIZE_INIT : Value.t :=
@@ -16771,6 +17045,7 @@ Module sync.
     
     Axiom Constant_value_ATOMIC_ISIZE_INIT :
       (M.get_constant "core::sync::atomic::ATOMIC_ISIZE_INIT") = value_ATOMIC_ISIZE_INIT.
+    Global Hint Rewrite Constant_value_ATOMIC_ISIZE_INIT : constant_rewrites.
     
     Definition value_ATOMIC_USIZE_INIT : Value.t :=
       M.run_constant
@@ -16789,6 +17064,7 @@ Module sync.
     
     Axiom Constant_value_ATOMIC_USIZE_INIT :
       (M.get_constant "core::sync::atomic::ATOMIC_USIZE_INIT") = value_ATOMIC_USIZE_INIT.
+    Global Hint Rewrite Constant_value_ATOMIC_USIZE_INIT : constant_rewrites.
     
     (*
     fn strongest_failure_ordering(order: Ordering) -> Ordering {
@@ -16842,6 +17118,7 @@ Module sync.
     
     Axiom Function_strongest_failure_ordering :
       M.IsFunction "core::sync::atomic::strongest_failure_ordering" strongest_failure_ordering.
+    Smpl Add apply Function_strongest_failure_ordering : is_function.
     
     (*
     unsafe fn atomic_store<T: Copy>(dst: *mut T, val: T, order: Ordering) {
@@ -16980,6 +17257,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_store : M.IsFunction "core::sync::atomic::atomic_store" atomic_store.
+    Smpl Add apply Function_atomic_store : is_function.
     
     (*
     unsafe fn atomic_load<T: Copy>(dst: *const T, order: Ordering) -> T {
@@ -17117,6 +17395,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_load : M.IsFunction "core::sync::atomic::atomic_load" atomic_load.
+    Smpl Add apply Function_atomic_load : is_function.
     
     (*
     unsafe fn atomic_swap<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -17195,6 +17474,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_swap : M.IsFunction "core::sync::atomic::atomic_swap" atomic_swap.
+    Smpl Add apply Function_atomic_swap : is_function.
     
     (*
     unsafe fn atomic_add<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -17273,6 +17553,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_add : M.IsFunction "core::sync::atomic::atomic_add" atomic_add.
+    Smpl Add apply Function_atomic_add : is_function.
     
     (*
     unsafe fn atomic_sub<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -17351,6 +17632,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_sub : M.IsFunction "core::sync::atomic::atomic_sub" atomic_sub.
+    Smpl Add apply Function_atomic_sub : is_function.
     
     (*
     unsafe fn atomic_compare_exchange<T: Copy>(
@@ -17788,6 +18070,7 @@ Module sync.
     
     Axiom Function_atomic_compare_exchange :
       M.IsFunction "core::sync::atomic::atomic_compare_exchange" atomic_compare_exchange.
+    Smpl Add apply Function_atomic_compare_exchange : is_function.
     
     (*
     unsafe fn atomic_compare_exchange_weak<T: Copy>(
@@ -18229,6 +18512,7 @@ Module sync.
     
     Axiom Function_atomic_compare_exchange_weak :
       M.IsFunction "core::sync::atomic::atomic_compare_exchange_weak" atomic_compare_exchange_weak.
+    Smpl Add apply Function_atomic_compare_exchange_weak : is_function.
     
     (*
     unsafe fn atomic_and<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18307,6 +18591,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_and : M.IsFunction "core::sync::atomic::atomic_and" atomic_and.
+    Smpl Add apply Function_atomic_and : is_function.
     
     (*
     unsafe fn atomic_nand<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18385,6 +18670,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_nand : M.IsFunction "core::sync::atomic::atomic_nand" atomic_nand.
+    Smpl Add apply Function_atomic_nand : is_function.
     
     (*
     unsafe fn atomic_or<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18463,6 +18749,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_or : M.IsFunction "core::sync::atomic::atomic_or" atomic_or.
+    Smpl Add apply Function_atomic_or : is_function.
     
     (*
     unsafe fn atomic_xor<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18541,6 +18828,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_xor : M.IsFunction "core::sync::atomic::atomic_xor" atomic_xor.
+    Smpl Add apply Function_atomic_xor : is_function.
     
     (*
     unsafe fn atomic_max<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18619,6 +18907,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_max : M.IsFunction "core::sync::atomic::atomic_max" atomic_max.
+    Smpl Add apply Function_atomic_max : is_function.
     
     (*
     unsafe fn atomic_min<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18697,6 +18986,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_min : M.IsFunction "core::sync::atomic::atomic_min" atomic_min.
+    Smpl Add apply Function_atomic_min : is_function.
     
     (*
     unsafe fn atomic_umax<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18775,6 +19065,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_umax : M.IsFunction "core::sync::atomic::atomic_umax" atomic_umax.
+    Smpl Add apply Function_atomic_umax : is_function.
     
     (*
     unsafe fn atomic_umin<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18853,6 +19144,7 @@ Module sync.
       end.
     
     Axiom Function_atomic_umin : M.IsFunction "core::sync::atomic::atomic_umin" atomic_umin.
+    Smpl Add apply Function_atomic_umin : is_function.
     
     (*
     pub fn fence(order: Ordering) {
@@ -18959,6 +19251,7 @@ Module sync.
       end.
     
     Axiom Function_fence : M.IsFunction "core::sync::atomic::fence" fence.
+    Smpl Add apply Function_fence : is_function.
     
     (*
     pub fn compiler_fence(order: Ordering) {
@@ -19082,6 +19375,7 @@ Module sync.
     
     Axiom Function_compiler_fence :
       M.IsFunction "core::sync::atomic::compiler_fence" compiler_fence.
+    Smpl Add apply Function_compiler_fence : is_function.
     
     Module Impl_core_fmt_Debug_for_core_sync_atomic_AtomicBool.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicBool".
@@ -19279,5 +19573,6 @@ Module sync.
     
     Axiom Function_spin_loop_hint :
       M.IsFunction "core::sync::atomic::spin_loop_hint" spin_loop_hint.
+    Smpl Add apply Function_spin_loop_hint : is_function.
   End atomic.
 End sync.

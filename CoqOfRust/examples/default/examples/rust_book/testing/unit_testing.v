@@ -17,6 +17,7 @@ Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_add : M.IsFunction "unit_testing::add" add.
+Smpl Add apply Function_add : is_function.
 
 (*
 fn bad_add(a: i32, b: i32) -> i32 {
@@ -34,6 +35,7 @@ Definition bad_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Axiom Function_bad_add : M.IsFunction "unit_testing::bad_add" bad_add.
+Smpl Add apply Function_bad_add : is_function.
 
 Module tests.
   (*
@@ -139,6 +141,7 @@ Module tests.
     end.
   
   Axiom Function_test_add : M.IsFunction "unit_testing::tests::test_add'1" test_add.
+  Smpl Add apply Function_test_add : is_function.
   
   (*
       fn test_bad_add() {
@@ -245,4 +248,5 @@ Module tests.
     end.
   
   Axiom Function_test_bad_add : M.IsFunction "unit_testing::tests::test_bad_add'1" test_bad_add.
+  Smpl Add apply Function_test_bad_add : is_function.
 End tests.

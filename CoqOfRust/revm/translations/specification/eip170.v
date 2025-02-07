@@ -7,4 +7,5 @@ Module eip170.
   
   Axiom Constant_value_MAX_CODE_SIZE :
     (M.get_constant "revm_specification::eip170::MAX_CODE_SIZE") = value_MAX_CODE_SIZE.
+  Global Hint Rewrite Constant_value_MAX_CODE_SIZE : constant_rewrites.
 End eip170.

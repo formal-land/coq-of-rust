@@ -211,6 +211,7 @@ Module instructions.
       end.
     
     Axiom Function_lt : M.IsFunction "revm_interpreter::instructions::bitwise::lt" lt.
+    Smpl Add apply Function_lt : is_function.
     
     (*
     pub fn gt<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -421,6 +422,7 @@ Module instructions.
       end.
     
     Axiom Function_gt : M.IsFunction "revm_interpreter::instructions::bitwise::gt" gt.
+    Smpl Add apply Function_gt : is_function.
     
     (*
     pub fn slt<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -641,6 +643,7 @@ Module instructions.
       end.
     
     Axiom Function_slt : M.IsFunction "revm_interpreter::instructions::bitwise::slt" slt.
+    Smpl Add apply Function_slt : is_function.
     
     (*
     pub fn sgt<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -863,6 +866,7 @@ Module instructions.
       end.
     
     Axiom Function_sgt : M.IsFunction "revm_interpreter::instructions::bitwise::sgt" sgt.
+    Smpl Add apply Function_sgt : is_function.
     
     (*
     pub fn eq<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1073,6 +1077,7 @@ Module instructions.
       end.
     
     Axiom Function_eq : M.IsFunction "revm_interpreter::instructions::bitwise::eq" eq.
+    Smpl Add apply Function_eq : is_function.
     
     (*
     pub fn iszero<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1270,6 +1275,7 @@ Module instructions.
       end.
     
     Axiom Function_iszero : M.IsFunction "revm_interpreter::instructions::bitwise::iszero" iszero.
+    Smpl Add apply Function_iszero : is_function.
     
     (*
     pub fn bitand<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1457,6 +1463,7 @@ Module instructions.
       end.
     
     Axiom Function_bitand : M.IsFunction "revm_interpreter::instructions::bitwise::bitand" bitand.
+    Smpl Add apply Function_bitand : is_function.
     
     (*
     pub fn bitor<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1645,6 +1652,7 @@ Module instructions.
       end.
     
     Axiom Function_bitor : M.IsFunction "revm_interpreter::instructions::bitwise::bitor" bitor.
+    Smpl Add apply Function_bitor : is_function.
     
     (*
     pub fn bitxor<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1833,6 +1841,7 @@ Module instructions.
       end.
     
     Axiom Function_bitxor : M.IsFunction "revm_interpreter::instructions::bitwise::bitxor" bitxor.
+    Smpl Add apply Function_bitxor : is_function.
     
     (*
     pub fn not<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2011,6 +2020,7 @@ Module instructions.
       end.
     
     Axiom Function_not : M.IsFunction "revm_interpreter::instructions::bitwise::not" not.
+    Smpl Add apply Function_not : is_function.
     
     (*
     pub fn byte<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2375,6 +2385,7 @@ Module instructions.
       end.
     
     Axiom Function_byte : M.IsFunction "revm_interpreter::instructions::bitwise::byte" byte.
+    Smpl Add apply Function_byte : is_function.
     
     (*
     pub fn shl<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2797,6 +2808,7 @@ Module instructions.
       end.
     
     Axiom Function_shl : M.IsFunction "revm_interpreter::instructions::bitwise::shl" shl.
+    Smpl Add apply Function_shl : is_function.
     
     (*
     pub fn shr<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3219,6 +3231,7 @@ Module instructions.
       end.
     
     Axiom Function_shr : M.IsFunction "revm_interpreter::instructions::bitwise::shr" shr.
+    Smpl Add apply Function_shr : is_function.
     
     (*
     pub fn sar<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3688,5 +3701,6 @@ Module instructions.
       end.
     
     Axiom Function_sar : M.IsFunction "revm_interpreter::instructions::bitwise::sar" sar.
+    Smpl Add apply Function_sar : is_function.
   End bitwise.
 End instructions.

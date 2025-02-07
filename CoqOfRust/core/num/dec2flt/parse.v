@@ -10,6 +10,7 @@ Module num.
       
       Axiom Constant_value_MIN_19DIGIT_INT :
         (M.get_constant "core::num::dec2flt::parse::MIN_19DIGIT_INT") = value_MIN_19DIGIT_INT.
+      Global Hint Rewrite Constant_value_MIN_19DIGIT_INT : constant_rewrites.
       
       (*
       fn parse_8digits(mut v: u64) -> u64 {
@@ -93,6 +94,7 @@ Module num.
       
       Axiom Function_parse_8digits :
         M.IsFunction "core::num::dec2flt::parse::parse_8digits" parse_8digits.
+      Smpl Add apply Function_parse_8digits : is_function.
       
       Module parse_8digits.
         Definition value_MASK : Value.t :=
@@ -101,6 +103,7 @@ Module num.
         
         Axiom Constant_value_MASK :
           (M.get_constant "core::num::dec2flt::parse::parse_8digits::MASK") = value_MASK.
+        Global Hint Rewrite Constant_value_MASK : constant_rewrites.
         
         Definition value_MUL1 : Value.t :=
           M.run_constant
@@ -108,6 +111,7 @@ Module num.
         
         Axiom Constant_value_MUL1 :
           (M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL1") = value_MUL1.
+        Global Hint Rewrite Constant_value_MUL1 : constant_rewrites.
         
         Definition value_MUL2 : Value.t :=
           M.run_constant
@@ -115,6 +119,7 @@ Module num.
         
         Axiom Constant_value_MUL2 :
           (M.get_constant "core::num::dec2flt::parse::parse_8digits::MUL2") = value_MUL2.
+        Global Hint Rewrite Constant_value_MUL2 : constant_rewrites.
       End parse_8digits.
       
       (*
@@ -383,6 +388,7 @@ Module num.
       
       Axiom Function_try_parse_digits :
         M.IsFunction "core::num::dec2flt::parse::try_parse_digits" try_parse_digits.
+      Smpl Add apply Function_try_parse_digits : is_function.
       
       (*
       fn try_parse_19digits(s_ref: &mut &[u8], x: &mut u64) {
@@ -557,6 +563,7 @@ Module num.
       
       Axiom Function_try_parse_19digits :
         M.IsFunction "core::num::dec2flt::parse::try_parse_19digits" try_parse_19digits.
+      Smpl Add apply Function_try_parse_19digits : is_function.
       
       (*
       fn parse_scientific(s_ref: &mut &[u8]) -> Option<i64> {
@@ -844,6 +851,7 @@ Module num.
       
       Axiom Function_parse_scientific :
         M.IsFunction "core::num::dec2flt::parse::parse_scientific" parse_scientific.
+      Smpl Add apply Function_parse_scientific : is_function.
       
       (*
       fn parse_partial_number(mut s: &[u8]) -> Option<(Number, usize)> {
@@ -1765,6 +1773,7 @@ Module num.
       
       Axiom Function_parse_partial_number :
         M.IsFunction "core::num::dec2flt::parse::parse_partial_number" parse_partial_number.
+      Smpl Add apply Function_parse_partial_number : is_function.
       
       (*
       pub fn parse_number(s: &[u8]) -> Option<Number> {
@@ -1867,6 +1876,7 @@ Module num.
       
       Axiom Function_parse_number :
         M.IsFunction "core::num::dec2flt::parse::parse_number" parse_number.
+      Smpl Add apply Function_parse_number : is_function.
       
       (*
       pub(crate) fn parse_inf_nan<F: RawFloat>(s: &[u8], negative: bool) -> Option<F> {
@@ -2183,6 +2193,7 @@ Module num.
       
       Axiom Function_parse_inf_nan :
         M.IsFunction "core::num::dec2flt::parse::parse_inf_nan" parse_inf_nan.
+      Smpl Add apply Function_parse_inf_nan : is_function.
       
       Module parse_inf_nan.
         Definition value_INF_3 : Value.t :=
@@ -2190,6 +2201,7 @@ Module num.
         
         Axiom Constant_value_INF_3 :
           (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::INF_3") = value_INF_3.
+        Global Hint Rewrite Constant_value_INF_3 : constant_rewrites.
         
         Definition value_INF_8 : Value.t :=
           M.run_constant
@@ -2197,12 +2209,14 @@ Module num.
         
         Axiom Constant_value_INF_8 :
           (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::INF_8") = value_INF_8.
+        Global Hint Rewrite Constant_value_INF_8 : constant_rewrites.
         
         Definition value_NAN : Value.t :=
           M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5128526 |))).
         
         Axiom Constant_value_NAN :
           (M.get_constant "core::num::dec2flt::parse::parse_inf_nan::NAN") = value_NAN.
+        Global Hint Rewrite Constant_value_NAN : constant_rewrites.
       End parse_inf_nan.
     End parse.
   End dec2flt.

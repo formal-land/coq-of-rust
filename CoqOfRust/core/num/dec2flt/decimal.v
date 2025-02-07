@@ -205,6 +205,7 @@ Module num.
         
         Axiom AssociatedConstant_value_MAX_DIGITS :
           M.IsAssociatedConstant Self "value_MAX_DIGITS" value_MAX_DIGITS.
+        Smpl Add apply AssociatedConstant_value_MAX_DIGITS : is_associated.
         
         (*     pub const MAX_DIGITS_WITHOUT_OVERFLOW: usize = 19; *)
         (* Ty.path "usize" *)
@@ -216,6 +217,7 @@ Module num.
             Self
             "value_MAX_DIGITS_WITHOUT_OVERFLOW"
             value_MAX_DIGITS_WITHOUT_OVERFLOW.
+        Smpl Add apply AssociatedConstant_value_MAX_DIGITS_WITHOUT_OVERFLOW : is_associated.
         
         (*     pub const DECIMAL_POINT_RANGE: i32 = 2047; *)
         (* Ty.path "i32" *)
@@ -224,6 +226,7 @@ Module num.
         
         Axiom AssociatedConstant_value_DECIMAL_POINT_RANGE :
           M.IsAssociatedConstant Self "value_DECIMAL_POINT_RANGE" value_DECIMAL_POINT_RANGE.
+        Smpl Add apply AssociatedConstant_value_DECIMAL_POINT_RANGE : is_associated.
         
         (*
             pub fn try_add_digit(&mut self, digit: u8) {
@@ -302,6 +305,7 @@ Module num.
         
         Axiom AssociatedFunction_try_add_digit :
           M.IsAssociatedFunction Self "try_add_digit" try_add_digit.
+        Smpl Add apply AssociatedFunction_try_add_digit : is_associated.
         
         (*
             pub fn trim(&mut self) {
@@ -467,6 +471,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_trim : M.IsAssociatedFunction Self "trim" trim.
+        Smpl Add apply AssociatedFunction_trim : is_associated.
         
         (*
             pub fn round(&self) -> u64 {
@@ -904,6 +909,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_round : M.IsAssociatedFunction Self "round" round.
+        Smpl Add apply AssociatedFunction_round : is_associated.
         
         (*
             pub fn left_shift(&mut self, shift: usize) {
@@ -1412,6 +1418,7 @@ Module num.
           end.
         
         Axiom AssociatedFunction_left_shift : M.IsAssociatedFunction Self "left_shift" left_shift.
+        Smpl Add apply AssociatedFunction_left_shift : is_associated.
         
         (*
             pub fn right_shift(&mut self, shift: usize) {
@@ -2030,6 +2037,7 @@ Module num.
         
         Axiom AssociatedFunction_right_shift :
           M.IsAssociatedFunction Self "right_shift" right_shift.
+        Smpl Add apply AssociatedFunction_right_shift : is_associated.
       End Impl_core_num_dec2flt_decimal_Decimal.
       
       (*
@@ -3454,6 +3462,7 @@ Module num.
       
       Axiom Function_parse_decimal :
         M.IsFunction "core::num::dec2flt::decimal::parse_decimal" parse_decimal.
+      Smpl Add apply Function_parse_decimal : is_function.
       
       (*
       fn number_of_digits_decimal_left_shift(d: &Decimal, mut shift: usize) -> usize {
@@ -3931,6 +3940,7 @@ Module num.
         M.IsFunction
           "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift"
           number_of_digits_decimal_left_shift.
+      Smpl Add apply Function_number_of_digits_decimal_left_shift : is_function.
       
       Module number_of_digits_decimal_left_shift.
         Definition value_TABLE : Value.t :=
@@ -4011,6 +4021,7 @@ Module num.
           (M.get_constant
               "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE") =
             value_TABLE.
+        Global Hint Rewrite Constant_value_TABLE : constant_rewrites.
         
         Definition value_TABLE_POW5 : Value.t :=
           M.run_constant
@@ -5333,6 +5344,7 @@ Module num.
           (M.get_constant
               "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE_POW5") =
             value_TABLE_POW5.
+        Global Hint Rewrite Constant_value_TABLE_POW5 : constant_rewrites.
       End number_of_digits_decimal_left_shift.
     End decimal.
   End dec2flt.

@@ -49,6 +49,7 @@ Module num.
       end.
     
     Axiom Function_u8 : M.IsFunction "core::num::int_log10::u8" u8.
+    Smpl Add apply Function_u8 : is_function.
     
     Module u8.
       Definition value_C1 : Value.t :=
@@ -62,6 +63,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C1 : (M.get_constant "core::num::int_log10::u8::C1") = value_C1.
+      Global Hint Rewrite Constant_value_C1 : constant_rewrites.
       
       Definition value_C2 : Value.t :=
         M.run_constant
@@ -74,6 +76,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C2 : (M.get_constant "core::num::int_log10::u8::C2") = value_C2.
+      Global Hint Rewrite Constant_value_C2 : constant_rewrites.
     End u8.
     
     (*
@@ -127,6 +130,7 @@ Module num.
       end.
     
     Axiom Function_less_than_5 : M.IsFunction "core::num::int_log10::less_than_5" less_than_5.
+    Smpl Add apply Function_less_than_5 : is_function.
     
     Module less_than_5.
       Definition value_C1 : Value.t :=
@@ -140,6 +144,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C1 : (M.get_constant "core::num::int_log10::less_than_5::C1") = value_C1.
+      Global Hint Rewrite Constant_value_C1 : constant_rewrites.
       
       Definition value_C2 : Value.t :=
         M.run_constant
@@ -152,6 +157,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C2 : (M.get_constant "core::num::int_log10::less_than_5::C2") = value_C2.
+      Global Hint Rewrite Constant_value_C2 : constant_rewrites.
       
       Definition value_C3 : Value.t :=
         M.run_constant
@@ -164,6 +170,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C3 : (M.get_constant "core::num::int_log10::less_than_5::C3") = value_C3.
+      Global Hint Rewrite Constant_value_C3 : constant_rewrites.
       
       Definition value_C4 : Value.t :=
         M.run_constant
@@ -176,6 +183,7 @@ Module num.
             |))).
       
       Axiom Constant_value_C4 : (M.get_constant "core::num::int_log10::less_than_5::C4") = value_C4.
+      Global Hint Rewrite Constant_value_C4 : constant_rewrites.
     End less_than_5.
     
     (*
@@ -196,6 +204,7 @@ Module num.
       end.
     
     Axiom Function_u16 : M.IsFunction "core::num::int_log10::u16" u16.
+    Smpl Add apply Function_u16 : is_function.
     
     (*
     pub const fn u32(mut val: u32) -> u32 {
@@ -256,6 +265,7 @@ Module num.
       end.
     
     Axiom Function_u32 : M.IsFunction "core::num::int_log10::u32" u32.
+    Smpl Add apply Function_u32 : is_function.
     
     (*
     pub const fn u64(mut val: u64) -> u32 {
@@ -354,6 +364,7 @@ Module num.
       end.
     
     Axiom Function_u64 : M.IsFunction "core::num::int_log10::u64" u64.
+    Smpl Add apply Function_u64 : is_function.
     
     (*
     pub const fn u128(mut val: u128) -> u32 {
@@ -483,6 +494,7 @@ Module num.
       end.
     
     Axiom Function_u128 : M.IsFunction "core::num::int_log10::u128" u128.
+    Smpl Add apply Function_u128 : is_function.
     
     (*
     pub const fn usize(val: usize) -> u32 {
@@ -502,6 +514,7 @@ Module num.
       end.
     
     Axiom Function_usize : M.IsFunction "core::num::int_log10::usize" usize.
+    Smpl Add apply Function_usize : is_function.
     
     (*
     pub const fn i8(val: i8) -> u32 {
@@ -521,6 +534,7 @@ Module num.
       end.
     
     Axiom Function_i8 : M.IsFunction "core::num::int_log10::i8" i8.
+    Smpl Add apply Function_i8 : is_function.
     
     (*
     pub const fn i16(val: i16) -> u32 {
@@ -540,6 +554,7 @@ Module num.
       end.
     
     Axiom Function_i16 : M.IsFunction "core::num::int_log10::i16" i16.
+    Smpl Add apply Function_i16 : is_function.
     
     (*
     pub const fn i32(val: i32) -> u32 {
@@ -559,6 +574,7 @@ Module num.
       end.
     
     Axiom Function_i32 : M.IsFunction "core::num::int_log10::i32" i32.
+    Smpl Add apply Function_i32 : is_function.
     
     (*
     pub const fn i64(val: i64) -> u32 {
@@ -578,6 +594,7 @@ Module num.
       end.
     
     Axiom Function_i64 : M.IsFunction "core::num::int_log10::i64" i64.
+    Smpl Add apply Function_i64 : is_function.
     
     (*
     pub const fn i128(val: i128) -> u32 {
@@ -597,6 +614,7 @@ Module num.
       end.
     
     Axiom Function_i128 : M.IsFunction "core::num::int_log10::i128" i128.
+    Smpl Add apply Function_i128 : is_function.
     
     (*
     pub const fn panic_for_nonpositive_argument() -> ! {
@@ -644,5 +662,6 @@ Module num.
       M.IsFunction
         "core::num::int_log10::panic_for_nonpositive_argument"
         panic_for_nonpositive_argument.
+    Smpl Add apply Function_panic_for_nonpositive_argument : is_function.
   End int_log10.
 End num.

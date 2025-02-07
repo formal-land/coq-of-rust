@@ -45,6 +45,7 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
   end.
 
 Axiom Function_checked_division : M.IsFunction "option::checked_division" checked_division.
+Smpl Add apply Function_checked_division : is_function.
 
 (*
 fn try_division(dividend: i32, divisor: i32) {
@@ -262,6 +263,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_try_division : M.IsFunction "option::try_division" try_division.
+Smpl Add apply Function_try_division : is_function.
 
 (*
 fn main() {
@@ -520,3 +522,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "option::main" main.
+Smpl Add apply Function_main : is_function.

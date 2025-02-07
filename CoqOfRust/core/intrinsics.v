@@ -21,81 +21,97 @@ Module intrinsics.
     end.
   
   Axiom Function_drop_in_place : M.IsFunction "core::intrinsics::drop_in_place" drop_in_place.
+  Smpl Add apply Function_drop_in_place : is_function.
   
   Parameter atomic_cxchg_relaxed_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_relaxed_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_relaxed_relaxed" atomic_cxchg_relaxed_relaxed.
+  Smpl Add apply Function_atomic_cxchg_relaxed_relaxed : is_function.
   
   Parameter atomic_cxchg_relaxed_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_relaxed_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_relaxed_acquire" atomic_cxchg_relaxed_acquire.
+  Smpl Add apply Function_atomic_cxchg_relaxed_acquire : is_function.
   
   Parameter atomic_cxchg_relaxed_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_relaxed_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_relaxed_seqcst" atomic_cxchg_relaxed_seqcst.
+  Smpl Add apply Function_atomic_cxchg_relaxed_seqcst : is_function.
   
   Parameter atomic_cxchg_acquire_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acquire_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_acquire_relaxed" atomic_cxchg_acquire_relaxed.
+  Smpl Add apply Function_atomic_cxchg_acquire_relaxed : is_function.
   
   Parameter atomic_cxchg_acquire_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acquire_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_acquire_acquire" atomic_cxchg_acquire_acquire.
+  Smpl Add apply Function_atomic_cxchg_acquire_acquire : is_function.
   
   Parameter atomic_cxchg_acquire_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acquire_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_acquire_seqcst" atomic_cxchg_acquire_seqcst.
+  Smpl Add apply Function_atomic_cxchg_acquire_seqcst : is_function.
   
   Parameter atomic_cxchg_release_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_release_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_release_relaxed" atomic_cxchg_release_relaxed.
+  Smpl Add apply Function_atomic_cxchg_release_relaxed : is_function.
   
   Parameter atomic_cxchg_release_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_release_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_release_acquire" atomic_cxchg_release_acquire.
+  Smpl Add apply Function_atomic_cxchg_release_acquire : is_function.
   
   Parameter atomic_cxchg_release_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_release_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_release_seqcst" atomic_cxchg_release_seqcst.
+  Smpl Add apply Function_atomic_cxchg_release_seqcst : is_function.
   
   Parameter atomic_cxchg_acqrel_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acqrel_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_acqrel_relaxed" atomic_cxchg_acqrel_relaxed.
+  Smpl Add apply Function_atomic_cxchg_acqrel_relaxed : is_function.
   
   Parameter atomic_cxchg_acqrel_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acqrel_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_acqrel_acquire" atomic_cxchg_acqrel_acquire.
+  Smpl Add apply Function_atomic_cxchg_acqrel_acquire : is_function.
   
   Parameter atomic_cxchg_acqrel_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_acqrel_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_acqrel_seqcst" atomic_cxchg_acqrel_seqcst.
+  Smpl Add apply Function_atomic_cxchg_acqrel_seqcst : is_function.
   
   Parameter atomic_cxchg_seqcst_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_seqcst_relaxed :
     M.IsFunction "core::intrinsics::atomic_cxchg_seqcst_relaxed" atomic_cxchg_seqcst_relaxed.
+  Smpl Add apply Function_atomic_cxchg_seqcst_relaxed : is_function.
   
   Parameter atomic_cxchg_seqcst_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_seqcst_acquire :
     M.IsFunction "core::intrinsics::atomic_cxchg_seqcst_acquire" atomic_cxchg_seqcst_acquire.
+  Smpl Add apply Function_atomic_cxchg_seqcst_acquire : is_function.
   
   Parameter atomic_cxchg_seqcst_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchg_seqcst_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchg_seqcst_seqcst" atomic_cxchg_seqcst_seqcst.
+  Smpl Add apply Function_atomic_cxchg_seqcst_seqcst : is_function.
   
   Parameter atomic_cxchgweak_relaxed_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -103,6 +119,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_relaxed_relaxed"
       atomic_cxchgweak_relaxed_relaxed.
+  Smpl Add apply Function_atomic_cxchgweak_relaxed_relaxed : is_function.
   
   Parameter atomic_cxchgweak_relaxed_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -110,6 +127,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_relaxed_acquire"
       atomic_cxchgweak_relaxed_acquire.
+  Smpl Add apply Function_atomic_cxchgweak_relaxed_acquire : is_function.
   
   Parameter atomic_cxchgweak_relaxed_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -117,6 +135,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_relaxed_seqcst"
       atomic_cxchgweak_relaxed_seqcst.
+  Smpl Add apply Function_atomic_cxchgweak_relaxed_seqcst : is_function.
   
   Parameter atomic_cxchgweak_acquire_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -124,6 +143,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acquire_relaxed"
       atomic_cxchgweak_acquire_relaxed.
+  Smpl Add apply Function_atomic_cxchgweak_acquire_relaxed : is_function.
   
   Parameter atomic_cxchgweak_acquire_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -131,6 +151,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acquire_acquire"
       atomic_cxchgweak_acquire_acquire.
+  Smpl Add apply Function_atomic_cxchgweak_acquire_acquire : is_function.
   
   Parameter atomic_cxchgweak_acquire_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -138,6 +159,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acquire_seqcst"
       atomic_cxchgweak_acquire_seqcst.
+  Smpl Add apply Function_atomic_cxchgweak_acquire_seqcst : is_function.
   
   Parameter atomic_cxchgweak_release_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -145,6 +167,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_release_relaxed"
       atomic_cxchgweak_release_relaxed.
+  Smpl Add apply Function_atomic_cxchgweak_release_relaxed : is_function.
   
   Parameter atomic_cxchgweak_release_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -152,6 +175,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_release_acquire"
       atomic_cxchgweak_release_acquire.
+  Smpl Add apply Function_atomic_cxchgweak_release_acquire : is_function.
   
   Parameter atomic_cxchgweak_release_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -159,6 +183,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_release_seqcst"
       atomic_cxchgweak_release_seqcst.
+  Smpl Add apply Function_atomic_cxchgweak_release_seqcst : is_function.
   
   Parameter atomic_cxchgweak_acqrel_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -166,6 +191,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acqrel_relaxed"
       atomic_cxchgweak_acqrel_relaxed.
+  Smpl Add apply Function_atomic_cxchgweak_acqrel_relaxed : is_function.
   
   Parameter atomic_cxchgweak_acqrel_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -173,11 +199,13 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_acqrel_acquire"
       atomic_cxchgweak_acqrel_acquire.
+  Smpl Add apply Function_atomic_cxchgweak_acqrel_acquire : is_function.
   
   Parameter atomic_cxchgweak_acqrel_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_acqrel_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchgweak_acqrel_seqcst" atomic_cxchgweak_acqrel_seqcst.
+  Smpl Add apply Function_atomic_cxchgweak_acqrel_seqcst : is_function.
   
   Parameter atomic_cxchgweak_seqcst_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -185,6 +213,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_seqcst_relaxed"
       atomic_cxchgweak_seqcst_relaxed.
+  Smpl Add apply Function_atomic_cxchgweak_seqcst_relaxed : is_function.
   
   Parameter atomic_cxchgweak_seqcst_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -192,346 +221,415 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_cxchgweak_seqcst_acquire"
       atomic_cxchgweak_seqcst_acquire.
+  Smpl Add apply Function_atomic_cxchgweak_seqcst_acquire : is_function.
   
   Parameter atomic_cxchgweak_seqcst_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_cxchgweak_seqcst_seqcst :
     M.IsFunction "core::intrinsics::atomic_cxchgweak_seqcst_seqcst" atomic_cxchgweak_seqcst_seqcst.
+  Smpl Add apply Function_atomic_cxchgweak_seqcst_seqcst : is_function.
   
   Parameter atomic_load_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_load_seqcst :
     M.IsFunction "core::intrinsics::atomic_load_seqcst" atomic_load_seqcst.
+  Smpl Add apply Function_atomic_load_seqcst : is_function.
   
   Parameter atomic_load_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_load_acquire :
     M.IsFunction "core::intrinsics::atomic_load_acquire" atomic_load_acquire.
+  Smpl Add apply Function_atomic_load_acquire : is_function.
   
   Parameter atomic_load_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_load_relaxed :
     M.IsFunction "core::intrinsics::atomic_load_relaxed" atomic_load_relaxed.
+  Smpl Add apply Function_atomic_load_relaxed : is_function.
   
   Parameter atomic_load_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_load_unordered :
     M.IsFunction "core::intrinsics::atomic_load_unordered" atomic_load_unordered.
+  Smpl Add apply Function_atomic_load_unordered : is_function.
   
   Parameter atomic_store_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_store_seqcst :
     M.IsFunction "core::intrinsics::atomic_store_seqcst" atomic_store_seqcst.
+  Smpl Add apply Function_atomic_store_seqcst : is_function.
   
   Parameter atomic_store_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_store_release :
     M.IsFunction "core::intrinsics::atomic_store_release" atomic_store_release.
+  Smpl Add apply Function_atomic_store_release : is_function.
   
   Parameter atomic_store_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_store_relaxed :
     M.IsFunction "core::intrinsics::atomic_store_relaxed" atomic_store_relaxed.
+  Smpl Add apply Function_atomic_store_relaxed : is_function.
   
   Parameter atomic_store_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_store_unordered :
     M.IsFunction "core::intrinsics::atomic_store_unordered" atomic_store_unordered.
+  Smpl Add apply Function_atomic_store_unordered : is_function.
   
   Parameter atomic_xchg_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_seqcst :
     M.IsFunction "core::intrinsics::atomic_xchg_seqcst" atomic_xchg_seqcst.
+  Smpl Add apply Function_atomic_xchg_seqcst : is_function.
   
   Parameter atomic_xchg_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_acquire :
     M.IsFunction "core::intrinsics::atomic_xchg_acquire" atomic_xchg_acquire.
+  Smpl Add apply Function_atomic_xchg_acquire : is_function.
   
   Parameter atomic_xchg_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_release :
     M.IsFunction "core::intrinsics::atomic_xchg_release" atomic_xchg_release.
+  Smpl Add apply Function_atomic_xchg_release : is_function.
   
   Parameter atomic_xchg_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_acqrel :
     M.IsFunction "core::intrinsics::atomic_xchg_acqrel" atomic_xchg_acqrel.
+  Smpl Add apply Function_atomic_xchg_acqrel : is_function.
   
   Parameter atomic_xchg_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xchg_relaxed :
     M.IsFunction "core::intrinsics::atomic_xchg_relaxed" atomic_xchg_relaxed.
+  Smpl Add apply Function_atomic_xchg_relaxed : is_function.
   
   Parameter atomic_xadd_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_seqcst :
     M.IsFunction "core::intrinsics::atomic_xadd_seqcst" atomic_xadd_seqcst.
+  Smpl Add apply Function_atomic_xadd_seqcst : is_function.
   
   Parameter atomic_xadd_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_acquire :
     M.IsFunction "core::intrinsics::atomic_xadd_acquire" atomic_xadd_acquire.
+  Smpl Add apply Function_atomic_xadd_acquire : is_function.
   
   Parameter atomic_xadd_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_release :
     M.IsFunction "core::intrinsics::atomic_xadd_release" atomic_xadd_release.
+  Smpl Add apply Function_atomic_xadd_release : is_function.
   
   Parameter atomic_xadd_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_acqrel :
     M.IsFunction "core::intrinsics::atomic_xadd_acqrel" atomic_xadd_acqrel.
+  Smpl Add apply Function_atomic_xadd_acqrel : is_function.
   
   Parameter atomic_xadd_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xadd_relaxed :
     M.IsFunction "core::intrinsics::atomic_xadd_relaxed" atomic_xadd_relaxed.
+  Smpl Add apply Function_atomic_xadd_relaxed : is_function.
   
   Parameter atomic_xsub_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_seqcst :
     M.IsFunction "core::intrinsics::atomic_xsub_seqcst" atomic_xsub_seqcst.
+  Smpl Add apply Function_atomic_xsub_seqcst : is_function.
   
   Parameter atomic_xsub_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_acquire :
     M.IsFunction "core::intrinsics::atomic_xsub_acquire" atomic_xsub_acquire.
+  Smpl Add apply Function_atomic_xsub_acquire : is_function.
   
   Parameter atomic_xsub_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_release :
     M.IsFunction "core::intrinsics::atomic_xsub_release" atomic_xsub_release.
+  Smpl Add apply Function_atomic_xsub_release : is_function.
   
   Parameter atomic_xsub_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_acqrel :
     M.IsFunction "core::intrinsics::atomic_xsub_acqrel" atomic_xsub_acqrel.
+  Smpl Add apply Function_atomic_xsub_acqrel : is_function.
   
   Parameter atomic_xsub_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xsub_relaxed :
     M.IsFunction "core::intrinsics::atomic_xsub_relaxed" atomic_xsub_relaxed.
+  Smpl Add apply Function_atomic_xsub_relaxed : is_function.
   
   Parameter atomic_and_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_seqcst :
     M.IsFunction "core::intrinsics::atomic_and_seqcst" atomic_and_seqcst.
+  Smpl Add apply Function_atomic_and_seqcst : is_function.
   
   Parameter atomic_and_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_acquire :
     M.IsFunction "core::intrinsics::atomic_and_acquire" atomic_and_acquire.
+  Smpl Add apply Function_atomic_and_acquire : is_function.
   
   Parameter atomic_and_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_release :
     M.IsFunction "core::intrinsics::atomic_and_release" atomic_and_release.
+  Smpl Add apply Function_atomic_and_release : is_function.
   
   Parameter atomic_and_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_acqrel :
     M.IsFunction "core::intrinsics::atomic_and_acqrel" atomic_and_acqrel.
+  Smpl Add apply Function_atomic_and_acqrel : is_function.
   
   Parameter atomic_and_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_and_relaxed :
     M.IsFunction "core::intrinsics::atomic_and_relaxed" atomic_and_relaxed.
+  Smpl Add apply Function_atomic_and_relaxed : is_function.
   
   Parameter atomic_nand_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_seqcst :
     M.IsFunction "core::intrinsics::atomic_nand_seqcst" atomic_nand_seqcst.
+  Smpl Add apply Function_atomic_nand_seqcst : is_function.
   
   Parameter atomic_nand_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_acquire :
     M.IsFunction "core::intrinsics::atomic_nand_acquire" atomic_nand_acquire.
+  Smpl Add apply Function_atomic_nand_acquire : is_function.
   
   Parameter atomic_nand_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_release :
     M.IsFunction "core::intrinsics::atomic_nand_release" atomic_nand_release.
+  Smpl Add apply Function_atomic_nand_release : is_function.
   
   Parameter atomic_nand_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_acqrel :
     M.IsFunction "core::intrinsics::atomic_nand_acqrel" atomic_nand_acqrel.
+  Smpl Add apply Function_atomic_nand_acqrel : is_function.
   
   Parameter atomic_nand_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_nand_relaxed :
     M.IsFunction "core::intrinsics::atomic_nand_relaxed" atomic_nand_relaxed.
+  Smpl Add apply Function_atomic_nand_relaxed : is_function.
   
   Parameter atomic_or_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_seqcst :
     M.IsFunction "core::intrinsics::atomic_or_seqcst" atomic_or_seqcst.
+  Smpl Add apply Function_atomic_or_seqcst : is_function.
   
   Parameter atomic_or_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_acquire :
     M.IsFunction "core::intrinsics::atomic_or_acquire" atomic_or_acquire.
+  Smpl Add apply Function_atomic_or_acquire : is_function.
   
   Parameter atomic_or_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_release :
     M.IsFunction "core::intrinsics::atomic_or_release" atomic_or_release.
+  Smpl Add apply Function_atomic_or_release : is_function.
   
   Parameter atomic_or_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_acqrel :
     M.IsFunction "core::intrinsics::atomic_or_acqrel" atomic_or_acqrel.
+  Smpl Add apply Function_atomic_or_acqrel : is_function.
   
   Parameter atomic_or_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_or_relaxed :
     M.IsFunction "core::intrinsics::atomic_or_relaxed" atomic_or_relaxed.
+  Smpl Add apply Function_atomic_or_relaxed : is_function.
   
   Parameter atomic_xor_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_seqcst :
     M.IsFunction "core::intrinsics::atomic_xor_seqcst" atomic_xor_seqcst.
+  Smpl Add apply Function_atomic_xor_seqcst : is_function.
   
   Parameter atomic_xor_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_acquire :
     M.IsFunction "core::intrinsics::atomic_xor_acquire" atomic_xor_acquire.
+  Smpl Add apply Function_atomic_xor_acquire : is_function.
   
   Parameter atomic_xor_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_release :
     M.IsFunction "core::intrinsics::atomic_xor_release" atomic_xor_release.
+  Smpl Add apply Function_atomic_xor_release : is_function.
   
   Parameter atomic_xor_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_acqrel :
     M.IsFunction "core::intrinsics::atomic_xor_acqrel" atomic_xor_acqrel.
+  Smpl Add apply Function_atomic_xor_acqrel : is_function.
   
   Parameter atomic_xor_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_xor_relaxed :
     M.IsFunction "core::intrinsics::atomic_xor_relaxed" atomic_xor_relaxed.
+  Smpl Add apply Function_atomic_xor_relaxed : is_function.
   
   Parameter atomic_max_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_seqcst :
     M.IsFunction "core::intrinsics::atomic_max_seqcst" atomic_max_seqcst.
+  Smpl Add apply Function_atomic_max_seqcst : is_function.
   
   Parameter atomic_max_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_acquire :
     M.IsFunction "core::intrinsics::atomic_max_acquire" atomic_max_acquire.
+  Smpl Add apply Function_atomic_max_acquire : is_function.
   
   Parameter atomic_max_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_release :
     M.IsFunction "core::intrinsics::atomic_max_release" atomic_max_release.
+  Smpl Add apply Function_atomic_max_release : is_function.
   
   Parameter atomic_max_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_acqrel :
     M.IsFunction "core::intrinsics::atomic_max_acqrel" atomic_max_acqrel.
+  Smpl Add apply Function_atomic_max_acqrel : is_function.
   
   Parameter atomic_max_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_max_relaxed :
     M.IsFunction "core::intrinsics::atomic_max_relaxed" atomic_max_relaxed.
+  Smpl Add apply Function_atomic_max_relaxed : is_function.
   
   Parameter atomic_min_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_seqcst :
     M.IsFunction "core::intrinsics::atomic_min_seqcst" atomic_min_seqcst.
+  Smpl Add apply Function_atomic_min_seqcst : is_function.
   
   Parameter atomic_min_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_acquire :
     M.IsFunction "core::intrinsics::atomic_min_acquire" atomic_min_acquire.
+  Smpl Add apply Function_atomic_min_acquire : is_function.
   
   Parameter atomic_min_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_release :
     M.IsFunction "core::intrinsics::atomic_min_release" atomic_min_release.
+  Smpl Add apply Function_atomic_min_release : is_function.
   
   Parameter atomic_min_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_acqrel :
     M.IsFunction "core::intrinsics::atomic_min_acqrel" atomic_min_acqrel.
+  Smpl Add apply Function_atomic_min_acqrel : is_function.
   
   Parameter atomic_min_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_min_relaxed :
     M.IsFunction "core::intrinsics::atomic_min_relaxed" atomic_min_relaxed.
+  Smpl Add apply Function_atomic_min_relaxed : is_function.
   
   Parameter atomic_umin_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_seqcst :
     M.IsFunction "core::intrinsics::atomic_umin_seqcst" atomic_umin_seqcst.
+  Smpl Add apply Function_atomic_umin_seqcst : is_function.
   
   Parameter atomic_umin_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_acquire :
     M.IsFunction "core::intrinsics::atomic_umin_acquire" atomic_umin_acquire.
+  Smpl Add apply Function_atomic_umin_acquire : is_function.
   
   Parameter atomic_umin_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_release :
     M.IsFunction "core::intrinsics::atomic_umin_release" atomic_umin_release.
+  Smpl Add apply Function_atomic_umin_release : is_function.
   
   Parameter atomic_umin_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_acqrel :
     M.IsFunction "core::intrinsics::atomic_umin_acqrel" atomic_umin_acqrel.
+  Smpl Add apply Function_atomic_umin_acqrel : is_function.
   
   Parameter atomic_umin_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umin_relaxed :
     M.IsFunction "core::intrinsics::atomic_umin_relaxed" atomic_umin_relaxed.
+  Smpl Add apply Function_atomic_umin_relaxed : is_function.
   
   Parameter atomic_umax_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_seqcst :
     M.IsFunction "core::intrinsics::atomic_umax_seqcst" atomic_umax_seqcst.
+  Smpl Add apply Function_atomic_umax_seqcst : is_function.
   
   Parameter atomic_umax_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_acquire :
     M.IsFunction "core::intrinsics::atomic_umax_acquire" atomic_umax_acquire.
+  Smpl Add apply Function_atomic_umax_acquire : is_function.
   
   Parameter atomic_umax_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_release :
     M.IsFunction "core::intrinsics::atomic_umax_release" atomic_umax_release.
+  Smpl Add apply Function_atomic_umax_release : is_function.
   
   Parameter atomic_umax_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_acqrel :
     M.IsFunction "core::intrinsics::atomic_umax_acqrel" atomic_umax_acqrel.
+  Smpl Add apply Function_atomic_umax_acqrel : is_function.
   
   Parameter atomic_umax_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_umax_relaxed :
     M.IsFunction "core::intrinsics::atomic_umax_relaxed" atomic_umax_relaxed.
+  Smpl Add apply Function_atomic_umax_relaxed : is_function.
   
   Parameter atomic_fence_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_fence_seqcst :
     M.IsFunction "core::intrinsics::atomic_fence_seqcst" atomic_fence_seqcst.
+  Smpl Add apply Function_atomic_fence_seqcst : is_function.
   
   Parameter atomic_fence_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_fence_acquire :
     M.IsFunction "core::intrinsics::atomic_fence_acquire" atomic_fence_acquire.
+  Smpl Add apply Function_atomic_fence_acquire : is_function.
   
   Parameter atomic_fence_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_fence_release :
     M.IsFunction "core::intrinsics::atomic_fence_release" atomic_fence_release.
+  Smpl Add apply Function_atomic_fence_release : is_function.
   
   Parameter atomic_fence_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_atomic_fence_acqrel :
     M.IsFunction "core::intrinsics::atomic_fence_acqrel" atomic_fence_acqrel.
+  Smpl Add apply Function_atomic_fence_acqrel : is_function.
   
   Parameter atomic_singlethreadfence_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -539,6 +637,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_singlethreadfence_seqcst"
       atomic_singlethreadfence_seqcst.
+  Smpl Add apply Function_atomic_singlethreadfence_seqcst : is_function.
   
   Parameter atomic_singlethreadfence_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -546,6 +645,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_singlethreadfence_acquire"
       atomic_singlethreadfence_acquire.
+  Smpl Add apply Function_atomic_singlethreadfence_acquire : is_function.
   
   Parameter atomic_singlethreadfence_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -553,6 +653,7 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_singlethreadfence_release"
       atomic_singlethreadfence_release.
+  Smpl Add apply Function_atomic_singlethreadfence_release : is_function.
   
   Parameter atomic_singlethreadfence_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -560,38 +661,46 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::atomic_singlethreadfence_acqrel"
       atomic_singlethreadfence_acqrel.
+  Smpl Add apply Function_atomic_singlethreadfence_acqrel : is_function.
   
   Parameter prefetch_read_data : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_prefetch_read_data :
     M.IsFunction "core::intrinsics::prefetch_read_data" prefetch_read_data.
+  Smpl Add apply Function_prefetch_read_data : is_function.
   
   Parameter prefetch_write_data : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_prefetch_write_data :
     M.IsFunction "core::intrinsics::prefetch_write_data" prefetch_write_data.
+  Smpl Add apply Function_prefetch_write_data : is_function.
   
   Parameter prefetch_read_instruction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_prefetch_read_instruction :
     M.IsFunction "core::intrinsics::prefetch_read_instruction" prefetch_read_instruction.
+  Smpl Add apply Function_prefetch_read_instruction : is_function.
   
   Parameter prefetch_write_instruction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_prefetch_write_instruction :
     M.IsFunction "core::intrinsics::prefetch_write_instruction" prefetch_write_instruction.
+  Smpl Add apply Function_prefetch_write_instruction : is_function.
   
   Parameter rustc_peek : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rustc_peek : M.IsFunction "core::intrinsics::rustc_peek" rustc_peek.
+  Smpl Add apply Function_rustc_peek : is_function.
   
   Parameter abort : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_abort : M.IsFunction "core::intrinsics::abort" abort.
+  Smpl Add apply Function_abort : is_function.
   
   Parameter unreachable : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unreachable : M.IsFunction "core::intrinsics::unreachable" unreachable.
+  Smpl Add apply Function_unreachable : is_function.
   
   (*
   pub const unsafe fn assume(b: bool) {
@@ -630,6 +739,7 @@ Module intrinsics.
     end.
   
   Axiom Function_assume : M.IsFunction "core::intrinsics::assume" assume.
+  Smpl Add apply Function_assume : is_function.
   
   (*
   pub const fn likely(b: bool) -> bool {
@@ -646,6 +756,7 @@ Module intrinsics.
     end.
   
   Axiom Function_likely : M.IsFunction "core::intrinsics::likely" likely.
+  Smpl Add apply Function_likely : is_function.
   
   (*
   pub const fn unlikely(b: bool) -> bool {
@@ -662,6 +773,7 @@ Module intrinsics.
     end.
   
   Axiom Function_unlikely : M.IsFunction "core::intrinsics::unlikely" unlikely.
+  Smpl Add apply Function_unlikely : is_function.
   
   (*
   pub fn select_unpredictable<T>(b: bool, true_val: T, false_val: T) -> T {
@@ -693,58 +805,71 @@ Module intrinsics.
   
   Axiom Function_select_unpredictable :
     M.IsFunction "core::intrinsics::select_unpredictable" select_unpredictable.
+  Smpl Add apply Function_select_unpredictable : is_function.
   
   Parameter breakpoint : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_breakpoint : M.IsFunction "core::intrinsics::breakpoint" breakpoint.
+  Smpl Add apply Function_breakpoint : is_function.
   
   Parameter assert_inhabited : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_assert_inhabited :
     M.IsFunction "core::intrinsics::assert_inhabited" assert_inhabited.
+  Smpl Add apply Function_assert_inhabited : is_function.
   
   Parameter assert_zero_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_assert_zero_valid :
     M.IsFunction "core::intrinsics::assert_zero_valid" assert_zero_valid.
+  Smpl Add apply Function_assert_zero_valid : is_function.
   
   Parameter assert_mem_uninitialized_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_assert_mem_uninitialized_valid :
     M.IsFunction "core::intrinsics::assert_mem_uninitialized_valid" assert_mem_uninitialized_valid.
+  Smpl Add apply Function_assert_mem_uninitialized_valid : is_function.
   
   Parameter caller_location : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_caller_location : M.IsFunction "core::intrinsics::caller_location" caller_location.
+  Smpl Add apply Function_caller_location : is_function.
   
   Parameter forget : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_forget : M.IsFunction "core::intrinsics::forget" forget.
+  Smpl Add apply Function_forget : is_function.
   
   Parameter transmute : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_transmute : M.IsFunction "core::intrinsics::transmute" transmute.
+  Smpl Add apply Function_transmute : is_function.
   
   Parameter transmute_unchecked : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_transmute_unchecked :
     M.IsFunction "core::intrinsics::transmute_unchecked" transmute_unchecked.
+  Smpl Add apply Function_transmute_unchecked : is_function.
   
   Parameter needs_drop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_needs_drop : M.IsFunction "core::intrinsics::needs_drop" needs_drop.
+  Smpl Add apply Function_needs_drop : is_function.
   
   Parameter offset : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_offset : M.IsFunction "core::intrinsics::offset" offset.
+  Smpl Add apply Function_offset : is_function.
   
   Parameter arith_offset : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_arith_offset : M.IsFunction "core::intrinsics::arith_offset" arith_offset.
+  Smpl Add apply Function_arith_offset : is_function.
   
   Parameter ptr_mask : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ptr_mask : M.IsFunction "core::intrinsics::ptr_mask" ptr_mask.
+  Smpl Add apply Function_ptr_mask : is_function.
   
   Parameter volatile_copy_nonoverlapping_memory :
       (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -753,570 +878,709 @@ Module intrinsics.
     M.IsFunction
       "core::intrinsics::volatile_copy_nonoverlapping_memory"
       volatile_copy_nonoverlapping_memory.
+  Smpl Add apply Function_volatile_copy_nonoverlapping_memory : is_function.
   
   Parameter volatile_copy_memory : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_volatile_copy_memory :
     M.IsFunction "core::intrinsics::volatile_copy_memory" volatile_copy_memory.
+  Smpl Add apply Function_volatile_copy_memory : is_function.
   
   Parameter volatile_set_memory : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_volatile_set_memory :
     M.IsFunction "core::intrinsics::volatile_set_memory" volatile_set_memory.
+  Smpl Add apply Function_volatile_set_memory : is_function.
   
   Parameter volatile_load : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_volatile_load : M.IsFunction "core::intrinsics::volatile_load" volatile_load.
+  Smpl Add apply Function_volatile_load : is_function.
   
   Parameter volatile_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_volatile_store : M.IsFunction "core::intrinsics::volatile_store" volatile_store.
+  Smpl Add apply Function_volatile_store : is_function.
   
   Parameter unaligned_volatile_load : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unaligned_volatile_load :
     M.IsFunction "core::intrinsics::unaligned_volatile_load" unaligned_volatile_load.
+  Smpl Add apply Function_unaligned_volatile_load : is_function.
   
   Parameter unaligned_volatile_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unaligned_volatile_store :
     M.IsFunction "core::intrinsics::unaligned_volatile_store" unaligned_volatile_store.
+  Smpl Add apply Function_unaligned_volatile_store : is_function.
   
   Parameter sqrtf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sqrtf16 : M.IsFunction "core::intrinsics::sqrtf16" sqrtf16.
+  Smpl Add apply Function_sqrtf16 : is_function.
   
   Parameter sqrtf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sqrtf32 : M.IsFunction "core::intrinsics::sqrtf32" sqrtf32.
+  Smpl Add apply Function_sqrtf32 : is_function.
   
   Parameter sqrtf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sqrtf64 : M.IsFunction "core::intrinsics::sqrtf64" sqrtf64.
+  Smpl Add apply Function_sqrtf64 : is_function.
   
   Parameter sqrtf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sqrtf128 : M.IsFunction "core::intrinsics::sqrtf128" sqrtf128.
+  Smpl Add apply Function_sqrtf128 : is_function.
   
   Parameter powif16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powif16 : M.IsFunction "core::intrinsics::powif16" powif16.
+  Smpl Add apply Function_powif16 : is_function.
   
   Parameter powif32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powif32 : M.IsFunction "core::intrinsics::powif32" powif32.
+  Smpl Add apply Function_powif32 : is_function.
   
   Parameter powif64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powif64 : M.IsFunction "core::intrinsics::powif64" powif64.
+  Smpl Add apply Function_powif64 : is_function.
   
   Parameter powif128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powif128 : M.IsFunction "core::intrinsics::powif128" powif128.
+  Smpl Add apply Function_powif128 : is_function.
   
   Parameter sinf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sinf16 : M.IsFunction "core::intrinsics::sinf16" sinf16.
+  Smpl Add apply Function_sinf16 : is_function.
   
   Parameter sinf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sinf32 : M.IsFunction "core::intrinsics::sinf32" sinf32.
+  Smpl Add apply Function_sinf32 : is_function.
   
   Parameter sinf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sinf64 : M.IsFunction "core::intrinsics::sinf64" sinf64.
+  Smpl Add apply Function_sinf64 : is_function.
   
   Parameter sinf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sinf128 : M.IsFunction "core::intrinsics::sinf128" sinf128.
+  Smpl Add apply Function_sinf128 : is_function.
   
   Parameter cosf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cosf16 : M.IsFunction "core::intrinsics::cosf16" cosf16.
+  Smpl Add apply Function_cosf16 : is_function.
   
   Parameter cosf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cosf32 : M.IsFunction "core::intrinsics::cosf32" cosf32.
+  Smpl Add apply Function_cosf32 : is_function.
   
   Parameter cosf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cosf64 : M.IsFunction "core::intrinsics::cosf64" cosf64.
+  Smpl Add apply Function_cosf64 : is_function.
   
   Parameter cosf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cosf128 : M.IsFunction "core::intrinsics::cosf128" cosf128.
+  Smpl Add apply Function_cosf128 : is_function.
   
   Parameter powf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powf16 : M.IsFunction "core::intrinsics::powf16" powf16.
+  Smpl Add apply Function_powf16 : is_function.
   
   Parameter powf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powf32 : M.IsFunction "core::intrinsics::powf32" powf32.
+  Smpl Add apply Function_powf32 : is_function.
   
   Parameter powf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powf64 : M.IsFunction "core::intrinsics::powf64" powf64.
+  Smpl Add apply Function_powf64 : is_function.
   
   Parameter powf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_powf128 : M.IsFunction "core::intrinsics::powf128" powf128.
+  Smpl Add apply Function_powf128 : is_function.
   
   Parameter expf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_expf16 : M.IsFunction "core::intrinsics::expf16" expf16.
+  Smpl Add apply Function_expf16 : is_function.
   
   Parameter expf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_expf32 : M.IsFunction "core::intrinsics::expf32" expf32.
+  Smpl Add apply Function_expf32 : is_function.
   
   Parameter expf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_expf64 : M.IsFunction "core::intrinsics::expf64" expf64.
+  Smpl Add apply Function_expf64 : is_function.
   
   Parameter expf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_expf128 : M.IsFunction "core::intrinsics::expf128" expf128.
+  Smpl Add apply Function_expf128 : is_function.
   
   Parameter exp2f16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_exp2f16 : M.IsFunction "core::intrinsics::exp2f16" exp2f16.
+  Smpl Add apply Function_exp2f16 : is_function.
   
   Parameter exp2f32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_exp2f32 : M.IsFunction "core::intrinsics::exp2f32" exp2f32.
+  Smpl Add apply Function_exp2f32 : is_function.
   
   Parameter exp2f64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_exp2f64 : M.IsFunction "core::intrinsics::exp2f64" exp2f64.
+  Smpl Add apply Function_exp2f64 : is_function.
   
   Parameter exp2f128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_exp2f128 : M.IsFunction "core::intrinsics::exp2f128" exp2f128.
+  Smpl Add apply Function_exp2f128 : is_function.
   
   Parameter logf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_logf16 : M.IsFunction "core::intrinsics::logf16" logf16.
+  Smpl Add apply Function_logf16 : is_function.
   
   Parameter logf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_logf32 : M.IsFunction "core::intrinsics::logf32" logf32.
+  Smpl Add apply Function_logf32 : is_function.
   
   Parameter logf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_logf64 : M.IsFunction "core::intrinsics::logf64" logf64.
+  Smpl Add apply Function_logf64 : is_function.
   
   Parameter logf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_logf128 : M.IsFunction "core::intrinsics::logf128" logf128.
+  Smpl Add apply Function_logf128 : is_function.
   
   Parameter log10f16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log10f16 : M.IsFunction "core::intrinsics::log10f16" log10f16.
+  Smpl Add apply Function_log10f16 : is_function.
   
   Parameter log10f32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log10f32 : M.IsFunction "core::intrinsics::log10f32" log10f32.
+  Smpl Add apply Function_log10f32 : is_function.
   
   Parameter log10f64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log10f64 : M.IsFunction "core::intrinsics::log10f64" log10f64.
+  Smpl Add apply Function_log10f64 : is_function.
   
   Parameter log10f128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log10f128 : M.IsFunction "core::intrinsics::log10f128" log10f128.
+  Smpl Add apply Function_log10f128 : is_function.
   
   Parameter log2f16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log2f16 : M.IsFunction "core::intrinsics::log2f16" log2f16.
+  Smpl Add apply Function_log2f16 : is_function.
   
   Parameter log2f32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log2f32 : M.IsFunction "core::intrinsics::log2f32" log2f32.
+  Smpl Add apply Function_log2f32 : is_function.
   
   Parameter log2f64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log2f64 : M.IsFunction "core::intrinsics::log2f64" log2f64.
+  Smpl Add apply Function_log2f64 : is_function.
   
   Parameter log2f128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_log2f128 : M.IsFunction "core::intrinsics::log2f128" log2f128.
+  Smpl Add apply Function_log2f128 : is_function.
   
   Parameter fmaf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fmaf16 : M.IsFunction "core::intrinsics::fmaf16" fmaf16.
+  Smpl Add apply Function_fmaf16 : is_function.
   
   Parameter fmaf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fmaf32 : M.IsFunction "core::intrinsics::fmaf32" fmaf32.
+  Smpl Add apply Function_fmaf32 : is_function.
   
   Parameter fmaf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fmaf64 : M.IsFunction "core::intrinsics::fmaf64" fmaf64.
+  Smpl Add apply Function_fmaf64 : is_function.
   
   Parameter fmaf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fmaf128 : M.IsFunction "core::intrinsics::fmaf128" fmaf128.
+  Smpl Add apply Function_fmaf128 : is_function.
   
   Parameter fabsf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fabsf16 : M.IsFunction "core::intrinsics::fabsf16" fabsf16.
+  Smpl Add apply Function_fabsf16 : is_function.
   
   Parameter fabsf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fabsf32 : M.IsFunction "core::intrinsics::fabsf32" fabsf32.
+  Smpl Add apply Function_fabsf32 : is_function.
   
   Parameter fabsf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fabsf64 : M.IsFunction "core::intrinsics::fabsf64" fabsf64.
+  Smpl Add apply Function_fabsf64 : is_function.
   
   Parameter fabsf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fabsf128 : M.IsFunction "core::intrinsics::fabsf128" fabsf128.
+  Smpl Add apply Function_fabsf128 : is_function.
   
   Parameter minnumf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_minnumf16 : M.IsFunction "core::intrinsics::minnumf16" minnumf16.
+  Smpl Add apply Function_minnumf16 : is_function.
   
   Parameter minnumf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_minnumf32 : M.IsFunction "core::intrinsics::minnumf32" minnumf32.
+  Smpl Add apply Function_minnumf32 : is_function.
   
   Parameter minnumf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_minnumf64 : M.IsFunction "core::intrinsics::minnumf64" minnumf64.
+  Smpl Add apply Function_minnumf64 : is_function.
   
   Parameter minnumf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_minnumf128 : M.IsFunction "core::intrinsics::minnumf128" minnumf128.
+  Smpl Add apply Function_minnumf128 : is_function.
   
   Parameter maxnumf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_maxnumf16 : M.IsFunction "core::intrinsics::maxnumf16" maxnumf16.
+  Smpl Add apply Function_maxnumf16 : is_function.
   
   Parameter maxnumf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_maxnumf32 : M.IsFunction "core::intrinsics::maxnumf32" maxnumf32.
+  Smpl Add apply Function_maxnumf32 : is_function.
   
   Parameter maxnumf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_maxnumf64 : M.IsFunction "core::intrinsics::maxnumf64" maxnumf64.
+  Smpl Add apply Function_maxnumf64 : is_function.
   
   Parameter maxnumf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_maxnumf128 : M.IsFunction "core::intrinsics::maxnumf128" maxnumf128.
+  Smpl Add apply Function_maxnumf128 : is_function.
   
   Parameter copysignf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_copysignf16 : M.IsFunction "core::intrinsics::copysignf16" copysignf16.
+  Smpl Add apply Function_copysignf16 : is_function.
   
   Parameter copysignf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_copysignf32 : M.IsFunction "core::intrinsics::copysignf32" copysignf32.
+  Smpl Add apply Function_copysignf32 : is_function.
   
   Parameter copysignf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_copysignf64 : M.IsFunction "core::intrinsics::copysignf64" copysignf64.
+  Smpl Add apply Function_copysignf64 : is_function.
   
   Parameter copysignf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_copysignf128 : M.IsFunction "core::intrinsics::copysignf128" copysignf128.
+  Smpl Add apply Function_copysignf128 : is_function.
   
   Parameter floorf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_floorf16 : M.IsFunction "core::intrinsics::floorf16" floorf16.
+  Smpl Add apply Function_floorf16 : is_function.
   
   Parameter floorf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_floorf32 : M.IsFunction "core::intrinsics::floorf32" floorf32.
+  Smpl Add apply Function_floorf32 : is_function.
   
   Parameter floorf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_floorf64 : M.IsFunction "core::intrinsics::floorf64" floorf64.
+  Smpl Add apply Function_floorf64 : is_function.
   
   Parameter floorf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_floorf128 : M.IsFunction "core::intrinsics::floorf128" floorf128.
+  Smpl Add apply Function_floorf128 : is_function.
   
   Parameter ceilf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ceilf16 : M.IsFunction "core::intrinsics::ceilf16" ceilf16.
+  Smpl Add apply Function_ceilf16 : is_function.
   
   Parameter ceilf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ceilf32 : M.IsFunction "core::intrinsics::ceilf32" ceilf32.
+  Smpl Add apply Function_ceilf32 : is_function.
   
   Parameter ceilf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ceilf64 : M.IsFunction "core::intrinsics::ceilf64" ceilf64.
+  Smpl Add apply Function_ceilf64 : is_function.
   
   Parameter ceilf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ceilf128 : M.IsFunction "core::intrinsics::ceilf128" ceilf128.
+  Smpl Add apply Function_ceilf128 : is_function.
   
   Parameter truncf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_truncf16 : M.IsFunction "core::intrinsics::truncf16" truncf16.
+  Smpl Add apply Function_truncf16 : is_function.
   
   Parameter truncf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_truncf32 : M.IsFunction "core::intrinsics::truncf32" truncf32.
+  Smpl Add apply Function_truncf32 : is_function.
   
   Parameter truncf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_truncf64 : M.IsFunction "core::intrinsics::truncf64" truncf64.
+  Smpl Add apply Function_truncf64 : is_function.
   
   Parameter truncf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_truncf128 : M.IsFunction "core::intrinsics::truncf128" truncf128.
+  Smpl Add apply Function_truncf128 : is_function.
   
   Parameter rintf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rintf16 : M.IsFunction "core::intrinsics::rintf16" rintf16.
+  Smpl Add apply Function_rintf16 : is_function.
   
   Parameter rintf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rintf32 : M.IsFunction "core::intrinsics::rintf32" rintf32.
+  Smpl Add apply Function_rintf32 : is_function.
   
   Parameter rintf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rintf64 : M.IsFunction "core::intrinsics::rintf64" rintf64.
+  Smpl Add apply Function_rintf64 : is_function.
   
   Parameter rintf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rintf128 : M.IsFunction "core::intrinsics::rintf128" rintf128.
+  Smpl Add apply Function_rintf128 : is_function.
   
   Parameter nearbyintf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_nearbyintf16 : M.IsFunction "core::intrinsics::nearbyintf16" nearbyintf16.
+  Smpl Add apply Function_nearbyintf16 : is_function.
   
   Parameter nearbyintf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_nearbyintf32 : M.IsFunction "core::intrinsics::nearbyintf32" nearbyintf32.
+  Smpl Add apply Function_nearbyintf32 : is_function.
   
   Parameter nearbyintf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_nearbyintf64 : M.IsFunction "core::intrinsics::nearbyintf64" nearbyintf64.
+  Smpl Add apply Function_nearbyintf64 : is_function.
   
   Parameter nearbyintf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_nearbyintf128 : M.IsFunction "core::intrinsics::nearbyintf128" nearbyintf128.
+  Smpl Add apply Function_nearbyintf128 : is_function.
   
   Parameter roundf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundf16 : M.IsFunction "core::intrinsics::roundf16" roundf16.
+  Smpl Add apply Function_roundf16 : is_function.
   
   Parameter roundf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundf32 : M.IsFunction "core::intrinsics::roundf32" roundf32.
+  Smpl Add apply Function_roundf32 : is_function.
   
   Parameter roundf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundf64 : M.IsFunction "core::intrinsics::roundf64" roundf64.
+  Smpl Add apply Function_roundf64 : is_function.
   
   Parameter roundf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundf128 : M.IsFunction "core::intrinsics::roundf128" roundf128.
+  Smpl Add apply Function_roundf128 : is_function.
   
   Parameter roundevenf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundevenf16 : M.IsFunction "core::intrinsics::roundevenf16" roundevenf16.
+  Smpl Add apply Function_roundevenf16 : is_function.
   
   Parameter roundevenf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundevenf32 : M.IsFunction "core::intrinsics::roundevenf32" roundevenf32.
+  Smpl Add apply Function_roundevenf32 : is_function.
   
   Parameter roundevenf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundevenf64 : M.IsFunction "core::intrinsics::roundevenf64" roundevenf64.
+  Smpl Add apply Function_roundevenf64 : is_function.
   
   Parameter roundevenf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_roundevenf128 : M.IsFunction "core::intrinsics::roundevenf128" roundevenf128.
+  Smpl Add apply Function_roundevenf128 : is_function.
   
   Parameter fadd_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fadd_fast : M.IsFunction "core::intrinsics::fadd_fast" fadd_fast.
+  Smpl Add apply Function_fadd_fast : is_function.
   
   Parameter fsub_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fsub_fast : M.IsFunction "core::intrinsics::fsub_fast" fsub_fast.
+  Smpl Add apply Function_fsub_fast : is_function.
   
   Parameter fmul_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fmul_fast : M.IsFunction "core::intrinsics::fmul_fast" fmul_fast.
+  Smpl Add apply Function_fmul_fast : is_function.
   
   Parameter fdiv_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fdiv_fast : M.IsFunction "core::intrinsics::fdiv_fast" fdiv_fast.
+  Smpl Add apply Function_fdiv_fast : is_function.
   
   Parameter frem_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_frem_fast : M.IsFunction "core::intrinsics::frem_fast" frem_fast.
+  Smpl Add apply Function_frem_fast : is_function.
   
   Parameter fadd_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fadd_algebraic : M.IsFunction "core::intrinsics::fadd_algebraic" fadd_algebraic.
+  Smpl Add apply Function_fadd_algebraic : is_function.
   
   Parameter fsub_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fsub_algebraic : M.IsFunction "core::intrinsics::fsub_algebraic" fsub_algebraic.
+  Smpl Add apply Function_fsub_algebraic : is_function.
   
   Parameter fmul_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fmul_algebraic : M.IsFunction "core::intrinsics::fmul_algebraic" fmul_algebraic.
+  Smpl Add apply Function_fmul_algebraic : is_function.
   
   Parameter fdiv_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_fdiv_algebraic : M.IsFunction "core::intrinsics::fdiv_algebraic" fdiv_algebraic.
+  Smpl Add apply Function_fdiv_algebraic : is_function.
   
   Parameter frem_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_frem_algebraic : M.IsFunction "core::intrinsics::frem_algebraic" frem_algebraic.
+  Smpl Add apply Function_frem_algebraic : is_function.
   
   Parameter float_to_int_unchecked : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_float_to_int_unchecked :
     M.IsFunction "core::intrinsics::float_to_int_unchecked" float_to_int_unchecked.
+  Smpl Add apply Function_float_to_int_unchecked : is_function.
   
   Parameter ctpop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ctpop : M.IsFunction "core::intrinsics::ctpop" ctpop.
+  Smpl Add apply Function_ctpop : is_function.
   
   Parameter ctlz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ctlz : M.IsFunction "core::intrinsics::ctlz" ctlz.
+  Smpl Add apply Function_ctlz : is_function.
   
   Parameter ctlz_nonzero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ctlz_nonzero : M.IsFunction "core::intrinsics::ctlz_nonzero" ctlz_nonzero.
+  Smpl Add apply Function_ctlz_nonzero : is_function.
   
   Parameter cttz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cttz : M.IsFunction "core::intrinsics::cttz" cttz.
+  Smpl Add apply Function_cttz : is_function.
   
   Parameter cttz_nonzero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_cttz_nonzero : M.IsFunction "core::intrinsics::cttz_nonzero" cttz_nonzero.
+  Smpl Add apply Function_cttz_nonzero : is_function.
   
   Parameter bswap : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_bswap : M.IsFunction "core::intrinsics::bswap" bswap.
+  Smpl Add apply Function_bswap : is_function.
   
   Parameter bitreverse : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_bitreverse : M.IsFunction "core::intrinsics::bitreverse" bitreverse.
+  Smpl Add apply Function_bitreverse : is_function.
   
   Parameter three_way_compare : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_three_way_compare :
     M.IsFunction "core::intrinsics::three_way_compare" three_way_compare.
+  Smpl Add apply Function_three_way_compare : is_function.
   
   Parameter add_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_add_with_overflow :
     M.IsFunction "core::intrinsics::add_with_overflow" add_with_overflow.
+  Smpl Add apply Function_add_with_overflow : is_function.
   
   Parameter sub_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sub_with_overflow :
     M.IsFunction "core::intrinsics::sub_with_overflow" sub_with_overflow.
+  Smpl Add apply Function_sub_with_overflow : is_function.
   
   Parameter mul_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_mul_with_overflow :
     M.IsFunction "core::intrinsics::mul_with_overflow" mul_with_overflow.
+  Smpl Add apply Function_mul_with_overflow : is_function.
   
   Parameter exact_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_exact_div : M.IsFunction "core::intrinsics::exact_div" exact_div.
+  Smpl Add apply Function_exact_div : is_function.
   
   Parameter unchecked_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_div : M.IsFunction "core::intrinsics::unchecked_div" unchecked_div.
+  Smpl Add apply Function_unchecked_div : is_function.
   
   Parameter unchecked_rem : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_rem : M.IsFunction "core::intrinsics::unchecked_rem" unchecked_rem.
+  Smpl Add apply Function_unchecked_rem : is_function.
   
   Parameter unchecked_shl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_shl : M.IsFunction "core::intrinsics::unchecked_shl" unchecked_shl.
+  Smpl Add apply Function_unchecked_shl : is_function.
   
   Parameter unchecked_shr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_shr : M.IsFunction "core::intrinsics::unchecked_shr" unchecked_shr.
+  Smpl Add apply Function_unchecked_shr : is_function.
   
   Parameter unchecked_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_add : M.IsFunction "core::intrinsics::unchecked_add" unchecked_add.
+  Smpl Add apply Function_unchecked_add : is_function.
   
   Parameter unchecked_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_sub : M.IsFunction "core::intrinsics::unchecked_sub" unchecked_sub.
+  Smpl Add apply Function_unchecked_sub : is_function.
   
   Parameter unchecked_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_unchecked_mul : M.IsFunction "core::intrinsics::unchecked_mul" unchecked_mul.
+  Smpl Add apply Function_unchecked_mul : is_function.
   
   Parameter rotate_left : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rotate_left : M.IsFunction "core::intrinsics::rotate_left" rotate_left.
+  Smpl Add apply Function_rotate_left : is_function.
   
   Parameter rotate_right : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_rotate_right : M.IsFunction "core::intrinsics::rotate_right" rotate_right.
+  Smpl Add apply Function_rotate_right : is_function.
   
   Parameter wrapping_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_wrapping_add : M.IsFunction "core::intrinsics::wrapping_add" wrapping_add.
+  Smpl Add apply Function_wrapping_add : is_function.
   
   Parameter wrapping_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_wrapping_sub : M.IsFunction "core::intrinsics::wrapping_sub" wrapping_sub.
+  Smpl Add apply Function_wrapping_sub : is_function.
   
   Parameter wrapping_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_wrapping_mul : M.IsFunction "core::intrinsics::wrapping_mul" wrapping_mul.
+  Smpl Add apply Function_wrapping_mul : is_function.
   
   Parameter saturating_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_saturating_add : M.IsFunction "core::intrinsics::saturating_add" saturating_add.
+  Smpl Add apply Function_saturating_add : is_function.
   
   Parameter saturating_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_saturating_sub : M.IsFunction "core::intrinsics::saturating_sub" saturating_sub.
+  Smpl Add apply Function_saturating_sub : is_function.
   
   Parameter read_via_copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_read_via_copy : M.IsFunction "core::intrinsics::read_via_copy" read_via_copy.
+  Smpl Add apply Function_read_via_copy : is_function.
   
   Parameter write_via_move : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_write_via_move : M.IsFunction "core::intrinsics::write_via_move" write_via_move.
+  Smpl Add apply Function_write_via_move : is_function.
   
   Parameter discriminant_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_discriminant_value :
     M.IsFunction "core::intrinsics::discriminant_value" discriminant_value.
+  Smpl Add apply Function_discriminant_value : is_function.
   
   Parameter catch_unwind : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_catch_unwind : M.IsFunction "core::intrinsics::catch_unwind" catch_unwind.
+  Smpl Add apply Function_catch_unwind : is_function.
   
   Parameter nontemporal_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_nontemporal_store :
     M.IsFunction "core::intrinsics::nontemporal_store" nontemporal_store.
+  Smpl Add apply Function_nontemporal_store : is_function.
   
   Parameter ptr_offset_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ptr_offset_from : M.IsFunction "core::intrinsics::ptr_offset_from" ptr_offset_from.
+  Smpl Add apply Function_ptr_offset_from : is_function.
   
   Parameter ptr_offset_from_unsigned : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ptr_offset_from_unsigned :
     M.IsFunction "core::intrinsics::ptr_offset_from_unsigned" ptr_offset_from_unsigned.
+  Smpl Add apply Function_ptr_offset_from_unsigned : is_function.
   
   (*
   pub const fn ptr_guaranteed_cmp<T>(ptr: *const T, other: *const T) -> u8 {
@@ -1335,18 +1599,22 @@ Module intrinsics.
   
   Axiom Function_ptr_guaranteed_cmp :
     M.IsFunction "core::intrinsics::ptr_guaranteed_cmp" ptr_guaranteed_cmp.
+  Smpl Add apply Function_ptr_guaranteed_cmp : is_function.
   
   Parameter raw_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_raw_eq : M.IsFunction "core::intrinsics::raw_eq" raw_eq.
+  Smpl Add apply Function_raw_eq : is_function.
   
   Parameter compare_bytes : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_compare_bytes : M.IsFunction "core::intrinsics::compare_bytes" compare_bytes.
+  Smpl Add apply Function_compare_bytes : is_function.
   
   Parameter black_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_black_box : M.IsFunction "core::intrinsics::black_box" black_box.
+  Smpl Add apply Function_black_box : is_function.
   
   (*
   pub const fn const_eval_select<ARG: Tuple, F, G, RET>(
@@ -1379,6 +1647,7 @@ Module intrinsics.
   
   Axiom Function_const_eval_select :
     M.IsFunction "core::intrinsics::const_eval_select" const_eval_select.
+  Smpl Add apply Function_const_eval_select : is_function.
   
   (*
   pub const fn is_val_statically_known<T: Copy>(_arg: T) -> bool {
@@ -1396,6 +1665,7 @@ Module intrinsics.
   
   Axiom Function_is_val_statically_known :
     M.IsFunction "core::intrinsics::is_val_statically_known" is_val_statically_known.
+  Smpl Add apply Function_is_val_statically_known : is_function.
   
   (*
   pub const unsafe fn typed_swap<T>(x: *mut T, y: *mut T) {
@@ -1424,6 +1694,7 @@ Module intrinsics.
     end.
   
   Axiom Function_typed_swap : M.IsFunction "core::intrinsics::typed_swap" typed_swap.
+  Smpl Add apply Function_typed_swap : is_function.
   
   (*
   pub const fn ub_checks() -> bool {
@@ -1437,6 +1708,7 @@ Module intrinsics.
     end.
   
   Axiom Function_ub_checks : M.IsFunction "core::intrinsics::ub_checks" ub_checks.
+  Smpl Add apply Function_ub_checks : is_function.
   
   (*
   pub const unsafe fn const_allocate(_size: usize, _align: usize) -> *mut u8 {
@@ -1456,6 +1728,7 @@ Module intrinsics.
     end.
   
   Axiom Function_const_allocate : M.IsFunction "core::intrinsics::const_allocate" const_allocate.
+  Smpl Add apply Function_const_allocate : is_function.
   
   (*
   pub const unsafe fn const_deallocate(_ptr: *mut u8, _size: usize, _align: usize) {
@@ -1475,6 +1748,7 @@ Module intrinsics.
   
   Axiom Function_const_deallocate :
     M.IsFunction "core::intrinsics::const_deallocate" const_deallocate.
+  Smpl Add apply Function_const_deallocate : is_function.
   
   (*
   pub unsafe fn vtable_size(_ptr: *const ()) -> usize {
@@ -1496,6 +1770,7 @@ Module intrinsics.
     end.
   
   Axiom Function_vtable_size : M.IsFunction "core::intrinsics::vtable_size" vtable_size.
+  Smpl Add apply Function_vtable_size : is_function.
   
   (*
   pub unsafe fn vtable_align(_ptr: *const ()) -> usize {
@@ -1517,6 +1792,7 @@ Module intrinsics.
     end.
   
   Axiom Function_vtable_align : M.IsFunction "core::intrinsics::vtable_align" vtable_align.
+  Smpl Add apply Function_vtable_align : is_function.
   
   (*
   pub const fn size_of<T>() -> usize {
@@ -1537,6 +1813,7 @@ Module intrinsics.
     end.
   
   Axiom Function_size_of : M.IsFunction "core::intrinsics::size_of" size_of.
+  Smpl Add apply Function_size_of : is_function.
   
   (*
   pub const fn min_align_of<T>() -> usize {
@@ -1557,6 +1834,7 @@ Module intrinsics.
     end.
   
   Axiom Function_min_align_of : M.IsFunction "core::intrinsics::min_align_of" min_align_of.
+  Smpl Add apply Function_min_align_of : is_function.
   
   (*
   pub const unsafe fn pref_align_of<T>() -> usize {
@@ -1577,6 +1855,7 @@ Module intrinsics.
     end.
   
   Axiom Function_pref_align_of : M.IsFunction "core::intrinsics::pref_align_of" pref_align_of.
+  Smpl Add apply Function_pref_align_of : is_function.
   
   (*
   pub const fn variant_count<T>() -> usize {
@@ -1597,6 +1876,7 @@ Module intrinsics.
     end.
   
   Axiom Function_variant_count : M.IsFunction "core::intrinsics::variant_count" variant_count.
+  Smpl Add apply Function_variant_count : is_function.
   
   (*
   pub const unsafe fn size_of_val<T: ?Sized>(_ptr: *const T) -> usize {
@@ -1618,6 +1898,7 @@ Module intrinsics.
     end.
   
   Axiom Function_size_of_val : M.IsFunction "core::intrinsics::size_of_val" size_of_val.
+  Smpl Add apply Function_size_of_val : is_function.
   
   (*
   pub const unsafe fn min_align_of_val<T: ?Sized>(_ptr: *const T) -> usize {
@@ -1640,6 +1921,7 @@ Module intrinsics.
   
   Axiom Function_min_align_of_val :
     M.IsFunction "core::intrinsics::min_align_of_val" min_align_of_val.
+  Smpl Add apply Function_min_align_of_val : is_function.
   
   (*
   pub const fn type_name<T: ?Sized>() -> &'static str {
@@ -1660,6 +1942,7 @@ Module intrinsics.
     end.
   
   Axiom Function_type_name : M.IsFunction "core::intrinsics::type_name" type_name.
+  Smpl Add apply Function_type_name : is_function.
   
   (*
   pub const fn type_id<T: ?Sized + 'static>() -> u128 {
@@ -1680,6 +1963,7 @@ Module intrinsics.
     end.
   
   Axiom Function_type_id : M.IsFunction "core::intrinsics::type_id" type_id.
+  Smpl Add apply Function_type_id : is_function.
   
   (*
   pub const fn aggregate_raw_ptr<P: AggregateRawPtr<D, Metadata = M>, D, M>(_data: D, _meta: M) -> P {
@@ -1705,6 +1989,7 @@ Module intrinsics.
   
   Axiom Function_aggregate_raw_ptr :
     M.IsFunction "core::intrinsics::aggregate_raw_ptr" aggregate_raw_ptr.
+  Smpl Add apply Function_aggregate_raw_ptr : is_function.
   
   (* Trait *)
   (* Empty module 'AggregateRawPtr' *)
@@ -1761,6 +2046,7 @@ Module intrinsics.
     end.
   
   Axiom Function_ptr_metadata : M.IsFunction "core::intrinsics::ptr_metadata" ptr_metadata.
+  Smpl Add apply Function_ptr_metadata : is_function.
   
   (*
   pub const unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
@@ -1861,12 +2147,14 @@ Module intrinsics.
   
   Axiom Function_copy_nonoverlapping :
     M.IsFunction "core::intrinsics::copy_nonoverlapping" copy_nonoverlapping.
+  Smpl Add apply Function_copy_nonoverlapping : is_function.
   
   Module copy_nonoverlapping.
     Parameter copy_nonoverlapping : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_copy_nonoverlapping :
       M.IsFunction "core::intrinsics::copy_nonoverlapping::copy_nonoverlapping" copy_nonoverlapping.
+    Smpl Add apply Function_copy_nonoverlapping : is_function.
   End copy_nonoverlapping.
   
   (*
@@ -1950,11 +2238,13 @@ Module intrinsics.
     end.
   
   Axiom Function_copy : M.IsFunction "core::intrinsics::copy" copy.
+  Smpl Add apply Function_copy : is_function.
   
   Module copy.
     Parameter copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_copy : M.IsFunction "core::intrinsics::copy::copy" copy.
+    Smpl Add apply Function_copy : is_function.
   End copy.
   
   (*
@@ -2036,11 +2326,13 @@ Module intrinsics.
     end.
   
   Axiom Function_write_bytes : M.IsFunction "core::intrinsics::write_bytes" write_bytes.
+  Smpl Add apply Function_write_bytes : is_function.
   
   Module write_bytes.
     Parameter write_bytes : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_write_bytes :
       M.IsFunction "core::intrinsics::write_bytes::write_bytes" write_bytes.
+    Smpl Add apply Function_write_bytes : is_function.
   End write_bytes.
 End intrinsics.

@@ -49,6 +49,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Axiom Function_function : M.IsFunction "the_use_as_declaration::function" function.
+Smpl Add apply Function_function : is_function.
 
 Module deeply.
   Module nested.
@@ -106,6 +107,7 @@ Module deeply.
     
     Axiom Function_function :
       M.IsFunction "the_use_as_declaration::deeply::nested::function" function.
+    Smpl Add apply Function_function : is_function.
   End nested.
 End deeply.
 
@@ -225,3 +227,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "the_use_as_declaration::main" main.
+Smpl Add apply Function_main : is_function.

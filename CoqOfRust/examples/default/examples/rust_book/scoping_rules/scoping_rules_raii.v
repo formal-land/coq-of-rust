@@ -35,6 +35,7 @@ Definition create_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_create_box : M.IsFunction "scoping_rules_raii::create_box" create_box.
+Smpl Add apply Function_create_box : is_function.
 
 (*
 fn main() {
@@ -177,3 +178,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_raii::main" main.
+Smpl Add apply Function_main : is_function.

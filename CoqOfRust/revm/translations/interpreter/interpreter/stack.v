@@ -8,6 +8,7 @@ Module interpreter.
     
     Axiom Constant_value_STACK_LIMIT :
       (M.get_constant "revm_interpreter::interpreter::stack::STACK_LIMIT") = value_STACK_LIMIT.
+    Global Hint Rewrite Constant_value_STACK_LIMIT : constant_rewrites.
     
     (* StructRecord
       {
@@ -1357,6 +1358,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn len(&self) -> usize {
@@ -1399,6 +1401,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -1441,6 +1444,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
       
       (*
           pub fn data(&self) -> &Vec<U256> {
@@ -1469,6 +1473,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
+      Smpl Add apply AssociatedFunction_data : is_associated.
       
       (*
           pub fn data_mut(&mut self) -> &mut Vec<U256> {
@@ -1502,6 +1507,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_data_mut : M.IsAssociatedFunction Self "data_mut" data_mut.
+      Smpl Add apply AssociatedFunction_data_mut : is_associated.
       
       (*
           pub fn into_data(self) -> Vec<U256> {
@@ -1524,6 +1530,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_into_data : M.IsAssociatedFunction Self "into_data" into_data.
+      Smpl Add apply AssociatedFunction_into_data : is_associated.
       
       (*
           pub fn pop(&mut self) -> Result<U256, InstructionResult> {
@@ -1587,6 +1594,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_pop : M.IsAssociatedFunction Self "pop" pop.
+      Smpl Add apply AssociatedFunction_pop : is_associated.
       
       (*
           pub unsafe fn pop_unsafe(&mut self) -> U256 {
@@ -1647,6 +1655,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_pop_unsafe : M.IsAssociatedFunction Self "pop_unsafe" pop_unsafe.
+      Smpl Add apply AssociatedFunction_pop_unsafe : is_associated.
       
       (*
           pub unsafe fn top_unsafe(&mut self) -> &mut U256 {
@@ -1770,6 +1779,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_top_unsafe : M.IsAssociatedFunction Self "top_unsafe" top_unsafe.
+      Smpl Add apply AssociatedFunction_top_unsafe : is_associated.
       
       (*
           pub unsafe fn popn<const N: usize>(&mut self) -> [U256; N] {
@@ -1999,6 +2009,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_popn : M.IsAssociatedFunction Self "popn" popn.
+      Smpl Add apply AssociatedFunction_popn : is_associated.
       
       (*
           pub unsafe fn popn_top<const POPN: usize>(&mut self) -> ([U256; POPN], &mut U256) {
@@ -2049,6 +2060,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_popn_top : M.IsAssociatedFunction Self "popn_top" popn_top.
+      Smpl Add apply AssociatedFunction_popn_top : is_associated.
       
       (*
           pub fn push(&mut self, value: U256) -> bool {
@@ -2321,6 +2333,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
+      Smpl Add apply AssociatedFunction_push : is_associated.
       
       (*
           pub fn peek(&self, no_from_top: usize) -> Result<U256, InstructionResult> {
@@ -2478,6 +2491,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_peek : M.IsAssociatedFunction Self "peek" peek.
+      Smpl Add apply AssociatedFunction_peek : is_associated.
       
       (*
           pub fn dup(&mut self, n: usize) -> bool {
@@ -2827,6 +2841,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_dup : M.IsAssociatedFunction Self "dup" dup.
+      Smpl Add apply AssociatedFunction_dup : is_associated.
       
       (*
           pub fn swap(&mut self, n: usize) -> bool {
@@ -2856,6 +2871,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
           pub fn exchange(&mut self, n: usize, m: usize) -> bool {
@@ -3187,6 +3203,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_exchange : M.IsAssociatedFunction Self "exchange" exchange.
+      Smpl Add apply AssociatedFunction_exchange : is_associated.
       
       (*
           pub fn push_slice(&mut self, slice: &[u8]) -> Result<(), InstructionResult> {
@@ -4484,6 +4501,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_push_slice : M.IsAssociatedFunction Self "push_slice" push_slice.
+      Smpl Add apply AssociatedFunction_push_slice : is_associated.
       
       (*
           pub fn set(&mut self, no_from_top: usize, val: U256) -> Result<(), InstructionResult> {
@@ -4644,6 +4662,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_set : M.IsAssociatedFunction Self "set" set.
+      Smpl Add apply AssociatedFunction_set : is_associated.
     End Impl_revm_interpreter_interpreter_stack_Stack.
   End stack.
 End interpreter.

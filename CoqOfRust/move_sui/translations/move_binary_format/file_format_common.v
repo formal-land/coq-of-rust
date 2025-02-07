@@ -21,6 +21,7 @@ Module file_format_common.
     
     Axiom AssociatedConstant_value_MOVE_MAGIC_SIZE :
       M.IsAssociatedConstant Self "value_MOVE_MAGIC_SIZE" value_MOVE_MAGIC_SIZE.
+    Smpl Add apply AssociatedConstant_value_MOVE_MAGIC_SIZE : is_associated.
     
     (*     pub const MOVE_MAGIC: [u8; BinaryConstants::MOVE_MAGIC_SIZE] = [0xA1, 0x1C, 0xEB, 0x0B]; *)
     (* Ty.apply
@@ -45,6 +46,7 @@ Module file_format_common.
     
     Axiom AssociatedConstant_value_MOVE_MAGIC :
       M.IsAssociatedConstant Self "value_MOVE_MAGIC" value_MOVE_MAGIC.
+    Smpl Add apply AssociatedConstant_value_MOVE_MAGIC : is_associated.
     
     (*     pub const HEADER_SIZE: usize = BinaryConstants::MOVE_MAGIC_SIZE + 5; *)
     (* Ty.path "usize" *)
@@ -60,6 +62,7 @@ Module file_format_common.
     
     Axiom AssociatedConstant_value_HEADER_SIZE :
       M.IsAssociatedConstant Self "value_HEADER_SIZE" value_HEADER_SIZE.
+    Smpl Add apply AssociatedConstant_value_HEADER_SIZE : is_associated.
     
     (*     pub const TABLE_HEADER_SIZE: u8 = size_of::<u32>() as u8 * 2 + 1; *)
     (* Ty.path "u8" *)
@@ -83,6 +86,7 @@ Module file_format_common.
     
     Axiom AssociatedConstant_value_TABLE_HEADER_SIZE :
       M.IsAssociatedConstant Self "value_TABLE_HEADER_SIZE" value_TABLE_HEADER_SIZE.
+    Smpl Add apply AssociatedConstant_value_TABLE_HEADER_SIZE : is_associated.
   End Impl_move_binary_format_file_format_common_BinaryConstants.
   
   Definition value_TABLE_COUNT_MAX : Value.t :=
@@ -91,6 +95,7 @@ Module file_format_common.
   Axiom Constant_value_TABLE_COUNT_MAX :
     (M.get_constant "move_binary_format::file_format_common::TABLE_COUNT_MAX") =
       value_TABLE_COUNT_MAX.
+  Global Hint Rewrite Constant_value_TABLE_COUNT_MAX : constant_rewrites.
   
   Definition value_TABLE_OFFSET_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
@@ -98,6 +103,7 @@ Module file_format_common.
   Axiom Constant_value_TABLE_OFFSET_MAX :
     (M.get_constant "move_binary_format::file_format_common::TABLE_OFFSET_MAX") =
       value_TABLE_OFFSET_MAX.
+  Global Hint Rewrite Constant_value_TABLE_OFFSET_MAX : constant_rewrites.
   
   Definition value_TABLE_SIZE_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
@@ -105,6 +111,7 @@ Module file_format_common.
   Axiom Constant_value_TABLE_SIZE_MAX :
     (M.get_constant "move_binary_format::file_format_common::TABLE_SIZE_MAX") =
       value_TABLE_SIZE_MAX.
+  Global Hint Rewrite Constant_value_TABLE_SIZE_MAX : constant_rewrites.
   
   Definition value_TABLE_CONTENT_SIZE_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
@@ -112,6 +119,7 @@ Module file_format_common.
   Axiom Constant_value_TABLE_CONTENT_SIZE_MAX :
     (M.get_constant "move_binary_format::file_format_common::TABLE_CONTENT_SIZE_MAX") =
       value_TABLE_CONTENT_SIZE_MAX.
+  Global Hint Rewrite Constant_value_TABLE_CONTENT_SIZE_MAX : constant_rewrites.
   
   Definition value_TABLE_INDEX_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
@@ -119,6 +127,7 @@ Module file_format_common.
   Axiom Constant_value_TABLE_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::TABLE_INDEX_MAX") =
       value_TABLE_INDEX_MAX.
+  Global Hint Rewrite Constant_value_TABLE_INDEX_MAX : constant_rewrites.
   
   Definition value_SIGNATURE_INDEX_MAX : Value.t :=
     M.run_constant
@@ -127,6 +136,7 @@ Module file_format_common.
   Axiom Constant_value_SIGNATURE_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::SIGNATURE_INDEX_MAX") =
       value_SIGNATURE_INDEX_MAX.
+  Global Hint Rewrite Constant_value_SIGNATURE_INDEX_MAX : constant_rewrites.
   
   Definition value_ADDRESS_INDEX_MAX : Value.t :=
     M.run_constant
@@ -135,6 +145,7 @@ Module file_format_common.
   Axiom Constant_value_ADDRESS_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::ADDRESS_INDEX_MAX") =
       value_ADDRESS_INDEX_MAX.
+  Global Hint Rewrite Constant_value_ADDRESS_INDEX_MAX : constant_rewrites.
   
   Definition value_IDENTIFIER_INDEX_MAX : Value.t :=
     M.run_constant
@@ -143,6 +154,7 @@ Module file_format_common.
   Axiom Constant_value_IDENTIFIER_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::IDENTIFIER_INDEX_MAX") =
       value_IDENTIFIER_INDEX_MAX.
+  Global Hint Rewrite Constant_value_IDENTIFIER_INDEX_MAX : constant_rewrites.
   
   Definition value_MODULE_HANDLE_INDEX_MAX : Value.t :=
     M.run_constant
@@ -151,6 +163,7 @@ Module file_format_common.
   Axiom Constant_value_MODULE_HANDLE_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::MODULE_HANDLE_INDEX_MAX") =
       value_MODULE_HANDLE_INDEX_MAX.
+  Global Hint Rewrite Constant_value_MODULE_HANDLE_INDEX_MAX : constant_rewrites.
   
   Definition value_STRUCT_HANDLE_INDEX_MAX : Value.t :=
     M.run_constant
@@ -159,6 +172,7 @@ Module file_format_common.
   Axiom Constant_value_STRUCT_HANDLE_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::STRUCT_HANDLE_INDEX_MAX") =
       value_STRUCT_HANDLE_INDEX_MAX.
+  Global Hint Rewrite Constant_value_STRUCT_HANDLE_INDEX_MAX : constant_rewrites.
   
   Definition value_STRUCT_DEF_INDEX_MAX : Value.t :=
     M.run_constant
@@ -167,6 +181,7 @@ Module file_format_common.
   Axiom Constant_value_STRUCT_DEF_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::STRUCT_DEF_INDEX_MAX") =
       value_STRUCT_DEF_INDEX_MAX.
+  Global Hint Rewrite Constant_value_STRUCT_DEF_INDEX_MAX : constant_rewrites.
   
   Definition value_FUNCTION_HANDLE_INDEX_MAX : Value.t :=
     M.run_constant
@@ -175,6 +190,7 @@ Module file_format_common.
   Axiom Constant_value_FUNCTION_HANDLE_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::FUNCTION_HANDLE_INDEX_MAX") =
       value_FUNCTION_HANDLE_INDEX_MAX.
+  Global Hint Rewrite Constant_value_FUNCTION_HANDLE_INDEX_MAX : constant_rewrites.
   
   Definition value_FUNCTION_INST_INDEX_MAX : Value.t :=
     M.run_constant
@@ -183,6 +199,7 @@ Module file_format_common.
   Axiom Constant_value_FUNCTION_INST_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::FUNCTION_INST_INDEX_MAX") =
       value_FUNCTION_INST_INDEX_MAX.
+  Global Hint Rewrite Constant_value_FUNCTION_INST_INDEX_MAX : constant_rewrites.
   
   Definition value_FIELD_HANDLE_INDEX_MAX : Value.t :=
     M.run_constant
@@ -191,6 +208,7 @@ Module file_format_common.
   Axiom Constant_value_FIELD_HANDLE_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::FIELD_HANDLE_INDEX_MAX") =
       value_FIELD_HANDLE_INDEX_MAX.
+  Global Hint Rewrite Constant_value_FIELD_HANDLE_INDEX_MAX : constant_rewrites.
   
   Definition value_FIELD_INST_INDEX_MAX : Value.t :=
     M.run_constant
@@ -199,6 +217,7 @@ Module file_format_common.
   Axiom Constant_value_FIELD_INST_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::FIELD_INST_INDEX_MAX") =
       value_FIELD_INST_INDEX_MAX.
+  Global Hint Rewrite Constant_value_FIELD_INST_INDEX_MAX : constant_rewrites.
   
   Definition value_STRUCT_DEF_INST_INDEX_MAX : Value.t :=
     M.run_constant
@@ -207,6 +226,7 @@ Module file_format_common.
   Axiom Constant_value_STRUCT_DEF_INST_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::STRUCT_DEF_INST_INDEX_MAX") =
       value_STRUCT_DEF_INST_INDEX_MAX.
+  Global Hint Rewrite Constant_value_STRUCT_DEF_INST_INDEX_MAX : constant_rewrites.
   
   Definition value_CONSTANT_INDEX_MAX : Value.t :=
     M.run_constant
@@ -215,6 +235,7 @@ Module file_format_common.
   Axiom Constant_value_CONSTANT_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::CONSTANT_INDEX_MAX") =
       value_CONSTANT_INDEX_MAX.
+  Global Hint Rewrite Constant_value_CONSTANT_INDEX_MAX : constant_rewrites.
   
   Definition value_BYTECODE_COUNT_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
@@ -222,6 +243,7 @@ Module file_format_common.
   Axiom Constant_value_BYTECODE_COUNT_MAX :
     (M.get_constant "move_binary_format::file_format_common::BYTECODE_COUNT_MAX") =
       value_BYTECODE_COUNT_MAX.
+  Global Hint Rewrite Constant_value_BYTECODE_COUNT_MAX : constant_rewrites.
   
   Definition value_BYTECODE_INDEX_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
@@ -229,6 +251,7 @@ Module file_format_common.
   Axiom Constant_value_BYTECODE_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::BYTECODE_INDEX_MAX") =
       value_BYTECODE_INDEX_MAX.
+  Global Hint Rewrite Constant_value_BYTECODE_INDEX_MAX : constant_rewrites.
   
   Definition value_LOCAL_INDEX_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
@@ -236,6 +259,7 @@ Module file_format_common.
   Axiom Constant_value_LOCAL_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::LOCAL_INDEX_MAX") =
       value_LOCAL_INDEX_MAX.
+  Global Hint Rewrite Constant_value_LOCAL_INDEX_MAX : constant_rewrites.
   
   Definition value_IDENTIFIER_SIZE_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
@@ -243,6 +267,7 @@ Module file_format_common.
   Axiom Constant_value_IDENTIFIER_SIZE_MAX :
     (M.get_constant "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX") =
       value_IDENTIFIER_SIZE_MAX.
+  Global Hint Rewrite Constant_value_IDENTIFIER_SIZE_MAX : constant_rewrites.
   
   Definition value_CONSTANT_SIZE_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
@@ -250,6 +275,7 @@ Module file_format_common.
   Axiom Constant_value_CONSTANT_SIZE_MAX :
     (M.get_constant "move_binary_format::file_format_common::CONSTANT_SIZE_MAX") =
       value_CONSTANT_SIZE_MAX.
+  Global Hint Rewrite Constant_value_CONSTANT_SIZE_MAX : constant_rewrites.
   
   Definition value_METADATA_KEY_SIZE_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1023 |))).
@@ -257,6 +283,7 @@ Module file_format_common.
   Axiom Constant_value_METADATA_KEY_SIZE_MAX :
     (M.get_constant "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX") =
       value_METADATA_KEY_SIZE_MAX.
+  Global Hint Rewrite Constant_value_METADATA_KEY_SIZE_MAX : constant_rewrites.
   
   Definition value_METADATA_VALUE_SIZE_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
@@ -264,6 +291,7 @@ Module file_format_common.
   Axiom Constant_value_METADATA_VALUE_SIZE_MAX :
     (M.get_constant "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX") =
       value_METADATA_VALUE_SIZE_MAX.
+  Global Hint Rewrite Constant_value_METADATA_VALUE_SIZE_MAX : constant_rewrites.
   
   Definition value_SIGNATURE_SIZE_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
@@ -271,6 +299,7 @@ Module file_format_common.
   Axiom Constant_value_SIGNATURE_SIZE_MAX :
     (M.get_constant "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX") =
       value_SIGNATURE_SIZE_MAX.
+  Global Hint Rewrite Constant_value_SIGNATURE_SIZE_MAX : constant_rewrites.
   
   Definition value_ACQUIRES_COUNT_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
@@ -278,6 +307,7 @@ Module file_format_common.
   Axiom Constant_value_ACQUIRES_COUNT_MAX :
     (M.get_constant "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX") =
       value_ACQUIRES_COUNT_MAX.
+  Global Hint Rewrite Constant_value_ACQUIRES_COUNT_MAX : constant_rewrites.
   
   Definition value_FIELD_COUNT_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
@@ -285,6 +315,7 @@ Module file_format_common.
   Axiom Constant_value_FIELD_COUNT_MAX :
     (M.get_constant "move_binary_format::file_format_common::FIELD_COUNT_MAX") =
       value_FIELD_COUNT_MAX.
+  Global Hint Rewrite Constant_value_FIELD_COUNT_MAX : constant_rewrites.
   
   Definition value_FIELD_OFFSET_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
@@ -292,6 +323,7 @@ Module file_format_common.
   Axiom Constant_value_FIELD_OFFSET_MAX :
     (M.get_constant "move_binary_format::file_format_common::FIELD_OFFSET_MAX") =
       value_FIELD_OFFSET_MAX.
+  Global Hint Rewrite Constant_value_FIELD_OFFSET_MAX : constant_rewrites.
   
   Definition value_TYPE_PARAMETER_COUNT_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
@@ -299,6 +331,7 @@ Module file_format_common.
   Axiom Constant_value_TYPE_PARAMETER_COUNT_MAX :
     (M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX") =
       value_TYPE_PARAMETER_COUNT_MAX.
+  Global Hint Rewrite Constant_value_TYPE_PARAMETER_COUNT_MAX : constant_rewrites.
   
   Definition value_TYPE_PARAMETER_INDEX_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65536 |))).
@@ -306,6 +339,7 @@ Module file_format_common.
   Axiom Constant_value_TYPE_PARAMETER_INDEX_MAX :
     (M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_INDEX_MAX") =
       value_TYPE_PARAMETER_INDEX_MAX.
+  Global Hint Rewrite Constant_value_TYPE_PARAMETER_INDEX_MAX : constant_rewrites.
   
   Definition value_SIGNATURE_TOKEN_DEPTH_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
@@ -313,6 +347,7 @@ Module file_format_common.
   Axiom Constant_value_SIGNATURE_TOKEN_DEPTH_MAX :
     (M.get_constant "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX") =
       value_SIGNATURE_TOKEN_DEPTH_MAX.
+  Global Hint Rewrite Constant_value_SIGNATURE_TOKEN_DEPTH_MAX : constant_rewrites.
   
   (*
   Enum TableType
@@ -2850,6 +2885,7 @@ Module file_format_common.
   Axiom Constant_value_BINARY_SIZE_LIMIT :
     (M.get_constant "move_binary_format::file_format_common::BINARY_SIZE_LIMIT") =
       value_BINARY_SIZE_LIMIT.
+  Global Hint Rewrite Constant_value_BINARY_SIZE_LIMIT : constant_rewrites.
   
   (* StructRecord
     {
@@ -2992,6 +3028,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn as_inner(&self) -> &[u8] {
@@ -3041,6 +3078,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_as_inner : M.IsAssociatedFunction Self "as_inner" as_inner.
+    Smpl Add apply AssociatedFunction_as_inner : is_associated.
     
     (*
         pub fn into_inner(self) -> Vec<u8> {
@@ -3063,6 +3101,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     
     (*
         pub fn push(&mut self, item: u8) -> Result<()> {
@@ -3334,6 +3373,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
+    Smpl Add apply AssociatedFunction_push : is_associated.
     
     (*
         pub fn extend(&mut self, vec: &[u8]) -> Result<()> {
@@ -3676,6 +3716,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
+    Smpl Add apply AssociatedFunction_extend : is_associated.
     
     (*
         pub fn len(&self) -> usize {
@@ -3712,6 +3753,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -3748,6 +3790,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
     
     (*
         pub fn clear(&mut self) {
@@ -3790,6 +3833,7 @@ Module file_format_common.
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
+    Smpl Add apply AssociatedFunction_clear : is_associated.
   End Impl_move_binary_format_file_format_common_BinaryData.
   
   Module Impl_core_convert_From_alloc_vec_Vec_u8_alloc_alloc_Global_for_move_binary_format_file_format_common_BinaryData.
@@ -4075,6 +4119,7 @@ Module file_format_common.
     M.IsFunction
       "move_binary_format::file_format_common::write_u64_as_uleb128"
       write_u64_as_uleb128.
+  Smpl Add apply Function_write_u64_as_uleb128 : is_function.
   
   (*
   pub(crate) fn write_u16(binary: &mut BinaryData, value: u16) -> Result<()> {
@@ -4117,6 +4162,7 @@ Module file_format_common.
   
   Axiom Function_write_u16 :
     M.IsFunction "move_binary_format::file_format_common::write_u16" write_u16.
+  Smpl Add apply Function_write_u16 : is_function.
   
   (*
   pub(crate) fn write_u32(binary: &mut BinaryData, value: u32) -> Result<()> {
@@ -4159,6 +4205,7 @@ Module file_format_common.
   
   Axiom Function_write_u32 :
     M.IsFunction "move_binary_format::file_format_common::write_u32" write_u32.
+  Smpl Add apply Function_write_u32 : is_function.
   
   (*
   pub(crate) fn write_u64(binary: &mut BinaryData, value: u64) -> Result<()> {
@@ -4201,6 +4248,7 @@ Module file_format_common.
   
   Axiom Function_write_u64 :
     M.IsFunction "move_binary_format::file_format_common::write_u64" write_u64.
+  Smpl Add apply Function_write_u64 : is_function.
   
   (*
   pub(crate) fn write_u128(binary: &mut BinaryData, value: u128) -> Result<()> {
@@ -4243,6 +4291,7 @@ Module file_format_common.
   
   Axiom Function_write_u128 :
     M.IsFunction "move_binary_format::file_format_common::write_u128" write_u128.
+  Smpl Add apply Function_write_u128 : is_function.
   
   (*
   pub(crate) fn write_u256(
@@ -4293,6 +4342,7 @@ Module file_format_common.
   
   Axiom Function_write_u256 :
     M.IsFunction "move_binary_format::file_format_common::write_u256" write_u256.
+  Smpl Add apply Function_write_u256 : is_function.
   
   (*
   pub fn read_u8(cursor: &mut Cursor<&[u8]>) -> Result<u8> {
@@ -4430,6 +4480,7 @@ Module file_format_common.
     end.
   
   Axiom Function_read_u8 : M.IsFunction "move_binary_format::file_format_common::read_u8" read_u8.
+  Smpl Add apply Function_read_u8 : is_function.
   
   (*
   pub fn read_u32(cursor: &mut Cursor<&[u8]>) -> Result<u32> {
@@ -4566,6 +4617,7 @@ Module file_format_common.
   
   Axiom Function_read_u32 :
     M.IsFunction "move_binary_format::file_format_common::read_u32" read_u32.
+  Smpl Add apply Function_read_u32 : is_function.
   
   (*
   pub fn read_uleb128_as_u64(cursor: &mut Cursor<&[u8]>) -> Result<u64> {
@@ -4954,42 +5006,49 @@ Module file_format_common.
   
   Axiom Function_read_uleb128_as_u64 :
     M.IsFunction "move_binary_format::file_format_common::read_uleb128_as_u64" read_uleb128_as_u64.
+  Smpl Add apply Function_read_uleb128_as_u64 : is_function.
   
   Definition value_VERSION_1 : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1 |))).
   
   Axiom Constant_value_VERSION_1 :
     (M.get_constant "move_binary_format::file_format_common::VERSION_1") = value_VERSION_1.
+  Global Hint Rewrite Constant_value_VERSION_1 : constant_rewrites.
   
   Definition value_VERSION_2 : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
   
   Axiom Constant_value_VERSION_2 :
     (M.get_constant "move_binary_format::file_format_common::VERSION_2") = value_VERSION_2.
+  Global Hint Rewrite Constant_value_VERSION_2 : constant_rewrites.
   
   Definition value_VERSION_3 : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 3 |))).
   
   Axiom Constant_value_VERSION_3 :
     (M.get_constant "move_binary_format::file_format_common::VERSION_3") = value_VERSION_3.
+  Global Hint Rewrite Constant_value_VERSION_3 : constant_rewrites.
   
   Definition value_VERSION_4 : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 4 |))).
   
   Axiom Constant_value_VERSION_4 :
     (M.get_constant "move_binary_format::file_format_common::VERSION_4") = value_VERSION_4.
+  Global Hint Rewrite Constant_value_VERSION_4 : constant_rewrites.
   
   Definition value_VERSION_5 : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 5 |))).
   
   Axiom Constant_value_VERSION_5 :
     (M.get_constant "move_binary_format::file_format_common::VERSION_5") = value_VERSION_5.
+  Global Hint Rewrite Constant_value_VERSION_5 : constant_rewrites.
   
   Definition value_VERSION_6 : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 6 |))).
   
   Axiom Constant_value_VERSION_6 :
     (M.get_constant "move_binary_format::file_format_common::VERSION_6") = value_VERSION_6.
+  Global Hint Rewrite Constant_value_VERSION_6 : constant_rewrites.
   
   Definition value_VERSION_MAX : Value.t :=
     M.run_constant
@@ -4997,6 +5056,7 @@ Module file_format_common.
   
   Axiom Constant_value_VERSION_MAX :
     (M.get_constant "move_binary_format::file_format_common::VERSION_MAX") = value_VERSION_MAX.
+  Global Hint Rewrite Constant_value_VERSION_MAX : constant_rewrites.
   
   Definition value_VERSION_MIN : Value.t :=
     M.run_constant
@@ -5004,6 +5064,7 @@ Module file_format_common.
   
   Axiom Constant_value_VERSION_MIN :
     (M.get_constant "move_binary_format::file_format_common::VERSION_MIN") = value_VERSION_MIN.
+  Global Hint Rewrite Constant_value_VERSION_MIN : constant_rewrites.
   
   (*
   pub fn instruction_key(instruction: &Bytecode) -> u8 {
@@ -6110,4 +6171,5 @@ Module file_format_common.
   
   Axiom Function_instruction_key :
     M.IsFunction "move_binary_format::file_format_common::instruction_key" instruction_key.
+  Smpl Add apply Function_instruction_key : is_function.
 End file_format_common.

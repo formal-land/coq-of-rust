@@ -782,6 +782,7 @@ Module effects.
     Axiom AssociatedFunction_as_ref :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
+    Smpl Add apply AssociatedFunction_as_ref : is_associated.
     
     (*
         pub fn map<F, U>(self, f: F) -> Op<U>
@@ -873,6 +874,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
+    Smpl Add apply AssociatedFunction_map : is_associated.
     
     (*
         pub fn ok(self) -> Option<T> {
@@ -942,6 +944,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_ok : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "ok" (ok T).
+    Smpl Add apply AssociatedFunction_ok : is_associated.
   End Impl_move_core_types_effects_Op_T.
   
   (* StructRecord
@@ -2286,6 +2289,7 @@ Module effects.
     end.
   
   Axiom Function_squash : M.IsFunction "move_core_types::effects::squash" squash.
+  Smpl Add apply Function_squash : is_function.
   
   Module Impl_move_core_types_effects_AccountChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::AccountChangeSet".
@@ -2312,6 +2316,7 @@ Module effects.
     
     Axiom AssociatedFunction_from_modules_resources :
       M.IsAssociatedFunction Self "from_modules_resources" from_modules_resources.
+    Smpl Add apply AssociatedFunction_from_modules_resources : is_associated.
     
     (*
         pub fn new() -> Self {
@@ -2383,6 +2388,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn add_module_op(&mut self, name: Identifier, op: Op<Vec<u8>>) -> Result<()> {
@@ -2660,6 +2666,7 @@ Module effects.
     
     Axiom AssociatedFunction_add_module_op :
       M.IsAssociatedFunction Self "add_module_op" add_module_op.
+    Smpl Add apply AssociatedFunction_add_module_op : is_associated.
     
     (*
         pub fn add_resource_op(&mut self, struct_tag: StructTag, op: Op<Vec<u8>>) -> Result<()> {
@@ -2937,6 +2944,7 @@ Module effects.
     
     Axiom AssociatedFunction_add_resource_op :
       M.IsAssociatedFunction Self "add_resource_op" add_resource_op.
+    Smpl Add apply AssociatedFunction_add_resource_op : is_associated.
     
     (*
         pub fn into_inner(
@@ -2974,6 +2982,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     
     (*
         pub fn into_resources(self) -> BTreeMap<StructTag, Op<Vec<u8>>> {
@@ -2997,6 +3006,7 @@ Module effects.
     
     Axiom AssociatedFunction_into_resources :
       M.IsAssociatedFunction Self "into_resources" into_resources.
+    Smpl Add apply AssociatedFunction_into_resources : is_associated.
     
     (*
         pub fn into_modules(self) -> BTreeMap<Identifier, Op<Vec<u8>>> {
@@ -3019,6 +3029,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_into_modules : M.IsAssociatedFunction Self "into_modules" into_modules.
+    Smpl Add apply AssociatedFunction_into_modules : is_associated.
     
     (*
         pub fn modules(&self) -> &BTreeMap<Identifier, Op<Vec<u8>>> {
@@ -3047,6 +3058,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_modules : M.IsAssociatedFunction Self "modules" modules.
+    Smpl Add apply AssociatedFunction_modules : is_associated.
     
     (*
         pub fn resources(&self) -> &BTreeMap<StructTag, Op<Vec<u8>>> {
@@ -3075,6 +3087,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_resources : M.IsAssociatedFunction Self "resources" resources.
+    Smpl Add apply AssociatedFunction_resources : is_associated.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -3159,6 +3172,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+    Smpl Add apply AssociatedFunction_is_empty : is_associated.
     
     (*
         pub fn squash(&mut self, other: Self) -> Result<()> {
@@ -3326,6 +3340,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_squash : M.IsAssociatedFunction Self "squash" squash.
+    Smpl Add apply AssociatedFunction_squash : is_associated.
   End Impl_move_core_types_effects_AccountChangeSet.
   
   (* StructRecord
@@ -3779,6 +3794,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn add_account_changeset(
@@ -4000,6 +4016,7 @@ Module effects.
     
     Axiom AssociatedFunction_add_account_changeset :
       M.IsAssociatedFunction Self "add_account_changeset" add_account_changeset.
+    Smpl Add apply AssociatedFunction_add_account_changeset : is_associated.
     
     (*
         pub fn accounts(&self) -> &BTreeMap<AccountAddress, AccountChangeSet> {
@@ -4028,6 +4045,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_accounts : M.IsAssociatedFunction Self "accounts" accounts.
+    Smpl Add apply AssociatedFunction_accounts : is_associated.
     
     (*
         pub fn into_inner(self) -> BTreeMap<AccountAddress, AccountChangeSet> {
@@ -4050,6 +4068,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     
     (*
         fn get_or_insert_account_changeset(&mut self, addr: AccountAddress) -> &mut AccountChangeSet {
@@ -4197,6 +4216,7 @@ Module effects.
     
     Axiom AssociatedFunction_get_or_insert_account_changeset :
       M.IsAssociatedFunction Self "get_or_insert_account_changeset" get_or_insert_account_changeset.
+    Smpl Add apply AssociatedFunction_get_or_insert_account_changeset : is_associated.
     
     (*
         pub fn add_module_op(&mut self, module_id: ModuleId, op: Op<Vec<u8>>) -> Result<()> {
@@ -4286,6 +4306,7 @@ Module effects.
     
     Axiom AssociatedFunction_add_module_op :
       M.IsAssociatedFunction Self "add_module_op" add_module_op.
+    Smpl Add apply AssociatedFunction_add_module_op : is_associated.
     
     (*
         pub fn add_resource_op(
@@ -4343,6 +4364,7 @@ Module effects.
     
     Axiom AssociatedFunction_add_resource_op :
       M.IsAssociatedFunction Self "add_resource_op" add_resource_op.
+    Smpl Add apply AssociatedFunction_add_resource_op : is_associated.
     
     (*
         pub fn squash(&mut self, other: Self) -> Result<()> {
@@ -4674,6 +4696,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_squash : M.IsAssociatedFunction Self "squash" squash.
+    Smpl Add apply AssociatedFunction_squash : is_associated.
     
     (*
         pub fn into_modules(self) -> impl Iterator<Item = (ModuleId, Op<Vec<u8>>)> {
@@ -5028,6 +5051,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_into_modules : M.IsAssociatedFunction Self "into_modules" into_modules.
+    Smpl Add apply AssociatedFunction_into_modules : is_associated.
     
     (*
         pub fn modules(&self) -> impl Iterator<Item = (AccountAddress, &Identifier, Op<&[u8]>)> {
@@ -5594,6 +5618,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_modules : M.IsAssociatedFunction Self "modules" modules.
+    Smpl Add apply AssociatedFunction_modules : is_associated.
     
     (*
         pub fn resources(&self) -> impl Iterator<Item = (AccountAddress, &StructTag, Op<&[u8]>)> {
@@ -6163,6 +6188,7 @@ Module effects.
       end.
     
     Axiom AssociatedFunction_resources : M.IsAssociatedFunction Self "resources" resources.
+    Smpl Add apply AssociatedFunction_resources : is_associated.
   End Impl_move_core_types_effects_ChangeSet.
   
   Axiom Event :

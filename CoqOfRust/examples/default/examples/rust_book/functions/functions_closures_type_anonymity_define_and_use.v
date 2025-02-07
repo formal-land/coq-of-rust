@@ -36,6 +36,7 @@ Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_apply : M.IsFunction "functions_closures_type_anonymity_define_and_use::apply" apply.
+Smpl Add apply Function_apply : is_function.
 
 (*
 fn main() {
@@ -155,3 +156,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_type_anonymity_define_and_use::main" main.
+Smpl Add apply Function_main : is_function.

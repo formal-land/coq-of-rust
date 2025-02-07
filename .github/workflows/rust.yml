@@ -66,7 +66,7 @@ jobs:
             cp ../../../../rust-toolchain ./
             time cargo build
             touch src/lib.rs
-            cargo coq-of-rust
+            time cargo coq-of-rust
             rsync -acv src/ ../../../../CoqOfRust/alloc/ --include='*/' --include='*.v' --exclude='*'
             cd ../../../..
           endGroup
@@ -75,7 +75,8 @@ jobs:
             cp ../../../../rust-toolchain ./
             time cargo build
             touch src/lib.rs
-            cargo coq-of-rust
+            export RUST_MIN_STACK=800000000
+            time cargo coq-of-rust
             rsync -acv src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --exclude='*'
             cd ../../../..
           endGroup
@@ -96,8 +97,8 @@ jobs:
             cd interpreter
             cargo coq-of-rust
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/revm/translations/interpreter/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/revm/translations/interpreter/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             # precompile
             cd precompile
@@ -169,6 +170,11 @@ jobs:
             rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_core_types/ --include='*/' --include='*.v' --exclude='*'
             cd ..
             cd ../../..
+          endGroup
+          startGroup "Generate Rocq files from Python"
+            cd CoqOfRust
+            make generate
+            cd ..
           endGroup
           startGroup "Check that the diff is empty (excluding submodules)"
             git -c color.ui=always diff --exit-code --ignore-submodules=dirty

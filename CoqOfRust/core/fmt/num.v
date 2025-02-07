@@ -6263,6 +6263,7 @@ Module fmt.
     
     Axiom Constant_value_DEC_DIGITS_LUT :
       (M.get_constant "core::fmt::num::DEC_DIGITS_LUT") = value_DEC_DIGITS_LUT.
+    Global Hint Rewrite Constant_value_DEC_DIGITS_LUT : constant_rewrites.
     
     Module imp.
       (*
@@ -6843,6 +6844,7 @@ Module fmt.
         end.
       
       Axiom Function_fmt_u64 : M.IsFunction "core::fmt::num::imp::fmt_u64" fmt_u64.
+      Smpl Add apply Function_fmt_u64 : is_function.
       
       Module Impl_core_fmt_Display_for_i8.
         Definition Self : Ty.t := Ty.path "i8".
@@ -9285,6 +9287,7 @@ Module fmt.
         end.
       
       Axiom Function_exp_u64 : M.IsFunction "core::fmt::num::imp::exp_u64" exp_u64.
+      Smpl Add apply Function_exp_u64 : is_function.
       
       Module Impl_core_fmt_LowerExp_for_i8.
         Definition Self : Ty.t := Ty.path "i8".
@@ -12861,6 +12864,7 @@ Module fmt.
       end.
     
     Axiom Function_exp_u128 : M.IsFunction "core::fmt::num::exp_u128" exp_u128.
+    Smpl Add apply Function_exp_u128 : is_function.
     
     Module Impl_core_fmt_LowerExp_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
@@ -14443,6 +14447,7 @@ Module fmt.
       end.
     
     Axiom Function_parse_u64_into : M.IsFunction "core::fmt::num::parse_u64_into" parse_u64_into.
+    Smpl Add apply Function_parse_u64_into : is_function.
     
     Module Impl_core_fmt_Display_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
@@ -15077,6 +15082,7 @@ Module fmt.
       end.
     
     Axiom Function_fmt_u128 : M.IsFunction "core::fmt::num::fmt_u128" fmt_u128.
+    Smpl Add apply Function_fmt_u128 : is_function.
     
     (*
     fn udiv_1e19(n: u128) -> (u128, u64) {
@@ -15172,6 +15178,7 @@ Module fmt.
       end.
     
     Axiom Function_udiv_1e19 : M.IsFunction "core::fmt::num::udiv_1e19" udiv_1e19.
+    Smpl Add apply Function_udiv_1e19 : is_function.
     
     Module udiv_1e19.
       Definition value_DIV : Value.t :=
@@ -15179,6 +15186,7 @@ Module fmt.
           ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| UnsupportedLiteral |)) |))).
       
       Axiom Constant_value_DIV : (M.get_constant "core::fmt::num::udiv_1e19::DIV") = value_DIV.
+      Global Hint Rewrite Constant_value_DIV : constant_rewrites.
       
       Definition value_FACTOR : Value.t :=
         M.run_constant
@@ -15187,6 +15195,7 @@ Module fmt.
       
       Axiom Constant_value_FACTOR :
         (M.get_constant "core::fmt::num::udiv_1e19::FACTOR") = value_FACTOR.
+      Global Hint Rewrite Constant_value_FACTOR : constant_rewrites.
     End udiv_1e19.
     
     (*
@@ -15281,5 +15290,6 @@ Module fmt.
       end.
     
     Axiom Function_u128_mulhi : M.IsFunction "core::fmt::num::u128_mulhi" u128_mulhi.
+    Smpl Add apply Function_u128_mulhi : is_function.
   End num.
 End fmt.

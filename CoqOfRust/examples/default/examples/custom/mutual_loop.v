@@ -24,6 +24,7 @@ Module Impl_mutual_loop_LoopA.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub(crate) fn start_loop(&self) -> LoopB {
@@ -43,6 +44,7 @@ Module Impl_mutual_loop_LoopA.
     end.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
+  Smpl Add apply AssociatedFunction_start_loop : is_associated.
 End Impl_mutual_loop_LoopA.
 
 (*
@@ -88,6 +90,7 @@ Module Impl_mutual_loop_LoopB.
     end.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
+  Smpl Add apply AssociatedFunction_start_loop : is_associated.
 End Impl_mutual_loop_LoopB.
 
 (*
@@ -122,3 +125,4 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Axiom Function_start_loop : M.IsFunction "mutual_loop::start_loop" start_loop.
+Smpl Add apply Function_start_loop : is_function.

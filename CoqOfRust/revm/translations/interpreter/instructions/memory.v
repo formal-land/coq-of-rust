@@ -563,6 +563,7 @@ Module instructions.
       end.
     
     Axiom Function_mload : M.IsFunction "revm_interpreter::instructions::memory::mload" mload.
+    Smpl Add apply Function_mload : is_function.
     
     (*
     pub fn mstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1069,6 +1070,7 @@ Module instructions.
       end.
     
     Axiom Function_mstore : M.IsFunction "revm_interpreter::instructions::memory::mstore" mstore.
+    Smpl Add apply Function_mstore : is_function.
     
     (*
     pub fn mstore8<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1581,6 +1583,7 @@ Module instructions.
       end.
     
     Axiom Function_mstore8 : M.IsFunction "revm_interpreter::instructions::memory::mstore8" mstore8.
+    Smpl Add apply Function_mstore8 : is_function.
     
     (*
     pub fn msize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1809,6 +1812,7 @@ Module instructions.
       end.
     
     Axiom Function_msize : M.IsFunction "revm_interpreter::instructions::memory::msize" msize.
+    Smpl Add apply Function_msize : is_function.
     
     (*
     pub fn mcopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2777,5 +2781,6 @@ Module instructions.
       end.
     
     Axiom Function_mcopy : M.IsFunction "revm_interpreter::instructions::memory::mcopy" mcopy.
+    Smpl Add apply Function_mcopy : is_function.
   End memory.
 End instructions.

@@ -142,6 +142,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
 
 Axiom Function_double_first :
   M.IsFunction "pulling_results_out_of_options::double_first" double_first.
+Smpl Add apply Function_double_first : is_function.
 
 (*
 fn main() {
@@ -550,3 +551,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "pulling_results_out_of_options::main" main.
+Smpl Add apply Function_main : is_function.

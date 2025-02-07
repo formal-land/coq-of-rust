@@ -5,6 +5,7 @@ Require Export Coq.ZArith.ZArith.
 (* Proof libraries that we can use everywhere. *)
 Require Export Lia.
 From Hammer Require Export Tactics.
+Require Export smpl.Smpl.
 
 Import List.ListNotations.
 
@@ -384,6 +385,8 @@ Parameter IsFunction :
     (function : PolymorphicFunction.t),
   Prop.
 
+Smpl Create is_function.
+
 Parameter IsAssociatedFunction :
   forall
     (Self : Ty.t)
@@ -397,6 +400,8 @@ Parameter IsAssociatedConstant :
     (constant_name : string)
     (constant : Value.t),
   Prop.
+
+Smpl Create is_associated.
 
 Parameter IsProvidedMethod :
   forall

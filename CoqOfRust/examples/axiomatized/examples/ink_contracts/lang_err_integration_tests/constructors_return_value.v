@@ -126,11 +126,13 @@ Module Impl_constructors_return_value_ReturnFlags.
   
   Axiom AssociatedFunction_new_with_reverted :
     M.IsAssociatedFunction Self "new_with_reverted" new_with_reverted.
+  Smpl Add apply AssociatedFunction_new_with_reverted : is_associated.
 End Impl_constructors_return_value_ReturnFlags.
 
 Parameter return_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_return_value : M.IsFunction "constructors_return_value::return_value" return_value.
+Smpl Add apply Function_return_value : is_function.
 
 Module Impl_constructors_return_value_ConstructorsReturnValue.
   Definition Self : Ty.t := Ty.path "constructors_return_value::ConstructorsReturnValue".
@@ -138,21 +140,26 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   Parameter try_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
+  Smpl Add apply AssociatedFunction_try_new : is_associated.
   
   Parameter revert_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_revert_new : M.IsAssociatedFunction Self "revert_new" revert_new.
+  Smpl Add apply AssociatedFunction_revert_new : is_associated.
   
   Parameter try_revert_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_try_revert_new :
     M.IsAssociatedFunction Self "try_revert_new" try_revert_new.
+  Smpl Add apply AssociatedFunction_try_revert_new : is_associated.
   
   Parameter get_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_value : M.IsAssociatedFunction Self "get_value" get_value.
+  Smpl Add apply AssociatedFunction_get_value : is_associated.
 End Impl_constructors_return_value_ConstructorsReturnValue.

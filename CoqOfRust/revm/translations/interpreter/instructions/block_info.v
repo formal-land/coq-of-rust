@@ -331,6 +331,7 @@ Module instructions.
     
     Axiom Function_chainid :
       M.IsFunction "revm_interpreter::instructions::block_info::chainid" chainid.
+    Smpl Add apply Function_chainid : is_function.
     
     (*
     pub fn coinbase<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -594,6 +595,7 @@ Module instructions.
     
     Axiom Function_coinbase :
       M.IsFunction "revm_interpreter::instructions::block_info::coinbase" coinbase.
+    Smpl Add apply Function_coinbase : is_function.
     
     (*
     pub fn timestamp<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -837,6 +839,7 @@ Module instructions.
     
     Axiom Function_timestamp :
       M.IsFunction "revm_interpreter::instructions::block_info::timestamp" timestamp.
+    Smpl Add apply Function_timestamp : is_function.
     
     (*
     pub fn block_number<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1080,6 +1083,7 @@ Module instructions.
     
     Axiom Function_block_number :
       M.IsFunction "revm_interpreter::instructions::block_info::block_number" block_number.
+    Smpl Add apply Function_block_number : is_function.
     
     (*
     pub fn difficulty<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1509,6 +1513,7 @@ Module instructions.
     
     Axiom Function_difficulty :
       M.IsFunction "revm_interpreter::instructions::block_info::difficulty" difficulty.
+    Smpl Add apply Function_difficulty : is_function.
     
     (*
     pub fn gaslimit<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1752,6 +1757,7 @@ Module instructions.
     
     Axiom Function_gaslimit :
       M.IsFunction "revm_interpreter::instructions::block_info::gaslimit" gaslimit.
+    Smpl Add apply Function_gaslimit : is_function.
     
     (*
     pub fn basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2081,6 +2087,7 @@ Module instructions.
     
     Axiom Function_basefee :
       M.IsFunction "revm_interpreter::instructions::block_info::basefee" basefee.
+    Smpl Add apply Function_basefee : is_function.
     
     (*
     pub fn blob_basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2426,5 +2433,6 @@ Module instructions.
     
     Axiom Function_blob_basefee :
       M.IsFunction "revm_interpreter::instructions::block_info::blob_basefee" blob_basefee.
+    Smpl Add apply Function_blob_basefee : is_function.
   End block_info.
 End instructions.

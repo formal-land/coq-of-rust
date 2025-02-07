@@ -270,6 +270,7 @@ Module option.
     Axiom AssociatedFunction_is_some :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "is_some" (is_some T).
+    Smpl Add apply AssociatedFunction_is_some : is_associated.
     
     (*
         pub fn is_some_and(self, f: impl FnOnce(T) -> bool) -> bool {
@@ -326,6 +327,7 @@ Module option.
     Axiom AssociatedFunction_is_some_and :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "is_some_and" (is_some_and T).
+    Smpl Add apply AssociatedFunction_is_some_and : is_associated.
     
     (*
         pub const fn is_none(&self) -> bool {
@@ -355,6 +357,7 @@ Module option.
     Axiom AssociatedFunction_is_none :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "is_none" (is_none T).
+    Smpl Add apply AssociatedFunction_is_none : is_associated.
     
     (*
         pub fn is_none_or(self, f: impl FnOnce(T) -> bool) -> bool {
@@ -411,6 +414,7 @@ Module option.
     Axiom AssociatedFunction_is_none_or :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "is_none_or" (is_none_or T).
+    Smpl Add apply AssociatedFunction_is_none_or : is_associated.
     
     (*
         pub const fn as_ref(&self) -> Option<&T> {
@@ -457,6 +461,7 @@ Module option.
     Axiom AssociatedFunction_as_ref :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
+    Smpl Add apply AssociatedFunction_as_ref : is_associated.
     
     (*
         pub const fn as_mut(&mut self) -> Option<&mut T> {
@@ -503,6 +508,7 @@ Module option.
     Axiom AssociatedFunction_as_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_mut" (as_mut T).
+    Smpl Add apply AssociatedFunction_as_mut : is_associated.
     
     (*
         pub const fn as_pin_ref(self: Pin<&Self>) -> Option<Pin<&T>> {
@@ -598,6 +604,7 @@ Module option.
     Axiom AssociatedFunction_as_pin_ref :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_pin_ref" (as_pin_ref T).
+    Smpl Add apply AssociatedFunction_as_pin_ref : is_associated.
     
     (*
         pub const fn as_pin_mut(self: Pin<&mut Self>) -> Option<Pin<&mut T>> {
@@ -695,6 +702,7 @@ Module option.
     Axiom AssociatedFunction_as_pin_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_pin_mut" (as_pin_mut T).
+    Smpl Add apply AssociatedFunction_as_pin_mut : is_associated.
     
     (*
         const fn len(&self) -> usize {
@@ -727,6 +735,7 @@ Module option.
       end.
     
     Axiom AssociatedFunction_len : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "len" (len T).
+    Smpl Add apply AssociatedFunction_len : is_associated.
     
     (*
         pub const fn as_slice(&self) -> &[T] {
@@ -818,6 +827,7 @@ Module option.
     Axiom AssociatedFunction_as_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_slice" (as_slice T).
+    Smpl Add apply AssociatedFunction_as_slice : is_associated.
     
     (*
         pub const fn as_mut_slice(&mut self) -> &mut [T] {
@@ -921,6 +931,7 @@ Module option.
     Axiom AssociatedFunction_as_mut_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_mut_slice" (as_mut_slice T).
+    Smpl Add apply AssociatedFunction_as_mut_slice : is_associated.
     
     (*
         pub const fn expect(self, msg: &str) -> T {
@@ -971,6 +982,7 @@ Module option.
     Axiom AssociatedFunction_expect :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "expect" (expect T).
+    Smpl Add apply AssociatedFunction_expect : is_associated.
     
     (*
         pub const fn unwrap(self) -> T {
@@ -1020,6 +1032,7 @@ Module option.
     Axiom AssociatedFunction_unwrap :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "unwrap" (unwrap T).
+    Smpl Add apply AssociatedFunction_unwrap : is_associated.
     
     (*
         pub fn unwrap_or(self, default: T) -> T {
@@ -1063,6 +1076,7 @@ Module option.
     Axiom AssociatedFunction_unwrap_or :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "unwrap_or" (unwrap_or T).
+    Smpl Add apply AssociatedFunction_unwrap_or : is_associated.
     
     (*
         pub fn unwrap_or_else<F>(self, f: F) -> T
@@ -1127,6 +1141,7 @@ Module option.
     Axiom AssociatedFunction_unwrap_or_else :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "unwrap_or_else" (unwrap_or_else T).
+    Smpl Add apply AssociatedFunction_unwrap_or_else : is_associated.
     
     (*
         pub fn unwrap_or_default(self) -> T
@@ -1190,6 +1205,7 @@ Module option.
     Axiom AssociatedFunction_unwrap_or_default :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "unwrap_or_default" (unwrap_or_default T).
+    Smpl Add apply AssociatedFunction_unwrap_or_default : is_associated.
     
     (*
         pub const unsafe fn unwrap_unchecked(self) -> T {
@@ -1245,6 +1261,7 @@ Module option.
     Axiom AssociatedFunction_unwrap_unchecked :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "unwrap_unchecked" (unwrap_unchecked T).
+    Smpl Add apply AssociatedFunction_unwrap_unchecked : is_associated.
     
     (*
         pub fn map<U, F>(self, f: F) -> Option<U>
@@ -1306,6 +1323,7 @@ Module option.
       end.
     
     Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
+    Smpl Add apply AssociatedFunction_map : is_associated.
     
     (*
         pub fn inspect<F: FnOnce(&T)>(self, f: F) -> Self {
@@ -1369,6 +1387,7 @@ Module option.
     Axiom AssociatedFunction_inspect :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "inspect" (inspect T).
+    Smpl Add apply AssociatedFunction_inspect : is_associated.
     
     (*
         pub fn map_or<U, F>(self, default: U, f: F) -> U
@@ -1429,6 +1448,7 @@ Module option.
     Axiom AssociatedFunction_map_or :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "map_or" (map_or T).
+    Smpl Add apply AssociatedFunction_map_or : is_associated.
     
     (*
         pub fn map_or_else<U, D, F>(self, default: D, f: F) -> U
@@ -1503,6 +1523,7 @@ Module option.
     Axiom AssociatedFunction_map_or_else :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "map_or_else" (map_or_else T).
+    Smpl Add apply AssociatedFunction_map_or_else : is_associated.
     
     (*
         pub fn ok_or<E>(self, err: E) -> Result<T, E> {
@@ -1548,6 +1569,7 @@ Module option.
     Axiom AssociatedFunction_ok_or :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "ok_or" (ok_or T).
+    Smpl Add apply AssociatedFunction_ok_or : is_associated.
     
     (*
         pub fn ok_or_else<E, F>(self, err: F) -> Result<T, E>
@@ -1611,6 +1633,7 @@ Module option.
     Axiom AssociatedFunction_ok_or_else :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "ok_or_else" (ok_or_else T).
+    Smpl Add apply AssociatedFunction_ok_or_else : is_associated.
     
     (*
         pub fn as_deref(&self) -> Option<&T::Target>
@@ -1684,6 +1707,7 @@ Module option.
     Axiom AssociatedFunction_as_deref :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_deref" (as_deref T).
+    Smpl Add apply AssociatedFunction_as_deref : is_associated.
     
     (*
         pub fn as_deref_mut(&mut self) -> Option<&mut T::Target>
@@ -1758,6 +1782,7 @@ Module option.
     Axiom AssociatedFunction_as_deref_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "as_deref_mut" (as_deref_mut T).
+    Smpl Add apply AssociatedFunction_as_deref_mut : is_associated.
     
     (*
         pub fn iter(&self) -> Iter<'_, T> {
@@ -1795,6 +1820,7 @@ Module option.
     Axiom AssociatedFunction_iter :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "iter" (iter T).
+    Smpl Add apply AssociatedFunction_iter : is_associated.
     
     (*
         pub fn iter_mut(&mut self) -> IterMut<'_, T> {
@@ -1832,6 +1858,7 @@ Module option.
     Axiom AssociatedFunction_iter_mut :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "iter_mut" (iter_mut T).
+    Smpl Add apply AssociatedFunction_iter_mut : is_associated.
     
     (*
         pub fn and<U>(self, optb: Option<U>) -> Option<U> {
@@ -1872,6 +1899,7 @@ Module option.
       end.
     
     Axiom AssociatedFunction_and : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "and" (and T).
+    Smpl Add apply AssociatedFunction_and : is_associated.
     
     (*
         pub fn and_then<U, F>(self, f: F) -> Option<U>
@@ -1931,6 +1959,7 @@ Module option.
     Axiom AssociatedFunction_and_then :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "and_then" (and_then T).
+    Smpl Add apply AssociatedFunction_and_then : is_associated.
     
     (*
         pub fn filter<P>(self, predicate: P) -> Self
@@ -2030,6 +2059,7 @@ Module option.
     Axiom AssociatedFunction_filter :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "filter" (filter T).
+    Smpl Add apply AssociatedFunction_filter : is_associated.
     
     (*
         pub fn or(self, optb: Option<T>) -> Option<T> {
@@ -2071,6 +2101,7 @@ Module option.
       end.
     
     Axiom AssociatedFunction_or : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "or" (or T).
+    Smpl Add apply AssociatedFunction_or : is_associated.
     
     (*
         pub fn or_else<F>(self, f: F) -> Option<T>
@@ -2130,6 +2161,7 @@ Module option.
     Axiom AssociatedFunction_or_else :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "or_else" (or_else T).
+    Smpl Add apply AssociatedFunction_or_else : is_associated.
     
     (*
         pub fn xor(self, optb: Option<T>) -> Option<T> {
@@ -2186,6 +2218,7 @@ Module option.
       end.
     
     Axiom AssociatedFunction_xor : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "xor" (xor T).
+    Smpl Add apply AssociatedFunction_xor : is_associated.
     
     (*
         pub fn insert(&mut self, value: T) -> &mut T {
@@ -2259,6 +2292,7 @@ Module option.
     Axiom AssociatedFunction_insert :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "insert" (insert T).
+    Smpl Add apply AssociatedFunction_insert : is_associated.
     
     (*
         pub fn get_or_insert(&mut self, value: T) -> &mut T {
@@ -2311,6 +2345,7 @@ Module option.
     Axiom AssociatedFunction_get_or_insert :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_or_insert" (get_or_insert T).
+    Smpl Add apply AssociatedFunction_get_or_insert : is_associated.
     
     (*
         pub fn get_or_insert_default(&mut self) -> &mut T
@@ -2367,6 +2402,7 @@ Module option.
     Axiom AssociatedFunction_get_or_insert_default :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_or_insert_default" (get_or_insert_default T).
+    Smpl Add apply AssociatedFunction_get_or_insert_default : is_associated.
     
     (*
         pub fn get_or_insert_with<F>(&mut self, f: F) -> &mut T
@@ -2479,6 +2515,7 @@ Module option.
     Axiom AssociatedFunction_get_or_insert_with :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "get_or_insert_with" (get_or_insert_with T).
+    Smpl Add apply AssociatedFunction_get_or_insert_with : is_associated.
     
     (*
         pub const fn take(&mut self) -> Option<T> {
@@ -2509,6 +2546,7 @@ Module option.
     Axiom AssociatedFunction_take :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take" (take T).
+    Smpl Add apply AssociatedFunction_take : is_associated.
     
     (*
         pub fn take_if<P>(&mut self, predicate: P) -> Option<T>
@@ -2587,6 +2625,7 @@ Module option.
     Axiom AssociatedFunction_take_if :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "take_if" (take_if T).
+    Smpl Add apply AssociatedFunction_take_if : is_associated.
     
     (*
         pub const fn replace(&mut self, value: T) -> Option<T> {
@@ -2617,6 +2656,7 @@ Module option.
     Axiom AssociatedFunction_replace :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "replace" (replace T).
+    Smpl Add apply AssociatedFunction_replace : is_associated.
     
     (*
         pub fn zip<U>(self, other: Option<U>) -> Option<(T, U)> {
@@ -2669,6 +2709,7 @@ Module option.
       end.
     
     Axiom AssociatedFunction_zip : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "zip" (zip T).
+    Smpl Add apply AssociatedFunction_zip : is_associated.
     
     (*
         pub fn zip_with<U, F, R>(self, other: Option<U>, f: F) -> Option<R>
@@ -2740,6 +2781,7 @@ Module option.
     Axiom AssociatedFunction_zip_with :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "zip_with" (zip_with T).
+    Smpl Add apply AssociatedFunction_zip_with : is_associated.
   End Impl_core_option_Option_T.
   
   Module Impl_core_option_Option_Tuple_T_U_.
@@ -2802,6 +2844,7 @@ Module option.
     Axiom AssociatedFunction_unzip :
       forall (T U : Ty.t),
       M.IsAssociatedFunction (Self T U) "unzip" (unzip T U).
+    Smpl Add apply AssociatedFunction_unzip : is_associated.
   End Impl_core_option_Option_Tuple_T_U_.
   
   Module Impl_core_option_Option_ref__T.
@@ -2857,6 +2900,7 @@ Module option.
     Axiom AssociatedFunction_copied :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "copied" (copied T).
+    Smpl Add apply AssociatedFunction_copied : is_associated.
     
     (*
         pub fn cloned(self) -> Option<T>
@@ -2919,6 +2963,7 @@ Module option.
     Axiom AssociatedFunction_cloned :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "cloned" (cloned T).
+    Smpl Add apply AssociatedFunction_cloned : is_associated.
   End Impl_core_option_Option_ref__T.
   
   Module Impl_core_option_Option_ref_mut_T.
@@ -2972,6 +3017,7 @@ Module option.
     Axiom AssociatedFunction_copied :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "copied" (copied T).
+    Smpl Add apply AssociatedFunction_copied : is_associated.
     
     (*
         pub fn cloned(self) -> Option<T>
@@ -3034,6 +3080,7 @@ Module option.
     Axiom AssociatedFunction_cloned :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "cloned" (cloned T).
+    Smpl Add apply AssociatedFunction_cloned : is_associated.
   End Impl_core_option_Option_ref_mut_T.
   
   Module Impl_core_option_Option_core_result_Result_T_E.
@@ -3117,6 +3164,7 @@ Module option.
     Axiom AssociatedFunction_transpose :
       forall (T E : Ty.t),
       M.IsAssociatedFunction (Self T E) "transpose" (transpose T E).
+    Smpl Add apply AssociatedFunction_transpose : is_associated.
   End Impl_core_option_Option_core_result_Result_T_E.
   
   (*
@@ -3136,6 +3184,7 @@ Module option.
     end.
   
   Axiom Function_unwrap_failed : M.IsFunction "core::option::unwrap_failed" unwrap_failed.
+  Smpl Add apply Function_unwrap_failed : is_function.
   
   (*
   const fn expect_failed(msg: &str) -> ! {
@@ -3159,6 +3208,7 @@ Module option.
     end.
   
   Axiom Function_expect_failed : M.IsFunction "core::option::expect_failed" expect_failed.
+  Smpl Add apply Function_expect_failed : is_function.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_option_Option_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
@@ -5404,5 +5454,6 @@ Module option.
     Axiom AssociatedFunction_flatten :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "flatten" (flatten T).
+    Smpl Add apply AssociatedFunction_flatten : is_associated.
   End Impl_core_option_Option_core_option_Option_T.
 End option.

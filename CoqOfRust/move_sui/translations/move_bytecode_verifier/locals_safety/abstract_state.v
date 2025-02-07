@@ -234,6 +234,7 @@ Module locals_safety.
     Axiom Constant_value_STEP_BASE_COST :
       (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::STEP_BASE_COST") =
         value_STEP_BASE_COST.
+    Global Hint Rewrite Constant_value_STEP_BASE_COST : constant_rewrites.
     
     Definition value_RET_PER_LOCAL_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 30 |))).
@@ -241,6 +242,7 @@ Module locals_safety.
     Axiom Constant_value_RET_PER_LOCAL_COST :
       (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::RET_PER_LOCAL_COST") =
         value_RET_PER_LOCAL_COST.
+    Global Hint Rewrite Constant_value_RET_PER_LOCAL_COST : constant_rewrites.
     
     Definition value_JOIN_BASE_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
@@ -248,6 +250,7 @@ Module locals_safety.
     Axiom Constant_value_JOIN_BASE_COST :
       (M.get_constant "move_bytecode_verifier::locals_safety::abstract_state::JOIN_BASE_COST") =
         value_JOIN_BASE_COST.
+    Global Hint Rewrite Constant_value_JOIN_BASE_COST : constant_rewrites.
     
     Definition value_JOIN_PER_LOCAL_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 5 |))).
@@ -256,6 +259,7 @@ Module locals_safety.
       (M.get_constant
           "move_bytecode_verifier::locals_safety::abstract_state::JOIN_PER_LOCAL_COST") =
         value_JOIN_PER_LOCAL_COST.
+    Global Hint Rewrite Constant_value_JOIN_PER_LOCAL_COST : constant_rewrites.
     
     (* StructRecord
       {
@@ -1399,6 +1403,7 @@ Module locals_safety.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn local_abilities(&self, idx: LocalIndex) -> AbilitySet {
@@ -1448,6 +1453,7 @@ Module locals_safety.
       
       Axiom AssociatedFunction_local_abilities :
         M.IsAssociatedFunction Self "local_abilities" local_abilities.
+      Smpl Add apply AssociatedFunction_local_abilities : is_associated.
       
       (*
           pub fn all_local_abilities(&self) -> &Vec<AbilitySet> {
@@ -1477,6 +1483,7 @@ Module locals_safety.
       
       Axiom AssociatedFunction_all_local_abilities :
         M.IsAssociatedFunction Self "all_local_abilities" all_local_abilities.
+      Smpl Add apply AssociatedFunction_all_local_abilities : is_associated.
       
       (*
           pub fn local_state(&self, idx: LocalIndex) -> LocalState {
@@ -1525,6 +1532,7 @@ Module locals_safety.
         end.
       
       Axiom AssociatedFunction_local_state : M.IsAssociatedFunction Self "local_state" local_state.
+      Smpl Add apply AssociatedFunction_local_state : is_associated.
       
       (*
           pub fn local_states(&self) -> &Vec<LocalState> {
@@ -1554,6 +1562,7 @@ Module locals_safety.
       
       Axiom AssociatedFunction_local_states :
         M.IsAssociatedFunction Self "local_states" local_states.
+      Smpl Add apply AssociatedFunction_local_states : is_associated.
       
       (*
           pub fn set_available(&mut self, idx: LocalIndex) {
@@ -1609,6 +1618,7 @@ Module locals_safety.
       
       Axiom AssociatedFunction_set_available :
         M.IsAssociatedFunction Self "set_available" set_available.
+      Smpl Add apply AssociatedFunction_set_available : is_associated.
       
       (*
           pub fn set_unavailable(&mut self, idx: LocalIndex) {
@@ -1754,6 +1764,7 @@ Module locals_safety.
       
       Axiom AssociatedFunction_set_unavailable :
         M.IsAssociatedFunction Self "set_unavailable" set_unavailable.
+      Smpl Add apply AssociatedFunction_set_unavailable : is_associated.
       
       (*
           pub fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -1817,6 +1828,7 @@ Module locals_safety.
         end.
       
       Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
+      Smpl Add apply AssociatedFunction_error : is_associated.
       
       (*
           fn join_(&self, other: &Self) -> Self {
@@ -2645,6 +2657,7 @@ Module locals_safety.
         end.
       
       Axiom AssociatedFunction_join_ : M.IsAssociatedFunction Self "join_" join_.
+      Smpl Add apply AssociatedFunction_join_ : is_associated.
     End Impl_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
     
     Module Impl_move_bytecode_verifier_absint_AbstractDomain_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.

@@ -166,6 +166,7 @@ Module vec.
       Axiom AssociatedFunction_as_slice :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_slice" (as_slice T A).
+      Smpl Add apply AssociatedFunction_as_slice : is_associated.
       
       (*
           pub fn allocator(&self) -> &A {
@@ -225,6 +226,7 @@ Module vec.
       Axiom AssociatedFunction_allocator :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
+      Smpl Add apply AssociatedFunction_allocator : is_associated.
       
       (*
           pub fn keep_rest(self) {
@@ -706,6 +708,7 @@ Module vec.
       Axiom AssociatedFunction_keep_rest :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "keep_rest" (keep_rest T A).
+      Smpl Add apply AssociatedFunction_keep_rest : is_associated.
     End Impl_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_convert_AsRef_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_drain_Drain_T_A.

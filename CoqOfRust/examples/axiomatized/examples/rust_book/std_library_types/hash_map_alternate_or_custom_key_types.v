@@ -91,7 +91,9 @@ Parameter try_logon : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_try_logon :
   M.IsFunction "hash_map_alternate_or_custom_key_types::try_logon" try_logon.
+Smpl Add apply Function_try_logon : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "hash_map_alternate_or_custom_key_types::main" main.
+Smpl Add apply Function_main : is_function.

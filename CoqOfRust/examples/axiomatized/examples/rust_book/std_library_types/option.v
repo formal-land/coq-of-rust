@@ -4,11 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter checked_division : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_checked_division : M.IsFunction "option::checked_division" checked_division.
+Smpl Add apply Function_checked_division : is_function.
 
 Parameter try_division : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_try_division : M.IsFunction "option::try_division" try_division.
+Smpl Add apply Function_try_division : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "option::main" main.
+Smpl Add apply Function_main : is_function.

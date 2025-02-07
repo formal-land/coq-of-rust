@@ -84,6 +84,7 @@ Module friends.
   
   Axiom Function_verify_module :
     M.IsFunction "move_bytecode_verifier::friends::verify_module" verify_module.
+  Smpl Add apply Function_verify_module : is_function.
   
   (*
   fn verify_module_impl(module: &CompiledModule) -> PartialVMResult<()> {
@@ -446,4 +447,5 @@ Module friends.
   
   Axiom Function_verify_module_impl :
     M.IsFunction "move_bytecode_verifier::friends::verify_module_impl" verify_module_impl.
+  Smpl Add apply Function_verify_module_impl : is_function.
 End friends.

@@ -46,6 +46,7 @@ Module char.
       end.
     
     Axiom Function_from_u32 : M.IsFunction "core::char::convert::from_u32" from_u32.
+    Smpl Add apply Function_from_u32 : is_function.
     
     (*
     pub(super) const unsafe fn from_u32_unchecked(i: u32) -> char {
@@ -112,6 +113,7 @@ Module char.
     
     Axiom Function_from_u32_unchecked :
       M.IsFunction "core::char::convert::from_u32_unchecked" from_u32_unchecked.
+    Smpl Add apply Function_from_u32_unchecked : is_function.
     
     Module Impl_core_convert_From_char_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
@@ -1126,6 +1128,7 @@ Module char.
     
     Axiom Function_char_try_from_u32 :
       M.IsFunction "core::char::convert::char_try_from_u32" char_try_from_u32.
+    Smpl Add apply Function_char_try_from_u32 : is_function.
     
     Module Impl_core_convert_TryFrom_u32_for_char.
       Definition Self : Ty.t := Ty.path "char".
@@ -1519,5 +1522,6 @@ Module char.
       end.
     
     Axiom Function_from_digit : M.IsFunction "core::char::convert::from_digit" from_digit.
+    Smpl Add apply Function_from_digit : is_function.
   End convert.
 End char.

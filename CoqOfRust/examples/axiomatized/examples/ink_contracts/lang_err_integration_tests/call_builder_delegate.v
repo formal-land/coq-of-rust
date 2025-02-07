@@ -48,12 +48,15 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   Parameter delegate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_delegate : M.IsAssociatedFunction Self "delegate" delegate.
+  Smpl Add apply AssociatedFunction_delegate : is_associated.
   
   Parameter invoke : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
+  Smpl Add apply AssociatedFunction_invoke : is_associated.
 End Impl_call_builder_delegate_CallBuilderDelegateTest.

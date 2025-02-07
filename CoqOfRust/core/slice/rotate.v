@@ -1337,6 +1337,7 @@ Module slice.
       end.
     
     Axiom Function_ptr_rotate : M.IsFunction "core::slice::rotate::ptr_rotate" ptr_rotate.
+    Smpl Add apply Function_ptr_rotate : is_function.
     
     Module ptr_rotate.
       Axiom BufType :

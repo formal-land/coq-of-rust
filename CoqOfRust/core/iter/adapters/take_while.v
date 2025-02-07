@@ -133,6 +133,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I P : Ty.t),
           M.IsAssociatedFunction (Self I P) "new" (new I P).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_take_while_TakeWhile_I_P.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_take_while_TakeWhile_I_P.

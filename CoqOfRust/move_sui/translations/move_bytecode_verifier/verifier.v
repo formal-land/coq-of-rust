@@ -51,6 +51,7 @@ Module verifier.
     M.IsFunction
       "move_bytecode_verifier::verifier::verify_module_unmetered"
       verify_module_unmetered.
+  Smpl Add apply Function_verify_module_unmetered : is_function.
   
   (*
   pub fn verify_module_with_config_for_test(
@@ -726,6 +727,7 @@ Module verifier.
     M.IsFunction
       "move_bytecode_verifier::verifier::verify_module_with_config_for_test"
       verify_module_with_config_for_test.
+  Smpl Add apply Function_verify_module_with_config_for_test : is_function.
   
   Module verify_module_with_config_for_test.
     Definition value_MAX_MODULE_SIZE : Value.t :=
@@ -735,6 +737,7 @@ Module verifier.
       (M.get_constant
           "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE") =
         value_MAX_MODULE_SIZE.
+    Global Hint Rewrite Constant_value_MAX_MODULE_SIZE : constant_rewrites.
   End verify_module_with_config_for_test.
   
   (*
@@ -1774,6 +1777,7 @@ Module verifier.
     M.IsFunction
       "move_bytecode_verifier::verifier::verify_module_with_config_metered"
       verify_module_with_config_metered.
+  Smpl Add apply Function_verify_module_with_config_metered : is_function.
   
   (*
   pub fn verify_module_with_config_unmetered(
@@ -1822,4 +1826,5 @@ Module verifier.
     M.IsFunction
       "move_bytecode_verifier::verifier::verify_module_with_config_unmetered"
       verify_module_with_config_unmetered.
+  Smpl Add apply Function_verify_module_with_config_unmetered : is_function.
 End verifier.

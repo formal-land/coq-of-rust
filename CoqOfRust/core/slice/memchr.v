@@ -15,6 +15,7 @@ Module slice.
     
     Axiom Constant_value_LO_USIZE :
       (M.get_constant "core::slice::memchr::LO_USIZE") = value_LO_USIZE.
+    Global Hint Rewrite Constant_value_LO_USIZE : constant_rewrites.
     
     Definition value_HI_USIZE : Value.t :=
       M.run_constant
@@ -28,6 +29,7 @@ Module slice.
     
     Axiom Constant_value_HI_USIZE :
       (M.get_constant "core::slice::memchr::HI_USIZE") = value_HI_USIZE.
+    Global Hint Rewrite Constant_value_HI_USIZE : constant_rewrites.
     
     Definition value_USIZE_BYTES : Value.t :=
       M.run_constant
@@ -41,6 +43,7 @@ Module slice.
     
     Axiom Constant_value_USIZE_BYTES :
       (M.get_constant "core::slice::memchr::USIZE_BYTES") = value_USIZE_BYTES.
+    Global Hint Rewrite Constant_value_USIZE_BYTES : constant_rewrites.
     
     (*
     const fn contains_zero_byte(x: usize) -> bool {
@@ -68,6 +71,7 @@ Module slice.
     
     Axiom Function_contains_zero_byte :
       M.IsFunction "core::slice::memchr::contains_zero_byte" contains_zero_byte.
+    Smpl Add apply Function_contains_zero_byte : is_function.
     
     (*
     pub const fn memchr(x: u8, text: &[u8]) -> Option<usize> {
@@ -160,6 +164,7 @@ Module slice.
       end.
     
     Axiom Function_memchr : M.IsFunction "core::slice::memchr::memchr" memchr.
+    Smpl Add apply Function_memchr : is_function.
     
     (*
     const fn memchr_naive(x: u8, text: &[u8]) -> Option<usize> {
@@ -292,6 +297,7 @@ Module slice.
       end.
     
     Axiom Function_memchr_naive : M.IsFunction "core::slice::memchr::memchr_naive" memchr_naive.
+    Smpl Add apply Function_memchr_naive : is_function.
     
     (*
     const fn memchr_aligned(x: u8, text: &[u8]) -> Option<usize> {
@@ -740,6 +746,7 @@ Module slice.
     
     Axiom Function_memchr_aligned :
       M.IsFunction "core::slice::memchr::memchr_aligned" memchr_aligned.
+    Smpl Add apply Function_memchr_aligned : is_function.
     
     (*
     pub fn memrchr(x: u8, text: &[u8]) -> Option<usize> {
@@ -1281,6 +1288,7 @@ Module slice.
       end.
     
     Axiom Function_memrchr : M.IsFunction "core::slice::memchr::memrchr" memrchr.
+    Smpl Add apply Function_memrchr : is_function.
     
     Module memrchr.
       Axiom Chunk : (Ty.path "core::slice::memchr::memrchr::Chunk") = (Ty.path "usize").

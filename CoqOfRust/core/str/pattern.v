@@ -1996,6 +1996,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_utf8_size : M.IsAssociatedFunction Self "utf8_size" utf8_size.
+      Smpl Add apply AssociatedFunction_utf8_size : is_associated.
     End Impl_core_str_pattern_CharSearcher.
     
     Module Impl_core_str_pattern_Searcher_for_core_str_pattern_CharSearcher.
@@ -10496,6 +10497,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
     End Impl_core_str_pattern_StrSearcher.
     
     Module Impl_core_str_pattern_Searcher_for_core_str_pattern_StrSearcher.
@@ -13292,6 +13294,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           fn byteset_create(bytes: &[u8]) -> u64 {
@@ -13369,6 +13372,7 @@ Module str.
       
       Axiom AssociatedFunction_byteset_create :
         M.IsAssociatedFunction Self "byteset_create" byteset_create.
+      Smpl Add apply AssociatedFunction_byteset_create : is_associated.
       
       (*
           fn byteset_contains(&self, byte: u8) -> bool {
@@ -13403,6 +13407,7 @@ Module str.
       
       Axiom AssociatedFunction_byteset_contains :
         M.IsAssociatedFunction Self "byteset_contains" byteset_contains.
+      Smpl Add apply AssociatedFunction_byteset_contains : is_associated.
       
       (*
           fn next<S>(&mut self, haystack: &[u8], needle: &[u8], long_period: bool) -> S::Output
@@ -14493,6 +14498,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_next : M.IsAssociatedFunction Self "next" next.
+      Smpl Add apply AssociatedFunction_next : is_associated.
       
       (*
           fn next_back<S>(&mut self, haystack: &[u8], needle: &[u8], long_period: bool) -> S::Output
@@ -15656,6 +15662,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_next_back : M.IsAssociatedFunction Self "next_back" next_back.
+      Smpl Add apply AssociatedFunction_next_back : is_associated.
       
       (*
           fn maximal_suffix(arr: &[u8], order_greater: bool) -> (usize, usize) {
@@ -15907,6 +15914,7 @@ Module str.
       
       Axiom AssociatedFunction_maximal_suffix :
         M.IsAssociatedFunction Self "maximal_suffix" maximal_suffix.
+      Smpl Add apply AssociatedFunction_maximal_suffix : is_associated.
       
       (*
           fn reverse_maximal_suffix(arr: &[u8], known_period: usize, order_greater: bool) -> usize {
@@ -16262,6 +16270,7 @@ Module str.
       
       Axiom AssociatedFunction_reverse_maximal_suffix :
         M.IsAssociatedFunction Self "reverse_maximal_suffix" reverse_maximal_suffix.
+      Smpl Add apply AssociatedFunction_reverse_maximal_suffix : is_associated.
     End Impl_core_str_pattern_TwoWaySearcher.
     
     (* Trait *)
@@ -18239,6 +18248,7 @@ Module str.
       end.
     
     Axiom Function_simd_contains : M.IsFunction "core::str::pattern::simd_contains" simd_contains.
+    Smpl Add apply Function_simd_contains : is_function.
     
     Module simd_contains.
       Definition value_UNROLL : Value.t :=
@@ -18246,6 +18256,7 @@ Module str.
       
       Axiom Constant_value_UNROLL :
         (M.get_constant "core::str::pattern::simd_contains::UNROLL") = value_UNROLL.
+      Global Hint Rewrite Constant_value_UNROLL : constant_rewrites.
     End simd_contains.
     
     (*
@@ -18973,5 +18984,6 @@ Module str.
     
     Axiom Function_small_slice_eq :
       M.IsFunction "core::str::pattern::small_slice_eq" small_slice_eq.
+    Smpl Add apply Function_small_slice_eq : is_function.
   End pattern.
 End str.

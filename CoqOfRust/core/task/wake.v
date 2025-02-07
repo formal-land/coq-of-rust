@@ -182,6 +182,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           const NOOP: RawWaker = {
@@ -224,6 +225,7 @@ Module task.
             |))).
       
       Axiom AssociatedConstant_value_NOOP : M.IsAssociatedConstant Self "value_NOOP" value_NOOP.
+      Smpl Add apply AssociatedConstant_value_NOOP : is_associated.
     End Impl_core_task_wake_RawWaker.
     
     (* StructRecord
@@ -543,6 +545,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
     End Impl_core_task_wake_RawWakerVTable.
     
     (*
@@ -725,6 +728,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_from_waker : M.IsAssociatedFunction Self "from_waker" from_waker.
+      Smpl Add apply AssociatedFunction_from_waker : is_associated.
       
       (*
           pub const fn waker(&self) -> &'a Waker {
@@ -757,6 +761,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_waker : M.IsAssociatedFunction Self "waker" waker.
+      Smpl Add apply AssociatedFunction_waker : is_associated.
       
       (*
           pub const fn local_waker(&self) -> &'a LocalWaker {
@@ -789,6 +794,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_local_waker : M.IsAssociatedFunction Self "local_waker" local_waker.
+      Smpl Add apply AssociatedFunction_local_waker : is_associated.
       
       (*
           pub const fn ext(&mut self) -> &mut dyn Any {
@@ -868,6 +874,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_ext : M.IsAssociatedFunction Self "ext" ext.
+      Smpl Add apply AssociatedFunction_ext : is_associated.
     End Impl_core_task_wake_Context.
     
     Module Impl_core_fmt_Debug_for_core_task_wake_Context.
@@ -1150,6 +1157,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_from_waker : M.IsAssociatedFunction Self "from_waker" from_waker.
+      Smpl Add apply AssociatedFunction_from_waker : is_associated.
       
       (*
           pub const fn from(cx: &'a mut Context<'_>) -> Self {
@@ -1265,6 +1273,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_from : M.IsAssociatedFunction Self "from" from.
+      Smpl Add apply AssociatedFunction_from : is_associated.
       
       (*
           pub const fn waker(self, waker: &'a Waker) -> Self {
@@ -1282,6 +1291,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_waker : M.IsAssociatedFunction Self "waker" waker.
+      Smpl Add apply AssociatedFunction_waker : is_associated.
       
       (*
           pub const fn local_waker(self, local_waker: &'a LocalWaker) -> Self {
@@ -1301,6 +1311,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_local_waker : M.IsAssociatedFunction Self "local_waker" local_waker.
+      Smpl Add apply AssociatedFunction_local_waker : is_associated.
       
       (*
           pub const fn ext(self, data: &'a mut dyn Any) -> Self {
@@ -1325,6 +1336,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_ext : M.IsAssociatedFunction Self "ext" ext.
+      Smpl Add apply AssociatedFunction_ext : is_associated.
       
       (*
           pub const fn build(self) -> Context<'a> {
@@ -1404,6 +1416,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_build : M.IsAssociatedFunction Self "build" build.
+      Smpl Add apply AssociatedFunction_build : is_associated.
     End Impl_core_task_wake_ContextBuilder.
     
     (* StructRecord
@@ -1560,6 +1573,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_wake : M.IsAssociatedFunction Self "wake" wake.
+      Smpl Add apply AssociatedFunction_wake : is_associated.
       
       (*
           pub fn wake_by_ref(&self) {
@@ -1613,6 +1627,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_wake_by_ref : M.IsAssociatedFunction Self "wake_by_ref" wake_by_ref.
+      Smpl Add apply AssociatedFunction_wake_by_ref : is_associated.
       
       (*
           pub fn will_wake(&self, other: &Waker) -> bool {
@@ -1708,6 +1723,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
+      Smpl Add apply AssociatedFunction_will_wake : is_associated.
       
       (*
           pub const unsafe fn new(data: *const (), vtable: &'static RawWakerVTable) -> Self {
@@ -1732,6 +1748,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const unsafe fn from_raw(waker: RawWaker) -> Waker {
@@ -1748,6 +1765,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
+      Smpl Add apply AssociatedFunction_from_raw : is_associated.
       
       (*
           pub const fn noop() -> &'static Waker {
@@ -1763,6 +1781,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
+      Smpl Add apply AssociatedFunction_noop : is_associated.
       
       (*
           pub fn data(&self) -> *const () {
@@ -1789,6 +1808,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
+      Smpl Add apply AssociatedFunction_data : is_associated.
       
       (*
           pub fn vtable(&self) -> &'static RawWakerVTable {
@@ -1815,6 +1835,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
+      Smpl Add apply AssociatedFunction_vtable : is_associated.
     End Impl_core_task_wake_Waker.
     
     Module Impl_core_clone_Clone_for_core_task_wake_Waker.
@@ -2289,6 +2310,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_wake : M.IsAssociatedFunction Self "wake" wake.
+      Smpl Add apply AssociatedFunction_wake : is_associated.
       
       (*
           pub fn wake_by_ref(&self) {
@@ -2342,6 +2364,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_wake_by_ref : M.IsAssociatedFunction Self "wake_by_ref" wake_by_ref.
+      Smpl Add apply AssociatedFunction_wake_by_ref : is_associated.
       
       (*
           pub fn will_wake(&self, other: &LocalWaker) -> bool {
@@ -2437,6 +2460,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
+      Smpl Add apply AssociatedFunction_will_wake : is_associated.
       
       (*
           pub const unsafe fn new(data: *const (), vtable: &'static RawWakerVTable) -> Self {
@@ -2461,6 +2485,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const unsafe fn from_raw(waker: RawWaker) -> LocalWaker {
@@ -2477,6 +2502,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
+      Smpl Add apply AssociatedFunction_from_raw : is_associated.
       
       (*
           pub const fn noop() -> &'static LocalWaker {
@@ -2492,6 +2518,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
+      Smpl Add apply AssociatedFunction_noop : is_associated.
       
       (*
           pub fn data(&self) -> *const () {
@@ -2518,6 +2545,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
+      Smpl Add apply AssociatedFunction_data : is_associated.
       
       (*
           pub fn vtable(&self) -> &'static RawWakerVTable {
@@ -2544,6 +2572,7 @@ Module task.
         end.
       
       Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
+      Smpl Add apply AssociatedFunction_vtable : is_associated.
     End Impl_core_task_wake_LocalWaker.
     
     Module Impl_core_clone_Clone_for_core_task_wake_LocalWaker.

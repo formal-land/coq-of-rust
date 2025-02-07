@@ -13,6 +13,7 @@ Enum Error
 Parameter set_code_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_set_code_hash : M.IsFunction "set_code_hash::set_code_hash" set_code_hash.
+Smpl Add apply Function_set_code_hash : is_function.
 
 (* StructRecord
   {
@@ -41,16 +42,20 @@ Module Impl_set_code_hash_Incrementer.
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   Parameter inc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
+  Smpl Add apply AssociatedFunction_inc : is_associated.
   
   Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
+  Smpl Add apply AssociatedFunction_get : is_associated.
   
   Parameter set_code : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
+  Smpl Add apply AssociatedFunction_set_code : is_associated.
 End Impl_set_code_hash_Incrementer.

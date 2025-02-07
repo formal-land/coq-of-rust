@@ -218,6 +218,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
     End Impl_revm_interpreter_interpreter_ext_bytecode_ExtBytecode.
     
     Module Impl_revm_interpreter_interpreter_types_Jumps_for_revm_interpreter_interpreter_ext_bytecode_ExtBytecode.

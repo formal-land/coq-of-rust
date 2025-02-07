@@ -102,6 +102,7 @@ Axiom Function_combine_vecs_explicit_return_type :
   M.IsFunction
     "impl_trait_as_return_type::combine_vecs_explicit_return_type"
     combine_vecs_explicit_return_type.
+Smpl Add apply Function_combine_vecs_explicit_return_type : is_function.
 
 (*
 fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
@@ -194,6 +195,7 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_combine_vecs : M.IsFunction "impl_trait_as_return_type::combine_vecs" combine_vecs.
+Smpl Add apply Function_combine_vecs : is_function.
 
 Module combine_vecs.
   (* Error OpaqueTy *)
@@ -1020,3 +1022,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "impl_trait_as_return_type::main" main.
+Smpl Add apply Function_main : is_function.

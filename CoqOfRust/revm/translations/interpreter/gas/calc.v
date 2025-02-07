@@ -595,6 +595,7 @@ Module gas.
     
     Axiom Function_sstore_refund :
       M.IsFunction "revm_interpreter::gas::calc::sstore_refund" sstore_refund.
+    Smpl Add apply Function_sstore_refund : is_function.
     
     (*
     pub const fn create2_cost(len: usize) -> Option<u64> {
@@ -657,6 +658,7 @@ Module gas.
     
     Axiom Function_create2_cost :
       M.IsFunction "revm_interpreter::gas::calc::create2_cost" create2_cost.
+    Smpl Add apply Function_create2_cost : is_function.
     
     (*
     const fn log2floor(value: U256) -> u64 {
@@ -873,6 +875,7 @@ Module gas.
       end.
     
     Axiom Function_log2floor : M.IsFunction "revm_interpreter::gas::calc::log2floor" log2floor.
+    Smpl Add apply Function_log2floor : is_function.
     
     (*
     pub fn exp_cost(spec_id: SpecId, power: U256) -> Option<u64> {
@@ -1300,6 +1303,7 @@ Module gas.
       end.
     
     Axiom Function_exp_cost : M.IsFunction "revm_interpreter::gas::calc::exp_cost" exp_cost.
+    Smpl Add apply Function_exp_cost : is_function.
     
     (*
     pub const fn copy_cost_verylow(len: usize) -> Option<u64> {
@@ -1323,6 +1327,7 @@ Module gas.
     
     Axiom Function_copy_cost_verylow :
       M.IsFunction "revm_interpreter::gas::calc::copy_cost_verylow" copy_cost_verylow.
+    Smpl Add apply Function_copy_cost_verylow : is_function.
     
     (*
     pub const fn extcodecopy_cost(
@@ -1435,6 +1440,7 @@ Module gas.
     
     Axiom Function_extcodecopy_cost :
       M.IsFunction "revm_interpreter::gas::calc::extcodecopy_cost" extcodecopy_cost.
+    Smpl Add apply Function_extcodecopy_cost : is_function.
     
     (*
     pub const fn copy_cost(base_cost: u64, len: usize) -> Option<u64> {
@@ -1495,6 +1501,7 @@ Module gas.
       end.
     
     Axiom Function_copy_cost : M.IsFunction "revm_interpreter::gas::calc::copy_cost" copy_cost.
+    Smpl Add apply Function_copy_cost : is_function.
     
     (*
     pub const fn log_cost(n: u8, len: u64) -> Option<u64> {
@@ -1602,6 +1609,7 @@ Module gas.
       end.
     
     Axiom Function_log_cost : M.IsFunction "revm_interpreter::gas::calc::log_cost" log_cost.
+    Smpl Add apply Function_log_cost : is_function.
     
     (*
     pub const fn keccak256_cost(len: usize) -> Option<u64> {
@@ -1664,6 +1672,7 @@ Module gas.
     
     Axiom Function_keccak256_cost :
       M.IsFunction "revm_interpreter::gas::calc::keccak256_cost" keccak256_cost.
+    Smpl Add apply Function_keccak256_cost : is_function.
     
     (*
     pub const fn cost_per_word(len: usize, multiple: u64) -> Option<u64> {
@@ -1697,6 +1706,7 @@ Module gas.
     
     Axiom Function_cost_per_word :
       M.IsFunction "revm_interpreter::gas::calc::cost_per_word" cost_per_word.
+    Smpl Add apply Function_cost_per_word : is_function.
     
     (*
     pub const fn initcode_cost(len: usize) -> u64 {
@@ -1743,6 +1753,7 @@ Module gas.
     
     Axiom Function_initcode_cost :
       M.IsFunction "revm_interpreter::gas::calc::initcode_cost" initcode_cost.
+    Smpl Add apply Function_initcode_cost : is_function.
     
     (*
     pub const fn sload_cost(spec_id: SpecId, is_cold: bool) -> u64 {
@@ -1879,6 +1890,7 @@ Module gas.
       end.
     
     Axiom Function_sload_cost : M.IsFunction "revm_interpreter::gas::calc::sload_cost" sload_cost.
+    Smpl Add apply Function_sload_cost : is_function.
     
     (*
     pub fn sstore_cost(spec_id: SpecId, vals: &SStoreResult, is_cold: bool) -> u64 {
@@ -2032,6 +2044,7 @@ Module gas.
     
     Axiom Function_sstore_cost :
       M.IsFunction "revm_interpreter::gas::calc::sstore_cost" sstore_cost.
+    Smpl Add apply Function_sstore_cost : is_function.
     
     (*
     fn istanbul_sstore_cost<const SLOAD_GAS: u64, const SSTORE_RESET_GAS: u64>(
@@ -2167,6 +2180,7 @@ Module gas.
     
     Axiom Function_istanbul_sstore_cost :
       M.IsFunction "revm_interpreter::gas::calc::istanbul_sstore_cost" istanbul_sstore_cost.
+    Smpl Add apply Function_istanbul_sstore_cost : is_function.
     
     (*
     fn frontier_sstore_cost(vals: &SStoreResult) -> u64 {
@@ -2228,6 +2242,7 @@ Module gas.
     
     Axiom Function_frontier_sstore_cost :
       M.IsFunction "revm_interpreter::gas::calc::frontier_sstore_cost" frontier_sstore_cost.
+    Smpl Add apply Function_frontier_sstore_cost : is_function.
     
     (*
     pub const fn selfdestruct_cost(spec_id: SpecId, res: StateLoad<SelfDestructResult>) -> u64 {
@@ -2473,6 +2488,7 @@ Module gas.
     
     Axiom Function_selfdestruct_cost :
       M.IsFunction "revm_interpreter::gas::calc::selfdestruct_cost" selfdestruct_cost.
+    Smpl Add apply Function_selfdestruct_cost : is_function.
     
     (*
     pub const fn call_cost(spec_id: SpecId, transfers_value: bool, account_load: AccountLoad) -> u64 {
@@ -2715,6 +2731,7 @@ Module gas.
       end.
     
     Axiom Function_call_cost : M.IsFunction "revm_interpreter::gas::calc::call_cost" call_cost.
+    Smpl Add apply Function_call_cost : is_function.
     
     (*
     pub const fn warm_cold_cost(is_cold: bool) -> u64 {
@@ -2750,6 +2767,7 @@ Module gas.
     
     Axiom Function_warm_cold_cost :
       M.IsFunction "revm_interpreter::gas::calc::warm_cold_cost" warm_cold_cost.
+    Smpl Add apply Function_warm_cold_cost : is_function.
     
     (*
     pub const fn warm_cold_cost_with_delegation(load: Eip7702CodeLoad<()>) -> u64 {
@@ -2837,6 +2855,7 @@ Module gas.
       M.IsFunction
         "revm_interpreter::gas::calc::warm_cold_cost_with_delegation"
         warm_cold_cost_with_delegation.
+    Smpl Add apply Function_warm_cold_cost_with_delegation : is_function.
     
     (*
     pub const fn memory_gas(num_words: usize) -> u64 {
@@ -2879,6 +2898,7 @@ Module gas.
       end.
     
     Axiom Function_memory_gas : M.IsFunction "revm_interpreter::gas::calc::memory_gas" memory_gas.
+    Smpl Add apply Function_memory_gas : is_function.
     
     (*
     pub fn validate_initial_tx_gas<AccessListT: AccessListTrait>(
@@ -3353,5 +3373,6 @@ Module gas.
     
     Axiom Function_validate_initial_tx_gas :
       M.IsFunction "revm_interpreter::gas::calc::validate_initial_tx_gas" validate_initial_tx_gas.
+    Smpl Add apply Function_validate_initial_tx_gas : is_function.
   End calc.
 End gas.

@@ -309,6 +309,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules_partial_moves::main" main.
+Smpl Add apply Function_main : is_function.
 
 Module main.
   (* StructRecord

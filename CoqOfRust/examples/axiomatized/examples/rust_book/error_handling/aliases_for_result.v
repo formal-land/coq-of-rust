@@ -9,11 +9,14 @@ Axiom AliasedResult :
 Parameter multiply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_multiply : M.IsFunction "aliases_for_result::multiply" multiply.
+Smpl Add apply Function_multiply : is_function.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_print : M.IsFunction "aliases_for_result::print" print.
+Smpl Add apply Function_print : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "aliases_for_result::main" main.
+Smpl Add apply Function_main : is_function.

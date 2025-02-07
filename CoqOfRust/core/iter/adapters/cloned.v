@@ -137,6 +137,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_cloned_Cloned_I.
       
       (*
@@ -213,6 +214,7 @@ Module iter.
       
       Axiom Function_clone_try_fold :
         M.IsFunction "core::iter::adapters::cloned::clone_try_fold" clone_try_fold.
+      Smpl Add apply Function_clone_try_fold : is_function.
       
       Module clone_try_fold.
         (* Error OpaqueTy *)

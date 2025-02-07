@@ -97,6 +97,7 @@ Module rc.
   
   Axiom Function_rcbox_layout_for_value_layout :
     M.IsFunction "alloc::rc::rcbox_layout_for_value_layout" rcbox_layout_for_value_layout.
+  Smpl Add apply Function_rcbox_layout_for_value_layout : is_function.
   
   (* StructRecord
     {
@@ -223,6 +224,7 @@ Module rc.
     Axiom AssociatedFunction_from_inner :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_inner" (from_inner T).
+    Smpl Add apply AssociatedFunction_from_inner : is_associated.
     
     (*
         unsafe fn from_ptr(ptr: *mut RcBox<T>) -> Self {
@@ -263,6 +265,7 @@ Module rc.
     Axiom AssociatedFunction_from_ptr :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_ptr" (from_ptr T).
+    Smpl Add apply AssociatedFunction_from_ptr : is_associated.
     (*
         pub fn new(value: T) -> Rc<T> {
             // There is an implicit weak pointer owned by all the strong
@@ -383,6 +386,7 @@ Module rc.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn new_cyclic<F>(data_fn: F) -> Rc<T>
@@ -413,6 +417,7 @@ Module rc.
     Axiom AssociatedFunction_new_cyclic :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "new_cyclic" (new_cyclic T).
+    Smpl Add apply AssociatedFunction_new_cyclic : is_associated.
     
     (*
         pub fn new_uninit() -> Rc<mem::MaybeUninit<T>> {
@@ -546,6 +551,7 @@ Module rc.
     Axiom AssociatedFunction_new_uninit :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "new_uninit" (new_uninit T).
+    Smpl Add apply AssociatedFunction_new_uninit : is_associated.
     
     (*
         pub fn new_zeroed() -> Rc<mem::MaybeUninit<T>> {
@@ -679,6 +685,7 @@ Module rc.
     Axiom AssociatedFunction_new_zeroed :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "new_zeroed" (new_zeroed T).
+    Smpl Add apply AssociatedFunction_new_zeroed : is_associated.
     
     (*
         pub fn try_new(value: T) -> Result<Rc<T>, AllocError> {
@@ -901,6 +908,7 @@ Module rc.
     Axiom AssociatedFunction_try_new :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_new" (try_new T).
+    Smpl Add apply AssociatedFunction_try_new : is_associated.
     
     (*
         pub fn try_new_uninit() -> Result<Rc<mem::MaybeUninit<T>>, AllocError> {
@@ -1166,6 +1174,7 @@ Module rc.
     Axiom AssociatedFunction_try_new_uninit :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_new_uninit" (try_new_uninit T).
+    Smpl Add apply AssociatedFunction_try_new_uninit : is_associated.
     
     (*
         pub fn try_new_zeroed() -> Result<Rc<mem::MaybeUninit<T>>, AllocError> {
@@ -1431,6 +1440,7 @@ Module rc.
     Axiom AssociatedFunction_try_new_zeroed :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_new_zeroed" (try_new_zeroed T).
+    Smpl Add apply AssociatedFunction_try_new_zeroed : is_associated.
     
     (*
         pub fn pin(value: T) -> Pin<Rc<T>> {
@@ -1469,6 +1479,7 @@ Module rc.
       end.
     
     Axiom AssociatedFunction_pin : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "pin" (pin T).
+    Smpl Add apply AssociatedFunction_pin : is_associated.
     (*
         pub unsafe fn from_raw(ptr: *const T) -> Self {
             unsafe { Self::from_raw_in(ptr, Global) }
@@ -1495,6 +1506,7 @@ Module rc.
     Axiom AssociatedFunction_from_raw :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_raw" (from_raw T).
+    Smpl Add apply AssociatedFunction_from_raw : is_associated.
     
     (*
         pub unsafe fn increment_strong_count(ptr: *const T) {
@@ -1527,6 +1539,7 @@ Module rc.
     Axiom AssociatedFunction_increment_strong_count :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "increment_strong_count" (increment_strong_count T).
+    Smpl Add apply AssociatedFunction_increment_strong_count : is_associated.
     
     (*
         pub unsafe fn decrement_strong_count(ptr: *const T) {
@@ -1559,6 +1572,7 @@ Module rc.
     Axiom AssociatedFunction_decrement_strong_count :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "decrement_strong_count" (decrement_strong_count T).
+    Smpl Add apply AssociatedFunction_decrement_strong_count : is_associated.
     (*
         unsafe fn allocate_for_layout(
             value_layout: Layout,
@@ -1670,6 +1684,7 @@ Module rc.
     Axiom AssociatedFunction_allocate_for_layout :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "allocate_for_layout" (allocate_for_layout T).
+    Smpl Add apply AssociatedFunction_allocate_for_layout : is_associated.
     
     (*
         unsafe fn try_allocate_for_layout(
@@ -2078,6 +2093,7 @@ Module rc.
     Axiom AssociatedFunction_try_allocate_for_layout :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "try_allocate_for_layout" (try_allocate_for_layout T).
+    Smpl Add apply AssociatedFunction_try_allocate_for_layout : is_associated.
   End Impl_alloc_rc_Rc_T_alloc_alloc_Global.
   
   Module Impl_alloc_rc_Rc_T_A.
@@ -2128,6 +2144,7 @@ Module rc.
     Axiom AssociatedFunction_inner :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "inner" (inner T A).
+    Smpl Add apply AssociatedFunction_inner : is_associated.
     
     (*
         fn into_inner_with_allocator(this: Self) -> (NonNull<RcBox<T>>, A) {
@@ -2231,6 +2248,7 @@ Module rc.
     Axiom AssociatedFunction_into_inner_with_allocator :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_inner_with_allocator" (into_inner_with_allocator T A).
+    Smpl Add apply AssociatedFunction_into_inner_with_allocator : is_associated.
     
     (*
         unsafe fn from_inner_in(ptr: NonNull<RcBox<T>>, alloc: A) -> Self {
@@ -2262,6 +2280,7 @@ Module rc.
     Axiom AssociatedFunction_from_inner_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "from_inner_in" (from_inner_in T A).
+    Smpl Add apply AssociatedFunction_from_inner_in : is_associated.
     
     (*
         unsafe fn from_ptr_in(ptr: *mut RcBox<T>, alloc: A) -> Self {
@@ -2304,6 +2323,7 @@ Module rc.
     Axiom AssociatedFunction_from_ptr_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "from_ptr_in" (from_ptr_in T A).
+    Smpl Add apply AssociatedFunction_from_ptr_in : is_associated.
     (*
         pub fn new_in(value: T, alloc: A) -> Rc<T, A> {
             // NOTE: Prefer match over unwrap_or_else since closure sometimes not inlineable.
@@ -2372,6 +2392,7 @@ Module rc.
     Axiom AssociatedFunction_new_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
+    Smpl Add apply AssociatedFunction_new_in : is_associated.
     
     (*
         pub fn new_uninit_in(alloc: A) -> Rc<mem::MaybeUninit<T>, A> {
@@ -2507,6 +2528,7 @@ Module rc.
     Axiom AssociatedFunction_new_uninit_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_uninit_in" (new_uninit_in T A).
+    Smpl Add apply AssociatedFunction_new_uninit_in : is_associated.
     
     (*
         pub fn new_zeroed_in(alloc: A) -> Rc<mem::MaybeUninit<T>, A> {
@@ -2642,6 +2664,7 @@ Module rc.
     Axiom AssociatedFunction_new_zeroed_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_zeroed_in" (new_zeroed_in T A).
+    Smpl Add apply AssociatedFunction_new_zeroed_in : is_associated.
     
     (*
         pub fn new_cyclic_in<F>(data_fn: F, alloc: A) -> Rc<T, A>
@@ -3166,6 +3189,7 @@ Module rc.
     Axiom AssociatedFunction_new_cyclic_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_cyclic_in" (new_cyclic_in T A).
+    Smpl Add apply AssociatedFunction_new_cyclic_in : is_associated.
     
     (*
         pub fn try_new_in(value: T, alloc: A) -> Result<Self, AllocError> {
@@ -3388,6 +3412,7 @@ Module rc.
     Axiom AssociatedFunction_try_new_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_new_in" (try_new_in T A).
+    Smpl Add apply AssociatedFunction_try_new_in : is_associated.
     
     (*
         pub fn try_new_uninit_in(alloc: A) -> Result<Rc<mem::MaybeUninit<T>, A>, AllocError> {
@@ -3648,6 +3673,7 @@ Module rc.
     Axiom AssociatedFunction_try_new_uninit_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
+    Smpl Add apply AssociatedFunction_try_new_uninit_in : is_associated.
     
     (*
         pub fn try_new_zeroed_in(alloc: A) -> Result<Rc<mem::MaybeUninit<T>, A>, AllocError> {
@@ -3908,6 +3934,7 @@ Module rc.
     Axiom AssociatedFunction_try_new_zeroed_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
+    Smpl Add apply AssociatedFunction_try_new_zeroed_in : is_associated.
     
     (*
         pub fn pin_in(value: T, alloc: A) -> Pin<Self>
@@ -3952,6 +3979,7 @@ Module rc.
     Axiom AssociatedFunction_pin_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "pin_in" (pin_in T A).
+    Smpl Add apply AssociatedFunction_pin_in : is_associated.
     
     (*
         pub fn try_unwrap(this: Self) -> Result<T, Self> {
@@ -4211,6 +4239,7 @@ Module rc.
     Axiom AssociatedFunction_try_unwrap :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "try_unwrap" (try_unwrap T A).
+    Smpl Add apply AssociatedFunction_try_unwrap : is_associated.
     
     (*
         pub fn into_inner(this: Self) -> Option<T> {
@@ -4251,6 +4280,7 @@ Module rc.
     Axiom AssociatedFunction_into_inner :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_inner" (into_inner T A).
+    Smpl Add apply AssociatedFunction_into_inner : is_associated.
     (*
         pub fn allocator(this: &Self) -> &A {
             &this.alloc
@@ -4281,6 +4311,7 @@ Module rc.
     Axiom AssociatedFunction_allocator :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
+    Smpl Add apply AssociatedFunction_allocator : is_associated.
     
     (*
         pub fn into_raw(this: Self) -> *const T {
@@ -4354,6 +4385,7 @@ Module rc.
     Axiom AssociatedFunction_into_raw :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_raw" (into_raw T A).
+    Smpl Add apply AssociatedFunction_into_raw : is_associated.
     
     (*
         pub fn into_raw_with_allocator(this: Self) -> ( *const T, A) {
@@ -4474,6 +4506,7 @@ Module rc.
     Axiom AssociatedFunction_into_raw_with_allocator :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
+    Smpl Add apply AssociatedFunction_into_raw_with_allocator : is_associated.
     
     (*
         pub fn as_ptr(this: &Self) -> *const T {
@@ -4534,6 +4567,7 @@ Module rc.
     Axiom AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "as_ptr" (as_ptr T A).
+    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     
     (*
         pub unsafe fn from_raw_in(ptr: *const T, alloc: A) -> Self {
@@ -4592,6 +4626,7 @@ Module rc.
     Axiom AssociatedFunction_from_raw_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "from_raw_in" (from_raw_in T A).
+    Smpl Add apply AssociatedFunction_from_raw_in : is_associated.
     
     (*
         pub fn downgrade(this: &Self) -> Weak<T, A>
@@ -4759,6 +4794,7 @@ Module rc.
     Axiom AssociatedFunction_downgrade :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "downgrade" (downgrade T A).
+    Smpl Add apply AssociatedFunction_downgrade : is_associated.
     
     (*
         pub fn weak_count(this: &Self) -> usize {
@@ -4807,6 +4843,7 @@ Module rc.
     Axiom AssociatedFunction_weak_count :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "weak_count" (weak_count T A).
+    Smpl Add apply AssociatedFunction_weak_count : is_associated.
     
     (*
         pub fn strong_count(this: &Self) -> usize {
@@ -4857,6 +4894,7 @@ Module rc.
     Axiom AssociatedFunction_strong_count :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "strong_count" (strong_count T A).
+    Smpl Add apply AssociatedFunction_strong_count : is_associated.
     
     (*
         pub unsafe fn increment_strong_count_in(ptr: *const T, alloc: A)
@@ -4933,6 +4971,7 @@ Module rc.
     Axiom AssociatedFunction_increment_strong_count_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "increment_strong_count_in" (increment_strong_count_in T A).
+    Smpl Add apply AssociatedFunction_increment_strong_count_in : is_associated.
     
     (*
         pub unsafe fn decrement_strong_count_in(ptr: *const T, alloc: A) {
@@ -4981,6 +5020,7 @@ Module rc.
     Axiom AssociatedFunction_decrement_strong_count_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "decrement_strong_count_in" (decrement_strong_count_in T A).
+    Smpl Add apply AssociatedFunction_decrement_strong_count_in : is_associated.
     
     (*
         fn is_unique(this: &Self) -> bool {
@@ -5026,6 +5066,7 @@ Module rc.
     Axiom AssociatedFunction_is_unique :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "is_unique" (is_unique T A).
+    Smpl Add apply AssociatedFunction_is_unique : is_associated.
     
     (*
         pub fn get_mut(this: &mut Self) -> Option<&mut T> {
@@ -5094,6 +5135,7 @@ Module rc.
     Axiom AssociatedFunction_get_mut :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "get_mut" (get_mut T A).
+    Smpl Add apply AssociatedFunction_get_mut : is_associated.
     
     (*
         pub unsafe fn get_mut_unchecked(this: &mut Self) -> &mut T {
@@ -5163,6 +5205,7 @@ Module rc.
     Axiom AssociatedFunction_get_mut_unchecked :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "get_mut_unchecked" (get_mut_unchecked T A).
+    Smpl Add apply AssociatedFunction_get_mut_unchecked : is_associated.
     
     (*
         pub fn ptr_eq(this: &Self, other: &Self) -> bool {
@@ -5238,6 +5281,7 @@ Module rc.
     Axiom AssociatedFunction_ptr_eq :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "ptr_eq" (ptr_eq T A).
+    Smpl Add apply AssociatedFunction_ptr_eq : is_associated.
     (*
         pub fn make_mut(this: &mut Self) -> &mut T {
             let size_of_val = size_of_val::<T>(&**this);
@@ -5822,6 +5866,7 @@ Module rc.
     Axiom AssociatedFunction_make_mut :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "make_mut" (make_mut T A).
+    Smpl Add apply AssociatedFunction_make_mut : is_associated.
     (*
         pub fn unwrap_or_clone(this: Self) -> T {
             Rc::try_unwrap(this).unwrap_or_else(|rc| ( *rc).clone())
@@ -5912,6 +5957,7 @@ Module rc.
     Axiom AssociatedFunction_unwrap_or_clone :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "unwrap_or_clone" (unwrap_or_clone T A).
+    Smpl Add apply AssociatedFunction_unwrap_or_clone : is_associated.
     (*
         unsafe fn allocate_for_ptr_in(ptr: *const T, alloc: &A) -> *mut RcBox<T> {
             // Allocate for the `RcBox<T>` using the given value.
@@ -6044,6 +6090,7 @@ Module rc.
     Axiom AssociatedFunction_allocate_for_ptr_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "allocate_for_ptr_in" (allocate_for_ptr_in T A).
+    Smpl Add apply AssociatedFunction_allocate_for_ptr_in : is_associated.
     
     (*
         fn from_box_in(src: Box<T, A>) -> Rc<T, A> {
@@ -6254,6 +6301,7 @@ Module rc.
     Axiom AssociatedFunction_from_box_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "from_box_in" (from_box_in T A).
+    Smpl Add apply AssociatedFunction_from_box_in : is_associated.
   End Impl_alloc_rc_Rc_T_A.
   
   
@@ -6324,6 +6372,7 @@ Module rc.
     Axiom AssociatedFunction_new_uninit_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "new_uninit_slice" (new_uninit_slice T).
+    Smpl Add apply AssociatedFunction_new_uninit_slice : is_associated.
     
     (*
         pub fn new_zeroed_slice(len: usize) -> Rc<[mem::MaybeUninit<T>]> {
@@ -6538,6 +6587,7 @@ Module rc.
     Axiom AssociatedFunction_new_zeroed_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "new_zeroed_slice" (new_zeroed_slice T).
+    Smpl Add apply AssociatedFunction_new_zeroed_slice : is_associated.
     (*
         unsafe fn allocate_for_slice(len: usize) -> *mut RcBox<[T]> {
             unsafe {
@@ -6707,6 +6757,7 @@ Module rc.
     Axiom AssociatedFunction_allocate_for_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "allocate_for_slice" (allocate_for_slice T).
+    Smpl Add apply AssociatedFunction_allocate_for_slice : is_associated.
     
     (*
         unsafe fn copy_from_slice(v: &[T]) -> Rc<[T]> {
@@ -6811,6 +6862,7 @@ Module rc.
     Axiom AssociatedFunction_copy_from_slice :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "copy_from_slice" (copy_from_slice T).
+    Smpl Add apply AssociatedFunction_copy_from_slice : is_associated.
     
     (*
         unsafe fn from_iter_exact(iter: impl Iterator<Item = T>, len: usize) -> Rc<[T]> {
@@ -7106,6 +7158,7 @@ Module rc.
     Axiom AssociatedFunction_from_iter_exact :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_iter_exact" (from_iter_exact T).
+    Smpl Add apply AssociatedFunction_from_iter_exact : is_associated.
   End Impl_alloc_rc_Rc_slice_T_alloc_alloc_Global.
   
   Module Impl_alloc_rc_Rc_slice_T_A.
@@ -7179,6 +7232,7 @@ Module rc.
     Axiom AssociatedFunction_new_uninit_slice_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
+    Smpl Add apply AssociatedFunction_new_uninit_slice_in : is_associated.
     
     (*
         pub fn new_zeroed_slice_in(len: usize, alloc: A) -> Rc<[mem::MaybeUninit<T>], A> {
@@ -7393,6 +7447,7 @@ Module rc.
     Axiom AssociatedFunction_new_zeroed_slice_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
+    Smpl Add apply AssociatedFunction_new_zeroed_slice_in : is_associated.
     (*
         unsafe fn allocate_for_slice_in(len: usize, alloc: &A) -> *mut RcBox<[T]> {
             unsafe {
@@ -7563,6 +7618,7 @@ Module rc.
     Axiom AssociatedFunction_allocate_for_slice_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "allocate_for_slice_in" (allocate_for_slice_in T A).
+    Smpl Add apply AssociatedFunction_allocate_for_slice_in : is_associated.
   End Impl_alloc_rc_Rc_slice_T_A.
   
   Module Impl_alloc_rc_Rc_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -7651,6 +7707,7 @@ Module rc.
     Axiom AssociatedFunction_assume_init :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "assume_init" (assume_init T A).
+    Smpl Add apply AssociatedFunction_assume_init : is_associated.
   End Impl_alloc_rc_Rc_core_mem_maybe_uninit_MaybeUninit_T_A.
   
   Module Impl_alloc_rc_Rc_slice_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -7769,6 +7826,7 @@ Module rc.
     Axiom AssociatedFunction_assume_init :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "assume_init" (assume_init T A).
+    Smpl Add apply AssociatedFunction_assume_init : is_associated.
   End Impl_alloc_rc_Rc_slice_core_mem_maybe_uninit_MaybeUninit_T_A.
   
   
@@ -7910,6 +7968,7 @@ Module rc.
     Axiom AssociatedFunction_downcast :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast" (downcast A).
+    Smpl Add apply AssociatedFunction_downcast : is_associated.
     
     (*
         pub unsafe fn downcast_unchecked<T: Any>(self) -> Rc<T, A> {
@@ -7992,6 +8051,7 @@ Module rc.
     Axiom AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
+    Smpl Add apply AssociatedFunction_downcast_unchecked : is_associated.
   End Impl_alloc_rc_Rc_Dyn_core_any_Any_Trait_A.
   
   
@@ -11061,6 +11121,7 @@ Module rc.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     (*
         pub unsafe fn from_raw(ptr: *const T) -> Self {
             unsafe { Self::from_raw_in(ptr, Global) }
@@ -11087,6 +11148,7 @@ Module rc.
     Axiom AssociatedFunction_from_raw :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_raw" (from_raw T).
+    Smpl Add apply AssociatedFunction_from_raw : is_associated.
   End Impl_alloc_rc_Weak_T_alloc_alloc_Global.
   
   Module Impl_alloc_rc_Weak_T_A.
@@ -11141,6 +11203,7 @@ Module rc.
     Axiom AssociatedFunction_new_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
+    Smpl Add apply AssociatedFunction_new_in : is_associated.
     (*
         pub fn allocator(&self) -> &A {
             &self.alloc
@@ -11171,6 +11234,7 @@ Module rc.
     Axiom AssociatedFunction_allocator :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
+    Smpl Add apply AssociatedFunction_allocator : is_associated.
     
     (*
         pub fn as_ptr(&self) -> *const T {
@@ -11262,6 +11326,7 @@ Module rc.
     Axiom AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "as_ptr" (as_ptr T A).
+    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
     
     (*
         pub fn into_raw(self) -> *const T {
@@ -11328,6 +11393,7 @@ Module rc.
     Axiom AssociatedFunction_into_raw :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_raw" (into_raw T A).
+    Smpl Add apply AssociatedFunction_into_raw : is_associated.
     
     (*
         pub fn into_raw_with_allocator(self) -> ( *const T, A) {
@@ -11443,6 +11509,7 @@ Module rc.
     Axiom AssociatedFunction_into_raw_with_allocator :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
+    Smpl Add apply AssociatedFunction_into_raw_with_allocator : is_associated.
     
     (*
         pub unsafe fn from_raw_in(ptr: *const T, alloc: A) -> Self {
@@ -11552,6 +11619,7 @@ Module rc.
     Axiom AssociatedFunction_from_raw_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "from_raw_in" (from_raw_in T A).
+    Smpl Add apply AssociatedFunction_from_raw_in : is_associated.
     
     (*
         pub fn upgrade(&self) -> Option<Rc<T, A>>
@@ -11758,6 +11826,7 @@ Module rc.
     Axiom AssociatedFunction_upgrade :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "upgrade" (upgrade T A).
+    Smpl Add apply AssociatedFunction_upgrade : is_associated.
     
     (*
         pub fn strong_count(&self) -> usize {
@@ -11824,6 +11893,7 @@ Module rc.
     Axiom AssociatedFunction_strong_count :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "strong_count" (strong_count T A).
+    Smpl Add apply AssociatedFunction_strong_count : is_associated.
     
     (*
         pub fn weak_count(&self) -> usize {
@@ -11925,6 +11995,7 @@ Module rc.
     Axiom AssociatedFunction_weak_count :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "weak_count" (weak_count T A).
+    Smpl Add apply AssociatedFunction_weak_count : is_associated.
     
     (*
         fn inner(&self) -> Option<WeakInner<'_>> {
@@ -12066,6 +12137,7 @@ Module rc.
     Axiom AssociatedFunction_inner :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "inner" (inner T A).
+    Smpl Add apply AssociatedFunction_inner : is_associated.
     
     (*
         pub fn ptr_eq(&self, other: &Self) -> bool {
@@ -12141,6 +12213,7 @@ Module rc.
     Axiom AssociatedFunction_ptr_eq :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "ptr_eq" (ptr_eq T A).
+    Smpl Add apply AssociatedFunction_ptr_eq : is_associated.
   End Impl_alloc_rc_Weak_T_A.
   
   (*
@@ -12179,6 +12252,7 @@ Module rc.
     end.
   
   Axiom Function_is_dangling : M.IsFunction "alloc::rc::is_dangling" is_dangling.
+  Smpl Add apply Function_is_dangling : is_function.
   
   (* StructRecord
     {
@@ -13227,6 +13301,7 @@ Module rc.
     end.
   
   Axiom Function_data_offset : M.IsFunction "alloc::rc::data_offset" data_offset.
+  Smpl Add apply Function_data_offset : is_function.
   
   (*
   fn data_offset_align(align: usize) -> usize {
@@ -13279,6 +13354,7 @@ Module rc.
     end.
   
   Axiom Function_data_offset_align : M.IsFunction "alloc::rc::data_offset_align" data_offset_align.
+  Smpl Add apply Function_data_offset_align : is_function.
   
   (* StructRecord
     {
@@ -13424,6 +13500,7 @@ Module rc.
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_alloc_rc_UniqueRc_T_alloc_alloc_Global.
   
   Module Impl_alloc_rc_UniqueRc_T_A.
@@ -13552,6 +13629,7 @@ Module rc.
     Axiom AssociatedFunction_new_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
+    Smpl Add apply AssociatedFunction_new_in : is_associated.
     (*
         pub fn into_rc(this: Self) -> Rc<T, A> {
             let mut this = ManuallyDrop::new(this);
@@ -13731,6 +13809,7 @@ Module rc.
     Axiom AssociatedFunction_into_rc :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_rc" (into_rc T A).
+    Smpl Add apply AssociatedFunction_into_rc : is_associated.
     (*
         pub fn downgrade(this: &Self) -> Weak<T, A> {
             // SAFETY: This pointer was allocated at creation time and we guarantee that we only have
@@ -13827,6 +13906,7 @@ Module rc.
     Axiom AssociatedFunction_downgrade :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "downgrade" (downgrade T A).
+    Smpl Add apply AssociatedFunction_downgrade : is_associated.
   End Impl_alloc_rc_UniqueRc_T_A.
   
   
@@ -14425,6 +14505,7 @@ Module rc.
     Axiom AssociatedFunction_new :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new" (new T A).
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn data_ptr(&mut self) -> *mut T {
@@ -14507,6 +14588,7 @@ Module rc.
     Axiom AssociatedFunction_data_ptr :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "data_ptr" (data_ptr T A).
+    Smpl Add apply AssociatedFunction_data_ptr : is_associated.
     
     (*
         unsafe fn into_rc(self) -> Rc<T, A> {
@@ -14644,6 +14726,7 @@ Module rc.
     Axiom AssociatedFunction_into_rc :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_rc" (into_rc T A).
+    Smpl Add apply AssociatedFunction_into_rc : is_associated.
   End Impl_alloc_rc_UniqueRcUninit_T_A.
   
   Module Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_UniqueRcUninit_T_A.

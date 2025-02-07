@@ -181,6 +181,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_enumerate_Enumerate_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_enumerate_Enumerate_I.

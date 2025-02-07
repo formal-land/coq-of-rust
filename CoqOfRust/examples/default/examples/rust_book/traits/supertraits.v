@@ -246,6 +246,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
 
 Axiom Function_comp_sci_student_greeting :
   M.IsFunction "supertraits::comp_sci_student_greeting" comp_sci_student_greeting.
+Smpl Add apply Function_comp_sci_student_greeting : is_function.
 
 (* fn main() {} *)
 Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -255,3 +256,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "supertraits::main" main.
+Smpl Add apply Function_main : is_function.

@@ -27,7 +27,9 @@ End Impl_core_hash_Hash_for_hash_Person.
 Parameter calculate_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_calculate_hash : M.IsFunction "hash::calculate_hash" calculate_hash.
+Smpl Add apply Function_calculate_hash : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "hash::main" main.
+Smpl Add apply Function_main : is_function.

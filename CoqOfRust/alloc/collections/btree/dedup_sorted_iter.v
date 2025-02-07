@@ -54,6 +54,7 @@ Module collections.
         Axiom AssociatedFunction_new :
           forall (K V I : Ty.t),
           M.IsAssociatedFunction (Self K V I) "new" (new K V I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_alloc_collections_btree_dedup_sorted_iter_DedupSortedIter_K_V_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_cmp_Eq_K_where_core_iter_traits_iterator_Iterator_I_for_alloc_collections_btree_dedup_sorted_iter_DedupSortedIter_K_V_I.

@@ -75,6 +75,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I U F : Ty.t),
           M.IsAssociatedFunction (Self I U F) "new" (new I U F).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             pub(crate) fn into_parts(self) -> (Option<U::IntoIter>, Option<I>, Option<U::IntoIter>) {
@@ -175,6 +176,7 @@ Module iter.
         Axiom AssociatedFunction_into_parts :
           forall (I U F : Ty.t),
           M.IsAssociatedFunction (Self I U F) "into_parts" (into_parts I U F).
+        Smpl Add apply AssociatedFunction_into_parts : is_associated.
       End Impl_core_iter_adapters_flatten_FlatMap_I_U_F.
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_U_where_core_iter_traits_collect_IntoIterator_U_for_core_iter_adapters_flatten_FlatMap_I_U_F.
@@ -1345,6 +1347,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_flatten_Flatten_I.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_U_where_core_iter_traits_iterator_Iterator_U_for_core_iter_adapters_flatten_Flatten_I.
@@ -2430,6 +2433,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I U : Ty.t),
           M.IsAssociatedFunction (Self I U) "new" (new I U).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         (*
             fn iter_fold<Acc, Fold>(self, mut acc: Acc, mut fold: Fold) -> Acc
             where
@@ -2595,6 +2599,7 @@ Module iter.
         Axiom AssociatedFunction_iter_fold :
           forall (I U : Ty.t),
           M.IsAssociatedFunction (Self I U) "iter_fold" (iter_fold I U).
+        Smpl Add apply AssociatedFunction_iter_fold : is_associated.
         
         (*
             fn iter_try_fold<Acc, Fold, R>(&mut self, mut acc: Acc, mut fold: Fold) -> R
@@ -3043,6 +3048,7 @@ Module iter.
         Axiom AssociatedFunction_iter_try_fold :
           forall (I U : Ty.t),
           M.IsAssociatedFunction (Self I U) "iter_try_fold" (iter_try_fold I U).
+        Smpl Add apply AssociatedFunction_iter_try_fold : is_associated.
         (*
             fn iter_rfold<Acc, Fold>(self, mut acc: Acc, mut fold: Fold) -> Acc
             where
@@ -3208,6 +3214,7 @@ Module iter.
         Axiom AssociatedFunction_iter_rfold :
           forall (I U : Ty.t),
           M.IsAssociatedFunction (Self I U) "iter_rfold" (iter_rfold I U).
+        Smpl Add apply AssociatedFunction_iter_rfold : is_associated.
         
         (*
             fn iter_try_rfold<Acc, Fold, R>(&mut self, mut acc: Acc, mut fold: Fold) -> R
@@ -3656,6 +3663,7 @@ Module iter.
         Axiom AssociatedFunction_iter_try_rfold :
           forall (I U : Ty.t),
           M.IsAssociatedFunction (Self I U) "iter_try_rfold" (iter_try_rfold I U).
+        Smpl Add apply AssociatedFunction_iter_try_rfold : is_associated.
       End Impl_core_iter_adapters_flatten_FlattenCompat_I_U.
       
       
@@ -5903,6 +5911,7 @@ Module iter.
       
       Axiom Function_and_then_or_clear :
         M.IsFunction "core::iter::adapters::flatten::and_then_or_clear" and_then_or_clear.
+      Smpl Add apply Function_and_then_or_clear : is_function.
       
       (* Trait *)
       (* Empty module 'OneShot' *)
@@ -6174,6 +6183,7 @@ Module iter.
         end.
       
       Axiom Function_into_item : M.IsFunction "core::iter::adapters::flatten::into_item" into_item.
+      Smpl Add apply Function_into_item : is_function.
       
       (*
       fn flatten_one<I: IntoIterator<IntoIter: OneShot>, Acc>(
@@ -6292,6 +6302,7 @@ Module iter.
       
       Axiom Function_flatten_one :
         M.IsFunction "core::iter::adapters::flatten::flatten_one" flatten_one.
+      Smpl Add apply Function_flatten_one : is_function.
       
       Module flatten_one.
         (* Error OpaqueTy *)
@@ -6427,6 +6438,7 @@ Module iter.
       
       Axiom Function_try_flatten_one :
         M.IsFunction "core::iter::adapters::flatten::try_flatten_one" try_flatten_one.
+      Smpl Add apply Function_try_flatten_one : is_function.
       
       Module try_flatten_one.
         (* Error OpaqueTy *)
@@ -6533,6 +6545,7 @@ Module iter.
       
       Axiom Function_advance_by_one :
         M.IsFunction "core::iter::adapters::flatten::advance_by_one" advance_by_one.
+      Smpl Add apply Function_advance_by_one : is_function.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_iterator_Iterator_U_where_core_iter_adapters_flatten_OneShot_U_for_core_iter_adapters_flatten_FlattenCompat_I_U.
         Definition Self (I U : Ty.t) : Ty.t :=

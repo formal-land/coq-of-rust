@@ -31,6 +31,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_inlateout_mul::main" main.
+Smpl Add apply Function_main : is_function.
 
 Module main.
   (*
@@ -78,4 +79,5 @@ Module main.
     end.
   
   Axiom Function_mul : M.IsFunction "inline_assembly_inlateout_mul::main::mul" mul.
+  Smpl Add apply Function_mul : is_function.
 End main.

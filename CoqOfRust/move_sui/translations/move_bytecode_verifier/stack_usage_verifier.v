@@ -362,6 +362,7 @@ Module stack_usage_verifier.
       end.
     
     Axiom AssociatedFunction_verify : M.IsAssociatedFunction Self "verify" verify.
+    Smpl Add apply AssociatedFunction_verify : is_associated.
     
     (*
         fn verify_block(
@@ -1324,6 +1325,7 @@ Module stack_usage_verifier.
       end.
     
     Axiom AssociatedFunction_verify_block : M.IsAssociatedFunction Self "verify_block" verify_block.
+    Smpl Add apply AssociatedFunction_verify_block : is_associated.
     
     (*
         fn instruction_effect(&self, instruction: &Bytecode) -> PartialVMResult<(u64, u64)> {
@@ -3162,6 +3164,7 @@ Module stack_usage_verifier.
     
     Axiom AssociatedFunction_instruction_effect :
       M.IsAssociatedFunction Self "instruction_effect" instruction_effect.
+    Smpl Add apply AssociatedFunction_instruction_effect : is_associated.
     
     (*
         fn current_function(&self) -> FunctionDefinitionIndex {
@@ -3201,5 +3204,6 @@ Module stack_usage_verifier.
     
     Axiom AssociatedFunction_current_function :
       M.IsAssociatedFunction Self "current_function" current_function.
+    Smpl Add apply AssociatedFunction_current_function : is_associated.
   End Impl_move_bytecode_verifier_stack_usage_verifier_StackUsageVerifier.
 End stack_usage_verifier.

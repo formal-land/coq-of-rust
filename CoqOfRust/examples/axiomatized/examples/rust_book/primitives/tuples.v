@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter reverse : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_reverse : M.IsFunction "tuples::reverse" reverse.
+Smpl Add apply Function_reverse : is_function.
 
 (* StructTuple
   {
@@ -29,3 +30,4 @@ End Impl_core_fmt_Debug_for_tuples_Matrix.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "tuples::main" main.
+Smpl Add apply Function_main : is_function.

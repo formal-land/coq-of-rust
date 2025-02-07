@@ -343,6 +343,7 @@ Module slice.
           end.
         
         Axiom Function_merge : M.IsFunction "core::slice::sort::stable::merge::merge" merge.
+        Smpl Add apply Function_merge : is_function.
         
         (* StructRecord
           {
@@ -621,6 +622,7 @@ Module slice.
           Axiom AssociatedFunction_merge_up :
             forall (T : Ty.t),
             M.IsAssociatedFunction (Self T) "merge_up" (merge_up T).
+          Smpl Add apply AssociatedFunction_merge_up : is_associated.
           
           (*
               unsafe fn merge_down<F: FnMut(&T, &T) -> bool>(
@@ -896,6 +898,7 @@ Module slice.
           Axiom AssociatedFunction_merge_down :
             forall (T : Ty.t),
             M.IsAssociatedFunction (Self T) "merge_down" (merge_down T).
+          Smpl Add apply AssociatedFunction_merge_down : is_associated.
         End Impl_core_slice_sort_stable_merge_MergeState_T.
         
         Module Impl_core_ops_drop_Drop_for_core_slice_sort_stable_merge_MergeState_T.

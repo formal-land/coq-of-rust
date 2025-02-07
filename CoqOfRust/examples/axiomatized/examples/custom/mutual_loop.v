@@ -15,10 +15,12 @@ Module Impl_mutual_loop_LoopA.
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   Parameter start_loop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
+  Smpl Add apply AssociatedFunction_start_loop : is_associated.
 End Impl_mutual_loop_LoopA.
 
 (*
@@ -43,8 +45,10 @@ Module Impl_mutual_loop_LoopB.
   Parameter start_loop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
+  Smpl Add apply AssociatedFunction_start_loop : is_associated.
 End Impl_mutual_loop_LoopB.
 
 Parameter start_loop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_start_loop : M.IsFunction "mutual_loop::start_loop" start_loop.
+Smpl Add apply Function_start_loop : is_function.

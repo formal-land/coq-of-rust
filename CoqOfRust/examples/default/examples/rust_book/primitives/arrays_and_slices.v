@@ -173,6 +173,7 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   end.
 
 Axiom Function_analyze_slice : M.IsFunction "arrays_and_slices::analyze_slice" analyze_slice.
+Smpl Add apply Function_analyze_slice : is_function.
 
 (*
 fn main() {
@@ -1244,3 +1245,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "arrays_and_slices::main" main.
+Smpl Add apply Function_main : is_function.

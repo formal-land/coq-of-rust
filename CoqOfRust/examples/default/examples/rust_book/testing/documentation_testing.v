@@ -17,6 +17,7 @@ Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_add : M.IsFunction "documentation_testing::add" add.
+Smpl Add apply Function_add : is_function.
 
 (*
 pub fn div(a: i32, b: i32) -> i32 {
@@ -67,3 +68,4 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_div : M.IsFunction "documentation_testing::div" div.
+Smpl Add apply Function_div : is_function.

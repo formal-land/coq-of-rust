@@ -95,11 +95,13 @@ Module panicking.
     end.
   
   Axiom Function_panic_fmt : M.IsFunction "core::panicking::panic_fmt" panic_fmt.
+  Smpl Add apply Function_panic_fmt : is_function.
   
   Module panic_fmt.
     Parameter panic_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_panic_impl : M.IsFunction "core::panicking::panic_fmt::panic_impl" panic_impl.
+    Smpl Add apply Function_panic_impl : is_function.
   End panic_fmt.
   
   (*
@@ -168,6 +170,7 @@ Module panicking.
   
   Axiom Function_panic_nounwind_fmt :
     M.IsFunction "core::panicking::panic_nounwind_fmt" panic_nounwind_fmt.
+  Smpl Add apply Function_panic_nounwind_fmt : is_function.
   
   Module panic_nounwind_fmt.
     (*
@@ -270,12 +273,14 @@ Module panicking.
       end.
     
     Axiom Function_runtime : M.IsFunction "core::panicking::panic_nounwind_fmt::runtime" runtime.
+    Smpl Add apply Function_runtime : is_function.
     
     Module runtime.
       Parameter panic_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
       
       Axiom Function_panic_impl :
         M.IsFunction "core::panicking::panic_nounwind_fmt::runtime::panic_impl" panic_impl.
+      Smpl Add apply Function_panic_impl : is_function.
     End runtime.
     
     (*
@@ -298,6 +303,7 @@ Module panicking.
       end.
     
     Axiom Function_comptime : M.IsFunction "core::panicking::panic_nounwind_fmt::comptime" comptime.
+    Smpl Add apply Function_comptime : is_function.
   End panic_nounwind_fmt.
   
   (*
@@ -341,6 +347,7 @@ Module panicking.
     end.
   
   Axiom Function_panic : M.IsFunction "core::panicking::panic" panic.
+  Smpl Add apply Function_panic : is_function.
   
   Module panic_const.
     (*
@@ -386,6 +393,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_add_overflow"
         panic_const_add_overflow.
+    Smpl Add apply Function_panic_const_add_overflow : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -431,6 +439,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_sub_overflow"
         panic_const_sub_overflow.
+    Smpl Add apply Function_panic_const_sub_overflow : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -476,6 +485,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_mul_overflow"
         panic_const_mul_overflow.
+    Smpl Add apply Function_panic_const_mul_overflow : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -521,6 +531,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_div_overflow"
         panic_const_div_overflow.
+    Smpl Add apply Function_panic_const_div_overflow : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -570,6 +581,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_rem_overflow"
         panic_const_rem_overflow.
+    Smpl Add apply Function_panic_const_rem_overflow : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -615,6 +627,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_neg_overflow"
         panic_const_neg_overflow.
+    Smpl Add apply Function_panic_const_neg_overflow : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -660,6 +673,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_shr_overflow"
         panic_const_shr_overflow.
+    Smpl Add apply Function_panic_const_shr_overflow : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -705,6 +719,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_shl_overflow"
         panic_const_shl_overflow.
+    Smpl Add apply Function_panic_const_shl_overflow : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -747,6 +762,7 @@ Module panicking.
     
     Axiom Function_panic_const_div_by_zero :
       M.IsFunction "core::panicking::panic_const::panic_const_div_by_zero" panic_const_div_by_zero.
+    Smpl Add apply Function_panic_const_div_by_zero : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -795,6 +811,7 @@ Module panicking.
     
     Axiom Function_panic_const_rem_by_zero :
       M.IsFunction "core::panicking::panic_const::panic_const_rem_by_zero" panic_const_rem_by_zero.
+    Smpl Add apply Function_panic_const_rem_by_zero : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -844,6 +861,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_coroutine_resumed"
         panic_const_coroutine_resumed.
+    Smpl Add apply Function_panic_const_coroutine_resumed : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -893,6 +911,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_async_fn_resumed"
         panic_const_async_fn_resumed.
+    Smpl Add apply Function_panic_const_async_fn_resumed : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -942,6 +961,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_async_gen_fn_resumed"
         panic_const_async_gen_fn_resumed.
+    Smpl Add apply Function_panic_const_async_gen_fn_resumed : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -990,6 +1010,7 @@ Module panicking.
     
     Axiom Function_panic_const_gen_fn_none :
       M.IsFunction "core::panicking::panic_const::panic_const_gen_fn_none" panic_const_gen_fn_none.
+    Smpl Add apply Function_panic_const_gen_fn_none : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1039,6 +1060,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_coroutine_resumed_panic"
         panic_const_coroutine_resumed_panic.
+    Smpl Add apply Function_panic_const_coroutine_resumed_panic : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1088,6 +1110,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_async_fn_resumed_panic"
         panic_const_async_fn_resumed_panic.
+    Smpl Add apply Function_panic_const_async_fn_resumed_panic : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1137,6 +1160,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_async_gen_fn_resumed_panic"
         panic_const_async_gen_fn_resumed_panic.
+    Smpl Add apply Function_panic_const_async_gen_fn_resumed_panic : is_function.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1191,6 +1215,7 @@ Module panicking.
       M.IsFunction
         "core::panicking::panic_const::panic_const_gen_fn_none_panic"
         panic_const_gen_fn_none_panic.
+    Smpl Add apply Function_panic_const_gen_fn_none_panic : is_function.
   End panic_const.
   
   (*
@@ -1224,6 +1249,7 @@ Module panicking.
     end.
   
   Axiom Function_panic_nounwind : M.IsFunction "core::panicking::panic_nounwind" panic_nounwind.
+  Smpl Add apply Function_panic_nounwind : is_function.
   
   (*
   pub fn panic_nounwind_nobacktrace(expr: &'static str) -> ! {
@@ -1257,6 +1283,7 @@ Module panicking.
   
   Axiom Function_panic_nounwind_nobacktrace :
     M.IsFunction "core::panicking::panic_nounwind_nobacktrace" panic_nounwind_nobacktrace.
+  Smpl Add apply Function_panic_nounwind_nobacktrace : is_function.
   
   (*
   pub const fn panic_explicit() -> ! {
@@ -1284,6 +1311,7 @@ Module panicking.
     end.
   
   Axiom Function_panic_explicit : M.IsFunction "core::panicking::panic_explicit" panic_explicit.
+  Smpl Add apply Function_panic_explicit : is_function.
   
   (*
   pub fn unreachable_display<T: fmt::Display>(x: &T) -> ! {
@@ -1351,6 +1379,7 @@ Module panicking.
   
   Axiom Function_unreachable_display :
     M.IsFunction "core::panicking::unreachable_display" unreachable_display.
+  Smpl Add apply Function_unreachable_display : is_function.
   
   (*
   pub const fn panic_str_2015(expr: &str) -> ! {
@@ -1374,6 +1403,7 @@ Module panicking.
     end.
   
   Axiom Function_panic_str_2015 : M.IsFunction "core::panicking::panic_str_2015" panic_str_2015.
+  Smpl Add apply Function_panic_str_2015 : is_function.
   
   (*
   pub const fn panic_display<T: fmt::Display>(x: &T) -> ! {
@@ -1437,6 +1467,7 @@ Module panicking.
     end.
   
   Axiom Function_panic_display : M.IsFunction "core::panicking::panic_display" panic_display.
+  Smpl Add apply Function_panic_display : is_function.
   
   (*
   fn panic_bounds_check(index: usize, len: usize) -> ! {
@@ -1547,6 +1578,7 @@ Module panicking.
   
   Axiom Function_panic_bounds_check :
     M.IsFunction "core::panicking::panic_bounds_check" panic_bounds_check.
+  Smpl Add apply Function_panic_bounds_check : is_function.
   
   (*
   fn panic_misaligned_pointer_dereference(required: usize, found: usize) -> ! {
@@ -1731,6 +1763,7 @@ Module panicking.
     M.IsFunction
       "core::panicking::panic_misaligned_pointer_dereference"
       panic_misaligned_pointer_dereference.
+  Smpl Add apply Function_panic_misaligned_pointer_dereference : is_function.
   
   (*
   fn panic_cannot_unwind() -> ! {
@@ -1751,6 +1784,7 @@ Module panicking.
   
   Axiom Function_panic_cannot_unwind :
     M.IsFunction "core::panicking::panic_cannot_unwind" panic_cannot_unwind.
+  Smpl Add apply Function_panic_cannot_unwind : is_function.
   
   (*
   fn panic_in_cleanup() -> ! {
@@ -1771,6 +1805,7 @@ Module panicking.
   
   Axiom Function_panic_in_cleanup :
     M.IsFunction "core::panicking::panic_in_cleanup" panic_in_cleanup.
+  Smpl Add apply Function_panic_in_cleanup : is_function.
   
   (*
   pub const fn const_panic_fmt(fmt: fmt::Arguments<'_>) -> ! {
@@ -1845,6 +1880,7 @@ Module panicking.
     end.
   
   Axiom Function_const_panic_fmt : M.IsFunction "core::panicking::const_panic_fmt" const_panic_fmt.
+  Smpl Add apply Function_const_panic_fmt : is_function.
   
   (*
   Enum AssertKind
@@ -1971,6 +2007,7 @@ Module panicking.
     end.
   
   Axiom Function_assert_failed : M.IsFunction "core::panicking::assert_failed" assert_failed.
+  Smpl Add apply Function_assert_failed : is_function.
   
   (*
   pub fn assert_matches_failed<T: fmt::Debug + ?Sized>(
@@ -2021,6 +2058,7 @@ Module panicking.
   
   Axiom Function_assert_matches_failed :
     M.IsFunction "core::panicking::assert_matches_failed" assert_matches_failed.
+  Smpl Add apply Function_assert_matches_failed : is_function.
   
   Module assert_matches_failed.
     (* StructTuple
@@ -2375,4 +2413,5 @@ Module panicking.
   
   Axiom Function_assert_failed_inner :
     M.IsFunction "core::panicking::assert_failed_inner" assert_failed_inner.
+  Smpl Add apply Function_assert_failed_inner : is_function.
 End panicking.

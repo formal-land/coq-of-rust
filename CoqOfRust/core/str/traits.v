@@ -298,6 +298,7 @@ Module str.
     
     Axiom Function_str_index_overflow_fail :
       M.IsFunction "core::str::traits::str_index_overflow_fail" str_index_overflow_fail.
+    Smpl Add apply Function_str_index_overflow_fail : is_function.
     
     Module Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeFull.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".

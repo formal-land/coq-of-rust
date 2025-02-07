@@ -26,6 +26,7 @@ Module ptr.
       end.
     
     Axiom Function_metadata : M.IsFunction "core::ptr::metadata::metadata" metadata.
+    Smpl Add apply Function_metadata : is_function.
     
     (*
     pub const fn from_raw_parts<T: ?Sized>(
@@ -58,6 +59,7 @@ Module ptr.
     
     Axiom Function_from_raw_parts :
       M.IsFunction "core::ptr::metadata::from_raw_parts" from_raw_parts.
+    Smpl Add apply Function_from_raw_parts : is_function.
     
     (*
     pub const fn from_raw_parts_mut<T: ?Sized>(
@@ -90,6 +92,7 @@ Module ptr.
     
     Axiom Function_from_raw_parts_mut :
       M.IsFunction "core::ptr::metadata::from_raw_parts_mut" from_raw_parts_mut.
+    Smpl Add apply Function_from_raw_parts_mut : is_function.
     
     (* StructRecord
       {
@@ -148,6 +151,7 @@ Module ptr.
       Axiom AssociatedFunction_vtable_ptr :
         forall (Dyn : Ty.t),
         M.IsAssociatedFunction (Self Dyn) "vtable_ptr" (vtable_ptr Dyn).
+      Smpl Add apply AssociatedFunction_vtable_ptr : is_associated.
       
       (*
           pub fn size_of(self) -> usize {
@@ -186,6 +190,7 @@ Module ptr.
       Axiom AssociatedFunction_size_of :
         forall (Dyn : Ty.t),
         M.IsAssociatedFunction (Self Dyn) "size_of" (size_of Dyn).
+      Smpl Add apply AssociatedFunction_size_of : is_associated.
       
       (*
           pub fn align_of(self) -> usize {
@@ -221,6 +226,7 @@ Module ptr.
       Axiom AssociatedFunction_align_of :
         forall (Dyn : Ty.t),
         M.IsAssociatedFunction (Self Dyn) "align_of" (align_of Dyn).
+      Smpl Add apply AssociatedFunction_align_of : is_associated.
       
       (*
           pub fn layout(self) -> crate::alloc::Layout {
@@ -269,6 +275,7 @@ Module ptr.
       Axiom AssociatedFunction_layout :
         forall (Dyn : Ty.t),
         M.IsAssociatedFunction (Self Dyn) "layout" (layout Dyn).
+      Smpl Add apply AssociatedFunction_layout : is_associated.
     End Impl_core_ptr_metadata_DynMetadata_Dyn.
     
     Module Impl_core_marker_Send_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.

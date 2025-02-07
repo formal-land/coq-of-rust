@@ -7,12 +7,14 @@ Module constants.
   
   Axiom Constant_value_STACK_LIMIT :
     (M.get_constant "revm_specification::constants::STACK_LIMIT") = value_STACK_LIMIT.
+  Global Hint Rewrite Constant_value_STACK_LIMIT : constant_rewrites.
   
   Definition value_MAX_CODE_SIZE : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 24576 |))).
   
   Axiom Constant_value_MAX_CODE_SIZE :
     (M.get_constant "revm_specification::constants::MAX_CODE_SIZE") = value_MAX_CODE_SIZE.
+  Global Hint Rewrite Constant_value_MAX_CODE_SIZE : constant_rewrites.
   
   Definition value_MAX_INITCODE_SIZE : Value.t :=
     M.run_constant
@@ -26,10 +28,12 @@ Module constants.
   
   Axiom Constant_value_MAX_INITCODE_SIZE :
     (M.get_constant "revm_specification::constants::MAX_INITCODE_SIZE") = value_MAX_INITCODE_SIZE.
+  Global Hint Rewrite Constant_value_MAX_INITCODE_SIZE : constant_rewrites.
   
   Definition value_CALL_STACK_LIMIT : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
   
   Axiom Constant_value_CALL_STACK_LIMIT :
     (M.get_constant "revm_specification::constants::CALL_STACK_LIMIT") = value_CALL_STACK_LIMIT.
+  Global Hint Rewrite Constant_value_CALL_STACK_LIMIT : constant_rewrites.
 End constants.

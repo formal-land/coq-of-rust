@@ -688,6 +688,7 @@ Module num.
       
       Axiom Function_compute_float :
         M.IsFunction "core::num::dec2flt::lemire::compute_float" compute_float.
+      Smpl Add apply Function_compute_float : is_function.
       
       (*
       fn power(q: i32) -> i32 {
@@ -719,6 +720,7 @@ Module num.
         end.
       
       Axiom Function_power : M.IsFunction "core::num::dec2flt::lemire::power" power.
+      Smpl Add apply Function_power : is_function.
       
       (*
       fn full_multiplication(a: u64, b: u64) -> (u64, u64) {
@@ -755,6 +757,7 @@ Module num.
       
       Axiom Function_full_multiplication :
         M.IsFunction "core::num::dec2flt::lemire::full_multiplication" full_multiplication.
+      Smpl Add apply Function_full_multiplication : is_function.
       
       (*
       fn compute_product_approx(q: i64, w: u64, precision: usize) -> (u64, u64) {
@@ -1140,6 +1143,7 @@ Module num.
       
       Axiom Function_compute_product_approx :
         M.IsFunction "core::num::dec2flt::lemire::compute_product_approx" compute_product_approx.
+      Smpl Add apply Function_compute_product_approx : is_function.
     End lemire.
   End dec2flt.
 End num.

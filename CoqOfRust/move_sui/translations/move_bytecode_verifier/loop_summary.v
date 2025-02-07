@@ -1658,6 +1658,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn is_descendant(&self, NodeId(ancestor): NodeId, NodeId(descendant): NodeId) -> bool {
@@ -1746,6 +1747,7 @@ Module loop_summary.
     
     Axiom AssociatedFunction_is_descendant :
       M.IsAssociatedFunction Self "is_descendant" is_descendant.
+    Smpl Add apply AssociatedFunction_is_descendant : is_associated.
     
     (*
         pub fn preorder(&self) -> impl DoubleEndedIterator<Item = NodeId> {
@@ -1827,6 +1829,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_preorder : M.IsAssociatedFunction Self "preorder" preorder.
+    Smpl Add apply AssociatedFunction_preorder : is_associated.
     
     (*
         pub fn block(&self, l: NodeId) -> BlockId {
@@ -1883,6 +1886,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_block : M.IsAssociatedFunction Self "block" block.
+    Smpl Add apply AssociatedFunction_block : is_associated.
     
     (*
         pub fn back_edges(&self, l: NodeId) -> &Vec<NodeId> {
@@ -1954,6 +1958,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_back_edges : M.IsAssociatedFunction Self "back_edges" back_edges.
+    Smpl Add apply AssociatedFunction_back_edges : is_associated.
     
     (*
         pub fn pred_edges(&self, l: NodeId) -> &Vec<NodeId> {
@@ -2025,6 +2030,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_pred_edges : M.IsAssociatedFunction Self "pred_edges" pred_edges.
+    Smpl Add apply AssociatedFunction_pred_edges : is_associated.
   End Impl_move_bytecode_verifier_loop_summary_LoopSummary.
   
   Module Impl_move_bytecode_verifier_loop_summary_LoopPartition.
@@ -2158,6 +2164,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn containing_loop(&mut self, id: NodeId) -> NodeId {
@@ -2505,6 +2512,7 @@ Module loop_summary.
     
     Axiom AssociatedFunction_containing_loop :
       M.IsAssociatedFunction Self "containing_loop" containing_loop.
+    Smpl Add apply AssociatedFunction_containing_loop : is_associated.
     
     (*
         pub fn collapse_loop(&mut self, head: NodeId, body: &BTreeSet<NodeId>) -> u16 {
@@ -3041,6 +3049,7 @@ Module loop_summary.
     
     Axiom AssociatedFunction_collapse_loop :
       M.IsAssociatedFunction Self "collapse_loop" collapse_loop.
+    Smpl Add apply AssociatedFunction_collapse_loop : is_associated.
     
     (*
         fn parent(&self, l: NodeId) -> NodeId {
@@ -3100,6 +3109,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_parent : M.IsAssociatedFunction Self "parent" parent.
+    Smpl Add apply AssociatedFunction_parent : is_associated.
     
     (*
         fn parent_mut(&mut self, l: NodeId) -> &mut NodeId {
@@ -3170,6 +3180,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_parent_mut : M.IsAssociatedFunction Self "parent_mut" parent_mut.
+    Smpl Add apply AssociatedFunction_parent_mut : is_associated.
     
     (*
         fn depth(&self, l: NodeId) -> u16 {
@@ -3226,6 +3237,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_depth : M.IsAssociatedFunction Self "depth" depth.
+    Smpl Add apply AssociatedFunction_depth : is_associated.
     
     (*
         fn depth_mut(&mut self, l: NodeId) -> &mut u16 {
@@ -3293,6 +3305,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_depth_mut : M.IsAssociatedFunction Self "depth_mut" depth_mut.
+    Smpl Add apply AssociatedFunction_depth_mut : is_associated.
   End Impl_move_bytecode_verifier_loop_summary_LoopPartition.
   
   Module Impl_move_bytecode_verifier_loop_summary_NodeId.
@@ -3329,6 +3342,7 @@ Module loop_summary.
       end.
     
     Axiom AssociatedFunction_bump : M.IsAssociatedFunction Self "bump" bump.
+    Smpl Add apply AssociatedFunction_bump : is_associated.
   End Impl_move_bytecode_verifier_loop_summary_NodeId.
   
   Module Impl_core_convert_From_move_bytecode_verifier_loop_summary_NodeId_for_usize.

@@ -46,6 +46,7 @@ Module Impl_enums_testcase_linked_list_List.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       fn prepend(self, elem: u32) -> List {
@@ -80,6 +81,7 @@ Module Impl_enums_testcase_linked_list_List.
     end.
   
   Axiom AssociatedFunction_prepend : M.IsAssociatedFunction Self "prepend" prepend.
+  Smpl Add apply AssociatedFunction_prepend : is_associated.
   
   (*
       fn len(&self) -> u32 {
@@ -153,6 +155,7 @@ Module Impl_enums_testcase_linked_list_List.
     end.
   
   Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+  Smpl Add apply AssociatedFunction_len : is_associated.
   
   (*
       fn stringify(&self) -> String {
@@ -363,6 +366,7 @@ Module Impl_enums_testcase_linked_list_List.
     end.
   
   Axiom AssociatedFunction_stringify : M.IsAssociatedFunction Self "stringify" stringify.
+  Smpl Add apply AssociatedFunction_stringify : is_associated.
 End Impl_enums_testcase_linked_list_List.
 
 (*
@@ -595,3 +599,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "enums_testcase_linked_list::main" main.
+Smpl Add apply Function_main : is_function.

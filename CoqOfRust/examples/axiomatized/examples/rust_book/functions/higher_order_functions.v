@@ -4,7 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter is_odd : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_is_odd : M.IsFunction "higher_order_functions::is_odd" is_odd.
+Smpl Add apply Function_is_odd : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "higher_order_functions::main" main.
+Smpl Add apply Function_main : is_function.

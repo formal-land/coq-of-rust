@@ -58,4 +58,5 @@ Module eip2.
   
   Axiom Constant_value_SECP256K1N_HALF :
     (M.get_constant "revm_specification::eip2::SECP256K1N_HALF") = value_SECP256K1N_HALF.
+  Global Hint Rewrite Constant_value_SECP256K1N_HALF : constant_rewrites.
 End eip2.

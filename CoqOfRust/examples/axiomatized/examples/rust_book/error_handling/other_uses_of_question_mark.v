@@ -59,11 +59,14 @@ End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_double_first : M.IsFunction "other_uses_of_question_mark::double_first" double_first.
+Smpl Add apply Function_double_first : is_function.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_print : M.IsFunction "other_uses_of_question_mark::print" print.
+Smpl Add apply Function_print : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "other_uses_of_question_mark::main" main.
+Smpl Add apply Function_main : is_function.

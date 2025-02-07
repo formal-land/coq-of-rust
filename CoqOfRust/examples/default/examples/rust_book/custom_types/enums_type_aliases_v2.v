@@ -69,4 +69,5 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     end.
   
   Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run.
+  Smpl Add apply AssociatedFunction_run : is_associated.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

@@ -246,6 +246,7 @@ Module collections.
       end.
     
     Axiom AssociatedFunction_kind : M.IsAssociatedFunction Self "kind" kind.
+    Smpl Add apply AssociatedFunction_kind : is_associated.
   End Impl_alloc_collections_TryReserveError.
   
   (*

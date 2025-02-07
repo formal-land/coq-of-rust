@@ -114,6 +114,7 @@ Module instruction_consistency.
     
     Axiom AssociatedFunction_verify_module :
       M.IsAssociatedFunction Self "verify_module" verify_module.
+    Smpl Add apply AssociatedFunction_verify_module : is_associated.
     
     (*
         fn verify_module_impl(module: &'a CompiledModule) -> PartialVMResult<()> {
@@ -449,6 +450,7 @@ Module instruction_consistency.
     
     Axiom AssociatedFunction_verify_module_impl :
       M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
+    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
     
     (*
         fn check_instructions(&self, code: &CodeUnit) -> PartialVMResult<()> {
@@ -4111,6 +4113,7 @@ Module instruction_consistency.
     
     Axiom AssociatedFunction_check_instructions :
       M.IsAssociatedFunction Self "check_instructions" check_instructions.
+    Smpl Add apply AssociatedFunction_check_instructions : is_associated.
     
     (*
         fn check_field_op(
@@ -4186,6 +4189,7 @@ Module instruction_consistency.
     
     Axiom AssociatedFunction_check_field_op :
       M.IsAssociatedFunction Self "check_field_op" check_field_op.
+    Smpl Add apply AssociatedFunction_check_field_op : is_associated.
     
     (*
         fn current_function(&self) -> FunctionDefinitionIndex {
@@ -4225,6 +4229,7 @@ Module instruction_consistency.
     
     Axiom AssociatedFunction_current_function :
       M.IsAssociatedFunction Self "current_function" current_function.
+    Smpl Add apply AssociatedFunction_current_function : is_associated.
     
     (*
         fn check_type_op(
@@ -4415,6 +4420,7 @@ Module instruction_consistency.
     
     Axiom AssociatedFunction_check_type_op :
       M.IsAssociatedFunction Self "check_type_op" check_type_op.
+    Smpl Add apply AssociatedFunction_check_type_op : is_associated.
     
     (*
         fn check_function_op(
@@ -4571,5 +4577,6 @@ Module instruction_consistency.
     
     Axiom AssociatedFunction_check_function_op :
       M.IsAssociatedFunction Self "check_function_op" check_function_op.
+    Smpl Add apply AssociatedFunction_check_function_op : is_associated.
   End Impl_move_bytecode_verifier_instruction_consistency_InstructionConsistency.
 End instruction_consistency.

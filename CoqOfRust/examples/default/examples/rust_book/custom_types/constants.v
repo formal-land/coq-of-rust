@@ -5,11 +5,13 @@ Definition value_LANGUAGE : Value.t :=
   M.run_constant ltac:(M.monadic (M.alloc (| Value.String "Rust" |))).
 
 Axiom Constant_value_LANGUAGE : (M.get_constant "constants::LANGUAGE") = value_LANGUAGE.
+Global Hint Rewrite Constant_value_LANGUAGE : constant_rewrites.
 
 Definition value_THRESHOLD : Value.t :=
   M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 10 |))).
 
 Axiom Constant_value_THRESHOLD : (M.get_constant "constants::THRESHOLD") = value_THRESHOLD.
+Global Hint Rewrite Constant_value_THRESHOLD : constant_rewrites.
 
 (*
 fn is_big(n: i32) -> bool {
@@ -27,6 +29,7 @@ Definition is_big (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   end.
 
 Axiom Function_is_big : M.IsFunction "constants::is_big" is_big.
+Smpl Add apply Function_is_big : is_function.
 
 (*
 fn main() {
@@ -309,3 +312,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "constants::main" main.
+Smpl Add apply Function_main : is_function.

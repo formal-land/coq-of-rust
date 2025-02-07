@@ -398,6 +398,7 @@ Module mem.
       
       Axiom AssociatedConstant_value_NOTHING :
         M.IsAssociatedConstant Self "value_NOTHING" value_NOTHING.
+      Smpl Add apply AssociatedConstant_value_NOTHING : is_associated.
       
       (*     pub const ALIGNMENT: Self = Self { alignment: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
@@ -412,6 +413,7 @@ Module mem.
       
       Axiom AssociatedConstant_value_ALIGNMENT :
         M.IsAssociatedConstant Self "value_ALIGNMENT" value_ALIGNMENT.
+      Smpl Add apply AssociatedConstant_value_ALIGNMENT : is_associated.
       
       (*     pub const LIFETIMES: Self = Self { lifetimes: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
@@ -426,6 +428,7 @@ Module mem.
       
       Axiom AssociatedConstant_value_LIFETIMES :
         M.IsAssociatedConstant Self "value_LIFETIMES" value_LIFETIMES.
+      Smpl Add apply AssociatedConstant_value_LIFETIMES : is_associated.
       
       (*     pub const SAFETY: Self = Self { safety: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
@@ -440,6 +443,7 @@ Module mem.
       
       Axiom AssociatedConstant_value_SAFETY :
         M.IsAssociatedConstant Self "value_SAFETY" value_SAFETY.
+      Smpl Add apply AssociatedConstant_value_SAFETY : is_associated.
       
       (*     pub const VALIDITY: Self = Self { validity: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
@@ -454,6 +458,7 @@ Module mem.
       
       Axiom AssociatedConstant_value_VALIDITY :
         M.IsAssociatedConstant Self "value_VALIDITY" value_VALIDITY.
+      Smpl Add apply AssociatedConstant_value_VALIDITY : is_associated.
       
       (*
           pub const fn and(self, other_assumptions: Self) -> Self {
@@ -551,6 +556,7 @@ Module mem.
         end.
       
       Axiom AssociatedFunction_and : M.IsAssociatedFunction Self "and" and.
+      Smpl Add apply AssociatedFunction_and : is_associated.
       
       (*
           pub const fn but_not(self, other_assumptions: Self) -> Self {
@@ -656,6 +662,7 @@ Module mem.
         end.
       
       Axiom AssociatedFunction_but_not : M.IsAssociatedFunction Self "but_not" but_not.
+      Smpl Add apply AssociatedFunction_but_not : is_associated.
     End Impl_core_mem_transmutability_Assume.
     
     Module Impl_core_ops_arith_Add_for_core_mem_transmutability_Assume.

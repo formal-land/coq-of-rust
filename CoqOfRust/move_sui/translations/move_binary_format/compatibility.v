@@ -505,6 +505,7 @@ Module compatibility.
       end.
     
     Axiom AssociatedFunction_full_check : M.IsAssociatedFunction Self "full_check" full_check.
+    Smpl Add apply AssociatedFunction_full_check : is_associated.
     
     (*
         pub fn no_check() -> Self {
@@ -537,6 +538,7 @@ Module compatibility.
       end.
     
     Axiom AssociatedFunction_no_check : M.IsAssociatedFunction Self "no_check" no_check.
+    Smpl Add apply AssociatedFunction_no_check : is_associated.
     
     (*
         pub fn need_check_compat(&self) -> bool {
@@ -594,6 +596,7 @@ Module compatibility.
     
     Axiom AssociatedFunction_need_check_compat :
       M.IsAssociatedFunction Self "need_check_compat" need_check_compat.
+    Smpl Add apply AssociatedFunction_need_check_compat : is_associated.
     
     (*
         pub fn check(&self, old_module: &Module, new_module: &Module) -> PartialVMResult<()> {
@@ -2408,6 +2411,7 @@ Module compatibility.
       end.
     
     Axiom AssociatedFunction_check : M.IsAssociatedFunction Self "check" check.
+    Smpl Add apply AssociatedFunction_check : is_associated.
   End Impl_move_binary_format_compatibility_Compatibility.
   
   (*
@@ -2526,6 +2530,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::struct_abilities_compatible"
       struct_abilities_compatible.
+  Smpl Add apply Function_struct_abilities_compatible : is_function.
   
   (*
   fn fun_type_parameters_compatible(
@@ -2718,6 +2723,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::fun_type_parameters_compatible"
       fun_type_parameters_compatible.
+  Smpl Add apply Function_fun_type_parameters_compatible : is_function.
   
   (*
   fn struct_type_parameters_compatible(
@@ -2946,6 +2952,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::struct_type_parameters_compatible"
       struct_type_parameters_compatible.
+  Smpl Add apply Function_struct_type_parameters_compatible : is_function.
   
   (*
   fn type_parameter_constraints_compatible(
@@ -3020,6 +3027,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::type_parameter_constraints_compatible"
       type_parameter_constraints_compatible.
+  Smpl Add apply Function_type_parameter_constraints_compatible : is_function.
   
   (*
   fn type_parameter_phantom_decl_compatible(
@@ -3107,6 +3115,7 @@ Module compatibility.
     M.IsFunction
       "move_binary_format::compatibility::type_parameter_phantom_decl_compatible"
       type_parameter_phantom_decl_compatible.
+  Smpl Add apply Function_type_parameter_phantom_decl_compatible : is_function.
   
   (*
   Enum InclusionCheck
@@ -4369,5 +4378,6 @@ Module compatibility.
       end.
     
     Axiom AssociatedFunction_check : M.IsAssociatedFunction Self "check" check.
+    Smpl Add apply AssociatedFunction_check : is_associated.
   End Impl_move_binary_format_compatibility_InclusionCheck.
 End compatibility.

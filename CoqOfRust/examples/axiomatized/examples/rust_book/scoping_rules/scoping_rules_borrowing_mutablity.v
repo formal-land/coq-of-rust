@@ -38,12 +38,15 @@ Parameter borrow_book : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_borrow_book :
   M.IsFunction "scoping_rules_borrowing_mutablity::borrow_book" borrow_book.
+Smpl Add apply Function_borrow_book : is_function.
 
 Parameter new_edition : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_new_edition :
   M.IsFunction "scoping_rules_borrowing_mutablity::new_edition" new_edition.
+Smpl Add apply Function_new_edition : is_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.
+Smpl Add apply Function_main : is_function.

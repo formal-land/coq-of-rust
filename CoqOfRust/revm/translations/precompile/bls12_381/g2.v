@@ -9,12 +9,14 @@ Module bls12_381.
     Axiom Constant_value_G2_INPUT_ITEM_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH") =
         value_G2_INPUT_ITEM_LENGTH.
+    Global Hint Rewrite Constant_value_G2_INPUT_ITEM_LENGTH : constant_rewrites.
     
     Definition value_G2_OUTPUT_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
     
     Axiom Constant_value_G2_OUTPUT_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::g2::G2_OUTPUT_LENGTH") = value_G2_OUTPUT_LENGTH.
+    Global Hint Rewrite Constant_value_G2_OUTPUT_LENGTH : constant_rewrites.
     
     (*
     pub(super) fn encode_g2_point(input: &blst_p2_affine) -> Bytes {
@@ -380,6 +382,7 @@ Module bls12_381.
     
     Axiom Function_encode_g2_point :
       M.IsFunction "revm_precompile::bls12_381::g2::encode_g2_point" encode_g2_point.
+    Smpl Add apply Function_encode_g2_point : is_function.
     
     (*
     pub(super) fn decode_and_check_g2(
@@ -612,6 +615,7 @@ Module bls12_381.
     
     Axiom Function_decode_and_check_g2 :
       M.IsFunction "revm_precompile::bls12_381::g2::decode_and_check_g2" decode_and_check_g2.
+    Smpl Add apply Function_decode_and_check_g2 : is_function.
     
     (*
     pub(super) fn check_canonical_fp2(
@@ -829,6 +833,7 @@ Module bls12_381.
     
     Axiom Function_check_canonical_fp2 :
       M.IsFunction "revm_precompile::bls12_381::g2::check_canonical_fp2" check_canonical_fp2.
+    Smpl Add apply Function_check_canonical_fp2 : is_function.
     
     (*
     pub(super) fn extract_g2_input(
@@ -1688,5 +1693,6 @@ Module bls12_381.
     
     Axiom Function_extract_g2_input :
       M.IsFunction "revm_precompile::bls12_381::g2::extract_g2_input" extract_g2_input.
+    Smpl Add apply Function_extract_g2_input : is_function.
   End g2.
 End bls12_381.

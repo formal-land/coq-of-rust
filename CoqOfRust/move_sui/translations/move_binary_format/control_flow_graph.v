@@ -446,6 +446,7 @@ Module control_flow_graph.
       end.
     
     Axiom AssociatedFunction_display : M.IsAssociatedFunction Self "display" display.
+    Smpl Add apply AssociatedFunction_display : is_associated.
   End Impl_move_binary_format_control_flow_graph_BasicBlock.
   
   Definition value_ENTRY_BLOCK_ID : Value.t :=
@@ -454,6 +455,7 @@ Module control_flow_graph.
   Axiom Constant_value_ENTRY_BLOCK_ID :
     (M.get_constant "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID") =
       value_ENTRY_BLOCK_ID.
+  Global Hint Rewrite Constant_value_ENTRY_BLOCK_ID : constant_rewrites.
   
   Module Impl_move_binary_format_control_flow_graph_VMControlFlowGraph.
     Definition Self : Ty.t := Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph".
@@ -2047,6 +2049,7 @@ Module control_flow_graph.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn display(&self) {
@@ -2305,6 +2308,7 @@ Module control_flow_graph.
       end.
     
     Axiom AssociatedFunction_display : M.IsAssociatedFunction Self "display" display.
+    Smpl Add apply AssociatedFunction_display : is_associated.
     
     (*
         fn is_end_of_block(pc: CodeOffset, code: &[Bytecode], block_ids: &Set<BlockId>) -> bool {
@@ -2368,6 +2372,7 @@ Module control_flow_graph.
     
     Axiom AssociatedFunction_is_end_of_block :
       M.IsAssociatedFunction Self "is_end_of_block" is_end_of_block.
+    Smpl Add apply AssociatedFunction_is_end_of_block : is_associated.
     
     (*
         fn record_block_ids(pc: CodeOffset, code: &[Bytecode], block_ids: &mut Set<BlockId>) {
@@ -2529,6 +2534,7 @@ Module control_flow_graph.
     
     Axiom AssociatedFunction_record_block_ids :
       M.IsAssociatedFunction Self "record_block_ids" record_block_ids.
+    Smpl Add apply AssociatedFunction_record_block_ids : is_associated.
     
     (*
         fn traverse_by(&self, block_id: BlockId) -> Vec<BlockId> {
@@ -2958,6 +2964,7 @@ Module control_flow_graph.
       end.
     
     Axiom AssociatedFunction_traverse_by : M.IsAssociatedFunction Self "traverse_by" traverse_by.
+    Smpl Add apply AssociatedFunction_traverse_by : is_associated.
     
     (*
         pub fn reachable_from(&self, block_id: BlockId) -> Vec<BlockId> {
@@ -2987,6 +2994,7 @@ Module control_flow_graph.
     
     Axiom AssociatedFunction_reachable_from :
       M.IsAssociatedFunction Self "reachable_from" reachable_from.
+    Smpl Add apply AssociatedFunction_reachable_from : is_associated.
   End Impl_move_binary_format_control_flow_graph_VMControlFlowGraph.
   
   Module Impl_move_binary_format_control_flow_graph_ControlFlowGraph_for_move_binary_format_control_flow_graph_VMControlFlowGraph.

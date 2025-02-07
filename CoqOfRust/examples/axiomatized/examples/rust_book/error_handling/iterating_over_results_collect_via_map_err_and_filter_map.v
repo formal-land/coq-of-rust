@@ -5,3 +5,4 @@ Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main :
   M.IsFunction "iterating_over_results_collect_via_map_err_and_filter_map::main" main.
+Smpl Add apply Function_main : is_function.

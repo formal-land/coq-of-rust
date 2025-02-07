@@ -188,6 +188,7 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   end.
 
 Axiom Function_calculate_hash : M.IsFunction "hash::calculate_hash" calculate_hash.
+Smpl Add apply Function_calculate_hash : is_function.
 
 (*
 fn main() {
@@ -323,3 +324,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "hash::main" main.
+Smpl Add apply Function_main : is_function.

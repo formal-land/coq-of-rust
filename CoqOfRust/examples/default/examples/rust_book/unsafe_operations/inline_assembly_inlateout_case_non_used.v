@@ -116,3 +116,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_inlateout_case_non_used::main" main.
+Smpl Add apply Function_main : is_function.

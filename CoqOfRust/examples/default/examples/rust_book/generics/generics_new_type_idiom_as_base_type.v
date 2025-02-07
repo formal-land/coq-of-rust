@@ -55,3 +55,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "generics_new_type_idiom_as_base_type::main" main.
+Smpl Add apply Function_main : is_function.

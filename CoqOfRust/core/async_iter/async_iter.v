@@ -283,6 +283,7 @@ Module async_iter.
       Axiom AssociatedFunction_async_gen_ready :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "async_gen_ready" (async_gen_ready T).
+      Smpl Add apply AssociatedFunction_async_gen_ready : is_associated.
       
       (*     pub const PENDING: Self = Poll::Pending; *)
       (* Ty.apply
@@ -297,6 +298,7 @@ Module async_iter.
       Axiom AssociatedConstant_value_PENDING :
         forall (T : Ty.t),
         M.IsAssociatedConstant (Self T) "value_PENDING" (value_PENDING T).
+      Smpl Add apply AssociatedConstant_value_PENDING : is_associated.
       
       (*     pub const FINISHED: Self = Poll::Ready(None); *)
       (* Ty.apply
@@ -316,6 +318,7 @@ Module async_iter.
       Axiom AssociatedConstant_value_FINISHED :
         forall (T : Ty.t),
         M.IsAssociatedConstant (Self T) "value_FINISHED" (value_FINISHED T).
+      Smpl Add apply AssociatedConstant_value_FINISHED : is_associated.
     End Impl_core_task_poll_Poll_core_option_Option_T.
     
     (* Trait *)

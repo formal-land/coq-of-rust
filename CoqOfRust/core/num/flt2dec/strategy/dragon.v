@@ -28,6 +28,7 @@ Module num.
         
         Axiom Constant_value_POW10 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW10") = value_POW10.
+        Global Hint Rewrite Constant_value_POW10 : constant_rewrites.
         
         Definition value_POW5TO16 : Value.t :=
           M.run_constant
@@ -41,6 +42,7 @@ Module num.
         
         Axiom Constant_value_POW5TO16 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO16") = value_POW5TO16.
+        Global Hint Rewrite Constant_value_POW5TO16 : constant_rewrites.
         
         Definition value_POW5TO32 : Value.t :=
           M.run_constant
@@ -58,6 +60,7 @@ Module num.
         
         Axiom Constant_value_POW5TO32 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO32") = value_POW5TO32.
+        Global Hint Rewrite Constant_value_POW5TO32 : constant_rewrites.
         
         Definition value_POW5TO64 : Value.t :=
           M.run_constant
@@ -77,6 +80,7 @@ Module num.
         
         Axiom Constant_value_POW5TO64 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO64") = value_POW5TO64.
+        Global Hint Rewrite Constant_value_POW5TO64 : constant_rewrites.
         
         Definition value_POW5TO128 : Value.t :=
           M.run_constant
@@ -101,6 +105,7 @@ Module num.
         
         Axiom Constant_value_POW5TO128 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO128") = value_POW5TO128.
+        Global Hint Rewrite Constant_value_POW5TO128 : constant_rewrites.
         
         Definition value_POW5TO256 : Value.t :=
           M.run_constant
@@ -134,6 +139,7 @@ Module num.
         
         Axiom Constant_value_POW5TO256 :
           (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO256") = value_POW5TO256.
+        Global Hint Rewrite Constant_value_POW5TO256 : constant_rewrites.
         
         (*
         pub fn mul_pow10(x: &mut Big, n: usize) -> &mut Big {
@@ -714,6 +720,7 @@ Module num.
         
         Axiom Function_mul_pow10 :
           M.IsFunction "core::num::flt2dec::strategy::dragon::mul_pow10" mul_pow10.
+        Smpl Add apply Function_mul_pow10 : is_function.
         
         (*
         fn div_2pow10(x: &mut Big, mut n: usize) -> &mut Big {
@@ -865,6 +872,7 @@ Module num.
         
         Axiom Function_div_2pow10 :
           M.IsFunction "core::num::flt2dec::strategy::dragon::div_2pow10" div_2pow10.
+        Smpl Add apply Function_div_2pow10 : is_function.
         
         (*
         fn div_rem_upto_16<'a>(
@@ -1205,6 +1213,7 @@ Module num.
         
         Axiom Function_div_rem_upto_16 :
           M.IsFunction "core::num::flt2dec::strategy::dragon::div_rem_upto_16" div_rem_upto_16.
+        Smpl Add apply Function_div_rem_upto_16 : is_function.
         
         (*
         pub fn format_shortest<'a>(
@@ -2827,6 +2836,7 @@ Module num.
         
         Axiom Function_format_shortest :
           M.IsFunction "core::num::flt2dec::strategy::dragon::format_shortest" format_shortest.
+        Smpl Add apply Function_format_shortest : is_function.
         
         (*
         pub fn format_exact<'a>(
@@ -5148,6 +5158,7 @@ Module num.
         
         Axiom Function_format_exact :
           M.IsFunction "core::num::flt2dec::strategy::dragon::format_exact" format_exact.
+        Smpl Add apply Function_format_exact : is_function.
       End dragon.
     End strategy.
   End flt2dec.

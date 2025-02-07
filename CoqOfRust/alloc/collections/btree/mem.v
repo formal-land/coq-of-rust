@@ -61,6 +61,7 @@ Module collections.
         end.
       
       Axiom Function_take_mut : M.IsFunction "alloc::collections::btree::mem::take_mut" take_mut.
+      Smpl Add apply Function_take_mut : is_function.
       
       (*
       pub fn replace<T, R>(v: &mut T, change: impl FnOnce(T) -> (T, R)) -> R {
@@ -154,6 +155,7 @@ Module collections.
         end.
       
       Axiom Function_replace : M.IsFunction "alloc::collections::btree::mem::replace" replace.
+      Smpl Add apply Function_replace : is_function.
       
       Module replace.
         (* StructTuple

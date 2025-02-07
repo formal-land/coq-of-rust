@@ -1316,6 +1316,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
+      Smpl Add apply AssociatedFunction_as_bytes : is_associated.
       
       (*
           pub fn into_bytes(self) -> Vec<u8> {
@@ -1338,6 +1339,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
+      Smpl Add apply AssociatedFunction_into_bytes : is_associated.
     End Impl_alloc_ffi_c_str_FromVecWithNulError.
     
     (* StructRecord
@@ -1713,6 +1715,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub unsafe fn from_vec_unchecked(v: Vec<u8>) -> Self {
@@ -1847,6 +1850,7 @@ Module ffi.
       
       Axiom AssociatedFunction_from_vec_unchecked :
         M.IsAssociatedFunction Self "from_vec_unchecked" from_vec_unchecked.
+      Smpl Add apply AssociatedFunction_from_vec_unchecked : is_associated.
       
       (*
           unsafe fn _from_vec_unchecked(mut v: Vec<u8>) -> Self {
@@ -1916,6 +1920,7 @@ Module ffi.
       
       Axiom AssociatedFunction__from_vec_unchecked :
         M.IsAssociatedFunction Self "_from_vec_unchecked" _from_vec_unchecked.
+      Smpl Add apply AssociatedFunction__from_vec_unchecked : is_associated.
       
       (*
           pub unsafe fn from_raw(ptr: *mut c_char) -> CString {
@@ -2004,6 +2009,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
+      Smpl Add apply AssociatedFunction_from_raw : is_associated.
       
       (*
           pub fn into_raw(self) -> *mut c_char {
@@ -2044,6 +2050,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_into_raw : M.IsAssociatedFunction Self "into_raw" into_raw.
+      Smpl Add apply AssociatedFunction_into_raw : is_associated.
       
       (*
           pub fn into_string(self) -> Result<String, IntoStringError> {
@@ -2149,6 +2156,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
+      Smpl Add apply AssociatedFunction_into_string : is_associated.
       
       (*
           pub fn into_bytes(self) -> Vec<u8> {
@@ -2346,6 +2354,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
+      Smpl Add apply AssociatedFunction_into_bytes : is_associated.
       
       (*
           pub fn into_bytes_with_nul(self) -> Vec<u8> {
@@ -2380,6 +2389,7 @@ Module ffi.
       
       Axiom AssociatedFunction_into_bytes_with_nul :
         M.IsAssociatedFunction Self "into_bytes_with_nul" into_bytes_with_nul.
+      Smpl Add apply AssociatedFunction_into_bytes_with_nul : is_associated.
       
       (*
           pub fn as_bytes(&self) -> &[u8] {
@@ -2453,6 +2463,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
+      Smpl Add apply AssociatedFunction_as_bytes : is_associated.
       
       (*
           pub fn as_bytes_with_nul(&self) -> &[u8] {
@@ -2486,6 +2497,7 @@ Module ffi.
       
       Axiom AssociatedFunction_as_bytes_with_nul :
         M.IsAssociatedFunction Self "as_bytes_with_nul" as_bytes_with_nul.
+      Smpl Add apply AssociatedFunction_as_bytes_with_nul : is_associated.
       
       (*
           pub fn as_c_str(&self) -> &CStr {
@@ -2523,6 +2535,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_as_c_str : M.IsAssociatedFunction Self "as_c_str" as_c_str.
+      Smpl Add apply AssociatedFunction_as_c_str : is_associated.
       
       (*
           pub fn into_boxed_c_str(self) -> Box<CStr> {
@@ -2579,6 +2592,7 @@ Module ffi.
       
       Axiom AssociatedFunction_into_boxed_c_str :
         M.IsAssociatedFunction Self "into_boxed_c_str" into_boxed_c_str.
+      Smpl Add apply AssociatedFunction_into_boxed_c_str : is_associated.
       
       (*
           fn into_inner(self) -> Box<[u8]> {
@@ -2664,6 +2678,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
           pub unsafe fn from_vec_with_nul_unchecked(v: Vec<u8>) -> Self {
@@ -2814,6 +2829,7 @@ Module ffi.
       
       Axiom AssociatedFunction_from_vec_with_nul_unchecked :
         M.IsAssociatedFunction Self "from_vec_with_nul_unchecked" from_vec_with_nul_unchecked.
+      Smpl Add apply AssociatedFunction_from_vec_with_nul_unchecked : is_associated.
       
       (*
           unsafe fn _from_vec_with_nul_unchecked(v: Vec<u8>) -> Self {
@@ -2851,6 +2867,7 @@ Module ffi.
       
       Axiom AssociatedFunction__from_vec_with_nul_unchecked :
         M.IsAssociatedFunction Self "_from_vec_with_nul_unchecked" _from_vec_with_nul_unchecked.
+      Smpl Add apply AssociatedFunction__from_vec_with_nul_unchecked : is_associated.
       
       (*
           pub fn from_vec_with_nul(v: Vec<u8>) -> Result<Self, FromVecWithNulError> {
@@ -3011,6 +3028,7 @@ Module ffi.
       
       Axiom AssociatedFunction_from_vec_with_nul :
         M.IsAssociatedFunction Self "from_vec_with_nul" from_vec_with_nul.
+      Smpl Add apply AssociatedFunction_from_vec_with_nul : is_associated.
     End Impl_alloc_ffi_c_str_CString.
     
     Module Impl_core_ops_drop_Drop_for_alloc_ffi_c_str_CString.
@@ -4500,6 +4518,7 @@ Module ffi.
       
       Axiom AssociatedFunction_nul_position :
         M.IsAssociatedFunction Self "nul_position" nul_position.
+      Smpl Add apply AssociatedFunction_nul_position : is_associated.
       
       (*
           pub fn into_vec(self) -> Vec<u8> {
@@ -4518,6 +4537,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_into_vec : M.IsAssociatedFunction Self "into_vec" into_vec.
+      Smpl Add apply AssociatedFunction_into_vec : is_associated.
     End Impl_alloc_ffi_c_str_NulError.
     
     Module Impl_core_fmt_Display_for_alloc_ffi_c_str_NulError.
@@ -4798,6 +4818,7 @@ Module ffi.
       
       Axiom AssociatedFunction_into_cstring :
         M.IsAssociatedFunction Self "into_cstring" into_cstring.
+      Smpl Add apply AssociatedFunction_into_cstring : is_associated.
       
       (*
           pub fn utf8_error(&self) -> Utf8Error {
@@ -4820,6 +4841,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_utf8_error : M.IsAssociatedFunction Self "utf8_error" utf8_error.
+      Smpl Add apply AssociatedFunction_utf8_error : is_associated.
       (*
           fn description(&self) -> &str {
               "C string contained non-utf8 bytes"
@@ -4838,6 +4860,7 @@ Module ffi.
         end.
       
       Axiom AssociatedFunction_description : M.IsAssociatedFunction Self "description" description.
+      Smpl Add apply AssociatedFunction_description : is_associated.
     End Impl_alloc_ffi_c_str_IntoStringError.
     
     
@@ -5239,6 +5262,7 @@ Module ffi.
       
       Axiom AssociatedFunction_to_string_lossy :
         M.IsAssociatedFunction Self "to_string_lossy" to_string_lossy.
+      Smpl Add apply AssociatedFunction_to_string_lossy : is_associated.
       
       (*
           pub fn into_c_string(self: Box<Self>) -> CString {
@@ -5272,6 +5296,7 @@ Module ffi.
       
       Axiom AssociatedFunction_into_c_string :
         M.IsAssociatedFunction Self "into_c_string" into_c_string.
+      Smpl Add apply AssociatedFunction_into_c_string : is_associated.
     End Impl_core_ffi_c_str_CStr.
     
     Module Impl_core_error_Error_for_alloc_ffi_c_str_NulError.

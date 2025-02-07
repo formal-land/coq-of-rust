@@ -173,6 +173,7 @@ Module Impl_traits_Sheep.
     end.
   
   Axiom AssociatedFunction_is_naked : M.IsAssociatedFunction Self "is_naked" is_naked.
+  Smpl Add apply AssociatedFunction_is_naked : is_associated.
   (*
       fn shear(&mut self) {
           if self.is_naked() {
@@ -388,6 +389,7 @@ Module Impl_traits_Sheep.
     end.
   
   Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear.
+  Smpl Add apply AssociatedFunction_shear : is_associated.
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
@@ -690,3 +692,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "traits::main" main.
+Smpl Add apply Function_main : is_function.

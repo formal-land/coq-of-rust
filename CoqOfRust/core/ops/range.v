@@ -877,6 +877,7 @@ Module ops.
       Axiom AssociatedFunction_contains :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
+      Smpl Add apply AssociatedFunction_contains : is_associated.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -918,6 +919,7 @@ Module ops.
       Axiom AssociatedFunction_is_empty :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "is_empty" (is_empty Idx).
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
     End Impl_core_ops_range_Range_Idx.
     
     (* StructRecord
@@ -1388,6 +1390,7 @@ Module ops.
       Axiom AssociatedFunction_contains :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
+      Smpl Add apply AssociatedFunction_contains : is_associated.
     End Impl_core_ops_range_RangeFrom_Idx.
     
     (* StructRecord
@@ -1871,6 +1874,7 @@ Module ops.
       Axiom AssociatedFunction_contains :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
+      Smpl Add apply AssociatedFunction_contains : is_associated.
     End Impl_core_ops_range_RangeTo_Idx.
     
     (* StructRecord
@@ -2245,6 +2249,7 @@ Module ops.
       Axiom AssociatedFunction_new :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "new" (new Idx).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const fn start(&self) -> &Idx {
@@ -2276,6 +2281,7 @@ Module ops.
       Axiom AssociatedFunction_start :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "start" (start Idx).
+      Smpl Add apply AssociatedFunction_start : is_associated.
       
       (*
           pub const fn end(&self) -> &Idx {
@@ -2307,6 +2313,7 @@ Module ops.
       Axiom AssociatedFunction_end_ :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "end_" (end_ Idx).
+      Smpl Add apply AssociatedFunction_end_ : is_associated.
       
       (*
           pub const fn into_inner(self) -> (Idx, Idx) {
@@ -2347,6 +2354,7 @@ Module ops.
       Axiom AssociatedFunction_into_inner :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "into_inner" (into_inner Idx).
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       (*
           pub fn contains<U>(&self, item: &U) -> bool
           where
@@ -2384,6 +2392,7 @@ Module ops.
       Axiom AssociatedFunction_contains :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
+      Smpl Add apply AssociatedFunction_contains : is_associated.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -2443,6 +2452,7 @@ Module ops.
       Axiom AssociatedFunction_is_empty :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "is_empty" (is_empty Idx).
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
     End Impl_core_ops_range_RangeInclusive_Idx.
     
     Module Impl_core_ops_range_RangeInclusive_usize.
@@ -2516,6 +2526,7 @@ Module ops.
       
       Axiom AssociatedFunction_into_slice_range :
         M.IsAssociatedFunction Self "into_slice_range" into_slice_range.
+      Smpl Add apply AssociatedFunction_into_slice_range : is_associated.
     End Impl_core_ops_range_RangeInclusive_usize.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeInclusive_Idx.
@@ -3463,6 +3474,7 @@ Module ops.
       Axiom AssociatedFunction_contains :
         forall (Idx : Ty.t),
         M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
+      Smpl Add apply AssociatedFunction_contains : is_associated.
     End Impl_core_ops_range_RangeToInclusive_Idx.
     
     (*
@@ -4069,6 +4081,7 @@ Module ops.
       Axiom AssociatedFunction_as_ref :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
+      Smpl Add apply AssociatedFunction_as_ref : is_associated.
       
       (*
           pub fn as_mut(&mut self) -> Bound<&mut T> {
@@ -4130,6 +4143,7 @@ Module ops.
       Axiom AssociatedFunction_as_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_mut" (as_mut T).
+      Smpl Add apply AssociatedFunction_as_mut : is_associated.
       
       (*
           pub fn map<U, F: FnOnce(T) -> U>(self, f: F) -> Bound<U> {
@@ -4218,6 +4232,7 @@ Module ops.
       Axiom AssociatedFunction_map :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "map" (map T).
+      Smpl Add apply AssociatedFunction_map : is_associated.
     End Impl_core_ops_range_Bound_T.
     
     Module Impl_core_ops_range_Bound_ref__T.
@@ -4310,6 +4325,7 @@ Module ops.
       Axiom AssociatedFunction_cloned :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "cloned" (cloned T).
+      Smpl Add apply AssociatedFunction_cloned : is_associated.
     End Impl_core_ops_range_Bound_ref__T.
     
     (* Trait *)

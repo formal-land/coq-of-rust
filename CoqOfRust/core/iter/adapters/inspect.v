@@ -102,6 +102,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I F : Ty.t),
           M.IsAssociatedFunction (Self I F) "new" (new I F).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         (*
             fn do_inspect(&mut self, elt: Option<I::Item>) -> Option<I::Item> {
                 if let Some(ref a) = elt {
@@ -177,6 +178,7 @@ Module iter.
         Axiom AssociatedFunction_do_inspect :
           forall (I F : Ty.t),
           M.IsAssociatedFunction (Self I F) "do_inspect" (do_inspect I F).
+        Smpl Add apply AssociatedFunction_do_inspect : is_associated.
       End Impl_core_iter_adapters_inspect_Inspect_I_F.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_inspect_Inspect_I_F.
@@ -361,6 +363,7 @@ Module iter.
       
       Axiom Function_inspect_fold :
         M.IsFunction "core::iter::adapters::inspect::inspect_fold" inspect_fold.
+      Smpl Add apply Function_inspect_fold : is_function.
       
       Module inspect_fold.
         (* Error OpaqueTy *)
@@ -460,6 +463,7 @@ Module iter.
       
       Axiom Function_inspect_try_fold :
         M.IsFunction "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
+      Smpl Add apply Function_inspect_try_fold : is_function.
       
       Module inspect_try_fold.
         (* Error OpaqueTy *)

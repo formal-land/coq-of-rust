@@ -1134,6 +1134,7 @@ Module instructions.
     
     Axiom Function_cast_slice_to_u256 :
       M.IsFunction "revm_interpreter::instructions::utility::cast_slice_to_u256" cast_slice_to_u256.
+    Smpl Add apply Function_cast_slice_to_u256 : is_function.
     
     (* Trait *)
     (* Empty module 'IntoU256' *)

@@ -8,6 +8,7 @@ Module bls12_381.
     
     Axiom Constant_value_MSM_MULTIPLIER :
       (M.get_constant "revm_precompile::bls12_381::msm::MSM_MULTIPLIER") = value_MSM_MULTIPLIER.
+    Global Hint Rewrite Constant_value_MSM_MULTIPLIER : constant_rewrites.
     
     Definition value_MSM_DISCOUNT_TABLE : Value.t :=
       M.run_constant
@@ -151,6 +152,7 @@ Module bls12_381.
     Axiom Constant_value_MSM_DISCOUNT_TABLE :
       (M.get_constant "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE") =
         value_MSM_DISCOUNT_TABLE.
+    Global Hint Rewrite Constant_value_MSM_DISCOUNT_TABLE : constant_rewrites.
     
     (*
     pub(super) fn msm_required_gas(k: usize, multiplication_cost: u64) -> u64 {
@@ -259,5 +261,6 @@ Module bls12_381.
     
     Axiom Function_msm_required_gas :
       M.IsFunction "revm_precompile::bls12_381::msm::msm_required_gas" msm_required_gas.
+    Smpl Add apply Function_msm_required_gas : is_function.
   End msm.
 End bls12_381.

@@ -57,6 +57,7 @@ Module vec.
       Axiom AssociatedFunction_len :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "len" (len T).
+      Smpl Add apply AssociatedFunction_len : is_associated.
     End Impl_alloc_vec_in_place_drop_InPlaceDrop_T.
     
     Module Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDrop_T.

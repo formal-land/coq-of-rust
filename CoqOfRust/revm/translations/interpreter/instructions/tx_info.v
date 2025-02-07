@@ -283,6 +283,7 @@ Module instructions.
     
     Axiom Function_gasprice :
       M.IsFunction "revm_interpreter::instructions::tx_info::gasprice" gasprice.
+    Smpl Add apply Function_gasprice : is_function.
     
     (*
     pub fn origin<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -572,6 +573,7 @@ Module instructions.
       end.
     
     Axiom Function_origin : M.IsFunction "revm_interpreter::instructions::tx_info::origin" origin.
+    Smpl Add apply Function_origin : is_function.
     
     (*
     pub fn blob_hash<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1296,5 +1298,6 @@ Module instructions.
     
     Axiom Function_blob_hash :
       M.IsFunction "revm_interpreter::instructions::tx_info::blob_hash" blob_hash.
+    Smpl Add apply Function_blob_hash : is_function.
   End tx_info.
 End instructions.

@@ -63,6 +63,7 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn new_default() -> Self {
@@ -94,6 +95,7 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
+  Smpl Add apply AssociatedFunction_new_default : is_associated.
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, FlipperError> {
@@ -146,6 +148,7 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
+  Smpl Add apply AssociatedFunction_try_new : is_associated.
   
   (*
       pub fn flip(&mut self) {
@@ -181,6 +184,7 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
+  Smpl Add apply AssociatedFunction_flip : is_associated.
   
   (*
       pub fn get(&self) -> bool {
@@ -203,6 +207,7 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
+  Smpl Add apply AssociatedFunction_get : is_associated.
   
   (*
       pub fn err_flip(&mut self) -> Result<(), ()> {
@@ -234,4 +239,5 @@ Module Impl_integration_flipper_Flipper.
     end.
   
   Axiom AssociatedFunction_err_flip : M.IsAssociatedFunction Self "err_flip" err_flip.
+  Smpl Add apply AssociatedFunction_err_flip : is_associated.
 End Impl_integration_flipper_Flipper.

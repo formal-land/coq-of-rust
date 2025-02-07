@@ -243,6 +243,7 @@ Module collections.
         Axiom AssociatedFunction_none :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "none" (none BorrowType K V).
+        Smpl Add apply AssociatedFunction_none : is_associated.
         
         (*
             fn is_empty(&self) -> bool {
@@ -335,6 +336,7 @@ Module collections.
         Axiom AssociatedFunction_is_empty :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "is_empty" (is_empty BorrowType K V).
+        Smpl Add apply AssociatedFunction_is_empty : is_associated.
         
         (*
             pub fn reborrow(&self) -> LeafRange<marker::Immut<'_>, K, V> {
@@ -719,6 +721,7 @@ Module collections.
         Axiom AssociatedFunction_reborrow :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
+        Smpl Add apply AssociatedFunction_reborrow : is_associated.
         (*
             fn perform_next_checked<F, R>(&mut self, f: F) -> Option<R>
             where
@@ -1155,6 +1158,7 @@ Module collections.
             (Self BorrowType K V)
             "perform_next_checked"
             (perform_next_checked BorrowType K V).
+        Smpl Add apply AssociatedFunction_perform_next_checked : is_associated.
         
         (*
             fn perform_next_back_checked<F, R>(&mut self, f: F) -> Option<R>
@@ -1592,6 +1596,7 @@ Module collections.
             (Self BorrowType K V)
             "perform_next_back_checked"
             (perform_next_back_checked BorrowType K V).
+        Smpl Add apply AssociatedFunction_perform_next_back_checked : is_associated.
       End Impl_alloc_collections_btree_navigate_LeafRange_BorrowType_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_Immut_K_V.
@@ -1709,6 +1714,7 @@ Module collections.
         Axiom AssociatedFunction_next_checked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_checked" (next_checked K V).
+        Smpl Add apply AssociatedFunction_next_checked : is_associated.
         
         (*
             pub fn next_back_checked(&mut self) -> Option<(&'a K, &'a V)> {
@@ -1818,6 +1824,7 @@ Module collections.
         Axiom AssociatedFunction_next_back_checked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_back_checked" (next_back_checked K V).
+        Smpl Add apply AssociatedFunction_next_back_checked : is_associated.
       End Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_Immut_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
@@ -1969,6 +1976,7 @@ Module collections.
         Axiom AssociatedFunction_next_checked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_checked" (next_checked K V).
+        Smpl Add apply AssociatedFunction_next_checked : is_associated.
         
         (*
             pub fn next_back_checked(&mut self) -> Option<(&'a K, &'a mut V)> {
@@ -2112,6 +2120,7 @@ Module collections.
         Axiom AssociatedFunction_next_back_checked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_back_checked" (next_back_checked K V).
+        Smpl Add apply AssociatedFunction_next_back_checked : is_associated.
       End Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
       
       
@@ -2348,6 +2357,7 @@ Module collections.
         Axiom AssociatedFunction_reborrow :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
+        Smpl Add apply AssociatedFunction_reborrow : is_associated.
       End Impl_alloc_collections_btree_navigate_LazyLeafHandle_BorrowType_K_V.
       
       (* StructRecord
@@ -2545,6 +2555,7 @@ Module collections.
         Axiom AssociatedFunction_none :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "none" (none BorrowType K V).
+        Smpl Add apply AssociatedFunction_none : is_associated.
         
         (*
             pub fn reborrow(&self) -> LazyLeafRange<marker::Immut<'_>, K, V> {
@@ -2793,6 +2804,7 @@ Module collections.
         Axiom AssociatedFunction_reborrow :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
+        Smpl Add apply AssociatedFunction_reborrow : is_associated.
         (*
             fn init_front(
                 &mut self,
@@ -2985,6 +2997,7 @@ Module collections.
         Axiom AssociatedFunction_init_front :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "init_front" (init_front BorrowType K V).
+        Smpl Add apply AssociatedFunction_init_front : is_associated.
         
         (*
             fn init_back(
@@ -3178,6 +3191,7 @@ Module collections.
         Axiom AssociatedFunction_init_back :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "init_back" (init_back BorrowType K V).
+        Smpl Add apply AssociatedFunction_init_back : is_associated.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_BorrowType_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Immut_K_V.
@@ -3284,6 +3298,7 @@ Module collections.
         Axiom AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_unchecked" (next_unchecked K V).
+        Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
         
         (*
             pub unsafe fn next_back_unchecked(&mut self) -> (&'a K, &'a V) {
@@ -3382,6 +3397,7 @@ Module collections.
         Axiom AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+        Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Immut_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
@@ -3488,6 +3504,7 @@ Module collections.
         Axiom AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_unchecked" (next_unchecked K V).
+        Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
         
         (*
             pub unsafe fn next_back_unchecked(&mut self) -> (&'a K, &'a mut V) {
@@ -3586,6 +3603,7 @@ Module collections.
         Axiom AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+        Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Dying_K_V.
@@ -3802,6 +3820,7 @@ Module collections.
         Axiom AssociatedFunction_take_front :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "take_front" (take_front K V).
+        Smpl Add apply AssociatedFunction_take_front : is_associated.
         
         (*
             pub unsafe fn deallocating_next_unchecked<A: Allocator + Clone>(
@@ -3990,6 +4009,7 @@ Module collections.
             (Self K V)
             "deallocating_next_unchecked"
             (deallocating_next_unchecked K V).
+        Smpl Add apply AssociatedFunction_deallocating_next_unchecked : is_associated.
         
         (*
             pub unsafe fn deallocating_next_back_unchecked<A: Allocator + Clone>(
@@ -4178,6 +4198,7 @@ Module collections.
             (Self K V)
             "deallocating_next_back_unchecked"
             (deallocating_next_back_unchecked K V).
+        Smpl Add apply AssociatedFunction_deallocating_next_back_unchecked : is_associated.
         
         (*
             pub fn deallocating_end<A: Allocator + Clone>(&mut self, alloc: A) {
@@ -4263,6 +4284,7 @@ Module collections.
         Axiom AssociatedFunction_deallocating_end :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "deallocating_end" (deallocating_end K V).
+        Smpl Add apply AssociatedFunction_deallocating_end : is_associated.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Dying_K_V.
       
       
@@ -4826,6 +4848,7 @@ Module collections.
             (Self BorrowType K V)
             "find_leaf_edges_spanning_range"
             (find_leaf_edges_spanning_range BorrowType K V).
+        Smpl Add apply AssociatedFunction_find_leaf_edges_spanning_range : is_associated.
         (*
             pub fn first_leaf_edge(self) -> Handle<NodeRef<BorrowType, K, V, marker::Leaf>, marker::Edge> {
                 let mut node = self;
@@ -4990,6 +5013,7 @@ Module collections.
             (Self BorrowType K V)
             "first_leaf_edge"
             (first_leaf_edge BorrowType K V).
+        Smpl Add apply AssociatedFunction_first_leaf_edge : is_associated.
         
         (*
             pub fn last_leaf_edge(self) -> Handle<NodeRef<BorrowType, K, V, marker::Leaf>, marker::Edge> {
@@ -5155,6 +5179,7 @@ Module collections.
             (Self BorrowType K V)
             "last_leaf_edge"
             (last_leaf_edge BorrowType K V).
+        Smpl Add apply AssociatedFunction_last_leaf_edge : is_associated.
         (*
             pub fn lower_bound<Q: ?Sized>(
                 self,
@@ -5329,6 +5354,7 @@ Module collections.
         Axiom AssociatedFunction_lower_bound :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "lower_bound" (lower_bound BorrowType K V).
+        Smpl Add apply AssociatedFunction_lower_bound : is_associated.
         
         (*
             pub fn upper_bound<Q: ?Sized>(
@@ -5504,6 +5530,7 @@ Module collections.
         Axiom AssociatedFunction_upper_bound :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "upper_bound" (upper_bound BorrowType K V).
+        Smpl Add apply AssociatedFunction_upper_bound : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       (*
@@ -5548,6 +5575,7 @@ Module collections.
       
       Axiom Function_full_range :
         M.IsFunction "alloc::collections::btree::navigate::full_range" full_range.
+      Smpl Add apply Function_full_range : is_function.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
         Definition Self (K V : Ty.t) : Ty.t :=
@@ -5607,6 +5635,7 @@ Module collections.
         Axiom AssociatedFunction_range_search :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "range_search" (range_search K V).
+        Smpl Add apply AssociatedFunction_range_search : is_associated.
         
         (*
             pub fn full_range(self) -> LazyLeafRange<marker::Immut<'a>, K, V> {
@@ -5638,6 +5667,7 @@ Module collections.
         Axiom AssociatedFunction_full_range :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "full_range" (full_range K V).
+        Smpl Add apply AssociatedFunction_full_range : is_associated.
         (*
             pub fn visit_nodes_in_order<F>(self, mut visit: F)
             where
@@ -6137,6 +6167,7 @@ Module collections.
         Axiom AssociatedFunction_visit_nodes_in_order :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "visit_nodes_in_order" (visit_nodes_in_order K V).
+        Smpl Add apply AssociatedFunction_visit_nodes_in_order : is_associated.
         
         (*
             pub fn calc_length(self) -> usize {
@@ -6308,6 +6339,7 @@ Module collections.
         Axiom AssociatedFunction_calc_length :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "calc_length" (calc_length K V).
+        Smpl Add apply AssociatedFunction_calc_length : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -6367,6 +6399,7 @@ Module collections.
         Axiom AssociatedFunction_range_search :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "range_search" (range_search K V).
+        Smpl Add apply AssociatedFunction_range_search : is_associated.
         
         (*
             pub fn full_range(self) -> LazyLeafRange<marker::ValMut<'a>, K, V> {
@@ -6431,6 +6464,7 @@ Module collections.
         Axiom AssociatedFunction_full_range :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "full_range" (full_range K V).
+        Smpl Add apply AssociatedFunction_full_range : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -6508,6 +6542,7 @@ Module collections.
         Axiom AssociatedFunction_full_range :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "full_range" (full_range K V).
+        Smpl Add apply AssociatedFunction_full_range : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -6775,6 +6810,7 @@ Module collections.
         Axiom AssociatedFunction_next_kv :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
+        Smpl Add apply AssociatedFunction_next_kv : is_associated.
         
         (*
             pub fn next_back_kv(
@@ -7028,6 +7064,7 @@ Module collections.
         Axiom AssociatedFunction_next_back_kv :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "next_back_kv" (next_back_kv BorrowType K V).
+        Smpl Add apply AssociatedFunction_next_back_kv : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_Edge.
@@ -7242,6 +7279,7 @@ Module collections.
         Axiom AssociatedFunction_next_kv :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
+        Smpl Add apply AssociatedFunction_next_kv : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_Edge.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -7603,6 +7641,7 @@ Module collections.
         Axiom AssociatedFunction_deallocating_next :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "deallocating_next" (deallocating_next K V).
+        Smpl Add apply AssociatedFunction_deallocating_next : is_associated.
         
         (*
             unsafe fn deallocating_next_back<A: Allocator + Clone>(
@@ -7945,6 +7984,7 @@ Module collections.
         Axiom AssociatedFunction_deallocating_next_back :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "deallocating_next_back" (deallocating_next_back K V).
+        Smpl Add apply AssociatedFunction_deallocating_next_back : is_associated.
         
         (*
             fn deallocating_end<A: Allocator + Clone>(self, alloc: A) {
@@ -8119,6 +8159,7 @@ Module collections.
         Axiom AssociatedFunction_deallocating_end :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "deallocating_end" (deallocating_end K V).
+        Smpl Add apply AssociatedFunction_deallocating_end : is_associated.
         (*
             unsafe fn deallocating_next_unchecked<A: Allocator + Clone>(
                 &mut self,
@@ -8345,6 +8386,7 @@ Module collections.
             (Self K V)
             "deallocating_next_unchecked"
             (deallocating_next_unchecked K V).
+        Smpl Add apply AssociatedFunction_deallocating_next_unchecked : is_associated.
         
         (*
             unsafe fn deallocating_next_back_unchecked<A: Allocator + Clone>(
@@ -8572,6 +8614,7 @@ Module collections.
             (Self K V)
             "deallocating_next_back_unchecked"
             (deallocating_next_back_unchecked K V).
+        Smpl Add apply AssociatedFunction_deallocating_next_back_unchecked : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -8875,6 +8918,7 @@ Module collections.
         Axiom AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_unchecked" (next_unchecked K V).
+        Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
         
         (*
             unsafe fn next_back_unchecked(&mut self) -> (&'a K, &'a V) {
@@ -9159,6 +9203,7 @@ Module collections.
         Axiom AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+        Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -9532,6 +9577,7 @@ Module collections.
         Axiom AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_unchecked" (next_unchecked K V).
+        Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
         
         (*
             unsafe fn next_back_unchecked(&mut self) -> (&'a K, &'a mut V) {
@@ -9886,6 +9932,7 @@ Module collections.
         Axiom AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
           M.IsAssociatedFunction (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+        Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       
@@ -10129,6 +10176,7 @@ Module collections.
             (Self BorrowType K V)
             "next_leaf_edge"
             (next_leaf_edge BorrowType K V).
+        Smpl Add apply AssociatedFunction_next_leaf_edge : is_associated.
         
         (*
             pub fn next_back_leaf_edge(
@@ -10307,6 +10355,7 @@ Module collections.
             (Self BorrowType K V)
             "next_back_leaf_edge"
             (next_back_leaf_edge BorrowType K V).
+        Smpl Add apply AssociatedFunction_next_back_leaf_edge : is_associated.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_KV.
       
     End navigate.

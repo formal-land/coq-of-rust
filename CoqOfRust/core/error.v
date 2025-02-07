@@ -194,6 +194,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    Smpl Add apply AssociatedFunction_is : is_associated.
     
     (*
         pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
@@ -266,6 +267,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    Smpl Add apply AssociatedFunction_downcast_ref : is_associated.
     
     (*
         pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
@@ -338,6 +340,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
     (*
         pub fn sources(&self) -> Source<'_> {
             // You may think this method would be better in the Error trait, and you'd be right.
@@ -371,6 +374,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_sources : M.IsAssociatedFunction Self "sources" sources.
+    Smpl Add apply AssociatedFunction_sources : is_associated.
   End Impl_Dyn_core_error_Error_Trait.
   
   Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
@@ -400,6 +404,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    Smpl Add apply AssociatedFunction_is : is_associated.
     
     (*
         pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
@@ -424,6 +429,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    Smpl Add apply AssociatedFunction_downcast_ref : is_associated.
     
     (*
         pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
@@ -448,6 +454,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
   
   Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
@@ -482,6 +489,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
+    Smpl Add apply AssociatedFunction_is : is_associated.
     
     (*
         pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> {
@@ -506,6 +514,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
+    Smpl Add apply AssociatedFunction_downcast_ref : is_associated.
     
     (*
         pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> {
@@ -530,6 +539,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
   
   
@@ -558,6 +568,7 @@ Module error.
     end.
   
   Axiom Function_request_value : M.IsFunction "core::error::request_value" request_value.
+  Smpl Add apply Function_request_value : is_function.
   
   (*
   pub fn request_ref<'a, T>(err: &'a (impl Error + ?Sized)) -> Option<&'a T>
@@ -590,6 +601,7 @@ Module error.
     end.
   
   Axiom Function_request_ref : M.IsFunction "core::error::request_ref" request_ref.
+  Smpl Add apply Function_request_ref : is_function.
   
   (*
   fn request_by_type_tag<'a, I>(err: &'a (impl Error + ?Sized)) -> Option<I::Reified>
@@ -668,6 +680,7 @@ Module error.
   
   Axiom Function_request_by_type_tag :
     M.IsFunction "core::error::request_by_type_tag" request_by_type_tag.
+  Smpl Add apply Function_request_by_type_tag : is_function.
   
   (* StructTuple
     {
@@ -727,6 +740,7 @@ Module error.
     
     Axiom AssociatedFunction_provide_value :
       M.IsAssociatedFunction Self "provide_value" provide_value.
+    Smpl Add apply AssociatedFunction_provide_value : is_associated.
     
     (*
         pub fn provide_value_with<T>(&mut self, fulfil: impl FnOnce() -> T) -> &mut Self
@@ -772,6 +786,7 @@ Module error.
     
     Axiom AssociatedFunction_provide_value_with :
       M.IsAssociatedFunction Self "provide_value_with" provide_value_with.
+    Smpl Add apply AssociatedFunction_provide_value_with : is_associated.
     
     (*
         pub fn provide_ref<T: ?Sized + 'static>(&mut self, value: &'a T) -> &mut Self {
@@ -815,6 +830,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_provide_ref : M.IsAssociatedFunction Self "provide_ref" provide_ref.
+    Smpl Add apply AssociatedFunction_provide_ref : is_associated.
     
     (*
         pub fn provide_ref_with<T: ?Sized + 'static>(
@@ -863,6 +879,7 @@ Module error.
     
     Axiom AssociatedFunction_provide_ref_with :
       M.IsAssociatedFunction Self "provide_ref_with" provide_ref_with.
+    Smpl Add apply AssociatedFunction_provide_ref_with : is_associated.
     
     (*
         fn provide<I>(&mut self, value: I::Reified) -> &mut Self
@@ -951,6 +968,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_provide : M.IsAssociatedFunction Self "provide" provide.
+    Smpl Add apply AssociatedFunction_provide : is_associated.
     
     (*
         fn provide_with<I>(&mut self, fulfil: impl FnOnce() -> I::Reified) -> &mut Self
@@ -1054,6 +1072,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_provide_with : M.IsAssociatedFunction Self "provide_with" provide_with.
+    Smpl Add apply AssociatedFunction_provide_with : is_associated.
     
     (*
         pub fn would_be_satisfied_by_value_of<T>(&self) -> bool
@@ -1086,6 +1105,7 @@ Module error.
     
     Axiom AssociatedFunction_would_be_satisfied_by_value_of :
       M.IsAssociatedFunction Self "would_be_satisfied_by_value_of" would_be_satisfied_by_value_of.
+    Smpl Add apply AssociatedFunction_would_be_satisfied_by_value_of : is_associated.
     
     (*
         pub fn would_be_satisfied_by_ref_of<T>(&self) -> bool
@@ -1123,6 +1143,7 @@ Module error.
     
     Axiom AssociatedFunction_would_be_satisfied_by_ref_of :
       M.IsAssociatedFunction Self "would_be_satisfied_by_ref_of" would_be_satisfied_by_ref_of.
+    Smpl Add apply AssociatedFunction_would_be_satisfied_by_ref_of : is_associated.
     
     (*
         fn would_be_satisfied_by<I>(&self) -> bool
@@ -1189,6 +1210,7 @@ Module error.
     
     Axiom AssociatedFunction_would_be_satisfied_by :
       M.IsAssociatedFunction Self "would_be_satisfied_by" would_be_satisfied_by.
+    Smpl Add apply AssociatedFunction_would_be_satisfied_by : is_associated.
   End Impl_core_error_Request.
   
   Module Impl_core_fmt_Debug_for_core_error_Request.
@@ -1579,6 +1601,7 @@ Module error.
     Axiom AssociatedFunction_as_request :
       forall (I : Ty.t),
       M.IsAssociatedFunction (Self I) "as_request" (as_request I).
+    Smpl Add apply AssociatedFunction_as_request : is_associated.
   End Impl_core_error_Tagged_core_error_TaggedOption_I.
   
   (* Trait *)
@@ -1743,6 +1766,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
+    Smpl Add apply AssociatedFunction_downcast : is_associated.
     
     (*
         fn downcast_mut<I>(&mut self) -> Option<&mut TaggedOption<'a, I>>
@@ -1882,6 +1906,7 @@ Module error.
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
+    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
   End Impl_core_error_Tagged_Dyn_core_error_Erased_Trait.
   
   (* StructRecord

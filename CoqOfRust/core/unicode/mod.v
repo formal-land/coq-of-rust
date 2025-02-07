@@ -7,4 +7,5 @@ Module unicode.
   
   Axiom Constant_value_UNICODE_VERSION :
     (M.get_constant "core::unicode::UNICODE_VERSION") = value_UNICODE_VERSION.
+  Global Hint Rewrite Constant_value_UNICODE_VERSION : constant_rewrites.
 End unicode.

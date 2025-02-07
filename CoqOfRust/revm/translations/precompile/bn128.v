@@ -15,6 +15,7 @@ Module bn128.
     
     Axiom Constant_value_ADDRESS :
       (M.get_constant "revm_precompile::bn128::add::ADDRESS") = value_ADDRESS.
+    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
     
     Definition value_ISTANBUL_ADD_GAS_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 150 |))).
@@ -22,6 +23,7 @@ Module bn128.
     Axiom Constant_value_ISTANBUL_ADD_GAS_COST :
       (M.get_constant "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST") =
         value_ISTANBUL_ADD_GAS_COST.
+    Global Hint Rewrite Constant_value_ISTANBUL_ADD_GAS_COST : constant_rewrites.
     
     Definition value_ISTANBUL : Value.t :=
       M.run_constant
@@ -117,6 +119,7 @@ Module bn128.
     
     Axiom Constant_value_ISTANBUL :
       (M.get_constant "revm_precompile::bn128::add::ISTANBUL") = value_ISTANBUL.
+    Global Hint Rewrite Constant_value_ISTANBUL : constant_rewrites.
     
     Definition value_BYZANTIUM_ADD_GAS_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 500 |))).
@@ -124,6 +127,7 @@ Module bn128.
     Axiom Constant_value_BYZANTIUM_ADD_GAS_COST :
       (M.get_constant "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST") =
         value_BYZANTIUM_ADD_GAS_COST.
+    Global Hint Rewrite Constant_value_BYZANTIUM_ADD_GAS_COST : constant_rewrites.
     
     Definition value_BYZANTIUM : Value.t :=
       M.run_constant
@@ -219,6 +223,7 @@ Module bn128.
     
     Axiom Constant_value_BYZANTIUM :
       (M.get_constant "revm_precompile::bn128::add::BYZANTIUM") = value_BYZANTIUM.
+    Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
   End add.
   
   Module mul.
@@ -234,6 +239,7 @@ Module bn128.
     
     Axiom Constant_value_ADDRESS :
       (M.get_constant "revm_precompile::bn128::mul::ADDRESS") = value_ADDRESS.
+    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
     
     Definition value_ISTANBUL_MUL_GAS_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6000 |))).
@@ -241,6 +247,7 @@ Module bn128.
     Axiom Constant_value_ISTANBUL_MUL_GAS_COST :
       (M.get_constant "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST") =
         value_ISTANBUL_MUL_GAS_COST.
+    Global Hint Rewrite Constant_value_ISTANBUL_MUL_GAS_COST : constant_rewrites.
     
     Definition value_ISTANBUL : Value.t :=
       M.run_constant
@@ -336,6 +343,7 @@ Module bn128.
     
     Axiom Constant_value_ISTANBUL :
       (M.get_constant "revm_precompile::bn128::mul::ISTANBUL") = value_ISTANBUL.
+    Global Hint Rewrite Constant_value_ISTANBUL : constant_rewrites.
     
     Definition value_BYZANTIUM_MUL_GAS_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 40000 |))).
@@ -343,6 +351,7 @@ Module bn128.
     Axiom Constant_value_BYZANTIUM_MUL_GAS_COST :
       (M.get_constant "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST") =
         value_BYZANTIUM_MUL_GAS_COST.
+    Global Hint Rewrite Constant_value_BYZANTIUM_MUL_GAS_COST : constant_rewrites.
     
     Definition value_BYZANTIUM : Value.t :=
       M.run_constant
@@ -438,6 +447,7 @@ Module bn128.
     
     Axiom Constant_value_BYZANTIUM :
       (M.get_constant "revm_precompile::bn128::mul::BYZANTIUM") = value_BYZANTIUM.
+    Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
   End mul.
   
   Module pair_.
@@ -453,6 +463,7 @@ Module bn128.
     
     Axiom Constant_value_ADDRESS :
       (M.get_constant "revm_precompile::bn128::pair::ADDRESS") = value_ADDRESS.
+    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
     
     Definition value_ISTANBUL_PAIR_PER_POINT : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 34000 |))).
@@ -460,6 +471,7 @@ Module bn128.
     Axiom Constant_value_ISTANBUL_PAIR_PER_POINT :
       (M.get_constant "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT") =
         value_ISTANBUL_PAIR_PER_POINT.
+    Global Hint Rewrite Constant_value_ISTANBUL_PAIR_PER_POINT : constant_rewrites.
     
     Definition value_ISTANBUL_PAIR_BASE : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
@@ -467,6 +479,7 @@ Module bn128.
     Axiom Constant_value_ISTANBUL_PAIR_BASE :
       (M.get_constant "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE") =
         value_ISTANBUL_PAIR_BASE.
+    Global Hint Rewrite Constant_value_ISTANBUL_PAIR_BASE : constant_rewrites.
     
     Definition value_ISTANBUL : Value.t :=
       M.run_constant
@@ -566,6 +579,7 @@ Module bn128.
     
     Axiom Constant_value_ISTANBUL :
       (M.get_constant "revm_precompile::bn128::pair::ISTANBUL") = value_ISTANBUL.
+    Global Hint Rewrite Constant_value_ISTANBUL : constant_rewrites.
     
     Definition value_BYZANTIUM_PAIR_PER_POINT : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 80000 |))).
@@ -573,6 +587,7 @@ Module bn128.
     Axiom Constant_value_BYZANTIUM_PAIR_PER_POINT :
       (M.get_constant "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT") =
         value_BYZANTIUM_PAIR_PER_POINT.
+    Global Hint Rewrite Constant_value_BYZANTIUM_PAIR_PER_POINT : constant_rewrites.
     
     Definition value_BYZANTIUM_PAIR_BASE : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100000 |))).
@@ -580,6 +595,7 @@ Module bn128.
     Axiom Constant_value_BYZANTIUM_PAIR_BASE :
       (M.get_constant "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE") =
         value_BYZANTIUM_PAIR_BASE.
+    Global Hint Rewrite Constant_value_BYZANTIUM_PAIR_BASE : constant_rewrites.
     
     Definition value_BYZANTIUM : Value.t :=
       M.run_constant
@@ -679,6 +695,7 @@ Module bn128.
     
     Axiom Constant_value_BYZANTIUM :
       (M.get_constant "revm_precompile::bn128::pair::BYZANTIUM") = value_BYZANTIUM.
+    Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
   End pair_.
   
   Definition value_ADD_INPUT_LEN : Value.t :=
@@ -693,6 +710,7 @@ Module bn128.
   
   Axiom Constant_value_ADD_INPUT_LEN :
     (M.get_constant "revm_precompile::bn128::ADD_INPUT_LEN") = value_ADD_INPUT_LEN.
+  Global Hint Rewrite Constant_value_ADD_INPUT_LEN : constant_rewrites.
   
   Definition value_MUL_INPUT_LEN : Value.t :=
     M.run_constant
@@ -706,6 +724,7 @@ Module bn128.
   
   Axiom Constant_value_MUL_INPUT_LEN :
     (M.get_constant "revm_precompile::bn128::MUL_INPUT_LEN") = value_MUL_INPUT_LEN.
+  Global Hint Rewrite Constant_value_MUL_INPUT_LEN : constant_rewrites.
   
   Definition value_PAIR_ELEMENT_LEN : Value.t :=
     M.run_constant
@@ -719,6 +738,7 @@ Module bn128.
   
   Axiom Constant_value_PAIR_ELEMENT_LEN :
     (M.get_constant "revm_precompile::bn128::PAIR_ELEMENT_LEN") = value_PAIR_ELEMENT_LEN.
+  Global Hint Rewrite Constant_value_PAIR_ELEMENT_LEN : constant_rewrites.
   
   (*
   pub fn read_fq(input: &[u8]) -> Result<Fq, PrecompileError> {
@@ -803,6 +823,7 @@ Module bn128.
     end.
   
   Axiom Function_read_fq : M.IsFunction "revm_precompile::bn128::read_fq" read_fq.
+  Smpl Add apply Function_read_fq : is_function.
   
   (*
   pub fn read_point(input: &[u8]) -> Result<G1, PrecompileError> {
@@ -1079,6 +1100,7 @@ Module bn128.
     end.
   
   Axiom Function_read_point : M.IsFunction "revm_precompile::bn128::read_point" read_point.
+  Smpl Add apply Function_read_point : is_function.
   
   (*
   pub fn new_g1_point(px: Fq, py: Fq) -> Result<G1, PrecompileError> {
@@ -1271,6 +1293,7 @@ Module bn128.
     end.
   
   Axiom Function_new_g1_point : M.IsFunction "revm_precompile::bn128::new_g1_point" new_g1_point.
+  Smpl Add apply Function_new_g1_point : is_function.
   
   (*
   pub fn run_add(input: &[u8], gas_cost: u64, gas_limit: u64) -> PrecompileResult {
@@ -1880,6 +1903,7 @@ Module bn128.
     end.
   
   Axiom Function_run_add : M.IsFunction "revm_precompile::bn128::run_add" run_add.
+  Smpl Add apply Function_run_add : is_function.
   
   (*
   pub fn run_mul(input: &[u8], gas_cost: u64, gas_limit: u64) -> PrecompileResult {
@@ -2434,6 +2458,7 @@ Module bn128.
     end.
   
   Axiom Function_run_mul : M.IsFunction "revm_precompile::bn128::run_mul" run_mul.
+  Smpl Add apply Function_run_mul : is_function.
   
   (*
   pub fn run_pair(
@@ -4327,4 +4352,5 @@ Module bn128.
     end.
   
   Axiom Function_run_pair : M.IsFunction "revm_precompile::bn128::run_pair" run_pair.
+  Smpl Add apply Function_run_pair : is_function.
 End bn128.

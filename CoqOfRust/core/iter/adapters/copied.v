@@ -137,6 +137,7 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_core_iter_adapters_copied_Copied_I.
       
       (*
@@ -193,6 +194,7 @@ Module iter.
         end.
       
       Axiom Function_copy_fold : M.IsFunction "core::iter::adapters::copied::copy_fold" copy_fold.
+      Smpl Add apply Function_copy_fold : is_function.
       
       Module copy_fold.
         (* Error OpaqueTy *)
@@ -253,6 +255,7 @@ Module iter.
       
       Axiom Function_copy_try_fold :
         M.IsFunction "core::iter::adapters::copied::copy_try_fold" copy_try_fold.
+      Smpl Add apply Function_copy_try_fold : is_function.
       
       Module copy_try_fold.
         (* Error OpaqueTy *)

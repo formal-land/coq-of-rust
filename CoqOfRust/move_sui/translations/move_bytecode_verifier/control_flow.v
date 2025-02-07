@@ -434,6 +434,7 @@ Module control_flow.
   
   Axiom Function_verify_function :
     M.IsFunction "move_bytecode_verifier::control_flow::verify_function" verify_function.
+  Smpl Add apply Function_verify_function : is_function.
   
   (*
   fn verify_fallthrough(
@@ -641,6 +642,7 @@ Module control_flow.
   
   Axiom Function_verify_fallthrough :
     M.IsFunction "move_bytecode_verifier::control_flow::verify_fallthrough" verify_fallthrough.
+  Smpl Add apply Function_verify_fallthrough : is_function.
   
   (*
   fn verify_reducibility<'a>(
@@ -1891,4 +1893,5 @@ Module control_flow.
   
   Axiom Function_verify_reducibility :
     M.IsFunction "move_bytecode_verifier::control_flow::verify_reducibility" verify_reducibility.
+  Smpl Add apply Function_verify_reducibility : is_function.
 End control_flow.

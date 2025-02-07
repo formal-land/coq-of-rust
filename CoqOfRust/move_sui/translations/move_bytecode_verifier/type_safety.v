@@ -22,6 +22,7 @@ Module type_safety.
   
   Axiom Constant_value_TYPE_NODE_COST :
     (M.get_constant "move_bytecode_verifier::type_safety::TYPE_NODE_COST") = value_TYPE_NODE_COST.
+  Global Hint Rewrite Constant_value_TYPE_NODE_COST : constant_rewrites.
   
   Module Impl_move_bytecode_verifier_type_safety_Locals.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::type_safety::Locals".
@@ -61,6 +62,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn local_at(&self, i: LocalIndex) -> &SignatureToken {
@@ -214,6 +216,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_local_at : M.IsAssociatedFunction Self "local_at" local_at.
+    Smpl Add apply AssociatedFunction_local_at : is_associated.
   End Impl_move_bytecode_verifier_type_safety_Locals.
   
   (* StructRecord
@@ -341,6 +344,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         fn local_at(&self, i: LocalIndex) -> &SignatureToken {
@@ -381,6 +385,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_local_at : M.IsAssociatedFunction Self "local_at" local_at.
+    Smpl Add apply AssociatedFunction_local_at : is_associated.
     
     (*
         fn abilities(&self, t: &SignatureToken) -> PartialVMResult<AbilitySet> {
@@ -448,6 +453,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_abilities : M.IsAssociatedFunction Self "abilities" abilities.
+    Smpl Add apply AssociatedFunction_abilities : is_associated.
     
     (*
         fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -528,6 +534,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
+    Smpl Add apply AssociatedFunction_error : is_associated.
     
     (*
         fn push(
@@ -944,6 +951,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
+    Smpl Add apply AssociatedFunction_push : is_associated.
     
     (*
         fn push_n(
@@ -1363,6 +1371,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_push_n : M.IsAssociatedFunction Self "push_n" push_n.
+    Smpl Add apply AssociatedFunction_push_n : is_associated.
     
     (*
         fn charge_ty(
@@ -1398,6 +1407,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_charge_ty : M.IsAssociatedFunction Self "charge_ty" charge_ty.
+    Smpl Add apply AssociatedFunction_charge_ty : is_associated.
     
     (*
         fn charge_ty_(
@@ -1466,6 +1476,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_charge_ty_ : M.IsAssociatedFunction Self "charge_ty_" charge_ty_.
+    Smpl Add apply AssociatedFunction_charge_ty_ : is_associated.
     
     (*
         fn charge_tys(
@@ -1685,6 +1696,7 @@ Module type_safety.
       end.
     
     Axiom AssociatedFunction_charge_tys : M.IsAssociatedFunction Self "charge_tys" charge_tys.
+    Smpl Add apply AssociatedFunction_charge_tys : is_associated.
   End Impl_move_bytecode_verifier_type_safety_TypeSafetyChecker.
   
   (*
@@ -2177,6 +2189,7 @@ Module type_safety.
     end.
   
   Axiom Function_verify : M.IsFunction "move_bytecode_verifier::type_safety::verify" verify.
+  Smpl Add apply Function_verify : is_function.
   
   (*
   fn borrow_field(
@@ -3054,6 +3067,7 @@ Module type_safety.
   
   Axiom Function_borrow_field :
     M.IsFunction "move_bytecode_verifier::type_safety::borrow_field" borrow_field.
+  Smpl Add apply Function_borrow_field : is_function.
   
   (*
   fn borrow_loc(
@@ -3337,6 +3351,7 @@ Module type_safety.
   
   Axiom Function_borrow_loc :
     M.IsFunction "move_bytecode_verifier::type_safety::borrow_loc" borrow_loc.
+  Smpl Add apply Function_borrow_loc : is_function.
   
   (*
   fn borrow_global(
@@ -4134,6 +4149,7 @@ Module type_safety.
   
   Axiom Function_borrow_global :
     M.IsFunction "move_bytecode_verifier::type_safety::borrow_global" borrow_global.
+  Smpl Add apply Function_borrow_global : is_function.
   
   (*
   fn call(
@@ -5109,6 +5125,7 @@ Module type_safety.
     end.
   
   Axiom Function_call : M.IsFunction "move_bytecode_verifier::type_safety::call" call.
+  Smpl Add apply Function_call : is_function.
   
   (*
   fn type_fields_signature(
@@ -5405,6 +5422,7 @@ Module type_safety.
   
   Axiom Function_type_fields_signature :
     M.IsFunction "move_bytecode_verifier::type_safety::type_fields_signature" type_fields_signature.
+  Smpl Add apply Function_type_fields_signature : is_function.
   
   (*
   fn pack(
@@ -6213,6 +6231,7 @@ Module type_safety.
     end.
   
   Axiom Function_pack : M.IsFunction "move_bytecode_verifier::type_safety::pack" pack.
+  Smpl Add apply Function_pack : is_function.
   
   (*
   fn unpack(
@@ -6925,6 +6944,7 @@ Module type_safety.
     end.
   
   Axiom Function_unpack : M.IsFunction "move_bytecode_verifier::type_safety::unpack" unpack.
+  Smpl Add apply Function_unpack : is_function.
   
   (*
   fn exists(
@@ -7612,6 +7632,7 @@ Module type_safety.
     end.
   
   Axiom Function_exists_ : M.IsFunction "move_bytecode_verifier::type_safety::exists" exists_.
+  Smpl Add apply Function_exists_ : is_function.
   
   (*
   fn move_from(
@@ -8312,6 +8333,7 @@ Module type_safety.
   
   Axiom Function_move_from :
     M.IsFunction "move_bytecode_verifier::type_safety::move_from" move_from.
+  Smpl Add apply Function_move_from : is_function.
   
   (*
   fn move_to(
@@ -9295,6 +9317,7 @@ Module type_safety.
     end.
   
   Axiom Function_move_to : M.IsFunction "move_bytecode_verifier::type_safety::move_to" move_to.
+  Smpl Add apply Function_move_to : is_function.
   
   (*
   fn borrow_vector_element(
@@ -10246,6 +10269,7 @@ Module type_safety.
   
   Axiom Function_borrow_vector_element :
     M.IsFunction "move_bytecode_verifier::type_safety::borrow_vector_element" borrow_vector_element.
+  Smpl Add apply Function_borrow_vector_element : is_function.
   
   (*
   fn verify_instr(
@@ -34364,6 +34388,7 @@ Module type_safety.
   
   Axiom Function_verify_instr :
     M.IsFunction "move_bytecode_verifier::type_safety::verify_instr" verify_instr.
+  Smpl Add apply Function_verify_instr : is_function.
   
   (*
   fn materialize_type(struct_handle: StructHandleIndex, type_args: &Signature) -> SignatureToken {
@@ -34478,6 +34503,7 @@ Module type_safety.
   
   Axiom Function_materialize_type :
     M.IsFunction "move_bytecode_verifier::type_safety::materialize_type" materialize_type.
+  Smpl Add apply Function_materialize_type : is_function.
   
   (*
   fn instantiate(token: &SignatureToken, subst: &Signature) -> SignatureToken {
@@ -35238,6 +35264,7 @@ Module type_safety.
   
   Axiom Function_instantiate :
     M.IsFunction "move_bytecode_verifier::type_safety::instantiate" instantiate.
+  Smpl Add apply Function_instantiate : is_function.
   
   (*
   fn get_vector_element_type(
@@ -35365,4 +35392,5 @@ Module type_safety.
     M.IsFunction
       "move_bytecode_verifier::type_safety::get_vector_element_type"
       get_vector_element_type.
+  Smpl Add apply Function_get_vector_element_type : is_function.
 End type_safety.

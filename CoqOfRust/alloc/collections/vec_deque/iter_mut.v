@@ -41,6 +41,7 @@ Module collections.
         Axiom AssociatedFunction_new :
           forall (T : Ty.t),
           M.IsAssociatedFunction (Self T) "new" (new T).
+        Smpl Add apply AssociatedFunction_new : is_associated.
       End Impl_alloc_collections_vec_deque_iter_mut_IterMut_T.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_vec_deque_iter_mut_IterMut_T.

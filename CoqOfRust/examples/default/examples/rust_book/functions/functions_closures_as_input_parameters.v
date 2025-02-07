@@ -39,6 +39,7 @@ Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_apply : M.IsFunction "functions_closures_as_input_parameters::apply" apply.
+Smpl Add apply Function_apply : is_function.
 
 (*
 fn apply_to_3<F>(f: F) -> i32
@@ -71,6 +72,7 @@ Definition apply_to_3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
 
 Axiom Function_apply_to_3 :
   M.IsFunction "functions_closures_as_input_parameters::apply_to_3" apply_to_3.
+Smpl Add apply Function_apply_to_3 : is_function.
 
 (*
 fn main() {
@@ -476,3 +478,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_as_input_parameters::main" main.
+Smpl Add apply Function_main : is_function.

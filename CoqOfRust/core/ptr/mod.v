@@ -24,6 +24,7 @@ Module ptr.
     end.
   
   Axiom Function_drop_in_place : M.IsFunction "core::ptr::drop_in_place" drop_in_place.
+  Smpl Add apply Function_drop_in_place : is_function.
   
   (*
   pub const fn null<T: ?Sized + Thin>() -> *const T {
@@ -48,6 +49,7 @@ Module ptr.
     end.
   
   Axiom Function_null : M.IsFunction "core::ptr::null" null.
+  Smpl Add apply Function_null : is_function.
   
   (*
   pub const fn null_mut<T: ?Sized + Thin>() -> *mut T {
@@ -72,6 +74,7 @@ Module ptr.
     end.
   
   Axiom Function_null_mut : M.IsFunction "core::ptr::null_mut" null_mut.
+  Smpl Add apply Function_null_mut : is_function.
   
   (*
   pub const fn without_provenance<T>(addr: usize) -> *const T {
@@ -101,6 +104,7 @@ Module ptr.
   
   Axiom Function_without_provenance :
     M.IsFunction "core::ptr::without_provenance" without_provenance.
+  Smpl Add apply Function_without_provenance : is_function.
   
   (*
   pub const fn dangling<T>() -> *const T {
@@ -119,6 +123,7 @@ Module ptr.
     end.
   
   Axiom Function_dangling : M.IsFunction "core::ptr::dangling" dangling.
+  Smpl Add apply Function_dangling : is_function.
   
   (*
   pub const fn without_provenance_mut<T>(addr: usize) -> *mut T {
@@ -148,6 +153,7 @@ Module ptr.
   
   Axiom Function_without_provenance_mut :
     M.IsFunction "core::ptr::without_provenance_mut" without_provenance_mut.
+  Smpl Add apply Function_without_provenance_mut : is_function.
   
   (*
   pub const fn dangling_mut<T>() -> *mut T {
@@ -166,6 +172,7 @@ Module ptr.
     end.
   
   Axiom Function_dangling_mut : M.IsFunction "core::ptr::dangling_mut" dangling_mut.
+  Smpl Add apply Function_dangling_mut : is_function.
   
   (*
   pub fn with_exposed_provenance<T>(addr: usize) -> *const T
@@ -187,6 +194,7 @@ Module ptr.
   
   Axiom Function_with_exposed_provenance :
     M.IsFunction "core::ptr::with_exposed_provenance" with_exposed_provenance.
+  Smpl Add apply Function_with_exposed_provenance : is_function.
   
   (*
   pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T
@@ -212,6 +220,7 @@ Module ptr.
   
   Axiom Function_with_exposed_provenance_mut :
     M.IsFunction "core::ptr::with_exposed_provenance_mut" with_exposed_provenance_mut.
+  Smpl Add apply Function_with_exposed_provenance_mut : is_function.
   
   (*
   pub const fn from_ref<T: ?Sized>(r: &T) -> *const T {
@@ -228,6 +237,7 @@ Module ptr.
     end.
   
   Axiom Function_from_ref : M.IsFunction "core::ptr::from_ref" from_ref.
+  Smpl Add apply Function_from_ref : is_function.
   
   (*
   pub const fn from_mut<T: ?Sized>(r: &mut T) -> *mut T {
@@ -244,6 +254,7 @@ Module ptr.
     end.
   
   Axiom Function_from_mut : M.IsFunction "core::ptr::from_mut" from_mut.
+  Smpl Add apply Function_from_mut : is_function.
   
   (*
   pub const fn slice_from_raw_parts<T>(data: *const T, len: usize) -> *const [T] {
@@ -269,6 +280,7 @@ Module ptr.
   
   Axiom Function_slice_from_raw_parts :
     M.IsFunction "core::ptr::slice_from_raw_parts" slice_from_raw_parts.
+  Smpl Add apply Function_slice_from_raw_parts : is_function.
   
   (*
   pub const fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
@@ -294,6 +306,7 @@ Module ptr.
   
   Axiom Function_slice_from_raw_parts_mut :
     M.IsFunction "core::ptr::slice_from_raw_parts_mut" slice_from_raw_parts_mut.
+  Smpl Add apply Function_slice_from_raw_parts_mut : is_function.
   
   (*
   pub const unsafe fn swap<T>(x: *mut T, y: *mut T) {
@@ -387,6 +400,7 @@ Module ptr.
     end.
   
   Axiom Function_swap : M.IsFunction "core::ptr::swap" swap.
+  Smpl Add apply Function_swap : is_function.
   
   (*
   pub const unsafe fn swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) {
@@ -819,6 +833,7 @@ Module ptr.
   
   Axiom Function_swap_nonoverlapping :
     M.IsFunction "core::ptr::swap_nonoverlapping" swap_nonoverlapping.
+  Smpl Add apply Function_swap_nonoverlapping : is_function.
   
   (*
   const unsafe fn swap_nonoverlapping_simple_untyped<T>(x: *mut T, y: *mut T, count: usize) {
@@ -1008,6 +1023,7 @@ Module ptr.
   
   Axiom Function_swap_nonoverlapping_simple_untyped :
     M.IsFunction "core::ptr::swap_nonoverlapping_simple_untyped" swap_nonoverlapping_simple_untyped.
+  Smpl Add apply Function_swap_nonoverlapping_simple_untyped : is_function.
   
   (*
   pub const unsafe fn replace<T>(dst: *mut T, src: T) -> T {
@@ -1086,6 +1102,7 @@ Module ptr.
     end.
   
   Axiom Function_replace : M.IsFunction "core::ptr::replace" replace.
+  Smpl Add apply Function_replace : is_function.
   
   (*
   pub const unsafe fn read<T>(src: *const T) -> T {
@@ -1181,6 +1198,7 @@ Module ptr.
     end.
   
   Axiom Function_read : M.IsFunction "core::ptr::read" read.
+  Smpl Add apply Function_read : is_function.
   
   (*
   pub const unsafe fn read_unaligned<T>(src: *const T) -> T {
@@ -1252,6 +1270,7 @@ Module ptr.
     end.
   
   Axiom Function_read_unaligned : M.IsFunction "core::ptr::read_unaligned" read_unaligned.
+  Smpl Add apply Function_read_unaligned : is_function.
   
   (*
   pub const unsafe fn write<T>(dst: *mut T, src: T) {
@@ -1332,6 +1351,7 @@ Module ptr.
     end.
   
   Axiom Function_write : M.IsFunction "core::ptr::write" write.
+  Smpl Add apply Function_write : is_function.
   
   (*
   pub const unsafe fn write_unaligned<T>(dst: *mut T, src: T) {
@@ -1378,6 +1398,7 @@ Module ptr.
     end.
   
   Axiom Function_write_unaligned : M.IsFunction "core::ptr::write_unaligned" write_unaligned.
+  Smpl Add apply Function_write_unaligned : is_function.
   
   (*
   pub unsafe fn read_volatile<T>(src: *const T) -> T {
@@ -1450,6 +1471,7 @@ Module ptr.
     end.
   
   Axiom Function_read_volatile : M.IsFunction "core::ptr::read_volatile" read_volatile.
+  Smpl Add apply Function_read_volatile : is_function.
   
   (*
   pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {
@@ -1525,6 +1547,7 @@ Module ptr.
     end.
   
   Axiom Function_write_volatile : M.IsFunction "core::ptr::write_volatile" write_volatile.
+  Smpl Add apply Function_write_volatile : is_function.
   
   (*
   pub(crate) const unsafe fn align_offset<T: Sized>(p: *const T, a: usize) -> usize {
@@ -2078,6 +2101,7 @@ Module ptr.
     end.
   
   Axiom Function_align_offset : M.IsFunction "core::ptr::align_offset" align_offset.
+  Smpl Add apply Function_align_offset : is_function.
   
   Module align_offset.
     (*
@@ -2259,6 +2283,7 @@ Module ptr.
       end.
     
     Axiom Function_mod_inv : M.IsFunction "core::ptr::align_offset::mod_inv" mod_inv.
+    Smpl Add apply Function_mod_inv : is_function.
     
     Module mod_inv.
       Definition value_INV_TABLE_MOD_16 : Value.t :=
@@ -2281,12 +2306,14 @@ Module ptr.
       Axiom Constant_value_INV_TABLE_MOD_16 :
         (M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16") =
           value_INV_TABLE_MOD_16.
+      Global Hint Rewrite Constant_value_INV_TABLE_MOD_16 : constant_rewrites.
       
       Definition value_INV_TABLE_MOD : Value.t :=
         M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
       
       Axiom Constant_value_INV_TABLE_MOD :
         (M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD") = value_INV_TABLE_MOD.
+      Global Hint Rewrite Constant_value_INV_TABLE_MOD : constant_rewrites.
     End mod_inv.
   End align_offset.
   
@@ -2306,6 +2333,7 @@ Module ptr.
     end.
   
   Axiom Function_eq : M.IsFunction "core::ptr::eq" eq.
+  Smpl Add apply Function_eq : is_function.
   
   (*
   pub fn addr_eq<T: ?Sized, U: ?Sized>(p: *const T, q: *const U) -> bool {
@@ -2326,6 +2354,7 @@ Module ptr.
     end.
   
   Axiom Function_addr_eq : M.IsFunction "core::ptr::addr_eq" addr_eq.
+  Smpl Add apply Function_addr_eq : is_function.
   
   (*
   pub fn fn_addr_eq<T: FnPtr, U: FnPtr>(f: T, g: U) -> bool {
@@ -2352,6 +2381,7 @@ Module ptr.
     end.
   
   Axiom Function_fn_addr_eq : M.IsFunction "core::ptr::fn_addr_eq" fn_addr_eq.
+  Smpl Add apply Function_fn_addr_eq : is_function.
   
   (*
   pub fn hash<T: ?Sized, S: hash::Hasher>(hashee: *const T, into: &mut S) {
@@ -2390,6 +2420,7 @@ Module ptr.
     end.
   
   Axiom Function_hash : M.IsFunction "core::ptr::hash" hash.
+  Smpl Add apply Function_hash : is_function.
   
   Module Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.

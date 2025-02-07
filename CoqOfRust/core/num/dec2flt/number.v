@@ -31,6 +31,7 @@ Module num.
       
       Axiom Constant_value_INT_POW10 :
         (M.get_constant "core::num::dec2flt::number::INT_POW10") = value_INT_POW10.
+      Global Hint Rewrite Constant_value_INT_POW10 : constant_rewrites.
       
       (* StructRecord
         {
@@ -504,6 +505,7 @@ Module num.
         
         Axiom AssociatedFunction_is_fast_path :
           M.IsAssociatedFunction Self "is_fast_path" is_fast_path.
+        Smpl Add apply AssociatedFunction_is_fast_path : is_associated.
         
         (*
             pub fn try_fast_path<F: RawFloat>(&self) -> Option<F> {
@@ -1004,6 +1006,7 @@ Module num.
         
         Axiom AssociatedFunction_try_fast_path :
           M.IsAssociatedFunction Self "try_fast_path" try_fast_path.
+        Smpl Add apply AssociatedFunction_try_fast_path : is_associated.
       End Impl_core_num_dec2flt_number_Number.
     End number.
   End dec2flt.

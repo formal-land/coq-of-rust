@@ -19,6 +19,7 @@ Module kzg_point_evaluation.
   Axiom Constant_value_POINT_EVALUATION :
     (M.get_constant "revm_precompile::kzg_point_evaluation::POINT_EVALUATION") =
       value_POINT_EVALUATION.
+  Global Hint Rewrite Constant_value_POINT_EVALUATION : constant_rewrites.
   
   Definition value_ADDRESS : Value.t :=
     M.run_constant
@@ -32,12 +33,14 @@ Module kzg_point_evaluation.
   
   Axiom Constant_value_ADDRESS :
     (M.get_constant "revm_precompile::kzg_point_evaluation::ADDRESS") = value_ADDRESS.
+  Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
   
   Definition value_GAS_COST : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 50000 |))).
   
   Axiom Constant_value_GAS_COST :
     (M.get_constant "revm_precompile::kzg_point_evaluation::GAS_COST") = value_GAS_COST.
+  Global Hint Rewrite Constant_value_GAS_COST : constant_rewrites.
   
   Definition value_VERSIONED_HASH_VERSION_KZG : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
@@ -45,6 +48,7 @@ Module kzg_point_evaluation.
   Axiom Constant_value_VERSIONED_HASH_VERSION_KZG :
     (M.get_constant "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG") =
       value_VERSIONED_HASH_VERSION_KZG.
+  Global Hint Rewrite Constant_value_VERSIONED_HASH_VERSION_KZG : constant_rewrites.
   
   Definition value_RETURN_VALUE : Value.t :=
     M.run_constant
@@ -63,6 +67,7 @@ Module kzg_point_evaluation.
   
   Axiom Constant_value_RETURN_VALUE :
     (M.get_constant "revm_precompile::kzg_point_evaluation::RETURN_VALUE") = value_RETURN_VALUE.
+  Global Hint Rewrite Constant_value_RETURN_VALUE : constant_rewrites.
   
   (*
   pub fn run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -833,6 +838,7 @@ Module kzg_point_evaluation.
     end.
   
   Axiom Function_run : M.IsFunction "revm_precompile::kzg_point_evaluation::run" run.
+  Smpl Add apply Function_run : is_function.
   
   (*
   pub fn kzg_to_versioned_hash(commitment: &[u8]) -> [u8; 32] {
@@ -990,6 +996,7 @@ Module kzg_point_evaluation.
     M.IsFunction
       "revm_precompile::kzg_point_evaluation::kzg_to_versioned_hash"
       kzg_to_versioned_hash.
+  Smpl Add apply Function_kzg_to_versioned_hash : is_function.
   
   (*
   pub fn verify_kzg_proof(commitment: &Bytes48, z: &Bytes32, y: &Bytes32, proof: &Bytes48) -> bool {
@@ -1057,6 +1064,7 @@ Module kzg_point_evaluation.
   
   Axiom Function_verify_kzg_proof :
     M.IsFunction "revm_precompile::kzg_point_evaluation::verify_kzg_proof" verify_kzg_proof.
+  Smpl Add apply Function_verify_kzg_proof : is_function.
   
   (*
   pub fn as_array<const N: usize>(bytes: &[u8]) -> &[u8; N] {
@@ -1104,6 +1112,7 @@ Module kzg_point_evaluation.
     end.
   
   Axiom Function_as_array : M.IsFunction "revm_precompile::kzg_point_evaluation::as_array" as_array.
+  Smpl Add apply Function_as_array : is_function.
   
   (*
   pub fn as_bytes32(bytes: &[u8]) -> &Bytes32 {
@@ -1164,6 +1173,7 @@ Module kzg_point_evaluation.
   
   Axiom Function_as_bytes32 :
     M.IsFunction "revm_precompile::kzg_point_evaluation::as_bytes32" as_bytes32.
+  Smpl Add apply Function_as_bytes32 : is_function.
   
   (*
   pub fn as_bytes48(bytes: &[u8]) -> &Bytes48 {
@@ -1224,4 +1234,5 @@ Module kzg_point_evaluation.
   
   Axiom Function_as_bytes48 :
     M.IsFunction "revm_precompile::kzg_point_evaluation::as_bytes48" as_bytes48.
+  Smpl Add apply Function_as_bytes48 : is_function.
 End kzg_point_evaluation.

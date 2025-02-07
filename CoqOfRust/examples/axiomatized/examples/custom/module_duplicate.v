@@ -6,13 +6,16 @@ Module foo.
     Parameter f_foo_gre : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Function_f_foo_gre : M.IsFunction "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
+    Smpl Add apply Function_f_foo_gre : is_function.
   End gre.
   
   Parameter f_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_f_foo : M.IsFunction "module_duplicate::foo::f_foo" f_foo.
+  Smpl Add apply Function_f_foo : is_function.
 End foo.
 
 Parameter f : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_f : M.IsFunction "module_duplicate::f" f.
+Smpl Add apply Function_f : is_function.

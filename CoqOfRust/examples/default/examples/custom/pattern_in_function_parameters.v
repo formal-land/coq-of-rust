@@ -27,6 +27,7 @@ Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_sum : M.IsFunction "pattern_in_function_parameters::sum" sum.
+Smpl Add apply Function_sum : is_function.
 
 (*
 fn steps_between(&start: &char, &end: &char) -> Option<usize> {
@@ -195,3 +196,4 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
 
 Axiom Function_steps_between :
   M.IsFunction "pattern_in_function_parameters::steps_between" steps_between.
+Smpl Add apply Function_steps_between : is_function.

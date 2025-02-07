@@ -471,6 +471,7 @@ Module interpreter.
     Axiom Constant_value_EMPTY_SHARED_MEMORY :
       (M.get_constant "revm_interpreter::interpreter::shared_memory::EMPTY_SHARED_MEMORY") =
         value_EMPTY_SHARED_MEMORY.
+    Global Hint Rewrite Constant_value_EMPTY_SHARED_MEMORY : constant_rewrites.
     
     Module Impl_core_fmt_Debug_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
       Definition Self : Ty.t :=
@@ -1469,6 +1470,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn with_capacity(capacity: usize) -> Self {
@@ -1522,6 +1524,7 @@ Module interpreter.
       
       Axiom AssociatedFunction_with_capacity :
         M.IsAssociatedFunction Self "with_capacity" with_capacity.
+      Smpl Add apply AssociatedFunction_with_capacity : is_associated.
       
       (*
           pub fn new_context(&mut self) {
@@ -1600,6 +1603,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_new_context : M.IsAssociatedFunction Self "new_context" new_context.
+      Smpl Add apply AssociatedFunction_new_context : is_associated.
       
       (*
           pub fn free_context(&mut self) {
@@ -1757,6 +1761,7 @@ Module interpreter.
       
       Axiom AssociatedFunction_free_context :
         M.IsAssociatedFunction Self "free_context" free_context.
+      Smpl Add apply AssociatedFunction_free_context : is_associated.
       
       (*
           pub fn len(&self) -> usize {
@@ -1802,6 +1807,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -1829,6 +1835,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
       
       (*
           pub fn resize(&mut self, new_size: usize) {
@@ -1883,6 +1890,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_resize : M.IsAssociatedFunction Self "resize" resize.
+      Smpl Add apply AssociatedFunction_resize : is_associated.
       
       (*
           pub fn slice_len(&self, offset: usize, size: usize) -> &[u8] {
@@ -1922,6 +1930,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_slice_len : M.IsAssociatedFunction Self "slice_len" slice_len.
+      Smpl Add apply AssociatedFunction_slice_len : is_associated.
       
       (*
           pub fn slice_range(&self, range @ Range { start, end }: Range<usize>) -> &[u8] {
@@ -2216,6 +2225,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_slice_range : M.IsAssociatedFunction Self "slice_range" slice_range.
+      Smpl Add apply AssociatedFunction_slice_range : is_associated.
       
       (*
           pub fn slice_mut(&mut self, offset: usize, size: usize) -> &mut [u8] {
@@ -2447,6 +2457,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_slice_mut : M.IsAssociatedFunction Self "slice_mut" slice_mut.
+      Smpl Add apply AssociatedFunction_slice_mut : is_associated.
       
       (*
           pub fn get_byte(&self, offset: usize) -> u8 {
@@ -2483,6 +2494,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_get_byte : M.IsAssociatedFunction Self "get_byte" get_byte.
+      Smpl Add apply AssociatedFunction_get_byte : is_associated.
       
       (*
           pub fn get_word(&self, offset: usize) -> B256 {
@@ -2554,6 +2566,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_get_word : M.IsAssociatedFunction Self "get_word" get_word.
+      Smpl Add apply AssociatedFunction_get_word : is_associated.
       
       (*
           pub fn get_u256(&self, offset: usize) -> U256 {
@@ -2603,6 +2616,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_get_u256 : M.IsAssociatedFunction Self "get_u256" get_u256.
+      Smpl Add apply AssociatedFunction_get_u256 : is_associated.
       
       (*
           pub fn set_byte(&mut self, offset: usize, byte: u8) {
@@ -2647,6 +2661,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_set_byte : M.IsAssociatedFunction Self "set_byte" set_byte.
+      Smpl Add apply AssociatedFunction_set_byte : is_associated.
       
       (*
           pub fn set_word(&mut self, offset: usize, value: &B256) {
@@ -2710,6 +2725,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_set_word : M.IsAssociatedFunction Self "set_word" set_word.
+      Smpl Add apply AssociatedFunction_set_word : is_associated.
       
       (*
           pub fn set_u256(&mut self, offset: usize, value: U256) {
@@ -2773,6 +2789,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_set_u256 : M.IsAssociatedFunction Self "set_u256" set_u256.
+      Smpl Add apply AssociatedFunction_set_u256 : is_associated.
       
       (*
           pub fn set(&mut self, offset: usize, value: &[u8]) {
@@ -2869,6 +2886,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_set : M.IsAssociatedFunction Self "set" set.
+      Smpl Add apply AssociatedFunction_set : is_associated.
       
       (*
           pub fn set_data(&mut self, memory_offset: usize, data_offset: usize, len: usize, data: &[u8]) {
@@ -3187,6 +3205,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_set_data : M.IsAssociatedFunction Self "set_data" set_data.
+      Smpl Add apply AssociatedFunction_set_data : is_associated.
       
       (*
           pub fn copy(&mut self, dst: usize, src: usize, len: usize) {
@@ -3242,6 +3261,7 @@ Module interpreter.
         end.
       
       Axiom AssociatedFunction_copy : M.IsAssociatedFunction Self "copy" copy.
+      Smpl Add apply AssociatedFunction_copy : is_associated.
       
       (*
           pub fn context_memory(&self) -> &[u8] {
@@ -3340,6 +3360,7 @@ Module interpreter.
       
       Axiom AssociatedFunction_context_memory :
         M.IsAssociatedFunction Self "context_memory" context_memory.
+      Smpl Add apply AssociatedFunction_context_memory : is_associated.
       
       (*
           pub fn context_memory_mut(&mut self) -> &mut [u8] {
@@ -3458,6 +3479,7 @@ Module interpreter.
       
       Axiom AssociatedFunction_context_memory_mut :
         M.IsAssociatedFunction Self "context_memory_mut" context_memory_mut.
+      Smpl Add apply AssociatedFunction_context_memory_mut : is_associated.
     End Impl_revm_interpreter_interpreter_shared_memory_SharedMemory.
     
     (*
@@ -3482,5 +3504,6 @@ Module interpreter.
     
     Axiom Function_num_words :
       M.IsFunction "revm_interpreter::interpreter::shared_memory::num_words" num_words.
+    Smpl Add apply Function_num_words : is_function.
   End shared_memory.
 End interpreter.

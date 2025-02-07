@@ -6,11 +6,13 @@ Module i128.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::i128::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::i128::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End i128.
 
 Module i16.
@@ -18,11 +20,13 @@ Module i16.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::i16::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::i16::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End i16.
 
 Module i32.
@@ -30,11 +34,13 @@ Module i32.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::i32::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::i32::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End i32.
 
 Module i64.
@@ -42,11 +48,13 @@ Module i64.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::i64::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::i64::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End i64.
 
 Module i8.
@@ -54,11 +62,13 @@ Module i8.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::i8::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::i8::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End i8.
 
 Module isize.
@@ -66,11 +76,13 @@ Module isize.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::isize::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::isize::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End isize.
 
 Module u128.
@@ -78,11 +90,13 @@ Module u128.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::u128::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::u128::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End u128.
 
 Module u16.
@@ -90,11 +104,13 @@ Module u16.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::u16::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::u16::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End u16.
 
 Module u32.
@@ -102,11 +118,13 @@ Module u32.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::u32::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::u32::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End u32.
 
 Module u64.
@@ -114,11 +132,13 @@ Module u64.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::u64::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::u64::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End u64.
 
 Module u8.
@@ -126,11 +146,13 @@ Module u8.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::u8::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::u8::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End u8.
 
 Module usize.
@@ -138,9 +160,11 @@ Module usize.
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::usize::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::usize::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
 End usize.

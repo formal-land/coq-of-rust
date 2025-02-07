@@ -24472,6 +24472,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_normalized_Constant.
   
   (* StructRecord
@@ -25996,6 +25997,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn module_id(&self) -> ModuleId {
@@ -26049,6 +26051,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_module_id : M.IsAssociatedFunction Self "module_id" module_id.
+    Smpl Add apply AssociatedFunction_module_id : is_associated.
   End Impl_move_binary_format_normalized_Module.
   
   Module Impl_move_binary_format_normalized_Type.
@@ -26958,6 +26961,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn is_closed(&self) -> bool {
@@ -27237,6 +27241,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_is_closed : M.IsAssociatedFunction Self "is_closed" is_closed.
+    Smpl Add apply AssociatedFunction_is_closed : is_associated.
     
     (*
         pub fn into_type_tag(self) -> Option<TypeTag> {
@@ -27791,6 +27796,7 @@ Module normalized.
     
     Axiom AssociatedFunction_into_type_tag :
       M.IsAssociatedFunction Self "into_type_tag" into_type_tag.
+    Smpl Add apply AssociatedFunction_into_type_tag : is_associated.
     
     (*
         pub fn into_struct_tag(self) -> Option<StructTag> {
@@ -27914,6 +27920,7 @@ Module normalized.
     
     Axiom AssociatedFunction_into_struct_tag :
       M.IsAssociatedFunction Self "into_struct_tag" into_struct_tag.
+    Smpl Add apply AssociatedFunction_into_struct_tag : is_associated.
     
     (*
         pub fn subst(&self, type_args: &[Type]) -> Self {
@@ -28505,6 +28512,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_subst : M.IsAssociatedFunction Self "subst" subst.
+    Smpl Add apply AssociatedFunction_subst : is_associated.
   End Impl_move_binary_format_normalized_Type.
   
   Module Impl_move_binary_format_normalized_Field.
@@ -28598,6 +28606,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_normalized_Field.
   
   Module Impl_move_binary_format_normalized_Struct.
@@ -28948,6 +28957,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn from_idx(m: &CompiledModule, idx: &StructDefinitionIndex) -> (Identifier, Self) {
@@ -28992,6 +29002,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_from_idx : M.IsAssociatedFunction Self "from_idx" from_idx.
+    Smpl Add apply AssociatedFunction_from_idx : is_associated.
     
     (*
         pub fn type_param_constraints(&self) -> impl ExactSizeIterator<Item = &AbilitySet> {
@@ -29109,6 +29120,7 @@ Module normalized.
     
     Axiom AssociatedFunction_type_param_constraints :
       M.IsAssociatedFunction Self "type_param_constraints" type_param_constraints.
+    Smpl Add apply AssociatedFunction_type_param_constraints : is_associated.
   End Impl_move_binary_format_normalized_Struct.
   
   Module Impl_move_binary_format_normalized_Function.
@@ -29908,6 +29920,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn new_from_name(m: &CompiledModule, func_name: &IdentStr) -> Option<Self> {
@@ -30179,6 +30192,7 @@ Module normalized.
     
     Axiom AssociatedFunction_new_from_name :
       M.IsAssociatedFunction Self "new_from_name" new_from_name.
+    Smpl Add apply AssociatedFunction_new_from_name : is_associated.
   End Impl_move_binary_format_normalized_Function.
   
   Module Impl_core_convert_From_move_core_types_language_storage_TypeTag_for_move_binary_format_normalized_Type.
@@ -30592,6 +30606,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn from_idx(m: &CompiledModule, field_handle_idx: &FieldHandleIndex) -> Self {
@@ -30636,6 +30651,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_from_idx : M.IsAssociatedFunction Self "from_idx" from_idx.
+    Smpl Add apply AssociatedFunction_from_idx : is_associated.
   End Impl_move_binary_format_normalized_FieldRef.
   
   Module Impl_move_binary_format_normalized_FunctionRef.
@@ -30735,6 +30751,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn from_idx(m: &CompiledModule, function_handle_idx: &FunctionHandleIndex) -> Self {
@@ -30779,6 +30796,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_from_idx : M.IsAssociatedFunction Self "from_idx" from_idx.
+    Smpl Add apply AssociatedFunction_from_idx : is_associated.
   End Impl_move_binary_format_normalized_FunctionRef.
   
   Module Impl_move_binary_format_normalized_Bytecode.
@@ -32619,6 +32637,7 @@ Module normalized.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_binary_format_normalized_Bytecode.
   
   Module Impl_core_fmt_Display_for_move_binary_format_normalized_Type.
@@ -34693,6 +34712,7 @@ Module normalized.
   
   Axiom Function_struct_instantiation :
     M.IsFunction "move_binary_format::normalized::struct_instantiation" struct_instantiation.
+  Smpl Add apply Function_struct_instantiation : is_function.
   
   (*
   fn field_instantiation(m: &CompiledModule, idx: &FieldInstantiationIndex) -> (FieldRef, Vec<Type>) {
@@ -34965,6 +34985,7 @@ Module normalized.
   
   Axiom Function_field_instantiation :
     M.IsFunction "move_binary_format::normalized::field_instantiation" field_instantiation.
+  Smpl Add apply Function_field_instantiation : is_function.
   
   (*
   fn signature_to_single_type(m: &CompiledModule, sig_idx: &SignatureIndex) -> Type {
@@ -35046,4 +35067,5 @@ Module normalized.
     M.IsFunction
       "move_binary_format::normalized::signature_to_single_type"
       signature_to_single_type.
+  Smpl Add apply Function_signature_to_single_type : is_function.
 End normalized.

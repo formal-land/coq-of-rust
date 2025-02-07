@@ -29,6 +29,7 @@ Module iter.
       
       Axiom Function_successors :
         M.IsFunction "core::iter::sources::successors::successors" successors.
+      Smpl Add apply Function_successors : is_function.
       
       (* StructRecord
         {

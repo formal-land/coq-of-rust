@@ -129,6 +129,7 @@ Module signature.
     
     Axiom AssociatedFunction_verify_module :
       M.IsAssociatedFunction Self "verify_module" verify_module.
+    Smpl Add apply AssociatedFunction_verify_module : is_associated.
     
     (*
         fn verify_module_impl(module: &'a CompiledModule) -> PartialVMResult<()> {
@@ -553,6 +554,7 @@ Module signature.
     
     Axiom AssociatedFunction_verify_module_impl :
       M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
+    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
     
     (*
         fn verify_signature_pool(&self, signatures: &[Signature]) -> PartialVMResult<()> {
@@ -783,6 +785,7 @@ Module signature.
     
     Axiom AssociatedFunction_verify_signature_pool :
       M.IsAssociatedFunction Self "verify_signature_pool" verify_signature_pool.
+    Smpl Add apply AssociatedFunction_verify_signature_pool : is_associated.
     
     (*
         fn verify_function_signatures(
@@ -1525,6 +1528,7 @@ Module signature.
     
     Axiom AssociatedFunction_verify_function_signatures :
       M.IsAssociatedFunction Self "verify_function_signatures" verify_function_signatures.
+    Smpl Add apply AssociatedFunction_verify_function_signatures : is_associated.
     
     (*
         fn verify_fields(&self, struct_defs: &[StructDefinition]) -> PartialVMResult<()> {
@@ -2853,6 +2857,7 @@ Module signature.
     
     Axiom AssociatedFunction_verify_fields :
       M.IsAssociatedFunction Self "verify_fields" verify_fields.
+    Smpl Add apply AssociatedFunction_verify_fields : is_associated.
     
     (*
         fn verify_code_units(
@@ -3327,6 +3332,7 @@ Module signature.
     
     Axiom AssociatedFunction_verify_code_units :
       M.IsAssociatedFunction Self "verify_code_units" verify_code_units.
+    Smpl Add apply AssociatedFunction_verify_code_units : is_associated.
     
     (*
         fn verify_code(
@@ -6344,6 +6350,7 @@ Module signature.
       end.
     
     Axiom AssociatedFunction_verify_code : M.IsAssociatedFunction Self "verify_code" verify_code.
+    Smpl Add apply AssociatedFunction_verify_code : is_associated.
     
     (*
         fn check_phantom_params(
@@ -7155,6 +7162,7 @@ Module signature.
     
     Axiom AssociatedFunction_check_phantom_params :
       M.IsAssociatedFunction Self "check_phantom_params" check_phantom_params.
+    Smpl Add apply AssociatedFunction_check_phantom_params : is_associated.
     
     (*
         fn check_signature(&self, idx: SignatureIndex) -> PartialVMResult<()> {
@@ -7570,6 +7578,7 @@ Module signature.
     
     Axiom AssociatedFunction_check_signature :
       M.IsAssociatedFunction Self "check_signature" check_signature.
+    Smpl Add apply AssociatedFunction_check_signature : is_associated.
     
     (*
         fn check_signature_tokens(&self, tys: &[SignatureToken]) -> PartialVMResult<()> {
@@ -7781,6 +7790,7 @@ Module signature.
     
     Axiom AssociatedFunction_check_signature_tokens :
       M.IsAssociatedFunction Self "check_signature_tokens" check_signature_tokens.
+    Smpl Add apply AssociatedFunction_check_signature_tokens : is_associated.
     
     (*
         fn check_signature_token(&self, ty: &SignatureToken) -> PartialVMResult<()> {
@@ -8115,6 +8125,7 @@ Module signature.
     
     Axiom AssociatedFunction_check_signature_token :
       M.IsAssociatedFunction Self "check_signature_token" check_signature_token.
+    Smpl Add apply AssociatedFunction_check_signature_token : is_associated.
     
     (*
         fn check_instantiation(
@@ -8620,6 +8631,7 @@ Module signature.
     
     Axiom AssociatedFunction_check_instantiation :
       M.IsAssociatedFunction Self "check_instantiation" check_instantiation.
+    Smpl Add apply AssociatedFunction_check_instantiation : is_associated.
     
     (*
         fn check_type_instantiation(
@@ -8916,6 +8928,7 @@ Module signature.
     
     Axiom AssociatedFunction_check_type_instantiation :
       M.IsAssociatedFunction Self "check_type_instantiation" check_type_instantiation.
+    Smpl Add apply AssociatedFunction_check_type_instantiation : is_associated.
     
     (*
         fn check_type_instantiation_(
@@ -9234,6 +9247,7 @@ Module signature.
     
     Axiom AssociatedFunction_check_type_instantiation_ :
       M.IsAssociatedFunction Self "check_type_instantiation_" check_type_instantiation_.
+    Smpl Add apply AssociatedFunction_check_type_instantiation_ : is_associated.
     
     (*
         fn check_generic_instance(
@@ -9995,5 +10009,6 @@ Module signature.
     
     Axiom AssociatedFunction_check_generic_instance :
       M.IsAssociatedFunction Self "check_generic_instance" check_generic_instance.
+    Smpl Add apply AssociatedFunction_check_generic_instance : is_associated.
   End Impl_move_bytecode_verifier_signature_SignatureChecker.
 End signature.

@@ -22,24 +22,28 @@ Module bls12_381.
     
     Axiom Constant_value_PRECOMPILE :
       (M.get_constant "revm_precompile::bls12_381::g2_mul::PRECOMPILE") = value_PRECOMPILE.
+    Global Hint Rewrite Constant_value_PRECOMPILE : constant_rewrites.
     
     Definition value_ADDRESS : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
     
     Axiom Constant_value_ADDRESS :
       (M.get_constant "revm_precompile::bls12_381::g2_mul::ADDRESS") = value_ADDRESS.
+    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
     
     Definition value_BASE_GAS_FEE : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 45000 |))).
     
     Axiom Constant_value_BASE_GAS_FEE :
       (M.get_constant "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE") = value_BASE_GAS_FEE.
+    Global Hint Rewrite Constant_value_BASE_GAS_FEE : constant_rewrites.
     
     Definition value_INPUT_LENGTH : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 288 |))).
     
     Axiom Constant_value_INPUT_LENGTH :
       (M.get_constant "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH") = value_INPUT_LENGTH.
+    Global Hint Rewrite Constant_value_INPUT_LENGTH : constant_rewrites.
     
     (*
     pub(super) fn g2_mul(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -890,5 +894,6 @@ Module bls12_381.
       end.
     
     Axiom Function_g2_mul : M.IsFunction "revm_precompile::bls12_381::g2_mul::g2_mul" g2_mul.
+    Smpl Add apply Function_g2_mul : is_function.
   End g2_mul.
 End bls12_381.

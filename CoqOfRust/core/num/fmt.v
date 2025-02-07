@@ -628,6 +628,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub fn write(&self, out: &mut [u8]) -> Option<usize> {
@@ -1092,6 +1093,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_write : M.IsAssociatedFunction Self "write" write.
+      Smpl Add apply AssociatedFunction_write : is_associated.
     End Impl_core_num_fmt_Part.
     
     (* StructRecord
@@ -1349,6 +1351,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub fn write(&self, out: &mut [u8]) -> Option<usize> {
@@ -1777,6 +1780,7 @@ Module num.
         end.
       
       Axiom AssociatedFunction_write : M.IsAssociatedFunction Self "write" write.
+      Smpl Add apply AssociatedFunction_write : is_associated.
     End Impl_core_num_fmt_Formatted.
   End fmt.
 End num.

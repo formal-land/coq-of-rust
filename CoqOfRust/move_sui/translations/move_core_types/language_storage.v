@@ -7,12 +7,14 @@ Module language_storage.
   
   Axiom Constant_value_CODE_TAG :
     (M.get_constant "move_core_types::language_storage::CODE_TAG") = value_CODE_TAG.
+  Global Hint Rewrite Constant_value_CODE_TAG : constant_rewrites.
   
   Definition value_RESOURCE_TAG : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
   Axiom Constant_value_RESOURCE_TAG :
     (M.get_constant "move_core_types::language_storage::RESOURCE_TAG") = value_RESOURCE_TAG.
+  Global Hint Rewrite Constant_value_RESOURCE_TAG : constant_rewrites.
   
   Definition value_CORE_CODE_ADDRESS : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "move_core_types::account_address::ONE")).
@@ -20,6 +22,7 @@ Module language_storage.
   Axiom Constant_value_CORE_CODE_ADDRESS :
     (M.get_constant "move_core_types::language_storage::CORE_CODE_ADDRESS") =
       value_CORE_CODE_ADDRESS.
+  Global Hint Rewrite Constant_value_CORE_CODE_ADDRESS : constant_rewrites.
   
   Definition value_TYPETAG_ENUM_ABSTRACT_SIZE : Value.t :=
     M.run_constant
@@ -108,6 +111,7 @@ Module language_storage.
   Axiom Constant_value_TYPETAG_ENUM_ABSTRACT_SIZE :
     (M.get_constant "move_core_types::language_storage::TYPETAG_ENUM_ABSTRACT_SIZE") =
       value_TYPETAG_ENUM_ABSTRACT_SIZE.
+  Global Hint Rewrite Constant_value_TYPETAG_ENUM_ABSTRACT_SIZE : constant_rewrites.
   
   (*
   Enum TypeTag
@@ -2827,6 +2831,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_to_canonical_string :
       M.IsAssociatedFunction Self "to_canonical_string" to_canonical_string.
+    Smpl Add apply AssociatedFunction_to_canonical_string : is_associated.
     
     (*
         pub fn to_canonical_display(&self, with_prefix: bool) -> impl std::fmt::Display + '_ {
@@ -2878,6 +2883,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_to_canonical_display :
       M.IsAssociatedFunction Self "to_canonical_display" to_canonical_display.
+    Smpl Add apply AssociatedFunction_to_canonical_display : is_associated.
     
     (*
         pub fn abstract_size_for_gas_metering(&self) -> AbstractMemorySize {
@@ -3143,6 +3149,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
       M.IsAssociatedFunction Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
+    Smpl Add apply AssociatedFunction_abstract_size_for_gas_metering : is_associated.
   End Impl_move_core_types_language_storage_TypeTag.
   
   Module Impl_core_str_traits_FromStr_for_move_core_types_language_storage_TypeTag.
@@ -4398,6 +4405,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_access_vector :
       M.IsAssociatedFunction Self "access_vector" access_vector.
+    Smpl Add apply AssociatedFunction_access_vector : is_associated.
     
     (*
         pub fn is_ascii_string(&self, move_std_addr: &AccountAddress) -> bool {
@@ -4555,6 +4563,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_is_ascii_string :
       M.IsAssociatedFunction Self "is_ascii_string" is_ascii_string.
+    Smpl Add apply AssociatedFunction_is_ascii_string : is_associated.
     
     (*
         pub fn is_std_string(&self, move_std_addr: &AccountAddress) -> bool {
@@ -4715,6 +4724,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_is_std_string :
       M.IsAssociatedFunction Self "is_std_string" is_std_string.
+    Smpl Add apply AssociatedFunction_is_std_string : is_associated.
     
     (*
         pub fn module_id(&self) -> ModuleId {
@@ -4768,6 +4778,7 @@ Module language_storage.
       end.
     
     Axiom AssociatedFunction_module_id : M.IsAssociatedFunction Self "module_id" module_id.
+    Smpl Add apply AssociatedFunction_module_id : is_associated.
     
     (*
         pub fn to_canonical_string(&self, with_prefix: bool) -> String {
@@ -4815,6 +4826,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_to_canonical_string :
       M.IsAssociatedFunction Self "to_canonical_string" to_canonical_string.
+    Smpl Add apply AssociatedFunction_to_canonical_string : is_associated.
     
     (*
         pub fn to_canonical_display(&self, with_prefix: bool) -> impl std::fmt::Display + '_ {
@@ -4870,6 +4882,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_to_canonical_display :
       M.IsAssociatedFunction Self "to_canonical_display" to_canonical_display.
+    Smpl Add apply AssociatedFunction_to_canonical_display : is_associated.
     
     (*
         pub fn abstract_size_for_gas_metering(&self) -> AbstractMemorySize {
@@ -5217,6 +5230,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
       M.IsAssociatedFunction Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
+    Smpl Add apply AssociatedFunction_abstract_size_for_gas_metering : is_associated.
   End Impl_move_core_types_language_storage_StructTag.
   
   Module Impl_core_str_traits_FromStr_for_move_core_types_language_storage_StructTag.
@@ -5887,6 +5901,7 @@ Module language_storage.
       end.
     
     Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
+    Smpl Add apply AssociatedFunction_address : is_associated.
     
     (*
         pub fn type_(&self) -> &StructTag {
@@ -5915,6 +5930,7 @@ Module language_storage.
       end.
     
     Axiom AssociatedFunction_type_ : M.IsAssociatedFunction Self "type_" type_.
+    Smpl Add apply AssociatedFunction_type_ : is_associated.
     (*
         pub fn new(address: AccountAddress, type_: StructTag) -> Self {
             ResourceKey { address, type_ }
@@ -5933,6 +5949,7 @@ Module language_storage.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_move_core_types_language_storage_ResourceKey.
   
   
@@ -6613,6 +6630,7 @@ Module language_storage.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn name(&self) -> &IdentStr {
@@ -6659,6 +6677,7 @@ Module language_storage.
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
+    Smpl Add apply AssociatedFunction_name : is_associated.
     
     (*
         pub fn address(&self) -> &AccountAddress {
@@ -6687,6 +6706,7 @@ Module language_storage.
       end.
     
     Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
+    Smpl Add apply AssociatedFunction_address : is_associated.
     
     (*
         pub fn access_vector(&self) -> Vec<u8> {
@@ -6805,6 +6825,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_access_vector :
       M.IsAssociatedFunction Self "access_vector" access_vector.
+    Smpl Add apply AssociatedFunction_access_vector : is_associated.
     
     (*
         pub fn to_canonical_string(&self, with_prefix: bool) -> String {
@@ -6852,6 +6873,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_to_canonical_string :
       M.IsAssociatedFunction Self "to_canonical_string" to_canonical_string.
+    Smpl Add apply AssociatedFunction_to_canonical_string : is_associated.
     
     (*
         pub fn to_canonical_display(&self, with_prefix: bool) -> impl Display + '_ {
@@ -6894,6 +6916,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_to_canonical_display :
       M.IsAssociatedFunction Self "to_canonical_display" to_canonical_display.
+    Smpl Add apply AssociatedFunction_to_canonical_display : is_associated.
     (*
         pub fn short_str_lossless(&self) -> String {
             format!("0x{}::{}", self.address.short_str_lossless(), self.name)
@@ -7025,6 +7048,7 @@ Module language_storage.
     
     Axiom AssociatedFunction_short_str_lossless :
       M.IsAssociatedFunction Self "short_str_lossless" short_str_lossless.
+    Smpl Add apply AssociatedFunction_short_str_lossless : is_associated.
   End Impl_move_core_types_language_storage_ModuleId.
   
   Module Impl_core_fmt_Display_for_move_core_types_language_storage_ModuleId.

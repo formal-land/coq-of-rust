@@ -53,6 +53,7 @@ Module my_mod.
   
   Axiom Function_private_function :
     M.IsFunction "visibility::my_mod::private_function" private_function.
+  Smpl Add apply Function_private_function : is_function.
   
   (*
       pub fn function() {
@@ -103,6 +104,7 @@ Module my_mod.
     end.
   
   Axiom Function_function : M.IsFunction "visibility::my_mod::function" function.
+  Smpl Add apply Function_function : is_function.
   
   (*
       pub fn indirect_access() {
@@ -166,6 +168,7 @@ Module my_mod.
   
   Axiom Function_indirect_access :
     M.IsFunction "visibility::my_mod::indirect_access" indirect_access.
+  Smpl Add apply Function_indirect_access : is_function.
   
   Module nested.
     (*
@@ -221,6 +224,7 @@ Module my_mod.
       end.
     
     Axiom Function_function : M.IsFunction "visibility::my_mod::nested::function" function.
+    Smpl Add apply Function_function : is_function.
     
     (*
             fn private_function() {
@@ -276,6 +280,7 @@ Module my_mod.
     
     Axiom Function_private_function :
       M.IsFunction "visibility::my_mod::nested::private_function" private_function.
+    Smpl Add apply Function_private_function : is_function.
     
     (*
             pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -350,6 +355,7 @@ Module my_mod.
       M.IsFunction
         "visibility::my_mod::nested::public_function_in_my_mod"
         public_function_in_my_mod.
+    Smpl Add apply Function_public_function_in_my_mod : is_function.
     
     (*
             pub(self) fn public_function_in_nested() {
@@ -412,6 +418,7 @@ Module my_mod.
       M.IsFunction
         "visibility::my_mod::nested::public_function_in_nested"
         public_function_in_nested.
+    Smpl Add apply Function_public_function_in_nested : is_function.
     
     (*
             pub(super) fn public_function_in_super_mod() {
@@ -474,6 +481,7 @@ Module my_mod.
       M.IsFunction
         "visibility::my_mod::nested::public_function_in_super_mod"
         public_function_in_super_mod.
+    Smpl Add apply Function_public_function_in_super_mod : is_function.
   End nested.
   
   (*
@@ -591,6 +599,7 @@ Module my_mod.
     M.IsFunction
       "visibility::my_mod::call_public_function_in_my_mod"
       call_public_function_in_my_mod.
+  Smpl Add apply Function_call_public_function_in_my_mod : is_function.
   
   (*
       pub(crate) fn public_function_in_crate() {
@@ -646,6 +655,7 @@ Module my_mod.
   
   Axiom Function_public_function_in_crate :
     M.IsFunction "visibility::my_mod::public_function_in_crate" public_function_in_crate.
+  Smpl Add apply Function_public_function_in_crate : is_function.
   
   Module private_nested.
     (*
@@ -701,6 +711,7 @@ Module my_mod.
       end.
     
     Axiom Function_function : M.IsFunction "visibility::my_mod::private_nested::function" function.
+    Smpl Add apply Function_function : is_function.
     
     (*
             pub(crate) fn restricted_function() {
@@ -757,6 +768,7 @@ Module my_mod.
     
     Axiom Function_restricted_function :
       M.IsFunction "visibility::my_mod::private_nested::restricted_function" restricted_function.
+    Smpl Add apply Function_restricted_function : is_function.
   End private_nested.
 End my_mod.
 
@@ -808,6 +820,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Axiom Function_function : M.IsFunction "visibility::function" function.
+Smpl Add apply Function_function : is_function.
 
 (*
 fn main() {
@@ -896,3 +909,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "visibility::main" main.
+Smpl Add apply Function_main : is_function.

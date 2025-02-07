@@ -183,6 +183,7 @@ Module ptr.
       M.IsFunction
         "core::ptr::alignment::_alignment_can_be_structurally_matched"
         _alignment_can_be_structurally_matched.
+    Smpl Add apply Function__alignment_can_be_structurally_matched : is_function.
     
     Module Impl_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
@@ -199,6 +200,7 @@ Module ptr.
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
       
       (*
           pub const fn of<T>() -> Self {
@@ -223,6 +225,7 @@ Module ptr.
         end.
       
       Axiom AssociatedFunction_of : M.IsAssociatedFunction Self "of" of.
+      Smpl Add apply AssociatedFunction_of : is_associated.
       
       (*
           pub const fn new(align: usize) -> Option<Self> {
@@ -284,6 +287,7 @@ Module ptr.
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const unsafe fn new_unchecked(align: usize) -> Self {
@@ -352,6 +356,7 @@ Module ptr.
       
       Axiom AssociatedFunction_new_unchecked :
         M.IsAssociatedFunction Self "new_unchecked" new_unchecked.
+      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
       
       (*
           pub const fn as_usize(self) -> usize {
@@ -372,6 +377,7 @@ Module ptr.
         end.
       
       Axiom AssociatedFunction_as_usize : M.IsAssociatedFunction Self "as_usize" as_usize.
+      Smpl Add apply AssociatedFunction_as_usize : is_associated.
       
       (*
           pub const fn as_nonzero(self) -> NonZero<usize> {
@@ -407,6 +413,7 @@ Module ptr.
         end.
       
       Axiom AssociatedFunction_as_nonzero : M.IsAssociatedFunction Self "as_nonzero" as_nonzero.
+      Smpl Add apply AssociatedFunction_as_nonzero : is_associated.
       
       (*
           pub const fn log2(self) -> u32 {
@@ -441,6 +448,7 @@ Module ptr.
         end.
       
       Axiom AssociatedFunction_log2 : M.IsAssociatedFunction Self "log2" log2.
+      Smpl Add apply AssociatedFunction_log2 : is_associated.
       
       (*
           pub const fn mask(self) -> usize {
@@ -474,6 +482,7 @@ Module ptr.
         end.
       
       Axiom AssociatedFunction_mask : M.IsAssociatedFunction Self "mask" mask.
+      Smpl Add apply AssociatedFunction_mask : is_associated.
       
       (*
           pub(crate) const fn max(a: Self, b: Self) -> Self {
@@ -526,6 +535,7 @@ Module ptr.
         end.
       
       Axiom AssociatedFunction_max : M.IsAssociatedFunction Self "max" max.
+      Smpl Add apply AssociatedFunction_max : is_associated.
     End Impl_core_ptr_alignment_Alignment.
     
     Module Impl_core_fmt_Debug_for_core_ptr_alignment_Alignment.

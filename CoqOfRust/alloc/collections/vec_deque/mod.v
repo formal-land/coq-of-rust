@@ -399,6 +399,7 @@ Module collections.
       Axiom AssociatedFunction_ptr :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "ptr" (ptr T A).
+      Smpl Add apply AssociatedFunction_ptr : is_associated.
       
       (*
           unsafe fn push_unchecked(&mut self, element: T) {
@@ -474,6 +475,7 @@ Module collections.
       Axiom AssociatedFunction_push_unchecked :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "push_unchecked" (push_unchecked T A).
+      Smpl Add apply AssociatedFunction_push_unchecked : is_associated.
       
       (*
           unsafe fn buffer_read(&mut self, off: usize) -> T {
@@ -525,6 +527,7 @@ Module collections.
       Axiom AssociatedFunction_buffer_read :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "buffer_read" (buffer_read T A).
+      Smpl Add apply AssociatedFunction_buffer_read : is_associated.
       
       (*
           unsafe fn buffer_write(&mut self, off: usize, value: T) {
@@ -587,6 +590,7 @@ Module collections.
       Axiom AssociatedFunction_buffer_write :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "buffer_write" (buffer_write T A).
+      Smpl Add apply AssociatedFunction_buffer_write : is_associated.
       
       (*
           unsafe fn buffer_range(&self, range: Range<usize>) -> *mut [T] {
@@ -655,6 +659,7 @@ Module collections.
       Axiom AssociatedFunction_buffer_range :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "buffer_range" (buffer_range T A).
+      Smpl Add apply AssociatedFunction_buffer_range : is_associated.
       
       (*
           fn is_full(&self) -> bool {
@@ -691,6 +696,7 @@ Module collections.
       Axiom AssociatedFunction_is_full :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "is_full" (is_full T A).
+      Smpl Add apply AssociatedFunction_is_full : is_associated.
       
       (*
           fn wrap_add(&self, idx: usize, addend: usize) -> usize {
@@ -729,6 +735,7 @@ Module collections.
       Axiom AssociatedFunction_wrap_add :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "wrap_add" (wrap_add T A).
+      Smpl Add apply AssociatedFunction_wrap_add : is_associated.
       
       (*
           fn to_physical_idx(&self, idx: usize) -> usize {
@@ -772,6 +779,7 @@ Module collections.
       Axiom AssociatedFunction_to_physical_idx :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "to_physical_idx" (to_physical_idx T A).
+      Smpl Add apply AssociatedFunction_to_physical_idx : is_associated.
       
       (*
           fn wrap_sub(&self, idx: usize, subtrahend: usize) -> usize {
@@ -824,6 +832,7 @@ Module collections.
       Axiom AssociatedFunction_wrap_sub :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "wrap_sub" (wrap_sub T A).
+      Smpl Add apply AssociatedFunction_wrap_sub : is_associated.
       
       (*
           unsafe fn copy(&mut self, src: usize, dst: usize, len: usize) {
@@ -1323,6 +1332,7 @@ Module collections.
       Axiom AssociatedFunction_copy :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "copy" (copy T A).
+      Smpl Add apply AssociatedFunction_copy : is_associated.
       
       (*
           unsafe fn copy_nonoverlapping(&mut self, src: usize, dst: usize, len: usize) {
@@ -1827,6 +1837,7 @@ Module collections.
       Axiom AssociatedFunction_copy_nonoverlapping :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "copy_nonoverlapping" (copy_nonoverlapping T A).
+      Smpl Add apply AssociatedFunction_copy_nonoverlapping : is_associated.
       
       (*
           unsafe fn wrap_copy(&mut self, src: usize, dst: usize, len: usize) {
@@ -2970,6 +2981,7 @@ Module collections.
       Axiom AssociatedFunction_wrap_copy :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "wrap_copy" (wrap_copy T A).
+      Smpl Add apply AssociatedFunction_wrap_copy : is_associated.
       
       (*
           unsafe fn copy_slice(&mut self, dst: usize, src: &[T]) {
@@ -3335,6 +3347,7 @@ Module collections.
       Axiom AssociatedFunction_copy_slice :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "copy_slice" (copy_slice T A).
+      Smpl Add apply AssociatedFunction_copy_slice : is_associated.
       
       (*
           unsafe fn write_iter(
@@ -3460,6 +3473,7 @@ Module collections.
       Axiom AssociatedFunction_write_iter :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "write_iter" (write_iter T A).
+      Smpl Add apply AssociatedFunction_write_iter : is_associated.
       
       (*
           unsafe fn write_iter_wrapping(
@@ -3733,6 +3747,7 @@ Module collections.
       Axiom AssociatedFunction_write_iter_wrapping :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "write_iter_wrapping" (write_iter_wrapping T A).
+      Smpl Add apply AssociatedFunction_write_iter_wrapping : is_associated.
       
       (*
           unsafe fn handle_capacity_increase(&mut self, old_capacity: usize) {
@@ -4126,6 +4141,7 @@ Module collections.
       Axiom AssociatedFunction_handle_capacity_increase :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "handle_capacity_increase" (handle_capacity_increase T A).
+      Smpl Add apply AssociatedFunction_handle_capacity_increase : is_associated.
       (*
           pub const fn new_in(alloc: A) -> VecDeque<T, A> {
               VecDeque { head: 0, len: 0, buf: RawVec::new_in(alloc) }
@@ -4159,6 +4175,7 @@ Module collections.
       Axiom AssociatedFunction_new_in :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
+      Smpl Add apply AssociatedFunction_new_in : is_associated.
       
       (*
           pub fn with_capacity_in(capacity: usize, alloc: A) -> VecDeque<T, A> {
@@ -4199,6 +4216,7 @@ Module collections.
       Axiom AssociatedFunction_with_capacity_in :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "with_capacity_in" (with_capacity_in T A).
+      Smpl Add apply AssociatedFunction_with_capacity_in : is_associated.
       
       (*
           pub(crate) unsafe fn from_contiguous_raw_parts_in(
@@ -4408,6 +4426,7 @@ Module collections.
           (Self T A)
           "from_contiguous_raw_parts_in"
           (from_contiguous_raw_parts_in T A).
+      Smpl Add apply AssociatedFunction_from_contiguous_raw_parts_in : is_associated.
       
       (*
           pub fn get(&self, index: usize) -> Option<&T> {
@@ -4521,6 +4540,7 @@ Module collections.
       Axiom AssociatedFunction_get :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "get" (get T A).
+      Smpl Add apply AssociatedFunction_get : is_associated.
       
       (*
           pub fn get_mut(&mut self, index: usize) -> Option<&mut T> {
@@ -4634,6 +4654,7 @@ Module collections.
       Axiom AssociatedFunction_get_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "get_mut" (get_mut T A).
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
           pub fn swap(&mut self, i: usize, j: usize) {
@@ -4833,6 +4854,7 @@ Module collections.
       Axiom AssociatedFunction_swap :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "swap" (swap T A).
+      Smpl Add apply AssociatedFunction_swap : is_associated.
       
       (*
           pub fn capacity(&self) -> usize {
@@ -4885,6 +4907,7 @@ Module collections.
       Axiom AssociatedFunction_capacity :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "capacity" (capacity T A).
+      Smpl Add apply AssociatedFunction_capacity : is_associated.
       
       (*
           pub fn reserve_exact(&mut self, additional: usize) {
@@ -5023,6 +5046,7 @@ Module collections.
       Axiom AssociatedFunction_reserve_exact :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "reserve_exact" (reserve_exact T A).
+      Smpl Add apply AssociatedFunction_reserve_exact : is_associated.
       
       (*
           pub fn reserve(&mut self, additional: usize) {
@@ -5158,6 +5182,7 @@ Module collections.
       Axiom AssociatedFunction_reserve :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "reserve" (reserve T A).
+      Smpl Add apply AssociatedFunction_reserve : is_associated.
       
       (*
           pub fn try_reserve_exact(&mut self, additional: usize) -> Result<(), TryReserveError> {
@@ -5462,6 +5487,7 @@ Module collections.
       Axiom AssociatedFunction_try_reserve_exact :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "try_reserve_exact" (try_reserve_exact T A).
+      Smpl Add apply AssociatedFunction_try_reserve_exact : is_associated.
       
       (*
           pub fn try_reserve(&mut self, additional: usize) -> Result<(), TryReserveError> {
@@ -5766,6 +5792,7 @@ Module collections.
       Axiom AssociatedFunction_try_reserve :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "try_reserve" (try_reserve T A).
+      Smpl Add apply AssociatedFunction_try_reserve : is_associated.
       
       (*
           pub fn shrink_to_fit(&mut self) {
@@ -5807,6 +5834,7 @@ Module collections.
       Axiom AssociatedFunction_shrink_to_fit :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "shrink_to_fit" (shrink_to_fit T A).
+      Smpl Add apply AssociatedFunction_shrink_to_fit : is_associated.
       
       (*
           pub fn shrink_to(&mut self, min_capacity: usize) {
@@ -6622,6 +6650,7 @@ Module collections.
       Axiom AssociatedFunction_shrink_to :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "shrink_to" (shrink_to T A).
+      Smpl Add apply AssociatedFunction_shrink_to : is_associated.
       
       (*
           unsafe fn abort_shrink(&mut self, old_head: usize, target_cap: usize) {
@@ -6851,6 +6880,7 @@ Module collections.
       Axiom AssociatedFunction_abort_shrink :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "abort_shrink" (abort_shrink T A).
+      Smpl Add apply AssociatedFunction_abort_shrink : is_associated.
       
       (*
           pub fn truncate(&mut self, len: usize) {
@@ -7153,6 +7183,7 @@ Module collections.
       Axiom AssociatedFunction_truncate :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "truncate" (truncate T A).
+      Smpl Add apply AssociatedFunction_truncate : is_associated.
       
       (*
           pub fn allocator(&self) -> &A {
@@ -7194,6 +7225,7 @@ Module collections.
       Axiom AssociatedFunction_allocator :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
+      Smpl Add apply AssociatedFunction_allocator : is_associated.
       
       (*
           pub fn iter(&self) -> Iter<'_, T> {
@@ -7266,6 +7298,7 @@ Module collections.
       Axiom AssociatedFunction_iter :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "iter" (iter T A).
+      Smpl Add apply AssociatedFunction_iter : is_associated.
       
       (*
           pub fn iter_mut(&mut self) -> IterMut<'_, T> {
@@ -7341,6 +7374,7 @@ Module collections.
       Axiom AssociatedFunction_iter_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "iter_mut" (iter_mut T A).
+      Smpl Add apply AssociatedFunction_iter_mut : is_associated.
       
       (*
           pub fn as_slices(&self) -> (&[T], &[T]) {
@@ -7456,6 +7490,7 @@ Module collections.
       Axiom AssociatedFunction_as_slices :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_slices" (as_slices T A).
+      Smpl Add apply AssociatedFunction_as_slices : is_associated.
       
       (*
           pub fn as_mut_slices(&mut self) -> (&mut [T], &mut [T]) {
@@ -7576,6 +7611,7 @@ Module collections.
       Axiom AssociatedFunction_as_mut_slices :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_mut_slices" (as_mut_slices T A).
+      Smpl Add apply AssociatedFunction_as_mut_slices : is_associated.
       
       (*
           pub fn len(&self) -> usize {
@@ -7601,6 +7637,7 @@ Module collections.
       Axiom AssociatedFunction_len :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "len" (len T A).
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -7629,6 +7666,7 @@ Module collections.
       Axiom AssociatedFunction_is_empty :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "is_empty" (is_empty T A).
+      Smpl Add apply AssociatedFunction_is_empty : is_associated.
       
       (*
           fn slice_ranges<R>(&self, range: R, len: usize) -> (Range<usize>, Range<usize>)
@@ -7879,6 +7917,7 @@ Module collections.
       Axiom AssociatedFunction_slice_ranges :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "slice_ranges" (slice_ranges T A).
+      Smpl Add apply AssociatedFunction_slice_ranges : is_associated.
       
       (*
           pub fn range<R>(&self, range: R) -> Iter<'_, T>
@@ -8017,6 +8056,7 @@ Module collections.
       Axiom AssociatedFunction_range :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "range" (range T A).
+      Smpl Add apply AssociatedFunction_range : is_associated.
       
       (*
           pub fn range_mut<R>(&mut self, range: R) -> IterMut<'_, T>
@@ -8174,6 +8214,7 @@ Module collections.
       Axiom AssociatedFunction_range_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "range_mut" (range_mut T A).
+      Smpl Add apply AssociatedFunction_range_mut : is_associated.
       
       (*
           pub fn drain<R>(&mut self, range: R) -> Drain<'_, T, A>
@@ -8292,6 +8333,7 @@ Module collections.
       Axiom AssociatedFunction_drain :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "drain" (drain T A).
+      Smpl Add apply AssociatedFunction_drain : is_associated.
       
       (*
           pub fn clear(&mut self) {
@@ -8339,6 +8381,7 @@ Module collections.
       Axiom AssociatedFunction_clear :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "clear" (clear T A).
+      Smpl Add apply AssociatedFunction_clear : is_associated.
       
       (*
           pub fn contains(&self, x: &T) -> bool
@@ -8414,6 +8457,7 @@ Module collections.
       Axiom AssociatedFunction_contains :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "contains" (contains T A).
+      Smpl Add apply AssociatedFunction_contains : is_associated.
       
       (*
           pub fn front(&self) -> Option<&T> {
@@ -8444,6 +8488,7 @@ Module collections.
       Axiom AssociatedFunction_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "front" (front T A).
+      Smpl Add apply AssociatedFunction_front : is_associated.
       
       (*
           pub fn front_mut(&mut self) -> Option<&mut T> {
@@ -8474,6 +8519,7 @@ Module collections.
       Axiom AssociatedFunction_front_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "front_mut" (front_mut T A).
+      Smpl Add apply AssociatedFunction_front_mut : is_associated.
       
       (*
           pub fn back(&self) -> Option<&T> {
@@ -8516,6 +8562,7 @@ Module collections.
       Axiom AssociatedFunction_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "back" (back T A).
+      Smpl Add apply AssociatedFunction_back : is_associated.
       
       (*
           pub fn back_mut(&mut self) -> Option<&mut T> {
@@ -8558,6 +8605,7 @@ Module collections.
       Axiom AssociatedFunction_back_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "back_mut" (back_mut T A).
+      Smpl Add apply AssociatedFunction_back_mut : is_associated.
       
       (*
           pub fn pop_front(&mut self) -> Option<T> {
@@ -8708,6 +8756,7 @@ Module collections.
       Axiom AssociatedFunction_pop_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "pop_front" (pop_front T A).
+      Smpl Add apply AssociatedFunction_pop_front : is_associated.
       
       (*
           pub fn pop_back(&mut self) -> Option<T> {
@@ -8848,6 +8897,7 @@ Module collections.
       Axiom AssociatedFunction_pop_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "pop_back" (pop_back T A).
+      Smpl Add apply AssociatedFunction_pop_back : is_associated.
       
       (*
           pub fn push_front(&mut self, value: T) {
@@ -8988,6 +9038,7 @@ Module collections.
       Axiom AssociatedFunction_push_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "push_front" (push_front T A).
+      Smpl Add apply AssociatedFunction_push_front : is_associated.
       
       (*
           pub fn push_back(&mut self, value: T) {
@@ -9103,6 +9154,7 @@ Module collections.
       Axiom AssociatedFunction_push_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "push_back" (push_back T A).
+      Smpl Add apply AssociatedFunction_push_back : is_associated.
       
       (*
           fn is_contiguous(&self) -> bool {
@@ -9154,6 +9206,7 @@ Module collections.
       Axiom AssociatedFunction_is_contiguous :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "is_contiguous" (is_contiguous T A).
+      Smpl Add apply AssociatedFunction_is_contiguous : is_associated.
       
       (*
           pub fn swap_remove_front(&mut self, index: usize) -> Option<T> {
@@ -9282,6 +9335,7 @@ Module collections.
       Axiom AssociatedFunction_swap_remove_front :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "swap_remove_front" (swap_remove_front T A).
+      Smpl Add apply AssociatedFunction_swap_remove_front : is_associated.
       
       (*
           pub fn swap_remove_back(&mut self, index: usize) -> Option<T> {
@@ -9419,6 +9473,7 @@ Module collections.
       Axiom AssociatedFunction_swap_remove_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "swap_remove_back" (swap_remove_back T A).
+      Smpl Add apply AssociatedFunction_swap_remove_back : is_associated.
       
       (*
           pub fn insert(&mut self, index: usize, value: T) {
@@ -9807,6 +9862,7 @@ Module collections.
       Axiom AssociatedFunction_insert :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "insert" (insert T A).
+      Smpl Add apply AssociatedFunction_insert : is_associated.
       
       (*
           pub fn remove(&mut self, index: usize) -> Option<T> {
@@ -10088,6 +10144,7 @@ Module collections.
       Axiom AssociatedFunction_remove :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "remove" (remove T A).
+      Smpl Add apply AssociatedFunction_remove : is_associated.
       
       (*
           pub fn split_off(&mut self, at: usize) -> Self
@@ -10507,6 +10564,7 @@ Module collections.
       Axiom AssociatedFunction_split_off :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "split_off" (split_off T A).
+      Smpl Add apply AssociatedFunction_split_off : is_associated.
       
       (*
           pub fn append(&mut self, other: &mut Self) {
@@ -10834,6 +10892,7 @@ Module collections.
       Axiom AssociatedFunction_append :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "append" (append T A).
+      Smpl Add apply AssociatedFunction_append : is_associated.
       
       (*
           pub fn retain<F>(&mut self, mut f: F)
@@ -10914,6 +10973,7 @@ Module collections.
       Axiom AssociatedFunction_retain :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "retain" (retain T A).
+      Smpl Add apply AssociatedFunction_retain : is_associated.
       
       (*
           pub fn retain_mut<F>(&mut self, mut f: F)
@@ -11296,6 +11356,7 @@ Module collections.
       Axiom AssociatedFunction_retain_mut :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "retain_mut" (retain_mut T A).
+      Smpl Add apply AssociatedFunction_retain_mut : is_associated.
       
       (*
           fn grow(&mut self) {
@@ -11502,6 +11563,7 @@ Module collections.
       Axiom AssociatedFunction_grow :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "grow" (grow T A).
+      Smpl Add apply AssociatedFunction_grow : is_associated.
       
       (*
           pub fn resize_with(&mut self, new_len: usize, generator: impl FnMut() -> T) {
@@ -11629,6 +11691,7 @@ Module collections.
       Axiom AssociatedFunction_resize_with :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "resize_with" (resize_with T A).
+      Smpl Add apply AssociatedFunction_resize_with : is_associated.
       
       (*
           pub fn make_contiguous(&mut self) -> &mut [T] {
@@ -12460,6 +12523,7 @@ Module collections.
       Axiom AssociatedFunction_make_contiguous :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "make_contiguous" (make_contiguous T A).
+      Smpl Add apply AssociatedFunction_make_contiguous : is_associated.
       
       (*
           pub fn rotate_left(&mut self, n: usize) {
@@ -12596,6 +12660,7 @@ Module collections.
       Axiom AssociatedFunction_rotate_left :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "rotate_left" (rotate_left T A).
+      Smpl Add apply AssociatedFunction_rotate_left : is_associated.
       
       (*
           pub fn rotate_right(&mut self, n: usize) {
@@ -12732,6 +12797,7 @@ Module collections.
       Axiom AssociatedFunction_rotate_right :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "rotate_right" (rotate_right T A).
+      Smpl Add apply AssociatedFunction_rotate_right : is_associated.
       
       (*
           unsafe fn rotate_left_inner(&mut self, mid: usize) {
@@ -12897,6 +12963,7 @@ Module collections.
       Axiom AssociatedFunction_rotate_left_inner :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "rotate_left_inner" (rotate_left_inner T A).
+      Smpl Add apply AssociatedFunction_rotate_left_inner : is_associated.
       
       (*
           unsafe fn rotate_right_inner(&mut self, k: usize) {
@@ -13064,6 +13131,7 @@ Module collections.
       Axiom AssociatedFunction_rotate_right_inner :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "rotate_right_inner" (rotate_right_inner T A).
+      Smpl Add apply AssociatedFunction_rotate_right_inner : is_associated.
       
       (*
           pub fn binary_search(&self, x: &T) -> Result<usize, usize>
@@ -13137,6 +13205,7 @@ Module collections.
       Axiom AssociatedFunction_binary_search :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "binary_search" (binary_search T A).
+      Smpl Add apply AssociatedFunction_binary_search : is_associated.
       
       (*
           pub fn binary_search_by<'a, F>(&'a self, mut f: F) -> Result<usize, usize>
@@ -13466,6 +13535,7 @@ Module collections.
       Axiom AssociatedFunction_binary_search_by :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "binary_search_by" (binary_search_by T A).
+      Smpl Add apply AssociatedFunction_binary_search_by : is_associated.
       
       (*
           pub fn binary_search_by_key<'a, B, F>(&'a self, b: &B, mut f: F) -> Result<usize, usize>
@@ -13566,6 +13636,7 @@ Module collections.
       Axiom AssociatedFunction_binary_search_by_key :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "binary_search_by_key" (binary_search_by_key T A).
+      Smpl Add apply AssociatedFunction_binary_search_by_key : is_associated.
       
       (*
           pub fn partition_point<P>(&self, mut pred: P) -> usize
@@ -13770,6 +13841,7 @@ Module collections.
       Axiom AssociatedFunction_partition_point :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "partition_point" (partition_point T A).
+      Smpl Add apply AssociatedFunction_partition_point : is_associated.
       (*
           pub fn resize(&mut self, new_len: usize, value: T) {
               if new_len > self.len() {
@@ -13889,6 +13961,7 @@ Module collections.
       Axiom AssociatedFunction_resize :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "resize" (resize T A).
+      Smpl Add apply AssociatedFunction_resize : is_associated.
     End Impl_alloc_collections_vec_deque_VecDeque_T_A.
     
     Module Impl_alloc_collections_vec_deque_VecDeque_T_alloc_alloc_Global.
@@ -13934,6 +14007,7 @@ Module collections.
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn with_capacity(capacity: usize) -> VecDeque<T> {
@@ -13969,6 +14043,7 @@ Module collections.
       Axiom AssociatedFunction_with_capacity :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "with_capacity" (with_capacity T).
+      Smpl Add apply AssociatedFunction_with_capacity : is_associated.
       
       (*
           pub fn try_with_capacity(capacity: usize) -> Result<VecDeque<T>, TryReserveError> {
@@ -14108,6 +14183,7 @@ Module collections.
       Axiom AssociatedFunction_try_with_capacity :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "try_with_capacity" (try_with_capacity T).
+      Smpl Add apply AssociatedFunction_try_with_capacity : is_associated.
     End Impl_alloc_collections_vec_deque_VecDeque_T_alloc_alloc_Global.
     
     
@@ -14225,6 +14301,7 @@ Module collections.
       end.
     
     Axiom Function_wrap_index : M.IsFunction "alloc::collections::vec_deque::wrap_index" wrap_index.
+    Smpl Add apply Function_wrap_index : is_function.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=

@@ -189,6 +189,7 @@ Module Impl_constructors_return_value_ReturnFlags.
   
   Axiom AssociatedFunction_new_with_reverted :
     M.IsAssociatedFunction Self "new_with_reverted" new_with_reverted.
+  Smpl Add apply AssociatedFunction_new_with_reverted : is_associated.
 End Impl_constructors_return_value_ReturnFlags.
 
 (*
@@ -210,6 +211,7 @@ Definition return_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_return_value : M.IsFunction "constructors_return_value::return_value" return_value.
+Smpl Add apply Function_return_value : is_function.
 
 Module Impl_constructors_return_value_ConstructorsReturnValue.
   Definition Self : Ty.t := Ty.path "constructors_return_value::ConstructorsReturnValue".
@@ -231,6 +233,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, ConstructorError> {
@@ -283,6 +286,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
+  Smpl Add apply AssociatedFunction_try_new : is_associated.
   
   (*
       pub fn revert_new(_init_value: bool) -> Self {
@@ -365,6 +369,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Axiom AssociatedFunction_revert_new : M.IsAssociatedFunction Self "revert_new" revert_new.
+  Smpl Add apply AssociatedFunction_revert_new : is_associated.
   
   (*
       pub fn try_revert_new(init_value: bool) -> Result<Self, ConstructorError> {
@@ -487,6 +492,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   
   Axiom AssociatedFunction_try_revert_new :
     M.IsAssociatedFunction Self "try_revert_new" try_revert_new.
+  Smpl Add apply AssociatedFunction_try_revert_new : is_associated.
   
   (*
       pub fn get_value(&self) -> bool {
@@ -509,4 +515,5 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Axiom AssociatedFunction_get_value : M.IsAssociatedFunction Self "get_value" get_value.
+  Smpl Add apply AssociatedFunction_get_value : is_associated.
 End Impl_constructors_return_value_ConstructorsReturnValue.

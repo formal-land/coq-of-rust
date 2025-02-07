@@ -5,3 +5,4 @@ Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main :
   M.IsFunction "inline_assembly_inputs_and_outputs_another_example_without_mov::main" main.
+Smpl Add apply Function_main : is_function.

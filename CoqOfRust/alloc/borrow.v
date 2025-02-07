@@ -414,6 +414,7 @@ Module borrow.
     Axiom AssociatedFunction_is_borrowed :
       forall (B : Ty.t),
       M.IsAssociatedFunction (Self B) "is_borrowed" (is_borrowed B).
+    Smpl Add apply AssociatedFunction_is_borrowed : is_associated.
     
     (*
         pub const fn is_owned(&self) -> bool {
@@ -443,6 +444,7 @@ Module borrow.
     Axiom AssociatedFunction_is_owned :
       forall (B : Ty.t),
       M.IsAssociatedFunction (Self B) "is_owned" (is_owned B).
+    Smpl Add apply AssociatedFunction_is_owned : is_associated.
     
     (*
         pub fn to_mut(&mut self) -> &mut <B as ToOwned>::Owned {
@@ -595,6 +597,7 @@ Module borrow.
     Axiom AssociatedFunction_to_mut :
       forall (B : Ty.t),
       M.IsAssociatedFunction (Self B) "to_mut" (to_mut B).
+    Smpl Add apply AssociatedFunction_to_mut : is_associated.
     
     (*
         pub fn into_owned(self) -> <B as ToOwned>::Owned {
@@ -652,6 +655,7 @@ Module borrow.
     Axiom AssociatedFunction_into_owned :
       forall (B : Ty.t),
       M.IsAssociatedFunction (Self B) "into_owned" (into_owned B).
+    Smpl Add apply AssociatedFunction_into_owned : is_associated.
   End Impl_alloc_borrow_Cow_B.
   
   Module Impl_core_ops_deref_Deref_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.

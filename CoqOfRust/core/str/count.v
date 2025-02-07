@@ -15,12 +15,14 @@ Module str.
     
     Axiom Constant_value_USIZE_SIZE :
       (M.get_constant "core::str::count::USIZE_SIZE") = value_USIZE_SIZE.
+    Global Hint Rewrite Constant_value_USIZE_SIZE : constant_rewrites.
     
     Definition value_UNROLL_INNER : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
     
     Axiom Constant_value_UNROLL_INNER :
       (M.get_constant "core::str::count::UNROLL_INNER") = value_UNROLL_INNER.
+    Global Hint Rewrite Constant_value_UNROLL_INNER : constant_rewrites.
     
     (*
     pub(super) fn count_chars(s: &str) -> usize {
@@ -96,6 +98,7 @@ Module str.
       end.
     
     Axiom Function_count_chars : M.IsFunction "core::str::count::count_chars" count_chars.
+    Smpl Add apply Function_count_chars : is_function.
     
     (*
     fn do_count_chars(s: &str) -> usize {
@@ -1018,6 +1021,7 @@ Module str.
       end.
     
     Axiom Function_do_count_chars : M.IsFunction "core::str::count::do_count_chars" do_count_chars.
+    Smpl Add apply Function_do_count_chars : is_function.
     
     Module do_count_chars.
       Definition value_CHUNK_SIZE : Value.t :=
@@ -1025,6 +1029,7 @@ Module str.
       
       Axiom Constant_value_CHUNK_SIZE :
         (M.get_constant "core::str::count::do_count_chars::CHUNK_SIZE") = value_CHUNK_SIZE.
+      Global Hint Rewrite Constant_value_CHUNK_SIZE : constant_rewrites.
     End do_count_chars.
     
     (*
@@ -1054,6 +1059,7 @@ Module str.
       M.IsFunction
         "core::str::count::contains_non_continuation_byte"
         contains_non_continuation_byte.
+    Smpl Add apply Function_contains_non_continuation_byte : is_function.
     
     Module contains_non_continuation_byte.
       Definition value_LSB : Value.t :=
@@ -1068,6 +1074,7 @@ Module str.
       
       Axiom Constant_value_LSB :
         (M.get_constant "core::str::count::contains_non_continuation_byte::LSB") = value_LSB.
+      Global Hint Rewrite Constant_value_LSB : constant_rewrites.
     End contains_non_continuation_byte.
     
     (*
@@ -1122,6 +1129,7 @@ Module str.
     
     Axiom Function_sum_bytes_in_usize :
       M.IsFunction "core::str::count::sum_bytes_in_usize" sum_bytes_in_usize.
+    Smpl Add apply Function_sum_bytes_in_usize : is_function.
     
     Module sum_bytes_in_usize.
       Definition value_LSB_SHORTS : Value.t :=
@@ -1136,6 +1144,7 @@ Module str.
       
       Axiom Constant_value_LSB_SHORTS :
         (M.get_constant "core::str::count::sum_bytes_in_usize::LSB_SHORTS") = value_LSB_SHORTS.
+      Global Hint Rewrite Constant_value_LSB_SHORTS : constant_rewrites.
       
       Definition value_SKIP_BYTES : Value.t :=
         M.run_constant
@@ -1149,6 +1158,7 @@ Module str.
       
       Axiom Constant_value_SKIP_BYTES :
         (M.get_constant "core::str::count::sum_bytes_in_usize::SKIP_BYTES") = value_SKIP_BYTES.
+      Global Hint Rewrite Constant_value_SKIP_BYTES : constant_rewrites.
     End sum_bytes_in_usize.
     
     (*
@@ -1248,5 +1258,6 @@ Module str.
     
     Axiom Function_char_count_general_case :
       M.IsFunction "core::str::count::char_count_general_case" char_count_general_case.
+    Smpl Add apply Function_char_count_general_case : is_function.
   End count.
 End str.

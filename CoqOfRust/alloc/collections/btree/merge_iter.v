@@ -496,6 +496,7 @@ Module collections.
         Axiom AssociatedFunction_new :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "new" (new I).
+        Smpl Add apply AssociatedFunction_new : is_associated.
         
         (*
             pub fn nexts<Cmp: Fn(&I::Item, &I::Item) -> Ordering>(
@@ -904,6 +905,7 @@ Module collections.
         Axiom AssociatedFunction_nexts :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "nexts" (nexts I).
+        Smpl Add apply AssociatedFunction_nexts : is_associated.
         
         (*
             pub fn lens(&self) -> (usize, usize)
@@ -1117,6 +1119,7 @@ Module collections.
         Axiom AssociatedFunction_lens :
           forall (I : Ty.t),
           M.IsAssociatedFunction (Self I) "lens" (lens I).
+        Smpl Add apply AssociatedFunction_lens : is_associated.
       End Impl_alloc_collections_btree_merge_iter_MergeIterInner_I.
     End merge_iter.
   End btree.

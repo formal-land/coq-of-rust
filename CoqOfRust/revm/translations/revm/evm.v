@@ -53,6 +53,7 @@ Module evm.
     Axiom AssociatedFunction_new :
       forall (ERROR CTX HANDLER : Ty.t),
       M.IsAssociatedFunction (Self ERROR CTX HANDLER) "new" (new ERROR CTX HANDLER).
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_revm_evm_Evm_ERROR_CTX_HANDLER.
   
   Module Impl_revm_exec_EvmCommit_where_revm_context_interface_transaction_TransactionSetter_CTX_where_revm_context_interface_block_BlockSetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_cfg_CfgGetter_CTX_where_revm_database_interface_DatabaseGetter_CTX_where_revm_context_interface_errors_ErrorGetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_host_Host_CTX_where_core_convert_From_ERROR_revm_context_interface_result_InvalidTransaction_where_core_convert_From_ERROR_revm_context_interface_result_InvalidHeader_where_core_convert_From_ERROR_associated_type_where_core_convert_From_ERROR_revm_precompile_interface_PrecompileErrors_where_revm_handler_interface_validation_ValidationHandler_VAL_where_revm_handler_interface_pre_execution_PreExecutionHandler_PREEXEC_where_revm_handler_interface_execution_ExecutionHandler_EXEC_where_revm_handler_interface_post_execution_PostExecutionHandler_POSTEXEC_where_revm_context_interface_result_HaltReasonTrait_HALT_for_revm_evm_Evm_ERROR_CTX_revm_handler_EthHandler_CTX_ERROR_VAL_PREEXEC_EXEC_POSTEXEC.
@@ -762,6 +763,7 @@ Module evm.
         (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
         "preverify_transaction"
         (preverify_transaction ERROR CTX VAL PREEXEC EXEC POSTEXEC).
+    Smpl Add apply AssociatedFunction_preverify_transaction : is_associated.
     
     (*
         fn clear(&mut self) {
@@ -849,6 +851,7 @@ Module evm.
         (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
         "clear"
         (clear ERROR CTX VAL PREEXEC EXEC POSTEXEC).
+    Smpl Add apply AssociatedFunction_clear : is_associated.
     
     (*
         pub fn transact_preverified(
@@ -1193,6 +1196,7 @@ Module evm.
         (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
         "transact_preverified"
         (transact_preverified ERROR CTX VAL PREEXEC EXEC POSTEXEC).
+    Smpl Add apply AssociatedFunction_transact_preverified : is_associated.
     
     (*
         fn preverify_transaction_inner(&mut self) -> Result<u64, ERROR> {
@@ -1603,6 +1607,7 @@ Module evm.
         (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
         "preverify_transaction_inner"
         (preverify_transaction_inner ERROR CTX VAL PREEXEC EXEC POSTEXEC).
+    Smpl Add apply AssociatedFunction_preverify_transaction_inner : is_associated.
     
     (*
         pub fn transact(&mut self) -> Result<<POSTEXEC as PostExecutionHandler>::Output, ERROR> {
@@ -1911,6 +1916,7 @@ Module evm.
         (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
         "transact"
         (transact ERROR CTX VAL PREEXEC EXEC POSTEXEC).
+    Smpl Add apply AssociatedFunction_transact : is_associated.
     
     (*
         fn transact_preverified_inner(
@@ -2919,5 +2925,6 @@ Module evm.
         (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
         "transact_preverified_inner"
         (transact_preverified_inner ERROR CTX VAL PREEXEC EXEC POSTEXEC).
+    Smpl Add apply AssociatedFunction_transact_preverified_inner : is_associated.
   End Impl_revm_evm_Evm_ERROR_CTX_revm_handler_EthHandler_CTX_ERROR_VAL_PREEXEC_EXEC_POSTEXEC.
 End evm.

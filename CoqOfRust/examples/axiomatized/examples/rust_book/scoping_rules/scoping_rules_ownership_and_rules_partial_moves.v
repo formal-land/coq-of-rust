@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules_partial_moves::main" main.
+Smpl Add apply Function_main : is_function.
 
 Module main.
   (* StructRecord

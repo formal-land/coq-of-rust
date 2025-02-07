@@ -24,6 +24,7 @@ Module intrinsics.
         M.IsFunction
           "core::intrinsics::mir::UnwindContinue::panic_cold_explicit"
           panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End UnwindContinue.
     
     Module UnwindUnreachable.
@@ -47,6 +48,7 @@ Module intrinsics.
         M.IsFunction
           "core::intrinsics::mir::UnwindUnreachable::panic_cold_explicit"
           panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End UnwindUnreachable.
     
     Module UnwindTerminate.
@@ -70,6 +72,7 @@ Module intrinsics.
         M.IsFunction
           "core::intrinsics::mir::UnwindTerminate::panic_cold_explicit"
           panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End UnwindTerminate.
     
     Module UnwindCleanup.
@@ -93,6 +96,7 @@ Module intrinsics.
         M.IsFunction
           "core::intrinsics::mir::UnwindCleanup::panic_cold_explicit"
           panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End UnwindCleanup.
     
     Module ReturnTo.
@@ -114,6 +118,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::ReturnTo::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End ReturnTo.
     
     Module Return.
@@ -135,6 +140,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Return::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Return.
     
     Module Goto.
@@ -156,6 +162,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Goto::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Goto.
     
     Module Unreachable.
@@ -177,6 +184,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Unreachable::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Unreachable.
     
     Module Drop.
@@ -198,6 +206,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Drop::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Drop.
     
     Module Call.
@@ -219,6 +228,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Call::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Call.
     
     Module TailCall.
@@ -240,6 +250,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::TailCall::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End TailCall.
     
     Module UnwindResume.
@@ -261,6 +272,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::UnwindResume::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End UnwindResume.
     
     Module StorageLive.
@@ -282,6 +294,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::StorageLive::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End StorageLive.
     
     Module StorageDead.
@@ -303,6 +316,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::StorageDead::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End StorageDead.
     
     Module Assume.
@@ -324,6 +338,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Assume::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Assume.
     
     Module Deinit.
@@ -345,6 +360,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Deinit::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Deinit.
     
     Module Checked.
@@ -366,6 +382,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Checked::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Checked.
     
     Module Len.
@@ -387,6 +404,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Len::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Len.
     
     Module PtrMetadata.
@@ -408,6 +426,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::PtrMetadata::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End PtrMetadata.
     
     Module CopyForDeref.
@@ -429,6 +448,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::CopyForDeref::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End CopyForDeref.
     
     Module Retag.
@@ -450,6 +470,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Retag::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Retag.
     
     Module Move.
@@ -471,6 +492,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Move::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Move.
     
     Module Static.
@@ -492,6 +514,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Static::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Static.
     
     Module StaticMut.
@@ -513,6 +536,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::StaticMut::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End StaticMut.
     
     Module Discriminant.
@@ -534,6 +558,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Discriminant::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Discriminant.
     
     Module SetDiscriminant.
@@ -557,6 +582,7 @@ Module intrinsics.
         M.IsFunction
           "core::intrinsics::mir::SetDiscriminant::panic_cold_explicit"
           panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End SetDiscriminant.
     
     Module Offset.
@@ -578,6 +604,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Offset::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Offset.
     
     Module Field.
@@ -599,6 +626,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Field::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Field.
     
     Module Variant.
@@ -620,6 +648,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::Variant::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End Variant.
     
     Module CastTransmute.
@@ -643,6 +672,7 @@ Module intrinsics.
         M.IsFunction
           "core::intrinsics::mir::CastTransmute::panic_cold_explicit"
           panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End CastTransmute.
     
     Module CastPtrToPtr.
@@ -664,6 +694,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::CastPtrToPtr::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End CastPtrToPtr.
     
     Module __internal_make_place.
@@ -687,6 +718,7 @@ Module intrinsics.
         M.IsFunction
           "core::intrinsics::mir::__internal_make_place::panic_cold_explicit"
           panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End __internal_make_place.
     
     Module __debuginfo.
@@ -708,6 +740,7 @@ Module intrinsics.
       
       Axiom Function_panic_cold_explicit :
         M.IsFunction "core::intrinsics::mir::__debuginfo::panic_cold_explicit" panic_cold_explicit.
+      Smpl Add apply Function_panic_cold_explicit : is_function.
     End __debuginfo.
   End mir.
 End intrinsics.
@@ -739,6 +772,7 @@ Module panic.
     end.
   
   Axiom Function_abort_unwind : M.IsFunction "core::panic::abort_unwind" abort_unwind.
+  Smpl Add apply Function_abort_unwind : is_function.
   
   (* Trait *)
   Module PanicPayload.

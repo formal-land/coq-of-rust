@@ -338,6 +338,7 @@ Module account_address.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*     pub const LENGTH: usize = 32; *)
     (* Ty.path "usize" *)
@@ -345,6 +346,7 @@ Module account_address.
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
     
     Axiom AssociatedConstant_value_LENGTH : M.IsAssociatedConstant Self "value_LENGTH" value_LENGTH.
+    Smpl Add apply AssociatedConstant_value_LENGTH : is_associated.
     
     (*     pub const ZERO: Self = Self([0u8; Self::LENGTH]); *)
     (* Ty.path "move_core_types::account_address::AccountAddress" *)
@@ -358,6 +360,7 @@ Module account_address.
           |))).
     
     Axiom AssociatedConstant_value_ZERO : M.IsAssociatedConstant Self "value_ZERO" value_ZERO.
+    Smpl Add apply AssociatedConstant_value_ZERO : is_associated.
     
     (*     pub const ONE: Self = Self::get_hex_address_one(); *)
     (* Ty.path "move_core_types::account_address::AccountAddress" *)
@@ -377,6 +380,7 @@ Module account_address.
           |))).
     
     Axiom AssociatedConstant_value_ONE : M.IsAssociatedConstant Self "value_ONE" value_ONE.
+    Smpl Add apply AssociatedConstant_value_ONE : is_associated.
     
     (*     pub const TWO: Self = Self::get_hex_address_two(); *)
     (* Ty.path "move_core_types::account_address::AccountAddress" *)
@@ -396,6 +400,7 @@ Module account_address.
           |))).
     
     Axiom AssociatedConstant_value_TWO : M.IsAssociatedConstant Self "value_TWO" value_TWO.
+    Smpl Add apply AssociatedConstant_value_TWO : is_associated.
     
     (*
         const fn get_hex_address_one() -> Self {
@@ -437,6 +442,7 @@ Module account_address.
     
     Axiom AssociatedFunction_get_hex_address_one :
       M.IsAssociatedFunction Self "get_hex_address_one" get_hex_address_one.
+    Smpl Add apply AssociatedFunction_get_hex_address_one : is_associated.
     
     (*
         const fn get_hex_address_two() -> Self {
@@ -478,6 +484,7 @@ Module account_address.
     
     Axiom AssociatedFunction_get_hex_address_two :
       M.IsAssociatedFunction Self "get_hex_address_two" get_hex_address_two.
+    Smpl Add apply AssociatedFunction_get_hex_address_two : is_associated.
     
     (*
         pub fn random() -> Self {
@@ -522,6 +529,7 @@ Module account_address.
       end.
     
     Axiom AssociatedFunction_random : M.IsAssociatedFunction Self "random" random.
+    Smpl Add apply AssociatedFunction_random : is_associated.
     
     (*
         pub fn to_canonical_string(&self, with_prefix: bool) -> String {
@@ -569,6 +577,7 @@ Module account_address.
     
     Axiom AssociatedFunction_to_canonical_string :
       M.IsAssociatedFunction Self "to_canonical_string" to_canonical_string.
+    Smpl Add apply AssociatedFunction_to_canonical_string : is_associated.
     
     (*
         pub fn to_canonical_display(&self, with_prefix: bool) -> impl fmt::Display + '_ {
@@ -622,6 +631,7 @@ Module account_address.
     
     Axiom AssociatedFunction_to_canonical_display :
       M.IsAssociatedFunction Self "to_canonical_display" to_canonical_display.
+    Smpl Add apply AssociatedFunction_to_canonical_display : is_associated.
     
     (*
         pub fn short_str_lossless(&self) -> String {
@@ -762,6 +772,7 @@ Module account_address.
     
     Axiom AssociatedFunction_short_str_lossless :
       M.IsAssociatedFunction Self "short_str_lossless" short_str_lossless.
+    Smpl Add apply AssociatedFunction_short_str_lossless : is_associated.
     
     (*
         pub fn to_vec(&self) -> Vec<u8> {
@@ -795,6 +806,7 @@ Module account_address.
       end.
     
     Axiom AssociatedFunction_to_vec : M.IsAssociatedFunction Self "to_vec" to_vec.
+    Smpl Add apply AssociatedFunction_to_vec : is_associated.
     
     (*
         pub fn into_bytes(self) -> [u8; Self::LENGTH] {
@@ -817,6 +829,7 @@ Module account_address.
       end.
     
     Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
+    Smpl Add apply AssociatedFunction_into_bytes : is_associated.
     
     (*
         pub fn from_hex_literal(literal: &str) -> Result<Self, AccountAddressParseError> {
@@ -1169,6 +1182,7 @@ Module account_address.
     
     Axiom AssociatedFunction_from_hex_literal :
       M.IsAssociatedFunction Self "from_hex_literal" from_hex_literal.
+    Smpl Add apply AssociatedFunction_from_hex_literal : is_associated.
     
     (*
         pub fn to_hex_literal(&self) -> String {
@@ -1268,6 +1282,7 @@ Module account_address.
     
     Axiom AssociatedFunction_to_hex_literal :
       M.IsAssociatedFunction Self "to_hex_literal" to_hex_literal.
+    Smpl Add apply AssociatedFunction_to_hex_literal : is_associated.
     
     (*
         pub fn from_hex<T: AsRef<[u8]>>(hex: T) -> Result<Self, AccountAddressParseError> {
@@ -1376,6 +1391,7 @@ Module account_address.
       end.
     
     Axiom AssociatedFunction_from_hex : M.IsAssociatedFunction Self "from_hex" from_hex.
+    Smpl Add apply AssociatedFunction_from_hex : is_associated.
     
     (*
         pub fn to_hex(&self) -> String {
@@ -1461,6 +1477,7 @@ Module account_address.
       end.
     
     Axiom AssociatedFunction_to_hex : M.IsAssociatedFunction Self "to_hex" to_hex.
+    Smpl Add apply AssociatedFunction_to_hex : is_associated.
     
     (*
         pub fn from_bytes<T: AsRef<[u8]>>(bytes: T) -> Result<Self, AccountAddressParseError> {
@@ -1583,6 +1600,7 @@ Module account_address.
       end.
     
     Axiom AssociatedFunction_from_bytes : M.IsAssociatedFunction Self "from_bytes" from_bytes.
+    Smpl Add apply AssociatedFunction_from_bytes : is_associated.
     
     (*
         pub fn abstract_size_for_gas_metering(&self) -> AbstractMemorySize {
@@ -1619,6 +1637,7 @@ Module account_address.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
       M.IsAssociatedFunction Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
+    Smpl Add apply AssociatedFunction_abstract_size_for_gas_metering : is_associated.
   End Impl_move_core_types_account_address_AccountAddress.
   
   Module Impl_core_convert_AsRef_slice_u8_for_move_core_types_account_address_AccountAddress.

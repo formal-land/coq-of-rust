@@ -4,14 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_foo : M.IsFunction "concurrent_tests::foo" foo.
+Smpl Add apply Function_foo : is_function.
 
 Module tests.
   Parameter test_file : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_test_file : M.IsFunction "concurrent_tests::tests::test_file'1" test_file.
+  Smpl Add apply Function_test_file : is_function.
   
   Parameter test_file_also : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_test_file_also :
     M.IsFunction "concurrent_tests::tests::test_file_also'1" test_file_also.
+  Smpl Add apply Function_test_file_also : is_function.
 End tests.

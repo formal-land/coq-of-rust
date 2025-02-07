@@ -431,6 +431,7 @@ Module instructions.
     Axiom Constant_value_MAX_POSITIVE_VALUE :
       (M.get_constant "revm_interpreter::instructions::i256::MAX_POSITIVE_VALUE") =
         value_MAX_POSITIVE_VALUE.
+    Global Hint Rewrite Constant_value_MAX_POSITIVE_VALUE : constant_rewrites.
     
     Definition value_MIN_NEGATIVE_VALUE : Value.t :=
       M.run_constant
@@ -461,6 +462,7 @@ Module instructions.
     Axiom Constant_value_MIN_NEGATIVE_VALUE :
       (M.get_constant "revm_interpreter::instructions::i256::MIN_NEGATIVE_VALUE") =
         value_MIN_NEGATIVE_VALUE.
+    Global Hint Rewrite Constant_value_MIN_NEGATIVE_VALUE : constant_rewrites.
     
     Definition value_FLIPH_BITMASK_U64 : Value.t :=
       M.run_constant
@@ -469,6 +471,7 @@ Module instructions.
     Axiom Constant_value_FLIPH_BITMASK_U64 :
       (M.get_constant "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64") =
         value_FLIPH_BITMASK_U64.
+    Global Hint Rewrite Constant_value_FLIPH_BITMASK_U64 : constant_rewrites.
     
     (*
     pub fn i256_sign(val: &U256) -> Sign {
@@ -564,6 +567,7 @@ Module instructions.
     
     Axiom Function_i256_sign :
       M.IsFunction "revm_interpreter::instructions::i256::i256_sign" i256_sign.
+    Smpl Add apply Function_i256_sign : is_function.
     
     (*
     pub fn i256_sign_compl(val: &mut U256) -> Sign {
@@ -642,6 +646,7 @@ Module instructions.
     
     Axiom Function_i256_sign_compl :
       M.IsFunction "revm_interpreter::instructions::i256::i256_sign_compl" i256_sign_compl.
+    Smpl Add apply Function_i256_sign_compl : is_function.
     
     (*
     fn u256_remove_sign(val: &mut U256) {
@@ -691,6 +696,7 @@ Module instructions.
     
     Axiom Function_u256_remove_sign :
       M.IsFunction "revm_interpreter::instructions::i256::u256_remove_sign" u256_remove_sign.
+    Smpl Add apply Function_u256_remove_sign : is_function.
     
     (*
     pub fn two_compl_mut(op: &mut U256) {
@@ -718,6 +724,7 @@ Module instructions.
     
     Axiom Function_two_compl_mut :
       M.IsFunction "revm_interpreter::instructions::i256::two_compl_mut" two_compl_mut.
+    Smpl Add apply Function_two_compl_mut : is_function.
     
     (*
     pub fn two_compl(op: U256) -> U256 {
@@ -746,6 +753,7 @@ Module instructions.
     
     Axiom Function_two_compl :
       M.IsFunction "revm_interpreter::instructions::i256::two_compl" two_compl.
+    Smpl Add apply Function_two_compl : is_function.
     
     (*
     pub fn i256_cmp(first: &U256, second: &U256) -> Ordering {
@@ -838,6 +846,7 @@ Module instructions.
     
     Axiom Function_i256_cmp :
       M.IsFunction "revm_interpreter::instructions::i256::i256_cmp" i256_cmp.
+    Smpl Add apply Function_i256_cmp : is_function.
     
     (*
     pub fn i256_div(mut first: U256, mut second: U256) -> U256 {
@@ -1242,6 +1251,7 @@ Module instructions.
     
     Axiom Function_i256_div :
       M.IsFunction "revm_interpreter::instructions::i256::i256_div" i256_div.
+    Smpl Add apply Function_i256_div : is_function.
     
     (*
     pub fn i256_mod(mut first: U256, mut second: U256) -> U256 {
@@ -1485,5 +1495,6 @@ Module instructions.
     
     Axiom Function_i256_mod :
       M.IsFunction "revm_interpreter::instructions::i256::i256_mod" i256_mod.
+    Smpl Add apply Function_i256_mod : is_function.
   End i256.
 End instructions.

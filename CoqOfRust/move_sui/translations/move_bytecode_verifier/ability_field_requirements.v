@@ -88,6 +88,7 @@ Module ability_field_requirements.
   
   Axiom Function_verify_module :
     M.IsFunction "move_bytecode_verifier::ability_field_requirements::verify_module" verify_module.
+  Smpl Add apply Function_verify_module : is_function.
   
   (*
   fn verify_module_impl(module: &CompiledModule) -> PartialVMResult<()> {
@@ -1014,4 +1015,5 @@ Module ability_field_requirements.
     M.IsFunction
       "move_bytecode_verifier::ability_field_requirements::verify_module_impl"
       verify_module_impl.
+  Smpl Add apply Function_verify_module_impl : is_function.
 End ability_field_requirements.

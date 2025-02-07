@@ -278,6 +278,7 @@ Module slice.
         
         Axiom Function_heapsort :
           M.IsFunction "core::slice::sort::unstable::heapsort::heapsort" heapsort.
+        Smpl Add apply Function_heapsort : is_function.
         
         (*
         unsafe fn sift_down<T, F>(v: &mut [T], mut node: usize, is_less: &mut F)
@@ -636,6 +637,7 @@ Module slice.
         
         Axiom Function_sift_down :
           M.IsFunction "core::slice::sort::unstable::heapsort::sift_down" sift_down.
+        Smpl Add apply Function_sift_down : is_function.
       End heapsort.
     End unstable.
   End sort.

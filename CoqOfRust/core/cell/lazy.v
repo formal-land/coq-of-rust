@@ -82,6 +82,7 @@ Module cell.
       Axiom AssociatedFunction_new :
         forall (T F : Ty.t),
         M.IsAssociatedFunction (Self T F) "new" (new T F).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub fn into_inner(this: Self) -> Result<T, F> {
@@ -172,6 +173,7 @@ Module cell.
       Axiom AssociatedFunction_into_inner :
         forall (T F : Ty.t),
         M.IsAssociatedFunction (Self T F) "into_inner" (into_inner T F).
+      Smpl Add apply AssociatedFunction_into_inner : is_associated.
       
       (*
           pub fn force(this: &LazyCell<T, F>) -> &T {
@@ -287,6 +289,7 @@ Module cell.
       Axiom AssociatedFunction_force :
         forall (T F : Ty.t),
         M.IsAssociatedFunction (Self T F) "force" (force T F).
+      Smpl Add apply AssociatedFunction_force : is_associated.
       
       (*
           pub fn force_mut(this: &mut LazyCell<T, F>) -> &mut T {
@@ -459,6 +462,7 @@ Module cell.
       Axiom AssociatedFunction_force_mut :
         forall (T F : Ty.t),
         M.IsAssociatedFunction (Self T F) "force_mut" (force_mut T F).
+      Smpl Add apply AssociatedFunction_force_mut : is_associated.
       
       (*
           unsafe fn really_init(this: &LazyCell<T, F>) -> &T {
@@ -671,6 +675,7 @@ Module cell.
       Axiom AssociatedFunction_really_init :
         forall (T F : Ty.t),
         M.IsAssociatedFunction (Self T F) "really_init" (really_init T F).
+      Smpl Add apply AssociatedFunction_really_init : is_associated.
       (*
           pub fn get_mut(this: &mut LazyCell<T, F>) -> Option<&mut T> {
               let state = this.state.get_mut();
@@ -741,6 +746,7 @@ Module cell.
       Axiom AssociatedFunction_get_mut :
         forall (T F : Ty.t),
         M.IsAssociatedFunction (Self T F) "get_mut" (get_mut T F).
+      Smpl Add apply AssociatedFunction_get_mut : is_associated.
       
       (*
           pub fn get(this: &LazyCell<T, F>) -> Option<&T> {
@@ -821,6 +827,7 @@ Module cell.
       Axiom AssociatedFunction_get :
         forall (T F : Ty.t),
         M.IsAssociatedFunction (Self T F) "get" (get T F).
+      Smpl Add apply AssociatedFunction_get : is_associated.
     End Impl_core_cell_lazy_LazyCell_T_F.
     
     
@@ -1104,5 +1111,6 @@ Module cell.
       end.
     
     Axiom Function_panic_poisoned : M.IsFunction "core::cell::lazy::panic_poisoned" panic_poisoned.
+    Smpl Add apply Function_panic_poisoned : is_function.
   End lazy.
 End cell.

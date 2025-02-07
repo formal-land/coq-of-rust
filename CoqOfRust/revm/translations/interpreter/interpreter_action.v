@@ -1156,6 +1156,7 @@ Module interpreter_action.
       end.
     
     Axiom AssociatedFunction_is_call : M.IsAssociatedFunction Self "is_call" is_call.
+    Smpl Add apply AssociatedFunction_is_call : is_associated.
     
     (*
         pub fn is_create(&self) -> bool {
@@ -1194,6 +1195,7 @@ Module interpreter_action.
       end.
     
     Axiom AssociatedFunction_is_create : M.IsAssociatedFunction Self "is_create" is_create.
+    Smpl Add apply AssociatedFunction_is_create : is_associated.
     
     (*
         pub fn is_return(&self) -> bool {
@@ -1226,6 +1228,7 @@ Module interpreter_action.
       end.
     
     Axiom AssociatedFunction_is_return : M.IsAssociatedFunction Self "is_return" is_return.
+    Smpl Add apply AssociatedFunction_is_return : is_associated.
     
     (*
         pub fn is_none(&self) -> bool {
@@ -1258,6 +1261,7 @@ Module interpreter_action.
       end.
     
     Axiom AssociatedFunction_is_none : M.IsAssociatedFunction Self "is_none" is_none.
+    Smpl Add apply AssociatedFunction_is_none : is_associated.
     
     (*
         pub fn is_some(&self) -> bool {
@@ -1284,6 +1288,7 @@ Module interpreter_action.
       end.
     
     Axiom AssociatedFunction_is_some : M.IsAssociatedFunction Self "is_some" is_some.
+    Smpl Add apply AssociatedFunction_is_some : is_associated.
     
     (*
         pub fn into_result_return(self) -> Option<InterpreterResult> {
@@ -1324,5 +1329,6 @@ Module interpreter_action.
     
     Axiom AssociatedFunction_into_result_return :
       M.IsAssociatedFunction Self "into_result_return" into_result_return.
+    Smpl Add apply AssociatedFunction_into_result_return : is_associated.
   End Impl_revm_interpreter_interpreter_action_InterpreterAction.
 End interpreter_action.

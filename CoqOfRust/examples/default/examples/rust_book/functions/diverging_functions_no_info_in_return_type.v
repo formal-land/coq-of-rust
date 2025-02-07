@@ -13,6 +13,7 @@ Definition some_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Axiom Function_some_fn : M.IsFunction "diverging_functions_no_info_in_return_type::some_fn" some_fn.
+Smpl Add apply Function_some_fn : is_function.
 
 (*
 fn main() {
@@ -73,3 +74,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "diverging_functions_no_info_in_return_type::main" main.
+Smpl Add apply Function_main : is_function.

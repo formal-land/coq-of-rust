@@ -11,6 +11,7 @@ Module eip4844.
   
   Axiom Constant_value_GAS_PER_BLOB :
     (M.get_constant "revm_specification::eip4844::GAS_PER_BLOB") = value_GAS_PER_BLOB.
+  Global Hint Rewrite Constant_value_GAS_PER_BLOB : constant_rewrites.
   
   Definition value_TARGET_BLOB_NUMBER_PER_BLOCK : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
@@ -18,6 +19,7 @@ Module eip4844.
   Axiom Constant_value_TARGET_BLOB_NUMBER_PER_BLOCK :
     (M.get_constant "revm_specification::eip4844::TARGET_BLOB_NUMBER_PER_BLOCK") =
       value_TARGET_BLOB_NUMBER_PER_BLOCK.
+  Global Hint Rewrite Constant_value_TARGET_BLOB_NUMBER_PER_BLOCK : constant_rewrites.
   
   Definition value_MAX_BLOB_NUMBER_PER_BLOCK : Value.t :=
     M.run_constant
@@ -32,6 +34,7 @@ Module eip4844.
   Axiom Constant_value_MAX_BLOB_NUMBER_PER_BLOCK :
     (M.get_constant "revm_specification::eip4844::MAX_BLOB_NUMBER_PER_BLOCK") =
       value_MAX_BLOB_NUMBER_PER_BLOCK.
+  Global Hint Rewrite Constant_value_MAX_BLOB_NUMBER_PER_BLOCK : constant_rewrites.
   
   Definition value_MAX_BLOB_GAS_PER_BLOCK : Value.t :=
     M.run_constant
@@ -46,6 +49,7 @@ Module eip4844.
   Axiom Constant_value_MAX_BLOB_GAS_PER_BLOCK :
     (M.get_constant "revm_specification::eip4844::MAX_BLOB_GAS_PER_BLOCK") =
       value_MAX_BLOB_GAS_PER_BLOCK.
+  Global Hint Rewrite Constant_value_MAX_BLOB_GAS_PER_BLOCK : constant_rewrites.
   
   Definition value_TARGET_BLOB_GAS_PER_BLOCK : Value.t :=
     M.run_constant
@@ -60,12 +64,14 @@ Module eip4844.
   Axiom Constant_value_TARGET_BLOB_GAS_PER_BLOCK :
     (M.get_constant "revm_specification::eip4844::TARGET_BLOB_GAS_PER_BLOCK") =
       value_TARGET_BLOB_GAS_PER_BLOCK.
+  Global Hint Rewrite Constant_value_TARGET_BLOB_GAS_PER_BLOCK : constant_rewrites.
   
   Definition value_MIN_BLOB_GASPRICE : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
   
   Axiom Constant_value_MIN_BLOB_GASPRICE :
     (M.get_constant "revm_specification::eip4844::MIN_BLOB_GASPRICE") = value_MIN_BLOB_GASPRICE.
+  Global Hint Rewrite Constant_value_MIN_BLOB_GASPRICE : constant_rewrites.
   
   Definition value_BLOB_GASPRICE_UPDATE_FRACTION : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3338477 |))).
@@ -73,6 +79,7 @@ Module eip4844.
   Axiom Constant_value_BLOB_GASPRICE_UPDATE_FRACTION :
     (M.get_constant "revm_specification::eip4844::BLOB_GASPRICE_UPDATE_FRACTION") =
       value_BLOB_GASPRICE_UPDATE_FRACTION.
+  Global Hint Rewrite Constant_value_BLOB_GASPRICE_UPDATE_FRACTION : constant_rewrites.
   
   Definition value_VERSIONED_HASH_VERSION_KZG : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
@@ -80,4 +87,5 @@ Module eip4844.
   Axiom Constant_value_VERSIONED_HASH_VERSION_KZG :
     (M.get_constant "revm_specification::eip4844::VERSIONED_HASH_VERSION_KZG") =
       value_VERSIONED_HASH_VERSION_KZG.
+  Global Hint Rewrite Constant_value_VERSIONED_HASH_VERSION_KZG : constant_rewrites.
 End eip4844.

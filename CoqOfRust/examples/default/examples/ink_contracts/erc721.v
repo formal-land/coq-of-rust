@@ -77,6 +77,7 @@ Module Impl_erc721_Mapping_K_V.
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
+  Smpl Add apply AssociatedFunction_contains : is_associated.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -88,6 +89,7 @@ Module Impl_erc721_Mapping_K_V.
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
+  Smpl Add apply AssociatedFunction_get : is_associated.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -99,6 +101,7 @@ Module Impl_erc721_Mapping_K_V.
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
+  Smpl Add apply AssociatedFunction_insert : is_associated.
   
   (*
       fn remove(&self, _key: K) {
@@ -110,6 +113,7 @@ Module Impl_erc721_Mapping_K_V.
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
+  Smpl Add apply AssociatedFunction_remove : is_associated.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -121,6 +125,7 @@ Module Impl_erc721_Mapping_K_V.
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
+  Smpl Add apply AssociatedFunction_size : is_associated.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -132,6 +137,7 @@ Module Impl_erc721_Mapping_K_V.
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "take" (take K V).
+  Smpl Add apply AssociatedFunction_take : is_associated.
 End Impl_erc721_Mapping_K_V.
 
 (* StructTuple
@@ -646,6 +652,7 @@ Module Impl_erc721_Env.
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
+  Smpl Add apply AssociatedFunction_caller : is_associated.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -655,6 +662,7 @@ Module Impl_erc721_Env.
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
+  Smpl Add apply AssociatedFunction_emit_event : is_associated.
 End Impl_erc721_Env.
 
 Module Impl_erc721_Erc721.
@@ -668,6 +676,7 @@ Module Impl_erc721_Erc721.
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
+  Smpl Add apply AssociatedFunction_init_env : is_associated.
   
   (*
       fn env(&self) -> Env {
@@ -687,6 +696,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
+  Smpl Add apply AssociatedFunction_env : is_associated.
   
   (*
       pub fn new() -> Self {
@@ -713,6 +723,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
@@ -763,6 +774,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_balance_of_or_zero :
     M.IsAssociatedFunction Self "balance_of_or_zero" balance_of_or_zero.
+  Smpl Add apply AssociatedFunction_balance_of_or_zero : is_associated.
   
   (*
       fn clear_approval(&mut self, id: TokenId) {
@@ -808,6 +820,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_clear_approval :
     M.IsAssociatedFunction Self "clear_approval" clear_approval.
+  Smpl Add apply AssociatedFunction_clear_approval : is_associated.
   
   (*
       fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
@@ -857,6 +870,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_approved_for_all :
     M.IsAssociatedFunction Self "approved_for_all" approved_for_all.
+  Smpl Add apply AssociatedFunction_approved_for_all : is_associated.
   
   (*
       pub fn owner_of(&self, id: TokenId) -> Option<AccountId> {
@@ -892,6 +906,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_owner_of : M.IsAssociatedFunction Self "owner_of" owner_of.
+  Smpl Add apply AssociatedFunction_owner_of : is_associated.
   
   (*
       fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
@@ -1105,6 +1120,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_approved_or_owner :
     M.IsAssociatedFunction Self "approved_or_owner" approved_or_owner.
+  Smpl Add apply AssociatedFunction_approved_or_owner : is_associated.
   
   (*
       fn exists(&self, id: TokenId) -> bool {
@@ -1140,6 +1156,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_exists_ : M.IsAssociatedFunction Self "exists_" exists_.
+  Smpl Add apply AssociatedFunction_exists_ : is_associated.
   
   (*
       pub fn balance_of(&self, owner: AccountId) -> u32 {
@@ -1163,6 +1180,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
+  Smpl Add apply AssociatedFunction_balance_of : is_associated.
   
   (*
       pub fn get_approved(&self, id: TokenId) -> Option<AccountId> {
@@ -1198,6 +1216,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_get_approved : M.IsAssociatedFunction Self "get_approved" get_approved.
+  Smpl Add apply AssociatedFunction_get_approved : is_associated.
   
   (*
       pub fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
@@ -1224,6 +1243,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_is_approved_for_all :
     M.IsAssociatedFunction Self "is_approved_for_all" is_approved_for_all.
+  Smpl Add apply AssociatedFunction_is_approved_for_all : is_associated.
   
   (*
       fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -1424,6 +1444,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_approve_for_all :
     M.IsAssociatedFunction Self "approve_for_all" approve_for_all.
+  Smpl Add apply AssociatedFunction_approve_for_all : is_associated.
   
   (*
       pub fn set_approval_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -1535,6 +1556,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_set_approval_for_all :
     M.IsAssociatedFunction Self "set_approval_for_all" set_approval_for_all.
+  Smpl Add apply AssociatedFunction_set_approval_for_all : is_associated.
   
   (*
       fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -1879,6 +1901,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_approve_for : M.IsAssociatedFunction Self "approve_for" approve_for.
+  Smpl Add apply AssociatedFunction_approve_for : is_associated.
   
   (*
       pub fn approve(&mut self, to: AccountId, id: TokenId) -> Result<(), Error> {
@@ -1992,6 +2015,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
+  Smpl Add apply AssociatedFunction_approve : is_associated.
   
   (*
       fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -2305,6 +2329,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_remove_token_from :
     M.IsAssociatedFunction Self "remove_token_from" remove_token_from.
+  Smpl Add apply AssociatedFunction_remove_token_from : is_associated.
   
   (*
       fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -2336,6 +2361,7 @@ Module Impl_erc721_Erc721.
   Parameter add_token_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_add_token_to : M.IsAssociatedFunction Self "add_token_to" add_token_to.
+  Smpl Add apply AssociatedFunction_add_token_to : is_associated.
   
   (*
       fn transfer_token_from(
@@ -2366,6 +2392,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_transfer_token_from :
     M.IsAssociatedFunction Self "transfer_token_from" transfer_token_from.
+  Smpl Add apply AssociatedFunction_transfer_token_from : is_associated.
   
   (*
       pub fn transfer(&mut self, destination: AccountId, id: TokenId) -> Result<(), Error> {
@@ -2501,6 +2528,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
+  Smpl Add apply AssociatedFunction_transfer : is_associated.
   
   (*
       pub fn transfer_from(
@@ -2625,6 +2653,7 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_transfer_from :
     M.IsAssociatedFunction Self "transfer_from" transfer_from.
+  Smpl Add apply AssociatedFunction_transfer_from : is_associated.
   
   (*
       pub fn mint(&mut self, id: TokenId) -> Result<(), Error> {
@@ -2817,6 +2846,7 @@ Module Impl_erc721_Erc721.
     end.
   
   Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
+  Smpl Add apply AssociatedFunction_mint : is_associated.
   
   (*
       pub fn burn(&mut self, id: TokenId) -> Result<(), Error> {
@@ -2851,4 +2881,5 @@ Module Impl_erc721_Erc721.
   Parameter burn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_burn : M.IsAssociatedFunction Self "burn" burn.
+  Smpl Add apply AssociatedFunction_burn : is_associated.
 End Impl_erc721_Erc721.

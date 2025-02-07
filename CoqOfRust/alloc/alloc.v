@@ -5,25 +5,30 @@ Module alloc.
   Parameter __rust_alloc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function___rust_alloc : M.IsFunction "alloc::alloc::__rust_alloc" __rust_alloc.
+  Smpl Add apply Function___rust_alloc : is_function.
   
   Parameter __rust_dealloc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function___rust_dealloc : M.IsFunction "alloc::alloc::__rust_dealloc" __rust_dealloc.
+  Smpl Add apply Function___rust_dealloc : is_function.
   
   Parameter __rust_realloc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function___rust_realloc : M.IsFunction "alloc::alloc::__rust_realloc" __rust_realloc.
+  Smpl Add apply Function___rust_realloc : is_function.
   
   Parameter __rust_alloc_zeroed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function___rust_alloc_zeroed :
     M.IsFunction "alloc::alloc::__rust_alloc_zeroed" __rust_alloc_zeroed.
+  Smpl Add apply Function___rust_alloc_zeroed : is_function.
   
   Parameter __rust_no_alloc_shim_is_unstable : Value.t.
   
   Axiom Constant___rust_no_alloc_shim_is_unstable :
     (M.get_constant "alloc::alloc::__rust_no_alloc_shim_is_unstable") =
       __rust_no_alloc_shim_is_unstable.
+  Global Hint Rewrite Constant___rust_no_alloc_shim_is_unstable : constant_rewrites.
   
   (* StructTuple
     {
@@ -179,6 +184,7 @@ Module alloc.
     end.
   
   Axiom Function_alloc : M.IsFunction "alloc::alloc::alloc" alloc.
+  Smpl Add apply Function_alloc : is_function.
   
   (*
   pub unsafe fn dealloc(ptr: *mut u8, layout: Layout) {
@@ -214,6 +220,7 @@ Module alloc.
     end.
   
   Axiom Function_dealloc : M.IsFunction "alloc::alloc::dealloc" dealloc.
+  Smpl Add apply Function_dealloc : is_function.
   
   (*
   pub unsafe fn realloc(ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
@@ -251,6 +258,7 @@ Module alloc.
     end.
   
   Axiom Function_realloc : M.IsFunction "alloc::alloc::realloc" realloc.
+  Smpl Add apply Function_realloc : is_function.
   
   (*
   pub unsafe fn alloc_zeroed(layout: Layout) -> *mut u8 {
@@ -320,6 +328,7 @@ Module alloc.
     end.
   
   Axiom Function_alloc_zeroed : M.IsFunction "alloc::alloc::alloc_zeroed" alloc_zeroed.
+  Smpl Add apply Function_alloc_zeroed : is_function.
   
   Module Impl_alloc_alloc_Global.
     Definition Self : Ty.t := Ty.path "alloc::alloc::Global".
@@ -578,6 +587,7 @@ Module alloc.
       end.
     
     Axiom AssociatedFunction_alloc_impl : M.IsAssociatedFunction Self "alloc_impl" alloc_impl.
+    Smpl Add apply AssociatedFunction_alloc_impl : is_associated.
     
     (*
         unsafe fn grow_impl(
@@ -1207,6 +1217,7 @@ Module alloc.
       end.
     
     Axiom AssociatedFunction_grow_impl : M.IsAssociatedFunction Self "grow_impl" grow_impl.
+    Smpl Add apply AssociatedFunction_grow_impl : is_associated.
   End Impl_alloc_alloc_Global.
   
   Module Impl_core_alloc_Allocator_for_alloc_alloc_Global.
@@ -2090,11 +2101,13 @@ Module alloc.
     end.
   
   Axiom Function_exchange_malloc : M.IsFunction "alloc::alloc::exchange_malloc" exchange_malloc.
+  Smpl Add apply Function_exchange_malloc : is_function.
   
   Parameter __rust_alloc_error_handler : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function___rust_alloc_error_handler :
     M.IsFunction "alloc::alloc::__rust_alloc_error_handler" __rust_alloc_error_handler.
+  Smpl Add apply Function___rust_alloc_error_handler : is_function.
   
   (*
   pub const fn handle_alloc_error(layout: Layout) -> ! {
@@ -2145,6 +2158,7 @@ Module alloc.
   
   Axiom Function_handle_alloc_error :
     M.IsFunction "alloc::alloc::handle_alloc_error" handle_alloc_error.
+  Smpl Add apply Function_handle_alloc_error : is_function.
   
   Module handle_alloc_error.
     (*
@@ -2194,6 +2208,7 @@ Module alloc.
       end.
     
     Axiom Function_ct_error : M.IsFunction "alloc::alloc::handle_alloc_error::ct_error" ct_error.
+    Smpl Add apply Function_ct_error : is_function.
     
     (*
         fn rt_error(layout: Layout) -> ! {
@@ -2234,6 +2249,7 @@ Module alloc.
       end.
     
     Axiom Function_rt_error : M.IsFunction "alloc::alloc::handle_alloc_error::rt_error" rt_error.
+    Smpl Add apply Function_rt_error : is_function.
   End handle_alloc_error.
   
   Module __alloc_error_handler.
@@ -2412,6 +2428,7 @@ Module alloc.
     
     Axiom Function___rdl_oom :
       M.IsFunction "alloc::alloc::__alloc_error_handler::__rdl_oom" __rdl_oom.
+    Smpl Add apply Function___rdl_oom : is_function.
     
     Module __rdl_oom.
       Parameter __rust_alloc_error_handler_should_panic : Value.t.
@@ -2420,6 +2437,7 @@ Module alloc.
         (M.get_constant
             "alloc::alloc::__alloc_error_handler::__rdl_oom::__rust_alloc_error_handler_should_panic") =
           __rust_alloc_error_handler_should_panic.
+      Global Hint Rewrite Constant___rust_alloc_error_handler_should_panic : constant_rewrites.
     End __rdl_oom.
   End __alloc_error_handler.
 End alloc.

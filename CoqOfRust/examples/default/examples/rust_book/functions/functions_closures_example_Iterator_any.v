@@ -900,3 +900,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_example_Iterator_any::main" main.
+Smpl Add apply Function_main : is_function.

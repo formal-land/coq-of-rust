@@ -181,6 +181,7 @@ Module instructions.
       end.
     
     Axiom Function_add : M.IsFunction "revm_interpreter::instructions::arithmetic::add" add.
+    Smpl Add apply Function_add : is_function.
     
     (*
     pub fn mul<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -360,6 +361,7 @@ Module instructions.
       end.
     
     Axiom Function_mul : M.IsFunction "revm_interpreter::instructions::arithmetic::mul" mul.
+    Smpl Add apply Function_mul : is_function.
     
     (*
     pub fn sub<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -539,6 +541,7 @@ Module instructions.
       end.
     
     Axiom Function_sub : M.IsFunction "revm_interpreter::instructions::arithmetic::sub" sub.
+    Smpl Add apply Function_sub : is_function.
     
     (*
     pub fn div<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -765,6 +768,7 @@ Module instructions.
       end.
     
     Axiom Function_div : M.IsFunction "revm_interpreter::instructions::arithmetic::div" div.
+    Smpl Add apply Function_div : is_function.
     
     (*
     pub fn sdiv<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -934,6 +938,7 @@ Module instructions.
       end.
     
     Axiom Function_sdiv : M.IsFunction "revm_interpreter::instructions::arithmetic::sdiv" sdiv.
+    Smpl Add apply Function_sdiv : is_function.
     
     (*
     pub fn rem<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1160,6 +1165,7 @@ Module instructions.
       end.
     
     Axiom Function_rem : M.IsFunction "revm_interpreter::instructions::arithmetic::rem" rem.
+    Smpl Add apply Function_rem : is_function.
     
     (*
     pub fn smod<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1327,6 +1333,7 @@ Module instructions.
       end.
     
     Axiom Function_smod : M.IsFunction "revm_interpreter::instructions::arithmetic::smod" smod.
+    Smpl Add apply Function_smod : is_function.
     
     (*
     pub fn addmod<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1511,6 +1518,7 @@ Module instructions.
     
     Axiom Function_addmod :
       M.IsFunction "revm_interpreter::instructions::arithmetic::addmod" addmod.
+    Smpl Add apply Function_addmod : is_function.
     
     (*
     pub fn mulmod<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1695,6 +1703,7 @@ Module instructions.
     
     Axiom Function_mulmod :
       M.IsFunction "revm_interpreter::instructions::arithmetic::mulmod" mulmod.
+    Smpl Add apply Function_mulmod : is_function.
     
     (*
     pub fn exp<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1964,6 +1973,7 @@ Module instructions.
       end.
     
     Axiom Function_exp : M.IsFunction "revm_interpreter::instructions::arithmetic::exp" exp.
+    Smpl Add apply Function_exp : is_function.
     
     (*
     pub fn signextend<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2448,5 +2458,6 @@ Module instructions.
     
     Axiom Function_signextend :
       M.IsFunction "revm_interpreter::instructions::arithmetic::signextend" signextend.
+    Smpl Add apply Function_signextend : is_function.
   End arithmetic.
 End instructions.

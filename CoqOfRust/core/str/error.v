@@ -276,6 +276,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_valid_up_to : M.IsAssociatedFunction Self "valid_up_to" valid_up_to.
+      Smpl Add apply AssociatedFunction_valid_up_to : is_associated.
       
       (*
           pub const fn error_len(&self) -> Option<usize> {
@@ -324,6 +325,7 @@ Module str.
         end.
       
       Axiom AssociatedFunction_error_len : M.IsAssociatedFunction Self "error_len" error_len.
+      Smpl Add apply AssociatedFunction_error_len : is_associated.
     End Impl_core_str_error_Utf8Error.
     
     Module Impl_core_fmt_Display_for_core_str_error_Utf8Error.

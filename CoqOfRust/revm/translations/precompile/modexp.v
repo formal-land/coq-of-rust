@@ -21,6 +21,7 @@ Module modexp.
   
   Axiom Constant_value_BYZANTIUM :
     (M.get_constant "revm_precompile::modexp::BYZANTIUM") = value_BYZANTIUM.
+  Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
   
   Definition value_BERLIN : Value.t :=
     M.run_constant
@@ -40,6 +41,7 @@ Module modexp.
         |))).
   
   Axiom Constant_value_BERLIN : (M.get_constant "revm_precompile::modexp::BERLIN") = value_BERLIN.
+  Global Hint Rewrite Constant_value_BERLIN : constant_rewrites.
   
   (*
   pub fn byzantium_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -182,6 +184,7 @@ Module modexp.
   
   Axiom Function_byzantium_run :
     M.IsFunction "revm_precompile::modexp::byzantium_run" byzantium_run.
+  Smpl Add apply Function_byzantium_run : is_function.
   
   (*
   pub fn berlin_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -323,6 +326,7 @@ Module modexp.
     end.
   
   Axiom Function_berlin_run : M.IsFunction "revm_precompile::modexp::berlin_run" berlin_run.
+  Smpl Add apply Function_berlin_run : is_function.
   
   (*
   pub fn calculate_iteration_count(exp_length: u64, exp_highp: &U256) -> u64 {
@@ -548,6 +552,7 @@ Module modexp.
   
   Axiom Function_calculate_iteration_count :
     M.IsFunction "revm_precompile::modexp::calculate_iteration_count" calculate_iteration_count.
+  Smpl Add apply Function_calculate_iteration_count : is_function.
   
   (*
   pub fn run_inner<F>(input: &[u8], gas_limit: u64, min_gas: u64, calc_gas: F) -> PrecompileResult
@@ -1731,6 +1736,7 @@ Module modexp.
     end.
   
   Axiom Function_run_inner : M.IsFunction "revm_precompile::modexp::run_inner" run_inner.
+  Smpl Add apply Function_run_inner : is_function.
   
   Module run_inner.
     Definition value_HEADER_LENGTH : Value.t :=
@@ -1738,6 +1744,7 @@ Module modexp.
     
     Axiom Constant_value_HEADER_LENGTH :
       (M.get_constant "revm_precompile::modexp::run_inner::HEADER_LENGTH") = value_HEADER_LENGTH.
+    Global Hint Rewrite Constant_value_HEADER_LENGTH : constant_rewrites.
   End run_inner.
   
   (*
@@ -1891,6 +1898,7 @@ Module modexp.
   
   Axiom Function_byzantium_gas_calc :
     M.IsFunction "revm_precompile::modexp::byzantium_gas_calc" byzantium_gas_calc.
+  Smpl Add apply Function_byzantium_gas_calc : is_function.
   
   Module byzantium_gas_calc.
     (*
@@ -2216,6 +2224,7 @@ Module modexp.
     
     Axiom Function_mul_complexity :
       M.IsFunction "revm_precompile::modexp::byzantium_gas_calc::mul_complexity" mul_complexity.
+    Smpl Add apply Function_mul_complexity : is_function.
   End byzantium_gas_calc.
   
   (*
@@ -2369,6 +2378,7 @@ Module modexp.
   
   Axiom Function_berlin_gas_calc :
     M.IsFunction "revm_precompile::modexp::berlin_gas_calc" berlin_gas_calc.
+  Smpl Add apply Function_berlin_gas_calc : is_function.
   
   Module berlin_gas_calc.
     (*
@@ -2477,5 +2487,6 @@ Module modexp.
       M.IsFunction
         "revm_precompile::modexp::berlin_gas_calc::calculate_multiplication_complexity"
         calculate_multiplication_complexity.
+    Smpl Add apply Function_calculate_multiplication_complexity : is_function.
   End berlin_gas_calc.
 End modexp.

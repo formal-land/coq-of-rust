@@ -45,6 +45,7 @@ Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Axiom Function_matching : M.IsFunction "constructor_as_function::matching" matching.
+Smpl Add apply Function_matching : is_function.
 
 (* StructTuple
   {
@@ -297,3 +298,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "constructor_as_function::main" main.
+Smpl Add apply Function_main : is_function.

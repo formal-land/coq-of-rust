@@ -19,18 +19,16 @@ Module Impl_u64.
     {{ num.Impl_u64.saturating_add [] [] [ φ self; φ rhs ] 🔽 Self }}.
   Proof.
     run_symbolic.
-    eapply Run.CallPrimitiveGetFunction. {
-      eapply intrinsics.Function_saturating_add.
-    }
-    run_symbolic.
     eapply Run.CallClosure. {
       apply (intrinsics.run_saturating_add IntegerKind.U64).
     }
     intros []; run_symbolic.
   Defined.
+  Smpl Add apply run_saturating_add : run_closure.
 
   Lemma run_saturating_mul (self rhs: Self) :
     {{ num.Impl_u64.saturating_mul [] [] [ φ self; φ rhs ] 🔽 Self }}.
   Proof.
   Admitted.
+  Smpl Add apply run_saturating_mul : run_closure.
 End Impl_u64.

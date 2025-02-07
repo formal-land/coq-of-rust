@@ -36,6 +36,7 @@ Module bool.
       end.
     
     Axiom AssociatedFunction_then_some : M.IsAssociatedFunction Self "then_some" then_some.
+    Smpl Add apply AssociatedFunction_then_some : is_associated.
     
     (*
         pub fn then<T, F: FnOnce() -> T>(self, f: F) -> Option<T> {
@@ -83,5 +84,6 @@ Module bool.
       end.
     
     Axiom AssociatedFunction_then_ : M.IsAssociatedFunction Self "then_" then_.
+    Smpl Add apply AssociatedFunction_then_ : is_associated.
   End Impl_bool.
 End bool.

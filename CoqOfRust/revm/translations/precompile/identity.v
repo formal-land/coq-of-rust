@@ -20,18 +20,21 @@ Module identity.
         |))).
   
   Axiom Constant_value_FUN : (M.get_constant "revm_precompile::identity::FUN") = value_FUN.
+  Global Hint Rewrite Constant_value_FUN : constant_rewrites.
   
   Definition value_IDENTITY_BASE : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
   
   Axiom Constant_value_IDENTITY_BASE :
     (M.get_constant "revm_precompile::identity::IDENTITY_BASE") = value_IDENTITY_BASE.
+  Global Hint Rewrite Constant_value_IDENTITY_BASE : constant_rewrites.
   
   Definition value_IDENTITY_PER_WORD : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
   
   Axiom Constant_value_IDENTITY_PER_WORD :
     (M.get_constant "revm_precompile::identity::IDENTITY_PER_WORD") = value_IDENTITY_PER_WORD.
+  Global Hint Rewrite Constant_value_IDENTITY_PER_WORD : constant_rewrites.
   
   (*
   pub fn identity_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -168,4 +171,5 @@ Module identity.
     end.
   
   Axiom Function_identity_run : M.IsFunction "revm_precompile::identity::identity_run" identity_run.
+  Smpl Add apply Function_identity_run : is_function.
 End identity.

@@ -108,6 +108,7 @@ Module collections.
         Axiom AssociatedFunction_from_range :
           forall (T : Ty.t),
           M.IsAssociatedFunction (Self T) "from_range" (from_range T).
+        Smpl Add apply AssociatedFunction_from_range : is_associated.
       End Impl_alloc_collections_btree_search_SearchBound_T.
       
       (*
@@ -387,6 +388,7 @@ Module collections.
         Axiom AssociatedFunction_search_tree :
           forall (BorrowType K V : Ty.t),
           M.IsAssociatedFunction (Self BorrowType K V) "search_tree" (search_tree BorrowType K V).
+        Smpl Add apply AssociatedFunction_search_tree : is_associated.
         
         (*
             pub fn search_tree_for_bifurcation<'r, Q: ?Sized, R>(
@@ -1345,6 +1347,7 @@ Module collections.
             (Self BorrowType K V)
             "search_tree_for_bifurcation"
             (search_tree_for_bifurcation BorrowType K V).
+        Smpl Add apply AssociatedFunction_search_tree_for_bifurcation : is_associated.
         
         (*
             pub fn find_lower_bound_edge<'r, Q>(
@@ -1440,6 +1443,7 @@ Module collections.
             (Self BorrowType K V)
             "find_lower_bound_edge"
             (find_lower_bound_edge BorrowType K V).
+        Smpl Add apply AssociatedFunction_find_lower_bound_edge : is_associated.
         
         (*
             pub fn find_upper_bound_edge<'r, Q>(
@@ -1539,6 +1543,7 @@ Module collections.
             (Self BorrowType K V)
             "find_upper_bound_edge"
             (find_upper_bound_edge BorrowType K V).
+        Smpl Add apply AssociatedFunction_find_upper_bound_edge : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_Type_.
@@ -1671,6 +1676,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "search_node"
             (search_node BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_search_node : is_associated.
         
         (*
             unsafe fn find_key_index<Q: ?Sized>(&self, key: &Q, start_index: usize) -> IndexResult
@@ -2073,6 +2079,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "find_key_index"
             (find_key_index BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_find_key_index : is_associated.
         
         (*
             fn find_lower_bound_index<'r, Q>(
@@ -2289,6 +2296,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "find_lower_bound_index"
             (find_lower_bound_index BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_find_lower_bound_index : is_associated.
         
         (*
             unsafe fn find_upper_bound_index<'r, Q>(
@@ -2507,6 +2515,7 @@ Module collections.
             (Self BorrowType K V Type_)
             "find_upper_bound_index"
             (find_upper_bound_index BorrowType K V Type_).
+        Smpl Add apply AssociatedFunction_find_upper_bound_index : is_associated.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_Type_.
     End search.
   End btree.

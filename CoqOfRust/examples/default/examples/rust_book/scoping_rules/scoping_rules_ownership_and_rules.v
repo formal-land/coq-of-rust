@@ -89,6 +89,7 @@ Definition destroy_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
 
 Axiom Function_destroy_box :
   M.IsFunction "scoping_rules_ownership_and_rules::destroy_box" destroy_box.
+Smpl Add apply Function_destroy_box : is_function.
 
 (*
 fn main() {
@@ -309,3 +310,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules::main" main.
+Smpl Add apply Function_main : is_function.

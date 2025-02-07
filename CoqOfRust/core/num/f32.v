@@ -6,188 +6,227 @@ Module f32.
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::RADIX")).
   
   Axiom Constant_value_RADIX : (M.get_constant "core::f32::RADIX") = value_RADIX.
+  Global Hint Rewrite Constant_value_RADIX : constant_rewrites.
   
   Definition value_MANTISSA_DIGITS : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::MANTISSA_DIGITS")).
   
   Axiom Constant_value_MANTISSA_DIGITS :
     (M.get_constant "core::f32::MANTISSA_DIGITS") = value_MANTISSA_DIGITS.
+  Global Hint Rewrite Constant_value_MANTISSA_DIGITS : constant_rewrites.
   
   Definition value_DIGITS : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::DIGITS")).
   
   Axiom Constant_value_DIGITS : (M.get_constant "core::f32::DIGITS") = value_DIGITS.
+  Global Hint Rewrite Constant_value_DIGITS : constant_rewrites.
   
   Definition value_EPSILON : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::EPSILON")).
   
   Axiom Constant_value_EPSILON : (M.get_constant "core::f32::EPSILON") = value_EPSILON.
+  Global Hint Rewrite Constant_value_EPSILON : constant_rewrites.
   
   Definition value_MIN : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::MIN")).
   
   Axiom Constant_value_MIN : (M.get_constant "core::f32::MIN") = value_MIN.
+  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
   
   Definition value_MIN_POSITIVE : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::MIN_POSITIVE")).
   
   Axiom Constant_value_MIN_POSITIVE :
     (M.get_constant "core::f32::MIN_POSITIVE") = value_MIN_POSITIVE.
+  Global Hint Rewrite Constant_value_MIN_POSITIVE : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::f32::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
   
   Definition value_MIN_EXP : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::MIN_EXP")).
   
   Axiom Constant_value_MIN_EXP : (M.get_constant "core::f32::MIN_EXP") = value_MIN_EXP.
+  Global Hint Rewrite Constant_value_MIN_EXP : constant_rewrites.
   
   Definition value_MAX_EXP : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::MAX_EXP")).
   
   Axiom Constant_value_MAX_EXP : (M.get_constant "core::f32::MAX_EXP") = value_MAX_EXP.
+  Global Hint Rewrite Constant_value_MAX_EXP : constant_rewrites.
   
   Definition value_MIN_10_EXP : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::MIN_10_EXP")).
   
   Axiom Constant_value_MIN_10_EXP : (M.get_constant "core::f32::MIN_10_EXP") = value_MIN_10_EXP.
+  Global Hint Rewrite Constant_value_MIN_10_EXP : constant_rewrites.
   
   Definition value_MAX_10_EXP : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::MAX_10_EXP")).
   
   Axiom Constant_value_MAX_10_EXP : (M.get_constant "core::f32::MAX_10_EXP") = value_MAX_10_EXP.
+  Global Hint Rewrite Constant_value_MAX_10_EXP : constant_rewrites.
   
   Definition value_NAN : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::NAN")).
   
   Axiom Constant_value_NAN : (M.get_constant "core::f32::NAN") = value_NAN.
+  Global Hint Rewrite Constant_value_NAN : constant_rewrites.
   
   Definition value_INFINITY : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::INFINITY")).
   
   Axiom Constant_value_INFINITY : (M.get_constant "core::f32::INFINITY") = value_INFINITY.
+  Global Hint Rewrite Constant_value_INFINITY : constant_rewrites.
   
   Definition value_NEG_INFINITY : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::f32::NEG_INFINITY")).
   
   Axiom Constant_value_NEG_INFINITY :
     (M.get_constant "core::f32::NEG_INFINITY") = value_NEG_INFINITY.
+  Global Hint Rewrite Constant_value_NEG_INFINITY : constant_rewrites.
   
   Module consts.
     Definition value_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_PI : (M.get_constant "core::f32::consts::PI") = value_PI.
+    Global Hint Rewrite Constant_value_PI : constant_rewrites.
     
     Definition value_TAU : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_TAU : (M.get_constant "core::f32::consts::TAU") = value_TAU.
+    Global Hint Rewrite Constant_value_TAU : constant_rewrites.
     
     Definition value_PHI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_PHI : (M.get_constant "core::f32::consts::PHI") = value_PHI.
+    Global Hint Rewrite Constant_value_PHI : constant_rewrites.
     
     Definition value_EGAMMA : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_EGAMMA : (M.get_constant "core::f32::consts::EGAMMA") = value_EGAMMA.
+    Global Hint Rewrite Constant_value_EGAMMA : constant_rewrites.
     
     Definition value_FRAC_PI_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_PI_2 :
       (M.get_constant "core::f32::consts::FRAC_PI_2") = value_FRAC_PI_2.
+    Global Hint Rewrite Constant_value_FRAC_PI_2 : constant_rewrites.
     
     Definition value_FRAC_PI_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_PI_3 :
       (M.get_constant "core::f32::consts::FRAC_PI_3") = value_FRAC_PI_3.
+    Global Hint Rewrite Constant_value_FRAC_PI_3 : constant_rewrites.
     
     Definition value_FRAC_PI_4 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_PI_4 :
       (M.get_constant "core::f32::consts::FRAC_PI_4") = value_FRAC_PI_4.
+    Global Hint Rewrite Constant_value_FRAC_PI_4 : constant_rewrites.
     
     Definition value_FRAC_PI_6 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_PI_6 :
       (M.get_constant "core::f32::consts::FRAC_PI_6") = value_FRAC_PI_6.
+    Global Hint Rewrite Constant_value_FRAC_PI_6 : constant_rewrites.
     
     Definition value_FRAC_PI_8 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_PI_8 :
       (M.get_constant "core::f32::consts::FRAC_PI_8") = value_FRAC_PI_8.
+    Global Hint Rewrite Constant_value_FRAC_PI_8 : constant_rewrites.
     
     Definition value_FRAC_1_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_1_PI :
       (M.get_constant "core::f32::consts::FRAC_1_PI") = value_FRAC_1_PI.
+    Global Hint Rewrite Constant_value_FRAC_1_PI : constant_rewrites.
     
     Definition value_FRAC_1_SQRT_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_1_SQRT_PI :
       (M.get_constant "core::f32::consts::FRAC_1_SQRT_PI") = value_FRAC_1_SQRT_PI.
+    Global Hint Rewrite Constant_value_FRAC_1_SQRT_PI : constant_rewrites.
     
     Definition value_FRAC_1_SQRT_2PI : Value.t :=
       M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_1_SQRT_2PI :
       (M.get_constant "core::f32::consts::FRAC_1_SQRT_2PI") = value_FRAC_1_SQRT_2PI.
+    Global Hint Rewrite Constant_value_FRAC_1_SQRT_2PI : constant_rewrites.
     
     Definition value_FRAC_2_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_2_PI :
       (M.get_constant "core::f32::consts::FRAC_2_PI") = value_FRAC_2_PI.
+    Global Hint Rewrite Constant_value_FRAC_2_PI : constant_rewrites.
     
     Definition value_FRAC_2_SQRT_PI : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_2_SQRT_PI :
       (M.get_constant "core::f32::consts::FRAC_2_SQRT_PI") = value_FRAC_2_SQRT_PI.
+    Global Hint Rewrite Constant_value_FRAC_2_SQRT_PI : constant_rewrites.
     
     Definition value_SQRT_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_SQRT_2 : (M.get_constant "core::f32::consts::SQRT_2") = value_SQRT_2.
+    Global Hint Rewrite Constant_value_SQRT_2 : constant_rewrites.
     
     Definition value_FRAC_1_SQRT_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_1_SQRT_2 :
       (M.get_constant "core::f32::consts::FRAC_1_SQRT_2") = value_FRAC_1_SQRT_2.
+    Global Hint Rewrite Constant_value_FRAC_1_SQRT_2 : constant_rewrites.
     
     Definition value_SQRT_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_SQRT_3 : (M.get_constant "core::f32::consts::SQRT_3") = value_SQRT_3.
+    Global Hint Rewrite Constant_value_SQRT_3 : constant_rewrites.
     
     Definition value_FRAC_1_SQRT_3 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_FRAC_1_SQRT_3 :
       (M.get_constant "core::f32::consts::FRAC_1_SQRT_3") = value_FRAC_1_SQRT_3.
+    Global Hint Rewrite Constant_value_FRAC_1_SQRT_3 : constant_rewrites.
     
     Definition value_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_E : (M.get_constant "core::f32::consts::E") = value_E.
+    Global Hint Rewrite Constant_value_E : constant_rewrites.
     
     Definition value_LOG2_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_LOG2_E : (M.get_constant "core::f32::consts::LOG2_E") = value_LOG2_E.
+    Global Hint Rewrite Constant_value_LOG2_E : constant_rewrites.
     
     Definition value_LOG2_10 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_LOG2_10 : (M.get_constant "core::f32::consts::LOG2_10") = value_LOG2_10.
+    Global Hint Rewrite Constant_value_LOG2_10 : constant_rewrites.
     
     Definition value_LOG10_E : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_LOG10_E : (M.get_constant "core::f32::consts::LOG10_E") = value_LOG10_E.
+    Global Hint Rewrite Constant_value_LOG10_E : constant_rewrites.
     
     Definition value_LOG10_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_LOG10_2 : (M.get_constant "core::f32::consts::LOG10_2") = value_LOG10_2.
+    Global Hint Rewrite Constant_value_LOG10_2 : constant_rewrites.
     
     Definition value_LN_2 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_LN_2 : (M.get_constant "core::f32::consts::LN_2") = value_LN_2.
+    Global Hint Rewrite Constant_value_LN_2 : constant_rewrites.
     
     Definition value_LN_10 : Value.t := M.run_constant ltac:(M.monadic UnsupportedLiteral).
     
     Axiom Constant_value_LN_10 : (M.get_constant "core::f32::consts::LN_10") = value_LN_10.
+    Global Hint Rewrite Constant_value_LN_10 : constant_rewrites.
   End consts.
   
   Module Impl_f32.
@@ -199,6 +238,7 @@ Module f32.
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
     
     Axiom AssociatedConstant_value_RADIX : M.IsAssociatedConstant Self "value_RADIX" value_RADIX.
+    Smpl Add apply AssociatedConstant_value_RADIX : is_associated.
     
     (*     pub const MANTISSA_DIGITS: u32 = 24; *)
     (* Ty.path "u32" *)
@@ -207,6 +247,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_MANTISSA_DIGITS :
       M.IsAssociatedConstant Self "value_MANTISSA_DIGITS" value_MANTISSA_DIGITS.
+    Smpl Add apply AssociatedConstant_value_MANTISSA_DIGITS : is_associated.
     
     (*     pub const DIGITS: u32 = 6; *)
     (* Ty.path "u32" *)
@@ -214,6 +255,7 @@ Module f32.
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 6 |))).
     
     Axiom AssociatedConstant_value_DIGITS : M.IsAssociatedConstant Self "value_DIGITS" value_DIGITS.
+    Smpl Add apply AssociatedConstant_value_DIGITS : is_associated.
     
     (*     pub const EPSILON: f32 = 1.19209290e-07_f32; *)
     (* Ty.path "f32" *)
@@ -221,12 +263,14 @@ Module f32.
     
     Axiom AssociatedConstant_value_EPSILON :
       M.IsAssociatedConstant Self "value_EPSILON" value_EPSILON.
+    Smpl Add apply AssociatedConstant_value_EPSILON : is_associated.
     
     (*     pub const MIN: f32 = -3.40282347e+38_f32; *)
     (* Ty.path "f32" *)
     Definition value_MIN : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
     Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
+    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
     
     (*     pub const MIN_POSITIVE: f32 = 1.17549435e-38_f32; *)
     (* Ty.path "f32" *)
@@ -234,12 +278,14 @@ Module f32.
     
     Axiom AssociatedConstant_value_MIN_POSITIVE :
       M.IsAssociatedConstant Self "value_MIN_POSITIVE" value_MIN_POSITIVE.
+    Smpl Add apply AssociatedConstant_value_MIN_POSITIVE : is_associated.
     
     (*     pub const MAX: f32 = 3.40282347e+38_f32; *)
     (* Ty.path "f32" *)
     Definition value_MAX : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
     Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
+    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
     
     (*     pub const MIN_EXP: i32 = -125; *)
     (* Ty.path "i32" *)
@@ -248,6 +294,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_MIN_EXP :
       M.IsAssociatedConstant Self "value_MIN_EXP" value_MIN_EXP.
+    Smpl Add apply AssociatedConstant_value_MIN_EXP : is_associated.
     
     (*     pub const MAX_EXP: i32 = 128; *)
     (* Ty.path "i32" *)
@@ -256,6 +303,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_MAX_EXP :
       M.IsAssociatedConstant Self "value_MAX_EXP" value_MAX_EXP.
+    Smpl Add apply AssociatedConstant_value_MAX_EXP : is_associated.
     
     (*     pub const MIN_10_EXP: i32 = -37; *)
     (* Ty.path "i32" *)
@@ -264,6 +312,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_MIN_10_EXP :
       M.IsAssociatedConstant Self "value_MIN_10_EXP" value_MIN_10_EXP.
+    Smpl Add apply AssociatedConstant_value_MIN_10_EXP : is_associated.
     
     (*     pub const MAX_10_EXP: i32 = 38; *)
     (* Ty.path "i32" *)
@@ -272,6 +321,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_MAX_10_EXP :
       M.IsAssociatedConstant Self "value_MAX_10_EXP" value_MAX_10_EXP.
+    Smpl Add apply AssociatedConstant_value_MAX_10_EXP : is_associated.
     
     (*     pub const NAN: f32 = 0.0_f32 / 0.0_f32; *)
     (* Ty.path "f32" *)
@@ -283,6 +333,7 @@ Module f32.
           |))).
     
     Axiom AssociatedConstant_value_NAN : M.IsAssociatedConstant Self "value_NAN" value_NAN.
+    Smpl Add apply AssociatedConstant_value_NAN : is_associated.
     
     (*     pub const INFINITY: f32 = 1.0_f32 / 0.0_f32; *)
     (* Ty.path "f32" *)
@@ -295,6 +346,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_INFINITY :
       M.IsAssociatedConstant Self "value_INFINITY" value_INFINITY.
+    Smpl Add apply AssociatedConstant_value_INFINITY : is_associated.
     
     (*     pub const NEG_INFINITY: f32 = -1.0_f32 / 0.0_f32; *)
     (* Ty.path "f32" *)
@@ -307,6 +359,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_NEG_INFINITY :
       M.IsAssociatedConstant Self "value_NEG_INFINITY" value_NEG_INFINITY.
+    Smpl Add apply AssociatedConstant_value_NEG_INFINITY : is_associated.
     
     (*     const SIGN_MASK: u32 = 0x8000_0000; *)
     (* Ty.path "u32" *)
@@ -315,6 +368,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_SIGN_MASK :
       M.IsAssociatedConstant Self "value_SIGN_MASK" value_SIGN_MASK.
+    Smpl Add apply AssociatedConstant_value_SIGN_MASK : is_associated.
     
     (*     const EXP_MASK: u32 = 0x7f80_0000; *)
     (* Ty.path "u32" *)
@@ -323,6 +377,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_EXP_MASK :
       M.IsAssociatedConstant Self "value_EXP_MASK" value_EXP_MASK.
+    Smpl Add apply AssociatedConstant_value_EXP_MASK : is_associated.
     
     (*     const MAN_MASK: u32 = 0x007f_ffff; *)
     (* Ty.path "u32" *)
@@ -331,6 +386,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_MAN_MASK :
       M.IsAssociatedConstant Self "value_MAN_MASK" value_MAN_MASK.
+    Smpl Add apply AssociatedConstant_value_MAN_MASK : is_associated.
     
     (*     const TINY_BITS: u32 = 0x1; *)
     (* Ty.path "u32" *)
@@ -339,6 +395,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_TINY_BITS :
       M.IsAssociatedConstant Self "value_TINY_BITS" value_TINY_BITS.
+    Smpl Add apply AssociatedConstant_value_TINY_BITS : is_associated.
     
     (*     const NEG_TINY_BITS: u32 = Self::TINY_BITS | Self::SIGN_MASK; *)
     (* Ty.path "u32" *)
@@ -353,6 +410,7 @@ Module f32.
     
     Axiom AssociatedConstant_value_NEG_TINY_BITS :
       M.IsAssociatedConstant Self "value_NEG_TINY_BITS" value_NEG_TINY_BITS.
+    Smpl Add apply AssociatedConstant_value_NEG_TINY_BITS : is_associated.
     
     (*
         pub const fn is_nan(self) -> bool {
@@ -369,6 +427,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_is_nan : M.IsAssociatedFunction Self "is_nan" is_nan.
+    Smpl Add apply AssociatedFunction_is_nan : is_associated.
     
     (*
         pub(crate) const fn abs_private(self) -> f32 {
@@ -404,6 +463,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_abs_private : M.IsAssociatedFunction Self "abs_private" abs_private.
+    Smpl Add apply AssociatedFunction_abs_private : is_associated.
     
     (*
         pub const fn is_infinite(self) -> bool {
@@ -428,6 +488,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_is_infinite : M.IsAssociatedFunction Self "is_infinite" is_infinite.
+    Smpl Add apply AssociatedFunction_is_infinite : is_associated.
     
     (*
         pub const fn is_finite(self) -> bool {
@@ -452,6 +513,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_is_finite : M.IsAssociatedFunction Self "is_finite" is_finite.
+    Smpl Add apply AssociatedFunction_is_finite : is_associated.
     
     (*
         pub const fn is_subnormal(self) -> bool {
@@ -484,6 +546,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_is_subnormal : M.IsAssociatedFunction Self "is_subnormal" is_subnormal.
+    Smpl Add apply AssociatedFunction_is_subnormal : is_associated.
     
     (*
         pub const fn is_normal(self) -> bool {
@@ -516,6 +579,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_is_normal : M.IsAssociatedFunction Self "is_normal" is_normal.
+    Smpl Add apply AssociatedFunction_is_normal : is_associated.
     
     (*
         pub const fn classify(self) -> FpCategory {
@@ -620,6 +684,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_classify : M.IsAssociatedFunction Self "classify" classify.
+    Smpl Add apply AssociatedFunction_classify : is_associated.
     
     (*
         pub const fn is_sign_positive(self) -> bool {
@@ -642,6 +707,7 @@ Module f32.
     
     Axiom AssociatedFunction_is_sign_positive :
       M.IsAssociatedFunction Self "is_sign_positive" is_sign_positive.
+    Smpl Add apply AssociatedFunction_is_sign_positive : is_associated.
     
     (*
         pub const fn is_sign_negative(self) -> bool {
@@ -674,6 +740,7 @@ Module f32.
     
     Axiom AssociatedFunction_is_sign_negative :
       M.IsAssociatedFunction Self "is_sign_negative" is_sign_negative.
+    Smpl Add apply AssociatedFunction_is_sign_negative : is_associated.
     
     (*
         pub const fn next_up(self) -> Self {
@@ -817,6 +884,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_next_up : M.IsAssociatedFunction Self "next_up" next_up.
+    Smpl Add apply AssociatedFunction_next_up : is_associated.
     
     (*
         pub const fn next_down(self) -> Self {
@@ -960,6 +1028,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_next_down : M.IsAssociatedFunction Self "next_down" next_down.
+    Smpl Add apply AssociatedFunction_next_down : is_associated.
     
     (*
         pub fn recip(self) -> f32 {
@@ -976,6 +1045,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_recip : M.IsAssociatedFunction Self "recip" recip.
+    Smpl Add apply AssociatedFunction_recip : is_associated.
     
     (*
         pub fn to_degrees(self) -> f32 {
@@ -997,6 +1067,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_to_degrees : M.IsAssociatedFunction Self "to_degrees" to_degrees.
+    Smpl Add apply AssociatedFunction_to_degrees : is_associated.
     
     (*
         pub fn to_radians(self) -> f32 {
@@ -1017,6 +1088,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_to_radians : M.IsAssociatedFunction Self "to_radians" to_radians.
+    Smpl Add apply AssociatedFunction_to_radians : is_associated.
     
     (*
         pub fn max(self, other: f32) -> f32 {
@@ -1037,6 +1109,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_max : M.IsAssociatedFunction Self "max" max.
+    Smpl Add apply AssociatedFunction_max : is_associated.
     
     (*
         pub fn min(self, other: f32) -> f32 {
@@ -1057,6 +1130,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_min : M.IsAssociatedFunction Self "min" min.
+    Smpl Add apply AssociatedFunction_min : is_associated.
     
     (*
         pub fn maximum(self, other: f32) -> f32 {
@@ -1174,6 +1248,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_maximum : M.IsAssociatedFunction Self "maximum" maximum.
+    Smpl Add apply AssociatedFunction_maximum : is_associated.
     
     (*
         pub fn minimum(self, other: f32) -> f32 {
@@ -1292,6 +1367,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_minimum : M.IsAssociatedFunction Self "minimum" minimum.
+    Smpl Add apply AssociatedFunction_minimum : is_associated.
     
     (*
         pub fn midpoint(self, other: f32) -> f32 {
@@ -1375,6 +1451,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
+    Smpl Add apply AssociatedFunction_midpoint : is_associated.
     
     (*
         pub unsafe fn to_int_unchecked<Int>(self) -> Int
@@ -1408,6 +1485,7 @@ Module f32.
     
     Axiom AssociatedFunction_to_int_unchecked :
       M.IsAssociatedFunction Self "to_int_unchecked" to_int_unchecked.
+    Smpl Add apply AssociatedFunction_to_int_unchecked : is_associated.
     
     (*
         pub const fn to_bits(self) -> u32 {
@@ -1432,6 +1510,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
+    Smpl Add apply AssociatedFunction_to_bits : is_associated.
     
     (*
         pub const fn from_bits(v: u32) -> Self {
@@ -1457,6 +1536,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
+    Smpl Add apply AssociatedFunction_from_bits : is_associated.
     
     (*
         pub const fn to_be_bytes(self) -> [u8; 4] {
@@ -1481,6 +1561,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
+    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
     
     (*
         pub const fn to_le_bytes(self) -> [u8; 4] {
@@ -1505,6 +1586,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
+    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
     
     (*
         pub const fn to_ne_bytes(self) -> [u8; 4] {
@@ -1529,6 +1611,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
+    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
     
     (*
         pub const fn from_be_bytes(bytes: [u8; 4]) -> Self {
@@ -1554,6 +1637,7 @@ Module f32.
     
     Axiom AssociatedFunction_from_be_bytes :
       M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
+    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
     
     (*
         pub const fn from_le_bytes(bytes: [u8; 4]) -> Self {
@@ -1579,6 +1663,7 @@ Module f32.
     
     Axiom AssociatedFunction_from_le_bytes :
       M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
+    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
     
     (*
         pub const fn from_ne_bytes(bytes: [u8; 4]) -> Self {
@@ -1604,6 +1689,7 @@ Module f32.
     
     Axiom AssociatedFunction_from_ne_bytes :
       M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
+    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
     
     (*
         pub fn total_cmp(&self, other: &Self) -> crate::cmp::Ordering {
@@ -1710,6 +1796,7 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_total_cmp : M.IsAssociatedFunction Self "total_cmp" total_cmp.
+    Smpl Add apply AssociatedFunction_total_cmp : is_associated.
     
     (*
         pub fn clamp(mut self, min: f32, max: f32) -> f32 {
@@ -1861,5 +1948,6 @@ Module f32.
       end.
     
     Axiom AssociatedFunction_clamp : M.IsAssociatedFunction Self "clamp" clamp.
+    Smpl Add apply AssociatedFunction_clamp : is_associated.
   End Impl_f32.
 End f32.

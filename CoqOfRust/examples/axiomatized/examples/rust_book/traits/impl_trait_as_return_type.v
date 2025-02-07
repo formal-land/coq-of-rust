@@ -7,10 +7,12 @@ Axiom Function_combine_vecs_explicit_return_type :
   M.IsFunction
     "impl_trait_as_return_type::combine_vecs_explicit_return_type"
     combine_vecs_explicit_return_type.
+Smpl Add apply Function_combine_vecs_explicit_return_type : is_function.
 
 Parameter combine_vecs : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_combine_vecs : M.IsFunction "impl_trait_as_return_type::combine_vecs" combine_vecs.
+Smpl Add apply Function_combine_vecs : is_function.
 
 Module combine_vecs.
   (* Error OpaqueTy *)
@@ -19,3 +21,4 @@ End combine_vecs.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "impl_trait_as_return_type::main" main.
+Smpl Add apply Function_main : is_function.

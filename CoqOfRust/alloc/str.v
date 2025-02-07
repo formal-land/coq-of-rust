@@ -3829,6 +3829,7 @@ Module str.
     end.
   
   Axiom Function_join_generic_copy : M.IsFunction "alloc::str::join_generic_copy" join_generic_copy.
+  Smpl Add apply Function_join_generic_copy : is_function.
   
   Module Impl_core_borrow_Borrow_str_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -4075,6 +4076,7 @@ Module str.
     
     Axiom AssociatedFunction_into_boxed_bytes :
       M.IsAssociatedFunction Self "into_boxed_bytes" into_boxed_bytes.
+    Smpl Add apply AssociatedFunction_into_boxed_bytes : is_associated.
     
     (*
         pub fn replace<P: Pattern>(&self, from: P, to: &str) -> String {
@@ -4318,6 +4320,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_replace : M.IsAssociatedFunction Self "replace" replace.
+    Smpl Add apply AssociatedFunction_replace : is_associated.
     
     (*
         pub fn replacen<P: Pattern>(&self, pat: P, to: &str, count: usize) -> String {
@@ -4598,6 +4601,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_replacen : M.IsAssociatedFunction Self "replacen" replacen.
+    Smpl Add apply AssociatedFunction_replacen : is_associated.
     
     (*
         pub fn to_lowercase(&self) -> String {
@@ -5056,6 +5060,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_to_lowercase : M.IsAssociatedFunction Self "to_lowercase" to_lowercase.
+    Smpl Add apply AssociatedFunction_to_lowercase : is_associated.
     
     (*
         pub fn to_uppercase(&self) -> String {
@@ -5334,6 +5339,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_to_uppercase : M.IsAssociatedFunction Self "to_uppercase" to_uppercase.
+    Smpl Add apply AssociatedFunction_to_uppercase : is_associated.
     
     (*
         pub fn into_string(self: Box<str>) -> String {
@@ -5399,6 +5405,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
+    Smpl Add apply AssociatedFunction_into_string : is_associated.
     
     (*
         pub fn repeat(&self, n: usize) -> String {
@@ -5445,6 +5452,7 @@ Module str.
       end.
     
     Axiom AssociatedFunction_repeat : M.IsAssociatedFunction Self "repeat" repeat.
+    Smpl Add apply AssociatedFunction_repeat : is_associated.
     
     (*
         pub fn to_ascii_uppercase(&self) -> String {
@@ -5506,6 +5514,7 @@ Module str.
     
     Axiom AssociatedFunction_to_ascii_uppercase :
       M.IsAssociatedFunction Self "to_ascii_uppercase" to_ascii_uppercase.
+    Smpl Add apply AssociatedFunction_to_ascii_uppercase : is_associated.
     
     (*
         pub fn to_ascii_lowercase(&self) -> String {
@@ -5567,6 +5576,7 @@ Module str.
     
     Axiom AssociatedFunction_to_ascii_lowercase :
       M.IsAssociatedFunction Self "to_ascii_lowercase" to_ascii_lowercase.
+    Smpl Add apply AssociatedFunction_to_ascii_lowercase : is_associated.
   End Impl_str.
   
   (*
@@ -5612,6 +5622,7 @@ Module str.
   
   Axiom Function_from_boxed_utf8_unchecked :
     M.IsFunction "alloc::str::from_boxed_utf8_unchecked" from_boxed_utf8_unchecked.
+  Smpl Add apply Function_from_boxed_utf8_unchecked : is_function.
   
   (*
   pub fn convert_while_ascii(s: &str, convert: fn(&u8) -> u8) -> (String, &str) {
@@ -6565,11 +6576,13 @@ Module str.
   
   Axiom Function_convert_while_ascii :
     M.IsFunction "alloc::str::convert_while_ascii" convert_while_ascii.
+  Smpl Add apply Function_convert_while_ascii : is_function.
   
   Module convert_while_ascii.
     Definition value_N : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
     
     Axiom Constant_value_N : (M.get_constant "alloc::str::convert_while_ascii::N") = value_N.
+    Global Hint Rewrite Constant_value_N : constant_rewrites.
   End convert_while_ascii.
 End str.

@@ -348,6 +348,7 @@ Module unicode.
     
     Axiom Function_bitset_search :
       M.IsFunction "core::unicode::unicode_data::bitset_search" bitset_search.
+    Smpl Add apply Function_bitset_search : is_function.
     
     (*
     fn decode_prefix_sum(short_offset_run_header: u32) -> u32 {
@@ -373,6 +374,7 @@ Module unicode.
     
     Axiom Function_decode_prefix_sum :
       M.IsFunction "core::unicode::unicode_data::decode_prefix_sum" decode_prefix_sum.
+    Smpl Add apply Function_decode_prefix_sum : is_function.
     
     (*
     fn decode_length(short_offset_run_header: u32) -> usize {
@@ -395,6 +397,7 @@ Module unicode.
     
     Axiom Function_decode_length :
       M.IsFunction "core::unicode::unicode_data::decode_length" decode_length.
+    Smpl Add apply Function_decode_length : is_function.
     
     (*
     fn skip_search<const SOR: usize, const OFFSETS: usize>(
@@ -828,6 +831,7 @@ Module unicode.
     
     Axiom Function_skip_search :
       M.IsFunction "core::unicode::unicode_data::skip_search" skip_search.
+    Smpl Add apply Function_skip_search : is_function.
     
     Definition value_UNICODE_VERSION : Value.t :=
       M.run_constant
@@ -843,6 +847,7 @@ Module unicode.
     
     Axiom Constant_value_UNICODE_VERSION :
       (M.get_constant "core::unicode::unicode_data::UNICODE_VERSION") = value_UNICODE_VERSION.
+    Global Hint Rewrite Constant_value_UNICODE_VERSION : constant_rewrites.
     
     Module alphabetic.
       Definition value_SHORT_OFFSET_RUNS : Value.t :=
@@ -912,6 +917,7 @@ Module unicode.
       Axiom Constant_value_SHORT_OFFSET_RUNS :
         (M.get_constant "core::unicode::unicode_data::alphabetic::SHORT_OFFSET_RUNS") =
           value_SHORT_OFFSET_RUNS.
+      Global Hint Rewrite Constant_value_SHORT_OFFSET_RUNS : constant_rewrites.
       
       Definition value_OFFSETS : Value.t :=
         M.run_constant
@@ -2441,6 +2447,7 @@ Module unicode.
       
       Axiom Constant_value_OFFSETS :
         (M.get_constant "core::unicode::unicode_data::alphabetic::OFFSETS") = value_OFFSETS.
+      Global Hint Rewrite Constant_value_OFFSETS : constant_rewrites.
       
       (*
           pub fn lookup(c: char) -> bool {
@@ -2497,6 +2504,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::alphabetic::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End alphabetic.
     
     Module case_ignorable.
@@ -2551,6 +2559,7 @@ Module unicode.
       Axiom Constant_value_SHORT_OFFSET_RUNS :
         (M.get_constant "core::unicode::unicode_data::case_ignorable::SHORT_OFFSET_RUNS") =
           value_SHORT_OFFSET_RUNS.
+      Global Hint Rewrite Constant_value_SHORT_OFFSET_RUNS : constant_rewrites.
       
       Definition value_OFFSETS : Value.t :=
         M.run_constant
@@ -3470,6 +3479,7 @@ Module unicode.
       
       Axiom Constant_value_OFFSETS :
         (M.get_constant "core::unicode::unicode_data::case_ignorable::OFFSETS") = value_OFFSETS.
+      Global Hint Rewrite Constant_value_OFFSETS : constant_rewrites.
       
       (*
           pub fn lookup(c: char) -> bool {
@@ -3527,6 +3537,7 @@ Module unicode.
       
       Axiom Function_lookup :
         M.IsFunction "core::unicode::unicode_data::case_ignorable::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End case_ignorable.
     
     Module cased.
@@ -3566,6 +3577,7 @@ Module unicode.
       Axiom Constant_value_SHORT_OFFSET_RUNS :
         (M.get_constant "core::unicode::unicode_data::cased::SHORT_OFFSET_RUNS") =
           value_SHORT_OFFSET_RUNS.
+      Global Hint Rewrite Constant_value_SHORT_OFFSET_RUNS : constant_rewrites.
       
       Definition value_OFFSETS : Value.t :=
         M.run_constant
@@ -3899,6 +3911,7 @@ Module unicode.
       
       Axiom Constant_value_OFFSETS :
         (M.get_constant "core::unicode::unicode_data::cased::OFFSETS") = value_OFFSETS.
+      Global Hint Rewrite Constant_value_OFFSETS : constant_rewrites.
       
       (*
           pub fn lookup(c: char) -> bool {
@@ -3952,6 +3965,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cased::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End cased.
     
     Module cc.
@@ -3963,6 +3977,7 @@ Module unicode.
       Axiom Constant_value_SHORT_OFFSET_RUNS :
         (M.get_constant "core::unicode::unicode_data::cc::SHORT_OFFSET_RUNS") =
           value_SHORT_OFFSET_RUNS.
+      Global Hint Rewrite Constant_value_SHORT_OFFSET_RUNS : constant_rewrites.
       
       Definition value_OFFSETS : Value.t :=
         M.run_constant
@@ -3982,6 +3997,7 @@ Module unicode.
       
       Axiom Constant_value_OFFSETS :
         (M.get_constant "core::unicode::unicode_data::cc::OFFSETS") = value_OFFSETS.
+      Global Hint Rewrite Constant_value_OFFSETS : constant_rewrites.
       
       (*
           pub fn lookup(c: char) -> bool {
@@ -4035,6 +4051,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cc::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End cc.
     
     Module grapheme_extend.
@@ -4086,6 +4103,7 @@ Module unicode.
       Axiom Constant_value_SHORT_OFFSET_RUNS :
         (M.get_constant "core::unicode::unicode_data::grapheme_extend::SHORT_OFFSET_RUNS") =
           value_SHORT_OFFSET_RUNS.
+      Global Hint Rewrite Constant_value_SHORT_OFFSET_RUNS : constant_rewrites.
       
       Definition value_OFFSETS : Value.t :=
         M.run_constant
@@ -4851,6 +4869,7 @@ Module unicode.
       
       Axiom Constant_value_OFFSETS :
         (M.get_constant "core::unicode::unicode_data::grapheme_extend::OFFSETS") = value_OFFSETS.
+      Global Hint Rewrite Constant_value_OFFSETS : constant_rewrites.
       
       (*
           pub fn lookup(c: char) -> bool {
@@ -4882,6 +4901,7 @@ Module unicode.
       
       Axiom Function_lookup :
         M.IsFunction "core::unicode::unicode_data::grapheme_extend::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
       
       (*
           fn lookup_slow(c: char) -> bool {
@@ -4939,6 +4959,7 @@ Module unicode.
       
       Axiom Function_lookup_slow :
         M.IsFunction "core::unicode::unicode_data::grapheme_extend::lookup_slow" lookup_slow.
+      Smpl Add apply Function_lookup_slow : is_function.
     End grapheme_extend.
     
     Module lowercase.
@@ -5087,6 +5108,7 @@ Module unicode.
       Axiom Constant_value_BITSET_CHUNKS_MAP :
         (M.get_constant "core::unicode::unicode_data::lowercase::BITSET_CHUNKS_MAP") =
           value_BITSET_CHUNKS_MAP.
+      Global Hint Rewrite Constant_value_BITSET_CHUNKS_MAP : constant_rewrites.
       
       Definition value_BITSET_INDEX_CHUNKS : Value.t :=
         M.run_constant
@@ -5490,6 +5512,7 @@ Module unicode.
       Axiom Constant_value_BITSET_INDEX_CHUNKS :
         (M.get_constant "core::unicode::unicode_data::lowercase::BITSET_INDEX_CHUNKS") =
           value_BITSET_INDEX_CHUNKS.
+      Global Hint Rewrite Constant_value_BITSET_INDEX_CHUNKS : constant_rewrites.
       
       Definition value_BITSET_CANONICAL : Value.t :=
         M.run_constant
@@ -5569,6 +5592,7 @@ Module unicode.
       Axiom Constant_value_BITSET_CANONICAL :
         (M.get_constant "core::unicode::unicode_data::lowercase::BITSET_CANONICAL") =
           value_BITSET_CANONICAL.
+      Global Hint Rewrite Constant_value_BITSET_CANONICAL : constant_rewrites.
       
       Definition value_BITSET_MAPPING : Value.t :=
         M.run_constant
@@ -5636,6 +5660,7 @@ Module unicode.
       Axiom Constant_value_BITSET_MAPPING :
         (M.get_constant "core::unicode::unicode_data::lowercase::BITSET_MAPPING") =
           value_BITSET_MAPPING.
+      Global Hint Rewrite Constant_value_BITSET_MAPPING : constant_rewrites.
       
       (*
           pub const fn lookup(c: char) -> bool {
@@ -5726,6 +5751,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::lowercase::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End lowercase.
     
     Module n.
@@ -5785,6 +5811,7 @@ Module unicode.
       Axiom Constant_value_SHORT_OFFSET_RUNS :
         (M.get_constant "core::unicode::unicode_data::n::SHORT_OFFSET_RUNS") =
           value_SHORT_OFFSET_RUNS.
+      Global Hint Rewrite Constant_value_SHORT_OFFSET_RUNS : constant_rewrites.
       
       Definition value_OFFSETS : Value.t :=
         M.run_constant
@@ -6088,6 +6115,7 @@ Module unicode.
       
       Axiom Constant_value_OFFSETS :
         (M.get_constant "core::unicode::unicode_data::n::OFFSETS") = value_OFFSETS.
+      Global Hint Rewrite Constant_value_OFFSETS : constant_rewrites.
       
       (*
           pub fn lookup(c: char) -> bool {
@@ -6141,6 +6169,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::n::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End n.
     
     Module uppercase.
@@ -6291,6 +6320,7 @@ Module unicode.
       Axiom Constant_value_BITSET_CHUNKS_MAP :
         (M.get_constant "core::unicode::unicode_data::uppercase::BITSET_CHUNKS_MAP") =
           value_BITSET_CHUNKS_MAP.
+      Global Hint Rewrite Constant_value_BITSET_CHUNKS_MAP : constant_rewrites.
       
       Definition value_BITSET_INDEX_CHUNKS : Value.t :=
         M.run_constant
@@ -6637,6 +6667,7 @@ Module unicode.
       Axiom Constant_value_BITSET_INDEX_CHUNKS :
         (M.get_constant "core::unicode::unicode_data::uppercase::BITSET_INDEX_CHUNKS") =
           value_BITSET_INDEX_CHUNKS.
+      Global Hint Rewrite Constant_value_BITSET_INDEX_CHUNKS : constant_rewrites.
       
       Definition value_BITSET_CANONICAL : Value.t :=
         M.run_constant
@@ -6704,6 +6735,7 @@ Module unicode.
       Axiom Constant_value_BITSET_CANONICAL :
         (M.get_constant "core::unicode::unicode_data::uppercase::BITSET_CANONICAL") =
           value_BITSET_CANONICAL.
+      Global Hint Rewrite Constant_value_BITSET_CANONICAL : constant_rewrites.
       
       Definition value_BITSET_MAPPING : Value.t :=
         M.run_constant
@@ -6777,6 +6809,7 @@ Module unicode.
       Axiom Constant_value_BITSET_MAPPING :
         (M.get_constant "core::unicode::unicode_data::uppercase::BITSET_MAPPING") =
           value_BITSET_MAPPING.
+      Global Hint Rewrite Constant_value_BITSET_MAPPING : constant_rewrites.
       
       (*
           pub const fn lookup(c: char) -> bool {
@@ -6867,6 +6900,7 @@ Module unicode.
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::uppercase::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End uppercase.
     
     Module white_space.
@@ -7140,6 +7174,7 @@ Module unicode.
       Axiom Constant_value_WHITESPACE_MAP :
         (M.get_constant "core::unicode::unicode_data::white_space::WHITESPACE_MAP") =
           value_WHITESPACE_MAP.
+      Global Hint Rewrite Constant_value_WHITESPACE_MAP : constant_rewrites.
       
       (*
           pub fn lookup(c: char) -> bool {
@@ -7259,6 +7294,7 @@ Module unicode.
       
       Axiom Function_lookup :
         M.IsFunction "core::unicode::unicode_data::white_space::lookup" lookup.
+      Smpl Add apply Function_lookup : is_function.
     End white_space.
     
     Module conversions.
@@ -7267,6 +7303,7 @@ Module unicode.
       
       Axiom Constant_value_INDEX_MASK :
         (M.get_constant "core::unicode::unicode_data::conversions::INDEX_MASK") = value_INDEX_MASK.
+      Global Hint Rewrite Constant_value_INDEX_MASK : constant_rewrites.
       
       (*
           pub fn to_lower(c: char) -> [char; 3] {
@@ -7678,6 +7715,7 @@ Module unicode.
       
       Axiom Function_to_lower :
         M.IsFunction "core::unicode::unicode_data::conversions::to_lower" to_lower.
+      Smpl Add apply Function_to_lower : is_function.
       
       (*
           pub fn to_upper(c: char) -> [char; 3] {
@@ -8089,6 +8127,7 @@ Module unicode.
       
       Axiom Function_to_upper :
         M.IsFunction "core::unicode::unicode_data::conversions::to_upper" to_upper.
+      Smpl Add apply Function_to_upper : is_function.
       
       Definition value_LOWERCASE_TABLE : Value.t :=
         M.run_constant
@@ -10982,6 +11021,7 @@ Module unicode.
       Axiom Constant_value_LOWERCASE_TABLE :
         (M.get_constant "core::unicode::unicode_data::conversions::LOWERCASE_TABLE") =
           value_LOWERCASE_TABLE.
+      Global Hint Rewrite Constant_value_LOWERCASE_TABLE : constant_rewrites.
       
       Definition value_LOWERCASE_TABLE_MULTI : Value.t :=
         M.run_constant
@@ -11009,6 +11049,7 @@ Module unicode.
       Axiom Constant_value_LOWERCASE_TABLE_MULTI :
         (M.get_constant "core::unicode::unicode_data::conversions::LOWERCASE_TABLE_MULTI") =
           value_LOWERCASE_TABLE_MULTI.
+      Global Hint Rewrite Constant_value_LOWERCASE_TABLE_MULTI : constant_rewrites.
       
       Definition value_UPPERCASE_TABLE : Value.t :=
         M.run_constant
@@ -14084,6 +14125,7 @@ Module unicode.
       Axiom Constant_value_UPPERCASE_TABLE :
         (M.get_constant "core::unicode::unicode_data::conversions::UPPERCASE_TABLE") =
           value_UPPERCASE_TABLE.
+      Global Hint Rewrite Constant_value_UPPERCASE_TABLE : constant_rewrites.
       
       Definition value_UPPERCASE_TABLE_MULTI : Value.t :=
         M.run_constant
@@ -14384,6 +14426,7 @@ Module unicode.
       Axiom Constant_value_UPPERCASE_TABLE_MULTI :
         (M.get_constant "core::unicode::unicode_data::conversions::UPPERCASE_TABLE_MULTI") =
           value_UPPERCASE_TABLE_MULTI.
+      Global Hint Rewrite Constant_value_UPPERCASE_TABLE_MULTI : constant_rewrites.
     End conversions.
   End unicode_data.
 End unicode.

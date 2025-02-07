@@ -129,6 +129,7 @@ Module mem.
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      Smpl Add apply AssociatedFunction_new : is_associated.
       
       (*
           pub const fn uninit() -> MaybeUninit<T> {
@@ -149,6 +150,7 @@ Module mem.
       Axiom AssociatedFunction_uninit :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "uninit" (uninit T).
+      Smpl Add apply AssociatedFunction_uninit : is_associated.
       
       (*
           pub const fn uninit_array<const N: usize>() -> [Self; N] {
@@ -175,6 +177,7 @@ Module mem.
       Axiom AssociatedFunction_uninit_array :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "uninit_array" (uninit_array T).
+      Smpl Add apply AssociatedFunction_uninit_array : is_associated.
       
       (*
           pub const fn zeroed() -> MaybeUninit<T> {
@@ -234,6 +237,7 @@ Module mem.
       Axiom AssociatedFunction_zeroed :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "zeroed" (zeroed T).
+      Smpl Add apply AssociatedFunction_zeroed : is_associated.
       
       (*
           pub const fn write(&mut self, val: T) -> &mut T {
@@ -297,6 +301,7 @@ Module mem.
       Axiom AssociatedFunction_write :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "write" (write T).
+      Smpl Add apply AssociatedFunction_write : is_associated.
       
       (*
           pub const fn as_ptr(&self) -> *const T {
@@ -324,6 +329,7 @@ Module mem.
       Axiom AssociatedFunction_as_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
+      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
       
       (*
           pub const fn as_mut_ptr(&mut self) -> *mut T {
@@ -351,6 +357,7 @@ Module mem.
       Axiom AssociatedFunction_as_mut_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_mut_ptr" (as_mut_ptr T).
+      Smpl Add apply AssociatedFunction_as_mut_ptr : is_associated.
       
       (*
           pub const unsafe fn assume_init(self) -> T {
@@ -402,6 +409,7 @@ Module mem.
       Axiom AssociatedFunction_assume_init :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "assume_init" (assume_init T).
+      Smpl Add apply AssociatedFunction_assume_init : is_associated.
       
       (*
           pub const unsafe fn assume_init_read(&self) -> T {
@@ -460,6 +468,7 @@ Module mem.
       Axiom AssociatedFunction_assume_init_read :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "assume_init_read" (assume_init_read T).
+      Smpl Add apply AssociatedFunction_assume_init_read : is_associated.
       
       (*
           pub unsafe fn assume_init_drop(&mut self) {
@@ -500,6 +509,7 @@ Module mem.
       Axiom AssociatedFunction_assume_init_drop :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "assume_init_drop" (assume_init_drop T).
+      Smpl Add apply AssociatedFunction_assume_init_drop : is_associated.
       
       (*
           pub const unsafe fn assume_init_ref(&self) -> &T {
@@ -558,6 +568,7 @@ Module mem.
       Axiom AssociatedFunction_assume_init_ref :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "assume_init_ref" (assume_init_ref T).
+      Smpl Add apply AssociatedFunction_assume_init_ref : is_associated.
       
       (*
           pub const unsafe fn assume_init_mut(&mut self) -> &mut T {
@@ -634,6 +645,7 @@ Module mem.
       Axiom AssociatedFunction_assume_init_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "assume_init_mut" (assume_init_mut T).
+      Smpl Add apply AssociatedFunction_assume_init_mut : is_associated.
       
       (*
           pub const unsafe fn array_assume_init<const N: usize>(array: [Self; N]) -> [T; N] {
@@ -694,6 +706,7 @@ Module mem.
       Axiom AssociatedFunction_array_assume_init :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "array_assume_init" (array_assume_init T).
+      Smpl Add apply AssociatedFunction_array_assume_init : is_associated.
       
       (*
           pub const unsafe fn slice_assume_init_ref(slice: &[Self]) -> &[T] {
@@ -742,6 +755,7 @@ Module mem.
       Axiom AssociatedFunction_slice_assume_init_ref :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "slice_assume_init_ref" (slice_assume_init_ref T).
+      Smpl Add apply AssociatedFunction_slice_assume_init_ref : is_associated.
       
       (*
           pub const unsafe fn slice_assume_init_mut(slice: &mut [Self]) -> &mut [T] {
@@ -798,6 +812,7 @@ Module mem.
       Axiom AssociatedFunction_slice_assume_init_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "slice_assume_init_mut" (slice_assume_init_mut T).
+      Smpl Add apply AssociatedFunction_slice_assume_init_mut : is_associated.
       
       (*
           pub const fn slice_as_ptr(this: &[MaybeUninit<T>]) -> *const T {
@@ -835,6 +850,7 @@ Module mem.
       Axiom AssociatedFunction_slice_as_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "slice_as_ptr" (slice_as_ptr T).
+      Smpl Add apply AssociatedFunction_slice_as_ptr : is_associated.
       
       (*
           pub const fn slice_as_mut_ptr(this: &mut [MaybeUninit<T>]) -> *mut T {
@@ -872,6 +888,7 @@ Module mem.
       Axiom AssociatedFunction_slice_as_mut_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "slice_as_mut_ptr" (slice_as_mut_ptr T).
+      Smpl Add apply AssociatedFunction_slice_as_mut_ptr : is_associated.
       
       (*
           pub fn copy_from_slice<'a>(this: &'a mut [MaybeUninit<T>], src: &[T]) -> &'a mut [T]
@@ -979,6 +996,7 @@ Module mem.
       Axiom AssociatedFunction_copy_from_slice :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "copy_from_slice" (copy_from_slice T).
+      Smpl Add apply AssociatedFunction_copy_from_slice : is_associated.
       
       (*
           pub fn clone_from_slice<'a>(this: &'a mut [MaybeUninit<T>], src: &[T]) -> &'a mut [T]
@@ -1417,6 +1435,7 @@ Module mem.
       Axiom AssociatedFunction_clone_from_slice :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "clone_from_slice" (clone_from_slice T).
+      Smpl Add apply AssociatedFunction_clone_from_slice : is_associated.
       
       (*
           pub fn fill<'a>(this: &'a mut [MaybeUninit<T>], value: T) -> &'a mut [T]
@@ -1491,6 +1510,7 @@ Module mem.
       Axiom AssociatedFunction_fill :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fill" (fill T).
+      Smpl Add apply AssociatedFunction_fill : is_associated.
       
       (*
           pub fn fill_with<'a, F>(this: &'a mut [MaybeUninit<T>], mut f: F) -> &'a mut [T]
@@ -1737,6 +1757,7 @@ Module mem.
       Axiom AssociatedFunction_fill_with :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fill_with" (fill_with T).
+      Smpl Add apply AssociatedFunction_fill_with : is_associated.
       
       (*
           pub fn fill_from<'a, I>(
@@ -2063,6 +2084,7 @@ Module mem.
       Axiom AssociatedFunction_fill_from :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "fill_from" (fill_from T).
+      Smpl Add apply AssociatedFunction_fill_from : is_associated.
       
       (*
           pub fn as_bytes(&self) -> &[MaybeUninit<u8>] {
@@ -2119,6 +2141,7 @@ Module mem.
       Axiom AssociatedFunction_as_bytes :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_bytes" (as_bytes T).
+      Smpl Add apply AssociatedFunction_as_bytes : is_associated.
       
       (*
           pub fn as_bytes_mut(&mut self) -> &mut [MaybeUninit<u8>] {
@@ -2208,6 +2231,7 @@ Module mem.
       Axiom AssociatedFunction_as_bytes_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_bytes_mut" (as_bytes_mut T).
+      Smpl Add apply AssociatedFunction_as_bytes_mut : is_associated.
       
       (*
           pub fn slice_as_bytes(this: &[MaybeUninit<T>]) -> &[MaybeUninit<u8>] {
@@ -2296,6 +2320,7 @@ Module mem.
       Axiom AssociatedFunction_slice_as_bytes :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "slice_as_bytes" (slice_as_bytes T).
+      Smpl Add apply AssociatedFunction_slice_as_bytes : is_associated.
       
       (*
           pub fn slice_as_bytes_mut(this: &mut [MaybeUninit<T>]) -> &mut [MaybeUninit<u8>] {
@@ -2403,6 +2428,7 @@ Module mem.
       Axiom AssociatedFunction_slice_as_bytes_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "slice_as_bytes_mut" (slice_as_bytes_mut T).
+      Smpl Add apply AssociatedFunction_slice_as_bytes_mut : is_associated.
     End Impl_core_mem_maybe_uninit_MaybeUninit_T.
     
     Module Impl_core_mem_maybe_uninit_MaybeUninit_array_N_T.
@@ -2453,6 +2479,7 @@ Module mem.
       Axiom AssociatedFunction_transpose :
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "transpose" (transpose N T).
+      Smpl Add apply AssociatedFunction_transpose : is_associated.
     End Impl_core_mem_maybe_uninit_MaybeUninit_array_N_T.
     
     Module Impl_array_N_core_mem_maybe_uninit_MaybeUninit_T.
@@ -2503,6 +2530,7 @@ Module mem.
       Axiom AssociatedFunction_transpose :
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "transpose" (transpose N T).
+      Smpl Add apply AssociatedFunction_transpose : is_associated.
     End Impl_array_N_core_mem_maybe_uninit_MaybeUninit_T.
     
     (* StructRecord

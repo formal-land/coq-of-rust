@@ -6,53 +6,63 @@ Module char.
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
   
   Axiom Constant_value_TAG_CONT : (M.get_constant "core::char::TAG_CONT") = value_TAG_CONT.
+  Global Hint Rewrite Constant_value_TAG_CONT : constant_rewrites.
   
   Definition value_TAG_TWO_B : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 192 |))).
   
   Axiom Constant_value_TAG_TWO_B : (M.get_constant "core::char::TAG_TWO_B") = value_TAG_TWO_B.
+  Global Hint Rewrite Constant_value_TAG_TWO_B : constant_rewrites.
   
   Definition value_TAG_THREE_B : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 224 |))).
   
   Axiom Constant_value_TAG_THREE_B : (M.get_constant "core::char::TAG_THREE_B") = value_TAG_THREE_B.
+  Global Hint Rewrite Constant_value_TAG_THREE_B : constant_rewrites.
   
   Definition value_TAG_FOUR_B : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 240 |))).
   
   Axiom Constant_value_TAG_FOUR_B : (M.get_constant "core::char::TAG_FOUR_B") = value_TAG_FOUR_B.
+  Global Hint Rewrite Constant_value_TAG_FOUR_B : constant_rewrites.
   
   Definition value_MAX_ONE_B : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 128 |))).
   
   Axiom Constant_value_MAX_ONE_B : (M.get_constant "core::char::MAX_ONE_B") = value_MAX_ONE_B.
+  Global Hint Rewrite Constant_value_MAX_ONE_B : constant_rewrites.
   
   Definition value_MAX_TWO_B : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2048 |))).
   
   Axiom Constant_value_MAX_TWO_B : (M.get_constant "core::char::MAX_TWO_B") = value_MAX_TWO_B.
+  Global Hint Rewrite Constant_value_MAX_TWO_B : constant_rewrites.
   
   Definition value_MAX_THREE_B : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 65536 |))).
   
   Axiom Constant_value_MAX_THREE_B : (M.get_constant "core::char::MAX_THREE_B") = value_MAX_THREE_B.
+  Global Hint Rewrite Constant_value_MAX_THREE_B : constant_rewrites.
   
   Definition value_MAX : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::char::methods::MAX")).
   
   Axiom Constant_value_MAX : (M.get_constant "core::char::MAX") = value_MAX.
+  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
   
   Definition value_REPLACEMENT_CHARACTER : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::char::methods::REPLACEMENT_CHARACTER")).
   
   Axiom Constant_value_REPLACEMENT_CHARACTER :
     (M.get_constant "core::char::REPLACEMENT_CHARACTER") = value_REPLACEMENT_CHARACTER.
+  Global Hint Rewrite Constant_value_REPLACEMENT_CHARACTER : constant_rewrites.
   
   Definition value_UNICODE_VERSION : Value.t :=
     M.run_constant ltac:(M.monadic (M.get_constant "core::char::methods::UNICODE_VERSION")).
   
   Axiom Constant_value_UNICODE_VERSION :
     (M.get_constant "core::char::UNICODE_VERSION") = value_UNICODE_VERSION.
+  Global Hint Rewrite Constant_value_UNICODE_VERSION : constant_rewrites.
   
   (*
   pub fn decode_utf16<I: IntoIterator<Item = u16>>(iter: I) -> DecodeUtf16<I::IntoIter> {
@@ -72,6 +82,7 @@ Module char.
     end.
   
   Axiom Function_decode_utf16 : M.IsFunction "core::char::decode_utf16" decode_utf16.
+  Smpl Add apply Function_decode_utf16 : is_function.
   
   (*
   pub const fn from_u32(i: u32) -> Option<char> {
@@ -91,6 +102,7 @@ Module char.
     end.
   
   Axiom Function_from_u32 : M.IsFunction "core::char::from_u32" from_u32.
+  Smpl Add apply Function_from_u32 : is_function.
   
   (*
   pub const unsafe fn from_u32_unchecked(i: u32) -> char {
@@ -112,6 +124,7 @@ Module char.
   
   Axiom Function_from_u32_unchecked :
     M.IsFunction "core::char::from_u32_unchecked" from_u32_unchecked.
+  Smpl Add apply Function_from_u32_unchecked : is_function.
   
   (*
   pub const fn from_digit(num: u32, radix: u32) -> Option<char> {
@@ -132,6 +145,7 @@ Module char.
     end.
   
   Axiom Function_from_digit : M.IsFunction "core::char::from_digit" from_digit.
+  Smpl Add apply Function_from_digit : is_function.
   
   (* StructTuple
     {
@@ -287,6 +301,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_core_char_EscapeUnicode.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeUnicode.
@@ -801,6 +816,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
+    Smpl Add apply AssociatedFunction_printable : is_associated.
     
     (*
         const fn backslash(c: ascii::Char) -> Self {
@@ -832,6 +848,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
+    Smpl Add apply AssociatedFunction_backslash : is_associated.
     
     (*
         const fn unicode(c: char) -> Self {
@@ -863,6 +880,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
+    Smpl Add apply AssociatedFunction_unicode : is_associated.
   End Impl_core_char_EscapeDefault.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeDefault.
@@ -1549,6 +1567,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
+    Smpl Add apply AssociatedFunction_printable : is_associated.
     
     (*
         const fn backslash(c: ascii::Char) -> Self {
@@ -1584,6 +1603,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
+    Smpl Add apply AssociatedFunction_backslash : is_associated.
     
     (*
         const fn unicode(c: char) -> Self {
@@ -1619,6 +1639,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
+    Smpl Add apply AssociatedFunction_unicode : is_associated.
     
     (*
         fn clear(&mut self) {
@@ -1661,6 +1682,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
+    Smpl Add apply AssociatedFunction_clear : is_associated.
   End Impl_core_char_EscapeDebug.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeDebug.
@@ -3645,6 +3667,7 @@ Module char.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
   End Impl_core_char_CaseMappingIter.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_CaseMappingIter.

@@ -588,6 +588,7 @@ Module instantiation_loops.
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    Smpl Add apply AssociatedFunction_new : is_associated.
     
     (*
         pub fn verify_module(module: &'a CompiledModule) -> VMResult<()> {
@@ -677,6 +678,7 @@ Module instantiation_loops.
     
     Axiom AssociatedFunction_verify_module :
       M.IsAssociatedFunction Self "verify_module" verify_module.
+    Smpl Add apply AssociatedFunction_verify_module : is_associated.
     
     (*
         fn verify_module_impl(module: &'a CompiledModule) -> PartialVMResult<()> {
@@ -1413,6 +1415,7 @@ Module instantiation_loops.
     
     Axiom AssociatedFunction_verify_module_impl :
       M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
+    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
     
     (*
         fn get_or_add_node(&mut self, node: Node) -> NodeIndex {
@@ -1561,6 +1564,7 @@ Module instantiation_loops.
     
     Axiom AssociatedFunction_get_or_add_node :
       M.IsAssociatedFunction Self "get_or_add_node" get_or_add_node.
+    Smpl Add apply AssociatedFunction_get_or_add_node : is_associated.
     
     (*
         fn extract_type_parameters(&self, ty: &SignatureToken) -> HashSet<TypeParameterIndex> {
@@ -1631,6 +1635,7 @@ Module instantiation_loops.
     
     Axiom AssociatedFunction_extract_type_parameters :
       M.IsAssociatedFunction Self "extract_type_parameters" extract_type_parameters.
+    Smpl Add apply AssociatedFunction_extract_type_parameters : is_associated.
     
     (*
         fn add_edge(&mut self, node_from: Node, node_to: Node, edge: Edge<'a>) {
@@ -1716,6 +1721,7 @@ Module instantiation_loops.
       end.
     
     Axiom AssociatedFunction_add_edge : M.IsAssociatedFunction Self "add_edge" add_edge.
+    Smpl Add apply AssociatedFunction_add_edge : is_associated.
     
     (*
         fn build_graph_call(
@@ -2155,6 +2161,7 @@ Module instantiation_loops.
     
     Axiom AssociatedFunction_build_graph_call :
       M.IsAssociatedFunction Self "build_graph_call" build_graph_call.
+    Smpl Add apply AssociatedFunction_build_graph_call : is_associated.
     
     (*
         fn build_graph_function_def(
@@ -2464,6 +2471,7 @@ Module instantiation_loops.
     
     Axiom AssociatedFunction_build_graph_function_def :
       M.IsAssociatedFunction Self "build_graph_function_def" build_graph_function_def.
+    Smpl Add apply AssociatedFunction_build_graph_function_def : is_associated.
     
     (*
         fn build_graph(&mut self) {
@@ -2803,6 +2811,7 @@ Module instantiation_loops.
       end.
     
     Axiom AssociatedFunction_build_graph : M.IsAssociatedFunction Self "build_graph" build_graph.
+    Smpl Add apply AssociatedFunction_build_graph : is_associated.
     
     (*
         fn find_non_trivial_components(&self) -> Vec<(Vec<NodeIndex>, Vec<EdgeIndex>)> {
@@ -4068,6 +4077,7 @@ Module instantiation_loops.
     
     Axiom AssociatedFunction_find_non_trivial_components :
       M.IsAssociatedFunction Self "find_non_trivial_components" find_non_trivial_components.
+    Smpl Add apply AssociatedFunction_find_non_trivial_components : is_associated.
     
     (*
         fn format_node(&self, node_idx: NodeIndex) -> String {
@@ -4263,6 +4273,7 @@ Module instantiation_loops.
       end.
     
     Axiom AssociatedFunction_format_node : M.IsAssociatedFunction Self "format_node" format_node.
+    Smpl Add apply AssociatedFunction_format_node : is_associated.
     
     (*
         fn format_edge(&self, edge_idx: EdgeIndex) -> String {
@@ -4682,5 +4693,6 @@ Module instantiation_loops.
       end.
     
     Axiom AssociatedFunction_format_edge : M.IsAssociatedFunction Self "format_edge" format_edge.
+    Smpl Add apply AssociatedFunction_format_edge : is_associated.
   End Impl_move_bytecode_verifier_instantiation_loops_InstantiationLoopChecker.
 End instantiation_loops.

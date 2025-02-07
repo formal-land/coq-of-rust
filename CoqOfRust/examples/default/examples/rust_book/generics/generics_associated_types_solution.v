@@ -210,6 +210,7 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
 
 Axiom Function_difference :
   M.IsFunction "generics_associated_types_solution::difference" difference.
+Smpl Add apply Function_difference : is_function.
 
 (*
 fn get_a<C: Contains>(container: &C) -> C::A {
@@ -237,6 +238,7 @@ Definition get_a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_get_a : M.IsFunction "generics_associated_types_solution::get_a" get_a.
+Smpl Add apply Function_get_a : is_function.
 
 (*
 fn main() {
@@ -663,3 +665,4 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_main : M.IsFunction "generics_associated_types_solution::main" main.
+Smpl Add apply Function_main : is_function.

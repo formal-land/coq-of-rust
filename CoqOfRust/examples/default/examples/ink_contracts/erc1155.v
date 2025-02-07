@@ -77,6 +77,7 @@ Module Impl_erc1155_Mapping_K_V.
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
+  Smpl Add apply AssociatedFunction_contains : is_associated.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -88,6 +89,7 @@ Module Impl_erc1155_Mapping_K_V.
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
+  Smpl Add apply AssociatedFunction_get : is_associated.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -99,6 +101,7 @@ Module Impl_erc1155_Mapping_K_V.
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
+  Smpl Add apply AssociatedFunction_insert : is_associated.
   
   (*
       fn remove(&self, _key: K) {
@@ -110,6 +113,7 @@ Module Impl_erc1155_Mapping_K_V.
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
+  Smpl Add apply AssociatedFunction_remove : is_associated.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -121,6 +125,7 @@ Module Impl_erc1155_Mapping_K_V.
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
+  Smpl Add apply AssociatedFunction_size : is_associated.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -132,6 +137,7 @@ Module Impl_erc1155_Mapping_K_V.
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "take" (take K V).
+  Smpl Add apply AssociatedFunction_take : is_associated.
 End Impl_erc1155_Mapping_K_V.
 
 (* StructTuple
@@ -312,6 +318,7 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Axiom Function_zero_address : M.IsFunction "erc1155::zero_address" zero_address.
+Smpl Add apply Function_zero_address : is_function.
 
 Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
   M.run_constant
@@ -328,6 +335,7 @@ Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
 
 Axiom Constant_value_ON_ERC_1155_RECEIVED_SELECTOR :
   (M.get_constant "erc1155::ON_ERC_1155_RECEIVED_SELECTOR") = value_ON_ERC_1155_RECEIVED_SELECTOR.
+Global Hint Rewrite Constant_value_ON_ERC_1155_RECEIVED_SELECTOR : constant_rewrites.
 
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
   M.run_constant
@@ -345,6 +353,7 @@ Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
 Axiom Constant__ON_ERC_1155_BATCH_RECEIVED_SELECTOR :
   (M.get_constant "erc1155::_ON_ERC_1155_BATCH_RECEIVED_SELECTOR") =
     _ON_ERC_1155_BATCH_RECEIVED_SELECTOR.
+Global Hint Rewrite Constant__ON_ERC_1155_BATCH_RECEIVED_SELECTOR : constant_rewrites.
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 
@@ -573,6 +582,7 @@ Module Impl_erc1155_Env.
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
+  Smpl Add apply AssociatedFunction_caller : is_associated.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -582,6 +592,7 @@ Module Impl_erc1155_Env.
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
+  Smpl Add apply AssociatedFunction_emit_event : is_associated.
 End Impl_erc1155_Env.
 
 (* StructRecord
@@ -688,6 +699,7 @@ Module Impl_erc1155_Contract.
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
+  Smpl Add apply AssociatedFunction_init_env : is_associated.
   
   (*
       fn env(&self) -> Env {
@@ -707,6 +719,7 @@ Module Impl_erc1155_Contract.
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
+  Smpl Add apply AssociatedFunction_env : is_associated.
   
   (*
       pub fn new() -> Self {
@@ -733,6 +746,7 @@ Module Impl_erc1155_Contract.
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  Smpl Add apply AssociatedFunction_new : is_associated.
   
   (*
       pub fn create(&mut self, value: Balance) -> TokenId {
@@ -906,6 +920,7 @@ Module Impl_erc1155_Contract.
     end.
   
   Axiom AssociatedFunction_create : M.IsAssociatedFunction Self "create" create.
+  Smpl Add apply AssociatedFunction_create : is_associated.
   
   (*
       pub fn mint(&mut self, token_id: TokenId, value: Balance) -> Result<()> {
@@ -1084,6 +1099,7 @@ Module Impl_erc1155_Contract.
     end.
   
   Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
+  Smpl Add apply AssociatedFunction_mint : is_associated.
   
   (*
       fn perform_transfer(
@@ -1336,6 +1352,7 @@ Module Impl_erc1155_Contract.
   
   Axiom AssociatedFunction_perform_transfer :
     M.IsAssociatedFunction Self "perform_transfer" perform_transfer.
+  Smpl Add apply AssociatedFunction_perform_transfer : is_associated.
   
   (*
       fn transfer_acceptance_check(
@@ -1427,6 +1444,7 @@ Module Impl_erc1155_Contract.
   
   Axiom AssociatedFunction_transfer_acceptance_check :
     M.IsAssociatedFunction Self "transfer_acceptance_check" transfer_acceptance_check.
+  Smpl Add apply AssociatedFunction_transfer_acceptance_check : is_associated.
 End Impl_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155_for_erc1155_Contract.

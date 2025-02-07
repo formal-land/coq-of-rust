@@ -67,6 +67,7 @@ Module str.
       end.
     
     Axiom Function_from_utf8 : M.IsFunction "core::str::converts::from_utf8" from_utf8.
+    Smpl Add apply Function_from_utf8 : is_function.
     
     (*
     pub const fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, Utf8Error> {
@@ -142,6 +143,7 @@ Module str.
       end.
     
     Axiom Function_from_utf8_mut : M.IsFunction "core::str::converts::from_utf8_mut" from_utf8_mut.
+    Smpl Add apply Function_from_utf8_mut : is_function.
     
     (*
     pub const unsafe fn from_utf8_unchecked(v: &[u8]) -> &str {
@@ -171,6 +173,7 @@ Module str.
     
     Axiom Function_from_utf8_unchecked :
       M.IsFunction "core::str::converts::from_utf8_unchecked" from_utf8_unchecked.
+    Smpl Add apply Function_from_utf8_unchecked : is_function.
     
     (*
     pub const unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str {
@@ -222,6 +225,7 @@ Module str.
     
     Axiom Function_from_utf8_unchecked_mut :
       M.IsFunction "core::str::converts::from_utf8_unchecked_mut" from_utf8_unchecked_mut.
+    Smpl Add apply Function_from_utf8_unchecked_mut : is_function.
     
     (*
     pub const unsafe fn from_raw_parts<'a>(ptr: *const u8, len: usize) -> &'a str {
@@ -258,6 +262,7 @@ Module str.
     
     Axiom Function_from_raw_parts :
       M.IsFunction "core::str::converts::from_raw_parts" from_raw_parts.
+    Smpl Add apply Function_from_raw_parts : is_function.
     
     (*
     pub const unsafe fn from_raw_parts_mut<'a>(ptr: *mut u8, len: usize) -> &'a mut str {
@@ -304,5 +309,6 @@ Module str.
     
     Axiom Function_from_raw_parts_mut :
       M.IsFunction "core::str::converts::from_raw_parts_mut" from_raw_parts_mut.
+    Smpl Add apply Function_from_raw_parts_mut : is_function.
   End converts.
 End str.

@@ -91,6 +91,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Axiom Function_foo : M.IsFunction "concurrent_tests::foo" foo.
+Smpl Add apply Function_foo : is_function.
 
 Module tests.
   (*
@@ -327,6 +328,7 @@ Module tests.
     end.
   
   Axiom Function_test_file : M.IsFunction "concurrent_tests::tests::test_file'1" test_file.
+  Smpl Add apply Function_test_file : is_function.
   
   (*
       fn test_file_also() {
@@ -563,4 +565,5 @@ Module tests.
   
   Axiom Function_test_file_also :
     M.IsFunction "concurrent_tests::tests::test_file_also'1" test_file_also.
+  Smpl Add apply Function_test_file_also : is_function.
 End tests.

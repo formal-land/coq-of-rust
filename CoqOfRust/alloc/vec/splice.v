@@ -1353,6 +1353,7 @@ Module vec.
       Axiom AssociatedFunction_fill :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "fill" (fill T A).
+      Smpl Add apply AssociatedFunction_fill : is_associated.
       
       (*
           unsafe fn move_tail(&mut self, additional: usize) {
@@ -1549,6 +1550,7 @@ Module vec.
       Axiom AssociatedFunction_move_tail :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "move_tail" (move_tail T A).
+      Smpl Add apply AssociatedFunction_move_tail : is_associated.
     End Impl_alloc_vec_drain_Drain_T_A.
   End splice.
 End vec.

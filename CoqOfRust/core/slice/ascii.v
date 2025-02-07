@@ -24,6 +24,7 @@ Module slice.
         end.
       
       Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
+      Smpl Add apply AssociatedFunction_is_ascii : is_associated.
       
       (*
           pub const fn as_ascii(&self) -> Option<&[ascii::Char]> {
@@ -91,6 +92,7 @@ Module slice.
         end.
       
       Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
+      Smpl Add apply AssociatedFunction_as_ascii : is_associated.
       
       (*
           pub const unsafe fn as_ascii_unchecked(&self) -> &[ascii::Char] {
@@ -138,6 +140,7 @@ Module slice.
       
       Axiom AssociatedFunction_as_ascii_unchecked :
         M.IsAssociatedFunction Self "as_ascii_unchecked" as_ascii_unchecked.
+      Smpl Add apply AssociatedFunction_as_ascii_unchecked : is_associated.
       
       (*
           pub fn eq_ignore_ascii_case(&self, other: &[u8]) -> bool {
@@ -269,6 +272,7 @@ Module slice.
       
       Axiom AssociatedFunction_eq_ignore_ascii_case :
         M.IsAssociatedFunction Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
+      Smpl Add apply AssociatedFunction_eq_ignore_ascii_case : is_associated.
       
       (*
           pub const fn make_ascii_uppercase(&mut self) {
@@ -372,6 +376,7 @@ Module slice.
       
       Axiom AssociatedFunction_make_ascii_uppercase :
         M.IsAssociatedFunction Self "make_ascii_uppercase" make_ascii_uppercase.
+      Smpl Add apply AssociatedFunction_make_ascii_uppercase : is_associated.
       
       (*
           pub const fn make_ascii_lowercase(&mut self) {
@@ -475,6 +480,7 @@ Module slice.
       
       Axiom AssociatedFunction_make_ascii_lowercase :
         M.IsAssociatedFunction Self "make_ascii_lowercase" make_ascii_lowercase.
+      Smpl Add apply AssociatedFunction_make_ascii_lowercase : is_associated.
       
       (*
           pub fn escape_ascii(&self) -> EscapeAscii<'_> {
@@ -522,6 +528,7 @@ Module slice.
       
       Axiom AssociatedFunction_escape_ascii :
         M.IsAssociatedFunction Self "escape_ascii" escape_ascii.
+      Smpl Add apply AssociatedFunction_escape_ascii : is_associated.
       
       (*
           pub const fn trim_ascii_start(&self) -> &[u8] {
@@ -622,6 +629,7 @@ Module slice.
       
       Axiom AssociatedFunction_trim_ascii_start :
         M.IsAssociatedFunction Self "trim_ascii_start" trim_ascii_start.
+      Smpl Add apply AssociatedFunction_trim_ascii_start : is_associated.
       
       (*
           pub const fn trim_ascii_end(&self) -> &[u8] {
@@ -722,6 +730,7 @@ Module slice.
       
       Axiom AssociatedFunction_trim_ascii_end :
         M.IsAssociatedFunction Self "trim_ascii_end" trim_ascii_end.
+      Smpl Add apply AssociatedFunction_trim_ascii_end : is_associated.
       
       (*
           pub const fn trim_ascii(&self) -> &[u8] {
@@ -766,6 +775,7 @@ Module slice.
         end.
       
       Axiom AssociatedFunction_trim_ascii : M.IsAssociatedFunction Self "trim_ascii" trim_ascii.
+      Smpl Add apply AssociatedFunction_trim_ascii : is_associated.
     End Impl_slice_u8.
     
     Module Impl_core_clone_Clone_for_core_slice_ascii_EscapeByte.
@@ -2341,6 +2351,7 @@ Module slice.
     
     Axiom Function_contains_nonascii :
       M.IsFunction "core::slice::ascii::contains_nonascii" contains_nonascii.
+    Smpl Add apply Function_contains_nonascii : is_function.
     
     Module contains_nonascii.
       Definition value_NONASCII_MASK : Value.t :=
@@ -2356,6 +2367,7 @@ Module slice.
       Axiom Constant_value_NONASCII_MASK :
         (M.get_constant "core::slice::ascii::contains_nonascii::NONASCII_MASK") =
           value_NONASCII_MASK.
+      Global Hint Rewrite Constant_value_NONASCII_MASK : constant_rewrites.
     End contains_nonascii.
     
     (*
@@ -2461,6 +2473,7 @@ Module slice.
     
     Axiom Function_is_ascii_simple :
       M.IsFunction "core::slice::ascii::is_ascii_simple" is_ascii_simple.
+    Smpl Add apply Function_is_ascii_simple : is_function.
     
     (*
     const fn is_ascii(s: &[u8]) -> bool {
@@ -3287,6 +3300,7 @@ Module slice.
       end.
     
     Axiom Function_is_ascii : M.IsFunction "core::slice::ascii::is_ascii" is_ascii.
+    Smpl Add apply Function_is_ascii : is_function.
     
     Module is_ascii.
       Definition value_USIZE_SIZE : Value.t :=
@@ -3301,6 +3315,7 @@ Module slice.
       
       Axiom Constant_value_USIZE_SIZE :
         (M.get_constant "core::slice::ascii::is_ascii::USIZE_SIZE") = value_USIZE_SIZE.
+      Global Hint Rewrite Constant_value_USIZE_SIZE : constant_rewrites.
     End is_ascii.
   End ascii.
 End slice.

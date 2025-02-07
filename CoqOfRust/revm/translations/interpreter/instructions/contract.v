@@ -1239,6 +1239,7 @@ Module instructions.
     
     Axiom Function_eofcreate :
       M.IsFunction "revm_interpreter::instructions::contract::eofcreate" eofcreate.
+    Smpl Add apply Function_eofcreate : is_function.
     
     (*
     pub fn return_contract<H: Host + ?Sized>(
@@ -2707,6 +2708,7 @@ Module instructions.
     
     Axiom Function_return_contract :
       M.IsFunction "revm_interpreter::instructions::contract::return_contract" return_contract.
+    Smpl Add apply Function_return_contract : is_function.
     
     (*
     pub fn extcall_input(interpreter: &mut Interpreter<impl InterpreterTypes>) -> Option<Bytes> {
@@ -3022,6 +3024,7 @@ Module instructions.
     
     Axiom Function_extcall_input :
       M.IsFunction "revm_interpreter::instructions::contract::extcall_input" extcall_input.
+    Smpl Add apply Function_extcall_input : is_function.
     
     (*
     pub fn extcall_gas_calc<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3581,6 +3584,7 @@ Module instructions.
     
     Axiom Function_extcall_gas_calc :
       M.IsFunction "revm_interpreter::instructions::contract::extcall_gas_calc" extcall_gas_calc.
+    Smpl Add apply Function_extcall_gas_calc : is_function.
     
     (*
     pub fn pop_extcall_target_address(
@@ -3852,6 +3856,7 @@ Module instructions.
       M.IsFunction
         "revm_interpreter::instructions::contract::pop_extcall_target_address"
         pop_extcall_target_address.
+    Smpl Add apply Function_pop_extcall_target_address : is_function.
     
     (*
     pub fn extcall<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4360,6 +4365,7 @@ Module instructions.
     
     Axiom Function_extcall :
       M.IsFunction "revm_interpreter::instructions::contract::extcall" extcall.
+    Smpl Add apply Function_extcall : is_function.
     
     (*
     pub fn extdelegatecall<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4755,6 +4761,7 @@ Module instructions.
     
     Axiom Function_extdelegatecall :
       M.IsFunction "revm_interpreter::instructions::contract::extdelegatecall" extdelegatecall.
+    Smpl Add apply Function_extdelegatecall : is_function.
     
     (*
     pub fn extstaticcall<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -5083,6 +5090,7 @@ Module instructions.
     
     Axiom Function_extstaticcall :
       M.IsFunction "revm_interpreter::instructions::contract::extstaticcall" extstaticcall.
+    Smpl Add apply Function_extstaticcall : is_function.
     
     (*
     pub fn create<WIRE: InterpreterTypes, const IS_CREATE2: bool, H: Host + ?Sized>(
@@ -6850,6 +6858,7 @@ Module instructions.
       end.
     
     Axiom Function_create : M.IsFunction "revm_interpreter::instructions::contract::create" create.
+    Smpl Add apply Function_create : is_function.
     
     (*
     pub fn call<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -7495,6 +7504,7 @@ Module instructions.
       end.
     
     Axiom Function_call : M.IsFunction "revm_interpreter::instructions::contract::call" call.
+    Smpl Add apply Function_call : is_function.
     
     (*
     pub fn call_code<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -8139,6 +8149,7 @@ Module instructions.
     
     Axiom Function_call_code :
       M.IsFunction "revm_interpreter::instructions::contract::call_code" call_code.
+    Smpl Add apply Function_call_code : is_function.
     
     (*
     pub fn delegate_call<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -8794,6 +8805,7 @@ Module instructions.
     
     Axiom Function_delegate_call :
       M.IsFunction "revm_interpreter::instructions::contract::delegate_call" delegate_call.
+    Smpl Add apply Function_delegate_call : is_function.
     
     (*
     pub fn static_call<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -9379,5 +9391,6 @@ Module instructions.
     
     Axiom Function_static_call :
       M.IsFunction "revm_interpreter::instructions::contract::static_call" static_call.
+    Smpl Add apply Function_static_call : is_function.
   End contract.
 End instructions.

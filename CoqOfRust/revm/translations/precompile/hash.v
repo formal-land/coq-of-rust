@@ -19,6 +19,7 @@ Module hash.
         |))).
   
   Axiom Constant_value_SHA256 : (M.get_constant "revm_precompile::hash::SHA256") = value_SHA256.
+  Global Hint Rewrite Constant_value_SHA256 : constant_rewrites.
   
   Definition value_RIPEMD160 : Value.t :=
     M.run_constant
@@ -39,6 +40,7 @@ Module hash.
   
   Axiom Constant_value_RIPEMD160 :
     (M.get_constant "revm_precompile::hash::RIPEMD160") = value_RIPEMD160.
+  Global Hint Rewrite Constant_value_RIPEMD160 : constant_rewrites.
   
   (*
   pub fn sha256_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -298,6 +300,7 @@ Module hash.
     end.
   
   Axiom Function_sha256_run : M.IsFunction "revm_precompile::hash::sha256_run" sha256_run.
+  Smpl Add apply Function_sha256_run : is_function.
   
   (*
   pub fn ripemd160_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -595,4 +598,5 @@ Module hash.
     end.
   
   Axiom Function_ripemd160_run : M.IsFunction "revm_precompile::hash::ripemd160_run" ripemd160_run.
+  Smpl Add apply Function_ripemd160_run : is_function.
 End hash.

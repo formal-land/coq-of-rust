@@ -319,6 +319,7 @@ Module ops.
       
       Axiom AssociatedFunction_new_unchecked :
         M.IsAssociatedFunction Self "new_unchecked" new_unchecked.
+      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
       
       (*
           pub const fn zero_to(end: usize) -> Self {
@@ -337,6 +338,7 @@ Module ops.
         end.
       
       Axiom AssociatedFunction_zero_to : M.IsAssociatedFunction Self "zero_to" zero_to.
+      Smpl Add apply AssociatedFunction_zero_to : is_associated.
       
       (*
           pub const fn start(&self) -> usize {
@@ -359,6 +361,7 @@ Module ops.
         end.
       
       Axiom AssociatedFunction_start : M.IsAssociatedFunction Self "start" start.
+      Smpl Add apply AssociatedFunction_start : is_associated.
       
       (*
           pub const fn end(&self) -> usize {
@@ -381,6 +384,7 @@ Module ops.
         end.
       
       Axiom AssociatedFunction_end_ : M.IsAssociatedFunction Self "end_" end_.
+      Smpl Add apply AssociatedFunction_end_ : is_associated.
       
       (*
           pub const fn len(&self) -> usize {
@@ -416,6 +420,7 @@ Module ops.
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
+      Smpl Add apply AssociatedFunction_len : is_associated.
       
       (*
           unsafe fn next_unchecked(&mut self) -> usize {
@@ -521,6 +526,7 @@ Module ops.
       
       Axiom AssociatedFunction_next_unchecked :
         M.IsAssociatedFunction Self "next_unchecked" next_unchecked.
+      Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
       
       (*
           unsafe fn next_back_unchecked(&mut self) -> usize {
@@ -631,6 +637,7 @@ Module ops.
       
       Axiom AssociatedFunction_next_back_unchecked :
         M.IsAssociatedFunction Self "next_back_unchecked" next_back_unchecked.
+      Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
       
       (*
           pub fn take_prefix(&mut self, n: usize) -> Self {
@@ -745,6 +752,7 @@ Module ops.
         end.
       
       Axiom AssociatedFunction_take_prefix : M.IsAssociatedFunction Self "take_prefix" take_prefix.
+      Smpl Add apply AssociatedFunction_take_prefix : is_associated.
       
       (*
           pub fn take_suffix(&mut self, n: usize) -> Self {
@@ -859,6 +867,7 @@ Module ops.
         end.
       
       Axiom AssociatedFunction_take_suffix : M.IsAssociatedFunction Self "take_suffix" take_suffix.
+      Smpl Add apply AssociatedFunction_take_suffix : is_associated.
     End Impl_core_ops_index_range_IndexRange.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_ops_index_range_IndexRange.
