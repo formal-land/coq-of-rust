@@ -1,0 +1,344 @@
+[
+  {
+    "file_name": "crates/specification/src/eip4844.rs",
+    "item": {
+      "Module": {
+        "name": "eip4844",
+        "body": [
+          {
+            "file_name": "crates/specification/src/eip4844.rs",
+            "item": {
+              "Const": {
+                "name": "value_GAS_PER_BLOB",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "BinOp.Wrap.shl"
+                          },
+                          "args": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "U64",
+                                  "negative_sign": false,
+                                  "value": 1
+                                }
+                              }
+                            },
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "I32",
+                                  "negative_sign": false,
+                                  "value": 17
+                                }
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/eip4844.rs",
+            "item": {
+              "Const": {
+                "name": "value_TARGET_BLOB_NUMBER_PER_BLOCK",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "U64",
+                            "negative_sign": false,
+                            "value": 3
+                          }
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/eip4844.rs",
+            "item": {
+              "Const": {
+                "name": "value_MAX_BLOB_NUMBER_PER_BLOCK",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "BinOp.Wrap.mul"
+                          },
+                          "args": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "U64",
+                                  "negative_sign": false,
+                                  "value": 2
+                                }
+                              }
+                            },
+                            {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.read"
+                                },
+                                "args": [
+                                  {
+                                    "GetConst": [
+                                      "revm_specification",
+                                      "eip4844",
+                                      "TARGET_BLOB_NUMBER_PER_BLOCK"
+                                    ]
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/eip4844.rs",
+            "item": {
+              "Const": {
+                "name": "value_MAX_BLOB_GAS_PER_BLOCK",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "BinOp.Wrap.mul"
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.read"
+                                },
+                                "args": [
+                                  {
+                                    "GetConst": [
+                                      "revm_specification",
+                                      "eip4844",
+                                      "MAX_BLOB_NUMBER_PER_BLOCK"
+                                    ]
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            },
+                            {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.read"
+                                },
+                                "args": [
+                                  {
+                                    "GetConst": [
+                                      "revm_specification",
+                                      "eip4844",
+                                      "GAS_PER_BLOB"
+                                    ]
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/eip4844.rs",
+            "item": {
+              "Const": {
+                "name": "value_TARGET_BLOB_GAS_PER_BLOCK",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "BinOp.Wrap.mul"
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.read"
+                                },
+                                "args": [
+                                  {
+                                    "GetConst": [
+                                      "revm_specification",
+                                      "eip4844",
+                                      "TARGET_BLOB_NUMBER_PER_BLOCK"
+                                    ]
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            },
+                            {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.read"
+                                },
+                                "args": [
+                                  {
+                                    "GetConst": [
+                                      "revm_specification",
+                                      "eip4844",
+                                      "GAS_PER_BLOB"
+                                    ]
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/eip4844.rs",
+            "item": {
+              "Const": {
+                "name": "value_MIN_BLOB_GASPRICE",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "U64",
+                            "negative_sign": false,
+                            "value": 1
+                          }
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/eip4844.rs",
+            "item": {
+              "Const": {
+                "name": "value_BLOB_GASPRICE_UPDATE_FRACTION",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "U64",
+                            "negative_sign": false,
+                            "value": 3338477
+                          }
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/eip4844.rs",
+            "item": {
+              "Const": {
+                "name": "value_VERSIONED_HASH_VERSION_KZG",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "U8",
+                            "negative_sign": false,
+                            "value": 1
+                          }
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

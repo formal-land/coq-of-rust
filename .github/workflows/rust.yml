@@ -93,6 +93,20 @@ jobs:
             cp ../../rust-toolchain ./
             cd crates
             # We compile each library twice to avoid errors. TODO: investigate why this is needed
+            # context
+            cd context
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/revm/translations/context/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
+            cd ..
+            # context/interface
+            cd context/interface
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../../CoqOfRust/revm/translations/context/interface/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
+            cd ../..
             # interpreter
             cd interpreter
             cargo coq-of-rust
@@ -125,8 +139,8 @@ jobs:
             cd specification
             cargo coq-of-rust
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/revm/translations/specification/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/revm/translations/specification/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             cd ../../..
           endGroup

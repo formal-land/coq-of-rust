@@ -1,0 +1,147 @@
+[
+  {
+    "file_name": "crates/specification/src/constants.rs",
+    "item": {
+      "Module": {
+        "name": "constants",
+        "body": [
+          {
+            "file_name": "crates/specification/src/constants.rs",
+            "item": {
+              "Const": {
+                "name": "value_STACK_LIMIT",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 1024
+                          }
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/constants.rs",
+            "item": {
+              "Const": {
+                "name": "value_MAX_CODE_SIZE",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 24576
+                          }
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/constants.rs",
+            "item": {
+              "Const": {
+                "name": "value_MAX_INITCODE_SIZE",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "BinOp.Wrap.mul"
+                          },
+                          "args": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 2
+                                }
+                              }
+                            },
+                            {
+                              "Call": {
+                                "func": {
+                                  "LocalVar": "M.read"
+                                },
+                                "args": [
+                                  {
+                                    "GetConst": [
+                                      "revm_specification",
+                                      "constants",
+                                      "MAX_CODE_SIZE"
+                                    ]
+                                  }
+                                ],
+                                "kind": "Effectful"
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/specification/src/constants.rs",
+            "item": {
+              "Const": {
+                "name": "value_CALL_STACK_LIMIT",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "U64",
+                            "negative_sign": false,
+                            "value": 1024
+                          }
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

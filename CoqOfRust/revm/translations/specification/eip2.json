@@ -1,0 +1,371 @@
+[
+  {
+    "file_name": "crates/specification/src/eip2.rs",
+    "item": {
+      "Module": {
+        "name": "eip2",
+        "body": [
+          {
+            "file_name": "crates/specification/src/eip2.rs",
+            "item": {
+              "Const": {
+                "name": "value_SECP256K1N_HALF",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "GetAssociatedFunction": {
+                              "ty": {
+                                "Application": {
+                                  "func": {
+                                    "Path": {
+                                      "path": [
+                                        "ruint",
+                                        "Uint"
+                                      ]
+                                    }
+                                  },
+                                  "consts": [
+                                    {
+                                      "Literal": {
+                                        "Integer": {
+                                          "kind": "Usize",
+                                          "negative_sign": false,
+                                          "value": 256
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "Literal": {
+                                        "Integer": {
+                                          "kind": "Usize",
+                                          "negative_sign": false,
+                                          "value": 4
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "tys": []
+                                }
+                              },
+                              "func": "from_be_bytes",
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Array": {
+                                "elements": [
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 127
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 255
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 93
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 87
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 110
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 115
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 87
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 164
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 80
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 29
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 223
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 233
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 47
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 70
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 104
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 27
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 32
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "Literal": {
+                                      "Integer": {
+                                        "kind": "U8",
+                                        "negative_sign": false,
+                                        "value": 160
+                                      }
+                                    }
+                                  }
+                                ],
+                                "is_internal": false
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

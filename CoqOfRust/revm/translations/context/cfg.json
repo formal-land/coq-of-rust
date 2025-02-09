@@ -1,0 +1,3620 @@
+[
+  {
+    "file_name": "crates/context/src/cfg.rs",
+    "item": {
+      "Module": {
+        "name": "cfg",
+        "body": [
+          {
+            "file_name": "crates/context/src/cfg.rs",
+            "item": {
+              "TypeStructStruct": {
+                "name": "CfgEnv",
+                "const_params": [],
+                "ty_params": [
+                  "SPEC"
+                ],
+                "fields": [
+                  [
+                    "chain_id",
+                    {
+                      "Path": {
+                        "path": [
+                          "u64"
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    "spec",
+                    {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  ],
+                  [
+                    "limit_contract_code_size",
+                    {
+                      "Application": {
+                        "func": {
+                          "Path": {
+                            "path": [
+                              "core",
+                              "option",
+                              "Option"
+                            ]
+                          }
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "Path": {
+                              "path": [
+                                "usize"
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    "disable_nonce_check",
+                    {
+                      "Path": {
+                        "path": [
+                          "bool"
+                        ]
+                      }
+                    }
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/src/cfg.rs",
+            "item": {
+              "TraitImpl": {
+                "generic_consts": [],
+                "generic_tys": [
+                  "SPEC"
+                ],
+                "predicates": [
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "clone",
+                        "Clone"
+                      ],
+                      "ty_params": []
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  },
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "convert",
+                        "Into"
+                      ],
+                      "ty_params": [
+                        [
+                          "T",
+                          {
+                            "RequiredValue": {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "revm_specification",
+                                      "hardfork",
+                                      "SpecId"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            }
+                          }
+                        ]
+                      ]
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  }
+                ],
+                "self_ty": {
+                  "Application": {
+                    "func": {
+                      "Path": {
+                        "path": [
+                          "revm_context",
+                          "cfg",
+                          "CfgEnv"
+                        ]
+                      }
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "Var": {
+                          "name": "SPEC"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "of_trait": [
+                  "core",
+                  "clone",
+                  "Clone"
+                ],
+                "trait_ty_params": [],
+                "items": [
+                  {
+                    "name": "clone",
+                    "snippet": [
+                      "Clone"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Application": {
+                                  "func": {
+                                    "Path": {
+                                      "path": [
+                                        "revm_context",
+                                        "cfg",
+                                        "CfgEnv"
+                                      ]
+                                    }
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "Var": {
+                                        "name": "SPEC"
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "StructStruct": {
+                                      "path": [
+                                        "revm_context",
+                                        "cfg",
+                                        "CfgEnv"
+                                      ],
+                                      "fields": [
+                                        [
+                                          "chain_id",
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "GetTraitMethod": {
+                                                  "trait_name": [
+                                                    "core",
+                                                    "clone",
+                                                    "Clone"
+                                                  ],
+                                                  "self_ty": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "u64"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "trait_tys": [],
+                                                  "method_name": "clone",
+                                                  "generic_tys": []
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.read"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "self"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      {
+                                                        "InternalString": "revm_context::cfg::CfgEnv"
+                                                      },
+                                                      {
+                                                        "InternalString": "chain_id"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        ],
+                                        [
+                                          "spec",
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "GetTraitMethod": {
+                                                  "trait_name": [
+                                                    "core",
+                                                    "clone",
+                                                    "Clone"
+                                                  ],
+                                                  "self_ty": {
+                                                    "Var": {
+                                                      "name": "SPEC"
+                                                    }
+                                                  },
+                                                  "trait_tys": [],
+                                                  "method_name": "clone",
+                                                  "generic_tys": []
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.read"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "self"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      {
+                                                        "InternalString": "revm_context::cfg::CfgEnv"
+                                                      },
+                                                      {
+                                                        "InternalString": "spec"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        ],
+                                        [
+                                          "limit_contract_code_size",
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "GetTraitMethod": {
+                                                  "trait_name": [
+                                                    "core",
+                                                    "clone",
+                                                    "Clone"
+                                                  ],
+                                                  "self_ty": {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "core",
+                                                            "option",
+                                                            "Option"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Path": {
+                                                            "path": [
+                                                              "usize"
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  "trait_tys": [],
+                                                  "method_name": "clone",
+                                                  "generic_tys": []
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.read"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "self"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      {
+                                                        "InternalString": "revm_context::cfg::CfgEnv"
+                                                      },
+                                                      {
+                                                        "InternalString": "limit_contract_code_size"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        ],
+                                        [
+                                          "disable_nonce_check",
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "GetTraitMethod": {
+                                                  "trait_name": [
+                                                    "core",
+                                                    "clone",
+                                                    "Clone"
+                                                  ],
+                                                  "self_ty": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "bool"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "trait_tys": [],
+                                                  "method_name": "clone",
+                                                  "generic_tys": []
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.read"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "self"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      {
+                                                        "InternalString": "revm_context::cfg::CfgEnv"
+                                                      },
+                                                      {
+                                                        "InternalString": "disable_nonce_check"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        ]
+                                      ],
+                                      "base": null
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "clone_from",
+                    "snippet": null,
+                    "kind": "Default"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/src/cfg.rs",
+            "item": {
+              "TraitImpl": {
+                "generic_consts": [],
+                "generic_tys": [
+                  "SPEC"
+                ],
+                "predicates": [
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "fmt",
+                        "Debug"
+                      ],
+                      "ty_params": []
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  },
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "convert",
+                        "Into"
+                      ],
+                      "ty_params": [
+                        [
+                          "T",
+                          {
+                            "RequiredValue": {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "revm_specification",
+                                      "hardfork",
+                                      "SpecId"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            }
+                          }
+                        ]
+                      ]
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  }
+                ],
+                "self_ty": {
+                  "Application": {
+                    "func": {
+                      "Path": {
+                        "path": [
+                          "revm_context",
+                          "cfg",
+                          "CfgEnv"
+                        ]
+                      }
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "Var": {
+                          "name": "SPEC"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "of_trait": [
+                  "core",
+                  "fmt",
+                  "Debug"
+                ],
+                "trait_ty_params": [],
+                "items": [
+                  {
+                    "name": "fmt",
+                    "snippet": [
+                      "Debug"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ],
+                                [
+                                  "f",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&mut"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "core",
+                                                  "fmt",
+                                                  "Formatter"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": []
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Application": {
+                                  "func": {
+                                    "Path": {
+                                      "path": [
+                                        "core",
+                                        "result",
+                                        "Result"
+                                      ]
+                                    }
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "Tuple": {
+                                        "tys": []
+                                      }
+                                    },
+                                    {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "core",
+                                              "fmt",
+                                              "Error"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Let": {
+                                      "name": "f",
+                                      "is_user": false,
+                                      "init": {
+                                        "Call": {
+                                          "func": {
+                                            "LocalVar": "M.alloc"
+                                          },
+                                          "args": [
+                                            {
+                                              "LocalVar": "f"
+                                            }
+                                          ],
+                                          "kind": "Effectful"
+                                        }
+                                      },
+                                      "body": {
+                                        "Call": {
+                                          "func": {
+                                            "GetAssociatedFunction": {
+                                              "ty": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "core",
+                                                        "fmt",
+                                                        "Formatter"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              },
+                                              "func": "debug_struct_field4_finish",
+                                              "generic_tys": []
+                                            }
+                                          },
+                                          "args": [
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "LocalVar": "f"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Literal": {
+                                                      "String": "CfgEnv"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Literal": {
+                                                      "String": "chain_id"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  {
+                                                    "InternalString": "revm_context::cfg::CfgEnv"
+                                                  },
+                                                  {
+                                                    "InternalString": "chain_id"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Literal": {
+                                                      "String": "spec"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  {
+                                                    "InternalString": "revm_context::cfg::CfgEnv"
+                                                  },
+                                                  {
+                                                    "InternalString": "spec"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Literal": {
+                                                      "String": "limit_contract_code_size"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  {
+                                                    "InternalString": "revm_context::cfg::CfgEnv"
+                                                  },
+                                                  {
+                                                    "InternalString": "limit_contract_code_size"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.read"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Literal": {
+                                                      "String": "disable_nonce_check"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.alloc"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "self"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        {
+                                                          "InternalString": "revm_context::cfg::CfgEnv"
+                                                        },
+                                                        {
+                                                          "InternalString": "disable_nonce_check"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            }
+                                          ],
+                                          "kind": "Closure"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/src/cfg.rs",
+            "item": {
+              "TraitImpl": {
+                "generic_consts": [],
+                "generic_tys": [
+                  "SPEC"
+                ],
+                "predicates": [
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "cmp",
+                        "Eq"
+                      ],
+                      "ty_params": []
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  },
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "convert",
+                        "Into"
+                      ],
+                      "ty_params": [
+                        [
+                          "T",
+                          {
+                            "RequiredValue": {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "revm_specification",
+                                      "hardfork",
+                                      "SpecId"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            }
+                          }
+                        ]
+                      ]
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  }
+                ],
+                "self_ty": {
+                  "Application": {
+                    "func": {
+                      "Path": {
+                        "path": [
+                          "revm_context",
+                          "cfg",
+                          "CfgEnv"
+                        ]
+                      }
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "Var": {
+                          "name": "SPEC"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "of_trait": [
+                  "core",
+                  "cmp",
+                  "Eq"
+                ],
+                "trait_ty_params": [],
+                "items": [
+                  {
+                    "name": "assert_receiver_is_total_eq",
+                    "snippet": [
+                      "Eq"
+                    ],
+                    "kind": {
+                      "OptionalValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Tuple": {
+                                  "tys": []
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.read"
+                                      },
+                                      "args": [
+                                        {
+                                          "Match": {
+                                            "scrutinee": {
+                                              "LocalVar": "Value.DeclaredButUndefined"
+                                            },
+                                            "arms": [
+                                              {
+                                                "Lambda": {
+                                                  "args": [
+                                                    [
+                                                      "γ",
+                                                      null
+                                                    ]
+                                                  ],
+                                                  "body": {
+                                                    "Match": {
+                                                      "scrutinee": {
+                                                        "LocalVar": "Value.DeclaredButUndefined"
+                                                      },
+                                                      "arms": [
+                                                        {
+                                                          "Lambda": {
+                                                            "args": [
+                                                              [
+                                                                "γ",
+                                                                null
+                                                              ]
+                                                            ],
+                                                            "body": {
+                                                              "Match": {
+                                                                "scrutinee": {
+                                                                  "LocalVar": "Value.DeclaredButUndefined"
+                                                                },
+                                                                "arms": [
+                                                                  {
+                                                                    "Lambda": {
+                                                                      "args": [
+                                                                        [
+                                                                          "γ",
+                                                                          null
+                                                                        ]
+                                                                      ],
+                                                                      "body": {
+                                                                        "Match": {
+                                                                          "scrutinee": {
+                                                                            "LocalVar": "Value.DeclaredButUndefined"
+                                                                          },
+                                                                          "arms": [
+                                                                            {
+                                                                              "Lambda": {
+                                                                                "args": [
+                                                                                  [
+                                                                                    "γ",
+                                                                                    null
+                                                                                  ]
+                                                                                ],
+                                                                                "body": {
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "LocalVar": "M.alloc"
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "Tuple": {
+                                                                                          "elements": []
+                                                                                        }
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Effectful"
+                                                                                  }
+                                                                                },
+                                                                                "is_for_match": true,
+                                                                                "is_internal": true
+                                                                              }
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "is_for_match": true,
+                                                                      "is_internal": true
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            "is_for_match": true,
+                                                            "is_internal": true
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  "is_for_match": true,
+                                                  "is_internal": true
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/src/cfg.rs",
+            "item": {
+              "TraitImpl": {
+                "generic_consts": [],
+                "generic_tys": [
+                  "SPEC"
+                ],
+                "predicates": [
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "convert",
+                        "Into"
+                      ],
+                      "ty_params": [
+                        [
+                          "T",
+                          {
+                            "RequiredValue": {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "revm_specification",
+                                      "hardfork",
+                                      "SpecId"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            }
+                          }
+                        ]
+                      ]
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  }
+                ],
+                "self_ty": {
+                  "Application": {
+                    "func": {
+                      "Path": {
+                        "path": [
+                          "revm_context",
+                          "cfg",
+                          "CfgEnv"
+                        ]
+                      }
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "Var": {
+                          "name": "SPEC"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "of_trait": [
+                  "core",
+                  "marker",
+                  "StructuralPartialEq"
+                ],
+                "trait_ty_params": [],
+                "items": []
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/src/cfg.rs",
+            "item": {
+              "TraitImpl": {
+                "generic_consts": [],
+                "generic_tys": [
+                  "SPEC"
+                ],
+                "predicates": [
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "cmp",
+                        "PartialEq"
+                      ],
+                      "ty_params": [
+                        [
+                          "Rhs",
+                          "Default"
+                        ]
+                      ]
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  },
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "convert",
+                        "Into"
+                      ],
+                      "ty_params": [
+                        [
+                          "T",
+                          {
+                            "RequiredValue": {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "revm_specification",
+                                      "hardfork",
+                                      "SpecId"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            }
+                          }
+                        ]
+                      ]
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  }
+                ],
+                "self_ty": {
+                  "Application": {
+                    "func": {
+                      "Path": {
+                        "path": [
+                          "revm_context",
+                          "cfg",
+                          "CfgEnv"
+                        ]
+                      }
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "Var": {
+                          "name": "SPEC"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "of_trait": [
+                  "core",
+                  "cmp",
+                  "PartialEq"
+                ],
+                "trait_ty_params": [
+                  [
+                    "Rhs",
+                    "Default"
+                  ]
+                ],
+                "items": [
+                  {
+                    "name": "eq",
+                    "snippet": [
+                      "PartialEq"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ],
+                                [
+                                  "other",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Path": {
+                                  "path": [
+                                    "bool"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Let": {
+                                      "name": "other",
+                                      "is_user": false,
+                                      "init": {
+                                        "Call": {
+                                          "func": {
+                                            "LocalVar": "M.alloc"
+                                          },
+                                          "args": [
+                                            {
+                                              "LocalVar": "other"
+                                            }
+                                          ],
+                                          "kind": "Effectful"
+                                        }
+                                      },
+                                      "body": {
+                                        "LogicalOperator": {
+                                          "name": "LogicalOp.and",
+                                          "lhs": {
+                                            "LogicalOperator": {
+                                              "name": "LogicalOp.and",
+                                              "lhs": {
+                                                "LogicalOperator": {
+                                                  "name": "LogicalOp.and",
+                                                  "lhs": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "BinOp.eq"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "self"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "revm_context::cfg::CfgEnv"
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "chain_id"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "other"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "revm_context::cfg::CfgEnv"
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "chain_id"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "rhs": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "cmp",
+                                                            "PartialEq"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "SPEC"
+                                                            }
+                                                          },
+                                                          "trait_tys": [
+                                                            {
+                                                              "Var": {
+                                                                "name": "SPEC"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "method_name": "eq",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "revm_context::cfg::CfgEnv"
+                                                              },
+                                                              {
+                                                                "InternalString": "spec"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "other"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "revm_context::cfg::CfgEnv"
+                                                              },
+                                                              {
+                                                                "InternalString": "spec"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "rhs": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "cmp",
+                                                        "PartialEq"
+                                                      ],
+                                                      "self_ty": {
+                                                        "Application": {
+                                                          "func": {
+                                                            "Path": {
+                                                              "path": [
+                                                                "core",
+                                                                "option",
+                                                                "Option"
+                                                              ]
+                                                            }
+                                                          },
+                                                          "consts": [],
+                                                          "tys": [
+                                                            {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "usize"
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "core",
+                                                                  "option",
+                                                                  "Option"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "usize"
+                                                                  ]
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ],
+                                                      "method_name": "eq",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "revm_context::cfg::CfgEnv"
+                                                          },
+                                                          {
+                                                            "InternalString": "limit_contract_code_size"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "other"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "revm_context::cfg::CfgEnv"
+                                                          },
+                                                          {
+                                                            "InternalString": "limit_contract_code_size"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "rhs": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "BinOp.eq"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "self"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            {
+                                                              "InternalString": "revm_context::cfg::CfgEnv"
+                                                            },
+                                                            {
+                                                              "InternalString": "disable_nonce_check"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                },
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "other"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            {
+                                                              "InternalString": "revm_context::cfg::CfgEnv"
+                                                            },
+                                                            {
+                                                              "InternalString": "disable_nonce_check"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "ne",
+                    "snippet": null,
+                    "kind": "Default"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/src/cfg.rs",
+            "item": {
+              "Impl": {
+                "generic_consts": [],
+                "generic_tys": [],
+                "self_ty": {
+                  "Application": {
+                    "func": {
+                      "Path": {
+                        "path": [
+                          "revm_context",
+                          "cfg",
+                          "CfgEnv"
+                        ]
+                      }
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "Application": {
+                          "func": {
+                            "Path": {
+                              "path": [
+                                "revm_specification",
+                                "hardfork",
+                                "SpecId"
+                              ]
+                            }
+                          },
+                          "consts": [],
+                          "tys": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                "items": [
+                  {
+                    "name": "with_chain_id",
+                    "snippet": [
+                      "    pub fn with_chain_id(mut self, chain_id: u64) -> Self {",
+                      "        self.chain_id = chain_id;",
+                      "        self",
+                      "    }"
+                    ],
+                    "kind": {
+                      "Definition": {
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [
+                              [
+                                "self",
+                                {
+                                  "Application": {
+                                    "func": {
+                                      "Path": {
+                                        "path": [
+                                          "revm_context",
+                                          "cfg",
+                                          "CfgEnv"
+                                        ]
+                                      }
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "revm_specification",
+                                                "hardfork",
+                                                "SpecId"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                null
+                              ],
+                              [
+                                "chain_id",
+                                {
+                                  "Path": {
+                                    "path": [
+                                      "u64"
+                                    ]
+                                  }
+                                },
+                                null
+                              ]
+                            ],
+                            "ret_ty": {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "revm_context",
+                                      "cfg",
+                                      "CfgEnv"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "revm_specification",
+                                            "hardfork",
+                                            "SpecId"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "body": {
+                              "Let": {
+                                "name": "self",
+                                "is_user": false,
+                                "init": {
+                                  "Call": {
+                                    "func": {
+                                      "LocalVar": "M.alloc"
+                                    },
+                                    "args": [
+                                      {
+                                        "LocalVar": "self"
+                                      }
+                                    ],
+                                    "kind": "Effectful"
+                                  }
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "chain_id",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "chain_id"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Let": {
+                                              "name": null,
+                                              "is_user": true,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.write"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          },
+                                                          {
+                                                            "InternalString": "revm_context::cfg::CfgEnv"
+                                                          },
+                                                          {
+                                                            "InternalString": "chain_id"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "chain_id"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "LocalVar": "self"
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/src/cfg.rs",
+            "item": {
+              "TraitImpl": {
+                "generic_consts": [],
+                "generic_tys": [
+                  "SPEC"
+                ],
+                "predicates": [
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "convert",
+                        "Into"
+                      ],
+                      "ty_params": [
+                        [
+                          "T",
+                          {
+                            "RequiredValue": {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "revm_specification",
+                                      "hardfork",
+                                      "SpecId"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            }
+                          }
+                        ]
+                      ]
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  },
+                  {
+                    "bound": {
+                      "name": [
+                        "core",
+                        "marker",
+                        "Copy"
+                      ],
+                      "ty_params": []
+                    },
+                    "ty": {
+                      "Var": {
+                        "name": "SPEC"
+                      }
+                    }
+                  }
+                ],
+                "self_ty": {
+                  "Application": {
+                    "func": {
+                      "Path": {
+                        "path": [
+                          "revm_context",
+                          "cfg",
+                          "CfgEnv"
+                        ]
+                      }
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "Var": {
+                          "name": "SPEC"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "of_trait": [
+                  "revm_context_interface",
+                  "cfg",
+                  "Cfg"
+                ],
+                "trait_ty_params": [],
+                "items": [
+                  {
+                    "name": "Spec",
+                    "snippet": [
+                      "    type Spec = SPEC;"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Type": {
+                          "ty": {
+                            "Var": {
+                              "name": "SPEC"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "chain_id",
+                    "snippet": [
+                      "    fn chain_id(&self) -> u64 {",
+                      "        self.chain_id",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Path": {
+                                  "path": [
+                                    "u64"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.read"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "InternalString": "revm_context::cfg::CfgEnv"
+                                              },
+                                              {
+                                                "InternalString": "chain_id"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "spec",
+                    "snippet": [
+                      "    fn spec(&self) -> Self::Spec {",
+                      "        self.spec",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": "Associated",
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.read"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "InternalString": "revm_context::cfg::CfgEnv"
+                                              },
+                                              {
+                                                "InternalString": "spec"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "max_code_size",
+                    "snippet": [
+                      "    fn max_code_size(&self) -> usize {",
+                      "        self.limit_contract_code_size.unwrap_or(MAX_CODE_SIZE)",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Path": {
+                                  "path": [
+                                    "usize"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetAssociatedFunction": {
+                                          "ty": {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "core",
+                                                    "option",
+                                                    "Option"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Path": {
+                                                    "path": [
+                                                      "usize"
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "func": "unwrap_or",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "InternalString": "revm_context::cfg::CfgEnv"
+                                                    },
+                                                    {
+                                                      "InternalString": "limit_contract_code_size"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "GetConst": [
+                                                  "revm_specification",
+                                                  "constants",
+                                                  "MAX_CODE_SIZE"
+                                                ]
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "is_eip3607_disabled",
+                    "snippet": [
+                      "    fn is_eip3607_disabled(&self) -> bool {",
+                      "        cfg_if::cfg_if! {",
+                      "            if #[cfg(feature = \"optional_eip3607\")] {",
+                      "                self.disable_eip3607",
+                      "            } else {",
+                      "                false",
+                      "            }",
+                      "        }",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Path": {
+                                  "path": [
+                                    "bool"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Literal": {
+                                      "Bool": false
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "is_balance_check_disabled",
+                    "snippet": [
+                      "    fn is_balance_check_disabled(&self) -> bool {",
+                      "        cfg_if::cfg_if! {",
+                      "            if #[cfg(feature = \"optional_balance_check\")] {",
+                      "                self.disable_balance_check",
+                      "            } else {",
+                      "                false",
+                      "            }",
+                      "        }",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Path": {
+                                  "path": [
+                                    "bool"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Literal": {
+                                      "Bool": false
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "is_gas_refund_disabled",
+                    "snippet": [
+                      "    fn is_gas_refund_disabled(&self) -> bool {",
+                      "        cfg_if::cfg_if! {",
+                      "            if #[cfg(feature = \"optional_gas_refund\")] {",
+                      "                self.disable_gas_refund",
+                      "            } else {",
+                      "                false",
+                      "            }",
+                      "        }",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Path": {
+                                  "path": [
+                                    "bool"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Literal": {
+                                      "Bool": false
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "is_block_gas_limit_disabled",
+                    "snippet": [
+                      "    fn is_block_gas_limit_disabled(&self) -> bool {",
+                      "        cfg_if::cfg_if! {",
+                      "            if #[cfg(feature = \"optional_block_gas_limit\")] {",
+                      "                self.disable_block_gas_limit",
+                      "            } else {",
+                      "                false",
+                      "            }",
+                      "        }",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Path": {
+                                  "path": [
+                                    "bool"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Literal": {
+                                      "Bool": false
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "is_nonce_check_disabled",
+                    "snippet": [
+                      "    fn is_nonce_check_disabled(&self) -> bool {",
+                      "        self.disable_nonce_check",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Path": {
+                                  "path": [
+                                    "bool"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.read"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "InternalString": "revm_context::cfg::CfgEnv"
+                                              },
+                                              {
+                                                "InternalString": "disable_nonce_check"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "is_base_fee_check_disabled",
+                    "snippet": [
+                      "    fn is_base_fee_check_disabled(&self) -> bool {",
+                      "        cfg_if::cfg_if! {",
+                      "            if #[cfg(feature = \"optional_no_base_fee\")] {",
+                      "                self.disable_base_fee",
+                      "            } else {",
+                      "                false",
+                      "            }",
+                      "        }",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "self",
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "&"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_context",
+                                                  "cfg",
+                                                  "CfgEnv"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Var": {
+                                                  "name": "SPEC"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "Path": {
+                                  "path": [
+                                    "bool"
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "self",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "self"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Literal": {
+                                      "Bool": false
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/src/cfg.rs",
+            "item": {
+              "TraitImpl": {
+                "generic_consts": [],
+                "generic_tys": [],
+                "predicates": [],
+                "self_ty": {
+                  "Application": {
+                    "func": {
+                      "Path": {
+                        "path": [
+                          "revm_context",
+                          "cfg",
+                          "CfgEnv"
+                        ]
+                      }
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "Application": {
+                          "func": {
+                            "Path": {
+                              "path": [
+                                "revm_specification",
+                                "hardfork",
+                                "SpecId"
+                              ]
+                            }
+                          },
+                          "consts": [],
+                          "tys": []
+                        }
+                      }
+                    ]
+                  }
+                },
+                "of_trait": [
+                  "core",
+                  "default",
+                  "Default"
+                ],
+                "trait_ty_params": [],
+                "items": [
+                  {
+                    "name": "default",
+                    "snippet": [
+                      "    fn default() -> Self {",
+                      "        Self {",
+                      "            chain_id: 1,",
+                      "            limit_contract_code_size: None,",
+                      "            spec: SpecId::PRAGUE,",
+                      "            disable_nonce_check: false,",
+                      "            #[cfg(feature = \"memory_limit\")]",
+                      "            memory_limit: (1 << 32) - 1,",
+                      "            #[cfg(feature = \"optional_balance_check\")]",
+                      "            disable_balance_check: false,",
+                      "            #[cfg(feature = \"optional_block_gas_limit\")]",
+                      "            disable_block_gas_limit: false,",
+                      "            #[cfg(feature = \"optional_eip3607\")]",
+                      "            disable_eip3607: false,",
+                      "            #[cfg(feature = \"optional_gas_refund\")]",
+                      "            disable_gas_refund: false,",
+                      "            #[cfg(feature = \"optional_no_base_fee\")]",
+                      "            disable_base_fee: false,",
+                      "        }",
+                      "    }"
+                    ],
+                    "kind": {
+                      "RequiredValue": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [],
+                            "signature_and_body": {
+                              "args": [],
+                              "ret_ty": {
+                                "Application": {
+                                  "func": {
+                                    "Path": {
+                                      "path": [
+                                        "revm_context",
+                                        "cfg",
+                                        "CfgEnv"
+                                      ]
+                                    }
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "revm_specification",
+                                              "hardfork",
+                                              "SpecId"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              "body": {
+                                "StructStruct": {
+                                  "path": [
+                                    "revm_context",
+                                    "cfg",
+                                    "CfgEnv"
+                                  ],
+                                  "fields": [
+                                    [
+                                      "chain_id",
+                                      {
+                                        "Literal": {
+                                          "Integer": {
+                                            "kind": "U64",
+                                            "negative_sign": false,
+                                            "value": 1
+                                          }
+                                        }
+                                      }
+                                    ],
+                                    [
+                                      "limit_contract_code_size",
+                                      {
+                                        "StructTuple": {
+                                          "path": [
+                                            "core",
+                                            "option",
+                                            "Option",
+                                            "None"
+                                          ],
+                                          "fields": []
+                                        }
+                                      }
+                                    ],
+                                    [
+                                      "spec",
+                                      {
+                                        "StructTuple": {
+                                          "path": [
+                                            "revm_specification",
+                                            "hardfork",
+                                            "SpecId",
+                                            "PRAGUE"
+                                          ],
+                                          "fields": []
+                                        }
+                                      }
+                                    ],
+                                    [
+                                      "disable_nonce_check",
+                                      {
+                                        "Literal": {
+                                          "Bool": false
+                                        }
+                                      }
+                                    ]
+                                  ],
+                                  "base": null
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]
