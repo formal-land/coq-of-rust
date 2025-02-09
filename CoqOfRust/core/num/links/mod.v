@@ -31,4 +31,11 @@ Module Impl_u64.
   Proof.
   Admitted.
   Smpl Add apply run_saturating_mul : run_closure.
+
+  (* pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) *)
+  Lemma run_overflowing_sub (self rhs: Self) :
+    {{ num.Impl_u64.overflowing_sub [] [] [ φ self; φ rhs ] 🔽 (Self * bool) }}.
+  Proof.
+  Admitted.
+  Smpl Add apply run_overflowing_sub : run_closure.
 End Impl_u64.

@@ -29,11 +29,11 @@ Module Option.
   Proof. eapply OfValue.Make with (A := option A); apply of_value_with_None. Defined.
   Smpl Add eapply of_value_None : of_value.
 
-  Definition of_value_Some {A : Set} `{Link A} (value : A) value' :
-    value' = φ value ->
+  Definition of_value_Some value' :
+    OfValue.t value' ->
     OfValue.t (Value.StructTuple "core::option::Option::Some" [value']).
   Proof.
-    intros; eapply OfValue.Make with (A := option A).
+    intros [A]; eapply OfValue.Make with (A := option A).
     apply of_value_with_Some; eassumption.
   Defined.
   Smpl Add eapply of_value_Some : of_value.

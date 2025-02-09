@@ -679,7 +679,9 @@ Fixpoint match_operator
     (arms : list (Value.t -> M)) :
     M :=
   match arms with
-  | nil => impossible "no match branches left"
+  | nil =>
+    (* It should ideally be an [impossible] case, but that would make the links more complex *)
+    panic (Panic.Make "no match branches left")
   | arm :: arms =>
     catch
       (arm scrutinee)

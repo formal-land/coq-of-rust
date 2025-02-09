@@ -204,65 +204,6 @@ Module Unit.
   Smpl Add apply of_value : of_value.
 End Unit.
 
-Module OneElementTuple.
-  (** There are no tuples of one element in Coq so we have to create it. This is different than the
-      type itself in the sense that the [Link] instance should not be the same and use Rust tuples
-      of one element instead. *)
-  Record t {A : Set} `{Link A} : Set := {
-    value : A;
-  }.
-  Arguments t _ {_}.
-
-  Global Instance IsLink {A : Set} `{Link A} : Link (t A) := {
-    Φ := Ty.tuple [Φ A];
-    φ '{| value := value |} := Value.Tuple [φ value];
-  }.
-
-  Lemma of_value_with {A : Set} `{Link A} value value' :
-    value' = φ value ->
-    Value.Tuple [value'] = φ (OneElementTuple.Build_t A _ value).
-  Proof. now intros; subst. Qed.
-  Smpl Add apply of_value_with : of_value.
-
-  Definition of_value (value' : Value.t) :
-    OfValue.t value' ->
-    OfValue.t (Value.Tuple [value']).
-  Proof.
-    intros [A].
-    eapply OfValue.Make with (A := t A).
-    smpl of_value; eassumption.
-  Defined.
-  Smpl Add apply of_value : of_value.
-End OneElementTuple.
-
-Module Pair.
-  Global Instance IsLink (A1 A2 : Set)
-      (_ : Link A1)
-      (_ : Link A2) :
-      Link (A1 * A2) := {
-    Φ := Ty.tuple [Φ A1; Φ A2];
-    φ '(a1, a2) := Value.Tuple [φ a1; φ a2];
-  }.
-
-  Lemma of_value_with {A1 A2 : Set} `{Link A1} `{Link A2} a1 a2 a1' a2' :
-    a1' = φ a1 ->
-    a2' = φ a2 ->
-    Value.Tuple [a1'; a2'] = φ (A := A1 * A2) (a1, a2).
-  Proof. now intros; subst. Qed.
-  Smpl Add apply of_value_with : of_value.
-
-  Definition of_value (a1' a2' : Value.t) :
-    OfValue.t a1' ->
-    OfValue.t a2' ->
-    OfValue.t (Value.Tuple [a1'; a2']).
-  Proof.
-    intros [A1] [A2].
-    eapply OfValue.Make with (A := A1 * A2).
-    smpl of_value; eassumption.
-  Defined.
-  Smpl Add apply of_value : of_value.
-End Pair.
-
 (** A general type for references. Can be used for mutable or non-mutable references, as well as
     for unsafe pointers (we assume that the `unsafe` code is safe). *)
 Module Ref.
@@ -813,7 +754,7 @@ Ltac run_symbolic_pure :=
     repeat smpl of_value.
 
 Ltac run_symbolic_state_alloc_immediate :=
-  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [smpl of_value |].
+  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat smpl of_value |].
 
 Ltac run_symbolic_state_read :=
   eapply Run.CallPrimitiveStateRead;
@@ -824,7 +765,7 @@ Ltac run_symbolic_state_read_immediate :=
   apply Run.CallPrimitiveStateReadImmediate.
 
 Ltac run_symbolic_state_write :=
-  eapply Run.CallPrimitiveStateWrite; [smpl of_value |].
+  eapply Run.CallPrimitiveStateWrite; [now repeat smpl of_value |].
 
 Ltac run_symbolic_get_function :=
   eapply Run.CallPrimitiveGetFunction; [smpl is_function |].
@@ -852,15 +793,20 @@ Ltac run_symbolic_closure :=
     intros []
   ].
 
-Ltac run_rewrites :=
+Ltac run_main_rewrites :=
   eapply Run.Rewrite; [
     (repeat (
       rewrite OfValue.get_value_of_value_eq ||
       rewrite Ref.deref_eq ||
       rewrite Ref.borrow_eq ||
-      rewrite Ref.cast_cast_eq ||
-      autorewrite with run_constant
+      rewrite Ref.cast_cast_eq
     ));
+    reflexivity
+  |].
+
+Ltac run_rewrites :=
+  eapply Run.Rewrite; [
+    autorewrite with run_constant;
     reflexivity
   |].
 
@@ -868,6 +814,7 @@ Ltac run_symbolic_one_step_immediate :=
   match goal with
   | |- {{ _ 🔽 _, _ }} =>
     cbn ||
+    run_main_rewrites ||
     run_symbolic_pure ||
     run_symbolic_state_alloc_immediate ||
     run_symbolic_state_read_immediate ||
@@ -893,7 +840,7 @@ Ltac run_symbolic :=
       eapply Run.Let; [
         run_symbolic
       |];
-      intros []; run_symbolic
+      intros [|[]]; run_symbolic
     )
   )).
 
@@ -916,3 +863,92 @@ Module Function2.
     φ x := Value.Closure (existS (_, _) x.(f));
   }.
 End Function2.
+
+Module OneElementTuple.
+  (** There are no tuples of one element in Coq so we have to create it. This is different than the
+      type itself in the sense that the [Link] instance should not be the same and use Rust tuples
+      of one element instead. *)
+  Record t {A : Set} `{Link A} : Set := {
+    value : A;
+  }.
+  Arguments t _ {_}.
+
+  Global Instance IsLink {A : Set} `{Link A} : Link (t A) := {
+    Φ := Ty.tuple [Φ A];
+    φ '{| value := value |} := Value.Tuple [φ value];
+  }.
+
+  Lemma of_value_with {A : Set} `{Link A} value value' :
+    value' = φ value ->
+    Value.Tuple [value'] = φ (OneElementTuple.Build_t A _ value).
+  Proof. now intros; subst. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (value' : Value.t) :
+    OfValue.t value' ->
+    OfValue.t (Value.Tuple [value']).
+  Proof.
+    intros [A].
+    eapply OfValue.Make with (A := t A).
+    smpl of_value; eassumption.
+  Defined.
+  Smpl Add apply of_value : of_value.
+End OneElementTuple.
+
+Module Pair.
+  Global Instance IsLink (A1 A2 : Set)
+      (_ : Link A1)
+      (_ : Link A2) :
+      Link (A1 * A2) := {
+    Φ := Ty.tuple [Φ A1; Φ A2];
+    φ '(a1, a2) := Value.Tuple [φ a1; φ a2];
+  }.
+
+  Lemma of_value_with {A1 A2 : Set} `{Link A1} `{Link A2} a1 a2 a1' a2' :
+    a1' = φ a1 ->
+    a2' = φ a2 ->
+    Value.Tuple [a1'; a2'] = φ (A := A1 * A2) (a1, a2).
+  Proof. now intros; subst. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (a1' a2' : Value.t) :
+    OfValue.t a1' ->
+    OfValue.t a2' ->
+    OfValue.t (Value.Tuple [a1'; a2']).
+  Proof.
+    intros [A1] [A2].
+    eapply OfValue.Make with (A := A1 * A2).
+    smpl of_value; eassumption.
+  Defined.
+  Smpl Add apply of_value : of_value.
+
+  Module SubPointer.
+    Definition get_index_0 {A1 A2 : Set} `{Link A1} `{Link A2} :
+        SubPointer.Runner.t (A1 * A2) A1 := {|
+      SubPointer.Runner.index := Pointer.Index.Tuple 0;
+      SubPointer.Runner.projection '(a1, _) := Some a1;
+      SubPointer.Runner.injection '(a1, a2) a1' := Some (a1', a2);
+    |}.
+
+    Lemma get_index_0_is_valid {A1 A2 : Set} `{Link A1} `{Link A2} :
+      SubPointer.Runner.Valid.t (get_index_0 (A1 := A1) (A2 := A2)).
+    Proof.
+      hauto l: on.
+    Qed.
+    Smpl Add run_sub_pointer get_index_0_is_valid : run_symbolic.
+
+    Definition get_index_1 {A1 A2 : Set} `{Link A1} `{Link A2} :
+        SubPointer.Runner.t (A1 * A2) A2 := {|
+      SubPointer.Runner.index := Pointer.Index.Tuple 1;
+      SubPointer.Runner.projection '(_, a2) := Some a2;
+      SubPointer.Runner.injection '(a1, a2) a2' := Some (a1, a2');
+    |}.
+
+    Lemma get_index_1_is_valid {A1 A2 : Set} `{Link A1} `{Link A2} :
+      SubPointer.Runner.Valid.t (get_index_1 (A1 := A1) (A2 := A2)).
+    Proof.
+      hauto l: on.
+    Qed.
+    Smpl Add run_sub_pointer get_index_1_is_valid : run_symbolic.
+  End SubPointer.
+End Pair.

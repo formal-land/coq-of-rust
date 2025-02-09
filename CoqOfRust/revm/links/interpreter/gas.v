@@ -7,6 +7,7 @@ Require core.links.default.
 Require core.links.option.
 Require core.mem.links.mod.
 Require core.mem.mod.
+Require core.num.links.mod.
 Require Import revm.translations.interpreter.gas.calc.
 Require revm.links.interpreter.gas.calc.
 Require Import revm.translations.interpreter.gas.
@@ -153,7 +154,8 @@ Module Impl_MemoryGas.
       option U64.t
     }}.
   Proof.
-    run_symbolic.
+  Admitted.
+    (* run_symbolic.
     eapply Run.Let. {
       run_symbolic.
       eapply Run.CallPrimitiveAreEqual with (A := bool); try smpl of_value.
@@ -168,10 +170,67 @@ Module Impl_MemoryGas.
       }
       intros []; run_symbolic.
     }
-    intros []; run_symbolic.
-  Admitted.
+    intros [|[]]; run_symbolic.
+  Defined. *)
   Smpl Add apply run_record_new_len : run_closure.
 End Impl_MemoryGas.
+
+(*
+    pub enum MemoryExtensionResult {
+        /// Memory was extended.
+        Extended,
+        /// Memory size stayed the same.
+        Same,
+        /// Not enough gas to extend memory.s
+        OutOfGas,
+    }
+*)
+Module MemoryExtensionResult.
+  Inductive t : Set :=
+  | Extended
+  | Same
+  | OutOfGas.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_interpreter::gas::MemoryExtensionResult";
+    φ x :=
+      match x with
+      | Extended => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" []
+      | Same => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" []
+      | OutOfGas => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" []
+      end;
+  }.
+
+  Lemma of_value_with_Extended :
+    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" [] = φ Extended.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with_Extended : of_value.
+
+  Lemma of_value_with_Same :
+    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" [] = φ Same.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with_Same : of_value.
+
+  Lemma of_value_with_OutOfGas :
+    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" [] = φ OutOfGas.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with_OutOfGas : of_value.
+
+  Definition of_value_Extended :
+    OfValue.t (Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" []).
+  Proof. econstructor; apply of_value_with_Extended. Defined.
+  Smpl Add apply of_value_Extended : of_value.
+
+  Definition of_value_Same :
+    OfValue.t (Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" []).
+  Proof. econstructor; apply of_value_with_Same. Defined.
+  Smpl Add apply of_value_Same : of_value.
+
+  Definition of_value_OutOfGas :
+    OfValue.t (Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" []).
+  Proof. econstructor; apply of_value_with_OutOfGas. Defined.
+  Smpl Add apply of_value_OutOfGas : of_value.
+End MemoryExtensionResult.
 
 (*
   /// Represents the state of gas during execution.
@@ -188,7 +247,6 @@ End Impl_MemoryGas.
       memory: MemoryGas,
   }
 *)
-
 Module Gas.
   Record t : Set := {
     limit : U64.t;
@@ -415,7 +473,6 @@ Module Impl_revm_interpreter_gas_Gas.
   Defined.
   Smpl Add apply run_memory : run_closure.
 
-
   (*
       pub const fn refunded(&self) -> i64 {
           self.refunded
@@ -452,7 +509,6 @@ Module Impl_revm_interpreter_gas_Gas.
   Defined.
   Smpl Add apply run_remaining : run_closure.
 
-
   (*
       pub const fn remaining_63_of_64_parts(&self) -> u64 {
           self.remaining - self.remaining / 64
@@ -476,7 +532,6 @@ Module Impl_revm_interpreter_gas_Gas.
     run_symbolic.
   Defined.
   Smpl Add apply run_erase_cost : run_closure.
-
 
   (*
       pub fn spend_all(&mut self) {
@@ -520,4 +575,96 @@ Module Impl_revm_interpreter_gas_Gas.
     }
     cbn; intros []; run_symbolic.
   Defined.
+
+  (*
+      pub fn set_refund(&mut self, refund: i64) {
+          self.refunded = refund;
+      }
+  *)
+  Definition run_set_refund (self : Ref.t Pointer.Kind.MutRef Self) (refund : I64.t) :
+    {{ gas.Impl_revm_interpreter_gas_Gas.set_refund [] [] [φ self; φ refund] 🔽 unit }}.
+  Proof.
+    run_symbolic.
+  Defined.
+  Smpl Add apply run_set_refund : run_closure.
+
+  (*
+      pub fn record_cost(&mut self, cost: u64) -> bool {
+        let (remaining, overflow) = self.remaining.overflowing_sub(cost);
+        let success = !overflow;
+        if success {
+            self.remaining = remaining;
+        }
+        success
+    }
+  *)
+  Definition run_record_cost (self : Ref.t Pointer.Kind.MutRef Self) (cost : U64.t) :
+    {{ gas.Impl_revm_interpreter_gas_Gas.record_cost [] [] [φ self; φ cost] 🔽 bool }}.
+  Proof.
+    run_symbolic.
+    match goal with
+    | |- {{
+        CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.GetSubPointer (φ ?ref) ?index) _ 🔽
+        ?R, ?Output
+      }} =>
+      match type of ref with
+      | Ref.t _ ?A =>
+        epose proof (H_0 :=
+          Run.CallPrimitiveGetSubPointer
+            (A := A)
+            R Output
+            _ _ _
+            Pair.SubPointer.get_index_0_is_valid
+        )
+      end
+    end.
+    apply H_0; clear H_0; intros.
+    match goal with
+    | |- {{
+        CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.GetSubPointer (φ ?ref) ?index) _ 🔽
+        ?R, ?Output
+      }} =>
+      match type of ref with
+      | Ref.t _ ?A =>
+        epose proof (H_1 :=
+          Run.CallPrimitiveGetSubPointer
+            (A := A)
+            R Output
+            _ _ _
+            Pair.SubPointer.get_index_1_is_valid
+        )
+      end
+    end.
+    apply H_1; clear H_1; intros.
+    run_symbolic.
+    eapply Run.Let. {
+      run_symbolic.
+      eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
+      intros []; run_symbolic.
+    }
+    intros [|[]]; run_symbolic.
+  Defined.
+  Smpl Add apply run_record_cost : run_closure.
+
+  (*
+      pub fn record_memory_expansion(&mut self, new_len: usize) -> MemoryExtensionResult {
+          let Some(additional_cost) = self.memory.record_new_len(new_len) else {
+              return MemoryExtensionResult::Same;
+          };
+
+          if !self.record_cost(additional_cost) {
+              return MemoryExtensionResult::OutOfGas;
+          }
+
+          MemoryExtensionResult::Extended
+      }
+  *)
+  Definition run_record_memory_expansion
+      (self : Ref.t Pointer.Kind.MutRef Self)
+      (new_len : Usize.t) :
+    {{ gas.Impl_revm_interpreter_gas_Gas.record_memory_expansion [] [] [φ self; φ new_len] 🔽 MemoryExtensionResult.t }}.
+  Proof.
+    run_symbolic.
+  Admitted.
+  Smpl Add apply run_record_memory_expansion : run_closure.
 End Impl_revm_interpreter_gas_Gas.
