@@ -146,12 +146,14 @@ Module table.
                         0
                       |) in
                     let table := M.alloc (| γ1_0 |) in
-                    M.write (|
-                      M.SubPointer.get_array_field (|
-                        M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
-                        M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
-                      |),
-                      M.read (| instruction |)
+                    M.alloc (|
+                      M.write (|
+                        M.SubPointer.get_array_field (|
+                          M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
+                          M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+                        |),
+                        M.read (| instruction |)
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -163,22 +165,25 @@ Module table.
                         0
                       |) in
                     let table := M.alloc (| γ1_0 |) in
-                    M.write (|
-                      M.SubPointer.get_array_field (|
-                        M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
-                        M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
-                      |),
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "revm_interpreter::table::CustomInstruction",
-                          CI,
-                          [],
-                          [],
-                          "from_base",
-                          [],
-                          []
+                    M.alloc (|
+                      M.write (|
+                        M.SubPointer.get_array_field (|
+                          M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
+                          M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
                         |),
-                        [ M.read (| instruction |) ]
+                        M.call_closure (|
+                          CI,
+                          M.get_trait_method (|
+                            "revm_interpreter::table::CustomInstruction",
+                            CI,
+                            [],
+                            [],
+                            "from_base",
+                            [],
+                            []
+                          |),
+                          [ M.read (| instruction |) ]
+                        |)
                       |)
                     |)))
               ]
@@ -215,6 +220,10 @@ Module table.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ] ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "revm_interpreter::table::InstructionTables")
@@ -261,6 +270,7 @@ Module table.
                                       ltac:(M.monadic
                                         (let i := M.copy (| γ |) in
                                         M.call_closure (|
+                                          CI,
                                           M.get_trait_method (|
                                             "revm_interpreter::table::CustomInstruction",
                                             CI,
@@ -337,6 +347,15 @@ Module table.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 256 ]
+                                          [ CI ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "revm_interpreter::table::InstructionTables")
@@ -432,14 +451,14 @@ Module table.
                             0
                           |) in
                         let table := M.alloc (| γ1_0 |) in
-                        let~ _ :=
-                          M.write (|
-                            M.deref (| M.read (| self |) |),
-                            Value.StructTuple
-                              "revm_interpreter::table::InstructionTables::Custom"
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
+                        let~ _ : Ty.tuple [] :=
+                          M.alloc (|
+                            M.write (|
+                              M.deref (| M.read (| self |) |),
+                              Value.StructTuple
+                                "revm_interpreter::table::InstructionTables::Custom"
+                                [
+                                  M.call_closure (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
                                       []
@@ -450,30 +469,46 @@ Module table.
                                           [ CI ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
-                                    "new",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "revm_interpreter::table::make_custom_instruction_table",
-                                        [],
-                                        [ WIRE; H; F; CI ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (| M.deref (| M.read (| table |) |) |)
-                                          |)
-                                        |);
-                                        M.read (| f |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              ]
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 256 ]
+                                            [ CI ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 256 ]
+                                          [ CI ],
+                                        M.get_function (|
+                                          "revm_interpreter::table::make_custom_instruction_table",
+                                          [],
+                                          [ WIRE; H; F; CI ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (| M.deref (| M.read (| table |) |) |)
+                                            |)
+                                          |);
+                                          M.read (| f |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
                           |) in
                         M.match_operator (|
                           self,
@@ -537,6 +572,15 @@ Module table.
                     M.SubPointer.get_array_field (|
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 256 ]
+                                [ CI ]
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "revm_interpreter::table::InstructionTables")
@@ -583,26 +627,29 @@ Module table.
           let opcode := M.alloc (| opcode |) in
           let instruction := M.alloc (| instruction |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.deref (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "revm_interpreter::table::InstructionTables")
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ CI ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "revm_interpreter::table::InstructionTables")
+                          []
+                          [ WIRE; H; CI ],
+                        "get_custom",
+                        [],
                         []
-                        [ WIRE; H; CI ],
-                      "get_custom",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                      M.read (| opcode |)
-                    ]
-                  |)
-                |),
-                M.read (| instruction |)
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                        M.read (| opcode |)
+                      ]
+                    |)
+                  |),
+                  M.read (| instruction |)
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -633,12 +680,14 @@ Module table.
           let opcode := M.alloc (| opcode |) in
           let instruction := M.alloc (| instruction |) in
           M.call_closure (|
+            CI,
             M.get_function (| "core::mem::replace", [], [ CI ] |),
             [
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ CI ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "revm_interpreter::table::InstructionTables")
@@ -719,6 +768,7 @@ Module table.
         (let table := M.alloc (| table |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ],
           M.get_function (|
             "core::array::from_fn",
             [ Value.Integer IntegerKind.Usize 256 ],
@@ -738,6 +788,7 @@ Module table.
                             ltac:(M.monadic
                               (let i := M.copy (| γ |) in
                               M.call_closure (|
+                                CI,
                                 M.get_trait_method (|
                                   "core::ops::function::FnMut",
                                   FN,

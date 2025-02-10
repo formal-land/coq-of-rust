@@ -35,8 +35,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ n := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
-        let~ _ :=
+        let~ n : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -48,13 +48,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         BinOp.lt (| M.read (| n |), Value.Integer IntegerKind.I32 0 |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  let~ _ :=
-                    let~ _ :=
+                  let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -86,6 +88,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -125,13 +128,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            let~ _ :=
+                          let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_function (| "std::io::stdio::_print", [], [] |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::Arguments",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
@@ -163,6 +168,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::Argument",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
@@ -192,13 +198,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let~ _ :=
-                            let~ _ :=
+                          (let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_function (| "std::io::stdio::_print", [], [] |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::Arguments",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
@@ -230,6 +238,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::Argument",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
@@ -261,7 +270,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ big_n :=
+        let~ big_n : Ty.path "i32" :=
           M.copy (|
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
@@ -278,13 +287,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
-                      let~ _ :=
+                    let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_function (| "std::io::stdio::_print", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -321,13 +332,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ _ :=
-                      let~ _ :=
+                    (let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_function (| "std::io::stdio::_print", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -365,13 +378,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -405,6 +420,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -419,6 +435,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",

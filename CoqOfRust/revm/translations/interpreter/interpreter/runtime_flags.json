@@ -161,7 +161,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -292,7 +292,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -423,7 +423,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -562,7 +562,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {

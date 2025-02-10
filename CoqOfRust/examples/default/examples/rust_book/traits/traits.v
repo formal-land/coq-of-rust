@@ -17,13 +17,15 @@ Module Animal.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -57,6 +59,7 @@ Module Animal.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -71,6 +74,7 @@ Module Animal.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                   M.get_trait_method (|
                                                     "traits::Animal",
                                                     Self,
@@ -94,6 +98,7 @@ Module Animal.
                                       ]
                                     |);
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -108,6 +113,7 @@ Module Animal.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                   M.get_trait_method (|
                                                     "traits::Animal",
                                                     Self,
@@ -201,6 +207,7 @@ Module Impl_traits_Sheep.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_associated_function (|
                             Ty.path "traits::Sheep",
                             "is_naked",
@@ -211,13 +218,15 @@ Module Impl_traits_Sheep.
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  let~ _ :=
-                    let~ _ :=
+                  let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -250,6 +259,7 @@ Module Impl_traits_Sheep.
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -264,6 +274,10 @@ Module Impl_traits_Sheep.
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ],
                                                           M.get_trait_method (|
                                                             "traits::Animal",
                                                             Ty.path "traits::Sheep",
@@ -300,13 +314,15 @@ Module Impl_traits_Sheep.
                   M.alloc (| Value.Tuple [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ _ :=
-                    let~ _ :=
+                  (let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -339,6 +355,7 @@ Module Impl_traits_Sheep.
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -372,14 +389,16 @@ Module Impl_traits_Sheep.
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |) in
-                  let~ _ :=
-                    M.write (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "traits::Sheep",
-                        "naked"
-                      |),
-                      Value.Bool true
+                  let~ _ : Ty.tuple [] :=
+                    M.alloc (|
+                      M.write (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "traits::Sheep",
+                          "naked"
+                        |),
+                        Value.Bool true
+                      |)
                     |) in
                   M.alloc (| Value.Tuple [] |)))
             ]
@@ -458,6 +477,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_associated_function (|
                             Ty.path "traits::Sheep",
                             "is_naked",
@@ -488,13 +508,15 @@ Module Impl_traits_Animal_for_traits_Sheep.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -528,6 +550,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -551,6 +574,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                       ]
                                     |);
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -565,6 +589,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                   M.get_trait_method (|
                                                     "traits::Animal",
                                                     Ty.path "traits::Sheep",
@@ -634,9 +659,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ dolly :=
+        let~ dolly : Ty.path "traits::Sheep" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "traits::Sheep",
               M.get_trait_method (|
                 "traits::Animal",
                 Ty.path "traits::Sheep",
@@ -649,9 +675,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| Value.String "Dolly" |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "traits::Animal",
                 Ty.path "traits::Sheep",
@@ -664,16 +691,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, dolly |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (| Ty.path "traits::Sheep", "shear", [], [] |),
               [ M.borrow (| Pointer.Kind.MutRef, dolly |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "traits::Animal",
                 Ty.path "traits::Sheep",

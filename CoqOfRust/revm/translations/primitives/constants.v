@@ -22,6 +22,7 @@ Module constants.
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
+            Ty.path "alloy_primitives::bits::address::Address",
             M.get_associated_function (|
               Ty.path "alloy_primitives::bits::address::Address",
               "new",
@@ -46,6 +47,7 @@ Module constants.
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
+            Ty.path "alloy_primitives::bits::address::Address",
             M.get_associated_function (|
               Ty.path "alloy_primitives::bits::address::Address",
               "new",

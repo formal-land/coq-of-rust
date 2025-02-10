@@ -48,7 +48,7 @@ Module tests.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -57,6 +57,7 @@ Module tests.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "i32",
                           M.get_function (| "unit_testing::add", [], [] |),
                           [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
                         |)
@@ -92,12 +93,13 @@ Module tests.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind :=
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (|
                                         "core::panicking::assert_failed",
                                         [],
@@ -155,7 +157,7 @@ Module tests.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -164,6 +166,7 @@ Module tests.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "i32",
                           M.get_function (| "unit_testing::bad_add", [], [] |),
                           [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
                         |)
@@ -199,12 +202,13 @@ Module tests.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind :=
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (|
                                         "core::panicking::assert_failed",
                                         [],

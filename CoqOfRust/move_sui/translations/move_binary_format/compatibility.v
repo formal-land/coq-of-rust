@@ -116,6 +116,7 @@ Module compatibility.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "move_binary_format::file_format::AbilitySet",
@@ -223,7 +224,16 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ names :=
+            let~ names :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 6 ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                  ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -262,7 +272,16 @@ Module compatibility.
                   |)
                 |)
               |) in
-            let~ values :=
+            let~ values :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                  ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -363,6 +382,10 @@ Module compatibility.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
@@ -490,6 +513,7 @@ Module compatibility.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.path "move_binary_format::compatibility::Compatibility",
             M.get_trait_method (|
               "core::default::Default",
               Ty.path "move_binary_format::compatibility::Compatibility",
@@ -551,6 +575,7 @@ Module compatibility.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply
@@ -577,6 +602,7 @@ Module compatibility.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_binary_format::compatibility::Compatibility",
                         M.get_associated_function (|
                           Ty.path "move_binary_format::compatibility::Compatibility",
                           "no_check",
@@ -756,11 +782,12 @@ Module compatibility.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ struct_and_function_linking := M.alloc (| Value.Bool true |) in
-                let~ struct_layout := M.alloc (| Value.Bool true |) in
-                let~ friend_linking := M.alloc (| Value.Bool true |) in
-                let~ entry_linking := M.alloc (| Value.Bool true |) in
-                let~ _ :=
+                let~ struct_and_function_linking : Ty.path "bool" :=
+                  M.alloc (| Value.Bool true |) in
+                let~ struct_layout : Ty.path "bool" := M.alloc (| Value.Bool true |) in
+                let~ friend_linking : Ty.path "bool" := M.alloc (| Value.Bool true |) in
+                let~ entry_linking : Ty.path "bool" := M.alloc (| Value.Bool true |) in
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -771,6 +798,7 @@ Module compatibility.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.path "move_core_types::account_address::AccountAddress",
@@ -802,6 +830,7 @@ Module compatibility.
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "move_core_types::identifier::Identifier",
@@ -834,16 +863,26 @@ Module compatibility.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ := M.write (| struct_and_function_linking, Value.Bool false |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (| struct_and_function_linking, Value.Bool false |)
+                            |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::Iter")
+                            []
+                            [
+                              Ty.path "move_core_types::identifier::Identifier";
+                              Ty.path "move_binary_format::normalized::Struct"
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -883,10 +922,30 @@ Module compatibility.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::identifier::Identifier"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "move_binary_format::normalized::Struct"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -936,6 +995,18 @@ Module compatibility.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Struct"
+                                                      ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path
@@ -981,7 +1052,7 @@ Module compatibility.
                                                       0
                                                     |) in
                                                   let new_struct := M.copy (| γ0_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -993,6 +1064,7 @@ Module compatibility.
                                                                   LogicalOp.or (|
                                                                     UnOp.not (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_function (|
                                                                           "move_binary_format::compatibility::struct_abilities_compatible",
                                                                           [],
@@ -1036,6 +1108,7 @@ Module compatibility.
                                                                     ltac:(M.monadic
                                                                       (UnOp.not (|
                                                                         M.call_closure (|
+                                                                          Ty.path "bool",
                                                                           M.get_function (|
                                                                             "move_binary_format::compatibility::struct_type_parameters_compatible",
                                                                             [],
@@ -1055,6 +1128,19 @@ Module compatibility.
                                                                               Pointer.Kind.Ref,
                                                                               M.deref (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::StructTypeParameter"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::ops::deref::Deref",
                                                                                     Ty.apply
@@ -1099,6 +1185,19 @@ Module compatibility.
                                                                               Pointer.Kind.Ref,
                                                                               M.deref (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::StructTypeParameter"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::ops::deref::Deref",
                                                                                     Ty.apply
@@ -1149,10 +1248,12 @@ Module compatibility.
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
-                                                            let~ _ :=
-                                                              M.write (|
-                                                                struct_and_function_linking,
-                                                                Value.Bool false
+                                                            let~ _ : Ty.tuple [] :=
+                                                              M.alloc (|
+                                                                M.write (|
+                                                                  struct_and_function_linking,
+                                                                  Value.Bool false
+                                                                |)
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -1169,6 +1270,7 @@ Module compatibility.
                                                             M.use
                                                               (M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "bool",
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialEq",
                                                                     Ty.apply
@@ -1225,9 +1327,11 @@ Module compatibility.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          M.write (|
-                                                            struct_layout,
-                                                            Value.Bool false
+                                                          M.alloc (|
+                                                            M.write (|
+                                                              struct_layout,
+                                                              Value.Bool false
+                                                            |)
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
@@ -1242,11 +1346,18 @@ Module compatibility.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::Iter")
+                            []
+                            [
+                              Ty.path "move_core_types::identifier::Identifier";
+                              Ty.path "move_binary_format::normalized::Function"
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1286,10 +1397,32 @@ Module compatibility.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::identifier::Identifier"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::normalized::Function"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1339,6 +1472,18 @@ Module compatibility.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Function"
+                                                      ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path
@@ -1384,7 +1529,7 @@ Module compatibility.
                                                       0
                                                     |) in
                                                   let new_func := M.copy (| γ0_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         Value.Tuple
@@ -1448,9 +1593,11 @@ Module compatibility.
                                                                   match γ with
                                                                   | [] =>
                                                                     ltac:(M.monadic
-                                                                      (M.write (|
-                                                                        struct_and_function_linking,
-                                                                        Value.Bool false
+                                                                      (M.alloc (|
+                                                                        M.write (|
+                                                                          struct_and_function_linking,
+                                                                          Value.Bool false
+                                                                        |)
                                                                       |)))
                                                                   | _ =>
                                                                     M.impossible
@@ -1479,16 +1626,18 @@ Module compatibility.
                                                                 γ0_1,
                                                                 "move_binary_format::file_format::Visibility::Private"
                                                               |) in
-                                                            M.write (|
-                                                              friend_linking,
-                                                              Value.Bool false
+                                                            M.alloc (|
+                                                              M.write (|
+                                                                friend_linking,
+                                                                Value.Bool false
+                                                              |)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.alloc (| Value.Tuple [] |)))
                                                       ]
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -1538,6 +1687,7 @@ Module compatibility.
                                                                       |),
                                                                       ltac:(M.monadic
                                                                         (M.call_closure (|
+                                                                          Ty.path "bool",
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialEq",
                                                                             Ty.path
@@ -1603,9 +1753,11 @@ Module compatibility.
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
-                                                            M.write (|
-                                                              entry_linking,
-                                                              Value.Bool false
+                                                            M.alloc (|
+                                                              M.write (|
+                                                                entry_linking,
+                                                                Value.Bool false
+                                                              |)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -1650,10 +1802,12 @@ Module compatibility.
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
-                                                                    let~ _ :=
-                                                                      M.write (|
-                                                                        entry_linking,
-                                                                        Value.Bool false
+                                                                    let~ _ : Ty.tuple [] :=
+                                                                      M.alloc (|
+                                                                        M.write (|
+                                                                          entry_linking,
+                                                                          Value.Bool false
+                                                                        |)
                                                                       |) in
                                                                     M.alloc (| Value.Tuple [] |)));
                                                                 fun γ =>
@@ -1674,6 +1828,7 @@ Module compatibility.
                                                                 LogicalOp.or (|
                                                                   LogicalOp.or (|
                                                                     M.call_closure (|
+                                                                      Ty.path "bool",
                                                                       M.get_trait_method (|
                                                                         "core::cmp::PartialEq",
                                                                         Ty.apply
@@ -1728,6 +1883,7 @@ Module compatibility.
                                                                     |),
                                                                     ltac:(M.monadic
                                                                       (M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -1788,6 +1944,7 @@ Module compatibility.
                                                                   ltac:(M.monadic
                                                                     (UnOp.not (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_function (|
                                                                           "move_binary_format::compatibility::fun_type_parameters_compatible",
                                                                           [],
@@ -1798,6 +1955,19 @@ Module compatibility.
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::AbilitySet"
+                                                                                      ]
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::deref::Deref",
                                                                                   Ty.apply
@@ -1842,6 +2012,19 @@ Module compatibility.
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::AbilitySet"
+                                                                                      ]
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::deref::Deref",
                                                                                   Ty.apply
@@ -1892,7 +2075,7 @@ Module compatibility.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let~ _ :=
+                                                          let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 M.deref (| M.read (| old_func |) |),
@@ -1907,9 +2090,11 @@ Module compatibility.
                                                                         γ,
                                                                         "move_binary_format::file_format::Visibility::Friend"
                                                                       |) in
-                                                                    M.write (|
-                                                                      friend_linking,
-                                                                      Value.Bool false
+                                                                    M.alloc (|
+                                                                      M.write (|
+                                                                        friend_linking,
+                                                                        Value.Bool false
+                                                                      |)
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
@@ -1918,9 +2103,11 @@ Module compatibility.
                                                                         γ,
                                                                         "move_binary_format::file_format::Visibility::Public"
                                                                       |) in
-                                                                    M.write (|
-                                                                      struct_and_function_linking,
-                                                                      Value.Bool false
+                                                                    M.alloc (|
+                                                                      M.write (|
+                                                                        struct_and_function_linking,
+                                                                        Value.Bool false
+                                                                      |)
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
@@ -1951,10 +2138,12 @@ Module compatibility.
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
-                                                                  let~ _ :=
-                                                                    M.write (|
-                                                                      entry_linking,
-                                                                      Value.Bool false
+                                                                  let~ _ : Ty.tuple [] :=
+                                                                    M.alloc (|
+                                                                      M.write (|
+                                                                        entry_linking,
+                                                                        Value.Bool false
+                                                                      |)
                                                                     |) in
                                                                   M.alloc (| Value.Tuple [] |)));
                                                               fun γ =>
@@ -1975,9 +2164,23 @@ Module compatibility.
                             |)))
                       ]
                     |)) in
-                let~ old_friend_module_ids :=
+                let~ old_friend_module_ids :
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [
+                        Ty.path "move_core_types::language_storage::ModuleId";
+                        Ty.path "alloc::alloc::Global"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [
+                          Ty.path "move_core_types::language_storage::ModuleId";
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -2005,6 +2208,15 @@ Module compatibility.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::cloned::Cloned")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_core_types::language_storage::ModuleId" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -2019,6 +2231,10 @@ Module compatibility.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_core_types::language_storage::ModuleId" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
@@ -2033,6 +2249,16 @@ Module compatibility.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [ Ty.path "move_core_types::language_storage::ModuleId"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.apply
@@ -2068,9 +2294,23 @@ Module compatibility.
                       ]
                     |)
                   |) in
-                let~ new_friend_module_ids :=
+                let~ new_friend_module_ids :
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [
+                        Ty.path "move_core_types::language_storage::ModuleId";
+                        Ty.path "alloc::alloc::Global"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [
+                          Ty.path "move_core_types::language_storage::ModuleId";
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -2098,6 +2338,15 @@ Module compatibility.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::cloned::Cloned")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_core_types::language_storage::ModuleId" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -2112,6 +2361,10 @@ Module compatibility.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_core_types::language_storage::ModuleId" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
@@ -2126,6 +2379,16 @@ Module compatibility.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [ Ty.path "move_core_types::language_storage::ModuleId"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.apply
@@ -2161,7 +2424,7 @@ Module compatibility.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2172,6 +2435,7 @@ Module compatibility.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2198,12 +2462,13 @@ Module compatibility.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ := M.write (| friend_linking, Value.Bool false |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (| M.write (| friend_linking, Value.Bool false |) |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2234,6 +2499,7 @@ Module compatibility.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
@@ -2254,7 +2520,7 @@ Module compatibility.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2284,6 +2550,7 @@ Module compatibility.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
@@ -2304,7 +2571,7 @@ Module compatibility.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2334,6 +2601,7 @@ Module compatibility.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
@@ -2354,7 +2622,7 @@ Module compatibility.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2384,6 +2652,7 @@ Module compatibility.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
@@ -2440,6 +2709,7 @@ Module compatibility.
         let new_abilities := M.alloc (| new_abilities |) in
         LogicalOp.and (|
           M.call_closure (|
+            Ty.path "bool",
             M.get_associated_function (|
               Ty.path "move_binary_format::file_format::AbilitySet",
               "is_subset",
@@ -2450,6 +2720,7 @@ Module compatibility.
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.path "move_binary_format::file_format::AbilitySetIterator",
@@ -2468,6 +2739,7 @@ Module compatibility.
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "move_binary_format::file_format::AbilitySetIterator",
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.path "move_binary_format::file_format::AbilitySet",
@@ -2496,6 +2768,7 @@ Module compatibility.
                                   LogicalOp.or (|
                                     UnOp.not (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::AbilitySet",
                                           "has_ability",
@@ -2507,6 +2780,7 @@ Module compatibility.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::AbilitySet",
                                           "has_ability",
@@ -2562,6 +2836,7 @@ Module compatibility.
         LogicalOp.and (|
           BinOp.eq (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -2574,6 +2849,7 @@ Module compatibility.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| old_type_parameters |) |) |) ]
             |),
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -2588,6 +2864,7 @@ Module compatibility.
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
@@ -2633,6 +2910,19 @@ Module compatibility.
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::zip::Zip")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::AbilitySet" ];
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -2657,6 +2947,10 @@ Module compatibility.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -2694,6 +2988,7 @@ Module compatibility.
                                   let old_type_parameter_constraint := M.copy (| γ0_0 |) in
                                   let new_type_parameter_constraint := M.copy (| γ0_1 |) in
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_function (|
                                       "move_binary_format::compatibility::type_parameter_constraints_compatible",
                                       [],
@@ -2762,6 +3057,7 @@ Module compatibility.
         LogicalOp.and (|
           BinOp.eq (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -2774,6 +3070,7 @@ Module compatibility.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| old_type_parameters |) |) |) ]
             |),
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -2788,6 +3085,7 @@ Module compatibility.
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
@@ -2833,6 +3131,19 @@ Module compatibility.
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::zip::Zip")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructTypeParameter" ];
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -2857,6 +3168,10 @@ Module compatibility.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -2895,6 +3210,7 @@ Module compatibility.
                                   let new_type_parameter := M.copy (| γ0_1 |) in
                                   LogicalOp.and (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_function (|
                                         "move_binary_format::compatibility::type_parameter_phantom_decl_compatible",
                                         [],
@@ -2914,6 +3230,7 @@ Module compatibility.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_function (|
                                           "move_binary_format::compatibility::type_parameter_constraints_compatible",
                                           [],
@@ -2989,6 +3306,7 @@ Module compatibility.
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "move_binary_format::file_format::AbilitySet",
@@ -3008,6 +3326,7 @@ Module compatibility.
                 ltac:(M.monadic
                   (M.alloc (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::AbilitySet",
                         "is_subset",
@@ -3202,6 +3521,10 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -3264,9 +3587,10 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -3275,9 +3599,10 @@ Module compatibility.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -3288,6 +3613,7 @@ Module compatibility.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                 [
                   M.borrow (|
@@ -3324,9 +3650,10 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -3335,9 +3662,10 @@ Module compatibility.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -3348,6 +3676,7 @@ Module compatibility.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.get_trait_method (|
                   "core::cmp::PartialOrd",
                   Ty.path "isize",
@@ -3429,9 +3758,10 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -3440,9 +3770,10 @@ Module compatibility.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -3528,12 +3859,17 @@ Module compatibility.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ err :=
+                let~ err :
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ] :=
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
+                          Ty.path "move_binary_format::errors::PartialVMError",
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
@@ -3548,7 +3884,7 @@ Module compatibility.
                         |)
                       ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3560,6 +3896,7 @@ Module compatibility.
                                 LogicalOp.or (|
                                   LogicalOp.or (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.path "move_core_types::account_address::AccountAddress",
@@ -3591,6 +3928,7 @@ Module compatibility.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.path "move_core_types::identifier::Identifier",
@@ -3647,7 +3985,7 @@ Module compatibility.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3658,6 +3996,7 @@ Module compatibility.
                               (M.alloc (|
                                 LogicalOp.and (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -3703,6 +4042,7 @@ Module compatibility.
                                       LogicalOp.or (|
                                         BinOp.ne (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3728,6 +4068,7 @@ Module compatibility.
                                             ]
                                           |),
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3756,6 +4097,7 @@ Module compatibility.
                                         ltac:(M.monadic
                                           (BinOp.ne (|
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -3784,6 +4126,7 @@ Module compatibility.
                                               ]
                                             |),
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -3816,6 +4159,7 @@ Module compatibility.
                                       ltac:(M.monadic
                                         (BinOp.ne (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -3841,6 +4185,7 @@ Module compatibility.
                                             ]
                                           |),
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -3877,11 +4222,18 @@ Module compatibility.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::Iter")
+                            []
+                            [
+                              Ty.path "move_core_types::identifier::Identifier";
+                              Ty.path "move_binary_format::normalized::Struct"
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -3921,10 +4273,30 @@ Module compatibility.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::identifier::Identifier"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "move_binary_format::normalized::Struct"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -3971,10 +4343,22 @@ Module compatibility.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let name := M.copy (| γ1_0 |) in
                                           let old_struct := M.copy (| γ1_1 |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::normalized::Struct"
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path
@@ -4023,6 +4407,7 @@ Module compatibility.
                                                     let γ :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialEq",
                                                             Ty.apply
@@ -4082,11 +4467,18 @@ Module compatibility.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::Iter")
+                            []
+                            [
+                              Ty.path "move_core_types::identifier::Identifier";
+                              Ty.path "move_binary_format::normalized::Function"
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -4126,10 +4518,32 @@ Module compatibility.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::identifier::Identifier"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::normalized::Function"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -4179,6 +4593,18 @@ Module compatibility.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Function"
+                                                      ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -4213,6 +4639,18 @@ Module compatibility.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Function"
+                                                          ]
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path
@@ -4259,6 +4697,19 @@ Module compatibility.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::normalized::Function"
+                                                                            ]
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -4321,6 +4772,7 @@ Module compatibility.
                                                   let γ :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply

@@ -201,9 +201,10 @@ Module parser.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -212,9 +213,10 @@ Module parser.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -253,6 +255,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -290,6 +293,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -327,6 +331,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -364,6 +369,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -401,6 +407,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -438,6 +445,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -475,6 +483,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -512,6 +521,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -549,6 +559,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -586,6 +597,7 @@ Module parser.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -639,6 +651,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::U8Type" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -660,6 +676,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::U16Type" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -681,6 +701,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::U32Type" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -702,6 +726,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::U64Type" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -724,6 +752,10 @@ Module parser.
                       M.is_struct_tuple (| γ, "move_core_types::parser::Token::U128Type" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -746,6 +778,10 @@ Module parser.
                       M.is_struct_tuple (| γ, "move_core_types::parser::Token::U256Type" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -768,6 +804,10 @@ Module parser.
                       M.is_struct_tuple (| γ, "move_core_types::parser::Token::BoolType" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -790,6 +830,10 @@ Module parser.
                       M.is_struct_tuple (| γ, "move_core_types::parser::Token::AddressType" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -812,6 +856,10 @@ Module parser.
                       M.is_struct_tuple (| γ, "move_core_types::parser::Token::VectorType" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -834,6 +882,10 @@ Module parser.
                       M.is_struct_tuple (| γ, "move_core_types::parser::Token::SignerType" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -861,6 +913,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -892,6 +948,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -923,6 +983,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -954,6 +1018,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -985,6 +1053,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -1016,6 +1088,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -1047,6 +1123,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -1078,6 +1158,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -1109,6 +1193,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -1140,6 +1228,10 @@ Module parser.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -1165,6 +1257,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::True" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1186,6 +1282,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::False" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1208,6 +1308,10 @@ Module parser.
                       M.is_struct_tuple (| γ, "move_core_types::parser::Token::ColonColon" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1229,6 +1333,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::Lt" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1250,6 +1358,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::Gt" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1271,6 +1383,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::Comma" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1292,6 +1408,10 @@ Module parser.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::parser::Token::EOF" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1404,6 +1524,7 @@ Module parser.
                             M.is_struct_tuple (| γ, "move_core_types::parser::Token::U8Type" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1427,6 +1548,7 @@ Module parser.
                             M.is_struct_tuple (| γ, "move_core_types::parser::Token::U16Type" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1450,6 +1572,7 @@ Module parser.
                             M.is_struct_tuple (| γ, "move_core_types::parser::Token::U32Type" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1473,6 +1596,7 @@ Module parser.
                             M.is_struct_tuple (| γ, "move_core_types::parser::Token::U64Type" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1496,6 +1620,7 @@ Module parser.
                             M.is_struct_tuple (| γ, "move_core_types::parser::Token::U128Type" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1519,6 +1644,7 @@ Module parser.
                             M.is_struct_tuple (| γ, "move_core_types::parser::Token::U256Type" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1542,6 +1668,7 @@ Module parser.
                             M.is_struct_tuple (| γ, "move_core_types::parser::Token::BoolType" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1568,6 +1695,7 @@ Module parser.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1594,6 +1722,7 @@ Module parser.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1617,6 +1746,7 @@ Module parser.
                             M.is_struct_tuple (| γ, "move_core_types::parser::Token::True" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1640,6 +1770,7 @@ Module parser.
                             M.is_struct_tuple (| γ, "move_core_types::parser::Token::False" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1666,6 +1797,7 @@ Module parser.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -1833,6 +1965,7 @@ Module parser.
                                               "core::result::Result::Err"
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "anyhow::Error",
                                                   M.get_associated_function (|
                                                     Ty.path "anyhow::Error",
                                                     "msg",
@@ -1841,6 +1974,7 @@ Module parser.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "core::hint::must_use",
                                                         [],
@@ -1848,9 +1982,11 @@ Module parser.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          let~ res :=
+                                                          let~ res :
+                                                              Ty.path "alloc::string::String" :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "alloc::string::String",
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
                                                                   [],
@@ -1858,6 +1994,7 @@ Module parser.
                                                                 |),
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.path "core::fmt::Arguments",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
@@ -1892,6 +2029,8 @@ Module parser.
                                                                               Value.Array
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
@@ -1978,6 +2117,7 @@ Module parser.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.get_associated_function (| Ty.path "alloc::string::String", "as_str", [], [] |),
                 [ M.borrow (| Pointer.Kind.Ref, s |) ]
               |)
@@ -2101,16 +2241,18 @@ Module parser.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ num :=
+              let~ num : Ty.path "alloc::string::String" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "alloc::string::String",
                     M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                     []
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (| Ty.path "alloc::string::String", "push", [], [] |),
                     [ M.borrow (| Pointer.Kind.MutRef, num |); M.read (| initial |) ]
                   |)
@@ -2123,6 +2265,7 @@ Module parser.
                         (M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 impl_Iterator_Item___char_,
@@ -2149,6 +2292,7 @@ Module parser.
                                   M.alloc (|
                                     LogicalOp.or (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "char",
                                           "is_ascii_digit",
@@ -2168,6 +2312,7 @@ Module parser.
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_associated_function (|
                                       Ty.path "alloc::string::String",
                                       "push",
@@ -2189,6 +2334,7 @@ Module parser.
                                 let γ :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path "char",
                                         "is_alphanumeric",
@@ -2203,9 +2349,10 @@ Module parser.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ suffix :=
+                                let~ suffix : Ty.path "alloc::string::String" :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "alloc::string::String",
                                       M.get_associated_function (|
                                         Ty.path "alloc::string::String",
                                         "new",
@@ -2215,9 +2362,10 @@ Module parser.
                                       []
                                     |)
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_associated_function (|
                                         Ty.path "alloc::string::String",
                                         "push",
@@ -2235,6 +2383,10 @@ Module parser.
                                           (M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "char" ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   impl_Iterator_Item___char_,
@@ -2260,6 +2412,7 @@ Module parser.
                                                   let γ :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_associated_function (|
                                                           Ty.path "char",
                                                           "is_ascii_alphanumeric",
@@ -2276,6 +2429,7 @@ Module parser.
                                                     |) in
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.tuple [],
                                                       M.get_associated_function (|
                                                         Ty.path "alloc::string::String",
                                                         "push",
@@ -2293,10 +2447,11 @@ Module parser.
                                                   (M.alloc (|
                                                     M.never_to_any (|
                                                       M.read (|
-                                                        let~ len :=
+                                                        let~ len : Ty.path "usize" :=
                                                           M.alloc (|
                                                             BinOp.Wrap.add (|
                                                               M.call_closure (|
+                                                                Ty.path "usize",
                                                                 M.get_associated_function (|
                                                                   Ty.path "alloc::string::String",
                                                                   "len",
@@ -2311,6 +2466,7 @@ Module parser.
                                                                 ]
                                                               |),
                                                               M.call_closure (|
+                                                                Ty.path "usize",
                                                                 M.get_associated_function (|
                                                                   Ty.path "alloc::string::String",
                                                                   "len",
@@ -2326,11 +2482,17 @@ Module parser.
                                                               |)
                                                             |)
                                                           |) in
-                                                        let~ tok :=
+                                                        let~ tok :
+                                                            Ty.path
+                                                              "move_core_types::parser::Token" :=
                                                           M.copy (|
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "str" ],
                                                                   M.get_associated_function (|
                                                                     Ty.path "alloc::string::String",
                                                                     "as_str",
@@ -2428,9 +2590,13 @@ Module parser.
                                                                               "core::result::Result::Err"
                                                                               [
                                                                                 M.read (|
-                                                                                  let~ error :=
+                                                                                  let~ error :
+                                                                                      Ty.path
+                                                                                        "anyhow::Error" :=
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "anyhow::Error",
                                                                                         M.get_function (|
                                                                                           "anyhow::__private::format_err",
                                                                                           [],
@@ -2438,6 +2604,8 @@ Module parser.
                                                                                         |),
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::Arguments",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "core::fmt::Arguments",
@@ -2501,9 +2669,10 @@ Module parser.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ len :=
+                                      let~ len : Ty.path "usize" :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.path "alloc::string::String",
                                               "len",
@@ -2643,9 +2812,17 @@ Module parser.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ it :=
+              let~ it :
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::peekable::Peekable")
+                    []
+                    [ Ty.path "core::str::iter::Chars" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::peekable::Peekable")
+                      []
+                      [ Ty.path "core::str::iter::Chars" ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.path "core::str::iter::Chars",
@@ -2657,6 +2834,7 @@ Module parser.
                     |),
                     [
                       M.call_closure (|
+                        Ty.path "core::str::iter::Chars",
                         M.get_associated_function (| Ty.path "str", "chars", [], [] |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                       |)
@@ -2666,6 +2844,7 @@ Module parser.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
@@ -2768,6 +2947,10 @@ Module parser.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "char" ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -2817,9 +3000,11 @@ Module parser.
                                                             "core::result::Result::Err"
                                                             [
                                                               M.read (|
-                                                                let~ error :=
+                                                                let~ error :
+                                                                    Ty.path "anyhow::Error" :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.path "anyhow::Error",
                                                                       M.get_function (|
                                                                         "anyhow::__private::format_err",
                                                                         [],
@@ -2827,6 +3012,8 @@ Module parser.
                                                                       |),
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::Arguments",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
@@ -2877,6 +3064,7 @@ Module parser.
                                             M.alloc (|
                                               LogicalOp.or (|
                                                 M.call_closure (|
+                                                  Ty.path "bool",
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialEq",
                                                     Ty.apply
@@ -2905,6 +3093,15 @@ Module parser.
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "char" ]
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -2943,6 +3140,7 @@ Module parser.
                                                 |),
                                                 ltac:(M.monadic
                                                   (M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -2975,6 +3173,15 @@ Module parser.
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "char" ]
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -3020,9 +3227,10 @@ Module parser.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.path "char" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "char",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -3034,6 +3242,10 @@ Module parser.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "char" ],
                                                     M.get_trait_method (|
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
@@ -3055,6 +3267,10 @@ Module parser.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "char" ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -3084,6 +3300,7 @@ Module parser.
                                                   let γ :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_associated_function (|
                                                           Ty.path "char",
                                                           "is_ascii_hexdigit",
@@ -3098,9 +3315,10 @@ Module parser.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let~ r :=
+                                                  let~ r : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "new",
@@ -3110,9 +3328,10 @@ Module parser.
                                                         []
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.tuple [],
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push",
@@ -3125,9 +3344,10 @@ Module parser.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.tuple [],
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push",
@@ -3140,9 +3360,10 @@ Module parser.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.tuple [],
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push",
@@ -3155,11 +3376,16 @@ Module parser.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.use
                                                       (M.match_operator (|
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::iter::adapters::peekable::Peekable")
+                                                              []
+                                                              [ Ty.path "core::str::iter::Chars" ],
                                                             M.get_trait_method (|
                                                               "core::iter::traits::collect::IntoIterator",
                                                               Ty.apply
@@ -3183,10 +3409,15 @@ Module parser.
                                                               (let iter := M.copy (| γ |) in
                                                               M.loop (|
                                                                 ltac:(M.monadic
-                                                                  (let~ _ :=
+                                                                  (let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [ Ty.path "char" ],
                                                                           M.get_trait_method (|
                                                                             "core::iter::traits::iterator::Iterator",
                                                                             Ty.apply
@@ -3252,6 +3483,8 @@ Module parser.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "char",
@@ -3275,9 +3508,13 @@ Module parser.
                                                                                         Value.Bool
                                                                                           true
                                                                                       |) in
-                                                                                    let~ _ :=
+                                                                                    let~ _ :
+                                                                                        Ty.tuple
+                                                                                          [] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.tuple
+                                                                                            [],
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "alloc::string::String",
@@ -3316,9 +3553,10 @@ Module parser.
                                                               |)))
                                                         ]
                                                       |)) in
-                                                  let~ len :=
+                                                  let~ len : Ty.path "usize" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "usize",
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "len",
@@ -3347,9 +3585,11 @@ Module parser.
                                                             "core::result::Result::Err"
                                                             [
                                                               M.read (|
-                                                                let~ error :=
+                                                                let~ error :
+                                                                    Ty.path "anyhow::Error" :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.path "anyhow::Error",
                                                                       M.get_function (|
                                                                         "anyhow::__private::format_err",
                                                                         [],
@@ -3357,6 +3597,8 @@ Module parser.
                                                                       |),
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::Arguments",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
@@ -3402,6 +3644,7 @@ Module parser.
                                           let γ :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_associated_function (|
                                                   Ty.path "char",
                                                   "is_ascii_digit",
@@ -3419,6 +3662,23 @@ Module parser.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "anyhow::Error"
+                                                      ];
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.path "move_core_types::parser::Token";
+                                                        Ty.path "usize"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -3440,6 +3700,18 @@ Module parser.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::parser::Token";
+                                                            Ty.path "usize"
+                                                          ];
+                                                        Ty.path "anyhow::Error"
+                                                      ],
                                                     M.get_function (|
                                                       "move_core_types::parser::next_number",
                                                       [],
@@ -3471,6 +3743,23 @@ Module parser.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::parser::Token";
+                                                                        Ty.path "usize"
+                                                                      ]
+                                                                  ];
+                                                                Ty.path "anyhow::Error"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -3533,6 +3822,7 @@ Module parser.
                                           let γ :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -3557,6 +3847,15 @@ Module parser.
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "char" ]
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -3597,9 +3896,10 @@ Module parser.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.path "char" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "char",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -3611,6 +3911,10 @@ Module parser.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "char" ],
                                                     M.get_trait_method (|
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
@@ -3629,9 +3933,10 @@ Module parser.
                                                 ]
                                               |)
                                             |) in
-                                          let~ r :=
+                                          let~ r : Ty.path "alloc::string::String" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "alloc::string::String",
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "new",
@@ -3641,12 +3946,16 @@ Module parser.
                                                 []
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.loop (|
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "char" ],
                                                       M.get_trait_method (|
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
@@ -3694,6 +4003,7 @@ Module parser.
                                                         let γ :=
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "bool",
                                                               M.get_associated_function (|
                                                                 Ty.path "char",
                                                                 "is_ascii",
@@ -3710,6 +4020,7 @@ Module parser.
                                                           |) in
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.tuple [],
                                                             M.get_associated_function (|
                                                               Ty.path "alloc::string::String",
                                                               "push",
@@ -3732,9 +4043,11 @@ Module parser.
                                                                   "core::result::Result::Err"
                                                                   [
                                                                     M.read (|
-                                                                      let~ error :=
+                                                                      let~ error :
+                                                                          Ty.path "anyhow::Error" :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "anyhow::Error",
                                                                             M.get_function (|
                                                                               "anyhow::__private::format_err",
                                                                               [],
@@ -3742,6 +4055,8 @@ Module parser.
                                                                             |),
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::Arguments",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::Arguments",
@@ -3782,10 +4097,11 @@ Module parser.
                                                   ]
                                                 |)))
                                             |) in
-                                          let~ len :=
+                                          let~ len : Ty.path "usize" :=
                                             M.alloc (|
                                               BinOp.Wrap.add (|
                                                 M.call_closure (|
+                                                  Ty.path "usize",
                                                   M.get_associated_function (|
                                                     Ty.path "alloc::string::String",
                                                     "len",
@@ -3804,6 +4120,7 @@ Module parser.
                                                   "move_core_types::parser::Token::Bytes"
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "hex::encode",
                                                         [],
@@ -3825,6 +4142,7 @@ Module parser.
                                           let γ :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -3849,6 +4167,15 @@ Module parser.
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "char" ]
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -3889,9 +4216,10 @@ Module parser.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.path "char" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "char",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -3903,6 +4231,10 @@ Module parser.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "char" ],
                                                     M.get_trait_method (|
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
@@ -3921,9 +4253,10 @@ Module parser.
                                                 ]
                                               |)
                                             |) in
-                                          let~ r :=
+                                          let~ r : Ty.path "alloc::string::String" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "alloc::string::String",
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "new",
@@ -3933,12 +4266,16 @@ Module parser.
                                                 []
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.loop (|
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "char" ],
                                                       M.get_trait_method (|
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
@@ -3986,6 +4323,7 @@ Module parser.
                                                         let γ :=
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "bool",
                                                               M.get_associated_function (|
                                                                 Ty.path "char",
                                                                 "is_ascii_hexdigit",
@@ -4002,6 +4340,7 @@ Module parser.
                                                           |) in
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.tuple [],
                                                             M.get_associated_function (|
                                                               Ty.path "alloc::string::String",
                                                               "push",
@@ -4024,9 +4363,11 @@ Module parser.
                                                                   "core::result::Result::Err"
                                                                   [
                                                                     M.read (|
-                                                                      let~ error :=
+                                                                      let~ error :
+                                                                          Ty.path "anyhow::Error" :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "anyhow::Error",
                                                                             M.get_function (|
                                                                               "anyhow::__private::format_err",
                                                                               [],
@@ -4034,6 +4375,8 @@ Module parser.
                                                                             |),
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::Arguments",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::Arguments",
@@ -4074,10 +4417,11 @@ Module parser.
                                                   ]
                                                 |)))
                                             |) in
-                                          let~ len :=
+                                          let~ len : Ty.path "usize" :=
                                             M.alloc (|
                                               BinOp.Wrap.add (|
                                                 M.call_closure (|
+                                                  Ty.path "usize",
                                                   M.get_associated_function (|
                                                     Ty.path "alloc::string::String",
                                                     "len",
@@ -4104,6 +4448,7 @@ Module parser.
                                           let γ :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_associated_function (|
                                                   Ty.path "char",
                                                   "is_ascii_whitespace",
@@ -4118,9 +4463,10 @@ Module parser.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ r :=
+                                          let~ r : Ty.path "alloc::string::String" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "alloc::string::String",
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "new",
@@ -4130,9 +4476,10 @@ Module parser.
                                                 []
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "push",
@@ -4145,11 +4492,16 @@ Module parser.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.use
                                               (M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::iter::adapters::peekable::Peekable")
+                                                      []
+                                                      [ Ty.path "core::str::iter::Chars" ],
                                                     M.get_trait_method (|
                                                       "core::iter::traits::collect::IntoIterator",
                                                       Ty.apply
@@ -4172,10 +4524,14 @@ Module parser.
                                                       (let iter := M.copy (| γ |) in
                                                       M.loop (|
                                                         ltac:(M.monadic
-                                                          (let~ _ :=
+                                                          (let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "char" ],
                                                                   M.get_trait_method (|
                                                                     "core::iter::traits::iterator::Iterator",
                                                                     Ty.apply
@@ -4236,6 +4592,7 @@ Module parser.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "char",
@@ -4256,9 +4613,10 @@ Module parser.
                                                                                 M.read (| γ |),
                                                                                 Value.Bool true
                                                                               |) in
-                                                                            let~ _ :=
+                                                                            let~ _ : Ty.tuple [] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.tuple [],
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "alloc::string::String",
@@ -4295,9 +4653,10 @@ Module parser.
                                                       |)))
                                                 ]
                                               |)) in
-                                          let~ len :=
+                                          let~ len : Ty.path "usize" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "usize",
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "len",
@@ -4322,6 +4681,7 @@ Module parser.
                                           let γ :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_associated_function (|
                                                   Ty.path "char",
                                                   "is_ascii_alphabetic",
@@ -4336,9 +4696,10 @@ Module parser.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ r :=
+                                          let~ r : Ty.path "alloc::string::String" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "alloc::string::String",
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "new",
@@ -4348,9 +4709,10 @@ Module parser.
                                                 []
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "push",
@@ -4363,11 +4725,16 @@ Module parser.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.use
                                               (M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::iter::adapters::peekable::Peekable")
+                                                      []
+                                                      [ Ty.path "core::str::iter::Chars" ],
                                                     M.get_trait_method (|
                                                       "core::iter::traits::collect::IntoIterator",
                                                       Ty.apply
@@ -4390,10 +4757,14 @@ Module parser.
                                                       (let iter := M.copy (| γ |) in
                                                       M.loop (|
                                                         ltac:(M.monadic
-                                                          (let~ _ :=
+                                                          (let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "char" ],
                                                                   M.get_trait_method (|
                                                                     "core::iter::traits::iterator::Iterator",
                                                                     Ty.apply
@@ -4454,6 +4825,7 @@ Module parser.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_function (|
                                                                                       "move_core_types::identifier::is_valid_identifier_char",
                                                                                       [],
@@ -4468,9 +4840,10 @@ Module parser.
                                                                                 M.read (| γ |),
                                                                                 Value.Bool true
                                                                               |) in
-                                                                            let~ _ :=
+                                                                            let~ _ : Ty.tuple [] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.tuple [],
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "alloc::string::String",
@@ -4507,9 +4880,10 @@ Module parser.
                                                       |)))
                                                 ]
                                               |)) in
-                                          let~ len :=
+                                          let~ len : Ty.path "usize" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "usize",
                                                 M.get_associated_function (|
                                                   Ty.path "alloc::string::String",
                                                   "len",
@@ -4523,6 +4897,7 @@ Module parser.
                                             Value.Tuple
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "move_core_types::parser::Token",
                                                   M.get_function (|
                                                     "move_core_types::parser::name_token",
                                                     [],
@@ -4543,9 +4918,10 @@ Module parser.
                                                     "core::result::Result::Err"
                                                     [
                                                       M.read (|
-                                                        let~ error :=
+                                                        let~ error : Ty.path "anyhow::Error" :=
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "anyhow::Error",
                                                               M.get_function (|
                                                                 "anyhow::__private::format_err",
                                                                 [],
@@ -4553,6 +4929,7 @@ Module parser.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::Arguments",
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_const",
@@ -4623,9 +5000,17 @@ Module parser.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ v :=
+              let~ v :
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -4639,7 +5024,7 @@ Module parser.
                     []
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -4651,6 +5036,28 @@ Module parser.
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "anyhow::Error"
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "move_core_types::parser::Token";
+                                                Ty.path "usize"
+                                              ]
+                                          ]
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
                                       Ty.apply
@@ -4677,6 +5084,22 @@ Module parser.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.path "move_core_types::parser::Token";
+                                                    Ty.path "usize"
+                                                  ]
+                                              ];
+                                            Ty.path "anyhow::Error"
+                                          ],
                                         M.get_function (|
                                           "move_core_types::parser::next_token",
                                           [],
@@ -4707,6 +5130,19 @@ Module parser.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.path "move_core_types::parser::Token";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ];
+                                                    Ty.path "anyhow::Error"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
@@ -4764,9 +5200,10 @@ Module parser.
                             let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                             let tok := M.copy (| γ1_0 |) in
                             let n := M.copy (| γ1_1 |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -4782,39 +5219,42 @@ Module parser.
                                   [ M.borrow (| Pointer.Kind.MutRef, v |); M.read (| tok |) ]
                                 |)
                               |) in
-                            let~ _ :=
-                              M.write (|
-                                s,
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::index::Index",
-                                            Ty.path "str",
-                                            [],
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (|
+                                M.write (|
+                                  s,
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
+                                              Ty.path "str",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  []
+                                                  [ Ty.path "usize" ]
+                                              ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
                                             [
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::RangeFrom")
-                                                []
-                                                [ Ty.path "usize" ]
-                                            ],
-                                            "index",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| s |) |)
-                                            |);
-                                            Value.StructRecord
-                                              "core::ops::range::RangeFrom"
-                                              [ ("start", M.read (| n |)) ]
-                                          ]
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| s |) |)
+                                              |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                [ ("start", M.read (| n |)) ]
+                                            ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -4827,7 +5267,7 @@ Module parser.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -4875,6 +5315,7 @@ Module parser.
             [
               ("it",
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     I,
@@ -4886,6 +5327,7 @@ Module parser.
                   |),
                   [
                     M.call_closure (|
+                      I,
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         T,
@@ -4926,6 +5368,10 @@ Module parser.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "move_core_types::parser::Token" ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
@@ -4971,9 +5417,10 @@ Module parser.
                                   "core::result::Result::Err"
                                   [
                                     M.read (|
-                                      let~ error :=
+                                      let~ error : Ty.path "anyhow::Error" :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "anyhow::Error",
                                             M.get_function (|
                                               "anyhow::__private::format_err",
                                               [],
@@ -4981,6 +5428,7 @@ Module parser.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::Arguments",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_const",
@@ -5041,6 +5489,10 @@ Module parser.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::parser::Token" ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
               "peek",
@@ -5085,11 +5537,21 @@ Module parser.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ t :=
+                let~ t : Ty.path "move_core_types::parser::Token" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error" ];
+                              Ty.path "move_core_types::parser::Token"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -5104,6 +5566,11 @@ Module parser.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "move_core_types::parser::Token"; Ty.path "anyhow::Error"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "move_core_types::parser::Parser") [] [ I ],
                                 "next",
@@ -5131,6 +5598,10 @@ Module parser.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -5170,7 +5641,7 @@ Module parser.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -5180,6 +5651,7 @@ Module parser.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "move_core_types::parser::Token",
@@ -5205,6 +5677,7 @@ Module parser.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "anyhow::Error",
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
@@ -5213,6 +5686,7 @@ Module parser.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_function (|
                                               "core::hint::must_use",
                                               [],
@@ -5220,9 +5694,10 @@ Module parser.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res :=
+                                                let~ res : Ty.path "alloc::string::String" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "alloc::fmt::format",
                                                         [],
@@ -5230,6 +5705,7 @@ Module parser.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -5266,6 +5742,8 @@ Module parser.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -5289,6 +5767,8 @@ Module parser.
                                                                           ]
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -5390,9 +5870,11 @@ Module parser.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ v :=
+                let~ v :
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ R; Ty.path "alloc::alloc::Global" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ R; Ty.path "alloc::alloc::Global" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -5405,7 +5887,7 @@ Module parser.
                       []
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -5416,6 +5898,7 @@ Module parser.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -5448,6 +5931,15 @@ Module parser.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "move_core_types::parser::Token" ]
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_core_types::parser::Parser")
@@ -5489,9 +5981,10 @@ Module parser.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -5507,6 +6000,19 @@ Module parser.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path "anyhow::Error"
+                                                    ];
+                                                  R
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::Try",
                                                 Ty.apply
@@ -5521,6 +6027,10 @@ Module parser.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ R; Ty.path "anyhow::Error" ],
                                                   M.get_trait_method (|
                                                     "core::ops::function::Fn",
                                                     F,
@@ -5576,6 +6086,17 @@ Module parser.
                                                     M.read (|
                                                       M.return_ (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [ R; Ty.path "alloc::alloc::Global"
+                                                                ];
+                                                              Ty.path "anyhow::Error"
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             Ty.apply
@@ -5628,7 +6149,7 @@ Module parser.
                                     ]
                                   |)
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -5638,6 +6159,7 @@ Module parser.
                                           M.use
                                             (M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -5671,6 +6193,18 @@ Module parser.
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::parser::Token"
+                                                              ]
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -5722,10 +6256,23 @@ Module parser.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "anyhow::Error"
+                                            ];
+                                          Ty.tuple []
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::Try",
                                         Ty.apply
@@ -5740,6 +6287,10 @@ Module parser.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "move_core_types::parser::Parser")
@@ -5777,6 +6328,16 @@ Module parser.
                                             M.read (|
                                               M.return_ (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [ R; Ty.path "alloc::alloc::Global" ];
+                                                      Ty.path "anyhow::Error"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
@@ -5831,6 +6392,7 @@ Module parser.
                                           (M.alloc (|
                                             LogicalOp.and (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -5864,6 +6426,18 @@ Module parser.
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::parser::Token"
+                                                              ]
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -5956,6 +6530,16 @@ Module parser.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error" ];
+                                Ty.path "move_core_types::parser::Token"
+                              ],
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
                               Ty.apply
@@ -5971,6 +6555,13 @@ Module parser.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::parser::Token";
+                                    Ty.path "anyhow::Error"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "move_core_types::parser::Parser") [] [ I ],
                                   "next",
@@ -6002,6 +6593,11 @@ Module parser.
                                   M.read (|
                                     M.return_ (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "alloc::string::String"; Ty.path "anyhow::Error"
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
@@ -6065,6 +6661,7 @@ Module parser.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "anyhow::Error",
                                           M.get_associated_function (|
                                             Ty.path "anyhow::Error",
                                             "msg",
@@ -6073,6 +6670,7 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -6080,9 +6678,10 @@ Module parser.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -6090,6 +6689,7 @@ Module parser.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
@@ -6127,6 +6727,8 @@ Module parser.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -6247,6 +6849,16 @@ Module parser.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error" ];
+                                Ty.path "move_core_types::parser::Token"
+                              ],
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
                               Ty.apply
@@ -6262,6 +6874,13 @@ Module parser.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::parser::Token";
+                                    Ty.path "anyhow::Error"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "move_core_types::parser::Parser") [] [ I ],
                                   "next",
@@ -6293,6 +6912,13 @@ Module parser.
                                   M.read (|
                                     M.return_ (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::language_storage::TypeTag";
+                                            Ty.path "anyhow::Error"
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
@@ -6439,10 +7065,23 @@ Module parser.
                                 γ,
                                 "move_core_types::parser::Token::VectorType"
                               |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "anyhow::Error"
+                                          ];
+                                        Ty.tuple []
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
                                       Ty.apply
@@ -6457,6 +7096,10 @@ Module parser.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "move_core_types::parser::Parser")
@@ -6492,6 +7135,14 @@ Module parser.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::TypeTag";
+                                                    Ty.path "anyhow::Error"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
@@ -6534,11 +7185,24 @@ Module parser.
                                       val))
                                 ]
                               |) in
-                            let~ ty :=
+                            let~ ty : Ty.path "move_core_types::language_storage::TypeTag" :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "anyhow::Error"
+                                            ];
+                                          Ty.path "move_core_types::language_storage::TypeTag"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::Try",
                                         Ty.apply
@@ -6556,6 +7220,13 @@ Module parser.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "move_core_types::language_storage::TypeTag";
+                                              Ty.path "anyhow::Error"
+                                            ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "move_core_types::parser::Parser")
@@ -6590,6 +7261,14 @@ Module parser.
                                             M.read (|
                                               M.return_ (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::language_storage::TypeTag";
+                                                      Ty.path "anyhow::Error"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
@@ -6633,10 +7312,23 @@ Module parser.
                                   ]
                                 |)
                               |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "anyhow::Error"
+                                          ];
+                                        Ty.tuple []
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
                                       Ty.apply
@@ -6651,6 +7343,10 @@ Module parser.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "move_core_types::parser::Parser")
@@ -6686,6 +7382,14 @@ Module parser.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::TypeTag";
+                                                    Ty.path "anyhow::Error"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
@@ -6733,6 +7437,13 @@ Module parser.
                                 "move_core_types::language_storage::TypeTag::Vector"
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::language_storage::TypeTag";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
@@ -6758,10 +7469,23 @@ Module parser.
                                 0
                               |) in
                             let addr := M.copy (| γ0_0 |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "anyhow::Error"
+                                          ];
+                                        Ty.tuple []
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
                                       Ty.apply
@@ -6776,6 +7500,10 @@ Module parser.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "move_core_types::parser::Parser")
@@ -6813,6 +7541,14 @@ Module parser.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::TypeTag";
+                                                    Ty.path "anyhow::Error"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
@@ -6855,11 +7591,24 @@ Module parser.
                                       val))
                                 ]
                               |) in
-                            let~ module :=
+                            let~ module : Ty.path "alloc::string::String" :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "anyhow::Error"
+                                            ];
+                                          Ty.path "alloc::string::String"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::Try",
                                         Ty.apply
@@ -6875,6 +7624,13 @@ Module parser.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "alloc::string::String";
+                                              Ty.path "anyhow::Error"
+                                            ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -6900,6 +7656,13 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "move_core_types::parser::Token";
+                                                  Ty.path "anyhow::Error"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "move_core_types::parser::Parser")
@@ -6941,6 +7704,14 @@ Module parser.
                                             M.read (|
                                               M.return_ (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::language_storage::TypeTag";
+                                                      Ty.path "anyhow::Error"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
@@ -6984,10 +7755,23 @@ Module parser.
                                   ]
                                 |)
                               |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "anyhow::Error"
+                                          ];
+                                        Ty.tuple []
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
                                       Ty.apply
@@ -7002,6 +7786,10 @@ Module parser.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "move_core_types::parser::Parser")
@@ -7039,6 +7827,14 @@ Module parser.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::TypeTag";
+                                                    Ty.path "anyhow::Error"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
@@ -7081,11 +7877,24 @@ Module parser.
                                       val))
                                 ]
                               |) in
-                            let~ name :=
+                            let~ name : Ty.path "alloc::string::String" :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "anyhow::Error"
+                                            ];
+                                          Ty.path "alloc::string::String"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::Try",
                                         Ty.apply
@@ -7101,6 +7910,13 @@ Module parser.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "alloc::string::String";
+                                              Ty.path "anyhow::Error"
+                                            ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -7126,6 +7942,13 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "move_core_types::parser::Token";
+                                                  Ty.path "anyhow::Error"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "move_core_types::parser::Parser")
@@ -7167,6 +7990,14 @@ Module parser.
                                             M.read (|
                                               M.return_ (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::language_storage::TypeTag";
+                                                      Ty.path "anyhow::Error"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
@@ -7210,7 +8041,14 @@ Module parser.
                                   ]
                                 |)
                               |) in
-                            let~ ty_args :=
+                            let~ ty_args :
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::language_storage::TypeTag";
+                                    Ty.path "alloc::alloc::Global"
+                                  ] :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -7221,6 +8059,7 @@ Module parser.
                                           M.use
                                             (M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -7254,6 +8093,18 @@ Module parser.
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::parser::Token"
+                                                              ]
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -7303,10 +8154,23 @@ Module parser.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.path "move_core_types::parser::Token" :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "anyhow::Error"
+                                                      ];
+                                                    Ty.path "move_core_types::parser::Token"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -7324,6 +8188,13 @@ Module parser.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "move_core_types::parser::Token";
+                                                        Ty.path "anyhow::Error"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "move_core_types::parser::Parser")
@@ -7358,6 +8229,14 @@ Module parser.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::language_storage::TypeTag";
+                                                                Ty.path "anyhow::Error"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -7401,11 +8280,39 @@ Module parser.
                                                   val))
                                             ]
                                           |) in
-                                        let~ ty_args :=
+                                        let~ ty_args :
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::language_storage::TypeTag";
+                                                Ty.path "alloc::alloc::Global"
+                                              ] :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "anyhow::Error"
+                                                        ];
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::language_storage::TypeTag";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ]
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -7430,6 +8337,20 @@ Module parser.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::language_storage::TypeTag";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ];
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
@@ -7486,6 +8407,16 @@ Module parser.
                                                                           (let parser :=
                                                                             M.copy (| γ |) in
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_core_types::language_storage::TypeTag";
+                                                                                Ty.path
+                                                                                  "anyhow::Error"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -7537,6 +8468,14 @@ Module parser.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::language_storage::TypeTag";
+                                                                  Ty.path "anyhow::Error"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -7581,10 +8520,23 @@ Module parser.
                                               ]
                                             |)
                                           |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "anyhow::Error"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -7599,6 +8551,10 @@ Module parser.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "move_core_types::parser::Parser")
@@ -7636,6 +8592,14 @@ Module parser.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_core_types::language_storage::TypeTag";
+                                                                Ty.path "anyhow::Error"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -7684,6 +8648,14 @@ Module parser.
                                       ltac:(M.monadic
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::language_storage::TypeTag";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -7708,6 +8680,13 @@ Module parser.
                                 "move_core_types::language_storage::TypeTag::Struct"
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::language_storage::StructTag";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
@@ -7729,6 +8708,22 @@ Module parser.
                                               M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::ops::control_flow::ControlFlow")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path
+                                                              "move_core_types::account_address::AccountAddressParseError"
+                                                          ];
+                                                        Ty.path
+                                                          "move_core_types::account_address::AccountAddress"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
@@ -7748,6 +8743,15 @@ Module parser.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::account_address::AccountAddress";
+                                                            Ty.path
+                                                              "move_core_types::account_address::AccountAddressParseError"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_core_types::account_address::AccountAddress",
@@ -7760,6 +8764,10 @@ Module parser.
                                                             Pointer.Kind.Ref,
                                                             M.deref (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "str" ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::deref::Deref",
                                                                   Ty.path "alloc::string::String",
@@ -7803,6 +8811,14 @@ Module parser.
                                                           M.read (|
                                                             M.return_ (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_core_types::language_storage::TypeTag";
+                                                                    Ty.path "anyhow::Error"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
@@ -7854,6 +8870,21 @@ Module parser.
                                               M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::ops::control_flow::ControlFlow")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path "anyhow::Error"
+                                                          ];
+                                                        Ty.path
+                                                          "move_core_types::identifier::Identifier"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
@@ -7872,6 +8903,14 @@ Module parser.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::identifier::Identifier";
+                                                            Ty.path "anyhow::Error"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_core_types::identifier::Identifier",
@@ -7899,6 +8938,14 @@ Module parser.
                                                           M.read (|
                                                             M.return_ (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_core_types::language_storage::TypeTag";
+                                                                    Ty.path "anyhow::Error"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
@@ -7949,6 +8996,21 @@ Module parser.
                                               M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::ops::control_flow::ControlFlow")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path "anyhow::Error"
+                                                          ];
+                                                        Ty.path
+                                                          "move_core_types::identifier::Identifier"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
@@ -7967,6 +9029,14 @@ Module parser.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::identifier::Identifier";
+                                                            Ty.path "anyhow::Error"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_core_types::identifier::Identifier",
@@ -7994,6 +9064,14 @@ Module parser.
                                                           M.read (|
                                                             M.return_ (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_core_types::language_storage::TypeTag";
+                                                                    Ty.path "anyhow::Error"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
@@ -8056,6 +9134,7 @@ Module parser.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "anyhow::Error",
                                           M.get_associated_function (|
                                             Ty.path "anyhow::Error",
                                             "msg",
@@ -8064,6 +9143,7 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -8071,9 +9151,10 @@ Module parser.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -8081,6 +9162,7 @@ Module parser.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
@@ -8118,6 +9200,8 @@ Module parser.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -8214,6 +9298,16 @@ Module parser.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error" ];
+                                Ty.path "move_core_types::parser::Token"
+                              ],
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
                               Ty.apply
@@ -8229,6 +9323,13 @@ Module parser.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::parser::Token";
+                                    Ty.path "anyhow::Error"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "move_core_types::parser::Parser") [] [ I ],
                                   "next",
@@ -8260,6 +9361,14 @@ Module parser.
                                   M.read (|
                                     M.return_ (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_core_types::transaction_argument::TransactionArgument";
+                                            Ty.path "anyhow::Error"
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
@@ -8320,6 +9429,19 @@ Module parser.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ];
+                                              Ty.path "u8"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -8337,6 +9459,13 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "u8";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
@@ -8348,6 +9477,7 @@ Module parser.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloc::string::String",
@@ -8362,6 +9492,7 @@ Module parser.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_associated_function (|
                                                                 Ty.path "str",
                                                                 "replace",
@@ -8373,6 +9504,10 @@ Module parser.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::deref::Deref",
                                                                         Ty.path
@@ -8427,6 +9562,14 @@ Module parser.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -8490,6 +9633,19 @@ Module parser.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ];
+                                              Ty.path "u16"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -8507,6 +9663,13 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "u16";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
@@ -8518,6 +9681,7 @@ Module parser.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloc::string::String",
@@ -8532,6 +9696,7 @@ Module parser.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_associated_function (|
                                                                 Ty.path "str",
                                                                 "replace",
@@ -8543,6 +9708,10 @@ Module parser.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::deref::Deref",
                                                                         Ty.path
@@ -8597,6 +9766,14 @@ Module parser.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -8660,6 +9837,19 @@ Module parser.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ];
+                                              Ty.path "u32"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -8677,6 +9867,13 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "u32";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
@@ -8688,6 +9885,7 @@ Module parser.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloc::string::String",
@@ -8702,6 +9900,7 @@ Module parser.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_associated_function (|
                                                                 Ty.path "str",
                                                                 "replace",
@@ -8713,6 +9912,10 @@ Module parser.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::deref::Deref",
                                                                         Ty.path
@@ -8767,6 +9970,14 @@ Module parser.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -8830,6 +10041,19 @@ Module parser.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ];
+                                              Ty.path "u64"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -8847,6 +10071,13 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "u64";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
@@ -8858,6 +10089,7 @@ Module parser.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloc::string::String",
@@ -8872,6 +10104,7 @@ Module parser.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_associated_function (|
                                                                 Ty.path "str",
                                                                 "replace",
@@ -8883,6 +10116,10 @@ Module parser.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::deref::Deref",
                                                                         Ty.path
@@ -8937,6 +10174,14 @@ Module parser.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -9000,6 +10245,19 @@ Module parser.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ];
+                                              Ty.path "u128"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -9017,6 +10275,13 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "u128";
+                                                  Ty.path "core::num::error::ParseIntError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
@@ -9028,6 +10293,7 @@ Module parser.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloc::string::String",
@@ -9042,6 +10308,7 @@ Module parser.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_associated_function (|
                                                                 Ty.path "str",
                                                                 "replace",
@@ -9053,6 +10320,10 @@ Module parser.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::deref::Deref",
                                                                         Ty.path
@@ -9107,6 +10378,14 @@ Module parser.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -9170,6 +10449,19 @@ Module parser.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "move_core_types::u256::U256FromStrError"
+                                                ];
+                                              Ty.path "move_core_types::u256::U256"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -9187,6 +10479,13 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "move_core_types::u256::U256";
+                                                  Ty.path "move_core_types::u256::U256FromStrError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "parse",
@@ -9198,6 +10497,7 @@ Module parser.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloc::string::String",
@@ -9212,6 +10512,7 @@ Module parser.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_associated_function (|
                                                                 Ty.path "str",
                                                                 "replace",
@@ -9223,6 +10524,10 @@ Module parser.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::deref::Deref",
                                                                         Ty.path
@@ -9277,6 +10582,14 @@ Module parser.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -9358,6 +10671,21 @@ Module parser.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddressParseError"
+                                                ];
+                                              Ty.path
+                                                "move_core_types::account_address::AccountAddress"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -9377,6 +10705,15 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddress";
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddressParseError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_core_types::account_address::AccountAddress",
@@ -9389,6 +10726,7 @@ Module parser.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "alloc::string::String",
@@ -9429,6 +10767,14 @@ Module parser.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -9492,6 +10838,22 @@ Module parser.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "hex::error::FromHexError"
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -9512,6 +10874,17 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
+                                                    ];
+                                                  Ty.path "hex::error::FromHexError"
+                                                ],
                                               M.get_function (|
                                                 "hex::decode",
                                                 [],
@@ -9537,6 +10910,14 @@ Module parser.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -9593,6 +10974,7 @@ Module parser.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "anyhow::Error",
                                           M.get_associated_function (|
                                             Ty.path "anyhow::Error",
                                             "msg",
@@ -9601,6 +10983,7 @@ Module parser.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -9608,9 +10991,10 @@ Module parser.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -9618,6 +11002,7 @@ Module parser.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
@@ -9655,6 +11040,8 @@ Module parser.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -9737,9 +11124,17 @@ Module parser.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ tokens :=
+              let~ tokens :
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global" ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
@@ -9779,6 +11174,29 @@ Module parser.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::filter::Filter")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::into_iter::IntoIter")
+                              []
+                              [
+                                Ty.path "move_core_types::parser::Token";
+                                Ty.path "alloc::alloc::Global"
+                              ];
+                            Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::parser::Token" ]
+                                  ]
+                              ]
+                              (Ty.path "bool")
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -9808,6 +11226,13 @@ Module parser.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::into_iter::IntoIter")
+                              []
+                              [
+                                Ty.path "move_core_types::parser::Token";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
@@ -9828,6 +11253,25 @@ Module parser.
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "anyhow::Error"
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_core_types::parser::Token";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::Try",
                                         Ty.apply
@@ -9851,6 +11295,19 @@ Module parser.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path "move_core_types::parser::Token";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ];
+                                              Ty.path "anyhow::Error"
+                                            ],
                                           M.get_function (|
                                             "move_core_types::parser::tokenize",
                                             [],
@@ -9881,6 +11338,10 @@ Module parser.
                                             M.read (|
                                               M.return_ (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ T; Ty.path "anyhow::Error" ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
@@ -9936,6 +11397,7 @@ Module parser.
                                             (let tok := M.copy (| γ |) in
                                             UnOp.not (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_associated_function (|
                                                   Ty.path "move_core_types::parser::Token",
                                                   "is_whitespace",
@@ -9959,9 +11421,10 @@ Module parser.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -9978,9 +11441,28 @@ Module parser.
                     ]
                   |)
                 |) in
-              let~ parser :=
+              let~ parser :
+                  Ty.apply
+                    (Ty.path "move_core_types::parser::Parser")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
+                        [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "move_core_types::parser::Parser")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
+                          [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global"
+                          ]
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_core_types::parser::Parser")
@@ -10007,11 +11489,21 @@ Module parser.
                     [ M.read (| tokens |) ]
                   |)
                 |) in
-              let~ res :=
+              let~ res : T :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error" ];
+                            T
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -10026,6 +11518,10 @@ Module parser.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ T; Ty.path "anyhow::Error" ],
                             M.get_trait_method (|
                               "core::ops::function::Fn",
                               F,
@@ -10085,6 +11581,10 @@ Module parser.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ T; Ty.path "anyhow::Error" ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -10124,10 +11624,20 @@ Module parser.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error" ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -10142,6 +11652,10 @@ Module parser.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "anyhow::Error" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "move_core_types::parser::Parser")
@@ -10182,6 +11696,10 @@ Module parser.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ T; Ty.path "anyhow::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -10242,6 +11760,16 @@ Module parser.
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ];
+              Ty.path "anyhow::Error"
+            ],
           M.get_function (|
             "move_core_types::parser::parse",
             [],
@@ -10300,6 +11828,19 @@ Module parser.
                             ltac:(M.monadic
                               (let parser := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "alloc::string::String";
+                                        Ty.path "alloc::alloc::Global"
+                                      ];
+                                    Ty.path "anyhow::Error"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "move_core_types::parser::Parser")
@@ -10365,6 +11906,13 @@ Module parser.
                                                   ltac:(M.monadic
                                                     (let parser := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "alloc::string::String";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
@@ -10426,6 +11974,19 @@ Module parser.
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.path "move_core_types::language_storage::TypeTag";
+                  Ty.path "alloc::alloc::Global"
+                ];
+              Ty.path "anyhow::Error"
+            ],
           M.get_function (|
             "move_core_types::parser::parse",
             [],
@@ -10490,6 +12051,19 @@ Module parser.
                             ltac:(M.monadic
                               (let parser := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::language_storage::TypeTag";
+                                        Ty.path "alloc::alloc::Global"
+                                      ];
+                                    Ty.path "anyhow::Error"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "move_core_types::parser::Parser")
@@ -10557,6 +12131,14 @@ Module parser.
                                                   ltac:(M.monadic
                                                     (let parser := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::language_storage::TypeTag";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
@@ -10616,6 +12198,10 @@ Module parser.
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "move_core_types::language_storage::TypeTag"; Ty.path "anyhow::Error" ],
           M.get_function (|
             "move_core_types::parser::parse",
             [],
@@ -10666,6 +12252,13 @@ Module parser.
                             ltac:(M.monadic
                               (let parser := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::language_storage::TypeTag";
+                                    Ty.path "anyhow::Error"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "move_core_types::parser::Parser")
@@ -10724,6 +12317,19 @@ Module parser.
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.path "move_core_types::transaction_argument::TransactionArgument";
+                  Ty.path "alloc::alloc::Global"
+                ];
+              Ty.path "anyhow::Error"
+            ],
           M.get_function (|
             "move_core_types::parser::parse",
             [],
@@ -10788,6 +12394,20 @@ Module parser.
                             ltac:(M.monadic
                               (let parser := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_core_types::transaction_argument::TransactionArgument";
+                                        Ty.path "alloc::alloc::Global"
+                                      ];
+                                    Ty.path "anyhow::Error"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "move_core_types::parser::Parser")
@@ -10857,6 +12477,14 @@ Module parser.
                                                   ltac:(M.monadic
                                                     (let parser := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
@@ -10916,6 +12544,13 @@ Module parser.
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "move_core_types::transaction_argument::TransactionArgument";
+              Ty.path "anyhow::Error"
+            ],
           M.get_function (|
             "move_core_types::parser::parse",
             [],
@@ -10968,6 +12603,14 @@ Module parser.
                             ltac:(M.monadic
                               (let parser := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_core_types::transaction_argument::TransactionArgument";
+                                    Ty.path "anyhow::Error"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "move_core_types::parser::Parser")
@@ -11024,11 +12667,21 @@ Module parser.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ type_tag :=
+              let~ type_tag : Ty.path "move_core_types::language_storage::TypeTag" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error" ];
+                            Ty.path "move_core_types::language_storage::TypeTag"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -11046,6 +12699,13 @@ Module parser.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "move_core_types::language_storage::TypeTag";
+                                Ty.path "anyhow::Error"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
@@ -11065,6 +12725,13 @@ Module parser.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::language_storage::TypeTag";
+                                    Ty.path "anyhow::Error"
+                                  ],
                                 M.get_function (|
                                   "move_core_types::parser::parse",
                                   [],
@@ -11117,6 +12784,14 @@ Module parser.
                                                   ltac:(M.monadic
                                                     (let parser := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::language_storage::TypeTag";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
@@ -11163,6 +12838,7 @@ Module parser.
                                               ltac:(M.monadic
                                                 (let e := M.copy (| γ |) in
                                                 M.call_closure (|
+                                                  Ty.path "anyhow::Error",
                                                   M.get_associated_function (|
                                                     Ty.path "anyhow::Error",
                                                     "msg",
@@ -11171,6 +12847,7 @@ Module parser.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "core::hint::must_use",
                                                         [],
@@ -11178,9 +12855,11 @@ Module parser.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          let~ res :=
+                                                          let~ res :
+                                                              Ty.path "alloc::string::String" :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "alloc::string::String",
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
                                                                   [],
@@ -11188,6 +12867,7 @@ Module parser.
                                                                 |),
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.path "core::fmt::Arguments",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
@@ -11226,6 +12906,8 @@ Module parser.
                                                                               Value.Array
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
@@ -11255,6 +12937,8 @@ Module parser.
                                                                                     ]
                                                                                   |);
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
@@ -11317,6 +13001,13 @@ Module parser.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::language_storage::StructTag";
+                                        Ty.path "anyhow::Error"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -11387,6 +13078,7 @@ Module parser.
                                 "core::result::Result::Err"
                                 [
                                   M.call_closure (|
+                                    Ty.path "anyhow::Error",
                                     M.get_associated_function (|
                                       Ty.path "anyhow::Error",
                                       "msg",
@@ -11395,6 +13087,7 @@ Module parser.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "alloc::string::String",
                                         M.get_function (|
                                           "core::hint::must_use",
                                           [],
@@ -11402,12 +13095,14 @@ Module parser.
                                         |),
                                         [
                                           M.read (|
-                                            let~ res :=
+                                            let~ res : Ty.path "alloc::string::String" :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "alloc::string::String",
                                                   M.get_function (| "alloc::fmt::format", [], [] |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -11441,6 +13136,8 @@ Module parser.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",

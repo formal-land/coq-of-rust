@@ -13,13 +13,15 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -52,6 +54,7 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -76,13 +79,15 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -115,6 +120,7 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -161,13 +167,15 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
       (let t := M.alloc (| t |) in
       let u := M.alloc (| u |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -197,6 +205,7 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -221,13 +230,15 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -257,6 +268,7 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -307,8 +319,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ string := M.copy (| Value.String "words" |) in
-        let~ array :=
+        let~ string : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+          M.copy (| Value.String "words" |) in
+        let~ array :
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "i32" ] :=
           M.alloc (|
             Value.Array
               [
@@ -317,9 +331,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 Value.Integer IntegerKind.I32 3
               ]
           |) in
-        let~ vec :=
+        let~ vec :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
@@ -329,6 +351,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.read (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "i32" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -359,9 +391,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "generics_multiple_bounds::compare_prints",
                 [],
@@ -375,9 +408,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "generics_multiple_bounds::compare_types",
                 [],

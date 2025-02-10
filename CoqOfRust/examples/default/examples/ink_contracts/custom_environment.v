@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
           "custom_environment::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -141,6 +142,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
           [
             ("first_topic",
               M.call_closure (|
+                Ty.path "u128",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "u128",
@@ -154,6 +156,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
               |));
             ("second_topic",
               M.call_closure (|
+                Ty.path "u128",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "u128",
@@ -167,6 +170,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
               |));
             ("third_topic",
               M.call_closure (|
+                Ty.path "u128",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "u128",
@@ -180,6 +184,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
               |));
             ("fourth_topic",
               M.call_closure (|
+                Ty.path "u128",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "u128",
@@ -193,6 +198,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
               |));
             ("fifth_topic",
               M.call_closure (|
+                Ty.path "u128",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "u128",
@@ -293,6 +299,7 @@ Module Impl_custom_environment_Topics.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "custom_environment::Env",
           M.get_associated_function (| Ty.path "custom_environment::Topics", "init_env", [], [] |),
           []
         |)))
@@ -312,6 +319,7 @@ Module Impl_custom_environment_Topics.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "custom_environment::Topics",
           M.get_trait_method (|
             "core::default::Default",
             Ty.path "custom_environment::Topics",
@@ -341,9 +349,10 @@ Module Impl_custom_environment_Topics.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.path "custom_environment::Env",
                   "emit_event",
@@ -355,6 +364,7 @@ Module Impl_custom_environment_Topics.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "custom_environment::Env",
                         M.get_associated_function (|
                           Ty.path "custom_environment::Topics",
                           "env",
@@ -369,6 +379,7 @@ Module Impl_custom_environment_Topics.
                     "custom_environment::Event::EventWithTopics"
                     [
                       M.call_closure (|
+                        Ty.path "custom_environment::EventWithTopics",
                         M.get_trait_method (|
                           "core::default::Default",
                           Ty.path "custom_environment::EventWithTopics",

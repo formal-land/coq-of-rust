@@ -41,16 +41,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ name_buf :=
+        let~ name_buf :
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ Ty.path "u8" ] :=
           M.alloc (|
             repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 12 |)
           |) in
-        let~ _ :=
-          let~ _ := InlineAssembly in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
-        let~ name :=
+        let~ name : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -65,6 +67,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                      Ty.path "core::str::error::Utf8Error"
+                    ],
                   M.get_function (| "core::str::converts::from_utf8", [], [] |),
                   [
                     M.borrow (|
@@ -76,13 +85,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -115,6 +126,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",

@@ -16,6 +16,7 @@ Module unit_.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.associated,
@@ -27,6 +28,7 @@ Module unit_.
             |),
             [
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,

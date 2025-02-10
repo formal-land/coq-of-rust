@@ -20,6 +20,24 @@ Definition combine_vecs_explicit_return_type
       (let v := M.alloc (| v |) in
       let u := M.alloc (| u |) in
       M.call_closure (|
+        Ty.apply
+          (Ty.path "core::iter::adapters::cycle::Cycle")
+          []
+          [
+            Ty.apply
+              (Ty.path "core::iter::adapters::chain::Chain")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ]
+          ],
         M.get_trait_method (|
           "core::iter::traits::iterator::Iterator",
           Ty.apply
@@ -43,6 +61,19 @@ Definition combine_vecs_explicit_return_type
         |),
         [
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::iter::adapters::chain::Chain")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -62,6 +93,10 @@ Definition combine_vecs_explicit_return_type
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
@@ -77,6 +112,10 @@ Definition combine_vecs_explicit_return_type
                 [ M.read (| v |) ]
               |);
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
@@ -116,6 +155,24 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       (let v := M.alloc (| v |) in
       let u := M.alloc (| u |) in
       M.call_closure (|
+        Ty.apply
+          (Ty.path "core::iter::adapters::cycle::Cycle")
+          []
+          [
+            Ty.apply
+              (Ty.path "core::iter::adapters::chain::Chain")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ]
+          ],
         M.get_trait_method (|
           "core::iter::traits::iterator::Iterator",
           Ty.apply
@@ -139,6 +196,19 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         |),
         [
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::iter::adapters::chain::Chain")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -158,6 +228,10 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
@@ -173,6 +247,10 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 [ M.read (| v |) ]
               |);
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
@@ -219,9 +297,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ v1 :=
+        let~ v1 :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
@@ -231,6 +317,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.read (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "i32" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -261,9 +357,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ v2 :=
+        let~ v2 :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
@@ -273,6 +377,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.read (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 2 ]
+                          [ Ty.path "i32" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -299,14 +413,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ v3 :=
+        let~ v3 : Ty.associated :=
           M.alloc (|
             M.call_closure (|
+              Ty.associated,
               M.get_function (| "impl_trait_as_return_type::combine_vecs", [], [] |),
               [ M.read (| v1 |); M.read (| v2 |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -323,6 +438,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.associated,
@@ -355,6 +471,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -390,12 +507,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],
@@ -442,7 +560,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -459,6 +577,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.associated,
@@ -491,6 +610,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -526,12 +646,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],
@@ -578,7 +699,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -595,6 +716,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.associated,
@@ -627,6 +749,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -662,12 +785,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],
@@ -714,7 +838,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -731,6 +855,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.associated,
@@ -763,6 +888,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -798,12 +924,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],
@@ -850,7 +977,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -867,6 +994,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.associated,
@@ -899,6 +1027,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -934,12 +1063,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],
@@ -986,13 +1116,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",

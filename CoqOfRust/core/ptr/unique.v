@@ -58,6 +58,7 @@ Module ptr.
               [
                 ("pointer",
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "dangling",
@@ -97,6 +98,7 @@ Module ptr.
               [
                 ("pointer",
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "new_unchecked",
@@ -139,6 +141,10 @@ Module ptr.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                               "new",
@@ -193,6 +199,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_ptr",
@@ -265,6 +272,7 @@ Module ptr.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ T ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ref",
@@ -315,6 +323,7 @@ Module ptr.
                       Pointer.Kind.MutRef,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&mut") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "as_mut",
@@ -364,6 +373,7 @@ Module ptr.
               [
                 ("pointer",
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "cast",
@@ -487,6 +497,10 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (|
                 "core::fmt::Pointer",
                 Ty.apply (Ty.path "*mut") [] [ T ],
@@ -504,6 +518,7 @@ Module ptr.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                             "as_ptr",
@@ -547,6 +562,10 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (|
                 "core::fmt::Pointer",
                 Ty.apply (Ty.path "*mut") [] [ T ],
@@ -564,6 +583,7 @@ Module ptr.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                             "as_ptr",
@@ -606,6 +626,7 @@ Module ptr.
           ltac:(M.monadic
             (let reference := M.alloc (| reference |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
@@ -617,6 +638,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],

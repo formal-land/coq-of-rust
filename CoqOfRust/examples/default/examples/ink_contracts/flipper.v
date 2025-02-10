@@ -39,9 +39,11 @@ Module Impl_flipper_Flipper.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "flipper::Flipper",
           M.get_associated_function (| Ty.path "flipper::Flipper", "new", [], [] |),
           [
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "bool",
@@ -72,19 +74,21 @@ Module Impl_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "flipper::Flipper",
-                "value"
-              |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "flipper::Flipper",
-                    "value"
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "flipper::Flipper",
+                  "value"
+                |),
+                UnOp.not (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "flipper::Flipper",
+                      "value"
+                    |)
                   |)
                 |)
               |)

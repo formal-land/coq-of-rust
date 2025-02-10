@@ -24,6 +24,10 @@ Module range.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
@@ -83,6 +87,7 @@ Module range.
               "core::range::iter::IterRange"
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -492,6 +497,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -527,6 +533,9 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -562,6 +571,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -593,6 +603,7 @@ Module range.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -629,6 +640,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -662,6 +674,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -695,6 +708,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -741,6 +755,13 @@ Module range.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.tuple [];
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -790,6 +811,7 @@ Module range.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
+              A,
               M.get_trait_method (|
                 "core::iter::range::Step",
                 A,
@@ -801,6 +823,7 @@ Module range.
               |),
               [
                 M.call_closure (|
+                  A,
                   M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                   [
                     M.borrow (|
@@ -861,6 +884,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -897,6 +921,7 @@ Module range.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -939,6 +964,13 @@ Module range.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.tuple [];
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
@@ -1028,6 +1060,7 @@ Module range.
               "core::range::iter::IterRange"
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ A ],
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "core::range::Range") [] [ A ],
@@ -1078,6 +1111,10 @@ Module range.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
@@ -1137,6 +1174,7 @@ Module range.
               "core::range::iter::IterRangeInclusive"
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1197,7 +1235,7 @@ Module range.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1207,6 +1245,7 @@ Module range.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeInclusive")
@@ -1304,6 +1343,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1339,6 +1379,9 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1374,6 +1417,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1409,6 +1453,7 @@ Module range.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1445,6 +1490,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1482,6 +1528,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1519,6 +1566,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1569,6 +1617,13 @@ Module range.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.tuple [];
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1630,6 +1685,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1666,6 +1722,7 @@ Module range.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1708,6 +1765,13 @@ Module range.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.tuple [];
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
@@ -1798,6 +1862,7 @@ Module range.
               "core::range::iter::IterRangeInclusive"
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ A ],
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ],
@@ -1944,6 +2009,10 @@ Module range.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
@@ -2003,6 +2072,7 @@ Module range.
               "core::range::iter::IterRangeFrom"
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
@@ -2100,6 +2170,7 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
@@ -2135,6 +2206,9 @@ Module range.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
@@ -2171,6 +2245,7 @@ Module range.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
@@ -2261,6 +2336,7 @@ Module range.
               "core::range::iter::IterRangeFrom"
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ A ],
                   M.get_trait_method (|
                     "core::convert::Into",
                     Ty.apply (Ty.path "core::range::RangeFrom") [] [ A ],

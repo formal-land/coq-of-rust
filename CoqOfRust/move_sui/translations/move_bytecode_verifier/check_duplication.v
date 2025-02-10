@@ -29,6 +29,10 @@ Module check_duplication.
         ltac:(M.monadic
           (let module := M.alloc (| module |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -45,6 +49,10 @@ Module check_duplication.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                   "verify_module_impl",
@@ -66,6 +74,7 @@ Module check_duplication.
                               ltac:(M.monadic
                                 (let e := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::errors::VMError",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
@@ -78,6 +87,7 @@ Module check_duplication.
                                       "move_binary_format::errors::Location::Module"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_core_types::language_storage::ModuleId",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -136,10 +146,23 @@ Module check_duplication.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -154,6 +177,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -166,6 +193,15 @@ Module check_duplication.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_core_types::identifier::Identifier" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "identifiers",
@@ -201,6 +237,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -242,10 +285,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -260,6 +316,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -272,6 +332,18 @@ Module check_duplication.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_core_types::account_address::AccountAddress"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "address_identifiers",
@@ -307,6 +379,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -348,10 +427,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -366,6 +458,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -378,6 +474,15 @@ Module check_duplication.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Constant" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "constant_pool",
@@ -413,6 +518,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -454,10 +566,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -472,6 +597,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -484,6 +613,15 @@ Module check_duplication.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signatures",
@@ -519,6 +657,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -560,10 +705,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -578,6 +736,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -590,6 +752,16 @@ Module check_duplication.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "module_handles",
@@ -625,6 +797,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -666,10 +845,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -684,6 +876,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -696,6 +892,16 @@ Module check_duplication.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "friend_decls",
@@ -731,6 +937,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -772,10 +985,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -790,6 +1016,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -802,6 +1032,16 @@ Module check_duplication.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::StructHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_handles",
@@ -837,6 +1077,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -878,10 +1125,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -896,6 +1156,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -908,6 +1172,18 @@ Module check_duplication.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "function_handles",
@@ -943,6 +1219,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -984,10 +1267,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1002,6 +1298,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -1014,6 +1314,18 @@ Module check_duplication.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionInstantiation"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "function_instantiations",
@@ -1049,6 +1361,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1090,16 +1409,30 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ checker :=
+                let~ checker :
+                    Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker" :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::check_duplication::DuplicationChecker"
                       [ ("module", M.read (| module |)) ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1114,6 +1447,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -1141,6 +1478,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1182,10 +1526,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1200,6 +1557,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -1227,6 +1588,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1268,10 +1636,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1286,6 +1667,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -1313,6 +1698,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1354,10 +1746,23 @@ Module check_duplication.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1372,6 +1777,10 @@ Module check_duplication.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -1399,6 +1808,13 @@ Module check_duplication.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1442,6 +1858,10 @@ Module check_duplication.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                       "check_struct_instantiations",
@@ -1481,6 +1901,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -1515,6 +1936,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -1569,6 +1991,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -1603,6 +2026,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -1655,6 +2079,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -1689,6 +2114,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -1739,6 +2165,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -1773,6 +2200,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -1823,6 +2251,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -1857,6 +2286,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -1907,6 +2337,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -1940,6 +2371,30 @@ Module check_duplication.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::map::Map")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructHandle" ];
+                          Ty.function
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructHandle" ]
+                                ]
+                            ]
+                            (Ty.tuple
+                              [
+                                Ty.path "move_binary_format::file_format::ModuleHandleIndex";
+                                Ty.path "move_binary_format::file_format::IdentifierIndex"
+                              ])
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -1975,6 +2430,10 @@ Module check_duplication.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructHandle" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -2044,6 +2503,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -2100,6 +2560,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -2134,6 +2595,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -2186,6 +2648,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -2219,6 +2682,30 @@ Module check_duplication.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::map::Map")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionHandle" ];
+                          Ty.function
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                                ]
+                            ]
+                            (Ty.tuple
+                              [
+                                Ty.path "move_binary_format::file_format::ModuleHandleIndex";
+                                Ty.path "move_binary_format::file_format::IdentifierIndex"
+                              ])
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -2254,6 +2741,10 @@ Module check_duplication.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -2323,6 +2814,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -2373,6 +2865,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -2391,6 +2884,15 @@ Module check_duplication.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FieldHandle" ]
+                        ],
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "field_handles",
@@ -2430,6 +2932,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -2484,6 +2987,7 @@ Module check_duplication.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker",
                     "first_duplicate_element",
@@ -2502,6 +3006,15 @@ Module check_duplication.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefInstantiation" ]
+                        ],
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_instantiations",
@@ -2541,6 +3054,7 @@ Module check_duplication.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
                               [],
@@ -2596,7 +3110,7 @@ Module check_duplication.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2605,6 +3119,7 @@ Module check_duplication.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -2627,6 +3142,18 @@ Module check_duplication.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FieldInstantiation"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "field_instantiations",
@@ -2666,6 +3193,7 @@ Module check_duplication.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -2771,7 +3299,7 @@ Module check_duplication.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2780,6 +3308,7 @@ Module check_duplication.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -2817,6 +3346,33 @@ Module check_duplication.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::map::Map")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ];
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructDefinition"
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path
+                                            "move_binary_format::file_format::StructHandleIndex")
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -2852,6 +3408,13 @@ Module check_duplication.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
@@ -2869,6 +3432,18 @@ Module check_duplication.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::StructDefinition"
+                                                      ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
@@ -2938,6 +3513,7 @@ Module check_duplication.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -2961,11 +3537,20 @@ Module check_duplication.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2985,6 +3570,15 @@ Module check_duplication.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -2999,6 +3593,10 @@ Module check_duplication.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -3014,6 +3612,18 @@ Module check_duplication.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructDefinition"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -3051,10 +3661,26 @@ Module check_duplication.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructDefinition"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -3106,7 +3732,20 @@ Module check_duplication.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let struct_idx := M.copy (| γ1_0 |) in
                                           let struct_def := M.copy (| γ1_1 |) in
-                                          let~ fields :=
+                                          let~ fields :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FieldDefinition";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ] :=
                                             M.copy (|
                                               M.match_operator (|
                                                 M.alloc (|
@@ -3147,7 +3786,7 @@ Module check_duplication.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -3157,6 +3796,7 @@ Module check_duplication.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
@@ -3191,6 +3831,8 @@ Module check_duplication.
                                                               "core::result::Result::Err"
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError",
                                                                   M.get_function (|
                                                                     "move_binary_format::errors::verification_error",
                                                                     [],
@@ -3225,6 +3867,10 @@ Module check_duplication.
                                                   (let γ :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "u16" ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -3264,6 +3910,35 @@ Module check_duplication.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::iter::adapters::map::Map")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::slice::iter::Iter")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::FieldDefinition"
+                                                                  ];
+                                                                Ty.function
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::FieldDefinition"
+                                                                          ]
+                                                                      ]
+                                                                  ]
+                                                                  (Ty.path
+                                                                    "move_binary_format::file_format::IdentifierIndex")
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::iter::traits::iterator::Iterator",
                                                               Ty.apply
@@ -3299,6 +3974,14 @@ Module check_duplication.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::slice::iter::Iter")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::FieldDefinition"
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
@@ -3316,6 +3999,18 @@ Module check_duplication.
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::FieldDefinition"
+                                                                              ]
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::ops::deref::Deref",
                                                                           Ty.apply
@@ -3395,6 +4090,8 @@ Module check_duplication.
                                                             "core::result::Result::Err"
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.get_function (|
                                                                   "move_binary_format::errors::verification_error",
                                                                   [],
@@ -3425,7 +4122,7 @@ Module check_duplication.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3434,6 +4131,7 @@ Module check_duplication.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -3466,6 +4164,13 @@ Module check_duplication.
                                     Pointer.Kind.MutRef,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
@@ -3483,6 +4188,18 @@ Module check_duplication.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::StructDefinition"
+                                                      ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
@@ -3524,6 +4241,7 @@ Module check_duplication.
                                                   ltac:(M.monadic
                                                     (let x := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
                                                         Ty.path
@@ -3543,6 +4261,13 @@ Module check_duplication.
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.deref (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::StructHandle"
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_binary_format::file_format::CompiledModule",
@@ -3583,6 +4308,8 @@ Module check_duplication.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::ModuleHandleIndex",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::file_format::CompiledModule",
@@ -3633,6 +4360,7 @@ Module check_duplication.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -3656,9 +4384,23 @@ Module check_duplication.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ implemented_struct_handles :=
+                let~ implemented_struct_handles :
+                    Ty.apply
+                      (Ty.path "std::collections::hash::set::HashSet")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::StructHandleIndex";
+                        Ty.path "std::hash::random::RandomState"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "std::collections::hash::set::HashSet")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::StructHandleIndex";
+                          Ty.path "std::hash::random::RandomState"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -3698,6 +4440,29 @@ Module check_duplication.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::map::Map")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ];
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::StructDefinition"
+                                        ]
+                                    ]
+                                ]
+                                (Ty.path "move_binary_format::file_format::StructHandleIndex")
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -3728,6 +4493,10 @@ Module check_duplication.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
@@ -3742,6 +4511,18 @@ Module check_duplication.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::StructDefinition"
+                                            ]
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "struct_defs",
@@ -3795,7 +4576,7 @@ Module check_duplication.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3804,6 +4585,7 @@ Module check_duplication.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -3826,6 +4608,7 @@ Module check_duplication.
                                           ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_",
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "slice")
@@ -3843,6 +4626,18 @@ Module check_duplication.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructHandle"
+                                                            ]
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
@@ -3885,9 +4680,13 @@ Module check_duplication.
                                                   ltac:(M.monadic
                                                     (let x := M.copy (| γ |) in
                                                     M.read (|
-                                                      let~ y :=
+                                                      let~ y :
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructHandleIndex" :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructHandleIndex",
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::StructHandleIndex",
@@ -3905,6 +4704,7 @@ Module check_duplication.
                                                       M.alloc (|
                                                         LogicalOp.and (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.path
@@ -3924,6 +4724,13 @@ Module check_duplication.
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructHandle"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -3958,6 +4765,8 @@ Module check_duplication.
                                                                 Pointer.Kind.Ref,
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::ModuleHandleIndex",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_binary_format::file_format::CompiledModule",
@@ -3989,6 +4798,7 @@ Module check_duplication.
                                                           ltac:(M.monadic
                                                             (UnOp.not (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -4049,6 +4859,7 @@ Module check_duplication.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -4148,7 +4959,7 @@ Module check_duplication.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -4157,6 +4968,7 @@ Module check_duplication.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -4194,6 +5006,33 @@ Module check_duplication.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::map::Map")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinition"
+                                          ];
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path
+                                            "move_binary_format::file_format::FunctionHandleIndex")
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -4229,6 +5068,13 @@ Module check_duplication.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinition"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
@@ -4246,6 +5092,18 @@ Module check_duplication.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::FunctionDefinition"
+                                                      ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
@@ -4315,6 +5173,7 @@ Module check_duplication.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -4338,11 +5197,20 @@ Module check_duplication.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -4362,6 +5230,16 @@ Module check_duplication.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -4376,6 +5254,11 @@ Module check_duplication.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -4393,6 +5276,18 @@ Module check_duplication.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -4430,10 +5325,26 @@ Module check_duplication.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -4485,9 +5396,23 @@ Module check_duplication.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let idx := M.copy (| γ1_0 |) in
                                           let function_def := M.copy (| γ1_1 |) in
-                                          let~ acquires :=
+                                          let~ acquires :
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructDefinitionIndex"
+                                                ] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructDefinitionIndex"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "slice")
@@ -4505,6 +5430,18 @@ Module check_duplication.
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::StructDefinitionIndex"
+                                                              ]
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::deref::Deref",
                                                           Ty.apply
@@ -4548,6 +5485,7 @@ Module check_duplication.
                                                     M.use
                                                       (M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -4562,6 +5500,10 @@ Module check_duplication.
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "u16" ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::check_duplication::DuplicationChecker",
@@ -4598,6 +5540,8 @@ Module check_duplication.
                                                             "core::result::Result::Err"
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.get_function (|
                                                                   "move_binary_format::errors::verification_error",
                                                                   [],
@@ -4630,7 +5574,7 @@ Module check_duplication.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -4639,6 +5583,7 @@ Module check_duplication.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -4672,6 +5617,13 @@ Module check_duplication.
                                     Pointer.Kind.MutRef,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinition"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
@@ -4689,6 +5641,18 @@ Module check_duplication.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::FunctionDefinition"
+                                                      ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
@@ -4730,6 +5694,7 @@ Module check_duplication.
                                                   ltac:(M.monadic
                                                     (let x := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
                                                         Ty.path
@@ -4749,6 +5714,13 @@ Module check_duplication.
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.deref (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::FunctionHandle"
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_binary_format::file_format::CompiledModule",
@@ -4789,6 +5761,8 @@ Module check_duplication.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::ModuleHandleIndex",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::file_format::CompiledModule",
@@ -4839,6 +5813,7 @@ Module check_duplication.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -4862,9 +5837,23 @@ Module check_duplication.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ implemented_function_handles :=
+                let~ implemented_function_handles :
+                    Ty.apply
+                      (Ty.path "std::collections::hash::set::HashSet")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                        Ty.path "std::hash::random::RandomState"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "std::collections::hash::set::HashSet")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                          Ty.path "std::hash::random::RandomState"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -4906,6 +5895,29 @@ Module check_duplication.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::map::Map")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::FunctionDefinition"
+                                        ]
+                                    ]
+                                ]
+                                (Ty.path "move_binary_format::file_format::FunctionHandleIndex")
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -4936,6 +5948,10 @@ Module check_duplication.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
@@ -4950,6 +5966,18 @@ Module check_duplication.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinition"
+                                            ]
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "function_defs",
@@ -5003,7 +6031,7 @@ Module check_duplication.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -5012,6 +6040,7 @@ Module check_duplication.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -5034,6 +6063,7 @@ Module check_duplication.
                                           ("start", Value.Integer IntegerKind.Usize 0);
                                           ("end_",
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "slice")
@@ -5051,6 +6081,18 @@ Module check_duplication.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FunctionHandle"
+                                                            ]
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
@@ -5093,9 +6135,13 @@ Module check_duplication.
                                                   ltac:(M.monadic
                                                     (let x := M.copy (| γ |) in
                                                     M.read (|
-                                                      let~ y :=
+                                                      let~ y :
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FunctionHandleIndex" :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path
+                                                              "move_binary_format::file_format::FunctionHandleIndex",
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::FunctionHandleIndex",
@@ -5113,6 +6159,7 @@ Module check_duplication.
                                                       M.alloc (|
                                                         LogicalOp.and (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.path
@@ -5132,6 +6179,13 @@ Module check_duplication.
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::FunctionHandle"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -5166,6 +6220,8 @@ Module check_duplication.
                                                                 Pointer.Kind.Ref,
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::ModuleHandleIndex",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_binary_format::file_format::CompiledModule",
@@ -5197,6 +6253,7 @@ Module check_duplication.
                                                           ltac:(M.monadic
                                                             (UnOp.not (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -5257,6 +6314,7 @@ Module check_duplication.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -5313,9 +6371,17 @@ Module check_duplication.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ uniq :=
+                let~ uniq :
+                    Ty.apply
+                      (Ty.path "std::collections::hash::set::HashSet")
+                      []
+                      [ Ty.associated; Ty.path "std::hash::random::RandomState" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "std::collections::hash::set::HashSet")
+                        []
+                        [ Ty.associated; Ty.path "std::hash::random::RandomState" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
@@ -5328,11 +6394,15 @@ Module check_duplication.
                       []
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [ Ty.associated ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -5347,6 +6417,10 @@ Module check_duplication.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [ Ty.associated ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.associated,
@@ -5358,6 +6432,7 @@ Module check_duplication.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.associated,
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     T,
@@ -5380,10 +6455,14 @@ Module check_duplication.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; Ty.associated ] ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -5437,6 +6516,7 @@ Module check_duplication.
                                                       (M.alloc (|
                                                         UnOp.not (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path

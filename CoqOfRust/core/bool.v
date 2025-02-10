@@ -62,6 +62,7 @@ Module bool.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            T,
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,

@@ -75,13 +75,15 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -115,6 +117,7 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -138,6 +141,7 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -192,22 +196,26 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
       M.read (|
-        let~ _ :=
-          M.write (|
-            M.SubPointer.get_struct_record_field (|
-              M.deref (| M.read (| book |) |),
-              "scoping_rules_borrowing_mutablity::Book",
-              "year"
-            |),
-            Value.Integer IntegerKind.U32 2014
+        let~ _ : Ty.tuple [] :=
+          M.alloc (|
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| book |) |),
+                "scoping_rules_borrowing_mutablity::Book",
+                "year"
+              |),
+              Value.Integer IntegerKind.U32 2014
+            |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -241,6 +249,7 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -264,6 +273,7 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -338,7 +348,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ immutabook :=
+        let~ immutabook : Ty.path "scoping_rules_borrowing_mutablity::Book" :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_mutablity::Book"
@@ -349,10 +359,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("year", Value.Integer IntegerKind.U32 1979)
               ]
           |) in
-        let~ mutabook := M.copy (| immutabook |) in
-        let~ _ :=
+        let~ mutabook : Ty.path "scoping_rules_borrowing_mutablity::Book" :=
+          M.copy (| immutabook |) in
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [], [] |),
               [
                 M.borrow (|
@@ -362,9 +374,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [], [] |),
               [
                 M.borrow (|
@@ -374,9 +387,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_borrowing_mutablity::new_edition", [], [] |),
               [
                 M.borrow (|

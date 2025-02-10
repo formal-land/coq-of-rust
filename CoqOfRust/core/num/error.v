@@ -22,6 +22,10 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
@@ -124,6 +128,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.tuple [],
@@ -210,12 +215,17 @@ Module num.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       M.get_trait_method (|
                         "core::error::Error",
                         Ty.path "core::num::error::TryFromIntError",
@@ -345,6 +355,10 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
@@ -403,6 +417,7 @@ Module num.
               [
                 ("kind",
                   M.call_closure (|
+                    Ty.path "core::num::error::IntErrorKind",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "core::num::error::IntErrorKind",
@@ -462,6 +477,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::num::error::IntErrorKind",
@@ -579,6 +595,10 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -749,9 +769,10 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -760,9 +781,10 @@ Module num.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -859,12 +881,17 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       M.get_trait_method (|
                         "core::error::Error",
                         Ty.path "core::num::error::ParseIntError",

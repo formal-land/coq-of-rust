@@ -31,13 +31,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -72,6 +74,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -86,6 +89,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "u32",
                                                 M.get_function (|
                                                   "diverging_functions_example_sum_odd_numbers::main.sum_odd_numbers",
                                                   [],
@@ -144,12 +148,13 @@ Module main.
       ltac:(M.monadic
         (let up_to := M.alloc (| up_to |) in
         M.read (|
-          let~ acc := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
-          let~ _ :=
+          let~ acc : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
+          let~ _ : Ty.tuple [] :=
             M.use
               (M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
@@ -172,10 +177,11 @@ Module main.
                       (let iter := M.copy (| γ |) in
                       M.loop (|
                         ltac:(M.monadic
-                          (let~ _ :=
+                          (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
@@ -211,7 +217,7 @@ Module main.
                                         0
                                       |) in
                                     let i := M.copy (| γ0_0 |) in
-                                    let~ addition :=
+                                    let~ addition : Ty.path "u32" :=
                                       M.copy (|
                                         M.match_operator (|
                                           M.alloc (|
@@ -245,11 +251,13 @@ Module main.
                                           ]
                                         |)
                                       |) in
-                                    let~ _ :=
-                                      let β := acc in
-                                      M.write (|
-                                        β,
-                                        BinOp.Wrap.add (| M.read (| β |), M.read (| addition |) |)
+                                    let~ _ : Ty.tuple [] :=
+                                      M.alloc (|
+                                        let β := acc in
+                                        M.write (|
+                                          β,
+                                          BinOp.Wrap.add (| M.read (| β |), M.read (| addition |) |)
+                                        |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
                               ]

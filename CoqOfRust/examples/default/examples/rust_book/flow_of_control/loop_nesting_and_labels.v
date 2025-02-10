@@ -27,16 +27,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.loop (|
             ltac:(M.monadic
-              (let~ _ :=
-                let~ _ :=
+              (let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -63,19 +65,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
                         ltac:(M.monadic
-                          (let~ _ :=
-                            let~ _ :=
+                          (let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_function (| "std::io::stdio::_print", [], [] |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::Arguments",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
@@ -111,13 +115,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)
                   |)
                 |) in
-              let~ _ :=
-                let~ _ :=
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -150,13 +156,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.Tuple [] |)))
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",

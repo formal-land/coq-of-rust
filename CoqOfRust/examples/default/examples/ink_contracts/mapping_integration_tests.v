@@ -28,6 +28,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
           [
             ("_key",
               M.call_closure (|
+                Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
@@ -41,6 +42,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               |));
             ("_value",
               M.call_closure (|
+                Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
@@ -174,6 +176,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
           "mapping_integration_tests::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -295,6 +298,10 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
           [
             ("balances",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "mapping_integration_tests::Mapping")
+                  []
+                  [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -355,9 +362,17 @@ Module Impl_mapping_integration_tests_Mappings.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ balances :=
+          let~ balances :
+              Ty.apply
+                (Ty.path "mapping_integration_tests::Mapping")
+                []
+                [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "mapping_integration_tests::Mapping")
+                  []
+                  [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -397,9 +412,10 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller :=
+          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "mapping_integration_tests::AccountId",
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
@@ -411,6 +427,7 @@ Module Impl_mapping_integration_tests_Mappings.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "mapping_integration_tests::Env",
                         M.get_associated_function (|
                           Ty.path "mapping_integration_tests::Mappings",
                           "env",
@@ -426,6 +443,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
@@ -471,9 +489,10 @@ Module Impl_mapping_integration_tests_Mappings.
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ caller :=
+          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "mapping_integration_tests::AccountId",
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
@@ -485,6 +504,7 @@ Module Impl_mapping_integration_tests_Mappings.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "mapping_integration_tests::Env",
                         M.get_associated_function (|
                           Ty.path "mapping_integration_tests::Mappings",
                           "env",
@@ -500,6 +520,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
@@ -543,9 +564,10 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller :=
+          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "mapping_integration_tests::AccountId",
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
@@ -557,6 +579,7 @@ Module Impl_mapping_integration_tests_Mappings.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "mapping_integration_tests::Env",
                         M.get_associated_function (|
                           Ty.path "mapping_integration_tests::Mappings",
                           "env",
@@ -572,6 +595,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
@@ -613,9 +637,10 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller :=
+          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "mapping_integration_tests::AccountId",
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
@@ -627,6 +652,7 @@ Module Impl_mapping_integration_tests_Mappings.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "mapping_integration_tests::Env",
                         M.get_associated_function (|
                           Ty.path "mapping_integration_tests::Mappings",
                           "env",
@@ -642,6 +668,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
@@ -687,9 +714,10 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller :=
+          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "mapping_integration_tests::AccountId",
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
@@ -701,6 +729,7 @@ Module Impl_mapping_integration_tests_Mappings.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "mapping_integration_tests::Env",
                         M.get_associated_function (|
                           Ty.path "mapping_integration_tests::Mappings",
                           "env",
@@ -714,9 +743,10 @@ Module Impl_mapping_integration_tests_Mappings.
                 ]
               |)
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "mapping_integration_tests::Mapping")
@@ -760,9 +790,10 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ caller :=
+          let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "mapping_integration_tests::AccountId",
                 M.get_associated_function (|
                   Ty.path "mapping_integration_tests::Env",
                   "caller",
@@ -774,6 +805,7 @@ Module Impl_mapping_integration_tests_Mappings.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "mapping_integration_tests::Env",
                         M.get_associated_function (|
                           Ty.path "mapping_integration_tests::Mappings",
                           "env",
@@ -789,6 +821,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")

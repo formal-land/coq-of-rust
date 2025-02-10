@@ -98,7 +98,7 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -107,7 +107,7 @@ Module num.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -134,6 +134,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
+                                          Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
@@ -167,6 +168,7 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.call_closure (|
+                Ty.path "f32",
                 M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
                 [
                   M.cast
@@ -219,14 +221,15 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ bits :=
+                let~ bits : Ty.path "u32" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ sign :=
+                let~ sign : Ty.path "i8" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -251,7 +254,7 @@ Module num.
                       ]
                     |)
                   |) in
-                let~ exponent :=
+                let~ exponent : Ty.path "i16" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "i16")
@@ -259,7 +262,7 @@ Module num.
                         (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 23 |))
                         (Value.Integer IntegerKind.U32 255))
                   |) in
-                let~ mantissa :=
+                let~ mantissa : Ty.path "u32" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -296,15 +299,17 @@ Module num.
                       ]
                     |)
                   |) in
-                let~ _ :=
-                  let β := exponent in
-                  M.write (|
-                    β,
-                    BinOp.Wrap.sub (|
-                      M.read (| β |),
-                      BinOp.Wrap.add (|
-                        Value.Integer IntegerKind.I16 127,
-                        Value.Integer IntegerKind.I16 23
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β := exponent in
+                    M.write (|
+                      β,
+                      BinOp.Wrap.sub (|
+                        M.read (| β |),
+                        BinOp.Wrap.add (|
+                          Value.Integer IntegerKind.I16 127,
+                          Value.Integer IntegerKind.I16 23
+                        |)
                       |)
                     |)
                   |) in
@@ -331,6 +336,7 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.path "core::num::FpCategory",
                 M.get_associated_function (| Ty.path "f32", "classify", [], [] |),
                 [ M.read (| self |) ]
               |)))
@@ -461,7 +467,7 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -470,7 +476,7 @@ Module num.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -497,6 +503,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
+                                          Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
@@ -530,6 +537,7 @@ Module num.
             ltac:(M.monadic
               (let v := M.alloc (| v |) in
               M.call_closure (|
+                Ty.path "f64",
                 M.get_associated_function (| Ty.path "f64", "from_bits", [], [] |),
                 [ M.read (| v |) ]
               |)))
@@ -582,14 +590,15 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ bits :=
+                let~ bits : Ty.path "u64" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (| Ty.path "f64", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ sign :=
+                let~ sign : Ty.path "i8" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -614,7 +623,7 @@ Module num.
                       ]
                     |)
                   |) in
-                let~ exponent :=
+                let~ exponent : Ty.path "i16" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "i16")
@@ -622,7 +631,7 @@ Module num.
                         (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 52 |))
                         (Value.Integer IntegerKind.U64 2047))
                   |) in
-                let~ mantissa :=
+                let~ mantissa : Ty.path "u64" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -659,15 +668,17 @@ Module num.
                       ]
                     |)
                   |) in
-                let~ _ :=
-                  let β := exponent in
-                  M.write (|
-                    β,
-                    BinOp.Wrap.sub (|
-                      M.read (| β |),
-                      BinOp.Wrap.add (|
-                        Value.Integer IntegerKind.I16 1023,
-                        Value.Integer IntegerKind.I16 52
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β := exponent in
+                    M.write (|
+                      β,
+                      BinOp.Wrap.sub (|
+                        M.read (| β |),
+                        BinOp.Wrap.add (|
+                          Value.Integer IntegerKind.I16 1023,
+                          Value.Integer IntegerKind.I16 52
+                        |)
                       |)
                     |)
                   |) in
@@ -689,6 +700,7 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.path "core::num::FpCategory",
                 M.get_associated_function (| Ty.path "f64", "classify", [], [] |),
                 [ M.read (| self |) ]
               |)))

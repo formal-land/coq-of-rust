@@ -12,6 +12,7 @@ Module cmp.
           let other := M.alloc (| other |) in
           UnOp.not (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", Self, [], [ Rhs ], "eq", [], [] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -135,9 +136,10 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "i8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -146,9 +148,10 @@ Module cmp.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "i8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -207,9 +210,10 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "i8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -218,9 +222,10 @@ Module cmp.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "i8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -231,6 +236,7 @@ Module cmp.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.get_trait_method (|
                   "core::cmp::PartialOrd",
                   Ty.path "i8",
@@ -275,9 +281,10 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "i8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -286,9 +293,10 @@ Module cmp.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "i8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -299,6 +307,7 @@ Module cmp.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], [], "cmp", [], [] |),
                 [
                   M.borrow (|
@@ -335,6 +344,10 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -399,9 +412,10 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "i8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -412,6 +426,7 @@ Module cmp.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "i8",
@@ -713,6 +728,7 @@ Module cmp.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::cmp::Ordering",
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
@@ -768,6 +784,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
             [
               M.borrow (|
@@ -846,6 +863,10 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -912,6 +933,7 @@ Module cmp.
             "core::cmp::Reverse"
             [
               M.call_closure (|
+                T,
                 M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                 []
               |)
@@ -940,6 +962,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
             [
               M.borrow (|
@@ -986,6 +1009,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
             [
               M.borrow (|
@@ -1027,6 +1051,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
             [
               M.borrow (|
@@ -1063,6 +1088,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
             [
               M.borrow (|
@@ -1099,6 +1125,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
             [
               M.borrow (|
@@ -1135,6 +1162,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
             [
               M.borrow (|
@@ -1190,6 +1218,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
             [
               M.borrow (|
@@ -1245,6 +1274,7 @@ Module cmp.
             "core::cmp::Reverse"
             [
               M.call_closure (|
+                T,
                 M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                 [
                   M.borrow (|
@@ -1274,6 +1304,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let source := M.alloc (| source |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::clone::Clone", T, [], [], "clone_from", [], [] |),
             [
               M.borrow (|
@@ -1324,6 +1355,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Self,
             M.get_function (|
               "core::cmp::max_by",
               [],
@@ -1351,6 +1383,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Self,
             M.get_function (|
               "core::cmp::min_by",
               [],
@@ -1379,7 +1412,7 @@ Module cmp.
           let min := M.alloc (| min |) in
           let max := M.alloc (| max |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1390,6 +1423,7 @@ Module cmp.
                           (M.alloc (|
                             UnOp.not (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Self,
@@ -1410,6 +1444,7 @@ Module cmp.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: min <= max" |) ]
                           |)
@@ -1427,6 +1462,7 @@ Module cmp.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Self,
@@ -1455,6 +1491,7 @@ Module cmp.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialOrd",
                                       Self,
@@ -1497,6 +1534,7 @@ Module cmp.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Self,
@@ -1543,6 +1581,7 @@ Module cmp.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Self,
@@ -1606,6 +1645,7 @@ Module cmp.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Self,
@@ -1652,6 +1692,7 @@ Module cmp.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Self,
@@ -1719,6 +1760,7 @@ Module cmp.
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
         M.call_closure (|
+          T,
           M.get_trait_method (| "core::cmp::Ord", T, [], [], "min", [], [] |),
           [ M.read (| v1 |); M.read (| v2 |) ]
         |)))
@@ -1747,6 +1789,7 @@ Module cmp.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::cmp::Ordering",
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
@@ -1820,6 +1863,7 @@ Module cmp.
         let v2 := M.alloc (| v2 |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          T,
           M.get_function (|
             "core::cmp::min_by",
             [],
@@ -1852,6 +1896,7 @@ Module cmp.
                                     ltac:(M.monadic
                                       (let v2 := M.copy (| γ |) in
                                       M.call_closure (|
+                                        Ty.path "core::cmp::Ordering",
                                         M.get_trait_method (|
                                           "core::cmp::Ord",
                                           K,
@@ -1866,6 +1911,7 @@ Module cmp.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                K,
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
@@ -1895,6 +1941,7 @@ Module cmp.
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    K,
                                                     M.get_trait_method (|
                                                       "core::ops::function::FnMut",
                                                       F,
@@ -1948,6 +1995,7 @@ Module cmp.
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
         M.call_closure (|
+          T,
           M.get_trait_method (| "core::cmp::Ord", T, [], [], "max", [], [] |),
           [ M.read (| v1 |); M.read (| v2 |) ]
         |)))
@@ -1976,6 +2024,7 @@ Module cmp.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::cmp::Ordering",
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
@@ -2049,6 +2098,7 @@ Module cmp.
         let v2 := M.alloc (| v2 |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          T,
           M.get_function (|
             "core::cmp::max_by",
             [],
@@ -2081,6 +2131,7 @@ Module cmp.
                                     ltac:(M.monadic
                                       (let v2 := M.copy (| γ |) in
                                       M.call_closure (|
+                                        Ty.path "core::cmp::Ordering",
                                         M.get_trait_method (|
                                           "core::cmp::Ord",
                                           K,
@@ -2095,6 +2146,7 @@ Module cmp.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                K,
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
@@ -2124,6 +2176,7 @@ Module cmp.
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    K,
                                                     M.get_trait_method (|
                                                       "core::ops::function::FnMut",
                                                       F,
@@ -2189,6 +2242,7 @@ Module cmp.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             T,
@@ -2240,6 +2294,7 @@ Module cmp.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_associated_function (|
                             Ty.path "core::cmp::Ordering",
                             "is_le",
@@ -2248,6 +2303,7 @@ Module cmp.
                           |),
                           [
                             M.call_closure (|
+                              Ty.path "core::cmp::Ordering",
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
@@ -2311,6 +2367,7 @@ Module cmp.
         let v2 := M.alloc (| v2 |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ],
           M.get_function (|
             "core::cmp::minmax_by",
             [],
@@ -2343,6 +2400,7 @@ Module cmp.
                                     ltac:(M.monadic
                                       (let v2 := M.copy (| γ |) in
                                       M.call_closure (|
+                                        Ty.path "core::cmp::Ordering",
                                         M.get_trait_method (|
                                           "core::cmp::Ord",
                                           K,
@@ -2357,6 +2415,7 @@ Module cmp.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                K,
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
@@ -2386,6 +2445,7 @@ Module cmp.
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    K,
                                                     M.get_trait_method (|
                                                       "core::ops::function::FnMut",
                                                       F,
@@ -3329,6 +3389,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], [], "cmp", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -4074,6 +4135,7 @@ Module cmp.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                             []
                           |)
@@ -4129,7 +4191,7 @@ Module cmp.
             let min := M.alloc (| min |) in
             let max := M.alloc (| max |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -4145,6 +4207,7 @@ Module cmp.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: min <= max" |) ]
                             |)
@@ -4155,9 +4218,11 @@ Module cmp.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], [], "min", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::Ord",
                         Ty.path "bool",
@@ -4209,6 +4274,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (|
                     "core::intrinsics::three_way_compare",
                     [],
@@ -4309,6 +4375,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "char" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -4344,6 +4411,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (|
                     "core::intrinsics::three_way_compare",
                     [],
@@ -4444,6 +4512,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "usize" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -4479,6 +4548,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u8" ] |),
                   [
                     M.read (| M.deref (| M.read (| self |) |) |);
@@ -4575,6 +4645,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u8" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -4610,6 +4681,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u16" ] |),
                   [
                     M.read (| M.deref (| M.read (| self |) |) |);
@@ -4706,6 +4778,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u16" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -4741,6 +4814,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u32" ] |),
                   [
                     M.read (| M.deref (| M.read (| self |) |) |);
@@ -4837,6 +4911,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u32" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -4872,6 +4947,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u64" ] |),
                   [
                     M.read (| M.deref (| M.read (| self |) |) |);
@@ -4968,6 +5044,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u64" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -5003,6 +5080,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (|
                     "core::intrinsics::three_way_compare",
                     [],
@@ -5103,6 +5181,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u128" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -5138,6 +5217,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (|
                     "core::intrinsics::three_way_compare",
                     [],
@@ -5238,6 +5318,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "isize" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -5273,6 +5354,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i8" ] |),
                   [
                     M.read (| M.deref (| M.read (| self |) |) |);
@@ -5369,6 +5451,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i8" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -5404,6 +5487,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i16" ] |),
                   [
                     M.read (| M.deref (| M.read (| self |) |) |);
@@ -5500,6 +5584,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i16" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -5535,6 +5620,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i32" ] |),
                   [
                     M.read (| M.deref (| M.read (| self |) |) |);
@@ -5631,6 +5717,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i32" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -5666,6 +5753,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i64" ] |),
                   [
                     M.read (| M.deref (| M.read (| self |) |) |);
@@ -5762,6 +5850,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i64" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -5797,6 +5886,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_function (|
                     "core::intrinsics::three_way_compare",
                     [],
@@ -5897,6 +5987,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i128" ] |),
               [
                 M.read (| M.deref (| M.read (| self |) |) |);
@@ -6036,6 +6127,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
               [
                 M.borrow (|
@@ -6064,6 +6156,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
               [
                 M.borrow (|
@@ -6110,6 +6203,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "partial_cmp", [], [] |),
               [
                 M.borrow (|
@@ -6138,6 +6232,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "lt", [], [] |),
               [
                 M.borrow (|
@@ -6166,6 +6261,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "le", [], [] |),
               [
                 M.borrow (|
@@ -6194,6 +6290,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "gt", [], [] |),
               [
                 M.borrow (|
@@ -6222,6 +6319,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "ge", [], [] |),
               [
                 M.borrow (|
@@ -6269,6 +6367,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
               [
                 M.borrow (|
@@ -6321,6 +6420,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
               [
                 M.borrow (|
@@ -6349,6 +6449,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
               [
                 M.borrow (|
@@ -6395,6 +6496,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "partial_cmp", [], [] |),
               [
                 M.borrow (|
@@ -6423,6 +6525,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "lt", [], [] |),
               [
                 M.borrow (|
@@ -6451,6 +6554,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "le", [], [] |),
               [
                 M.borrow (|
@@ -6479,6 +6583,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "gt", [], [] |),
               [
                 M.borrow (|
@@ -6507,6 +6612,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "ge", [], [] |),
               [
                 M.borrow (|
@@ -6554,6 +6660,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
               [
                 M.borrow (|
@@ -6606,6 +6713,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
               [
                 M.borrow (|
@@ -6634,6 +6742,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
               [
                 M.borrow (|
@@ -6675,6 +6784,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
               [
                 M.borrow (|
@@ -6703,6 +6813,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
               [
                 M.borrow (|

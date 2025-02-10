@@ -26,9 +26,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ immutable_box :=
+        let~ immutable_box :
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -41,13 +49,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.U32 5 ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -80,6 +90,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -109,14 +120,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ mutable_box := M.copy (| immutable_box |) in
-        let~ _ :=
-          let~ _ :=
+        let~ mutable_box :
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ] :=
+          M.copy (| immutable_box |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -149,6 +167,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -178,15 +197,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          M.write (| M.deref (| M.read (| mutable_box |) |), Value.Integer IntegerKind.U32 4 |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          M.alloc (|
+            M.write (| M.deref (| M.read (| mutable_box |) |), Value.Integer IntegerKind.U32 4 |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -219,6 +242,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",

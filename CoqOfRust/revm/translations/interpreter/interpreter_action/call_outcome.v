@@ -30,6 +30,7 @@ Module interpreter_action.
               [
                 ("result",
                   M.call_closure (|
+                    Ty.path "revm_interpreter::interpreter::InterpreterResult",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "revm_interpreter::interpreter::InterpreterResult",
@@ -57,6 +58,7 @@ Module interpreter_action.
                   |));
                 ("memory_offset",
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -106,6 +108,10 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -192,6 +198,7 @@ Module interpreter_action.
             let other := M.alloc (| other |) in
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "revm_interpreter::interpreter::InterpreterResult",
@@ -222,6 +229,7 @@ Module interpreter_action.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -461,6 +469,7 @@ Module interpreter_action.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_trait_method (|
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],

@@ -28,6 +28,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -75,9 +76,11 @@ Module Impl_integration_flipper_Flipper.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "integration_flipper::Flipper",
           M.get_associated_function (| Ty.path "integration_flipper::Flipper", "new", [], [] |),
           [
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "bool",
@@ -124,6 +127,7 @@ Module Impl_integration_flipper_Flipper.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "integration_flipper::Flipper",
                           M.get_associated_function (|
                             Ty.path "integration_flipper::Flipper",
                             "new",
@@ -161,19 +165,21 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "integration_flipper::Flipper",
-                "value"
-              |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "integration_flipper::Flipper",
-                    "value"
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "integration_flipper::Flipper",
+                  "value"
+                |),
+                UnOp.not (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "integration_flipper::Flipper",
+                      "value"
+                    |)
                   |)
                 |)
               |)
@@ -221,9 +227,10 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.path "integration_flipper::Flipper",
                   "flip",

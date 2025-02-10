@@ -39,6 +39,10 @@ Module checked.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -205,6 +209,7 @@ Module checked.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "f64",
                           M.get_associated_function (| Ty.path "f64", "sqrt", [], [] |),
                           [ M.read (| x |) ]
                         |)
@@ -261,6 +266,7 @@ Module checked.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "f64",
                           M.get_associated_function (| Ty.path "f64", "ln", [], [] |),
                           [ M.read (| x |) ]
                         |)
@@ -295,11 +301,24 @@ Module checked.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ ratio :=
+              let~ ratio : Ty.path "f64" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "result_chaining_with_question_mark::checked::MathError"
+                              ];
+                            Ty.path "f64"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -317,6 +336,13 @@ Module checked.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "f64";
+                                Ty.path "result_chaining_with_question_mark::checked::MathError"
+                              ],
                             M.get_function (|
                               "result_chaining_with_question_mark::checked::div",
                               [],
@@ -342,6 +368,14 @@ Module checked.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "f64";
+                                        Ty.path
+                                          "result_chaining_with_question_mark::checked::MathError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -386,11 +420,24 @@ Module checked.
                     ]
                   |)
                 |) in
-              let~ ln :=
+              let~ ln : Ty.path "f64" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "result_chaining_with_question_mark::checked::MathError"
+                              ];
+                            Ty.path "f64"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -408,6 +455,13 @@ Module checked.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "f64";
+                                Ty.path "result_chaining_with_question_mark::checked::MathError"
+                              ],
                             M.get_function (|
                               "result_chaining_with_question_mark::checked::ln",
                               [],
@@ -433,6 +487,14 @@ Module checked.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "f64";
+                                        Ty.path
+                                          "result_chaining_with_question_mark::checked::MathError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -479,6 +541,13 @@ Module checked.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "f64";
+                      Ty.path "result_chaining_with_question_mark::checked::MathError"
+                    ],
                   M.get_function (| "result_chaining_with_question_mark::checked::sqrt", [], [] |),
                   [ M.read (| ln |) ]
                 |)
@@ -516,6 +585,11 @@ Module checked.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "f64"; Ty.path "result_chaining_with_question_mark::checked::MathError"
+                  ],
                 M.get_function (| "result_chaining_with_question_mark::checked::op_", [], [] |),
                 [ M.read (| x |); M.read (| y |) ]
               |)
@@ -529,6 +603,7 @@ Module checked.
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
+                        Ty.path "never",
                         M.get_function (|
                           "core::panicking::panic_display",
                           [],
@@ -597,12 +672,14 @@ Module checked.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let value := M.copy (| γ0_0 |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -635,6 +712,7 @@ Module checked.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -679,9 +757,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "result_chaining_with_question_mark::checked::op", [], [] |),
               [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
             |)

@@ -71,6 +71,10 @@ Module panic.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field3_finish",
@@ -189,9 +193,10 @@ Module panic.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -219,9 +224,10 @@ Module panic.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "u32",
@@ -251,6 +257,7 @@ Module panic.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "u32",
@@ -304,6 +311,7 @@ Module panic.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
                       "core::cmp::Ord",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -350,6 +358,7 @@ Module panic.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "core::cmp::Ordering",
                             M.get_trait_method (|
                               "core::cmp::Ord",
                               Ty.path "u32",
@@ -395,6 +404,7 @@ Module panic.
                               (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.path "u32",
@@ -482,6 +492,7 @@ Module panic.
             LogicalOp.and (|
               LogicalOp.and (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -571,6 +582,7 @@ Module panic.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                     M.get_trait_method (|
                       "core::cmp::PartialOrd",
                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -623,6 +635,10 @@ Module panic.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::cmp::Ordering" ],
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.path "u32",
@@ -674,6 +690,10 @@ Module panic.
                               let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "u32",
@@ -750,6 +770,7 @@ Module panic.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
               M.get_function (| "core::intrinsics::caller_location", [], [] |),
               []
             |)))
@@ -875,10 +896,15 @@ Module panic.
             (let self := M.alloc (| self |) in
             let formatter := M.alloc (| formatter |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| formatter |) |) |);
                 M.call_closure (|
+                  Ty.path "core::fmt::Arguments",
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
                     M.borrow (|
@@ -906,6 +932,7 @@ Module panic.
                             Value.Array
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Argument",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
@@ -929,6 +956,7 @@ Module panic.
                                   ]
                                 |);
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Argument",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
@@ -952,6 +980,7 @@ Module panic.
                                   ]
                                 |);
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Argument",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",

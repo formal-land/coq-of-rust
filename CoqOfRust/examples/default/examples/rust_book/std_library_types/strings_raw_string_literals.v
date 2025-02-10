@@ -22,14 +22,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ raw_str := M.copy (| Value.String "Escapes don't work here: \x3F \u{211D}" |) in
-        let~ _ :=
-          let~ _ :=
+        let~ raw_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+          M.copy (| Value.String "Escapes don't work here: \x3F \u{211D}" |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -59,6 +62,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -83,14 +87,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ quotes := M.copy (| Value.String "And then I said: ""There is no escape!""" |) in
-        let~ _ :=
-          let~ _ :=
+        let~ quotes : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+          M.copy (| Value.String "And then I said: ""There is no escape!""" |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -120,6 +127,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -144,15 +152,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ longer_delimiter :=
+        let~ longer_delimiter : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
           M.copy (| Value.String "A string with ""# in it. And even ""##!" |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -182,6 +192,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",

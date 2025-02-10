@@ -31,18 +31,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ a_binding := M.copy (| Value.DeclaredButUndefined |) in
-        let~ _ :=
-          let~ x := M.alloc (| Value.Integer IntegerKind.I32 2 |) in
-          let~ _ := M.write (| a_binding, BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) |) in
+        let a_binding := M.copy (| Value.DeclaredButUndefined |) in
+        let~ _ : Ty.tuple [] :=
+          let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 2 |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (| a_binding, BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) |)
+            |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -75,6 +80,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -99,15 +105,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ another_binding := M.copy (| Value.DeclaredButUndefined |) in
-        let~ _ := M.write (| another_binding, Value.Integer IntegerKind.I32 1 |) in
-        let~ _ :=
-          let~ _ :=
+        let another_binding := M.copy (| Value.DeclaredButUndefined |) in
+        let~ _ : Ty.tuple [] :=
+          M.alloc (| M.write (| another_binding, Value.Integer IntegerKind.I32 1 |) |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -140,6 +149,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",

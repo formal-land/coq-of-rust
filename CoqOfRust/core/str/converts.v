@@ -24,6 +24,10 @@ Module str.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
                   M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                 |)
@@ -41,6 +45,7 @@ Module str.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 M.get_function (|
                                   "core::str::converts::from_utf8_unchecked",
                                   [],
@@ -90,6 +95,10 @@ Module str.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
                   M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                 |)
@@ -110,6 +119,7 @@ Module str.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
                                     M.get_function (|
                                       "core::str::converts::from_utf8_unchecked_mut",
                                       [],
@@ -158,6 +168,7 @@ Module str.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
             M.get_function (|
               "core::intrinsics::transmute",
               [],
@@ -246,6 +257,7 @@ Module str.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "str" ],
                     M.get_function (|
                       "core::ptr::metadata::from_raw_parts",
                       [],
@@ -289,6 +301,7 @@ Module str.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ],
                             M.get_function (|
                               "core::ptr::metadata::from_raw_parts_mut",
                               [],

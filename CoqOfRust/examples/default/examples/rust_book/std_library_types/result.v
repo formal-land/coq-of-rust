@@ -39,6 +39,10 @@ Module checked.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -197,6 +201,7 @@ Module checked.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "f64",
                           M.get_associated_function (| Ty.path "f64", "sqrt", [], [] |),
                           [ M.read (| x |) ]
                         |)
@@ -249,6 +254,7 @@ Module checked.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "f64",
                           M.get_associated_function (| Ty.path "f64", "ln", [], [] |),
                           [ M.read (| x |) ]
                         |)
@@ -289,6 +295,10 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
               M.get_function (| "result::checked::div", [], [] |),
               [ M.read (| x |); M.read (| y |) ]
             |)
@@ -302,9 +312,11 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (|
                   M.never_to_any (|
                     M.call_closure (|
+                      Ty.path "never",
                       M.get_function (| "core::panicking::panic_fmt", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -330,6 +342,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
@@ -362,6 +375,10 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                       M.get_function (| "result::checked::ln", [], [] |),
                       [ M.read (| ratio |) ]
                     |)
@@ -379,9 +396,11 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_v1",
@@ -407,6 +426,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Value.Array
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::rt::Argument",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::rt::Argument",
                                                     "new_debug",
@@ -445,6 +465,10 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                               M.get_function (| "result::checked::sqrt", [], [] |),
                               [ M.read (| ln |) ]
                             |)
@@ -462,9 +486,11 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
@@ -492,6 +518,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Value.Array
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_debug",
@@ -552,13 +579,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -588,6 +617,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -602,6 +632,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "f64",
                                                 M.get_function (| "result::op", [], [] |),
                                                 [
                                                   M.read (| UnsupportedLiteral |);

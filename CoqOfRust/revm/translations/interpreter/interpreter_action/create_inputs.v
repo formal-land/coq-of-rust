@@ -37,6 +37,7 @@ Module interpreter_action.
               [
                 ("caller",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bits::address::Address",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -64,6 +65,7 @@ Module interpreter_action.
                   |));
                 ("scheme",
                   M.call_closure (|
+                    Ty.path "revm_context_interface::cfg::CreateScheme",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "revm_context_interface::cfg::CreateScheme",
@@ -91,6 +93,10 @@ Module interpreter_action.
                   |));
                 ("value",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -121,6 +127,7 @@ Module interpreter_action.
                   |));
                 ("init_code",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bytes_::Bytes",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -148,6 +155,7 @@ Module interpreter_action.
                   |));
                 ("gas_limit",
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "u64",
@@ -197,6 +205,10 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field5_finish",
@@ -331,6 +343,7 @@ Module interpreter_action.
                 LogicalOp.and (|
                   LogicalOp.and (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "alloy_primitives::bits::address::Address",
@@ -361,6 +374,7 @@ Module interpreter_action.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.path "revm_context_interface::cfg::CreateScheme",
@@ -392,6 +406,7 @@ Module interpreter_action.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.apply
@@ -432,6 +447,7 @@ Module interpreter_action.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -565,9 +581,10 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -595,9 +612,10 @@ Module interpreter_action.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "revm_context_interface::cfg::CreateScheme",
@@ -625,9 +643,10 @@ Module interpreter_action.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.apply
@@ -658,9 +677,10 @@ Module interpreter_action.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -690,6 +710,7 @@ Module interpreter_action.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "u64",
@@ -766,6 +787,7 @@ Module interpreter_action.
                         |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "alloy_primitives::bits::address::Address",
                           M.get_associated_function (|
                             Ty.path "alloy_primitives::bits::address::Address",
                             "create",
@@ -796,6 +818,7 @@ Module interpreter_action.
                       let salt := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "alloy_primitives::bits::address::Address",
                           M.get_associated_function (|
                             Ty.path "alloy_primitives::bits::address::Address",
                             "create2_from_code",
@@ -821,6 +844,10 @@ Module interpreter_action.
                               |)
                             |);
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "ruint::Uint")

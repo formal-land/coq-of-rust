@@ -55,6 +55,7 @@ Module convert.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ U ],
                 M.get_trait_method (| "core::convert::AsRef", T, [], [ U ], "as_ref", [], [] |),
                 [
                   M.borrow (|
@@ -95,6 +96,7 @@ Module convert.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ U ],
                 M.get_trait_method (| "core::convert::AsRef", T, [], [ U ], "as_ref", [], [] |),
                 [
                   M.borrow (|
@@ -138,6 +140,7 @@ Module convert.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ U ],
                     M.get_trait_method (| "core::convert::AsMut", T, [], [ U ], "as_mut", [], [] |),
                     [
                       M.borrow (|
@@ -177,6 +180,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            U,
             M.get_trait_method (| "core::convert::From", U, [], [ T ], "from", [], [] |),
             [ M.read (| self |) ]
           |)))
@@ -264,6 +268,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::result::Result") [] [ U; Ty.associated ],
             M.get_trait_method (| "core::convert::TryFrom", U, [], [ T ], "try_from", [], [] |),
             [ M.read (| self |) ]
           |)))
@@ -304,6 +309,7 @@ Module convert.
             "core::result::Result::Ok"
             [
               M.call_closure (|
+                T,
                 M.get_trait_method (| "core::convert::Into", U, [], [ T ], "into", [], [] |),
                 [ M.read (| value |) ]
               |)

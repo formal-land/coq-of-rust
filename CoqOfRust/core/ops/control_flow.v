@@ -52,6 +52,10 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -83,6 +87,10 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -147,6 +155,7 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue"
                           [
                             M.call_closure (|
+                              C,
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 C,
@@ -176,6 +185,7 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break"
                           [
                             M.call_closure (|
+                              B,
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 B,
@@ -244,9 +254,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -255,9 +266,10 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -296,6 +308,7 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ C ],
@@ -333,6 +346,7 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ B ],
@@ -353,6 +367,7 @@ Module ops.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
@@ -432,9 +447,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -443,9 +459,10 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "isize",
@@ -479,6 +496,7 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::hash::Hash",
                             C,
@@ -506,6 +524,7 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::hash::Hash",
                             B,
@@ -910,6 +929,7 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break"
                           [
                             M.call_closure (|
+                              T,
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
@@ -1026,6 +1046,7 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue"
                           [
                             M.call_closure (|
+                              T,
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
@@ -1087,6 +1108,10 @@ Module ops.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [ Ty.associated; Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::try_trait::Try",
                       R,
@@ -1128,6 +1153,7 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break"
                           [
                             M.call_closure (|
+                              R,
                               M.get_trait_method (|
                                 "core::ops::try_trait::FromResidual",
                                 R,
@@ -1181,6 +1207,7 @@ Module ops.
                       let v := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          R,
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             R,

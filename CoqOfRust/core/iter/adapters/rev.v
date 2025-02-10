@@ -28,6 +28,7 @@ Module iter.
                 [
                   ("iter",
                     M.call_closure (|
+                      T,
                       M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -71,6 +72,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
@@ -157,6 +162,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -192,6 +198,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.tuple
+                  [
+                    Ty.path "usize";
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -233,6 +244,13 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.tuple [];
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -270,6 +288,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -313,6 +332,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                R,
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -355,6 +375,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Acc,
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -395,6 +416,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -454,6 +476,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -495,6 +518,13 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.tuple [];
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -532,6 +562,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -575,6 +606,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                R,
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -617,6 +649,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Acc,
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -657,6 +690,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -714,6 +748,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.path "usize",
                 M.get_trait_method (|
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
@@ -749,6 +784,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
@@ -824,6 +860,7 @@ Module iter.
           | [], [], [] =>
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ I ],
                   "new",
@@ -832,6 +869,7 @@ Module iter.
                 |),
                 [
                   M.call_closure (|
+                    I,
                     M.get_trait_method (| "core::default::Default", I, [], [], "default", [], [] |),
                     []
                   |)

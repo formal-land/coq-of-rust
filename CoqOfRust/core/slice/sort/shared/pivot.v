@@ -50,9 +50,10 @@ Module slice.
               (let v := M.alloc (| v |) in
               let is_less := M.alloc (| is_less |) in
               M.read (|
-                let~ len :=
+                let~ len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
@@ -62,7 +63,7 @@ Module slice.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -78,6 +79,7 @@ Module slice.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
+                                Ty.path "never",
                                 M.get_function (| "core::intrinsics::abort", [], [] |),
                                 []
                               |)
@@ -86,9 +88,10 @@ Module slice.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ v_base :=
+                let~ v_base : Ty.apply (Ty.path "*const") [] [ T ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "as_ptr",
@@ -98,14 +101,15 @@ Module slice.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
-                let~ len_div_8 :=
+                let~ len_div_8 : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.div (| M.read (| len |), Value.Integer IntegerKind.Usize 8 |)
                   |) in
-                let~ a := M.copy (| v_base |) in
-                let~ b :=
+                let~ a : Ty.apply (Ty.path "*const") [] [ T ] := M.copy (| v_base |) in
+                let~ b : Ty.apply (Ty.path "*const") [] [ T ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ T ],
                         "add",
@@ -121,9 +125,10 @@ Module slice.
                       ]
                     |)
                   |) in
-                let~ c :=
+                let~ c : Ty.apply (Ty.path "*const") [] [ T ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ T ],
                         "add",
@@ -159,6 +164,7 @@ Module slice.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*const") [] [ T ],
                               "sub_ptr",
@@ -167,6 +173,7 @@ Module slice.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ T ],
                                 M.get_function (|
                                   "core::slice::sort::shared::pivot::median3",
                                   [],
@@ -205,6 +212,7 @@ Module slice.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*const") [] [ T ],
                               "sub_ptr",
@@ -213,6 +221,7 @@ Module slice.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ T ],
                                 M.get_function (|
                                   "core::slice::sort::shared::pivot::median3_rec",
                                   [],
@@ -274,7 +283,7 @@ Module slice.
               let n := M.alloc (| n |) in
               let is_less := M.alloc (| is_less |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -296,155 +305,170 @@ Module slice.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ n8 :=
+                          let~ n8 : Ty.path "usize" :=
                             M.alloc (|
                               BinOp.Wrap.div (| M.read (| n |), Value.Integer IntegerKind.Usize 8 |)
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              a,
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::slice::sort::shared::pivot::median3_rec",
-                                  [],
-                                  [ T; F ]
-                                |),
-                                [
-                                  M.read (| a |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                a,
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                  M.get_function (|
+                                    "core::slice::sort::shared::pivot::median3_rec",
+                                    [],
+                                    [ T; F ]
+                                  |),
+                                  [
+                                    M.read (| a |);
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| a |);
-                                      BinOp.Wrap.mul (|
-                                        M.read (| n8 |),
-                                        Value.Integer IntegerKind.Usize 4
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| a |);
+                                        BinOp.Wrap.mul (|
+                                          M.read (| n8 |),
+                                          Value.Integer IntegerKind.Usize 4
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| a |);
-                                      BinOp.Wrap.mul (|
-                                        M.read (| n8 |),
-                                        Value.Integer IntegerKind.Usize 7
-                                      |)
-                                    ]
-                                  |);
-                                  M.read (| n8 |);
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| is_less |) |)
-                                  |)
-                                ]
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| a |);
+                                        BinOp.Wrap.mul (|
+                                          M.read (| n8 |),
+                                          Value.Integer IntegerKind.Usize 7
+                                        |)
+                                      ]
+                                    |);
+                                    M.read (| n8 |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| is_less |) |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              b,
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::slice::sort::shared::pivot::median3_rec",
-                                  [],
-                                  [ T; F ]
-                                |),
-                                [
-                                  M.read (| b |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                b,
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                  M.get_function (|
+                                    "core::slice::sort::shared::pivot::median3_rec",
+                                    [],
+                                    [ T; F ]
+                                  |),
+                                  [
+                                    M.read (| b |);
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| b |);
-                                      BinOp.Wrap.mul (|
-                                        M.read (| n8 |),
-                                        Value.Integer IntegerKind.Usize 4
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| b |);
+                                        BinOp.Wrap.mul (|
+                                          M.read (| n8 |),
+                                          Value.Integer IntegerKind.Usize 4
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| b |);
-                                      BinOp.Wrap.mul (|
-                                        M.read (| n8 |),
-                                        Value.Integer IntegerKind.Usize 7
-                                      |)
-                                    ]
-                                  |);
-                                  M.read (| n8 |);
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| is_less |) |)
-                                  |)
-                                ]
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| b |);
+                                        BinOp.Wrap.mul (|
+                                          M.read (| n8 |),
+                                          Value.Integer IntegerKind.Usize 7
+                                        |)
+                                      ]
+                                    |);
+                                    M.read (| n8 |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| is_less |) |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              c,
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::slice::sort::shared::pivot::median3_rec",
-                                  [],
-                                  [ T; F ]
-                                |),
-                                [
-                                  M.read (| c |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                c,
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                  M.get_function (|
+                                    "core::slice::sort::shared::pivot::median3_rec",
+                                    [],
+                                    [ T; F ]
+                                  |),
+                                  [
+                                    M.read (| c |);
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| c |);
-                                      BinOp.Wrap.mul (|
-                                        M.read (| n8 |),
-                                        Value.Integer IntegerKind.Usize 4
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| c |);
+                                        BinOp.Wrap.mul (|
+                                          M.read (| n8 |),
+                                          Value.Integer IntegerKind.Usize 4
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| c |);
-                                      BinOp.Wrap.mul (|
-                                        M.read (| n8 |),
-                                        Value.Integer IntegerKind.Usize 7
-                                      |)
-                                    ]
-                                  |);
-                                  M.read (| n8 |);
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| is_less |) |)
-                                  |)
-                                ]
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| c |);
+                                        BinOp.Wrap.mul (|
+                                          M.read (| n8 |),
+                                          Value.Integer IntegerKind.Usize 7
+                                        |)
+                                      ]
+                                    |);
+                                    M.read (| n8 |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| is_less |) |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -453,6 +477,7 @@ Module slice.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
                     M.get_function (| "core::slice::sort::shared::pivot::median3", [], [ T; F ] |),
                     [
                       M.borrow (|
@@ -506,9 +531,10 @@ Module slice.
               let c := M.alloc (| c |) in
               let is_less := M.alloc (| is_less |) in
               M.read (|
-                let~ x :=
+                let~ x : Ty.path "bool" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::ops::function::FnMut",
                         F,
@@ -531,9 +557,10 @@ Module slice.
                       ]
                     |)
                   |) in
-                let~ y :=
+                let~ y : Ty.path "bool" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::ops::function::FnMut",
                         F,
@@ -565,9 +592,10 @@ Module slice.
                           M.use (M.alloc (| BinOp.eq (| M.read (| x |), M.read (| y |) |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ z :=
+                        let~ z : Ty.path "bool" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::ops::function::FnMut",
                                 F,

@@ -24,13 +24,14 @@ Module num.
             (let mant := M.alloc (| mant |) in
             let exp := M.alloc (| exp |) in
             M.read (|
-              let~ nbits :=
+              let~ nbits : Ty.path "i64" :=
                 M.alloc (|
                   BinOp.Wrap.sub (|
                     Value.Integer IntegerKind.I64 64,
                     M.cast
                       (Ty.path "i64")
                       (M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
                         [ BinOp.Wrap.sub (| M.read (| mant |), Value.Integer IntegerKind.U64 1 |) ]
                       |))

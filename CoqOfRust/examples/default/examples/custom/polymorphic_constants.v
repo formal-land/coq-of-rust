@@ -38,6 +38,7 @@ Module Impl_polymorphic_constants_Foo_N_A.
           [
             ("data",
               M.call_closure (|
+                B,
                 M.get_trait_method (| "core::convert::Into", A, [], [ B ], "into", [], [] |),
                 [
                   M.read (|
@@ -74,7 +75,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ foo :=
+        let~ foo :
+            Ty.apply
+              (Ty.path "polymorphic_constants::Foo")
+              [ Value.Integer IntegerKind.Usize 3 ]
+              [ Ty.path "i32" ] :=
           M.alloc (|
             Value.StructRecord
               "polymorphic_constants::Foo"
@@ -84,9 +89,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   repeat (| Value.Integer IntegerKind.I32 42, Value.Integer IntegerKind.Usize 3 |))
               ]
           |) in
-        let~ bar :=
+        let~ bar :
+            Ty.apply
+              (Ty.path "polymorphic_constants::Foo")
+              [ Value.Integer IntegerKind.Usize 0 ]
+              [ Ty.path "f64" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "polymorphic_constants::Foo")
+                [ Value.Integer IntegerKind.Usize 0 ]
+                [ Ty.path "f64" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "polymorphic_constants::Foo")
@@ -99,7 +112,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| foo |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -142,12 +155,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],
@@ -185,7 +199,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -218,6 +232,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -253,12 +268,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],

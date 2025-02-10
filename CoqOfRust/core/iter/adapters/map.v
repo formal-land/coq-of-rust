@@ -28,6 +28,7 @@ Module iter.
                 [
                   ("iter",
                     M.call_closure (|
+                      I,
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -47,6 +48,7 @@ Module iter.
                     |));
                   ("f",
                     M.call_closure (|
+                      F,
                       M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -153,6 +155,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
@@ -164,6 +170,7 @@ Module iter.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "field",
@@ -175,6 +182,7 @@ Module iter.
                             Pointer.Kind.MutRef,
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::fmt::builders::DebugStruct",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Formatter",
                                   "debug_struct",
@@ -259,6 +267,7 @@ Module iter.
                                     ltac:(M.monadic
                                       (let elt := M.copy (| γ |) in
                                       M.call_closure (|
+                                        Acc,
                                         M.get_trait_method (|
                                           "core::ops::function::FnMut",
                                           impl_FnMut_Acc__B__arrow_Acc,
@@ -274,6 +283,7 @@ Module iter.
                                             [
                                               M.read (| acc |);
                                               M.call_closure (|
+                                                B,
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   impl_FnMut_T__arrow_B,
@@ -342,6 +352,7 @@ Module iter.
                                     ltac:(M.monadic
                                       (let elt := M.copy (| γ |) in
                                       M.call_closure (|
+                                        R,
                                         M.get_trait_method (|
                                           "core::ops::function::FnMut",
                                           impl_FnMut_Acc__B__arrow_R__plus__'a,
@@ -357,6 +368,7 @@ Module iter.
                                             [
                                               M.read (| acc |);
                                               M.call_closure (|
+                                                B,
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   impl_FnMut_T__arrow_B,
@@ -413,6 +425,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ B ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                   "map",
@@ -421,6 +434,7 @@ Module iter.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       I,
@@ -471,6 +485,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.tuple
+                  [
+                    Ty.path "usize";
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -518,6 +537,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let g := M.alloc (| g |) in
               M.call_closure (|
+                R,
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -538,6 +558,7 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
+                    Ty.associated,
                     M.get_function (|
                       "core::iter::adapters::map::map_try_fold",
                       [],
@@ -582,6 +603,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let g := M.alloc (| g |) in
               M.call_closure (|
+                Acc,
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -601,6 +623,7 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
+                    Ty.associated,
                     M.get_function (|
                       "core::iter::adapters::map::map_fold",
                       [],
@@ -645,6 +668,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
               M.call_closure (|
+                B,
                 M.get_trait_method (|
                   "core::ops::function::FnMut",
                   F,
@@ -666,6 +690,7 @@ Module iter.
                   Value.Tuple
                     [
                       M.call_closure (|
+                        Ty.associated,
                         M.get_function (|
                           "core::iter::adapters::zip::try_get_unchecked",
                           [],
@@ -732,6 +757,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ B ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                   "map",
@@ -740,6 +766,7 @@ Module iter.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       I,
@@ -797,6 +824,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let g := M.alloc (| g |) in
               M.call_closure (|
+                R,
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -817,6 +845,7 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
+                    Ty.associated,
                     M.get_function (|
                       "core::iter::adapters::map::map_try_fold",
                       [],
@@ -861,6 +890,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let g := M.alloc (| g |) in
               M.call_closure (|
+                Acc,
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -880,6 +910,7 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
+                    Ty.associated,
                     M.get_function (|
                       "core::iter::adapters::map::map_fold",
                       [],
@@ -931,6 +962,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.path "usize",
                 M.get_trait_method (|
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
@@ -971,6 +1003,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
@@ -1070,9 +1103,10 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ item :=
+                let~ item : Ty.associated :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.associated,
                       M.get_trait_method (|
                         "core::iter::traits::unchecked_iterator::UncheckedIterator",
                         I,
@@ -1096,6 +1130,7 @@ Module iter.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    B,
                     M.get_trait_method (|
                       "core::ops::function::FnMut",
                       F,
@@ -1201,6 +1236,7 @@ Module iter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
                             M.get_trait_method (|
                               "core::iter::adapters::SourceIter",
                               I,

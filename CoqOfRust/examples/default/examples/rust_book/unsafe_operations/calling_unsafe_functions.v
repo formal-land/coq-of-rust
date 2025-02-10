@@ -20,9 +20,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ some_vector :=
+        let~ some_vector :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                 "into_vec",
@@ -32,6 +40,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.read (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 4 ]
+                          [ Ty.path "u32" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -63,9 +81,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ pointer :=
+        let~ pointer : Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -78,9 +97,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
             |)
           |) in
-        let~ length :=
+        let~ length : Ty.path "usize" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -93,19 +113,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, some_vector |) ]
             |)
           |) in
-        let~ my_slice :=
+        let~ my_slice :
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ] :=
           M.alloc (|
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
                   M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u32" ] |),
                   [ M.read (| pointer |); M.read (| length |) ]
                 |)
               |)
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -114,6 +136,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -147,6 +173,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -182,12 +209,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],

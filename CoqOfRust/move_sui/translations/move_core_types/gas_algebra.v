@@ -102,11 +102,15 @@ Module gas_algebra.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -163,10 +167,14 @@ Module gas_algebra.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -231,10 +239,14 @@ Module gas_algebra.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -301,6 +313,7 @@ Module gas_algebra.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -338,6 +351,13 @@ Module gas_algebra.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ];
+                  Ty.associated
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -458,6 +478,10 @@ Module gas_algebra.
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
+            Ty.apply
+              (Ty.path "move_core_types::gas_algebra::GasQuantity")
+              []
+              [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -480,6 +504,10 @@ Module gas_algebra.
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
+            Ty.apply
+              (Ty.path "move_core_types::gas_algebra::GasQuantity")
+              []
+              [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -539,6 +567,7 @@ Module gas_algebra.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
@@ -566,6 +595,7 @@ Module gas_algebra.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
@@ -621,6 +651,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
             [
               M.borrow (|
@@ -666,6 +697,10 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
               "map",
@@ -679,6 +714,7 @@ Module gas_algebra.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                 M.get_associated_function (| Ty.path "u64", "checked_sub", [], [] |),
                 [
                   M.read (|
@@ -731,6 +767,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_trait_method (|
               "core::convert::Into",
               Ty.path "u64",
@@ -742,6 +779,7 @@ Module gas_algebra.
             |),
             [
               M.call_closure (|
+                Ty.path "u64",
                 M.get_associated_function (| Ty.path "u64", "saturating_sub", [], [] |),
                 [
                   M.read (|
@@ -786,7 +824,7 @@ Module gas_algebra.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (|
                   Value.Tuple
@@ -826,12 +864,13 @@ Module gas_algebra.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ kind :=
+                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
                                       M.alloc (|
                                         Value.StructTuple "core::panicking::AssertKind::Ne" []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (|
                                           "core::panicking::assert_failed",
                                           [],
@@ -871,6 +910,7 @@ Module gas_algebra.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                   "new",
@@ -879,6 +919,7 @@ Module gas_algebra.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                     [
                       M.read (|
@@ -927,6 +968,7 @@ Module gas_algebra.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               "new",
@@ -935,6 +977,7 @@ Module gas_algebra.
             |),
             [
               M.call_closure (|
+                Ty.path "u64",
                 M.get_function (| "move_core_types::gas_algebra::apply_ratio_round_down", [], [] |),
                 [
                   M.read (|
@@ -982,6 +1025,7 @@ Module gas_algebra.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               "new",
@@ -990,6 +1034,7 @@ Module gas_algebra.
             |),
             [
               M.call_closure (|
+                Ty.path "u64",
                 M.get_function (| "move_core_types::gas_algebra::apply_ratio_round_up", [], [] |),
                 [
                   M.read (|
@@ -1042,9 +1087,10 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let params := M.alloc (| params |) in
           M.read (|
-            let~ multiplier :=
+            let~ multiplier : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_trait_method (|
                     "move_core_types::gas_algebra::ToUnitWithParams",
                     U,
@@ -1057,7 +1103,7 @@ Module gas_algebra.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| params |) |) |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (|
                   Value.Tuple
@@ -1094,12 +1140,13 @@ Module gas_algebra.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ kind :=
+                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
                                       M.alloc (|
                                         Value.StructTuple "core::panicking::AssertKind::Ne" []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (|
                                           "core::panicking::assert_failed",
                                           [],
@@ -1139,6 +1186,7 @@ Module gas_algebra.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                   "new",
@@ -1147,6 +1195,7 @@ Module gas_algebra.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                     [
                       M.read (|
@@ -1199,6 +1248,7 @@ Module gas_algebra.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                   M.get_trait_method (|
                     "move_core_types::gas_algebra::ToUnitFractionalWithParams",
                     U,
@@ -1220,6 +1270,7 @@ Module gas_algebra.
                     let d := M.copy (| γ0_1 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                           "new",
@@ -1228,6 +1279,7 @@ Module gas_algebra.
                         |),
                         [
                           M.call_closure (|
+                            Ty.path "u64",
                             M.get_function (|
                               "move_core_types::gas_algebra::apply_ratio_round_down",
                               [],
@@ -1290,6 +1342,7 @@ Module gas_algebra.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                   M.get_trait_method (|
                     "move_core_types::gas_algebra::ToUnitFractionalWithParams",
                     U,
@@ -1311,6 +1364,7 @@ Module gas_algebra.
                     let d := M.copy (| γ0_1 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                           "new",
@@ -1319,6 +1373,7 @@ Module gas_algebra.
                         |),
                         [
                           M.call_closure (|
+                            Ty.path "u64",
                             M.get_function (|
                               "move_core_types::gas_algebra::apply_ratio_round_up",
                               [],
@@ -1370,6 +1425,7 @@ Module gas_algebra.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
@@ -1440,6 +1496,7 @@ Module gas_algebra.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
@@ -1498,10 +1555,15 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.borrow (|
@@ -1522,6 +1584,7 @@ Module gas_algebra.
                           Value.Array
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
@@ -1582,10 +1645,15 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.borrow (|
@@ -1613,6 +1681,7 @@ Module gas_algebra.
                           Value.Array
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
@@ -1636,6 +1705,7 @@ Module gas_algebra.
                                 ]
                               |);
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
@@ -1650,6 +1720,7 @@ Module gas_algebra.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                             M.get_function (| "core::any::type_name", [], [ U ] |),
                                             []
                                           |)
@@ -1701,6 +1772,7 @@ Module gas_algebra.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
                     "cmp_impl",
@@ -1763,6 +1835,7 @@ Module gas_algebra.
             "core::option::Option::Some"
             [
               M.call_closure (|
+                Ty.path "core::cmp::Ordering",
                 M.get_trait_method (|
                   "core::cmp::Ord",
                   Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
@@ -1807,6 +1880,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "cmp_impl",
@@ -1851,6 +1925,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_associated_function (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
               "new",
@@ -1859,6 +1934,7 @@ Module gas_algebra.
             |),
             [
               M.call_closure (|
+                Ty.path "u64",
                 M.get_associated_function (| Ty.path "u64", "saturating_add", [], [] |),
                 [
                   M.read (|
@@ -1909,21 +1985,20 @@ Module gas_algebra.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          M.read (|
-            M.write (|
-              M.deref (| M.read (| self |) |),
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::arith::Add",
-                  Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
-                  [],
-                  [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
-                  "add",
-                  [],
-                  []
-                |),
-                [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-              |)
+          M.write (|
+            M.deref (| M.read (| self |) |),
+            M.call_closure (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              M.get_trait_method (|
+                "core::ops::arith::Add",
+                Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+                [],
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+                "add",
+                [],
+                []
+              |),
+              [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1952,6 +2027,7 @@ Module gas_algebra.
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
         M.call_closure (|
+          Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U1 ],
           M.get_associated_function (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U1 ],
             "new",
@@ -1960,6 +2036,7 @@ Module gas_algebra.
           |),
           [
             M.call_closure (|
+              Ty.path "u64",
               M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
               [
                 M.read (|
@@ -2007,6 +2084,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U1 ],
             M.get_function (| "move_core_types::gas_algebra::mul_impl", [], [ U1; U2 ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
@@ -2054,6 +2132,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U1 ],
             M.get_function (| "move_core_types::gas_algebra::mul_impl", [], [ U1; U2 ] |),
             [ M.read (| rhs |); M.read (| self |) ]
           |)))
@@ -2092,7 +2171,7 @@ Module gas_algebra.
         let nominator := M.alloc (| nominator |) in
         let denominator := M.alloc (| denominator |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -2126,12 +2205,13 @@ Module gas_algebra.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind :=
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Ne" []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (|
                                         "core::panicking::assert_failed",
                                         [],
@@ -2169,7 +2249,7 @@ Module gas_algebra.
                     |)))
               ]
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -2203,12 +2283,13 @@ Module gas_algebra.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind :=
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Ne" []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (|
                                         "core::panicking::assert_failed",
                                         [],
@@ -2246,7 +2327,7 @@ Module gas_algebra.
                     |)))
               ]
             |) in
-          let~ res :=
+          let~ res : Ty.path "u128" :=
             M.alloc (|
               BinOp.Wrap.div (|
                 BinOp.Wrap.mul (|
@@ -2306,7 +2387,7 @@ Module gas_algebra.
         let nominator := M.alloc (| nominator |) in
         let denominator := M.alloc (| denominator |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -2340,12 +2421,13 @@ Module gas_algebra.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind :=
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Ne" []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (|
                                         "core::panicking::assert_failed",
                                         [],
@@ -2383,7 +2465,7 @@ Module gas_algebra.
                     |)))
               ]
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -2417,12 +2499,13 @@ Module gas_algebra.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ kind :=
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Ne" []
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (|
                                         "core::panicking::assert_failed",
                                         [],
@@ -2460,15 +2543,16 @@ Module gas_algebra.
                     |)))
               ]
             |) in
-          let~ n :=
+          let~ n : Ty.path "u128" :=
             M.alloc (|
               BinOp.Wrap.mul (|
                 M.cast (Ty.path "u128") (M.read (| val |)),
                 M.cast (Ty.path "u128") (M.read (| nominator |))
               |)
             |) in
-          let~ d := M.alloc (| M.cast (Ty.path "u128") (M.read (| denominator |)) |) in
-          let~ res :=
+          let~ d : Ty.path "u128" :=
+            M.alloc (| M.cast (Ty.path "u128") (M.read (| denominator |)) |) in
+          let~ res : Ty.path "u128" :=
             M.alloc (|
               BinOp.Wrap.add (|
                 BinOp.Wrap.div (| M.read (| n |), M.read (| d |) |),

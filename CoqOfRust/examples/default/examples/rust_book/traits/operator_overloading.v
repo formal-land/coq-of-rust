@@ -36,6 +36,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -72,6 +73,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -109,13 +111,15 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
         (let self := M.alloc (| self |) in
         let _rhs := M.alloc (| _rhs |) in
         M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
@@ -175,13 +179,15 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
         (let self := M.alloc (| self |) in
         let _rhs := M.alloc (| _rhs |) in
         M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
@@ -232,13 +238,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -271,6 +279,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -285,6 +294,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "operator_overloading::FooBar",
                                                 M.get_trait_method (|
                                                   "core::ops::arith::Add",
                                                   Ty.path "operator_overloading::Foo",
@@ -316,13 +326,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -355,6 +367,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -369,6 +382,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "operator_overloading::BarFoo",
                                                 M.get_trait_method (|
                                                   "core::ops::arith::Add",
                                                   Ty.path "operator_overloading::Bar",

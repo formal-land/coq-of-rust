@@ -13,23 +13,47 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
               M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "12" |) |) |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "bool"; Ty.path "core::str::error::ParseBoolError" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "bool"; Ty.path "core::str::error::ParseBoolError" ],
               M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "bool" ] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "true" |) |) |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ],
               M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "u32" ] |),
               [
                 M.borrow (|

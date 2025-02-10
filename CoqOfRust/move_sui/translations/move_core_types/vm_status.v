@@ -248,9 +248,10 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -259,9 +260,10 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -320,6 +322,10 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -438,9 +444,10 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -451,6 +458,7 @@ Module vm_status.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "isize",
@@ -1570,6 +1578,10 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -4619,9 +4631,10 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -4632,6 +4645,7 @@ Module vm_status.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "u64",
@@ -4684,9 +4698,10 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -4695,9 +4710,10 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -4730,9 +4746,10 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -4741,9 +4758,10 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -4754,6 +4772,7 @@ Module vm_status.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.get_trait_method (|
                   "core::cmp::PartialOrd",
                   Ty.path "u64",
@@ -4798,9 +4817,10 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -4809,9 +4829,10 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -4822,6 +4843,7 @@ Module vm_status.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
                 [
                   M.borrow (|
@@ -8213,9 +8235,10 @@ Module vm_status.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ major_status_number :=
+                let~ major_status_number : Ty.path "u64" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_trait_method (|
                         "core::convert::Into",
                         Ty.path "move_core_types::vm_status::StatusCode",
@@ -8228,7 +8251,7 @@ Module vm_status.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -8279,7 +8302,7 @@ Module vm_status.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -8330,7 +8353,7 @@ Module vm_status.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -8381,7 +8404,7 @@ Module vm_status.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -8432,7 +8455,7 @@ Module vm_status.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -8511,10 +8534,12 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let serializer := M.alloc (| serializer |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
             M.get_trait_method (| "serde::ser::Serializer", S, [], [], "serialize_u64", [], [] |),
             [
               M.read (| serializer |);
               M.call_closure (|
+                Ty.path "u64",
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.path "move_core_types::vm_status::StatusCode",
@@ -8572,6 +8597,10 @@ Module vm_status.
         ltac:(M.monadic
           (let deserializer := M.alloc (| deserializer |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "move_core_types::vm_status::StatusCode"; Ty.associated ],
             M.get_trait_method (|
               "serde::de::Deserializer",
               D,

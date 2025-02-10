@@ -15,6 +15,7 @@ Module hash.
               (M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Self ],
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Self ] ],
@@ -33,10 +34,14 @@ Module hash.
                       (let iter := M.copy (| γ |) in
                       M.loop (|
                         ltac:(M.monadic
-                          (let~ _ :=
+                          (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Self ] ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Self ],
@@ -71,6 +76,7 @@ Module hash.
                                     let piece := M.copy (| γ0_0 |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_trait_method (|
                                           "core::hash::Hash",
                                           Self,
@@ -114,6 +120,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -136,6 +143,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -146,6 +154,10 @@ Module hash.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 2 ]
+                          [ Ty.path "u8" ],
                         M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
                         [ M.read (| i |) ]
                       |)
@@ -166,6 +178,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -176,6 +189,10 @@ Module hash.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 4 ]
+                          [ Ty.path "u8" ],
                         M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
                         [ M.read (| i |) ]
                       |)
@@ -196,6 +213,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -206,6 +224,10 @@ Module hash.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 8 ]
+                          [ Ty.path "u8" ],
                         M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
                         [ M.read (| i |) ]
                       |)
@@ -226,6 +248,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -236,6 +259,10 @@ Module hash.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 16 ]
+                          [ Ty.path "u8" ],
                         M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
                         [ M.read (| i |) ]
                       |)
@@ -262,6 +289,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -272,6 +300,10 @@ Module hash.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 8 ]
+                          [ Ty.path "u8" ],
                         M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
                         [ M.read (| i |) ]
                       |)
@@ -293,6 +325,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u8", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -310,6 +343,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u16", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -327,6 +361,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u32", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -344,6 +379,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u64", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -361,6 +397,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u128", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -384,6 +421,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_usize", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -407,9 +445,10 @@ Module hash.
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hasher",
                     Self,
@@ -439,9 +478,10 @@ Module hash.
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -449,6 +489,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                         |)
@@ -457,9 +501,10 @@ Module hash.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", Self, [], [], "write_u8", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -490,6 +535,7 @@ Module hash.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "u64",
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "finish", [], [] |),
             [
               M.borrow (|
@@ -514,6 +560,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let bytes := M.alloc (| bytes |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
             [
               M.borrow (|
@@ -539,6 +586,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
             [
               M.borrow (|
@@ -564,6 +612,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u16", [], [] |),
             [
               M.borrow (|
@@ -589,6 +638,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
             [
               M.borrow (|
@@ -614,6 +664,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u64", [], [] |),
             [
               M.borrow (|
@@ -639,6 +690,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u128", [], [] |),
             [
               M.borrow (|
@@ -664,6 +716,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_usize", [], [] |),
             [
               M.borrow (|
@@ -689,6 +742,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i8", [], [] |),
             [
               M.borrow (|
@@ -714,6 +768,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i16", [], [] |),
             [
               M.borrow (|
@@ -739,6 +794,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i32", [], [] |),
             [
               M.borrow (|
@@ -764,6 +820,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i64", [], [] |),
             [
               M.borrow (|
@@ -789,6 +846,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i128", [], [] |),
             [
               M.borrow (|
@@ -814,6 +872,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_isize", [], [] |),
             [
               M.borrow (|
@@ -844,6 +903,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_length_prefix", [], [] |),
             [
               M.borrow (|
@@ -869,6 +929,7 @@ Module hash.
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_str", [], [] |),
             [
               M.borrow (|
@@ -917,9 +978,10 @@ Module hash.
           (let self := M.alloc (| self |) in
           let x := M.alloc (| x |) in
           M.read (|
-            let~ hasher :=
+            let~ hasher : Ty.associated :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::hash::BuildHasher",
                     Self,
@@ -932,9 +994,10 @@ Module hash.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     T,
@@ -955,6 +1018,7 @@ Module hash.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "u64",
                 M.get_trait_method (|
                   "core::hash::Hasher",
                   Ty.associated,
@@ -1024,6 +1088,10 @@ Module hash.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish",
@@ -1035,6 +1103,7 @@ Module hash.
                 Pointer.Kind.MutRef,
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::fmt::builders::DebugStruct",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_struct",
@@ -1084,6 +1153,7 @@ Module hash.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            H,
             M.get_trait_method (| "core::default::Default", H, [], [], "default", [], [] |),
             []
           |)))
@@ -1148,6 +1218,7 @@ Module hash.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ],
               "new",
@@ -1222,6 +1293,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1249,9 +1321,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -1260,11 +1333,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
@@ -1276,6 +1350,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1283,6 +1358,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -1323,6 +1402,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u16", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1350,9 +1430,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -1361,11 +1442,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                         "as_ptr",
@@ -1377,6 +1459,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1384,6 +1467,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -1424,6 +1511,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1451,9 +1539,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -1462,11 +1551,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                         "as_ptr",
@@ -1478,6 +1568,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1485,6 +1576,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -1525,6 +1620,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u64", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1552,9 +1648,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -1563,11 +1660,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                         "as_ptr",
@@ -1579,6 +1677,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1586,6 +1685,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -1626,6 +1729,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_usize", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1653,9 +1757,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -1664,11 +1769,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                         "as_ptr",
@@ -1680,6 +1786,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1687,6 +1794,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -1727,6 +1838,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i8", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1754,9 +1866,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -1765,11 +1878,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                         "as_ptr",
@@ -1781,6 +1895,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1788,6 +1903,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -1828,6 +1947,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i16", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1855,9 +1975,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -1866,11 +1987,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ],
                         "as_ptr",
@@ -1882,6 +2004,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1889,6 +2012,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -1929,6 +2056,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i32", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1956,9 +2084,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -1967,11 +2096,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "i32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                         "as_ptr",
@@ -1983,6 +2113,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -1990,6 +2121,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -2030,6 +2165,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i64", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2057,9 +2193,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -2068,11 +2205,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "i64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ],
                         "as_ptr",
@@ -2084,6 +2222,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2091,6 +2230,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -2131,6 +2274,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_isize", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2158,9 +2302,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -2169,11 +2314,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "isize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ],
                         "as_ptr",
@@ -2185,6 +2331,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2192,6 +2339,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -2232,6 +2383,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u128", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2259,9 +2411,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -2270,11 +2423,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                         "as_ptr",
@@ -2286,6 +2440,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2293,6 +2448,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -2333,6 +2492,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_i128", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2360,9 +2520,10 @@ Module hash.
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ newlen :=
+              let~ newlen : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (|
                       "core::mem::size_of_val",
                       [],
@@ -2371,11 +2532,12 @@ Module hash.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ])
                     (M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "i128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i128" ],
                         "as_ptr",
@@ -2387,6 +2549,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hasher", H, [], [], "write", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2394,6 +2557,10 @@ Module hash.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_function (|
                             "core::slice::raw::from_raw_parts",
                             [],
@@ -2434,6 +2601,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u8", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2466,6 +2634,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_u32", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2498,9 +2667,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (| "core::hash::Hasher", H, [], [], "write_str", [], [] |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
@@ -2600,9 +2770,10 @@ Module hash.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let value_T := M.alloc (| γ0_0 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -2660,9 +2831,10 @@ Module hash.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -2678,9 +2850,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -2740,9 +2913,10 @@ Module hash.
                       let value_T := M.alloc (| γ0_0 |) in
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -2758,9 +2932,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -2776,9 +2951,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -2840,9 +3016,10 @@ Module hash.
                       let value_B := M.alloc (| γ0_1 |) in
                       let value_C := M.alloc (| γ0_2 |) in
                       let value_D := M.alloc (| γ0_3 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -2858,9 +3035,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -2876,9 +3054,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -2894,9 +3073,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               D,
@@ -2965,9 +3145,10 @@ Module hash.
                       let value_C := M.alloc (| γ0_2 |) in
                       let value_D := M.alloc (| γ0_3 |) in
                       let value_E := M.alloc (| γ0_4 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -2983,9 +3164,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -3001,9 +3183,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -3019,9 +3202,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               D,
@@ -3037,9 +3221,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               E,
@@ -3110,9 +3295,10 @@ Module hash.
                       let value_D := M.alloc (| γ0_3 |) in
                       let value_E := M.alloc (| γ0_4 |) in
                       let value_F := M.alloc (| γ0_5 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -3128,9 +3314,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -3146,9 +3333,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -3164,9 +3352,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               D,
@@ -3182,9 +3371,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               E,
@@ -3200,9 +3390,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               F,
@@ -3275,9 +3466,10 @@ Module hash.
                       let value_E := M.alloc (| γ0_4 |) in
                       let value_F := M.alloc (| γ0_5 |) in
                       let value_G := M.alloc (| γ0_6 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -3293,9 +3485,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -3311,9 +3504,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -3329,9 +3523,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               D,
@@ -3347,9 +3542,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               E,
@@ -3365,9 +3561,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               F,
@@ -3383,9 +3580,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               G,
@@ -3460,9 +3658,10 @@ Module hash.
                       let value_F := M.alloc (| γ0_5 |) in
                       let value_G := M.alloc (| γ0_6 |) in
                       let value_H := M.alloc (| γ0_7 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -3478,9 +3677,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -3496,9 +3696,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -3514,9 +3715,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               D,
@@ -3532,9 +3734,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               E,
@@ -3550,9 +3753,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               F,
@@ -3568,9 +3772,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               G,
@@ -3586,9 +3791,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               H,
@@ -3665,9 +3871,10 @@ Module hash.
                       let value_G := M.alloc (| γ0_6 |) in
                       let value_H := M.alloc (| γ0_7 |) in
                       let value_I := M.alloc (| γ0_8 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -3683,9 +3890,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -3701,9 +3909,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -3719,9 +3928,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               D,
@@ -3737,9 +3947,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               E,
@@ -3755,9 +3966,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               F,
@@ -3773,9 +3985,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               G,
@@ -3791,9 +4004,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               H,
@@ -3809,9 +4023,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               I,
@@ -3891,9 +4106,10 @@ Module hash.
                       let value_H := M.alloc (| γ0_7 |) in
                       let value_I := M.alloc (| γ0_8 |) in
                       let value_J := M.alloc (| γ0_9 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -3909,9 +4125,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -3927,9 +4144,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -3945,9 +4163,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               D,
@@ -3963,9 +4182,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               E,
@@ -3981,9 +4201,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               F,
@@ -3999,9 +4220,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               G,
@@ -4017,9 +4239,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               H,
@@ -4035,9 +4258,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               I,
@@ -4053,9 +4277,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               J,
@@ -4137,9 +4362,10 @@ Module hash.
                       let value_I := M.alloc (| γ0_8 |) in
                       let value_J := M.alloc (| γ0_9 |) in
                       let value_K := M.alloc (| γ0_10 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -4155,9 +4381,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -4173,9 +4400,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -4191,9 +4419,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               D,
@@ -4209,9 +4438,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               E,
@@ -4227,9 +4457,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               F,
@@ -4245,9 +4476,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               G,
@@ -4263,9 +4495,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               H,
@@ -4281,9 +4514,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               I,
@@ -4299,9 +4533,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               J,
@@ -4317,9 +4552,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               K,
@@ -4403,9 +4639,10 @@ Module hash.
                       let value_J := M.alloc (| γ0_9 |) in
                       let value_K := M.alloc (| γ0_10 |) in
                       let value_L := M.alloc (| γ0_11 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               T,
@@ -4421,9 +4658,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               B,
@@ -4439,9 +4677,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               C,
@@ -4457,9 +4696,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               D,
@@ -4475,9 +4715,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               E,
@@ -4493,9 +4734,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               F,
@@ -4511,9 +4753,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               G,
@@ -4529,9 +4772,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               H,
@@ -4547,9 +4791,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               I,
@@ -4565,9 +4810,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               J,
@@ -4583,9 +4829,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               K,
@@ -4601,9 +4848,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               L,
@@ -4652,9 +4900,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hasher",
                       H,
@@ -4667,6 +4916,7 @@ Module hash.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
@@ -4680,6 +4930,7 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hash", T, [], [], "hash_slice", [], [ H ] |),
                   [
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -4716,9 +4967,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
                     [
                       M.borrow (|
@@ -4759,9 +5011,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
                     [
                       M.borrow (|
@@ -4807,6 +5060,7 @@ Module hash.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]; Ty.associated ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "to_raw_parts",
@@ -4823,9 +5077,10 @@ Module hash.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let address := M.copy (| γ0_0 |) in
                       let metadata := M.copy (| γ0_1 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hasher",
                               H,
@@ -4838,6 +5093,7 @@ Module hash.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                                   "addr",
@@ -4849,9 +5105,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               Ty.associated,
@@ -4904,6 +5161,7 @@ Module hash.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ]; Ty.associated ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ T ],
                       "to_raw_parts",
@@ -4920,9 +5178,10 @@ Module hash.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let address := M.copy (| γ0_0 |) in
                       let metadata := M.copy (| γ0_1 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hasher",
                               H,
@@ -4935,6 +5194,7 @@ Module hash.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                                   "addr",
@@ -4946,9 +5206,10 @@ Module hash.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
                               Ty.associated,

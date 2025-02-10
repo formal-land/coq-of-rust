@@ -14,12 +14,17 @@ Module utilities.
         (let data := M.alloc (| data |) in
         let offset := M.alloc (| offset |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "alloc::borrow::Cow")
+            []
+            [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
           M.get_function (| "revm_precompile::utilities::right_pad", [ LEN ], [] |),
           [
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -32,6 +37,15 @@ Module utilities.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "get",
@@ -71,12 +85,17 @@ Module utilities.
         let offset := M.alloc (| offset |) in
         let len := M.alloc (| len |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "alloc::borrow::Cow")
+            []
+            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
           M.get_function (| "revm_precompile::utilities::right_pad_vec", [], [] |),
           [
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -89,6 +108,15 @@ Module utilities.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "get",
@@ -141,6 +169,15 @@ Module utilities.
                   (let γ :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
@@ -168,6 +205,10 @@ Module utilities.
                       "alloc::borrow::Cow::Borrowed"
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -185,6 +226,16 @@ Module utilities.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
+                                  Ty.path "core::array::TryFromSliceError"
+                                ],
                               M.get_trait_method (|
                                 "core::convert::TryInto",
                                 Ty.apply
@@ -210,10 +261,12 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded := M.alloc (| repeat (| Value.Integer IntegerKind.U8 0, LEN |) |) in
-                  let~ _ :=
+                  (let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
+                    M.alloc (| repeat (| Value.Integer IntegerKind.U8 0, LEN |) |) in
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
@@ -225,6 +278,10 @@ Module utilities.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_trait_method (|
                                   "core::ops::index::IndexMut",
                                   Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
@@ -246,6 +303,7 @@ Module utilities.
                                     [
                                       ("end_",
                                         M.call_closure (|
+                                          Ty.path "usize",
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "len",
@@ -306,6 +364,15 @@ Module utilities.
                   (let γ :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
@@ -330,16 +397,25 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded :=
+                  (let~ padded :
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u8" ] |),
                         [ Value.Integer IntegerKind.U8 0; M.read (| len |) ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
@@ -351,6 +427,10 @@ Module utilities.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_trait_method (|
                                   "core::ops::index::IndexMut",
                                   Ty.apply
@@ -375,6 +455,7 @@ Module utilities.
                                     [
                                       ("end_",
                                         M.call_closure (|
+                                          Ty.path "usize",
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "len",
@@ -435,6 +516,15 @@ Module utilities.
                   (let γ :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
@@ -462,6 +552,10 @@ Module utilities.
                       "alloc::borrow::Cow::Borrowed"
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -479,6 +573,16 @@ Module utilities.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
+                                  Ty.path "core::array::TryFromSliceError"
+                                ],
                               M.get_trait_method (|
                                 "core::convert::TryInto",
                                 Ty.apply
@@ -504,10 +608,12 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded := M.alloc (| repeat (| Value.Integer IntegerKind.U8 0, LEN |) |) in
-                  let~ _ :=
+                  (let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
+                    M.alloc (| repeat (| Value.Integer IntegerKind.U8 0, LEN |) |) in
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
@@ -519,6 +625,10 @@ Module utilities.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_trait_method (|
                                   "core::ops::index::IndexMut",
                                   Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ],
@@ -545,6 +655,7 @@ Module utilities.
                                               "revm_precompile::utilities::left_pad::LEN"
                                           |),
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "len",
@@ -606,6 +717,15 @@ Module utilities.
                   (let γ :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get",
@@ -630,16 +750,25 @@ Module utilities.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ padded :=
+                  (let~ padded :
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u8" ] |),
                         [ Value.Integer IntegerKind.U8 0; M.read (| len |) ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
@@ -651,6 +780,10 @@ Module utilities.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_trait_method (|
                                   "core::ops::index::IndexMut",
                                   Ty.apply
@@ -677,6 +810,7 @@ Module utilities.
                                         BinOp.Wrap.sub (|
                                           M.read (| len |),
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                               "len",
@@ -724,6 +858,7 @@ Module utilities.
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         M.call_closure (|
+          Ty.path "alloy_primitives::bytes_::Bytes",
           M.get_associated_function (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             "from_static",
@@ -739,6 +874,15 @@ Module utilities.
                   M.SubPointer.get_struct_tuple_field (|
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              []
+                          ],
                         M.get_function (| "revm_precompile::utilities::bool_to_b256", [], [] |),
                         [ M.read (| value |) ]
                       |)
@@ -807,6 +951,10 @@ Module utilities.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
@@ -843,6 +991,10 @@ Module utilities.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")

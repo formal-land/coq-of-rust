@@ -12,9 +12,10 @@ Definition call_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
     ltac:(M.monadic
       (let f := M.alloc (| f |) in
       M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 F,
@@ -45,13 +46,15 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -99,7 +102,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ closure :=
+        let~ closure : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -113,12 +116,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_function (| "std::io::stdio::_print", [], [] |),
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
@@ -152,9 +157,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "functions_closures_input_functions::call_me",
                 [],
@@ -163,9 +169,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| closure |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "functions_closures_input_functions::call_me",
                 [],

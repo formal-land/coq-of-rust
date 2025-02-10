@@ -83,6 +83,10 @@ Module future.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
@@ -94,6 +98,7 @@ Module future.
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "core::fmt::builders::DebugStruct",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_struct",
@@ -140,6 +145,7 @@ Module future.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::future::pending::Pending") [] [ T ],
               M.get_function (| "core::future::pending::pending", [], [ T ] |),
               []
             |)))

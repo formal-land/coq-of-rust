@@ -22,6 +22,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
@@ -77,13 +78,15 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -116,6 +119,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -162,13 +166,15 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -201,6 +207,7 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -247,16 +254,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
-        let~ ref_x :=
+        let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
+        let~ ref_x :
+            Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ Ty.path "i32" ] :=
           M.alloc (|
             Value.StructTuple
               "scoping_rules_lifetimes_bounds::Ref"
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "scoping_rules_lifetimes_bounds::print_ref",
                 [],
@@ -270,9 +279,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "scoping_rules_lifetimes_bounds::print",
                 [],

@@ -16,9 +16,10 @@ Module exec.
           (let self := M.alloc (| self |) in
           let tx := M.alloc (| tx |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "revm::exec::EvmExec", Self, [], [], "set_tx", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -28,6 +29,7 @@ Module exec.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (| "revm::exec::EvmExec", Self, [], [], "exec", [], [] |),
                 [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
               |)
@@ -54,9 +56,10 @@ Module exec.
           (let self := M.alloc (| self |) in
           let tx := M.alloc (| tx |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "revm::exec::EvmExec", Self, [], [], "set_tx", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -66,6 +69,7 @@ Module exec.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "revm::exec::EvmCommit",
                   Self,

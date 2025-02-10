@@ -24,10 +24,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ elem := M.alloc (| Value.Integer IntegerKind.U8 5 |) in
-        let~ vec :=
+        let~ elem : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 5 |) in
+        let~ vec :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -40,9 +48,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -55,13 +64,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, vec |); M.read (| elem |) ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -91,6 +102,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",

@@ -159,7 +159,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -466,7 +466,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -483,7 +483,7 @@
                                   "body": {
                                     "Let": {
                                       "name": "f",
-                                      "is_user": false,
+                                      "ty": null,
                                       "init": {
                                         "Call": {
                                           "func": {
@@ -1072,7 +1072,44 @@
                                               }
                                             }
                                           ],
-                                          "kind": "Closure"
+                                          "kind": {
+                                            "Closure": {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "core",
+                                                      "result",
+                                                      "Result"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "Tuple": {
+                                                      "tys": []
+                                                    }
+                                                  },
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "core",
+                                                            "fmt",
+                                                            "Error"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": []
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     }
@@ -1180,7 +1217,15 @@
                                             }
                                           },
                                           "args": [],
-                                          "kind": "Closure"
+                                          "kind": {
+                                            "Closure": {
+                                              "Path": {
+                                                "path": [
+                                                  "u64"
+                                                ]
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     ],
@@ -1210,7 +1255,15 @@
                                             }
                                           },
                                           "args": [],
-                                          "kind": "Closure"
+                                          "kind": {
+                                            "Closure": {
+                                              "Path": {
+                                                "path": [
+                                                  "u64"
+                                                ]
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     ],
@@ -1240,7 +1293,15 @@
                                             }
                                           },
                                           "args": [],
-                                          "kind": "Closure"
+                                          "kind": {
+                                            "Closure": {
+                                              "Path": {
+                                                "path": [
+                                                  "i64"
+                                                ]
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     ],
@@ -1278,7 +1339,23 @@
                                             }
                                           },
                                           "args": [],
-                                          "kind": "Closure"
+                                          "kind": {
+                                            "Closure": {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "revm_interpreter",
+                                                      "gas",
+                                                      "MemoryGas"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     ]
@@ -1452,7 +1529,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -1469,7 +1546,7 @@
                                   "body": {
                                     "Let": {
                                       "name": "other",
-                                      "is_user": false,
+                                      "ty": null,
                                       "init": {
                                         "Call": {
                                           "func": {
@@ -1973,7 +2050,15 @@
                                                   }
                                                 }
                                               ],
-                                              "kind": "Closure"
+                                              "kind": {
+                                                "Closure": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "bool"
+                                                    ]
+                                                  }
+                                                }
+                                              }
                                             }
                                           }
                                         }
@@ -2081,7 +2166,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -2304,7 +2389,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -2321,7 +2406,7 @@
                                   "body": {
                                     "Let": {
                                       "name": "state",
-                                      "is_user": false,
+                                      "ty": null,
                                       "init": {
                                         "Call": {
                                           "func": {
@@ -2344,7 +2429,11 @@
                                             {
                                               "Let": {
                                                 "name": null,
-                                                "is_user": true,
+                                                "ty": {
+                                                  "Tuple": {
+                                                    "tys": []
+                                                  }
+                                                },
                                                 "init": {
                                                   "Call": {
                                                     "func": {
@@ -2493,7 +2582,13 @@
                                                               }
                                                             }
                                                           ],
-                                                          "kind": "Closure"
+                                                          "kind": {
+                                                            "Closure": {
+                                                              "Tuple": {
+                                                                "tys": []
+                                                              }
+                                                            }
+                                                          }
                                                         }
                                                       }
                                                     ],
@@ -2503,7 +2598,11 @@
                                                 "body": {
                                                   "Let": {
                                                     "name": null,
-                                                    "is_user": true,
+                                                    "ty": {
+                                                      "Tuple": {
+                                                        "tys": []
+                                                      }
+                                                    },
                                                     "init": {
                                                       "Call": {
                                                         "func": {
@@ -2652,7 +2751,13 @@
                                                                   }
                                                                 }
                                                               ],
-                                                              "kind": "Closure"
+                                                              "kind": {
+                                                                "Closure": {
+                                                                  "Tuple": {
+                                                                    "tys": []
+                                                                  }
+                                                                }
+                                                              }
                                                             }
                                                           }
                                                         ],
@@ -2662,7 +2767,11 @@
                                                     "body": {
                                                       "Let": {
                                                         "name": null,
-                                                        "is_user": true,
+                                                        "ty": {
+                                                          "Tuple": {
+                                                            "tys": []
+                                                          }
+                                                        },
                                                         "init": {
                                                           "Call": {
                                                             "func": {
@@ -2811,7 +2920,13 @@
                                                                       }
                                                                     }
                                                                   ],
-                                                                  "kind": "Closure"
+                                                                  "kind": {
+                                                                    "Closure": {
+                                                                      "Tuple": {
+                                                                        "tys": []
+                                                                      }
+                                                                    }
+                                                                  }
                                                                 }
                                                               }
                                                             ],
@@ -2974,7 +3089,13 @@
                                                                       }
                                                                     }
                                                                   ],
-                                                                  "kind": "Closure"
+                                                                  "kind": {
+                                                                    "Closure": {
+                                                                      "Tuple": {
+                                                                        "tys": []
+                                                                      }
+                                                                    }
+                                                                  }
                                                                 }
                                                               }
                                                             ],
@@ -3081,7 +3202,7 @@
                             "body": {
                               "Let": {
                                 "name": "limit",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -3174,7 +3295,23 @@
                                               }
                                             },
                                             "args": [],
-                                            "kind": "Closure"
+                                            "kind": {
+                                              "Closure": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "revm_interpreter",
+                                                        "gas",
+                                                        "MemoryGas"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              }
+                                            }
                                           }
                                         }
                                       ]
@@ -3238,7 +3375,7 @@
                             "body": {
                               "Let": {
                                 "name": "limit",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -3327,7 +3464,23 @@
                                               }
                                             },
                                             "args": [],
-                                            "kind": "Closure"
+                                            "kind": {
+                                              "Closure": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "revm_interpreter",
+                                                        "gas",
+                                                        "MemoryGas"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              }
+                                            }
                                           }
                                         }
                                       ]
@@ -3400,7 +3553,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -3528,7 +3681,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -3616,7 +3769,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -3744,7 +3897,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -3931,7 +4084,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -4059,7 +4212,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -4276,7 +4429,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -4293,7 +4446,7 @@
                                 "body": {
                                   "Let": {
                                     "name": "returned",
-                                    "is_user": false,
+                                    "ty": null,
                                     "init": {
                                       "Call": {
                                         "func": {
@@ -4316,86 +4469,100 @@
                                           {
                                             "Let": {
                                               "name": null,
-                                              "is_user": true,
+                                              "ty": {
+                                                "Tuple": {
+                                                  "tys": []
+                                                }
+                                              },
                                               "init": {
-                                                "Let": {
-                                                  "name": "β",
-                                                  "is_user": false,
-                                                  "init": {
-                                                    "Call": {
-                                                      "func": {
-                                                        "LocalVar": "M.SubPointer.get_struct_record_field"
-                                                      },
-                                                      "args": [
-                                                        {
-                                                          "Call": {
-                                                            "func": {
-                                                              "LocalVar": "M.deref"
-                                                            },
-                                                            "args": [
-                                                              {
-                                                                "Call": {
-                                                                  "func": {
-                                                                    "LocalVar": "M.read"
-                                                                  },
-                                                                  "args": [
-                                                                    {
-                                                                      "LocalVar": "self"
-                                                                    }
-                                                                  ],
-                                                                  "kind": "Effectful"
-                                                                }
-                                                              }
-                                                            ],
-                                                            "kind": "Effectful"
-                                                          }
-                                                        },
-                                                        {
-                                                          "InternalString": "revm_interpreter::gas::Gas"
-                                                        },
-                                                        {
-                                                          "InternalString": "remaining"
-                                                        }
-                                                      ],
-                                                      "kind": "Effectful"
-                                                    }
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
                                                   },
-                                                  "body": {
-                                                    "Call": {
-                                                      "func": {
-                                                        "LocalVar": "M.write"
-                                                      },
-                                                      "args": [
-                                                        {
-                                                          "LocalVar": "β"
-                                                        },
-                                                        {
+                                                  "args": [
+                                                    {
+                                                      "Let": {
+                                                        "name": "β",
+                                                        "ty": null,
+                                                        "init": {
                                                           "Call": {
                                                             "func": {
-                                                              "LocalVar": "BinOp.Wrap.add"
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
                                                             },
                                                             "args": [
                                                               {
                                                                 "Call": {
                                                                   "func": {
-                                                                    "LocalVar": "M.read"
+                                                                    "LocalVar": "M.deref"
                                                                   },
                                                                   "args": [
                                                                     {
-                                                                      "LocalVar": "β"
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "self"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
                                                                     }
                                                                   ],
                                                                   "kind": "Effectful"
                                                                 }
                                                               },
                                                               {
+                                                                "InternalString": "revm_interpreter::gas::Gas"
+                                                              },
+                                                              {
+                                                                "InternalString": "remaining"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        "body": {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.write"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "β"
+                                                              },
+                                                              {
                                                                 "Call": {
                                                                   "func": {
-                                                                    "LocalVar": "M.read"
+                                                                    "LocalVar": "BinOp.Wrap.add"
                                                                   },
                                                                   "args": [
                                                                     {
-                                                                      "LocalVar": "returned"
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "β"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "returned"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
                                                                     }
                                                                   ],
                                                                   "kind": "Effectful"
@@ -4405,10 +4572,10 @@
                                                             "kind": "Effectful"
                                                           }
                                                         }
-                                                      ],
-                                                      "kind": "Effectful"
+                                                      }
                                                     }
-                                                  }
+                                                  ],
+                                                  "kind": "Effectful"
                                                 }
                                               },
                                               "body": {
@@ -4499,7 +4666,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -4522,59 +4689,73 @@
                                       {
                                         "Let": {
                                           "name": null,
-                                          "is_user": true,
+                                          "ty": {
+                                            "Tuple": {
+                                              "tys": []
+                                            }
+                                          },
                                           "init": {
                                             "Call": {
                                               "func": {
-                                                "LocalVar": "M.write"
+                                                "LocalVar": "M.alloc"
                                               },
                                               "args": [
                                                 {
                                                   "Call": {
                                                     "func": {
-                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                      "LocalVar": "M.write"
                                                     },
                                                     "args": [
                                                       {
                                                         "Call": {
                                                           "func": {
-                                                            "LocalVar": "M.deref"
+                                                            "LocalVar": "M.SubPointer.get_struct_record_field"
                                                           },
                                                           "args": [
                                                             {
                                                               "Call": {
                                                                 "func": {
-                                                                  "LocalVar": "M.read"
+                                                                  "LocalVar": "M.deref"
                                                                 },
                                                                 "args": [
                                                                   {
-                                                                    "LocalVar": "self"
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.read"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "LocalVar": "self"
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
                                                                   }
                                                                 ],
                                                                 "kind": "Effectful"
                                                               }
+                                                            },
+                                                            {
+                                                              "InternalString": "revm_interpreter::gas::Gas"
+                                                            },
+                                                            {
+                                                              "InternalString": "remaining"
                                                             }
                                                           ],
                                                           "kind": "Effectful"
                                                         }
                                                       },
                                                       {
-                                                        "InternalString": "revm_interpreter::gas::Gas"
-                                                      },
-                                                      {
-                                                        "InternalString": "remaining"
+                                                        "Literal": {
+                                                          "Integer": {
+                                                            "kind": "U64",
+                                                            "negative_sign": false,
+                                                            "value": 0
+                                                          }
+                                                        }
                                                       }
                                                     ],
                                                     "kind": "Effectful"
-                                                  }
-                                                },
-                                                {
-                                                  "Literal": {
-                                                    "Integer": {
-                                                      "kind": "U64",
-                                                      "negative_sign": false,
-                                                      "value": 0
-                                                    }
                                                   }
                                                 }
                                               ],
@@ -4678,7 +4859,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -4695,7 +4876,7 @@
                                 "body": {
                                   "Let": {
                                     "name": "refund",
-                                    "is_user": false,
+                                    "ty": null,
                                     "init": {
                                       "Call": {
                                         "func": {
@@ -4718,86 +4899,100 @@
                                           {
                                             "Let": {
                                               "name": null,
-                                              "is_user": true,
+                                              "ty": {
+                                                "Tuple": {
+                                                  "tys": []
+                                                }
+                                              },
                                               "init": {
-                                                "Let": {
-                                                  "name": "β",
-                                                  "is_user": false,
-                                                  "init": {
-                                                    "Call": {
-                                                      "func": {
-                                                        "LocalVar": "M.SubPointer.get_struct_record_field"
-                                                      },
-                                                      "args": [
-                                                        {
-                                                          "Call": {
-                                                            "func": {
-                                                              "LocalVar": "M.deref"
-                                                            },
-                                                            "args": [
-                                                              {
-                                                                "Call": {
-                                                                  "func": {
-                                                                    "LocalVar": "M.read"
-                                                                  },
-                                                                  "args": [
-                                                                    {
-                                                                      "LocalVar": "self"
-                                                                    }
-                                                                  ],
-                                                                  "kind": "Effectful"
-                                                                }
-                                                              }
-                                                            ],
-                                                            "kind": "Effectful"
-                                                          }
-                                                        },
-                                                        {
-                                                          "InternalString": "revm_interpreter::gas::Gas"
-                                                        },
-                                                        {
-                                                          "InternalString": "refunded"
-                                                        }
-                                                      ],
-                                                      "kind": "Effectful"
-                                                    }
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
                                                   },
-                                                  "body": {
-                                                    "Call": {
-                                                      "func": {
-                                                        "LocalVar": "M.write"
-                                                      },
-                                                      "args": [
-                                                        {
-                                                          "LocalVar": "β"
-                                                        },
-                                                        {
+                                                  "args": [
+                                                    {
+                                                      "Let": {
+                                                        "name": "β",
+                                                        "ty": null,
+                                                        "init": {
                                                           "Call": {
                                                             "func": {
-                                                              "LocalVar": "BinOp.Wrap.add"
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
                                                             },
                                                             "args": [
                                                               {
                                                                 "Call": {
                                                                   "func": {
-                                                                    "LocalVar": "M.read"
+                                                                    "LocalVar": "M.deref"
                                                                   },
                                                                   "args": [
                                                                     {
-                                                                      "LocalVar": "β"
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "self"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
                                                                     }
                                                                   ],
                                                                   "kind": "Effectful"
                                                                 }
                                                               },
                                                               {
+                                                                "InternalString": "revm_interpreter::gas::Gas"
+                                                              },
+                                                              {
+                                                                "InternalString": "refunded"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        "body": {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.write"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "β"
+                                                              },
+                                                              {
                                                                 "Call": {
                                                                   "func": {
-                                                                    "LocalVar": "M.read"
+                                                                    "LocalVar": "BinOp.Wrap.add"
                                                                   },
                                                                   "args": [
                                                                     {
-                                                                      "LocalVar": "refund"
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "β"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "refund"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
                                                                     }
                                                                   ],
                                                                   "kind": "Effectful"
@@ -4807,10 +5002,10 @@
                                                             "kind": "Effectful"
                                                           }
                                                         }
-                                                      ],
-                                                      "kind": "Effectful"
+                                                      }
                                                     }
-                                                  }
+                                                  ],
+                                                  "kind": "Effectful"
                                                 }
                                               },
                                               "body": {
@@ -4913,7 +5108,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -4930,7 +5125,7 @@
                                 "body": {
                                   "Let": {
                                     "name": "is_london",
-                                    "is_user": false,
+                                    "ty": null,
                                     "init": {
                                       "Call": {
                                         "func": {
@@ -4953,7 +5148,13 @@
                                           {
                                             "Let": {
                                               "name": "max_refund_quotient",
-                                              "is_user": true,
+                                              "ty": {
+                                                "Path": {
+                                                  "path": [
+                                                    "u64"
+                                                  ]
+                                                }
+                                              },
                                               "init": {
                                                 "Call": {
                                                   "func": {
@@ -4989,7 +5190,7 @@
                                                               "body": {
                                                                 "Let": {
                                                                   "name": "γ",
-                                                                  "is_user": false,
+                                                                  "ty": null,
                                                                   "init": {
                                                                     "Use": {
                                                                       "LocalVar": "is_london"
@@ -4998,7 +5199,7 @@
                                                                   "body": {
                                                                     "Let": {
                                                                       "name": null,
-                                                                      "is_user": false,
+                                                                      "ty": null,
                                                                       "init": {
                                                                         "Call": {
                                                                           "func": {
@@ -5095,142 +5296,156 @@
                                               "body": {
                                                 "Let": {
                                                   "name": null,
-                                                  "is_user": true,
+                                                  "ty": {
+                                                    "Tuple": {
+                                                      "tys": []
+                                                    }
+                                                  },
                                                   "init": {
                                                     "Call": {
                                                       "func": {
-                                                        "LocalVar": "M.write"
+                                                        "LocalVar": "M.alloc"
                                                       },
                                                       "args": [
                                                         {
                                                           "Call": {
                                                             "func": {
-                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                              "LocalVar": "M.write"
                                                             },
                                                             "args": [
                                                               {
                                                                 "Call": {
                                                                   "func": {
-                                                                    "LocalVar": "M.deref"
+                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
                                                                   },
                                                                   "args": [
                                                                     {
                                                                       "Call": {
                                                                         "func": {
-                                                                          "LocalVar": "M.read"
+                                                                          "LocalVar": "M.deref"
                                                                         },
                                                                         "args": [
                                                                           {
-                                                                            "LocalVar": "self"
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "self"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
                                                                           }
                                                                         ],
                                                                         "kind": "Effectful"
                                                                       }
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "revm_interpreter::gas::Gas"
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "refunded"
                                                                     }
                                                                   ],
                                                                   "kind": "Effectful"
                                                                 }
                                                               },
                                                               {
-                                                                "InternalString": "revm_interpreter::gas::Gas"
-                                                              },
-                                                              {
-                                                                "InternalString": "refunded"
-                                                              }
-                                                            ],
-                                                            "kind": "Effectful"
-                                                          }
-                                                        },
-                                                        {
-                                                          "Cast": {
-                                                            "target_ty": {
-                                                              "Path": {
-                                                                "path": [
-                                                                  "i64"
-                                                                ]
-                                                              }
-                                                            },
-                                                            "source": {
-                                                              "Call": {
-                                                                "func": {
-                                                                  "GetTraitMethod": {
-                                                                    "trait_name": [
-                                                                      "core",
-                                                                      "cmp",
-                                                                      "Ord"
-                                                                    ],
-                                                                    "self_ty": {
-                                                                      "Path": {
-                                                                        "path": [
-                                                                          "u64"
-                                                                        ]
-                                                                      }
-                                                                    },
-                                                                    "trait_consts": [],
-                                                                    "trait_tys": [],
-                                                                    "method_name": "min",
-                                                                    "generic_consts": [],
-                                                                    "generic_tys": []
-                                                                  }
-                                                                },
-                                                                "args": [
-                                                                  {
-                                                                    "Cast": {
-                                                                      "target_ty": {
-                                                                        "Path": {
-                                                                          "path": [
-                                                                            "u64"
-                                                                          ]
-                                                                        }
-                                                                      },
-                                                                      "source": {
-                                                                        "Call": {
-                                                                          "func": {
-                                                                            "GetAssociatedFunction": {
-                                                                              "ty": {
-                                                                                "Application": {
-                                                                                  "func": {
-                                                                                    "Path": {
-                                                                                      "path": [
-                                                                                        "revm_interpreter",
-                                                                                        "gas",
-                                                                                        "Gas"
-                                                                                      ]
-                                                                                    }
-                                                                                  },
-                                                                                  "consts": [],
-                                                                                  "tys": []
-                                                                                }
-                                                                              },
-                                                                              "func": "refunded",
-                                                                              "generic_consts": [],
-                                                                              "generic_tys": []
+                                                                "Cast": {
+                                                                  "target_ty": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "i64"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "source": {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "GetTraitMethod": {
+                                                                          "trait_name": [
+                                                                            "core",
+                                                                            "cmp",
+                                                                            "Ord"
+                                                                          ],
+                                                                          "self_ty": {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "u64"
+                                                                              ]
                                                                             }
                                                                           },
-                                                                          "args": [
-                                                                            {
+                                                                          "trait_consts": [],
+                                                                          "trait_tys": [],
+                                                                          "method_name": "min",
+                                                                          "generic_consts": [],
+                                                                          "generic_tys": []
+                                                                        }
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "Cast": {
+                                                                            "target_ty": {
+                                                                              "Path": {
+                                                                                "path": [
+                                                                                  "u64"
+                                                                                ]
+                                                                              }
+                                                                            },
+                                                                            "source": {
                                                                               "Call": {
                                                                                 "func": {
-                                                                                  "LocalVar": "M.borrow"
+                                                                                  "GetAssociatedFunction": {
+                                                                                    "ty": {
+                                                                                      "Application": {
+                                                                                        "func": {
+                                                                                          "Path": {
+                                                                                            "path": [
+                                                                                              "revm_interpreter",
+                                                                                              "gas",
+                                                                                              "Gas"
+                                                                                            ]
+                                                                                          }
+                                                                                        },
+                                                                                        "consts": [],
+                                                                                        "tys": []
+                                                                                      }
+                                                                                    },
+                                                                                    "func": "refunded",
+                                                                                    "generic_consts": [],
+                                                                                    "generic_tys": []
+                                                                                  }
                                                                                 },
                                                                                 "args": [
                                                                                   {
-                                                                                    "LocalVar": "Pointer.Kind.Ref"
-                                                                                  },
-                                                                                  {
                                                                                     "Call": {
                                                                                       "func": {
-                                                                                        "LocalVar": "M.deref"
+                                                                                        "LocalVar": "M.borrow"
                                                                                       },
                                                                                       "args": [
                                                                                         {
+                                                                                          "LocalVar": "Pointer.Kind.Ref"
+                                                                                        },
+                                                                                        {
                                                                                           "Call": {
                                                                                             "func": {
-                                                                                              "LocalVar": "M.read"
+                                                                                              "LocalVar": "M.deref"
                                                                                             },
                                                                                             "args": [
                                                                                               {
-                                                                                                "LocalVar": "self"
+                                                                                                "Call": {
+                                                                                                  "func": {
+                                                                                                    "LocalVar": "M.read"
+                                                                                                  },
+                                                                                                  "args": [
+                                                                                                    {
+                                                                                                      "LocalVar": "self"
+                                                                                                    }
+                                                                                                  ],
+                                                                                                  "kind": "Effectful"
+                                                                                                }
                                                                                               }
                                                                                             ],
                                                                                             "kind": "Effectful"
@@ -5241,69 +5456,77 @@
                                                                                     }
                                                                                   }
                                                                                 ],
-                                                                                "kind": "Effectful"
+                                                                                "kind": {
+                                                                                  "Closure": {
+                                                                                    "Path": {
+                                                                                      "path": [
+                                                                                        "i64"
+                                                                                      ]
+                                                                                    }
+                                                                                  }
+                                                                                }
                                                                               }
                                                                             }
-                                                                          ],
-                                                                          "kind": "Closure"
-                                                                        }
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  {
-                                                                    "Call": {
-                                                                      "func": {
-                                                                        "LocalVar": "BinOp.Wrap.div"
-                                                                      },
-                                                                      "args": [
+                                                                          }
+                                                                        },
                                                                         {
                                                                           "Call": {
                                                                             "func": {
-                                                                              "GetAssociatedFunction": {
-                                                                                "ty": {
-                                                                                  "Application": {
-                                                                                    "func": {
-                                                                                      "Path": {
-                                                                                        "path": [
-                                                                                          "revm_interpreter",
-                                                                                          "gas",
-                                                                                          "Gas"
-                                                                                        ]
-                                                                                      }
-                                                                                    },
-                                                                                    "consts": [],
-                                                                                    "tys": []
-                                                                                  }
-                                                                                },
-                                                                                "func": "spent",
-                                                                                "generic_consts": [],
-                                                                                "generic_tys": []
-                                                                              }
+                                                                              "LocalVar": "BinOp.Wrap.div"
                                                                             },
                                                                             "args": [
                                                                               {
                                                                                 "Call": {
                                                                                   "func": {
-                                                                                    "LocalVar": "M.borrow"
+                                                                                    "GetAssociatedFunction": {
+                                                                                      "ty": {
+                                                                                        "Application": {
+                                                                                          "func": {
+                                                                                            "Path": {
+                                                                                              "path": [
+                                                                                                "revm_interpreter",
+                                                                                                "gas",
+                                                                                                "Gas"
+                                                                                              ]
+                                                                                            }
+                                                                                          },
+                                                                                          "consts": [],
+                                                                                          "tys": []
+                                                                                        }
+                                                                                      },
+                                                                                      "func": "spent",
+                                                                                      "generic_consts": [],
+                                                                                      "generic_tys": []
+                                                                                    }
                                                                                   },
                                                                                   "args": [
                                                                                     {
-                                                                                      "LocalVar": "Pointer.Kind.Ref"
-                                                                                    },
-                                                                                    {
                                                                                       "Call": {
                                                                                         "func": {
-                                                                                          "LocalVar": "M.deref"
+                                                                                          "LocalVar": "M.borrow"
                                                                                         },
                                                                                         "args": [
                                                                                           {
+                                                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                                                          },
+                                                                                          {
                                                                                             "Call": {
                                                                                               "func": {
-                                                                                                "LocalVar": "M.read"
+                                                                                                "LocalVar": "M.deref"
                                                                                               },
                                                                                               "args": [
                                                                                                 {
-                                                                                                  "LocalVar": "self"
+                                                                                                  "Call": {
+                                                                                                    "func": {
+                                                                                                      "LocalVar": "M.read"
+                                                                                                    },
+                                                                                                    "args": [
+                                                                                                      {
+                                                                                                        "LocalVar": "self"
+                                                                                                      }
+                                                                                                    ],
+                                                                                                    "kind": "Effectful"
+                                                                                                  }
                                                                                                 }
                                                                                               ],
                                                                                               "kind": "Effectful"
@@ -5314,34 +5537,50 @@
                                                                                       }
                                                                                     }
                                                                                   ],
+                                                                                  "kind": {
+                                                                                    "Closure": {
+                                                                                      "Path": {
+                                                                                        "path": [
+                                                                                          "u64"
+                                                                                        ]
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              },
+                                                                              {
+                                                                                "Call": {
+                                                                                  "func": {
+                                                                                    "LocalVar": "M.read"
+                                                                                  },
+                                                                                  "args": [
+                                                                                    {
+                                                                                      "LocalVar": "max_refund_quotient"
+                                                                                    }
+                                                                                  ],
                                                                                   "kind": "Effectful"
                                                                                 }
-                                                                              }
-                                                                            ],
-                                                                            "kind": "Closure"
-                                                                          }
-                                                                        },
-                                                                        {
-                                                                          "Call": {
-                                                                            "func": {
-                                                                              "LocalVar": "M.read"
-                                                                            },
-                                                                            "args": [
-                                                                              {
-                                                                                "LocalVar": "max_refund_quotient"
                                                                               }
                                                                             ],
                                                                             "kind": "Effectful"
                                                                           }
                                                                         }
                                                                       ],
-                                                                      "kind": "Effectful"
+                                                                      "kind": {
+                                                                        "Closure": {
+                                                                          "Path": {
+                                                                            "path": [
+                                                                              "u64"
+                                                                            ]
+                                                                          }
+                                                                        }
+                                                                      }
                                                                     }
                                                                   }
-                                                                ],
-                                                                "kind": "Closure"
+                                                                }
                                                               }
-                                                            }
+                                                            ],
+                                                            "kind": "Effectful"
                                                           }
                                                         }
                                                       ],
@@ -5449,7 +5688,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -5466,7 +5705,7 @@
                                 "body": {
                                   "Let": {
                                     "name": "refund",
-                                    "is_user": false,
+                                    "ty": null,
                                     "init": {
                                       "Call": {
                                         "func": {
@@ -5489,60 +5728,74 @@
                                           {
                                             "Let": {
                                               "name": null,
-                                              "is_user": true,
+                                              "ty": {
+                                                "Tuple": {
+                                                  "tys": []
+                                                }
+                                              },
                                               "init": {
                                                 "Call": {
                                                   "func": {
-                                                    "LocalVar": "M.write"
+                                                    "LocalVar": "M.alloc"
                                                   },
                                                   "args": [
                                                     {
                                                       "Call": {
                                                         "func": {
-                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                          "LocalVar": "M.write"
                                                         },
                                                         "args": [
                                                           {
                                                             "Call": {
                                                               "func": {
-                                                                "LocalVar": "M.deref"
+                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
                                                               },
                                                               "args": [
                                                                 {
                                                                   "Call": {
                                                                     "func": {
-                                                                      "LocalVar": "M.read"
+                                                                      "LocalVar": "M.deref"
                                                                     },
                                                                     "args": [
                                                                       {
-                                                                        "LocalVar": "self"
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.read"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "LocalVar": "self"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
                                                                       }
                                                                     ],
                                                                     "kind": "Effectful"
                                                                   }
+                                                                },
+                                                                {
+                                                                  "InternalString": "revm_interpreter::gas::Gas"
+                                                                },
+                                                                {
+                                                                  "InternalString": "refunded"
                                                                 }
                                                               ],
                                                               "kind": "Effectful"
                                                             }
                                                           },
                                                           {
-                                                            "InternalString": "revm_interpreter::gas::Gas"
-                                                          },
-                                                          {
-                                                            "InternalString": "refunded"
-                                                          }
-                                                        ],
-                                                        "kind": "Effectful"
-                                                      }
-                                                    },
-                                                    {
-                                                      "Call": {
-                                                        "func": {
-                                                          "LocalVar": "M.read"
-                                                        },
-                                                        "args": [
-                                                          {
-                                                            "LocalVar": "refund"
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "refund"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
                                                           }
                                                         ],
                                                         "kind": "Effectful"
@@ -5656,7 +5909,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -5673,7 +5926,7 @@
                                 "body": {
                                   "Let": {
                                     "name": "cost",
-                                    "is_user": false,
+                                    "ty": null,
                                     "init": {
                                       "Call": {
                                         "func": {
@@ -5781,7 +6034,28 @@
                                                             }
                                                           }
                                                         ],
-                                                        "kind": "Closure"
+                                                        "kind": {
+                                                          "Closure": {
+                                                            "Tuple": {
+                                                              "tys": [
+                                                                {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "u64"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "bool"
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        }
                                                       }
                                                     }
                                                   ],
@@ -5800,7 +6074,7 @@
                                                     "body": {
                                                       "Let": {
                                                         "name": "γ0_0",
-                                                        "is_user": false,
+                                                        "ty": null,
                                                         "init": {
                                                           "Call": {
                                                             "func": {
@@ -5820,7 +6094,7 @@
                                                         "body": {
                                                           "Let": {
                                                             "name": "γ0_1",
-                                                            "is_user": false,
+                                                            "ty": null,
                                                             "init": {
                                                               "Call": {
                                                                 "func": {
@@ -5840,7 +6114,7 @@
                                                             "body": {
                                                               "Let": {
                                                                 "name": "remaining",
-                                                                "is_user": false,
+                                                                "ty": null,
                                                                 "init": {
                                                                   "Call": {
                                                                     "func": {
@@ -5857,7 +6131,7 @@
                                                                 "body": {
                                                                   "Let": {
                                                                     "name": "overflow",
-                                                                    "is_user": false,
+                                                                    "ty": null,
                                                                     "init": {
                                                                       "Call": {
                                                                         "func": {
@@ -5874,7 +6148,13 @@
                                                                     "body": {
                                                                       "Let": {
                                                                         "name": "success",
-                                                                        "is_user": true,
+                                                                        "ty": {
+                                                                          "Path": {
+                                                                            "path": [
+                                                                              "bool"
+                                                                            ]
+                                                                          }
+                                                                        },
                                                                         "init": {
                                                                           "Call": {
                                                                             "func": {
@@ -5911,7 +6191,11 @@
                                                                         "body": {
                                                                           "Let": {
                                                                             "name": null,
-                                                                            "is_user": true,
+                                                                            "ty": {
+                                                                              "Tuple": {
+                                                                                "tys": []
+                                                                              }
+                                                                            },
                                                                             "init": {
                                                                               "Match": {
                                                                                 "scrutinee": {
@@ -5941,7 +6225,7 @@
                                                                                       "body": {
                                                                                         "Let": {
                                                                                           "name": "γ",
-                                                                                          "is_user": false,
+                                                                                          "ty": null,
                                                                                           "init": {
                                                                                             "Use": {
                                                                                               "LocalVar": "success"
@@ -5950,7 +6234,7 @@
                                                                                           "body": {
                                                                                             "Let": {
                                                                                               "name": null,
-                                                                                              "is_user": false,
+                                                                                              "ty": null,
                                                                                               "init": {
                                                                                                 "Call": {
                                                                                                   "func": {
@@ -5982,60 +6266,74 @@
                                                                                               "body": {
                                                                                                 "Let": {
                                                                                                   "name": null,
-                                                                                                  "is_user": true,
+                                                                                                  "ty": {
+                                                                                                    "Tuple": {
+                                                                                                      "tys": []
+                                                                                                    }
+                                                                                                  },
                                                                                                   "init": {
                                                                                                     "Call": {
                                                                                                       "func": {
-                                                                                                        "LocalVar": "M.write"
+                                                                                                        "LocalVar": "M.alloc"
                                                                                                       },
                                                                                                       "args": [
                                                                                                         {
                                                                                                           "Call": {
                                                                                                             "func": {
-                                                                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                                                              "LocalVar": "M.write"
                                                                                                             },
                                                                                                             "args": [
                                                                                                               {
                                                                                                                 "Call": {
                                                                                                                   "func": {
-                                                                                                                    "LocalVar": "M.deref"
+                                                                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
                                                                                                                   },
                                                                                                                   "args": [
                                                                                                                     {
                                                                                                                       "Call": {
                                                                                                                         "func": {
-                                                                                                                          "LocalVar": "M.read"
+                                                                                                                          "LocalVar": "M.deref"
                                                                                                                         },
                                                                                                                         "args": [
                                                                                                                           {
-                                                                                                                            "LocalVar": "self"
+                                                                                                                            "Call": {
+                                                                                                                              "func": {
+                                                                                                                                "LocalVar": "M.read"
+                                                                                                                              },
+                                                                                                                              "args": [
+                                                                                                                                {
+                                                                                                                                  "LocalVar": "self"
+                                                                                                                                }
+                                                                                                                              ],
+                                                                                                                              "kind": "Effectful"
+                                                                                                                            }
                                                                                                                           }
                                                                                                                         ],
                                                                                                                         "kind": "Effectful"
                                                                                                                       }
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                      "InternalString": "revm_interpreter::gas::Gas"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                      "InternalString": "remaining"
                                                                                                                     }
                                                                                                                   ],
                                                                                                                   "kind": "Effectful"
                                                                                                                 }
                                                                                                               },
                                                                                                               {
-                                                                                                                "InternalString": "revm_interpreter::gas::Gas"
-                                                                                                              },
-                                                                                                              {
-                                                                                                                "InternalString": "remaining"
-                                                                                                              }
-                                                                                                            ],
-                                                                                                            "kind": "Effectful"
-                                                                                                          }
-                                                                                                        },
-                                                                                                        {
-                                                                                                          "Call": {
-                                                                                                            "func": {
-                                                                                                              "LocalVar": "M.read"
-                                                                                                            },
-                                                                                                            "args": [
-                                                                                                              {
-                                                                                                                "LocalVar": "remaining"
+                                                                                                                "Call": {
+                                                                                                                  "func": {
+                                                                                                                    "LocalVar": "M.read"
+                                                                                                                  },
+                                                                                                                  "args": [
+                                                                                                                    {
+                                                                                                                      "LocalVar": "remaining"
+                                                                                                                    }
+                                                                                                                  ],
+                                                                                                                  "kind": "Effectful"
+                                                                                                                }
                                                                                                               }
                                                                                                             ],
                                                                                                             "kind": "Effectful"
@@ -6220,7 +6518,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -6237,7 +6535,7 @@
                                 "body": {
                                   "Let": {
                                     "name": "new_len",
-                                    "is_user": false,
+                                    "ty": null,
                                     "init": {
                                       "Call": {
                                         "func": {
@@ -6365,7 +6663,31 @@
                                                                       }
                                                                     }
                                                                   ],
-                                                                  "kind": "Closure"
+                                                                  "kind": {
+                                                                    "Closure": {
+                                                                      "Application": {
+                                                                        "func": {
+                                                                          "Path": {
+                                                                            "path": [
+                                                                              "core",
+                                                                              "option",
+                                                                              "Option"
+                                                                            ]
+                                                                          }
+                                                                        },
+                                                                        "consts": [],
+                                                                        "tys": [
+                                                                          {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "u64"
+                                                                              ]
+                                                                            }
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    }
+                                                                  }
                                                                 }
                                                               }
                                                             ],
@@ -6384,7 +6706,7 @@
                                                               "body": {
                                                                 "Let": {
                                                                   "name": "γ0_0",
-                                                                  "is_user": false,
+                                                                  "ty": null,
                                                                   "init": {
                                                                     "Call": {
                                                                       "func": {
@@ -6407,7 +6729,7 @@
                                                                   "body": {
                                                                     "Let": {
                                                                       "name": "additional_cost",
-                                                                      "is_user": false,
+                                                                      "ty": null,
                                                                       "init": {
                                                                         "Call": {
                                                                           "func": {
@@ -6424,7 +6746,11 @@
                                                                       "body": {
                                                                         "Let": {
                                                                           "name": null,
-                                                                          "is_user": true,
+                                                                          "ty": {
+                                                                            "Tuple": {
+                                                                              "tys": []
+                                                                            }
+                                                                          },
                                                                           "init": {
                                                                             "Match": {
                                                                               "scrutinee": {
@@ -6454,7 +6780,7 @@
                                                                                     "body": {
                                                                                       "Let": {
                                                                                         "name": "γ",
-                                                                                        "is_user": false,
+                                                                                        "ty": null,
                                                                                         "init": {
                                                                                           "Use": {
                                                                                             "Call": {
@@ -6543,7 +6869,15 @@
                                                                                                               }
                                                                                                             }
                                                                                                           ],
-                                                                                                          "kind": "Closure"
+                                                                                                          "kind": {
+                                                                                                            "Closure": {
+                                                                                                              "Path": {
+                                                                                                                "path": [
+                                                                                                                  "bool"
+                                                                                                                ]
+                                                                                                              }
+                                                                                                            }
+                                                                                                          }
                                                                                                         }
                                                                                                       }
                                                                                                     ],
@@ -6558,7 +6892,7 @@
                                                                                         "body": {
                                                                                           "Let": {
                                                                                             "name": null,
-                                                                                            "is_user": false,
+                                                                                            "ty": null,
                                                                                             "init": {
                                                                                               "Call": {
                                                                                                 "func": {
@@ -6892,7 +7226,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -7121,7 +7455,15 @@
                                             }
                                           },
                                           "args": [],
-                                          "kind": "Closure"
+                                          "kind": {
+                                            "Closure": {
+                                              "Path": {
+                                                "path": [
+                                                  "usize"
+                                                ]
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     ],
@@ -7151,7 +7493,15 @@
                                             }
                                           },
                                           "args": [],
-                                          "kind": "Closure"
+                                          "kind": {
+                                            "Closure": {
+                                              "Path": {
+                                                "path": [
+                                                  "u64"
+                                                ]
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     ]
@@ -7317,7 +7667,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -7334,7 +7684,7 @@
                                   "body": {
                                     "Let": {
                                       "name": "f",
-                                      "is_user": false,
+                                      "ty": null,
                                       "init": {
                                         "Call": {
                                           "func": {
@@ -7697,7 +8047,44 @@
                                               }
                                             }
                                           ],
-                                          "kind": "Closure"
+                                          "kind": {
+                                            "Closure": {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "core",
+                                                      "result",
+                                                      "Result"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "Tuple": {
+                                                      "tys": []
+                                                    }
+                                                  },
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "core",
+                                                            "fmt",
+                                                            "Error"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": []
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     }
@@ -7870,7 +8257,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -7887,7 +8274,7 @@
                                   "body": {
                                     "Let": {
                                       "name": "other",
-                                      "is_user": false,
+                                      "ty": null,
                                       "init": {
                                         "Call": {
                                           "func": {
@@ -8225,7 +8612,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -8427,7 +8814,7 @@
                               "body": {
                                 "Let": {
                                   "name": "self",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -8444,7 +8831,7 @@
                                   "body": {
                                     "Let": {
                                       "name": "state",
-                                      "is_user": false,
+                                      "ty": null,
                                       "init": {
                                         "Call": {
                                           "func": {
@@ -8467,7 +8854,11 @@
                                             {
                                               "Let": {
                                                 "name": null,
-                                                "is_user": true,
+                                                "ty": {
+                                                  "Tuple": {
+                                                    "tys": []
+                                                  }
+                                                },
                                                 "init": {
                                                   "Call": {
                                                     "func": {
@@ -8616,7 +9007,13 @@
                                                               }
                                                             }
                                                           ],
-                                                          "kind": "Closure"
+                                                          "kind": {
+                                                            "Closure": {
+                                                              "Tuple": {
+                                                                "tys": []
+                                                              }
+                                                            }
+                                                          }
                                                         }
                                                       }
                                                     ],
@@ -8771,7 +9168,13 @@
                                                               }
                                                             }
                                                           ],
-                                                          "kind": "Closure"
+                                                          "kind": {
+                                                            "Closure": {
+                                                              "Tuple": {
+                                                                "tys": []
+                                                              }
+                                                            }
+                                                          }
                                                         }
                                                       }
                                                     ],
@@ -8991,7 +9394,7 @@
                             "body": {
                               "Let": {
                                 "name": "self",
-                                "is_user": false,
+                                "ty": null,
                                 "init": {
                                   "Call": {
                                     "func": {
@@ -9008,7 +9411,7 @@
                                 "body": {
                                   "Let": {
                                     "name": "new_num",
-                                    "is_user": false,
+                                    "ty": null,
                                     "init": {
                                       "Call": {
                                         "func": {
@@ -9040,7 +9443,11 @@
                                                     {
                                                       "Let": {
                                                         "name": null,
-                                                        "is_user": true,
+                                                        "ty": {
+                                                          "Tuple": {
+                                                            "tys": []
+                                                          }
+                                                        },
                                                         "init": {
                                                           "Match": {
                                                             "scrutinee": {
@@ -9070,7 +9477,7 @@
                                                                   "body": {
                                                                     "Let": {
                                                                       "name": "γ",
-                                                                      "is_user": false,
+                                                                      "ty": null,
                                                                       "init": {
                                                                         "Use": {
                                                                           "Call": {
@@ -9158,7 +9565,7 @@
                                                                       "body": {
                                                                         "Let": {
                                                                           "name": null,
-                                                                          "is_user": false,
+                                                                          "ty": null,
                                                                           "init": {
                                                                             "Call": {
                                                                               "func": {
@@ -9271,60 +9678,74 @@
                                                         "body": {
                                                           "Let": {
                                                             "name": null,
-                                                            "is_user": true,
+                                                            "ty": {
+                                                              "Tuple": {
+                                                                "tys": []
+                                                              }
+                                                            },
                                                             "init": {
                                                               "Call": {
                                                                 "func": {
-                                                                  "LocalVar": "M.write"
+                                                                  "LocalVar": "M.alloc"
                                                                 },
                                                                 "args": [
                                                                   {
                                                                     "Call": {
                                                                       "func": {
-                                                                        "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                        "LocalVar": "M.write"
                                                                       },
                                                                       "args": [
                                                                         {
                                                                           "Call": {
                                                                             "func": {
-                                                                              "LocalVar": "M.deref"
+                                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
                                                                             },
                                                                             "args": [
                                                                               {
                                                                                 "Call": {
                                                                                   "func": {
-                                                                                    "LocalVar": "M.read"
+                                                                                    "LocalVar": "M.deref"
                                                                                   },
                                                                                   "args": [
                                                                                     {
-                                                                                      "LocalVar": "self"
+                                                                                      "Call": {
+                                                                                        "func": {
+                                                                                          "LocalVar": "M.read"
+                                                                                        },
+                                                                                        "args": [
+                                                                                          {
+                                                                                            "LocalVar": "self"
+                                                                                          }
+                                                                                        ],
+                                                                                        "kind": "Effectful"
+                                                                                      }
                                                                                     }
                                                                                   ],
                                                                                   "kind": "Effectful"
                                                                                 }
+                                                                              },
+                                                                              {
+                                                                                "InternalString": "revm_interpreter::gas::MemoryGas"
+                                                                              },
+                                                                              {
+                                                                                "InternalString": "words_num"
                                                                               }
                                                                             ],
                                                                             "kind": "Effectful"
                                                                           }
                                                                         },
                                                                         {
-                                                                          "InternalString": "revm_interpreter::gas::MemoryGas"
-                                                                        },
-                                                                        {
-                                                                          "InternalString": "words_num"
-                                                                        }
-                                                                      ],
-                                                                      "kind": "Effectful"
-                                                                    }
-                                                                  },
-                                                                  {
-                                                                    "Call": {
-                                                                      "func": {
-                                                                        "LocalVar": "M.read"
-                                                                      },
-                                                                      "args": [
-                                                                        {
-                                                                          "LocalVar": "new_num"
+                                                                          "Call": {
+                                                                            "func": {
+                                                                              "LocalVar": "M.read"
+                                                                            },
+                                                                            "args": [
+                                                                              {
+                                                                                "LocalVar": "new_num"
+                                                                              }
+                                                                            ],
+                                                                            "kind": "Effectful"
+                                                                          }
                                                                         }
                                                                       ],
                                                                       "kind": "Effectful"
@@ -9337,7 +9758,13 @@
                                                             "body": {
                                                               "Let": {
                                                                 "name": "cost",
-                                                                "is_user": true,
+                                                                "ty": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "u64"
+                                                                    ]
+                                                                  }
+                                                                },
                                                                 "init": {
                                                                   "Call": {
                                                                     "func": {
@@ -9373,7 +9800,15 @@
                                                                               }
                                                                             }
                                                                           ],
-                                                                          "kind": "Closure"
+                                                                          "kind": {
+                                                                            "Closure": {
+                                                                              "Path": {
+                                                                                "path": [
+                                                                                  "u64"
+                                                                                ]
+                                                                              }
+                                                                            }
+                                                                          }
                                                                         }
                                                                       }
                                                                     ],
@@ -9383,7 +9818,11 @@
                                                                 "body": {
                                                                   "Let": {
                                                                     "name": null,
-                                                                    "is_user": true,
+                                                                    "ty": {
+                                                                      "Tuple": {
+                                                                        "tys": []
+                                                                      }
+                                                                    },
                                                                     "init": {
                                                                       "Call": {
                                                                         "func": {
@@ -9527,7 +9966,13 @@
                                                                                   }
                                                                                 }
                                                                               ],
-                                                                              "kind": "Closure"
+                                                                              "kind": {
+                                                                                "Closure": {
+                                                                                  "Tuple": {
+                                                                                    "tys": []
+                                                                                  }
+                                                                                }
+                                                                              }
                                                                             }
                                                                           }
                                                                         ],

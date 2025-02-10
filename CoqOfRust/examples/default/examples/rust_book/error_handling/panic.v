@@ -17,7 +17,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let beverage := M.alloc (| beverage |) in
       M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -27,6 +27,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.use
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -46,6 +47,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
+                        Ty.path "never",
                         M.get_function (|
                           "std::panicking::begin_panic",
                           [],
@@ -58,13 +60,15 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -97,6 +101,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -140,16 +145,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "panic::drink", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "water" |) |) |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "panic::drink", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "lemonade" |) |) |)
               ]

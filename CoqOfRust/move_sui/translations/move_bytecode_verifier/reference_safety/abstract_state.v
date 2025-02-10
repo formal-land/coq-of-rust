@@ -98,6 +98,10 @@ Module reference_safety.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -127,6 +131,10 @@ Module reference_safety.
                         |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
@@ -212,9 +220,10 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -226,9 +235,10 @@ Module reference_safety.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -270,6 +280,7 @@ Module reference_safety.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -373,6 +384,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             UnOp.not (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                   "is_reference",
@@ -495,6 +507,7 @@ Module reference_safety.
                           "move_bytecode_verifier::reference_safety::abstract_state::Label::Local"
                           [
                             M.call_closure (|
+                              Ty.path "u8",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "u8",
@@ -524,6 +537,7 @@ Module reference_safety.
                           "move_bytecode_verifier::reference_safety::abstract_state::Label::Global"
                           [
                             M.call_closure (|
+                              Ty.path "move_binary_format::file_format::StructDefinitionIndex",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -553,6 +567,7 @@ Module reference_safety.
                           "move_bytecode_verifier::reference_safety::abstract_state::Label::Field"
                           [
                             M.call_closure (|
+                              Ty.path "move_binary_format::file_format::FieldHandleIndex",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_binary_format::file_format::FieldHandleIndex",
@@ -608,6 +623,10 @@ Module reference_safety.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -639,6 +658,10 @@ Module reference_safety.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -670,6 +693,10 @@ Module reference_safety.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -761,9 +788,10 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -772,9 +800,10 @@ Module reference_safety.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -786,6 +815,7 @@ Module reference_safety.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
                       "core::cmp::Ord",
                       Ty.path "isize",
@@ -836,6 +866,7 @@ Module reference_safety.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.path "u8",
@@ -879,6 +910,7 @@ Module reference_safety.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.path
@@ -923,6 +955,7 @@ Module reference_safety.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.path "move_binary_format::file_format::FieldHandleIndex",
@@ -949,6 +982,7 @@ Module reference_safety.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
@@ -998,9 +1032,10 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -1009,9 +1044,10 @@ Module reference_safety.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -1050,6 +1086,7 @@ Module reference_safety.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
@@ -1087,6 +1124,7 @@ Module reference_safety.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -1138,6 +1176,7 @@ Module reference_safety.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -1170,6 +1209,7 @@ Module reference_safety.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
@@ -1204,9 +1244,10 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -1215,9 +1256,10 @@ Module reference_safety.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -1251,6 +1293,10 @@ Module reference_safety.
                       let __arg1_0 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "u8",
@@ -1288,6 +1334,10 @@ Module reference_safety.
                       let __arg1_0 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "move_binary_format::file_format::StructDefinitionIndex",
@@ -1325,6 +1375,10 @@ Module reference_safety.
                       let __arg1_0 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "move_binary_format::file_format::FieldHandleIndex",
@@ -1344,6 +1398,10 @@ Module reference_safety.
                     ltac:(M.monadic
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
@@ -1414,6 +1472,10 @@ Module reference_safety.
                       let i := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
@@ -1423,6 +1485,7 @@ Module reference_safety.
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -1450,6 +1513,7 @@ Module reference_safety.
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -1485,6 +1549,10 @@ Module reference_safety.
                       let i := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
@@ -1494,6 +1562,7 @@ Module reference_safety.
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -1521,6 +1590,7 @@ Module reference_safety.
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -1564,6 +1634,10 @@ Module reference_safety.
                       let i := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
@@ -1573,6 +1647,7 @@ Module reference_safety.
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -1600,6 +1675,7 @@ Module reference_safety.
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -1771,6 +1847,10 @@ Module reference_safety.
               [
                 ("current_function",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -1801,6 +1881,14 @@ Module reference_safety.
                   |));
                 ("locals",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -1835,6 +1923,13 @@ Module reference_safety.
                   |));
                 ("borrow_graph",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                      ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -1868,6 +1963,7 @@ Module reference_safety.
                   |));
                 ("next_id",
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "usize",
@@ -1917,6 +2013,10 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
@@ -2036,6 +2136,7 @@ Module reference_safety.
               LogicalOp.and (|
                 LogicalOp.and (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.apply
@@ -2074,6 +2175,7 @@ Module reference_safety.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.apply
@@ -2121,6 +2223,7 @@ Module reference_safety.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.apply
@@ -2285,10 +2388,11 @@ Module reference_safety.
           ltac:(M.monadic
             (let function_context := M.alloc (| function_context |) in
             M.read (|
-              let~ num_locals :=
+              let~ num_locals : Ty.path "usize" :=
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::Signature",
                         "len",
@@ -2300,6 +2404,10 @@ Module reference_safety.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                 "parameters",
@@ -2318,6 +2426,7 @@ Module reference_safety.
                       ]
                     |),
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::Signature",
                         "len",
@@ -2329,6 +2438,10 @@ Module reference_safety.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                 "locals",
@@ -2348,17 +2461,23 @@ Module reference_safety.
                     |)
                   |)
                 |) in
-              let~ next_id :=
+              let~ next_id : Ty.path "usize" :=
                 M.alloc (|
                   BinOp.Wrap.add (| M.read (| num_locals |), Value.Integer IntegerKind.Usize 1 |)
                 |) in
-              let~ state :=
+              let~ state :
+                  Ty.path
+                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" :=
                 M.alloc (|
                   Value.StructRecord
                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
                     [
                       ("current_function",
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             "index",
@@ -2374,6 +2493,14 @@ Module reference_safety.
                         |));
                       ("locals",
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           M.get_function (|
                             "alloc::vec::from_elem",
                             [],
@@ -2391,6 +2518,14 @@ Module reference_safety.
                         |));
                       ("borrow_graph",
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -2409,11 +2544,20 @@ Module reference_safety.
                       ("next_id", M.read (| next_id |))
                     ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -2433,6 +2577,15 @@ Module reference_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -2447,6 +2600,10 @@ Module reference_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -2461,6 +2618,18 @@ Module reference_safety.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -2483,6 +2652,13 @@ Module reference_safety.
                                             M.SubPointer.get_struct_tuple_field (|
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Signature"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_bytecode_verifier::absint::FunctionContext",
@@ -2519,10 +2695,26 @@ Module reference_safety.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path "usize";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -2580,6 +2772,7 @@ Module reference_safety.
                                                   M.use
                                                     (M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::SignatureToken",
@@ -2600,9 +2793,13 @@ Module reference_safety.
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
-                                                let~ id :=
+                                                let~ id :
+                                                    Ty.path
+                                                      "move_borrow_graph::references::RefID" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path
+                                                        "move_borrow_graph::references::RefID",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_borrow_graph::references::RefID",
@@ -2613,9 +2810,10 @@ Module reference_safety.
                                                       [ M.read (| param_idx |) ]
                                                     |)
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.tuple [],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
@@ -2641,6 +2839,7 @@ Module reference_safety.
                                                         |);
                                                         M.read (| id |);
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_binary_format::file_format::SignatureToken",
@@ -2658,41 +2857,50 @@ Module reference_safety.
                                                       ]
                                                     |)
                                                   |) in
-                                                M.write (|
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::index::IndexMut",
+                                                M.alloc (|
+                                                  M.write (|
+                                                    M.deref (|
+                                                      M.call_closure (|
                                                         Ty.apply
-                                                          (Ty.path "alloc::vec::Vec")
+                                                          (Ty.path "&mut")
                                                           []
                                                           [
                                                             Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                                            Ty.path "alloc::alloc::Global"
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                           ],
-                                                        [],
-                                                        [ Ty.path "usize" ],
-                                                        "index_mut",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.MutRef,
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            state,
-                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                            "locals"
-                                                          |)
-                                                        |);
-                                                        M.read (| param_idx |)
-                                                      ]
-                                                    |)
-                                                  |),
-                                                  Value.StructTuple
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
-                                                    [ M.read (| id |) ]
+                                                        M.get_trait_method (|
+                                                          "core::ops::index::IndexMut",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          [ Ty.path "usize" ],
+                                                          "index_mut",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.MutRef,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              state,
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                              "locals"
+                                                            |)
+                                                          |);
+                                                          M.read (| param_idx |)
+                                                        ]
+                                                      |)
+                                                    |),
+                                                    Value.StructTuple
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+                                                      [ M.read (| id |) ]
+                                                  |)
                                                 |)));
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
@@ -2703,9 +2911,10 @@ Module reference_safety.
                           |)))
                     ]
                   |)) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -2728,6 +2937,7 @@ Module reference_safety.
                         |)
                       |);
                       M.call_closure (|
+                        Ty.path "move_borrow_graph::references::RefID",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -2741,7 +2951,7 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2752,6 +2962,7 @@ Module reference_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -2768,6 +2979,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: state.is_canonical()" |) ]
                             |)
@@ -2795,6 +3007,7 @@ Module reference_safety.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -2836,6 +3049,7 @@ Module reference_safety.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -2876,6 +3090,7 @@ Module reference_safety.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "move_borrow_graph::references::RefID",
               M.get_associated_function (|
                 Ty.path "move_borrow_graph::references::RefID",
                 "new",
@@ -2884,6 +3099,7 @@ Module reference_safety.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -2932,6 +3148,7 @@ Module reference_safety.
             let status := M.alloc (| status |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
+              Ty.path "move_binary_format::errors::PartialVMError",
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "at_code_offset",
@@ -2940,6 +3157,7 @@ Module reference_safety.
               |),
               [
                 M.call_closure (|
+                  Ty.path "move_binary_format::errors::PartialVMError",
                   M.get_associated_function (|
                     Ty.path "move_binary_format::errors::PartialVMError",
                     "new",
@@ -2949,6 +3167,7 @@ Module reference_safety.
                   [ M.read (| status |) ]
                 |);
                 M.call_closure (|
+                  Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -3013,6 +3232,7 @@ Module reference_safety.
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
                           [
                             M.call_closure (|
+                              Ty.path "move_borrow_graph::references::RefID",
                               M.get_associated_function (|
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -3041,6 +3261,7 @@ Module reference_safety.
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
                           [
                             M.call_closure (|
+                              Ty.path "move_borrow_graph::references::RefID",
                               M.get_associated_function (|
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -3086,9 +3307,10 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let mut_ := M.alloc (| mut_ |) in
             M.read (|
-              let~ id :=
+              let~ id : Ty.path "move_borrow_graph::references::RefID" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_borrow_graph::references::RefID",
                     M.get_associated_function (|
                       Ty.path "move_borrow_graph::references::RefID",
                       "new",
@@ -3106,9 +3328,10 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3135,16 +3358,18 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                    "next_id"
-                  |) in
-                M.write (|
-                  β,
-                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  let β :=
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                      "next_id"
+                    |) in
+                  M.write (|
+                    β,
+                    BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                  |)
                 |) in
               id
             |)))
@@ -3167,6 +3392,7 @@ Module reference_safety.
             let parent := M.alloc (| parent |) in
             let child := M.alloc (| child |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3212,6 +3438,7 @@ Module reference_safety.
             let parent := M.alloc (| parent |) in
             let child := M.alloc (| child |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3259,6 +3486,7 @@ Module reference_safety.
             let field := M.alloc (| field |) in
             let child := M.alloc (| child |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3309,6 +3537,7 @@ Module reference_safety.
             let local := M.alloc (| local |) in
             let id := M.alloc (| id |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3332,6 +3561,7 @@ Module reference_safety.
                 |);
                 Value.Tuple [];
                 M.call_closure (|
+                  Ty.path "move_borrow_graph::references::RefID",
                   M.get_associated_function (|
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -3368,6 +3598,7 @@ Module reference_safety.
             let resource := M.alloc (| resource |) in
             let id := M.alloc (| id |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3391,6 +3622,7 @@ Module reference_safety.
                 |);
                 Value.Tuple [];
                 M.call_closure (|
+                  Ty.path "move_borrow_graph::references::RefID",
                   M.get_associated_function (|
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -3425,9 +3657,10 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let id := M.alloc (| id |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3477,6 +3710,33 @@ Module reference_safety.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path "move_borrow_graph::references::RefID";
+                            Ty.tuple [];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::Label";
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              []
+                              [
+                                Ty.path "move_borrow_graph::references::RefID";
+                                Ty.tuple [];
+                                Ty.path "alloc::alloc::Global"
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3512,6 +3772,7 @@ Module reference_safety.
                       M.alloc (|
                         UnOp.not (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3564,6 +3825,33 @@ Module reference_safety.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path "move_borrow_graph::references::RefID";
+                            Ty.tuple [];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::Label";
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              []
+                              [
+                                Ty.path "move_borrow_graph::references::RefID";
+                                Ty.tuple [];
+                                Ty.path "alloc::alloc::Global"
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3600,6 +3888,7 @@ Module reference_safety.
                         LogicalOp.or (|
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3627,6 +3916,7 @@ Module reference_safety.
                                         M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
@@ -3679,6 +3969,24 @@ Module reference_safety.
                                               Pointer.Kind.MutRef,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::map::Values")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::Label";
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::map::BTreeMap")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_borrow_graph::references::RefID";
+                                                          Ty.tuple [];
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path
@@ -3721,6 +4029,7 @@ Module reference_safety.
                                                               (let borrows := M.copy (| γ |) in
                                                               UnOp.not (|
                                                                 M.call_closure (|
+                                                                  Ty.path "bool",
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path
@@ -3765,6 +4074,7 @@ Module reference_safety.
                                       let label := M.copy (| γ0_0 |) in
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3776,6 +4086,10 @@ Module reference_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "bool" ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -3827,6 +4141,26 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::btree::map::BTreeMap")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_borrow_graph::references::RefID";
+                                                              Ty.tuple [];
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ]
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path
@@ -3878,6 +4212,7 @@ Module reference_safety.
                                                                   (let borrows := M.copy (| γ |) in
                                                                   UnOp.not (|
                                                                     M.call_closure (|
+                                                                      Ty.path "bool",
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -3961,6 +4296,33 @@ Module reference_safety.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path "move_borrow_graph::references::RefID";
+                            Ty.tuple [];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::Label";
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              []
+                              [
+                                Ty.path "move_borrow_graph::references::RefID";
+                                Ty.tuple [];
+                                Ty.path "alloc::alloc::Global"
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -3997,6 +4359,7 @@ Module reference_safety.
                         LogicalOp.or (|
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4024,6 +4387,7 @@ Module reference_safety.
                                         M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
@@ -4076,6 +4440,24 @@ Module reference_safety.
                                               Pointer.Kind.MutRef,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::map::Values")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::Label";
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::map::BTreeMap")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_borrow_graph::references::RefID";
+                                                          Ty.tuple [];
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path
@@ -4118,6 +4500,7 @@ Module reference_safety.
                                                               (let borrows := M.copy (| γ |) in
                                                               UnOp.not (|
                                                                 M.call_closure (|
+                                                                  Ty.path "bool",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4159,6 +4542,7 @@ Module reference_safety.
                                       let label := M.copy (| γ0_0 |) in
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -4170,6 +4554,10 @@ Module reference_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "bool" ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -4221,6 +4609,26 @@ Module reference_safety.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::btree::map::BTreeMap")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_borrow_graph::references::RefID";
+                                                              Ty.tuple [];
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ]
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path
@@ -4272,6 +4680,7 @@ Module reference_safety.
                                                                   (let borrows := M.copy (| γ |) in
                                                                   UnOp.not (|
                                                                     M.call_closure (|
+                                                                      Ty.path "bool",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4334,7 +4743,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let id := M.alloc (| id |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -4345,6 +4754,7 @@ Module reference_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -4377,6 +4787,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -4392,6 +4803,7 @@ Module reference_safety.
               M.alloc (|
                 UnOp.not (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_associated_function (|
                       Ty.path
                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4428,7 +4840,7 @@ Module reference_safety.
             let id := M.alloc (| id |) in
             let at_field_opt := M.alloc (| at_field_opt |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -4439,6 +4851,7 @@ Module reference_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -4471,6 +4884,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -4486,6 +4900,7 @@ Module reference_safety.
               M.alloc (|
                 UnOp.not (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_associated_function (|
                       Ty.path
                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4497,6 +4912,13 @@ Module reference_safety.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                       M.read (| id |);
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -4545,9 +4967,10 @@ Module reference_safety.
             let id := M.alloc (| id |) in
             let at_field_opt := M.alloc (| at_field_opt |) in
             M.read (|
-              let~ is_mutable :=
+              let~ is_mutable : Ty.path "bool" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -4578,6 +5001,7 @@ Module reference_safety.
                   UnOp.not (| M.read (| is_mutable |) |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_associated_function (|
                         Ty.path
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4612,6 +5036,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                 "has_consistent_borrows",
@@ -4621,6 +5046,7 @@ Module reference_safety.
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
+                  Ty.path "move_borrow_graph::references::RefID",
                   M.get_associated_function (|
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4662,6 +5088,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                 "has_consistent_mutable_borrows",
@@ -4671,6 +5098,7 @@ Module reference_safety.
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
+                  Ty.path "move_borrow_graph::references::RefID",
                   M.get_associated_function (|
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4708,6 +5136,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let resource := M.alloc (| resource |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                 "has_consistent_borrows",
@@ -4717,6 +5146,7 @@ Module reference_safety.
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
+                  Ty.path "move_borrow_graph::references::RefID",
                   M.get_associated_function (|
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4758,6 +5188,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let resource := M.alloc (| resource |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                 "has_consistent_mutable_borrows",
@@ -4767,6 +5198,7 @@ Module reference_safety.
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
+                  Ty.path "move_borrow_graph::references::RefID",
                   M.get_associated_function (|
                     Ty.path
                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4808,6 +5240,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             UnOp.not (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                   "has_consistent_borrows",
@@ -4817,6 +5250,7 @@ Module reference_safety.
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                   M.call_closure (|
+                    Ty.path "move_borrow_graph::references::RefID",
                     M.get_associated_function (|
                       Ty.path
                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4866,6 +5300,7 @@ Module reference_safety.
                       let id := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_associated_function (|
                             Ty.path
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -4931,6 +5366,18 @@ Module reference_safety.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.path
+                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                ]
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -4948,6 +5395,18 @@ Module reference_safety.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                        ]
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::deref::Deref",
                                     Ty.apply
@@ -4995,9 +5454,10 @@ Module reference_safety.
                         fun γ =>
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                            let~ err :=
+                            let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::errors::PartialVMError",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "with_message",
@@ -5006,6 +5466,7 @@ Module reference_safety.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
@@ -5019,6 +5480,7 @@ Module reference_safety.
                                       ]
                                     |);
                                     M.call_closure (|
+                                      Ty.path "alloc::string::String",
                                       M.get_function (|
                                         "core::hint::must_use",
                                         [],
@@ -5026,12 +5488,14 @@ Module reference_safety.
                                       |),
                                       [
                                         M.read (|
-                                          let~ res :=
+                                          let~ res : Ty.path "alloc::string::String" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "alloc::string::String",
                                                 M.get_function (| "alloc::fmt::format", [], [] |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path "core::fmt::Arguments",
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
@@ -5063,6 +5527,17 @@ Module reference_safety.
                                                             Pointer.Kind.Ref,
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      0
+                                                                  ]
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument"
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "none",
@@ -5101,9 +5576,11 @@ Module reference_safety.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
+                                          Ty.path "never",
                                           M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::Arguments",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
@@ -5131,6 +5608,7 @@ Module reference_safety.
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_debug",
@@ -5191,10 +5669,12 @@ Module reference_safety.
                               0
                             |) in
                           let id := M.alloc (| γ1_0 |) in
-                          let~ id := M.copy (| M.deref (| M.read (| id |) |) |) in
-                          let~ new_id :=
+                          let~ id : Ty.path "move_borrow_graph::references::RefID" :=
+                            M.copy (| M.deref (| M.read (| id |) |) |) in
+                          let~ new_id : Ty.path "move_borrow_graph::references::RefID" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_borrow_graph::references::RefID",
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -5208,6 +5688,7 @@ Module reference_safety.
                                     M.deref (| M.read (| self |) |)
                                   |);
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -5236,9 +5717,10 @@ Module reference_safety.
                                 ]
                               |)
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -5276,6 +5758,7 @@ Module reference_safety.
                           let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -5296,6 +5779,7 @@ Module reference_safety.
                               "core::result::Result::Err"
                               [
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::errors::PartialVMError",
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -5372,9 +5856,13 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ old_value :=
+                  let~ old_value :
+                      Ty.path
+                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                         M.get_function (|
                           "core::mem::replace",
                           [],
@@ -5394,6 +5882,18 @@ Module reference_safety.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
@@ -5411,6 +5911,18 @@ Module reference_safety.
                                               Pointer.Kind.MutRef,
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                        ]
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::deref::DerefMut",
                                                     Ty.apply
@@ -5467,9 +5979,13 @@ Module reference_safety.
                                                 γ,
                                                 "core::option::Option::None"
                                               |) in
-                                            let~ err :=
+                                            let~ err :
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError" :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError",
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
@@ -5479,6 +5995,8 @@ Module reference_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
@@ -5493,6 +6011,7 @@ Module reference_safety.
                                                       ]
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "core::hint::must_use",
                                                         [],
@@ -5500,9 +6019,11 @@ Module reference_safety.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          let~ res :=
+                                                          let~ res :
+                                                              Ty.path "alloc::string::String" :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "alloc::string::String",
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
                                                                   [],
@@ -5510,6 +6031,7 @@ Module reference_safety.
                                                                 |),
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.path "core::fmt::Arguments",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
@@ -5542,6 +6064,17 @@ Module reference_safety.
                                                                             Pointer.Kind.Ref,
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      0
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument"
+                                                                                  ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -5588,6 +6121,7 @@ Module reference_safety.
                                                             M.alloc (|
                                                               M.never_to_any (|
                                                                 M.call_closure (|
+                                                                  Ty.path "never",
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
                                                                     [],
@@ -5595,6 +6129,8 @@ Module reference_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -5629,6 +6165,8 @@ Module reference_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -5725,6 +6263,7 @@ Module reference_safety.
                           let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -5745,6 +6284,7 @@ Module reference_safety.
                               "core::result::Result::Err"
                               [
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::errors::PartialVMError",
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -5823,9 +6363,13 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ old_value :=
+                  let~ old_value :
+                      Ty.path
+                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                         M.get_function (|
                           "core::mem::replace",
                           [],
@@ -5845,6 +6389,18 @@ Module reference_safety.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
@@ -5862,6 +6418,18 @@ Module reference_safety.
                                               Pointer.Kind.MutRef,
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                        ]
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::deref::DerefMut",
                                                     Ty.apply
@@ -5918,9 +6486,13 @@ Module reference_safety.
                                                 γ,
                                                 "core::option::Option::None"
                                               |) in
-                                            let~ err :=
+                                            let~ err :
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError" :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError",
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
@@ -5930,6 +6502,8 @@ Module reference_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
@@ -5944,6 +6518,7 @@ Module reference_safety.
                                                       ]
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "core::hint::must_use",
                                                         [],
@@ -5951,9 +6526,11 @@ Module reference_safety.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          let~ res :=
+                                                          let~ res :
+                                                              Ty.path "alloc::string::String" :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "alloc::string::String",
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
                                                                   [],
@@ -5961,6 +6538,7 @@ Module reference_safety.
                                                                 |),
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.path "core::fmt::Arguments",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
@@ -5993,6 +6571,17 @@ Module reference_safety.
                                                                             Pointer.Kind.Ref,
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      0
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument"
+                                                                                  ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -6039,6 +6628,7 @@ Module reference_safety.
                                                             M.alloc (|
                                                               M.never_to_any (|
                                                                 M.call_closure (|
+                                                                  Ty.path "never",
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
                                                                     [],
@@ -6046,6 +6636,8 @@ Module reference_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -6080,6 +6672,8 @@ Module reference_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -6155,9 +6749,10 @@ Module reference_safety.
                               0
                             |) in
                           let id := M.copy (| γ0_0 |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6187,6 +6782,7 @@ Module reference_safety.
                           let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6207,6 +6803,7 @@ Module reference_safety.
                               "core::result::Result::Err"
                               [
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::errors::PartialVMError",
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6269,7 +6866,7 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -6280,6 +6877,7 @@ Module reference_safety.
                                 (M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6308,6 +6906,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6334,9 +6933,10 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ frozen_id :=
+                  let~ frozen_id : Ty.path "move_borrow_graph::references::RefID" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_borrow_graph::references::RefID",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6350,9 +6950,10 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6367,9 +6968,10 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6437,7 +7039,7 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [ M.read (| v1 |); M.read (| v2 |) ] |),
                       [
@@ -6464,6 +7066,7 @@ Module reference_safety.
                                 LogicalOp.or (|
                                   UnOp.not (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6484,6 +7087,7 @@ Module reference_safety.
                                   ltac:(M.monadic
                                     (UnOp.not (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path
                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6513,6 +7117,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6554,9 +7159,10 @@ Module reference_safety.
                                 0
                               |) in
                             let id2 := M.copy (| γ1_0 |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6575,6 +7181,7 @@ Module reference_safety.
                               |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_associated_function (|
                                   Ty.path
                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6597,7 +7204,7 @@ Module reference_safety.
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let v1 := M.copy (| γ0_0 |) in
                             let v2 := M.copy (| γ0_1 |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -6608,6 +7215,7 @@ Module reference_safety.
                                           (M.alloc (|
                                             UnOp.not (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
@@ -6627,6 +7235,7 @@ Module reference_safety.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
+                                            Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
@@ -6639,7 +7248,7 @@ Module reference_safety.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -6650,6 +7259,7 @@ Module reference_safety.
                                           (M.alloc (|
                                             UnOp.not (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
@@ -6669,6 +7279,7 @@ Module reference_safety.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
+                                            Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
@@ -6721,7 +7332,7 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -6732,6 +7343,7 @@ Module reference_safety.
                                 (M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6760,6 +7372,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6786,9 +7399,10 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6839,7 +7453,7 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -6850,6 +7464,7 @@ Module reference_safety.
                                 (M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6877,6 +7492,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6903,9 +7519,10 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6957,7 +7574,7 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -6970,6 +7587,7 @@ Module reference_safety.
                                     UnOp.not (| M.read (| mut_ |) |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path
                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -6997,6 +7615,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7023,9 +7642,10 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ new_id :=
+                  let~ new_id : Ty.path "move_borrow_graph::references::RefID" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_borrow_graph::references::RefID",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7039,9 +7659,10 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7110,7 +7731,8 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ is_mut_borrow_with_full_borrows :=
+                  let~ is_mut_borrow_with_full_borrows :
+                      Ty.function [ Ty.tuple [] ] (Ty.path "bool") :=
                     M.alloc (|
                       M.closure
                         (fun γ =>
@@ -7127,6 +7749,7 @@ Module reference_safety.
                                           M.read (| mut_ |),
                                           ltac:(M.monadic
                                             (M.call_closure (|
+                                              Ty.path "bool",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7148,7 +7771,8 @@ Module reference_safety.
                             | _ => M.impossible "wrong number of arguments"
                             end))
                     |) in
-                  let~ is_imm_borrow_with_mut_borrows :=
+                  let~ is_imm_borrow_with_mut_borrows :
+                      Ty.function [ Ty.tuple [] ] (Ty.path "bool") :=
                     M.alloc (|
                       M.closure
                         (fun γ =>
@@ -7166,6 +7790,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (UnOp.not (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7191,7 +7816,7 @@ Module reference_safety.
                             | _ => M.impossible "wrong number of arguments"
                             end))
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -7202,6 +7827,7 @@ Module reference_safety.
                                 (M.alloc (|
                                   LogicalOp.or (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::ops::function::Fn",
                                         Ty.function [ Ty.tuple [] ] (Ty.path "bool"),
@@ -7221,6 +7847,7 @@ Module reference_safety.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::ops::function::Fn",
                                           Ty.function [ Ty.tuple [] ] (Ty.path "bool"),
@@ -7250,6 +7877,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7276,9 +7904,10 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ field_borrow_id :=
+                  let~ field_borrow_id : Ty.path "move_borrow_graph::references::RefID" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_borrow_graph::references::RefID",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7292,9 +7921,10 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7310,9 +7940,10 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7372,7 +8003,7 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -7386,6 +8017,7 @@ Module reference_safety.
                                       M.read (| mut_ |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7404,6 +8036,7 @@ Module reference_safety.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path
                                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7431,6 +8064,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7457,9 +8091,10 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ new_id :=
+                  let~ new_id : Ty.path "move_borrow_graph::references::RefID" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_borrow_graph::references::RefID",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7473,9 +8108,10 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7538,6 +8174,7 @@ Module reference_safety.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7557,6 +8194,7 @@ Module reference_safety.
                           "core::result::Result::Err"
                           [
                             M.call_closure (|
+                              Ty.path "move_binary_format::errors::PartialVMError",
                               M.get_associated_function (|
                                 Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7620,11 +8258,15 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ id :=
+                  let~ id : Ty.path "move_borrow_graph::references::RefID" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_borrow_graph::references::RefID" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
@@ -7649,9 +8291,10 @@ Module reference_safety.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                              let~ err :=
+                              let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "with_message",
@@ -7660,6 +8303,7 @@ Module reference_safety.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
@@ -7673,6 +8317,7 @@ Module reference_safety.
                                         ]
                                       |);
                                       M.call_closure (|
+                                        Ty.path "alloc::string::String",
                                         M.get_function (|
                                           "core::hint::must_use",
                                           [],
@@ -7680,12 +8325,14 @@ Module reference_safety.
                                         |),
                                         [
                                           M.read (|
-                                            let~ res :=
+                                            let~ res : Ty.path "alloc::string::String" :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "alloc::string::String",
                                                   M.get_function (| "alloc::fmt::format", [], [] |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -7717,6 +8364,17 @@ Module reference_safety.
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        0
+                                                                    ]
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -7756,6 +8414,7 @@ Module reference_safety.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
+                                            Ty.path "never",
                                             M.get_function (|
                                               "core::panicking::panic_fmt",
                                               [],
@@ -7763,6 +8422,7 @@ Module reference_safety.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::Arguments",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
@@ -7791,6 +8451,7 @@ Module reference_safety.
                                                           Value.Array
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::Argument",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
@@ -7841,7 +8502,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -7855,6 +8516,7 @@ Module reference_safety.
                                     ltac:(M.monadic
                                       (UnOp.not (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7883,6 +8545,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7909,9 +8572,10 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -7967,11 +8631,15 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ vec_id :=
+                  let~ vec_id : Ty.path "move_borrow_graph::references::RefID" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_borrow_graph::references::RefID" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
@@ -7996,9 +8664,10 @@ Module reference_safety.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                              let~ err :=
+                              let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "with_message",
@@ -8007,6 +8676,7 @@ Module reference_safety.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
@@ -8020,6 +8690,7 @@ Module reference_safety.
                                         ]
                                       |);
                                       M.call_closure (|
+                                        Ty.path "alloc::string::String",
                                         M.get_function (|
                                           "core::hint::must_use",
                                           [],
@@ -8027,12 +8698,14 @@ Module reference_safety.
                                         |),
                                         [
                                           M.read (|
-                                            let~ res :=
+                                            let~ res : Ty.path "alloc::string::String" :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "alloc::string::String",
                                                   M.get_function (| "alloc::fmt::format", [], [] |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -8064,6 +8737,17 @@ Module reference_safety.
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        0
+                                                                    ]
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -8103,6 +8787,7 @@ Module reference_safety.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
+                                            Ty.path "never",
                                             M.get_function (|
                                               "core::panicking::panic_fmt",
                                               [],
@@ -8110,6 +8795,7 @@ Module reference_safety.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::Arguments",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
@@ -8138,6 +8824,7 @@ Module reference_safety.
                                                           Value.Array
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::Argument",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_debug",
@@ -8188,7 +8875,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -8202,6 +8889,7 @@ Module reference_safety.
                                     ltac:(M.monadic
                                       (UnOp.not (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -8230,6 +8918,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -8256,9 +8945,10 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ elem_id :=
+                  let~ elem_id : Ty.path "move_borrow_graph::references::RefID" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_borrow_graph::references::RefID",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -8272,9 +8962,10 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -8289,9 +8980,10 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -8417,10 +9109,23 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -8435,6 +9140,11 @@ Module reference_safety.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_trait_method (|
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
@@ -8457,6 +9167,7 @@ Module reference_safety.
                                     "move_bytecode_verifier::reference_safety::abstract_state::CALL_PER_ACQUIRES_COST"
                                 |);
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -8497,6 +9208,20 @@ Module reference_safety.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                              Ty.path "alloc::alloc::Global"
+                                            ];
+                                          Ty.path "move_binary_format::errors::PartialVMError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -8545,11 +9270,15 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::set::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ],
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
@@ -8580,10 +9309,22 @@ Module reference_safety.
                               (let iter := M.copy (| γ |) in
                               M.loop (|
                                 ltac:(M.monadic
-                                  (let~ _ :=
+                                  (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructDefinitionIndex"
+                                                ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
@@ -8636,6 +9377,7 @@ Module reference_safety.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -8669,6 +9411,8 @@ Module reference_safety.
                                                               "core::result::Result::Err"
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -8704,9 +9448,23 @@ Module reference_safety.
                               |)))
                         ]
                       |)) in
-                  let~ all_references_to_borrow_from :=
+                  let~ all_references_to_borrow_from :
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [
+                          Ty.path "move_borrow_graph::references::RefID";
+                          Ty.path "alloc::alloc::Global"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::set::BTreeSet")
+                          []
+                          [
+                            Ty.path "move_borrow_graph::references::RefID";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -8722,9 +9480,23 @@ Module reference_safety.
                         []
                       |)
                     |) in
-                  let~ mutable_references_to_borrow_from :=
+                  let~ mutable_references_to_borrow_from :
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [
+                          Ty.path "move_borrow_graph::references::RefID";
+                          Ty.path "alloc::alloc::Global"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::set::BTreeSet")
+                          []
+                          [
+                            Ty.path "move_borrow_graph::references::RefID";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -8740,11 +9512,40 @@ Module reference_safety.
                         []
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::filter_map::FilterMap")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ];
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "move_borrow_graph::references::RefID" ])
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
@@ -8784,6 +9585,35 @@ Module reference_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::filter_map::FilterMap")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                      ];
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "move_borrow_graph::references::RefID" ])
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -8820,6 +9650,13 @@ Module reference_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -8837,6 +9674,18 @@ Module reference_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -8872,6 +9721,13 @@ Module reference_safety.
                                                   ltac:(M.monadic
                                                     (let v := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_borrow_graph::references::RefID"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
@@ -8901,10 +9757,14 @@ Module reference_safety.
                               (let iter := M.copy (| γ |) in
                               M.loop (|
                                 ltac:(M.monadic
-                                  (let~ _ :=
+                                  (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "move_borrow_graph::references::RefID" ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
@@ -8972,7 +9832,7 @@ Module reference_safety.
                                                 0
                                               |) in
                                             let id := M.copy (| γ0_0 |) in
-                                            let~ _ :=
+                                            let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
@@ -8982,6 +9842,7 @@ Module reference_safety.
                                                         M.use
                                                           (M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "bool",
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -9014,7 +9875,7 @@ Module reference_safety.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let~ _ :=
+                                                      let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
@@ -9025,6 +9886,7 @@ Module reference_safety.
                                                                     (M.alloc (|
                                                                       UnOp.not (|
                                                                         M.call_closure (|
+                                                                          Ty.path "bool",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -9057,6 +9919,8 @@ Module reference_safety.
                                                                           "core::result::Result::Err"
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -9089,9 +9953,10 @@ Module reference_safety.
                                                                 (M.alloc (| Value.Tuple [] |)))
                                                           ]
                                                         |) in
-                                                      let~ _ :=
+                                                      let~ _ : Ty.path "bool" :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -9120,9 +9985,10 @@ Module reference_safety.
                                                     ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                                 ]
                                               |) in
-                                            let~ _ :=
+                                            let~ _ : Ty.path "bool" :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "bool",
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path
@@ -9153,10 +10019,27 @@ Module reference_safety.
                               |)))
                         ]
                       |)) in
-                  let~ returned_refs := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                  let~ return_values :=
+                  let~ returned_refs : Ty.path "usize" :=
+                    M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                  let~ return_values :
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                          Ty.path "alloc::alloc::Global"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -9198,6 +10081,30 @@ Module reference_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::map::Map")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ];
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.path
+                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -9230,6 +10137,10 @@ Module reference_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -9244,6 +10155,18 @@ Module reference_safety.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -9300,9 +10223,13 @@ Module reference_safety.
                                                               "move_binary_format::file_format::SignatureToken::MutableReference",
                                                               0
                                                             |) in
-                                                          let~ id :=
+                                                          let~ id :
+                                                              Ty.path
+                                                                "move_borrow_graph::references::RefID" :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path
+                                                                  "move_borrow_graph::references::RefID",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -9319,11 +10246,19 @@ Module reference_safety.
                                                                 ]
                                                               |)
                                                             |) in
-                                                          let~ _ :=
+                                                          let~ _ : Ty.tuple [] :=
                                                             M.use
                                                               (M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::btree::set::Iter")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_borrow_graph::references::RefID"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::iter::traits::collect::IntoIterator",
                                                                       Ty.apply
@@ -9361,10 +10296,24 @@ Module reference_safety.
                                                                       (let iter := M.copy (| γ |) in
                                                                       M.loop (|
                                                                         ltac:(M.monadic
-                                                                          (let~ _ :=
+                                                                          (let~ _ : Ty.tuple [] :=
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_borrow_graph::references::RefID"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::iter::traits::iterator::Iterator",
                                                                                     Ty.apply
@@ -9421,9 +10370,13 @@ Module reference_safety.
                                                                                       M.copy (|
                                                                                         γ0_0
                                                                                       |) in
-                                                                                    let~ _ :=
+                                                                                    let~ _ :
+                                                                                        Ty.tuple
+                                                                                          [] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.tuple
+                                                                                            [],
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -9464,13 +10417,15 @@ Module reference_safety.
                                                                       |)))
                                                                 ]
                                                               |)) in
-                                                          let~ _ :=
-                                                            let β := returned_refs in
-                                                            M.write (|
-                                                              β,
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| β |),
-                                                                Value.Integer IntegerKind.Usize 1
+                                                          let~ _ : Ty.tuple [] :=
+                                                            M.alloc (|
+                                                              let β := returned_refs in
+                                                              M.write (|
+                                                                β,
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
                                                               |)
                                                             |) in
                                                           M.alloc (|
@@ -9487,9 +10442,13 @@ Module reference_safety.
                                                               "move_binary_format::file_format::SignatureToken::Reference",
                                                               0
                                                             |) in
-                                                          let~ id :=
+                                                          let~ id :
+                                                              Ty.path
+                                                                "move_borrow_graph::references::RefID" :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path
+                                                                  "move_borrow_graph::references::RefID",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -9506,11 +10465,19 @@ Module reference_safety.
                                                                 ]
                                                               |)
                                                             |) in
-                                                          let~ _ :=
+                                                          let~ _ : Ty.tuple [] :=
                                                             M.use
                                                               (M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::btree::set::Iter")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_borrow_graph::references::RefID"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::iter::traits::collect::IntoIterator",
                                                                       Ty.apply
@@ -9548,10 +10515,24 @@ Module reference_safety.
                                                                       (let iter := M.copy (| γ |) in
                                                                       M.loop (|
                                                                         ltac:(M.monadic
-                                                                          (let~ _ :=
+                                                                          (let~ _ : Ty.tuple [] :=
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_borrow_graph::references::RefID"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::iter::traits::iterator::Iterator",
                                                                                     Ty.apply
@@ -9608,9 +10589,13 @@ Module reference_safety.
                                                                                       M.copy (|
                                                                                         γ0_0
                                                                                       |) in
-                                                                                    let~ _ :=
+                                                                                    let~ _ :
+                                                                                        Ty.tuple
+                                                                                          [] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.tuple
+                                                                                            [],
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -9651,13 +10636,15 @@ Module reference_safety.
                                                                       |)))
                                                                 ]
                                                               |)) in
-                                                          let~ _ :=
-                                                            let β := returned_refs in
-                                                            M.write (|
-                                                              β,
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| β |),
-                                                                Value.Integer IntegerKind.Usize 1
+                                                          let~ _ : Ty.tuple [] :=
+                                                            M.alloc (|
+                                                              let β := returned_refs in
+                                                              M.write (|
+                                                                β,
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
                                                               |)
                                                             |) in
                                                           M.alloc (|
@@ -9684,10 +10671,23 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -9702,6 +10702,11 @@ Module reference_safety.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_trait_method (|
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
@@ -9724,6 +10729,7 @@ Module reference_safety.
                                     "move_bytecode_verifier::reference_safety::abstract_state::REF_PARAM_EDGE_COST"
                                 |);
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "saturating_mul",
@@ -9732,6 +10738,7 @@ Module reference_safety.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -9778,6 +10785,20 @@ Module reference_safety.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                              Ty.path "alloc::alloc::Global"
+                                            ];
+                                          Ty.path "move_binary_format::errors::PartialVMError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -9826,11 +10847,18 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::set::IntoIter")
+                              []
+                              [
+                                Ty.path "move_borrow_graph::references::RefID";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
@@ -9855,10 +10883,14 @@ Module reference_safety.
                               (let iter := M.copy (| γ |) in
                               M.loop (|
                                 ltac:(M.monadic
-                                  (let~ _ :=
+                                  (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "move_borrow_graph::references::RefID" ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
@@ -9904,6 +10936,7 @@ Module reference_safety.
                                             let id := M.copy (| γ0_0 |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -9975,9 +11008,23 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ released :=
+                  let~ released :
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [
+                          Ty.path "move_borrow_graph::references::RefID";
+                          Ty.path "alloc::alloc::Global"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::set::BTreeSet")
+                          []
+                          [
+                            Ty.path "move_borrow_graph::references::RefID";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -9993,11 +11040,18 @@ Module reference_safety.
                         []
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [
+                                Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
@@ -10015,6 +11069,13 @@ Module reference_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -10032,6 +11093,18 @@ Module reference_safety.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -10072,10 +11145,22 @@ Module reference_safety.
                               (let iter := M.copy (| γ |) in
                               M.loop (|
                                 ltac:(M.monadic
-                                  (let~ _ :=
+                                  (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
@@ -10133,9 +11218,10 @@ Module reference_safety.
                                                         0
                                                       |) in
                                                     let id := M.alloc (| γ1_0 |) in
-                                                    let~ _ :=
+                                                    let~ _ : Ty.path "bool" :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -10172,9 +11258,10 @@ Module reference_safety.
                               |)))
                         ]
                       |)) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -10196,6 +11283,13 @@ Module reference_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::set::IntoIter")
+                              []
+                              [
+                                Ty.path "move_borrow_graph::references::RefID";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
@@ -10226,6 +11320,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let id := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.tuple [],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -10248,7 +11343,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -10259,6 +11354,7 @@ Module reference_safety.
                                 (M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -10285,6 +11381,7 @@ Module reference_safety.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -10311,11 +11408,36 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::filter_map::FilterMap")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                    Ty.path "alloc::alloc::Global"
+                                  ];
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "move_borrow_graph::references::RefID" ])
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
@@ -10351,6 +11473,31 @@ Module reference_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::filter_map::FilterMap")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                        Ty.path "alloc::alloc::Global"
+                                      ];
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]
+                                      ]
+                                      (Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "move_borrow_graph::references::RefID" ])
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -10383,6 +11530,14 @@ Module reference_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
@@ -10414,6 +11569,13 @@ Module reference_safety.
                                                   ltac:(M.monadic
                                                     (let v := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_borrow_graph::references::RefID"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
@@ -10438,10 +11600,14 @@ Module reference_safety.
                               (let iter := M.copy (| γ |) in
                               M.loop (|
                                 ltac:(M.monadic
-                                  (let~ _ :=
+                                  (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "move_borrow_graph::references::RefID" ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
@@ -10515,6 +11681,7 @@ Module reference_safety.
                                                         (M.alloc (|
                                                           LogicalOp.and (|
                                                             M.call_closure (|
+                                                              Ty.path "bool",
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -10544,6 +11711,7 @@ Module reference_safety.
                                                             ltac:(M.monadic
                                                               (UnOp.not (|
                                                                 M.call_closure (|
+                                                                  Ty.path "bool",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -10577,6 +11745,8 @@ Module reference_safety.
                                                               "core::result::Result::Err"
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -10661,9 +11831,25 @@ Module reference_safety.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ id_map :=
+              let~ id_map :
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_borrow_graph::references::RefID";
+                      Ty.path "move_borrow_graph::references::RefID";
+                      Ty.path "alloc::alloc::Global"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::map::BTreeMap")
+                      []
+                      [
+                        Ty.path "move_borrow_graph::references::RefID";
+                        Ty.path "move_borrow_graph::references::RefID";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -10680,9 +11866,17 @@ Module reference_safety.
                     []
                   |)
                 |) in
-              let~ _ :=
+              let~ _ :
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_borrow_graph::references::RefID" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "move_borrow_graph::references::RefID" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -10699,6 +11893,7 @@ Module reference_safety.
                     [
                       M.borrow (| Pointer.Kind.MutRef, id_map |);
                       M.call_closure (|
+                        Ty.path "move_borrow_graph::references::RefID",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -10709,6 +11904,7 @@ Module reference_safety.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |);
                       M.call_closure (|
+                        Ty.path "move_borrow_graph::references::RefID",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -10721,9 +11917,25 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ locals :=
+              let~ locals :
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path
+                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                      Ty.path "alloc::alloc::Global"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
@@ -10779,6 +11991,42 @@ Module reference_safety.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::map::Map")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]
+                              ];
+                            Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.path "usize";
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]
+                                      ]
+                                  ]
+                              ]
+                              (Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -10823,6 +12071,18 @@ Module reference_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -10840,6 +12100,13 @@ Module reference_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -10857,6 +12124,18 @@ Module reference_safety.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -10919,9 +12198,13 @@ Module reference_safety.
                                                           0
                                                         |) in
                                                       let old_id := M.alloc (| γ1_0 |) in
-                                                      let~ new_id :=
+                                                      let~ new_id :
+                                                          Ty.path
+                                                            "move_borrow_graph::references::RefID" :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path
+                                                              "move_borrow_graph::references::RefID",
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_borrow_graph::references::RefID",
@@ -10932,9 +12215,23 @@ Module reference_safety.
                                                             [ M.read (| local |) ]
                                                           |)
                                                         |) in
-                                                      let~ _ :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_borrow_graph::references::RefID"
+                                                            ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_borrow_graph::references::RefID"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -10993,7 +12290,7 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -11005,6 +12302,7 @@ Module reference_safety.
                               UnOp.not (|
                                 BinOp.eq (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -11030,6 +12328,7 @@ Module reference_safety.
                                     ]
                                   |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -11053,6 +12352,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -11065,9 +12365,23 @@ Module reference_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ borrow_graph :=
+              let~ borrow_graph :
+                  Ty.apply
+                    (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                      ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -11095,9 +12409,10 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -11119,7 +12434,9 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ canonical_state :=
+              let~ canonical_state :
+                  Ty.path
+                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" :=
                 M.alloc (|
                   Value.StructRecord
                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
@@ -11137,6 +12454,7 @@ Module reference_safety.
                       ("next_id",
                         BinOp.Wrap.add (|
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -11165,7 +12483,7 @@ Module reference_safety.
                         |))
                     ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -11176,6 +12494,7 @@ Module reference_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -11192,6 +12511,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -11226,6 +12546,7 @@ Module reference_safety.
             let borrows := M.alloc (| borrows |) in
             UnOp.not (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply
@@ -11255,6 +12576,10 @@ Module reference_safety.
                     Pointer.Kind.MutRef,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::Keys")
+                          []
+                          [ Ty.path "move_borrow_graph::references::RefID"; Ty.tuple [] ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -11285,6 +12610,7 @@ Module reference_safety.
                                   ltac:(M.monadic
                                     (let x := M.copy (| γ |) in
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -11344,6 +12670,7 @@ Module reference_safety.
               BinOp.eq (|
                 BinOp.Wrap.add (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -11380,6 +12707,7 @@ Module reference_safety.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
@@ -11424,6 +12752,18 @@ Module reference_safety.
                       Pointer.Kind.MutRef,
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [
+                                  Ty.path
+                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -11441,6 +12781,13 @@ Module reference_safety.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [
+                                  Ty.path
+                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
@@ -11458,6 +12805,18 @@ Module reference_safety.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.apply
@@ -11509,6 +12868,7 @@ Module reference_safety.
                                       let local := M.copy (| γ0_0 |) in
                                       let value := M.copy (| γ0_1 |) in
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -11520,6 +12880,10 @@ Module reference_safety.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "bool" ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -11542,6 +12906,11 @@ Module reference_safety.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "move_borrow_graph::references::RefID"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
@@ -11569,6 +12938,7 @@ Module reference_safety.
                                                               ltac:(M.monadic
                                                                 (let id := M.copy (| γ |) in
                                                                 M.call_closure (|
+                                                                  Ty.path "bool",
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialEq",
                                                                     Ty.path
@@ -11587,6 +12957,8 @@ Module reference_safety.
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_borrow_graph::references::RefID",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_borrow_graph::references::RefID",
@@ -11677,7 +13049,7 @@ Module reference_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -11688,6 +13060,7 @@ Module reference_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -11737,6 +13110,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -11750,7 +13124,7 @@ Module reference_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -11762,6 +13136,7 @@ Module reference_safety.
                               UnOp.not (|
                                 LogicalOp.and (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -11778,6 +13153,7 @@ Module reference_safety.
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -11800,6 +13176,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -11813,7 +13190,7 @@ Module reference_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -11846,6 +13223,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -11858,7 +13236,7 @@ Module reference_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -11870,6 +13248,7 @@ Module reference_safety.
                               UnOp.not (|
                                 BinOp.eq (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -11895,6 +13274,7 @@ Module reference_safety.
                                     ]
                                   |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -11927,6 +13307,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -11940,9 +13321,23 @@ Module reference_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ self_graph :=
+              let~ self_graph :
+                  Ty.apply
+                    (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                      ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -11970,9 +13365,23 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ other_graph :=
+              let~ other_graph :
+                  Ty.apply
+                    (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                      ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -12000,9 +13409,25 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ locals :=
+              let~ locals :
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path
+                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                      Ty.path "alloc::alloc::Global"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
@@ -12071,6 +13496,55 @@ Module reference_safety.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::map::Map")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::zip::Zip")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ];
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]
+                              ];
+                            Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                          ]
+                                      ]
+                                  ]
+                              ]
+                              (Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -12128,6 +13602,25 @@ Module reference_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::zip::Zip")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ];
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -12159,6 +13652,13 @@ Module reference_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -12176,6 +13676,18 @@ Module reference_safety.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -12262,9 +13774,10 @@ Module reference_safety.
                                                           γ0_1,
                                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
                                                         |) in
-                                                      let~ _ :=
+                                                      let~ _ : Ty.tuple [] :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.tuple [],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -12315,9 +13828,10 @@ Module reference_safety.
                                                           0
                                                         |) in
                                                       let id := M.alloc (| γ2_0 |) in
-                                                      let~ _ :=
+                                                      let~ _ : Ty.tuple [] :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.tuple [],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -12356,7 +13870,7 @@ Module reference_safety.
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                       let v1 := M.copy (| γ0_0 |) in
                                                       let v2 := M.copy (| γ0_1 |) in
-                                                      let~ _ :=
+                                                      let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
@@ -12367,6 +13881,7 @@ Module reference_safety.
                                                                     (M.alloc (|
                                                                       UnOp.not (|
                                                                         M.call_closure (|
+                                                                          Ty.path "bool",
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialEq",
                                                                             Ty.apply
@@ -12411,6 +13926,7 @@ Module reference_safety.
                                                                 M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.call_closure (|
+                                                                      Ty.path "never",
                                                                       M.get_function (|
                                                                         "core::panicking::panic",
                                                                         [],
@@ -12443,9 +13959,23 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ borrow_graph :=
+              let~ borrow_graph :
+                  Ty.apply
+                    (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -12467,7 +13997,11 @@ Module reference_safety.
                     ]
                   |)
                 |) in
-              let~ current_function :=
+              let~ current_function :
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ] :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -12475,7 +14009,7 @@ Module reference_safety.
                     "current_function"
                   |)
                 |) in
-              let~ next_id :=
+              let~ next_id : Ty.path "usize" :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -12546,9 +14080,13 @@ Module reference_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ joined :=
+                  let~ joined :
+                      Ty.path
+                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -12562,7 +14100,7 @@ Module reference_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -12573,6 +14111,7 @@ Module reference_safety.
                                 (M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
@@ -12589,6 +14128,7 @@ Module reference_safety.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
+                                  Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
                                   [
                                     M.read (|
@@ -12601,7 +14141,7 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -12613,6 +14153,7 @@ Module reference_safety.
                                   UnOp.not (|
                                     BinOp.eq (|
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -12638,6 +14179,7 @@ Module reference_safety.
                                         ]
                                       |),
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -12670,6 +14212,7 @@ Module reference_safety.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
+                                  Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
                                   [
                                     M.read (|
@@ -12683,10 +14226,23 @@ Module reference_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -12701,6 +14257,11 @@ Module reference_safety.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_trait_method (|
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
@@ -12742,6 +14303,13 @@ Module reference_safety.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "move_bytecode_verifier::absint::JoinResult";
+                                          Ty.path "move_binary_format::errors::PartialVMError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -12783,10 +14351,23 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -12801,6 +14382,11 @@ Module reference_safety.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_trait_method (|
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
@@ -12823,6 +14409,7 @@ Module reference_safety.
                                     "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_LOCAL_COST"
                                 |);
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -12867,6 +14454,13 @@ Module reference_safety.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "move_bytecode_verifier::absint::JoinResult";
+                                          Ty.path "move_binary_format::errors::PartialVMError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -12908,10 +14502,23 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -12926,6 +14533,11 @@ Module reference_safety.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_trait_method (|
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
@@ -12948,6 +14560,7 @@ Module reference_safety.
                                     "move_bytecode_verifier::reference_safety::abstract_state::JOIN_PER_GRAPH_ITEM_COST"
                                 |);
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -12992,6 +14605,13 @@ Module reference_safety.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "move_bytecode_verifier::absint::JoinResult";
+                                          Ty.path "move_binary_format::errors::PartialVMError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -13033,9 +14653,10 @@ Module reference_safety.
                             val))
                       ]
                     |) in
-                  let~ locals_unchanged :=
+                  let~ locals_unchanged : Ty.path "bool" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -13093,6 +14714,25 @@ Module reference_safety.
                             Pointer.Kind.MutRef,
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::zip::Zip")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                      ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -13124,6 +14764,13 @@ Module reference_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -13141,6 +14788,18 @@ Module reference_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -13200,6 +14859,7 @@ Module reference_safety.
                                             let self_value := M.copy (| γ0_0 |) in
                                             let joined_value := M.copy (| γ0_1 |) in
                                             M.call_closure (|
+                                              Ty.path "bool",
                                               M.get_trait_method (|
                                                 "core::cmp::PartialEq",
                                                 Ty.apply
@@ -13247,6 +14907,7 @@ Module reference_safety.
                                   M.read (| locals_unchanged |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "move_borrow_graph::graph::BorrowGraph")
@@ -13299,8 +14960,10 @@ Module reference_safety.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let~ _ :=
-                            M.write (| M.deref (| M.read (| self |) |), M.read (| joined |) |) in
+                          (let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (| M.deref (| M.read (| self |) |), M.read (| joined |) |)
+                            |) in
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"

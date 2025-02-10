@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
           "constructors_return_value::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -149,6 +150,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -204,6 +206,7 @@ Definition return_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       (let return_flags := M.alloc (| return_flags |) in
       let return_value := M.alloc (| return_value |) in
       M.call_closure (|
+        Ty.path "never",
         M.get_function (| "core::panicking::panic", [], [] |),
         [ M.read (| Value.String "not implemented" |) ]
       |)))
@@ -262,6 +265,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "constructors_return_value::ConstructorsReturnValue",
                           M.get_associated_function (|
                             Ty.path "constructors_return_value::ConstructorsReturnValue",
                             "new",
@@ -303,6 +307,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
         (let _init_value := M.alloc (| _init_value |) in
         M.never_to_any (|
           M.call_closure (|
+            Ty.path "never",
             M.get_function (|
               "constructors_return_value::return_value",
               [],
@@ -318,6 +323,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
             |),
             [
               M.call_closure (|
+                Ty.path "constructors_return_value::ReturnFlags",
                 M.get_associated_function (|
                   Ty.path "constructors_return_value::ReturnFlags",
                   "new_with_reverted",
@@ -336,6 +342,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                         "core::result::Result::Ok"
                         [
                           M.call_closure (|
+                            Ty.path "constructors_return_value::AccountId",
                             M.get_trait_method (|
                               "core::convert::From",
                               Ty.path "constructors_return_value::AccountId",
@@ -391,7 +398,20 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         M.read (|
-          let~ value :=
+          let~ value :
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "constructors_return_value::AccountId";
+                      Ty.path "constructors_return_value::ConstructorError"
+                    ];
+                  Ty.path "constructors_return_value::LangError"
+                ] :=
             M.copy (|
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -408,6 +428,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                               "core::result::Result::Ok"
                               [
                                 M.call_closure (|
+                                  Ty.path "constructors_return_value::AccountId",
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "constructors_return_value::AccountId",
@@ -449,6 +470,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           M.alloc (|
             M.never_to_any (|
               M.call_closure (|
+                Ty.path "never",
                 M.get_function (|
                   "constructors_return_value::return_value",
                   [],
@@ -470,6 +492,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "constructors_return_value::ReturnFlags",
                     M.get_associated_function (|
                       Ty.path "constructors_return_value::ReturnFlags",
                       "new_with_reverted",

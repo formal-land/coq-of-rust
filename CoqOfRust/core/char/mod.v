@@ -75,6 +75,7 @@ Module char.
       ltac:(M.monadic
         (let iter := M.alloc (| iter |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ Ty.associated ],
           M.get_function (| "core::char::decode::decode_utf16", [], [ I ] |),
           [ M.read (| iter |) ]
         |)))
@@ -95,6 +96,7 @@ Module char.
       ltac:(M.monadic
         (let i := M.alloc (| i |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
           M.get_function (| "core::char::convert::from_u32", [], [] |),
           [ M.read (| i |) ]
         |)))
@@ -116,6 +118,7 @@ Module char.
       ltac:(M.monadic
         (let i := M.alloc (| i |) in
         M.call_closure (|
+          Ty.path "char",
           M.get_function (| "core::char::convert::from_u32_unchecked", [], [] |),
           [ M.read (| i |) ]
         |)))
@@ -138,6 +141,7 @@ Module char.
         (let num := M.alloc (| num |) in
         let radix := M.alloc (| radix |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
           M.get_function (| "core::char::convert::from_digit", [], [] |),
           [ M.read (| num |); M.read (| radix |) ]
         |)))
@@ -174,6 +178,10 @@ Module char.
             "core::char::EscapeUnicode"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 10 ]
+                  [],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -225,6 +233,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -285,6 +297,10 @@ Module char.
             "core::char::EscapeUnicode"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 10 ]
+                  [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -321,6 +337,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
@@ -329,6 +346,7 @@ Module char.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -375,9 +393,10 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ n :=
+            let~ n : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::escape::EscapeIterInner")
@@ -419,6 +438,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -449,6 +469,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
@@ -457,6 +478,7 @@ Module char.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -499,6 +521,11 @@ Module char.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -553,6 +580,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -610,6 +638,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -617,6 +649,7 @@ Module char.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::escape::EscapeIterInner")
@@ -679,6 +712,10 @@ Module char.
             "core::char::EscapeDefault"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 10 ]
+                  [],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -730,6 +767,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -790,6 +831,10 @@ Module char.
             "core::char::EscapeDefault"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 10 ]
+                  [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -801,6 +846,7 @@ Module char.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (|
                       Ty.path "core::ascii::ascii_char::AsciiChar",
                       "to_u8",
@@ -832,6 +878,10 @@ Module char.
             "core::char::EscapeDefault"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 10 ]
+                  [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -864,6 +914,10 @@ Module char.
             "core::char::EscapeDefault"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 10 ]
+                  [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -900,6 +954,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
@@ -908,6 +963,7 @@ Module char.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -954,9 +1010,10 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ n :=
+            let~ n : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::escape::EscapeIterInner")
@@ -998,6 +1055,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -1028,6 +1086,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
               "map",
@@ -1036,6 +1095,7 @@ Module char.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -1078,6 +1138,11 @@ Module char.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -1132,6 +1197,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -1189,6 +1255,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -1196,6 +1266,7 @@ Module char.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::escape::EscapeIterInner")
@@ -1252,6 +1323,7 @@ Module char.
             "core::char::EscapeDebug"
             [
               M.call_closure (|
+                Ty.path "core::char::EscapeDebugInner",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "core::char::EscapeDebugInner",
@@ -1300,6 +1372,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -1399,6 +1475,10 @@ Module char.
                         "core::char::EscapeDebugInner::Bytes"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::escape::EscapeIterInner")
+                              [ Value.Integer IntegerKind.Usize 10 ]
+                              [],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.apply
@@ -1430,6 +1510,7 @@ Module char.
                         "core::char::EscapeDebugInner::Char"
                         [
                           M.call_closure (|
+                            Ty.path "char",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "char",
@@ -1483,6 +1564,10 @@ Module char.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -1514,6 +1599,10 @@ Module char.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -1586,6 +1675,10 @@ Module char.
                 "core::char::EscapeDebugInner::Bytes"
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::escape::EscapeIterInner")
+                      [ Value.Integer IntegerKind.Usize 10 ]
+                      [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::escape::EscapeIterInner")
@@ -1622,6 +1715,10 @@ Module char.
                 "core::char::EscapeDebugInner::Bytes"
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::escape::EscapeIterInner")
+                      [ Value.Integer IntegerKind.Usize 10 ]
+                      [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::escape::EscapeIterInner")
@@ -1652,29 +1749,35 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.deref (| M.read (| self |) |),
-                  "core::char::EscapeDebug",
-                  0
-                |),
-                Value.StructTuple
-                  "core::char::EscapeDebugInner::Bytes"
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::char::EscapeDebug",
+                    0
+                  |),
+                  Value.StructTuple
+                    "core::char::EscapeDebugInner::Bytes"
+                    [
+                      M.call_closure (|
                         Ty.apply
                           (Ty.path "core::escape::EscapeIterInner")
                           [ Value.Integer IntegerKind.Usize 10 ]
                           [],
-                        "empty",
-                        [ Value.Integer IntegerKind.Usize 10 ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::escape::EscapeIterInner")
+                            [ Value.Integer IntegerKind.Usize 10 ]
+                            [],
+                          "empty",
+                          [ Value.Integer IntegerKind.Usize 10 ],
+                          []
+                        |),
                         []
-                      |),
-                      []
-                    |)
-                  ]
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -1726,6 +1829,7 @@ Module char.
                     let bytes := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                           "map",
@@ -1734,6 +1838,7 @@ Module char.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::escape::EscapeIterInner")
@@ -1766,9 +1871,10 @@ Module char.
                         0
                       |) in
                     let chr := M.copy (| γ0_0 |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
                             "clear",
@@ -1799,9 +1905,10 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ n :=
+            let~ n : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.path "core::char::EscapeDebug",
@@ -1834,6 +1941,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::EscapeDebug",
@@ -1903,6 +2011,7 @@ Module char.
                     let bytes := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::escape::EscapeIterInner")
@@ -1992,6 +2101,10 @@ Module char.
                     let bytes := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -2004,6 +2117,7 @@ Module char.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::escape::EscapeIterInner")
@@ -2033,6 +2147,10 @@ Module char.
                     let chr := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_trait_method (|
                           "core::fmt::Write",
                           Ty.path "core::fmt::Formatter",
@@ -2081,6 +2199,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -2137,6 +2259,7 @@ Module char.
             "core::char::ToLowercase"
             [
               M.call_closure (|
+                Ty.path "core::char::CaseMappingIter",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "core::char::CaseMappingIter",
@@ -2191,6 +2314,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2225,6 +2349,8 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.tuple
+              [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2264,6 +2390,7 @@ Module char.
           let init := M.alloc (| init |) in
           let fold := M.alloc (| fold |) in
           M.call_closure (|
+            Acc,
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2295,6 +2422,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2324,6 +2452,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2354,6 +2483,11 @@ Module char.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2391,6 +2525,7 @@ Module char.
           (let self := M.alloc (| self |) in
           let idx := M.alloc (| idx |) in
           M.call_closure (|
+            Ty.path "char",
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2447,6 +2582,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2486,6 +2622,7 @@ Module char.
           let init := M.alloc (| init |) in
           let rfold := M.alloc (| rfold |) in
           M.call_closure (|
+            Acc,
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2518,6 +2655,11 @@ Module char.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2580,6 +2722,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2614,6 +2757,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2700,6 +2844,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (|
               "core::fmt::Display",
               Ty.path "core::char::CaseMappingIter",
@@ -2756,6 +2904,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -2812,6 +2964,7 @@ Module char.
             "core::char::ToUppercase"
             [
               M.call_closure (|
+                Ty.path "core::char::CaseMappingIter",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "core::char::CaseMappingIter",
@@ -2866,6 +3019,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2900,6 +3054,8 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.tuple
+              [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2939,6 +3095,7 @@ Module char.
           let init := M.alloc (| init |) in
           let fold := M.alloc (| fold |) in
           M.call_closure (|
+            Acc,
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2970,6 +3127,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -2999,6 +3157,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -3029,6 +3188,11 @@ Module char.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -3066,6 +3230,7 @@ Module char.
           (let self := M.alloc (| self |) in
           let idx := M.alloc (| idx |) in
           M.call_closure (|
+            Ty.path "char",
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.path "core::char::CaseMappingIter",
@@ -3122,6 +3287,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -3161,6 +3327,7 @@ Module char.
           let init := M.alloc (| init |) in
           let rfold := M.alloc (| rfold |) in
           M.call_closure (|
+            Acc,
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -3193,6 +3360,11 @@ Module char.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -3255,6 +3427,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -3289,6 +3462,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::CaseMappingIter",
@@ -3375,6 +3549,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (|
               "core::fmt::Display",
               Ty.path "core::char::CaseMappingIter",
@@ -3437,6 +3615,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -3493,6 +3675,10 @@ Module char.
             "core::char::CaseMappingIter"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::array::iter::IntoIter")
+                  [ Value.Integer IntegerKind.Usize 3 ]
+                  [ Ty.path "char" ],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -3557,9 +3743,17 @@ Module char.
         ltac:(M.monadic
           (let chars := M.alloc (| chars |) in
           M.read (|
-            let~ iter :=
+            let~ iter :
+                Ty.apply
+                  (Ty.path "core::array::iter::IntoIter")
+                  [ Value.Integer IntegerKind.Usize 3 ]
+                  [ Ty.path "char" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::array::iter::IntoIter")
+                    [ Value.Integer IntegerKind.Usize 3 ]
+                    [ Ty.path "char" ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
@@ -3575,7 +3769,7 @@ Module char.
                   [ M.read (| chars |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3595,9 +3789,10 @@ Module char.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
+                      let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                             M.get_trait_method (|
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               Ty.apply
@@ -3636,9 +3831,11 @@ Module char.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ _ :=
+                              let~ _ :
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                                     M.get_trait_method (|
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       Ty.apply
@@ -3687,6 +3884,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3724,6 +3922,8 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.tuple
+              [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3766,6 +3966,7 @@ Module char.
           let init := M.alloc (| init |) in
           let fold := M.alloc (| fold |) in
           M.call_closure (|
+            Acc,
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3800,6 +4001,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3832,6 +4034,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3865,6 +4068,11 @@ Module char.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3905,6 +4113,7 @@ Module char.
           (let self := M.alloc (| self |) in
           let idx := M.alloc (| idx |) in
           M.call_closure (|
+            Ty.path "char",
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3964,6 +4173,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply
@@ -4006,6 +4216,7 @@ Module char.
           let init := M.alloc (| init |) in
           let rfold := M.alloc (| rfold |) in
           M.call_closure (|
+            Acc,
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply
@@ -4041,6 +4252,11 @@ Module char.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply
@@ -4095,6 +4311,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.apply
@@ -4132,6 +4349,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.apply
@@ -4237,11 +4455,15 @@ Module char.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::array::iter::IntoIter")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "char" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -4256,6 +4478,10 @@ Module char.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::array::iter::IntoIter")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.path "char" ],
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.apply
@@ -4288,10 +4514,14 @@ Module char.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "char" ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -4332,10 +4562,23 @@ Module char.
                                               0
                                             |) in
                                           let c := M.copy (| γ0_0 |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "core::fmt::Error"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -4350,6 +4593,10 @@ Module char.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       M.get_trait_method (|
                                                         "core::fmt::Write",
                                                         Ty.path "core::fmt::Formatter",
@@ -4385,6 +4632,13 @@ Module char.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -4467,6 +4721,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -4569,6 +4827,7 @@ Module char.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.tuple [],
@@ -4654,6 +4913,10 @@ Module char.
           (let self := M.alloc (| self |) in
           let fmt := M.alloc (| fmt |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
               M.borrow (|

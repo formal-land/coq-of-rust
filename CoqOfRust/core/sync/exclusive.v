@@ -26,6 +26,7 @@ Module sync.
               [
                 ("inner",
                   M.call_closure (|
+                    T,
                     M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                     []
                   |))
@@ -72,6 +73,10 @@ Module sync.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
@@ -83,6 +88,7 @@ Module sync.
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "core::fmt::builders::DebugStruct",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_struct",
@@ -213,6 +219,7 @@ Module sync.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                 "new_unchecked",
@@ -228,6 +235,10 @@ Module sync.
                       M.SubPointer.get_struct_record_field (|
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::pin::Pin")
@@ -335,6 +346,15 @@ Module sync.
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::pin::Pin")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ]
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::pin::Pin")
@@ -354,6 +374,10 @@ Module sync.
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
                         "from_mut",
@@ -365,6 +389,7 @@ Module sync.
                           Pointer.Kind.MutRef,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::pin::Pin")
@@ -410,6 +435,7 @@ Module sync.
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
                 "new",
@@ -455,6 +481,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let args := M.alloc (| args |) in
             M.call_closure (|
+              Ty.associated,
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 F,
@@ -466,6 +493,7 @@ Module sync.
               |),
               [
                 M.call_closure (|
+                  F,
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ],
                     "into_inner",
@@ -515,6 +543,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let args := M.alloc (| args |) in
             M.call_closure (|
+              Ty.associated,
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 F,
@@ -529,6 +558,7 @@ Module sync.
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ F ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ],
                         "get_mut",
@@ -574,9 +604,11 @@ Module sync.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.associated ],
               M.get_trait_method (| "core::future::future::Future", T, [], [], "poll", [], [] |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
                     "get_pin_mut",
@@ -624,6 +656,10 @@ Module sync.
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::ops::coroutine::CoroutineState")
+                []
+                [ Ty.associated; Ty.associated ],
               M.get_trait_method (|
                 "core::ops::coroutine::Coroutine",
                 G,
@@ -635,6 +671,7 @@ Module sync.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ G ],
                     "get_pin_mut",

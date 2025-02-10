@@ -36,13 +36,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -70,7 +72,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         M.match_operator (|
-          M.alloc (| M.call_closure (| M.get_function (| "match_binding::age", [], [] |), [] |) |),
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "u32",
+              M.get_function (| "match_binding::age", [], [] |),
+              []
+            |)
+          |),
           [
             fun γ =>
               ltac:(M.monadic
@@ -79,12 +87,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.read (| γ |),
                     Value.Integer IntegerKind.U32 0
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -118,12 +128,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let n := M.copy (| γ |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -156,6 +168,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
@@ -183,12 +196,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let n := M.copy (| γ |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -221,6 +236,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",
@@ -248,12 +264,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let n := M.copy (| γ |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -286,6 +304,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_debug",

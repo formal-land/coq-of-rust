@@ -18,6 +18,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
             [
               M.borrow (|
@@ -46,6 +47,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
             [
               M.borrow (|
@@ -130,6 +132,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
             [
               M.borrow (|
@@ -163,6 +166,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
             [
               M.borrow (|
@@ -201,6 +205,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
             [
               M.borrow (|
@@ -239,6 +244,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
             [
               M.borrow (|
@@ -277,6 +283,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
             [
               M.borrow (|
@@ -334,6 +341,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
             [
               M.borrow (|
@@ -379,9 +387,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -506,6 +515,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
               [
                 M.borrow (|
@@ -520,6 +530,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -550,6 +561,7 @@ Module tuple.
           let other := M.alloc (| other |) in
           LogicalOp.or (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
               [
                 M.borrow (|
@@ -564,6 +576,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -657,6 +670,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     U,
@@ -695,6 +709,10 @@ Module tuple.
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
@@ -747,9 +765,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     U,
@@ -790,6 +810,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -823,6 +844,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -857,6 +879,7 @@ Module tuple.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
@@ -913,9 +936,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     U,
@@ -956,6 +981,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -989,6 +1015,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -1023,6 +1050,7 @@ Module tuple.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
@@ -1079,9 +1107,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     U,
@@ -1122,6 +1152,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -1155,6 +1186,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -1189,6 +1221,7 @@ Module tuple.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
@@ -1245,9 +1278,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     U,
@@ -1288,6 +1323,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -1321,6 +1357,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -1355,6 +1392,7 @@ Module tuple.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
@@ -1433,6 +1471,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", U, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -1457,6 +1496,7 @@ Module tuple.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::cmp::Ordering",
                         M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                         [
                           M.borrow (|
@@ -1513,9 +1553,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -1531,9 +1572,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -1663,6 +1705,7 @@ Module tuple.
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -1677,6 +1720,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -1692,6 +1736,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -1723,6 +1768,7 @@ Module tuple.
           LogicalOp.or (|
             LogicalOp.or (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -1737,6 +1783,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -1752,6 +1799,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -1850,6 +1898,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     V,
@@ -1889,6 +1938,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
@@ -1930,6 +1983,10 @@ Module tuple.
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
@@ -1991,9 +2048,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     V,
@@ -2034,6 +2093,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -2067,6 +2127,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -2099,9 +2160,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
@@ -2148,6 +2217,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -2182,6 +2252,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -2216,6 +2287,7 @@ Module tuple.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
@@ -2274,9 +2346,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     V,
@@ -2317,6 +2391,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -2350,6 +2425,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -2382,9 +2458,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
@@ -2431,6 +2515,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -2465,6 +2550,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -2499,6 +2585,7 @@ Module tuple.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
@@ -2557,9 +2644,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     V,
@@ -2600,6 +2689,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -2633,6 +2723,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -2665,9 +2756,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
@@ -2714,6 +2813,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -2748,6 +2848,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -2782,6 +2883,7 @@ Module tuple.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
@@ -2840,9 +2942,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     V,
@@ -2883,6 +2987,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -2916,6 +3021,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -2948,9 +3054,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             U,
@@ -2997,6 +3111,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -3031,6 +3146,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -3065,6 +3181,7 @@ Module tuple.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   T,
@@ -3145,6 +3262,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", V, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -3170,6 +3288,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", U, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -3197,6 +3316,7 @@ Module tuple.
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                                 [
                                   M.borrow (|
@@ -3262,9 +3382,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -3280,9 +3401,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -3298,9 +3420,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -3441,6 +3564,7 @@ Module tuple.
             LogicalOp.and (|
               LogicalOp.and (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -3455,6 +3579,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -3470,6 +3595,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -3485,6 +3611,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -3517,6 +3644,7 @@ Module tuple.
             LogicalOp.or (|
               LogicalOp.or (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -3531,6 +3659,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -3546,6 +3675,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -3561,6 +3691,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -3659,6 +3790,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     W,
@@ -3698,6 +3830,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
@@ -3740,6 +3876,10 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
@@ -3785,6 +3925,10 @@ Module tuple.
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ],
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
@@ -3852,9 +3996,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     W,
@@ -3895,6 +4041,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -3928,6 +4075,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -3960,9 +4108,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
@@ -4009,6 +4165,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -4043,6 +4200,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -4075,9 +4233,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
@@ -4124,6 +4290,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -4165,6 +4332,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -4199,6 +4367,7 @@ Module tuple.
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
@@ -4259,9 +4428,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     W,
@@ -4302,6 +4473,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -4335,6 +4507,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -4367,9 +4540,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
@@ -4416,6 +4597,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -4450,6 +4632,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -4482,9 +4665,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
@@ -4531,6 +4722,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -4572,6 +4764,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -4606,6 +4799,7 @@ Module tuple.
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
@@ -4666,9 +4860,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     W,
@@ -4709,6 +4905,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -4742,6 +4939,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -4774,9 +4972,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
@@ -4823,6 +5029,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -4857,6 +5064,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -4889,9 +5097,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
@@ -4938,6 +5154,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -4979,6 +5196,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -5017,6 +5235,7 @@ Module tuple.
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
@@ -5077,9 +5296,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     W,
@@ -5120,6 +5341,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -5153,6 +5375,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -5185,9 +5408,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             V,
@@ -5234,6 +5465,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -5268,6 +5500,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -5300,9 +5533,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     U,
@@ -5349,6 +5590,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -5390,6 +5632,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -5428,6 +5671,7 @@ Module tuple.
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           T,
@@ -5510,6 +5754,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", W, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -5535,6 +5780,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", V, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -5563,6 +5809,7 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     U,
@@ -5602,6 +5849,7 @@ Module tuple.
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "core::cmp::Ordering",
                                         M.get_trait_method (|
                                           "core::cmp::Ord",
                                           T,
@@ -5681,9 +5929,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : W :=
                   M.alloc (|
                     M.call_closure (|
+                      W,
                       M.get_trait_method (|
                         "core::default::Default",
                         W,
@@ -5699,9 +5948,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -5717,9 +5967,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -5735,9 +5986,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -5893,6 +6145,7 @@ Module tuple.
               LogicalOp.and (|
                 LogicalOp.and (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -5907,6 +6160,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.borrow (|
@@ -5922,6 +6176,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -5937,6 +6192,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -5952,6 +6208,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -5985,6 +6242,7 @@ Module tuple.
               LogicalOp.or (|
                 LogicalOp.or (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -5999,6 +6257,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.borrow (|
@@ -6014,6 +6273,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -6029,6 +6289,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -6044,6 +6305,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -6143,6 +6405,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     X,
@@ -6182,6 +6445,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
@@ -6224,6 +6491,10 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
@@ -6270,6 +6541,10 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
@@ -6318,6 +6593,10 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ],
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
@@ -6391,9 +6670,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     X,
@@ -6434,6 +6715,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -6467,6 +6749,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -6499,9 +6782,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
@@ -6548,6 +6839,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -6582,6 +6874,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -6614,9 +6907,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
@@ -6663,6 +6964,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -6704,6 +7006,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -6736,9 +7039,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
@@ -6785,6 +7096,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -6826,6 +7138,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -6864,6 +7177,7 @@ Module tuple.
                                           ltac:(M.monadic
                                             (M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
@@ -6926,9 +7240,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     X,
@@ -6969,6 +7285,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -7002,6 +7319,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -7034,9 +7352,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
@@ -7083,6 +7409,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -7117,6 +7444,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -7149,9 +7477,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
@@ -7198,6 +7534,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -7239,6 +7576,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -7271,9 +7609,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
@@ -7320,6 +7666,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -7361,6 +7708,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -7399,6 +7747,7 @@ Module tuple.
                                           ltac:(M.monadic
                                             (M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
@@ -7461,9 +7810,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     X,
@@ -7504,6 +7855,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -7537,6 +7889,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -7569,9 +7922,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
@@ -7618,6 +7979,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -7652,6 +8014,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -7684,9 +8047,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
@@ -7733,6 +8104,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -7774,6 +8146,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -7810,9 +8183,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
@@ -7859,6 +8240,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -7900,6 +8282,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -7938,6 +8321,7 @@ Module tuple.
                                           ltac:(M.monadic
                                             (M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
@@ -8000,9 +8384,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     X,
@@ -8043,6 +8429,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -8076,6 +8463,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -8108,9 +8496,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             W,
@@ -8157,6 +8553,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -8191,6 +8588,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -8223,9 +8621,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     V,
@@ -8272,6 +8678,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -8313,6 +8720,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -8349,9 +8757,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             U,
@@ -8398,6 +8814,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -8439,6 +8856,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -8477,6 +8895,7 @@ Module tuple.
                                           ltac:(M.monadic
                                             (M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   T,
@@ -8561,6 +8980,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", X, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -8586,6 +9006,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", W, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -8614,6 +9035,7 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     V,
@@ -8654,6 +9076,7 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             U,
@@ -8696,6 +9119,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "core::cmp::Ordering",
                                                 M.get_trait_method (|
                                                   "core::cmp::Ord",
                                                   T,
@@ -8786,9 +9210,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : X :=
                   M.alloc (|
                     M.call_closure (|
+                      X,
                       M.get_trait_method (|
                         "core::default::Default",
                         X,
@@ -8804,9 +9229,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : W :=
                   M.alloc (|
                     M.call_closure (|
+                      W,
                       M.get_trait_method (|
                         "core::default::Default",
                         W,
@@ -8822,9 +9248,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -8840,9 +9267,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -8858,9 +9286,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -9023,6 +9452,7 @@ Module tuple.
                 LogicalOp.and (|
                   LogicalOp.and (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", Y, [], [ Y ], "eq", [], [] |),
                       [
                         M.borrow (|
@@ -9037,6 +9467,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.borrow (|
@@ -9052,6 +9483,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.borrow (|
@@ -9067,6 +9499,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -9082,6 +9515,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -9097,6 +9531,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -9131,6 +9566,7 @@ Module tuple.
                 LogicalOp.or (|
                   LogicalOp.or (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", Y, [], [ Y ], "ne", [], [] |),
                       [
                         M.borrow (|
@@ -9145,6 +9581,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.borrow (|
@@ -9160,6 +9597,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.borrow (|
@@ -9175,6 +9613,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -9190,6 +9629,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -9205,6 +9645,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -9306,6 +9747,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Y,
@@ -9345,6 +9787,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
@@ -9387,6 +9833,10 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
@@ -9433,6 +9883,10 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
@@ -9482,6 +9936,10 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
@@ -9530,6 +9988,10 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ],
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
@@ -9609,9 +10071,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Y,
@@ -9652,6 +10116,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -9685,6 +10150,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -9717,9 +10183,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
@@ -9766,6 +10240,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -9800,6 +10275,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -9832,9 +10308,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
@@ -9881,6 +10365,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -9922,6 +10407,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -9954,9 +10440,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
@@ -10003,6 +10497,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -10044,6 +10539,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -10080,9 +10576,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
@@ -10129,6 +10633,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -10170,6 +10675,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -10208,6 +10714,7 @@ Module tuple.
                                                   ltac:(M.monadic
                                                     (M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
@@ -10272,9 +10779,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Y,
@@ -10315,6 +10824,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -10348,6 +10858,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -10380,9 +10891,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
@@ -10429,6 +10948,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -10463,6 +10983,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -10495,9 +11016,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
@@ -10544,6 +11073,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -10585,6 +11115,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -10617,9 +11148,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
@@ -10666,6 +11205,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -10707,6 +11247,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -10743,9 +11284,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
@@ -10792,6 +11341,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -10833,6 +11383,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -10871,6 +11422,7 @@ Module tuple.
                                                   ltac:(M.monadic
                                                     (M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
@@ -10935,9 +11487,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Y,
@@ -10978,6 +11532,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -11011,6 +11566,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -11043,9 +11599,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
@@ -11092,6 +11656,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -11126,6 +11691,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -11158,9 +11724,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
@@ -11207,6 +11781,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -11248,6 +11823,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -11284,9 +11860,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
@@ -11333,6 +11917,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -11374,6 +11959,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -11410,9 +11996,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
@@ -11459,6 +12053,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -11500,6 +12095,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -11538,6 +12134,7 @@ Module tuple.
                                                   ltac:(M.monadic
                                                     (M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
@@ -11602,9 +12199,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Y,
@@ -11645,6 +12244,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -11678,6 +12278,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -11710,9 +12311,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             X,
@@ -11759,6 +12368,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -11793,6 +12403,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -11825,9 +12436,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     W,
@@ -11874,6 +12493,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -11915,6 +12535,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -11951,9 +12572,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             V,
@@ -12000,6 +12629,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -12041,6 +12671,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -12077,9 +12708,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     U,
@@ -12126,6 +12765,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -12167,6 +12807,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -12205,6 +12846,7 @@ Module tuple.
                                                   ltac:(M.monadic
                                                     (M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           T,
@@ -12291,6 +12933,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Y, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -12316,6 +12959,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", X, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -12344,6 +12988,7 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     W,
@@ -12384,6 +13029,7 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             V,
@@ -12427,6 +13073,7 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
                                                     "core::cmp::Ord",
                                                     U,
@@ -12469,6 +13116,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "core::cmp::Ordering",
                                                         M.get_trait_method (|
                                                           "core::cmp::Ord",
                                                           T,
@@ -12565,9 +13213,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : Y :=
                   M.alloc (|
                     M.call_closure (|
+                      Y,
                       M.get_trait_method (|
                         "core::default::Default",
                         Y,
@@ -12583,9 +13232,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : X :=
                   M.alloc (|
                     M.call_closure (|
+                      X,
                       M.get_trait_method (|
                         "core::default::Default",
                         X,
@@ -12601,9 +13251,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : W :=
                   M.alloc (|
                     M.call_closure (|
+                      W,
                       M.get_trait_method (|
                         "core::default::Default",
                         W,
@@ -12619,9 +13270,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -12637,9 +13289,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -12655,9 +13308,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -12832,6 +13486,7 @@ Module tuple.
                   LogicalOp.and (|
                     LogicalOp.and (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", Z, [], [ Z ], "eq", [], [] |),
                         [
                           M.borrow (|
@@ -12846,6 +13501,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -12869,6 +13525,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.borrow (|
@@ -12884,6 +13541,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.borrow (|
@@ -12899,6 +13557,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -12914,6 +13573,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -12929,6 +13589,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -12969,6 +13630,7 @@ Module tuple.
                   LogicalOp.or (|
                     LogicalOp.or (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", Z, [], [ Z ], "ne", [], [] |),
                         [
                           M.borrow (|
@@ -12983,6 +13645,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -13006,6 +13669,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.borrow (|
@@ -13021,6 +13685,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.borrow (|
@@ -13036,6 +13701,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -13051,6 +13717,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -13066,6 +13733,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -13167,6 +13835,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Z,
@@ -13206,6 +13875,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
@@ -13248,6 +13921,10 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
@@ -13294,6 +13971,10 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
@@ -13343,6 +14024,10 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
@@ -13392,6 +14077,10 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
@@ -13442,6 +14131,10 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering" ],
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
@@ -13536,9 +14229,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Z,
@@ -13579,6 +14274,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -13612,6 +14308,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -13644,9 +14341,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
@@ -13693,6 +14398,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -13727,6 +14433,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -13759,9 +14466,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
@@ -13808,6 +14523,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -13849,6 +14565,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -13881,9 +14598,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
@@ -13930,6 +14655,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -13971,6 +14697,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -14007,9 +14734,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
@@ -14056,6 +14791,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -14097,6 +14833,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -14133,9 +14870,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
@@ -14184,6 +14929,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -14236,6 +14982,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -14282,6 +15029,7 @@ Module tuple.
                                                           ltac:(M.monadic
                                                             (M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
@@ -14357,9 +15105,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Z,
@@ -14400,6 +15150,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -14433,6 +15184,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -14465,9 +15217,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
@@ -14514,6 +15274,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -14548,6 +15309,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -14580,9 +15342,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
@@ -14629,6 +15399,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -14670,6 +15441,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -14702,9 +15474,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
@@ -14751,6 +15531,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -14792,6 +15573,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -14828,9 +15610,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
@@ -14877,6 +15667,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -14918,6 +15709,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -14954,9 +15746,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
@@ -15005,6 +15805,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -15057,6 +15858,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -15103,6 +15905,7 @@ Module tuple.
                                                           ltac:(M.monadic
                                                             (M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
@@ -15178,9 +15981,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Z,
@@ -15221,6 +16026,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -15254,6 +16060,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -15286,9 +16093,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
@@ -15335,6 +16150,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -15369,6 +16185,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -15401,9 +16218,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
@@ -15450,6 +16275,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -15491,6 +16317,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -15527,9 +16354,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
@@ -15576,6 +16411,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -15617,6 +16453,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -15653,9 +16490,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
@@ -15702,6 +16547,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -15743,6 +16589,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -15779,9 +16626,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
@@ -15830,6 +16685,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -15882,6 +16738,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -15928,6 +16785,7 @@ Module tuple.
                                                           ltac:(M.monadic
                                                             (M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
@@ -16003,9 +16861,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Z,
@@ -16046,6 +16906,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -16079,6 +16940,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -16111,9 +16973,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
@@ -16160,6 +17030,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -16194,6 +17065,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -16226,9 +17098,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     X,
@@ -16275,6 +17155,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -16316,6 +17197,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -16352,9 +17234,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             W,
@@ -16401,6 +17291,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -16442,6 +17333,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -16478,9 +17370,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     V,
@@ -16527,6 +17427,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -16568,6 +17469,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -16604,9 +17506,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             U,
@@ -16655,6 +17565,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -16707,6 +17618,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -16753,6 +17665,7 @@ Module tuple.
                                                           ltac:(M.monadic
                                                             (M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialOrd",
                                                                   T,
@@ -16850,6 +17763,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Z, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -16875,6 +17789,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", Y, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -16903,6 +17818,7 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     X,
@@ -16943,6 +17859,7 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             W,
@@ -16986,6 +17903,7 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
                                                     "core::cmp::Ord",
                                                     V,
@@ -17029,6 +17947,7 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "core::cmp::Ordering",
                                                           M.get_trait_method (|
                                                             "core::cmp::Ord",
                                                             U,
@@ -17073,6 +17992,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "core::cmp::Ordering",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::Ord",
                                                                   T,
@@ -17179,9 +18099,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : Z :=
                   M.alloc (|
                     M.call_closure (|
+                      Z,
                       M.get_trait_method (|
                         "core::default::Default",
                         Z,
@@ -17197,9 +18118,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Y :=
                   M.alloc (|
                     M.call_closure (|
+                      Y,
                       M.get_trait_method (|
                         "core::default::Default",
                         Y,
@@ -17215,9 +18137,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : X :=
                   M.alloc (|
                     M.call_closure (|
+                      X,
                       M.get_trait_method (|
                         "core::default::Default",
                         X,
@@ -17233,9 +18156,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : W :=
                   M.alloc (|
                     M.call_closure (|
+                      W,
                       M.get_trait_method (|
                         "core::default::Default",
                         W,
@@ -17251,9 +18175,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -17269,9 +18194,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -17287,9 +18213,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -17471,6 +18398,7 @@ Module tuple.
                     LogicalOp.and (|
                       LogicalOp.and (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             A,
@@ -17493,6 +18421,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -17522,6 +18451,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -17545,6 +18475,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.borrow (|
@@ -17560,6 +18491,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.borrow (|
@@ -17575,6 +18507,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -17590,6 +18523,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -17605,6 +18539,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -17646,6 +18581,7 @@ Module tuple.
                     LogicalOp.or (|
                       LogicalOp.or (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             A,
@@ -17668,6 +18604,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -17697,6 +18634,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -17720,6 +18658,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.borrow (|
@@ -17735,6 +18674,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.borrow (|
@@ -17750,6 +18690,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -17765,6 +18706,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -17780,6 +18722,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -17881,6 +18824,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     A,
@@ -17920,6 +18864,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
@@ -17962,6 +18910,10 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
@@ -18008,6 +18960,10 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
@@ -18057,6 +19013,10 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
@@ -18106,6 +19066,10 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
@@ -18157,6 +19121,11 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
@@ -18209,6 +19178,14 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
@@ -18312,9 +19289,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     A,
@@ -18355,6 +19334,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -18388,6 +19368,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -18420,9 +19401,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
@@ -18469,6 +19458,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -18503,6 +19493,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -18535,9 +19526,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
@@ -18584,6 +19583,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -18625,6 +19625,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -18657,9 +19658,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
@@ -18706,6 +19715,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -18747,6 +19757,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -18783,9 +19794,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
@@ -18832,6 +19851,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -18873,6 +19893,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -18909,9 +19930,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
@@ -18960,6 +19989,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -19012,6 +20042,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -19056,9 +20087,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
@@ -19109,6 +20150,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -19161,6 +20203,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -19210,6 +20253,7 @@ Module tuple.
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
@@ -19291,9 +20335,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     A,
@@ -19334,6 +20380,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -19367,6 +20414,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -19399,9 +20447,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
@@ -19448,6 +20504,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -19482,6 +20539,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -19514,9 +20572,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
@@ -19563,6 +20629,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -19604,6 +20671,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -19636,9 +20704,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
@@ -19685,6 +20761,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -19726,6 +20803,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -19762,9 +20840,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
@@ -19811,6 +20897,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -19852,6 +20939,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -19888,9 +20976,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
@@ -19939,6 +21035,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -19991,6 +21088,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -20035,9 +21133,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
@@ -20088,6 +21196,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -20140,6 +21249,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -20189,6 +21299,7 @@ Module tuple.
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
@@ -20270,9 +21381,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     A,
@@ -20313,6 +21426,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -20346,6 +21460,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -20378,9 +21493,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
@@ -20427,6 +21550,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -20461,6 +21585,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -20493,9 +21618,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
@@ -20542,6 +21675,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -20583,6 +21717,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -20619,9 +21754,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
@@ -20668,6 +21811,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -20709,6 +21853,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -20745,9 +21890,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
@@ -20794,6 +21947,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -20835,6 +21989,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -20871,9 +22026,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
@@ -20922,6 +22085,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -20974,6 +22138,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -21018,9 +22183,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
@@ -21071,6 +22246,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -21123,6 +22299,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -21172,6 +22349,7 @@ Module tuple.
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
@@ -21253,9 +22431,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     A,
@@ -21296,6 +22476,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -21329,6 +22510,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -21361,9 +22543,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Z,
@@ -21410,6 +22600,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -21444,6 +22635,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -21476,9 +22668,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Y,
@@ -21525,6 +22725,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -21566,6 +22767,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -21602,9 +22804,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             X,
@@ -21651,6 +22861,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -21692,6 +22903,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -21728,9 +22940,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     W,
@@ -21777,6 +22997,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -21818,6 +23039,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -21854,9 +23076,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             V,
@@ -21905,6 +23135,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -21957,6 +23188,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -22001,9 +23233,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     U,
@@ -22054,6 +23296,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -22106,6 +23349,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -22155,6 +23399,7 @@ Module tuple.
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialOrd",
                                                                           T,
@@ -22258,6 +23503,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -22283,6 +23529,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", Z, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -22311,6 +23558,7 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Y,
@@ -22351,6 +23599,7 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             X,
@@ -22394,6 +23643,7 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
                                                     "core::cmp::Ord",
                                                     W,
@@ -22437,6 +23687,7 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "core::cmp::Ordering",
                                                           M.get_trait_method (|
                                                             "core::cmp::Ord",
                                                             V,
@@ -22482,6 +23733,7 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "core::cmp::Ordering",
                                                                   M.get_trait_method (|
                                                                     "core::cmp::Ord",
                                                                     U,
@@ -22528,6 +23780,8 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "core::cmp::Ordering",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::Ord",
                                                                           T,
@@ -22643,9 +23897,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : A :=
                   M.alloc (|
                     M.call_closure (|
+                      A,
                       M.get_trait_method (|
                         "core::default::Default",
                         A,
@@ -22661,9 +23916,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Z :=
                   M.alloc (|
                     M.call_closure (|
+                      Z,
                       M.get_trait_method (|
                         "core::default::Default",
                         Z,
@@ -22679,9 +23935,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Y :=
                   M.alloc (|
                     M.call_closure (|
+                      Y,
                       M.get_trait_method (|
                         "core::default::Default",
                         Y,
@@ -22697,9 +23954,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : X :=
                   M.alloc (|
                     M.call_closure (|
+                      X,
                       M.get_trait_method (|
                         "core::default::Default",
                         X,
@@ -22715,9 +23973,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : W :=
                   M.alloc (|
                     M.call_closure (|
+                      W,
                       M.get_trait_method (|
                         "core::default::Default",
                         W,
@@ -22733,9 +23992,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -22751,9 +24011,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -22769,9 +24030,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -22960,6 +24222,7 @@ Module tuple.
                       LogicalOp.and (|
                         LogicalOp.and (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               B,
@@ -22988,6 +24251,7 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 A,
@@ -23017,6 +24281,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -23046,6 +24311,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -23069,6 +24335,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.borrow (|
@@ -23084,6 +24351,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.borrow (|
@@ -23099,6 +24367,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -23114,6 +24383,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -23129,6 +24399,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -23171,6 +24442,7 @@ Module tuple.
                       LogicalOp.or (|
                         LogicalOp.or (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               B,
@@ -23199,6 +24471,7 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 A,
@@ -23228,6 +24501,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -23257,6 +24531,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -23280,6 +24555,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.borrow (|
@@ -23295,6 +24571,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.borrow (|
@@ -23310,6 +24587,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -23325,6 +24603,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -23340,6 +24619,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -23441,6 +24721,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     B,
@@ -23480,6 +24761,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
@@ -23522,6 +24807,10 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
@@ -23568,6 +24857,10 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
@@ -23617,6 +24910,10 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
@@ -23666,6 +24963,10 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
@@ -23717,6 +25018,11 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
@@ -23770,6 +25076,14 @@ Module tuple.
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
@@ -23824,6 +25138,14 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
@@ -23936,9 +25258,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     B,
@@ -23979,6 +25303,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -24012,6 +25337,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -24044,9 +25370,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
@@ -24093,6 +25427,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -24127,6 +25462,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -24159,9 +25495,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
@@ -24208,6 +25552,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -24249,6 +25594,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -24281,9 +25627,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
@@ -24330,6 +25684,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -24371,6 +25726,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -24407,9 +25763,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
@@ -24456,6 +25820,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -24497,6 +25862,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -24533,9 +25899,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
@@ -24584,6 +25958,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -24636,6 +26011,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -24680,9 +26056,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
@@ -24733,6 +26119,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -24785,6 +26172,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -24832,9 +26220,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
@@ -24889,6 +26293,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -24941,6 +26346,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -24990,6 +26396,7 @@ Module tuple.
                                                                           ltac:(M.monadic
                                                                             (M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
@@ -25073,9 +26480,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     B,
@@ -25116,6 +26525,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -25149,6 +26559,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -25181,9 +26592,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
@@ -25230,6 +26649,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -25264,6 +26684,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -25296,9 +26717,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
@@ -25345,6 +26774,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -25386,6 +26816,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -25418,9 +26849,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
@@ -25467,6 +26906,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -25508,6 +26948,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -25544,9 +26985,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
@@ -25593,6 +27042,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -25634,6 +27084,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -25670,9 +27121,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
@@ -25721,6 +27180,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -25773,6 +27233,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -25817,9 +27278,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
@@ -25870,6 +27341,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -25922,6 +27394,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -25969,9 +27442,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
@@ -26026,6 +27515,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -26078,6 +27568,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -26127,6 +27618,7 @@ Module tuple.
                                                                           ltac:(M.monadic
                                                                             (M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
@@ -26210,9 +27702,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     B,
@@ -26253,6 +27747,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -26286,6 +27781,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -26318,9 +27814,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
@@ -26367,6 +27871,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -26401,6 +27906,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -26433,9 +27939,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
@@ -26482,6 +27996,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -26523,6 +28038,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -26559,9 +28075,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
@@ -26608,6 +28132,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -26649,6 +28174,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -26685,9 +28211,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
@@ -26734,6 +28268,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -26775,6 +28310,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -26811,9 +28347,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
@@ -26862,6 +28406,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -26914,6 +28459,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -26958,9 +28504,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
@@ -27011,6 +28567,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -27063,6 +28620,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -27110,9 +28668,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
@@ -27167,6 +28741,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -27219,6 +28794,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -27268,6 +28844,7 @@ Module tuple.
                                                                           ltac:(M.monadic
                                                                             (M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
@@ -27351,9 +28928,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     B,
@@ -27394,6 +28973,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -27427,6 +29007,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -27459,9 +29040,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             A,
@@ -27508,6 +29097,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -27542,6 +29132,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -27574,9 +29165,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Z,
@@ -27623,6 +29222,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -27664,6 +29264,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -27700,9 +29301,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Y,
@@ -27749,6 +29358,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -27790,6 +29400,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -27826,9 +29437,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     X,
@@ -27875,6 +29494,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -27916,6 +29536,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -27952,9 +29573,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             W,
@@ -28003,6 +29632,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -28055,6 +29685,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -28099,9 +29730,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     V,
@@ -28152,6 +29793,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -28204,6 +29846,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -28251,9 +29894,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             U,
@@ -28308,6 +29967,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -28360,6 +30020,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -28409,6 +30070,7 @@ Module tuple.
                                                                           ltac:(M.monadic
                                                                             (M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialOrd",
                                                                                   T,
@@ -28514,6 +30176,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", B, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -28539,6 +30202,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -28567,6 +30231,7 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Z,
@@ -28607,6 +30272,7 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             Y,
@@ -28650,6 +30316,7 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
                                                     "core::cmp::Ord",
                                                     X,
@@ -28693,6 +30360,7 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "core::cmp::Ordering",
                                                           M.get_trait_method (|
                                                             "core::cmp::Ord",
                                                             W,
@@ -28738,6 +30406,7 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "core::cmp::Ordering",
                                                                   M.get_trait_method (|
                                                                     "core::cmp::Ord",
                                                                     V,
@@ -28785,6 +30454,8 @@ Module tuple.
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering",
                                                                           M.get_trait_method (|
                                                                             "core::cmp::Ord",
                                                                             U,
@@ -28833,6 +30504,8 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::cmp::Ordering",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::Ord",
                                                                                   T,
@@ -28957,9 +30630,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : B :=
                   M.alloc (|
                     M.call_closure (|
+                      B,
                       M.get_trait_method (|
                         "core::default::Default",
                         B,
@@ -28975,9 +30649,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : A :=
                   M.alloc (|
                     M.call_closure (|
+                      A,
                       M.get_trait_method (|
                         "core::default::Default",
                         A,
@@ -28993,9 +30668,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Z :=
                   M.alloc (|
                     M.call_closure (|
+                      Z,
                       M.get_trait_method (|
                         "core::default::Default",
                         Z,
@@ -29011,9 +30687,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Y :=
                   M.alloc (|
                     M.call_closure (|
+                      Y,
                       M.get_trait_method (|
                         "core::default::Default",
                         Y,
@@ -29029,9 +30706,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : X :=
                   M.alloc (|
                     M.call_closure (|
+                      X,
                       M.get_trait_method (|
                         "core::default::Default",
                         X,
@@ -29047,9 +30725,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : W :=
                   M.alloc (|
                     M.call_closure (|
+                      W,
                       M.get_trait_method (|
                         "core::default::Default",
                         W,
@@ -29065,9 +30744,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -29083,9 +30763,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -29101,9 +30782,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -29300,6 +30982,7 @@ Module tuple.
                         LogicalOp.and (|
                           LogicalOp.and (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 C,
@@ -29328,6 +31011,7 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   B,
@@ -29357,6 +31041,7 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 A,
@@ -29386,6 +31071,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -29415,6 +31101,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -29438,6 +31125,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.borrow (|
@@ -29453,6 +31141,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.borrow (|
@@ -29468,6 +31157,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -29483,6 +31173,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -29498,6 +31189,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -29541,6 +31233,7 @@ Module tuple.
                         LogicalOp.or (|
                           LogicalOp.or (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 C,
@@ -29569,6 +31262,7 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   B,
@@ -29598,6 +31292,7 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 A,
@@ -29627,6 +31322,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -29656,6 +31352,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -29679,6 +31376,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.borrow (|
@@ -29694,6 +31392,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.borrow (|
@@ -29709,6 +31408,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -29724,6 +31424,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -29739,6 +31440,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -29845,6 +31547,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     C,
@@ -29884,6 +31587,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
@@ -29926,6 +31633,10 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
@@ -29972,6 +31683,10 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
@@ -30021,6 +31736,10 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
@@ -30070,6 +31789,10 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
@@ -30121,6 +31844,11 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
@@ -30174,6 +31902,14 @@ Module tuple.
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
@@ -30229,6 +31965,14 @@ Module tuple.
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
@@ -30285,6 +32029,14 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::cmp::Ordering"
+                                                                                          ],
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
@@ -30406,9 +32158,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     C,
@@ -30449,6 +32203,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -30482,6 +32237,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -30514,9 +32270,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
@@ -30563,6 +32327,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -30597,6 +32362,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -30629,9 +32395,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
@@ -30678,6 +32452,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -30719,6 +32494,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -30751,9 +32527,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
@@ -30800,6 +32584,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -30841,6 +32626,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -30877,9 +32663,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
@@ -30926,6 +32720,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -30967,6 +32762,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -31003,9 +32799,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
@@ -31054,6 +32858,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -31106,6 +32911,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -31150,9 +32956,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
@@ -31203,6 +33019,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -31255,6 +33072,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -31302,9 +33120,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
@@ -31359,6 +33193,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -31411,6 +33246,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -31458,9 +33294,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
@@ -31517,6 +33369,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -31572,6 +33426,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -31621,6 +33477,8 @@ Module tuple.
                                                                                   ltac:(M.monadic
                                                                                     (M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
@@ -31706,9 +33564,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     C,
@@ -31749,6 +33609,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -31782,6 +33643,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -31814,9 +33676,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
@@ -31863,6 +33733,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -31897,6 +33768,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -31929,9 +33801,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
@@ -31978,6 +33858,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -32019,6 +33900,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -32051,9 +33933,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
@@ -32100,6 +33990,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -32141,6 +34032,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -32177,9 +34069,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
@@ -32226,6 +34126,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -32267,6 +34168,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -32303,9 +34205,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
@@ -32354,6 +34264,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -32406,6 +34317,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -32450,9 +34362,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
@@ -32503,6 +34425,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -32555,6 +34478,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -32602,9 +34526,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
@@ -32659,6 +34599,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -32711,6 +34652,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -32758,9 +34700,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
@@ -32817,6 +34775,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -32872,6 +34832,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -32921,6 +34883,8 @@ Module tuple.
                                                                                   ltac:(M.monadic
                                                                                     (M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
@@ -33006,9 +34970,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     C,
@@ -33049,6 +35015,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -33082,6 +35049,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -33114,9 +35082,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
@@ -33163,6 +35139,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -33197,6 +35174,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -33229,9 +35207,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
@@ -33278,6 +35264,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -33319,6 +35306,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -33355,9 +35343,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
@@ -33404,6 +35400,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -33445,6 +35442,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -33481,9 +35479,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
@@ -33530,6 +35536,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -33571,6 +35578,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -33607,9 +35615,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
@@ -33658,6 +35674,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -33710,6 +35727,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -33754,9 +35772,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
@@ -33807,6 +35835,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -33859,6 +35888,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -33906,9 +35936,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
@@ -33963,6 +36009,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -34015,6 +36062,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -34062,9 +36110,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
@@ -34121,6 +36185,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -34176,6 +36242,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -34225,6 +36293,8 @@ Module tuple.
                                                                                   ltac:(M.monadic
                                                                                     (M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
@@ -34310,9 +36380,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     C,
@@ -34353,6 +36425,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -34386,6 +36459,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -34418,9 +36492,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             B,
@@ -34467,6 +36549,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -34501,6 +36584,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -34533,9 +36617,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     A,
@@ -34582,6 +36674,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -34623,6 +36716,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -34659,9 +36753,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Z,
@@ -34708,6 +36810,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -34749,6 +36852,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -34785,9 +36889,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Y,
@@ -34834,6 +36946,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -34875,6 +36988,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -34911,9 +37025,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             X,
@@ -34962,6 +37084,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -35014,6 +37137,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -35058,9 +37182,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     W,
@@ -35111,6 +37245,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -35163,6 +37298,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -35210,9 +37346,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             V,
@@ -35267,6 +37419,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -35319,6 +37472,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -35366,9 +37520,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     U,
@@ -35425,6 +37595,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -35480,6 +37652,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -35529,6 +37703,8 @@ Module tuple.
                                                                                   ltac:(M.monadic
                                                                                     (M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialOrd",
                                                                                           T,
@@ -35637,6 +37813,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", C, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -35662,6 +37839,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", B, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -35690,6 +37868,7 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     A,
@@ -35730,6 +37909,7 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             Z,
@@ -35773,6 +37953,7 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
                                                     "core::cmp::Ord",
                                                     Y,
@@ -35816,6 +37997,7 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "core::cmp::Ordering",
                                                           M.get_trait_method (|
                                                             "core::cmp::Ord",
                                                             X,
@@ -35861,6 +38043,7 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "core::cmp::Ordering",
                                                                   M.get_trait_method (|
                                                                     "core::cmp::Ord",
                                                                     W,
@@ -35908,6 +38091,8 @@ Module tuple.
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering",
                                                                           M.get_trait_method (|
                                                                             "core::cmp::Ord",
                                                                             V,
@@ -35957,6 +38142,8 @@ Module tuple.
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering",
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::Ord",
                                                                                     U,
@@ -36007,6 +38194,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "core::cmp::Ordering",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::Ord",
                                                                                           T,
@@ -36141,9 +38330,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : C :=
                   M.alloc (|
                     M.call_closure (|
+                      C,
                       M.get_trait_method (|
                         "core::default::Default",
                         C,
@@ -36159,9 +38349,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : B :=
                   M.alloc (|
                     M.call_closure (|
+                      B,
                       M.get_trait_method (|
                         "core::default::Default",
                         B,
@@ -36177,9 +38368,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : A :=
                   M.alloc (|
                     M.call_closure (|
+                      A,
                       M.get_trait_method (|
                         "core::default::Default",
                         A,
@@ -36195,9 +38387,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Z :=
                   M.alloc (|
                     M.call_closure (|
+                      Z,
                       M.get_trait_method (|
                         "core::default::Default",
                         Z,
@@ -36213,9 +38406,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Y :=
                   M.alloc (|
                     M.call_closure (|
+                      Y,
                       M.get_trait_method (|
                         "core::default::Default",
                         Y,
@@ -36231,9 +38425,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : X :=
                   M.alloc (|
                     M.call_closure (|
+                      X,
                       M.get_trait_method (|
                         "core::default::Default",
                         X,
@@ -36249,9 +38444,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : W :=
                   M.alloc (|
                     M.call_closure (|
+                      W,
                       M.get_trait_method (|
                         "core::default::Default",
                         W,
@@ -36267,9 +38463,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -36285,9 +38482,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -36303,9 +38501,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -36509,6 +38708,7 @@ Module tuple.
                           LogicalOp.and (|
                             LogicalOp.and (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   D,
@@ -36537,6 +38737,7 @@ Module tuple.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     C,
@@ -36566,6 +38767,7 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   B,
@@ -36595,6 +38797,7 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 A,
@@ -36624,6 +38827,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -36653,6 +38857,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -36676,6 +38881,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.borrow (|
@@ -36691,6 +38897,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.borrow (|
@@ -36706,6 +38913,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -36721,6 +38929,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -36736,6 +38945,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -36780,6 +38990,7 @@ Module tuple.
                           LogicalOp.or (|
                             LogicalOp.or (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   D,
@@ -36808,6 +39019,7 @@ Module tuple.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     C,
@@ -36837,6 +39049,7 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   B,
@@ -36866,6 +39079,7 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 A,
@@ -36895,6 +39109,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -36924,6 +39139,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -36947,6 +39163,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.borrow (|
@@ -36962,6 +39179,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.borrow (|
@@ -36977,6 +39195,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -36992,6 +39211,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -37007,6 +39227,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -37113,6 +39334,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     D,
@@ -37152,6 +39374,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
@@ -37194,6 +39420,10 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
@@ -37240,6 +39470,10 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
@@ -37289,6 +39523,10 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
@@ -37338,6 +39576,10 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
@@ -37389,6 +39631,11 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
@@ -37442,6 +39689,14 @@ Module tuple.
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
@@ -37497,6 +39752,14 @@ Module tuple.
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
@@ -37554,6 +39817,14 @@ Module tuple.
                                                                                     M.match_operator (|
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
@@ -37611,6 +39882,14 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::option::Option")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "core::cmp::Ordering"
+                                                                                                  ],
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
@@ -37744,9 +40023,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     D,
@@ -37787,6 +40068,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -37820,6 +40102,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -37852,9 +40135,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
@@ -37901,6 +40192,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -37935,6 +40227,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -37967,9 +40260,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
@@ -38016,6 +40317,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -38057,6 +40359,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -38089,9 +40392,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
@@ -38138,6 +40449,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -38179,6 +40491,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -38215,9 +40528,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
@@ -38264,6 +40585,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -38305,6 +40627,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -38341,9 +40664,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
@@ -38392,6 +40723,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -38444,6 +40776,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -38488,9 +40821,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
@@ -38541,6 +40884,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -38593,6 +40937,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -38640,9 +40985,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
@@ -38697,6 +41058,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -38749,6 +41111,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -38796,9 +41159,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
@@ -38855,6 +41234,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -38910,6 +41291,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -38957,9 +41340,25 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let~ c :=
+                                                                                    (let~ c :
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::cmp::Ordering"
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
@@ -39018,6 +41417,8 @@ Module tuple.
                                                                                               M.use
                                                                                                 (M.alloc (|
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::cmp::PartialEq",
                                                                                                       Ty.apply
@@ -39073,6 +41474,8 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialEq",
                                                                                                   Ty.apply
@@ -39122,6 +41525,8 @@ Module tuple.
                                                                                           ltac:(M.monadic
                                                                                             (M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
@@ -39211,9 +41616,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     D,
@@ -39254,6 +41661,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -39287,6 +41695,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -39319,9 +41728,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
@@ -39368,6 +41785,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -39402,6 +41820,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -39434,9 +41853,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
@@ -39483,6 +41910,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -39524,6 +41952,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -39556,9 +41985,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
@@ -39605,6 +42042,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -39646,6 +42084,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -39682,9 +42121,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
@@ -39731,6 +42178,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -39772,6 +42220,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -39808,9 +42257,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
@@ -39859,6 +42316,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -39911,6 +42369,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -39955,9 +42414,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
@@ -40008,6 +42477,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -40060,6 +42530,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -40107,9 +42578,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
@@ -40164,6 +42651,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -40216,6 +42704,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -40263,9 +42752,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
@@ -40322,6 +42827,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -40377,6 +42884,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -40424,9 +42933,25 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let~ c :=
+                                                                                    (let~ c :
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::cmp::Ordering"
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
@@ -40485,6 +43010,8 @@ Module tuple.
                                                                                               M.use
                                                                                                 (M.alloc (|
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::cmp::PartialEq",
                                                                                                       Ty.apply
@@ -40540,6 +43067,8 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialEq",
                                                                                                   Ty.apply
@@ -40589,6 +43118,8 @@ Module tuple.
                                                                                           ltac:(M.monadic
                                                                                             (M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
@@ -40678,9 +43209,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     D,
@@ -40721,6 +43254,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -40754,6 +43288,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -40786,9 +43321,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
@@ -40835,6 +43378,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -40869,6 +43413,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -40901,9 +43446,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
@@ -40950,6 +43503,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -40991,6 +43545,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -41027,9 +43582,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
@@ -41076,6 +43639,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -41117,6 +43681,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -41153,9 +43718,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
@@ -41202,6 +43775,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -41243,6 +43817,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -41279,9 +43854,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
@@ -41330,6 +43913,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -41382,6 +43966,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -41426,9 +44011,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
@@ -41479,6 +44074,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -41531,6 +44127,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -41578,9 +44175,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
@@ -41635,6 +44248,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -41687,6 +44301,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -41734,9 +44349,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
@@ -41793,6 +44424,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -41848,6 +44481,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -41895,9 +44530,25 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let~ c :=
+                                                                                    (let~ c :
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::cmp::Ordering"
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
@@ -41956,6 +44607,8 @@ Module tuple.
                                                                                               M.use
                                                                                                 (M.alloc (|
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::cmp::PartialEq",
                                                                                                       Ty.apply
@@ -42011,6 +44664,8 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialEq",
                                                                                                   Ty.apply
@@ -42060,6 +44715,8 @@ Module tuple.
                                                                                           ltac:(M.monadic
                                                                                             (M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
@@ -42149,9 +44806,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     D,
@@ -42192,6 +44851,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -42225,6 +44885,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -42257,9 +44918,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             C,
@@ -42306,6 +44975,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -42340,6 +45010,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -42372,9 +45043,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     B,
@@ -42421,6 +45100,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -42462,6 +45142,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -42498,9 +45179,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             A,
@@ -42547,6 +45236,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -42588,6 +45278,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -42624,9 +45315,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Z,
@@ -42673,6 +45372,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -42714,6 +45414,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -42750,9 +45451,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Y,
@@ -42801,6 +45510,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -42853,6 +45563,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -42897,9 +45608,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     X,
@@ -42950,6 +45671,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -43002,6 +45724,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -43049,9 +45772,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             W,
@@ -43106,6 +45845,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -43158,6 +45898,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -43205,9 +45946,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     V,
@@ -43264,6 +46021,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -43319,6 +46078,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -43366,9 +46127,25 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let~ c :=
+                                                                                    (let~ c :
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::cmp::Ordering"
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             U,
@@ -43427,6 +46204,8 @@ Module tuple.
                                                                                               M.use
                                                                                                 (M.alloc (|
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::cmp::PartialEq",
                                                                                                       Ty.apply
@@ -43482,6 +46261,8 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialEq",
                                                                                                   Ty.apply
@@ -43531,6 +46312,8 @@ Module tuple.
                                                                                           ltac:(M.monadic
                                                                                             (M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialOrd",
                                                                                                   T,
@@ -43643,6 +46426,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", D, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -43668,6 +46452,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", C, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -43696,6 +46481,7 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     B,
@@ -43736,6 +46522,7 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             A,
@@ -43779,6 +46566,7 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
                                                     "core::cmp::Ord",
                                                     Z,
@@ -43822,6 +46610,7 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "core::cmp::Ordering",
                                                           M.get_trait_method (|
                                                             "core::cmp::Ord",
                                                             Y,
@@ -43867,6 +46656,7 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "core::cmp::Ordering",
                                                                   M.get_trait_method (|
                                                                     "core::cmp::Ord",
                                                                     X,
@@ -43914,6 +46704,8 @@ Module tuple.
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering",
                                                                           M.get_trait_method (|
                                                                             "core::cmp::Ord",
                                                                             W,
@@ -43963,6 +46755,8 @@ Module tuple.
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering",
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::Ord",
                                                                                     V,
@@ -44014,6 +46808,8 @@ Module tuple.
                                                                                     M.match_operator (|
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering",
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::Ord",
                                                                                             U,
@@ -44065,6 +46861,8 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "core::cmp::Ordering",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::Ord",
                                                                                                   T,
@@ -44209,9 +47007,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : D :=
                   M.alloc (|
                     M.call_closure (|
+                      D,
                       M.get_trait_method (|
                         "core::default::Default",
                         D,
@@ -44227,9 +47026,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : C :=
                   M.alloc (|
                     M.call_closure (|
+                      C,
                       M.get_trait_method (|
                         "core::default::Default",
                         C,
@@ -44245,9 +47045,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : B :=
                   M.alloc (|
                     M.call_closure (|
+                      B,
                       M.get_trait_method (|
                         "core::default::Default",
                         B,
@@ -44263,9 +47064,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : A :=
                   M.alloc (|
                     M.call_closure (|
+                      A,
                       M.get_trait_method (|
                         "core::default::Default",
                         A,
@@ -44281,9 +47083,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Z :=
                   M.alloc (|
                     M.call_closure (|
+                      Z,
                       M.get_trait_method (|
                         "core::default::Default",
                         Z,
@@ -44299,9 +47102,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Y :=
                   M.alloc (|
                     M.call_closure (|
+                      Y,
                       M.get_trait_method (|
                         "core::default::Default",
                         Y,
@@ -44317,9 +47121,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : X :=
                   M.alloc (|
                     M.call_closure (|
+                      X,
                       M.get_trait_method (|
                         "core::default::Default",
                         X,
@@ -44335,9 +47140,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : W :=
                   M.alloc (|
                     M.call_closure (|
+                      W,
                       M.get_trait_method (|
                         "core::default::Default",
                         W,
@@ -44353,9 +47159,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -44371,9 +47178,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -44389,9 +47197,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,
@@ -44602,6 +47411,7 @@ Module tuple.
                             LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     E,
@@ -44630,6 +47440,7 @@ Module tuple.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       D,
@@ -44659,6 +47470,7 @@ Module tuple.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     C,
@@ -44688,6 +47500,7 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   B,
@@ -44717,6 +47530,7 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 A,
@@ -44746,6 +47560,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -44775,6 +47590,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -44798,6 +47614,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "eq", [], [] |),
                         [
                           M.borrow (|
@@ -44813,6 +47630,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "eq", [], [] |),
                       [
                         M.borrow (|
@@ -44828,6 +47646,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -44843,6 +47662,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -44858,6 +47678,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -44903,6 +47724,7 @@ Module tuple.
                             LogicalOp.or (|
                               LogicalOp.or (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     E,
@@ -44931,6 +47753,7 @@ Module tuple.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       D,
@@ -44960,6 +47783,7 @@ Module tuple.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     C,
@@ -44989,6 +47813,7 @@ Module tuple.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   B,
@@ -45018,6 +47843,7 @@ Module tuple.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 A,
@@ -45047,6 +47873,7 @@ Module tuple.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Z,
@@ -45076,6 +47903,7 @@ Module tuple.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Y,
@@ -45099,6 +47927,7 @@ Module tuple.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", X, [], [ X ], "ne", [], [] |),
                         [
                           M.borrow (|
@@ -45114,6 +47943,7 @@ Module tuple.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (| "core::cmp::PartialEq", W, [], [ W ], "ne", [], [] |),
                       [
                         M.borrow (|
@@ -45129,6 +47959,7 @@ Module tuple.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", V, [], [ V ], "ne", [], [] |),
                     [
                       M.borrow (|
@@ -45144,6 +47975,7 @@ Module tuple.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", U, [], [ U ], "ne", [], [] |),
                   [
                     M.borrow (|
@@ -45159,6 +47991,7 @@ Module tuple.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
@@ -45265,6 +48098,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     E,
@@ -45304,6 +48138,10 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
@@ -45346,6 +48184,10 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
@@ -45392,6 +48234,10 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
@@ -45441,6 +48287,10 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
@@ -45490,6 +48340,10 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
@@ -45541,6 +48395,11 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
@@ -45594,6 +48453,14 @@ Module tuple.
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
@@ -45649,6 +48516,14 @@ Module tuple.
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
@@ -45706,6 +48581,14 @@ Module tuple.
                                                                                     M.match_operator (|
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
@@ -45764,6 +48647,14 @@ Module tuple.
                                                                                             M.match_operator (|
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ],
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
@@ -45825,6 +48716,14 @@ Module tuple.
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "core::option::Option")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "core::cmp::Ordering"
+                                                                                                          ],
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
@@ -45969,9 +48868,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     E,
@@ -46012,6 +48913,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -46045,6 +48947,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -46077,9 +48980,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
@@ -46126,6 +49037,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -46160,6 +49072,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -46192,9 +49105,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
@@ -46241,6 +49162,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -46282,6 +49204,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -46314,9 +49237,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
@@ -46363,6 +49294,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -46404,6 +49336,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -46440,9 +49373,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
@@ -46489,6 +49430,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -46530,6 +49472,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -46566,9 +49509,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
@@ -46617,6 +49568,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -46669,6 +49621,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -46713,9 +49666,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
@@ -46766,6 +49729,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -46818,6 +49782,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -46865,9 +49830,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
@@ -46922,6 +49903,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -46974,6 +49956,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -47021,9 +50004,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
@@ -47080,6 +50079,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -47135,6 +50136,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -47182,9 +50185,25 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let~ c :=
+                                                                                    (let~ c :
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::cmp::Ordering"
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
@@ -47243,6 +50262,8 @@ Module tuple.
                                                                                               M.use
                                                                                                 (M.alloc (|
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::cmp::PartialEq",
                                                                                                       Ty.apply
@@ -47298,6 +50319,8 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialEq",
                                                                                                   Ty.apply
@@ -47346,9 +50369,25 @@ Module tuple.
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
                                                                                             (let~
-                                                                                                  c :=
+                                                                                                  c :
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::option::Option")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "core::cmp::Ordering"
+                                                                                                  ] :=
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ],
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
@@ -47410,6 +50449,8 @@ Module tuple.
                                                                                                       M.use
                                                                                                         (M.alloc (|
                                                                                                           M.call_closure (|
+                                                                                                            Ty.path
+                                                                                                              "bool",
                                                                                                             M.get_trait_method (|
                                                                                                               "core::cmp::PartialEq",
                                                                                                               Ty.apply
@@ -47466,6 +50507,8 @@ Module tuple.
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialEq",
                                                                                                           Ty.apply
@@ -47516,6 +50559,8 @@ Module tuple.
                                                                                                   ltac:(M.monadic
                                                                                                     (M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
@@ -47607,9 +50652,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     E,
@@ -47650,6 +50697,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -47683,6 +50731,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -47715,9 +50764,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
@@ -47764,6 +50821,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -47798,6 +50856,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -47830,9 +50889,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
@@ -47879,6 +50946,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -47920,6 +50988,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -47952,9 +51021,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
@@ -48001,6 +51078,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -48042,6 +51120,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -48078,9 +51157,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
@@ -48127,6 +51214,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -48168,6 +51256,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -48204,9 +51293,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
@@ -48255,6 +51352,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -48307,6 +51405,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -48351,9 +51450,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
@@ -48404,6 +51513,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -48456,6 +51566,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -48503,9 +51614,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
@@ -48560,6 +51687,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -48612,6 +51740,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -48659,9 +51788,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
@@ -48718,6 +51863,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -48773,6 +51920,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -48820,9 +51969,25 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let~ c :=
+                                                                                    (let~ c :
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::cmp::Ordering"
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
@@ -48881,6 +52046,8 @@ Module tuple.
                                                                                               M.use
                                                                                                 (M.alloc (|
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::cmp::PartialEq",
                                                                                                       Ty.apply
@@ -48936,6 +52103,8 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialEq",
                                                                                                   Ty.apply
@@ -48984,9 +52153,25 @@ Module tuple.
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
                                                                                             (let~
-                                                                                                  c :=
+                                                                                                  c :
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::option::Option")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "core::cmp::Ordering"
+                                                                                                  ] :=
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ],
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
@@ -49048,6 +52233,8 @@ Module tuple.
                                                                                                       M.use
                                                                                                         (M.alloc (|
                                                                                                           M.call_closure (|
+                                                                                                            Ty.path
+                                                                                                              "bool",
                                                                                                             M.get_trait_method (|
                                                                                                               "core::cmp::PartialEq",
                                                                                                               Ty.apply
@@ -49104,6 +52291,8 @@ Module tuple.
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialEq",
                                                                                                           Ty.apply
@@ -49154,6 +52343,8 @@ Module tuple.
                                                                                                   ltac:(M.monadic
                                                                                                     (M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
@@ -49245,9 +52436,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     E,
@@ -49288,6 +52481,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -49321,6 +52515,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -49353,9 +52548,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
@@ -49402,6 +52605,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -49436,6 +52640,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -49468,9 +52673,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
@@ -49517,6 +52730,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -49558,6 +52772,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -49594,9 +52809,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
@@ -49643,6 +52866,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -49684,6 +52908,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -49720,9 +52945,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
@@ -49769,6 +53002,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -49810,6 +53044,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -49846,9 +53081,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
@@ -49897,6 +53140,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -49949,6 +53193,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -49993,9 +53238,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
@@ -50046,6 +53301,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -50098,6 +53354,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -50145,9 +53402,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
@@ -50202,6 +53475,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -50254,6 +53528,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -50301,9 +53576,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
@@ -50360,6 +53651,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -50415,6 +53708,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -50462,9 +53757,25 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let~ c :=
+                                                                                    (let~ c :
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::cmp::Ordering"
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
@@ -50523,6 +53834,8 @@ Module tuple.
                                                                                               M.use
                                                                                                 (M.alloc (|
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::cmp::PartialEq",
                                                                                                       Ty.apply
@@ -50578,6 +53891,8 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialEq",
                                                                                                   Ty.apply
@@ -50626,9 +53941,25 @@ Module tuple.
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
                                                                                             (let~
-                                                                                                  c :=
+                                                                                                  c :
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::option::Option")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "core::cmp::Ordering"
+                                                                                                  ] :=
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ],
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
@@ -50690,6 +54021,8 @@ Module tuple.
                                                                                                       M.use
                                                                                                         (M.alloc (|
                                                                                                           M.call_closure (|
+                                                                                                            Ty.path
+                                                                                                              "bool",
                                                                                                             M.get_trait_method (|
                                                                                                               "core::cmp::PartialEq",
                                                                                                               Ty.apply
@@ -50746,6 +54079,8 @@ Module tuple.
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialEq",
                                                                                                           Ty.apply
@@ -50796,6 +54131,8 @@ Module tuple.
                                                                                                   ltac:(M.monadic
                                                                                                     (M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
@@ -50887,9 +54224,11 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ c :=
+            let~ c :
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     E,
@@ -50930,6 +54269,7 @@ Module tuple.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.apply
@@ -50963,6 +54303,7 @@ Module tuple.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -50995,9 +54336,17 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ c :=
+                    (let~ c :
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             D,
@@ -51044,6 +54393,7 @@ Module tuple.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -51078,6 +54428,7 @@ Module tuple.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -51110,9 +54461,17 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ c :=
+                            (let~ c :
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     C,
@@ -51159,6 +54518,7 @@ Module tuple.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.apply
@@ -51200,6 +54560,7 @@ Module tuple.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -51236,9 +54597,17 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ c :=
+                                    (let~ c :
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             B,
@@ -51285,6 +54654,7 @@ Module tuple.
                                               M.use
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -51326,6 +54696,7 @@ Module tuple.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.apply
@@ -51362,9 +54733,17 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let~ c :=
+                                            (let~ c :
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     A,
@@ -51411,6 +54790,7 @@ Module tuple.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
                                                               Ty.apply
@@ -51452,6 +54832,7 @@ Module tuple.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -51488,9 +54869,17 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ c :=
+                                                    (let~ c :
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "core::cmp::Ordering" ],
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Z,
@@ -51539,6 +54928,7 @@ Module tuple.
                                                               M.use
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_trait_method (|
                                                                       "core::cmp::PartialEq",
                                                                       Ty.apply
@@ -51591,6 +54981,7 @@ Module tuple.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -51635,9 +55026,19 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let~ c :=
+                                                            (let~ c :
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering"
+                                                                  ] :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "core::cmp::Ordering"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialOrd",
                                                                     Y,
@@ -51688,6 +55089,7 @@ Module tuple.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_trait_method (|
                                                                               "core::cmp::PartialEq",
                                                                               Ty.apply
@@ -51740,6 +55142,7 @@ Module tuple.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "bool",
                                                                         M.get_trait_method (|
                                                                           "core::cmp::PartialEq",
                                                                           Ty.apply
@@ -51787,9 +55190,25 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let~ c :=
+                                                                    (let~ c :
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::cmp::Ordering"
+                                                                          ] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::cmp::Ordering"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::cmp::PartialOrd",
                                                                             X,
@@ -51844,6 +55263,7 @@ Module tuple.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "bool",
                                                                                     M.get_trait_method (|
                                                                                       "core::cmp::PartialEq",
                                                                                       Ty.apply
@@ -51896,6 +55316,7 @@ Module tuple.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_trait_method (|
                                                                                   "core::cmp::PartialEq",
                                                                                   Ty.apply
@@ -51943,9 +55364,25 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let~ c :=
+                                                                            (let~ c :
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::cmp::Ordering"
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialOrd",
                                                                                     W,
@@ -52002,6 +55439,8 @@ Module tuple.
                                                                                       M.use
                                                                                         (M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
                                                                                             M.get_trait_method (|
                                                                                               "core::cmp::PartialEq",
                                                                                               Ty.apply
@@ -52057,6 +55496,8 @@ Module tuple.
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_trait_method (|
                                                                                           "core::cmp::PartialEq",
                                                                                           Ty.apply
@@ -52104,9 +55545,25 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let~ c :=
+                                                                                    (let~ c :
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::cmp::Ordering"
+                                                                                          ] :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::cmp::Ordering"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::PartialOrd",
                                                                                             V,
@@ -52165,6 +55622,8 @@ Module tuple.
                                                                                               M.use
                                                                                                 (M.alloc (|
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::cmp::PartialEq",
                                                                                                       Ty.apply
@@ -52220,6 +55679,8 @@ Module tuple.
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.get_trait_method (|
                                                                                                   "core::cmp::PartialEq",
                                                                                                   Ty.apply
@@ -52268,9 +55729,25 @@ Module tuple.
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
                                                                                             (let~
-                                                                                                  c :=
+                                                                                                  c :
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::option::Option")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "core::cmp::Ordering"
+                                                                                                  ] :=
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::cmp::Ordering"
+                                                                                                    ],
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::PartialOrd",
                                                                                                     U,
@@ -52332,6 +55809,8 @@ Module tuple.
                                                                                                       M.use
                                                                                                         (M.alloc (|
                                                                                                           M.call_closure (|
+                                                                                                            Ty.path
+                                                                                                              "bool",
                                                                                                             M.get_trait_method (|
                                                                                                               "core::cmp::PartialEq",
                                                                                                               Ty.apply
@@ -52388,6 +55867,8 @@ Module tuple.
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialEq",
                                                                                                           Ty.apply
@@ -52438,6 +55919,8 @@ Module tuple.
                                                                                                   ltac:(M.monadic
                                                                                                     (M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::PartialOrd",
                                                                                                           T,
@@ -52552,6 +56035,7 @@ Module tuple.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", E, [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -52577,6 +56061,7 @@ Module tuple.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (| "core::cmp::Ord", D, [], [], "cmp", [], [] |),
                           [
                             M.borrow (|
@@ -52605,6 +56090,7 @@ Module tuple.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     C,
@@ -52645,6 +56131,7 @@ Module tuple.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             B,
@@ -52688,6 +56175,7 @@ Module tuple.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
                                                     "core::cmp::Ord",
                                                     A,
@@ -52731,6 +56219,7 @@ Module tuple.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "core::cmp::Ordering",
                                                           M.get_trait_method (|
                                                             "core::cmp::Ord",
                                                             Z,
@@ -52776,6 +56265,7 @@ Module tuple.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "core::cmp::Ordering",
                                                                   M.get_trait_method (|
                                                                     "core::cmp::Ord",
                                                                     Y,
@@ -52823,6 +56313,8 @@ Module tuple.
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::cmp::Ordering",
                                                                           M.get_trait_method (|
                                                                             "core::cmp::Ord",
                                                                             X,
@@ -52872,6 +56364,8 @@ Module tuple.
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "core::cmp::Ordering",
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::Ord",
                                                                                     W,
@@ -52923,6 +56417,8 @@ Module tuple.
                                                                                     M.match_operator (|
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "core::cmp::Ordering",
                                                                                           M.get_trait_method (|
                                                                                             "core::cmp::Ord",
                                                                                             V,
@@ -52975,6 +56471,8 @@ Module tuple.
                                                                                             M.match_operator (|
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "core::cmp::Ordering",
                                                                                                   M.get_trait_method (|
                                                                                                     "core::cmp::Ord",
                                                                                                     U,
@@ -53027,6 +56525,8 @@ Module tuple.
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "core::cmp::Ordering",
                                                                                                         M.get_trait_method (|
                                                                                                           "core::cmp::Ord",
                                                                                                           T,
@@ -53182,9 +56682,10 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let~ x :=
+                let~ x : E :=
                   M.alloc (|
                     M.call_closure (|
+                      E,
                       M.get_trait_method (|
                         "core::default::Default",
                         E,
@@ -53200,9 +56701,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : D :=
                   M.alloc (|
                     M.call_closure (|
+                      D,
                       M.get_trait_method (|
                         "core::default::Default",
                         D,
@@ -53218,9 +56720,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : C :=
                   M.alloc (|
                     M.call_closure (|
+                      C,
                       M.get_trait_method (|
                         "core::default::Default",
                         C,
@@ -53236,9 +56739,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : B :=
                   M.alloc (|
                     M.call_closure (|
+                      B,
                       M.get_trait_method (|
                         "core::default::Default",
                         B,
@@ -53254,9 +56758,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : A :=
                   M.alloc (|
                     M.call_closure (|
+                      A,
                       M.get_trait_method (|
                         "core::default::Default",
                         A,
@@ -53272,9 +56777,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Z :=
                   M.alloc (|
                     M.call_closure (|
+                      Z,
                       M.get_trait_method (|
                         "core::default::Default",
                         Z,
@@ -53290,9 +56796,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : Y :=
                   M.alloc (|
                     M.call_closure (|
+                      Y,
                       M.get_trait_method (|
                         "core::default::Default",
                         Y,
@@ -53308,9 +56815,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : X :=
                   M.alloc (|
                     M.call_closure (|
+                      X,
                       M.get_trait_method (|
                         "core::default::Default",
                         X,
@@ -53326,9 +56834,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : W :=
                   M.alloc (|
                     M.call_closure (|
+                      W,
                       M.get_trait_method (|
                         "core::default::Default",
                         W,
@@ -53344,9 +56853,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : V :=
                   M.alloc (|
                     M.call_closure (|
+                      V,
                       M.get_trait_method (|
                         "core::default::Default",
                         V,
@@ -53362,9 +56872,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : U :=
                   M.alloc (|
                     M.call_closure (|
+                      U,
                       M.get_trait_method (|
                         "core::default::Default",
                         U,
@@ -53380,9 +56891,10 @@ Module tuple.
                 x
               |);
               M.read (|
-                let~ x :=
+                let~ x : T :=
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_trait_method (|
                         "core::default::Default",
                         T,

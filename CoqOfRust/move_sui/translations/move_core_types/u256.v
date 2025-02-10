@@ -49,6 +49,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -139,6 +143,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -254,9 +262,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -265,9 +274,10 @@ Module u256.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -358,9 +368,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -371,6 +382,7 @@ Module u256.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "isize",
@@ -424,6 +436,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -505,6 +521,7 @@ Module u256.
               ("kind", M.read (| kind |));
               ("val",
                 M.call_closure (|
+                  Ty.path "move_core_types::u256::U256",
                   M.get_trait_method (|
                     "core::convert::Into",
                     T,
@@ -558,7 +575,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ type_str :=
+            let~ type_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.copy (|
                 M.match_operator (|
                   M.SubPointer.get_struct_record_field (|
@@ -630,9 +647,10 @@ Module u256.
                   ]
                 |)
               |) in
-            let~ err_str :=
+            let~ err_str : Ty.path "alloc::string::String" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_function (|
                     "core::hint::must_use",
                     [],
@@ -640,12 +658,14 @@ Module u256.
                   |),
                   [
                     M.read (|
-                      let~ res :=
+                      let~ res : Ty.path "alloc::string::String" :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "alloc::string::String",
                             M.get_function (| "alloc::fmt::format", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
@@ -678,6 +698,7 @@ Module u256.
                                           Value.Array
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
@@ -701,6 +722,7 @@ Module u256.
                                                 ]
                                               |);
                                               M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
@@ -733,10 +755,15 @@ Module u256.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -762,6 +789,7 @@ Module u256.
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -811,6 +839,10 @@ Module u256.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ],
             M.get_trait_method (|
               "core::error::Error",
               Ty.path "uint::uint::FromStrRadixErr",
@@ -857,10 +889,15 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.borrow (|
@@ -881,6 +918,7 @@ Module u256.
                           Value.Array
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
@@ -968,6 +1006,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -1030,6 +1072,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "primitive_types::U256",
@@ -1111,6 +1154,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::hash::Hash",
               Ty.path "primitive_types::U256",
@@ -1170,6 +1214,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.path "primitive_types::U256",
@@ -1230,6 +1275,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
               "core::cmp::Ord",
               Ty.path "primitive_types::U256",
@@ -1291,6 +1337,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "primitive_types::U256",
@@ -1329,6 +1376,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (|
               "core::fmt::Display",
               Ty.path "primitive_types::U256",
@@ -1376,6 +1427,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (|
               "core::fmt::UpperHex",
               Ty.path "primitive_types::U256",
@@ -1428,6 +1483,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (|
               "core::fmt::LowerHex",
               Ty.path "primitive_types::U256",
@@ -1482,6 +1541,13 @@ Module u256.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::u256::U256";
+                Ty.path "move_core_types::u256::U256FromStrError"
+              ],
             M.get_associated_function (|
               Ty.path "move_core_types::u256::U256",
               "from_str_radix",
@@ -1529,6 +1595,7 @@ Module u256.
                 "core::result::Result::Ok"
                 [
                   M.call_closure (|
+                    Ty.path "move_core_types::u256::U256",
                     M.get_associated_function (|
                       Ty.path "move_core_types::u256::U256",
                       "from_le_bytes",
@@ -1544,6 +1611,19 @@ Module u256.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [ Ty.path "u8" ]
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
@@ -1564,6 +1644,16 @@ Module u256.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [ Ty.path "u8" ];
+                                          Ty.associated
+                                        ],
                                       M.get_trait_method (|
                                         "serde::de::Deserialize",
                                         Ty.apply
@@ -1596,6 +1686,13 @@ Module u256.
                                         M.read (|
                                           M.return_ (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "move_core_types::u256::U256";
+                                                  Ty.associated
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
@@ -1673,6 +1770,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let serializer := M.alloc (| serializer |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
             M.get_trait_method (|
               "serde::ser::Serialize",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
@@ -1687,6 +1785,10 @@ Module u256.
                 Pointer.Kind.Ref,
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ],
                     M.get_associated_function (|
                       Ty.path "move_core_types::u256::U256",
                       "to_le_bytes",
@@ -1747,6 +1849,7 @@ Module u256.
                         "move_core_types::u256::U256"
                         [
                           M.call_closure (|
+                            Ty.path "primitive_types::U256",
                             M.get_trait_method (|
                               "core::ops::bit::Shl",
                               Ty.path "primitive_types::U256",
@@ -1810,6 +1913,7 @@ Module u256.
                         "move_core_types::u256::U256"
                         [
                           M.call_closure (|
+                            Ty.path "primitive_types::U256",
                             M.get_trait_method (|
                               "core::ops::bit::Shl",
                               Ty.path "primitive_types::U256",
@@ -1873,6 +1977,7 @@ Module u256.
                         "move_core_types::u256::U256"
                         [
                           M.call_closure (|
+                            Ty.path "primitive_types::U256",
                             M.get_trait_method (|
                               "core::ops::bit::Shr",
                               Ty.path "primitive_types::U256",
@@ -1949,6 +2054,7 @@ Module u256.
                                 "move_core_types::u256::U256"
                                 [
                                   M.call_closure (|
+                                    Ty.path "primitive_types::U256",
                                     M.get_trait_method (|
                                       "core::ops::bit::BitOr",
                                       Ty.path "primitive_types::U256",
@@ -2028,6 +2134,7 @@ Module u256.
                                 "move_core_types::u256::U256"
                                 [
                                   M.call_closure (|
+                                    Ty.path "primitive_types::U256",
                                     M.get_trait_method (|
                                       "core::ops::bit::BitAnd",
                                       Ty.path "primitive_types::U256",
@@ -2107,6 +2214,7 @@ Module u256.
                                 "move_core_types::u256::U256"
                                 [
                                   M.call_closure (|
+                                    Ty.path "primitive_types::U256",
                                     M.get_trait_method (|
                                       "core::ops::bit::BitXor",
                                       Ty.path "primitive_types::U256",
@@ -2152,20 +2260,23 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.deref (| M.read (| self |) |),
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::bit::BitAnd",
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
                     Ty.path "move_core_types::u256::U256",
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "bitand",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
+                      Ty.path "move_core_types::u256::U256",
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                  |)
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -2199,6 +2310,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.path "move_core_types::u256::U256",
             M.get_associated_function (|
               Ty.path "move_core_types::u256::U256",
               "wrapping_add",
@@ -2233,20 +2345,23 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.deref (| M.read (| self |) |),
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Add",
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
                     Ty.path "move_core_types::u256::U256",
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "add",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
+                      Ty.path "move_core_types::u256::U256",
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                  |)
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -2280,6 +2395,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.path "move_core_types::u256::U256",
             M.get_associated_function (|
               Ty.path "move_core_types::u256::U256",
               "wrapping_sub",
@@ -2314,20 +2430,23 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.deref (| M.read (| self |) |),
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Sub",
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
                     Ty.path "move_core_types::u256::U256",
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "sub",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
+                      Ty.path "move_core_types::u256::U256",
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                  |)
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -2361,6 +2480,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.path "move_core_types::u256::U256",
             M.get_associated_function (|
               Ty.path "move_core_types::u256::U256",
               "wrapping_mul",
@@ -2395,20 +2515,23 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.deref (| M.read (| self |) |),
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Mul",
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
                     Ty.path "move_core_types::u256::U256",
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "mul",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
+                      Ty.path "move_core_types::u256::U256",
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                  |)
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -2445,6 +2568,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_trait_method (|
                   "core::ops::arith::Div",
                   Ty.path "primitive_types::U256",
@@ -2490,20 +2614,23 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.deref (| M.read (| self |) |),
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Div",
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
                     Ty.path "move_core_types::u256::U256",
-                    [],
-                    [ Ty.path "move_core_types::u256::U256" ],
-                    "div",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
+                      Ty.path "move_core_types::u256::U256",
+                      [],
+                      [ Ty.path "move_core_types::u256::U256" ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                  |)
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -2540,6 +2667,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_trait_method (|
                   "core::ops::arith::Rem",
                   Ty.path "primitive_types::U256",
@@ -2585,40 +2713,43 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.deref (| M.read (| self |) |),
-                Value.StructTuple
-                  "move_core_types::u256::U256"
-                  [
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  Value.StructTuple
+                    "move_core_types::u256::U256"
+                    [
+                      M.call_closure (|
                         Ty.path "primitive_types::U256",
-                        [],
-                        [ Ty.path "primitive_types::U256" ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::u256::U256",
-                            0
+                        M.get_trait_method (|
+                          "core::ops::arith::Rem",
+                          Ty.path "primitive_types::U256",
+                          [],
+                          [ Ty.path "primitive_types::U256" ],
+                          "rem",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::u256::U256",
+                              0
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              rhs,
+                              "move_core_types::u256::U256",
+                              0
+                            |)
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            rhs,
-                            "move_core_types::u256::U256",
-                            0
-                          |)
-                        |)
-                      ]
-                    |)
-                  ]
+                        ]
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -2649,6 +2780,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_associated_function (| Ty.path "primitive_types::U256", "zero", [], [] |),
                 []
               |)
@@ -2672,6 +2804,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_associated_function (| Ty.path "primitive_types::U256", "one", [], [] |),
                 []
               |)
@@ -2695,6 +2828,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_associated_function (|
                   Ty.path "primitive_types::U256",
                   "max_value",
@@ -2724,6 +2858,13 @@ Module u256.
           (let src := M.alloc (| src |) in
           let radix := M.alloc (| radix |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::u256::U256";
+                Ty.path "move_core_types::u256::U256FromStrError"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -2740,6 +2881,10 @@ Module u256.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "move_core_types::u256::U256"; Ty.path "uint::uint::FromStrRadixErr" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -2756,6 +2901,10 @@ Module u256.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "primitive_types::U256"; Ty.path "uint::uint::FromStrRadixErr" ],
                     M.get_associated_function (|
                       Ty.path "primitive_types::U256",
                       "from_str_radix",
@@ -2767,6 +2916,7 @@ Module u256.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.get_associated_function (|
                               Ty.path "str",
                               "trim_start_matches",
@@ -2810,6 +2960,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_associated_function (|
                   Ty.path "primitive_types::U256",
                   "from_little_endian",
@@ -2839,13 +2990,18 @@ Module u256.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ bytes :=
+            let~ bytes :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [ Ty.path "u8" ] :=
               M.alloc (|
                 repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.path "primitive_types::U256",
                     "to_little_endian",
@@ -2887,6 +3043,7 @@ Module u256.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "u32",
             M.get_associated_function (|
               Ty.path "primitive_types::U256",
               "leading_zeros",
@@ -2924,6 +3081,7 @@ Module u256.
           M.cast
             (Ty.path "u8")
             (M.call_closure (|
+              Ty.path "u128",
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
                 M.borrow (|
@@ -2956,6 +3114,7 @@ Module u256.
           M.cast
             (Ty.path "u16")
             (M.call_closure (|
+              Ty.path "u128",
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
                 M.borrow (|
@@ -2988,6 +3147,7 @@ Module u256.
           M.cast
             (Ty.path "u32")
             (M.call_closure (|
+              Ty.path "u128",
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
                 M.borrow (|
@@ -3020,6 +3180,7 @@ Module u256.
           M.cast
             (Ty.path "u64")
             (M.call_closure (|
+              Ty.path "u128",
               M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
               [
                 M.borrow (|
@@ -3050,6 +3211,7 @@ Module u256.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "u128",
             M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
             [
               M.borrow (|
@@ -3081,6 +3243,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
               "map",
@@ -3094,6 +3257,7 @@ Module u256.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
                 M.get_associated_function (|
                   Ty.path "primitive_types::U256",
                   "checked_add",
@@ -3130,6 +3294,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
               "map",
@@ -3143,6 +3308,7 @@ Module u256.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
                 M.get_associated_function (|
                   Ty.path "primitive_types::U256",
                   "checked_sub",
@@ -3179,6 +3345,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
               "map",
@@ -3192,6 +3359,7 @@ Module u256.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
                 M.get_associated_function (|
                   Ty.path "primitive_types::U256",
                   "checked_mul",
@@ -3228,6 +3396,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
               "map",
@@ -3241,6 +3410,7 @@ Module u256.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
                 M.get_associated_function (|
                   Ty.path "primitive_types::U256",
                   "checked_div",
@@ -3277,6 +3447,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
               "map",
@@ -3290,6 +3461,7 @@ Module u256.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "primitive_types::U256" ],
                 M.get_associated_function (|
                   Ty.path "primitive_types::U256",
                   "checked_rem",
@@ -3331,7 +3503,7 @@ Module u256.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3369,6 +3541,7 @@ Module u256.
                         "move_core_types::u256::U256"
                         [
                           M.call_closure (|
+                            Ty.path "primitive_types::U256",
                             M.get_trait_method (|
                               "core::ops::bit::Shl",
                               Ty.path "primitive_types::U256",
@@ -3417,7 +3590,7 @@ Module u256.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3455,6 +3628,7 @@ Module u256.
                         "move_core_types::u256::U256"
                         [
                           M.call_closure (|
+                            Ty.path "primitive_types::U256",
                             M.get_trait_method (|
                               "core::ops::bit::Shr",
                               Ty.path "primitive_types::U256",
@@ -3509,11 +3683,15 @@ Module u256.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ type_size :=
+            let~ type_size : Ty.path "usize" :=
               M.alloc (|
-                M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_function (| "core::mem::size_of", [], [ T ] |),
+                  []
+                |)
               |) in
-            let~ max_val :=
+            let~ max_val : Ty.path "u128" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -3551,6 +3729,7 @@ Module u256.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.associated ],
                   M.get_trait_method (|
                     "core::convert::TryFrom",
                     T,
@@ -3563,6 +3742,7 @@ Module u256.
                   [
                     BinOp.bit_and
                       (M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.path "primitive_types::U256",
                           "low_u128",
@@ -3598,9 +3778,11 @@ Module u256.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
@@ -3654,6 +3836,7 @@ Module u256.
                 M.SubPointer.get_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [ Ty.path "primitive_types::U256"; Ty.path "bool" ],
                       M.get_associated_function (|
                         Ty.path "primitive_types::U256",
                         "overflowing_add",
@@ -3706,6 +3889,7 @@ Module u256.
                 M.SubPointer.get_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [ Ty.path "primitive_types::U256"; Ty.path "bool" ],
                       M.get_associated_function (|
                         Ty.path "primitive_types::U256",
                         "overflowing_sub",
@@ -3758,6 +3942,7 @@ Module u256.
                 M.SubPointer.get_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [ Ty.path "primitive_types::U256"; Ty.path "bool" ],
                       M.get_associated_function (|
                         Ty.path "primitive_types::U256",
                         "overflowing_mul",
@@ -3821,10 +4006,11 @@ Module u256.
           (let self := M.alloc (| self |) in
           let b := M.alloc (| b |) in
           M.read (|
-            let~ half := M.alloc (| Value.Integer IntegerKind.U8 128 |) in
-            let~ value_LOWER_MASK :=
+            let~ half : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 128 |) in
+            let~ value_LOWER_MASK : Ty.path "move_core_types::u256::U256" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_core_types::u256::U256",
                   M.get_trait_method (|
                     "core::ops::bit::Shr",
                     Ty.path "move_core_types::u256::U256",
@@ -3836,6 +4022,7 @@ Module u256.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "max_value",
@@ -3848,9 +4035,10 @@ Module u256.
                   ]
                 |)
               |) in
-            let~ low :=
+            let~ low : Ty.path "move_core_types::u256::U256" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_core_types::u256::U256",
                   M.get_associated_function (|
                     Ty.path "move_core_types::u256::U256",
                     "wrapping_mul",
@@ -3859,6 +4047,7 @@ Module u256.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_trait_method (|
                         "core::ops::bit::BitAnd",
                         Ty.path "move_core_types::u256::U256",
@@ -3871,6 +4060,7 @@ Module u256.
                       [ M.read (| self |); M.read (| value_LOWER_MASK |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_trait_method (|
                         "core::ops::bit::BitAnd",
                         Ty.path "move_core_types::u256::U256",
@@ -3885,9 +4075,10 @@ Module u256.
                   ]
                 |)
               |) in
-            let~ t :=
+            let~ t : Ty.path "move_core_types::u256::U256" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_core_types::u256::U256",
                   M.get_trait_method (|
                     "core::ops::bit::Shr",
                     Ty.path "move_core_types::u256::U256",
@@ -3900,9 +4091,10 @@ Module u256.
                   [ M.read (| low |); M.read (| half |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::ops::bit::BitAndAssign",
                     Ty.path "move_core_types::u256::U256",
@@ -3915,9 +4107,10 @@ Module u256.
                   [ M.borrow (| Pointer.Kind.MutRef, low |); M.read (| value_LOWER_MASK |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.path "move_core_types::u256::U256",
@@ -3930,6 +4123,7 @@ Module u256.
                   [
                     M.borrow (| Pointer.Kind.MutRef, t |);
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "wrapping_mul",
@@ -3938,6 +4132,7 @@ Module u256.
                       |),
                       [
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_trait_method (|
                             "core::ops::bit::Shr",
                             Ty.path "move_core_types::u256::U256",
@@ -3950,6 +4145,7 @@ Module u256.
                           [ M.read (| self |); M.read (| half |) ]
                         |);
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_trait_method (|
                             "core::ops::bit::BitAnd",
                             Ty.path "move_core_types::u256::U256",
@@ -3966,9 +4162,10 @@ Module u256.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.path "move_core_types::u256::U256",
@@ -3981,6 +4178,7 @@ Module u256.
                   [
                     M.borrow (| Pointer.Kind.MutRef, low |);
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_trait_method (|
                         "core::ops::bit::Shl",
                         Ty.path "move_core_types::u256::U256",
@@ -3992,6 +4190,7 @@ Module u256.
                       |),
                       [
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_trait_method (|
                             "core::ops::bit::BitAnd",
                             Ty.path "move_core_types::u256::U256",
@@ -4009,9 +4208,10 @@ Module u256.
                   ]
                 |)
               |) in
-            let~ high :=
+            let~ high : Ty.path "move_core_types::u256::U256" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_core_types::u256::U256",
                   M.get_trait_method (|
                     "core::ops::bit::Shr",
                     Ty.path "move_core_types::u256::U256",
@@ -4024,25 +4224,29 @@ Module u256.
                   [ M.read (| t |); M.read (| half |) ]
                 |)
               |) in
-            let~ _ :=
-              M.write (|
-                t,
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::bit::Shr",
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  t,
+                  M.call_closure (|
                     Ty.path "move_core_types::u256::U256",
-                    [],
-                    [ Ty.path "u8" ],
-                    "shr",
-                    [],
-                    []
-                  |),
-                  [ M.read (| low |); M.read (| half |) ]
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
+                      Ty.path "move_core_types::u256::U256",
+                      [],
+                      [ Ty.path "u8" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| low |); M.read (| half |) ]
+                  |)
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::ops::bit::BitAndAssign",
                     Ty.path "move_core_types::u256::U256",
@@ -4055,9 +4259,10 @@ Module u256.
                   [ M.borrow (| Pointer.Kind.MutRef, low |); M.read (| value_LOWER_MASK |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.path "move_core_types::u256::U256",
@@ -4070,6 +4275,7 @@ Module u256.
                   [
                     M.borrow (| Pointer.Kind.MutRef, t |);
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "wrapping_mul",
@@ -4078,6 +4284,7 @@ Module u256.
                       |),
                       [
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_trait_method (|
                             "core::ops::bit::Shr",
                             Ty.path "move_core_types::u256::U256",
@@ -4090,6 +4297,7 @@ Module u256.
                           [ M.read (| b |); M.read (| half |) ]
                         |);
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_trait_method (|
                             "core::ops::bit::BitAnd",
                             Ty.path "move_core_types::u256::U256",
@@ -4106,9 +4314,10 @@ Module u256.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.path "move_core_types::u256::U256",
@@ -4121,6 +4330,7 @@ Module u256.
                   [
                     M.borrow (| Pointer.Kind.MutRef, low |);
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_trait_method (|
                         "core::ops::bit::Shl",
                         Ty.path "move_core_types::u256::U256",
@@ -4132,6 +4342,7 @@ Module u256.
                       |),
                       [
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_trait_method (|
                             "core::ops::bit::BitAnd",
                             Ty.path "move_core_types::u256::U256",
@@ -4149,9 +4360,10 @@ Module u256.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.path "move_core_types::u256::U256",
@@ -4164,6 +4376,7 @@ Module u256.
                   [
                     M.borrow (| Pointer.Kind.MutRef, high |);
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_trait_method (|
                         "core::ops::bit::Shr",
                         Ty.path "move_core_types::u256::U256",
@@ -4178,9 +4391,10 @@ Module u256.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::ops::arith::AddAssign",
                     Ty.path "move_core_types::u256::U256",
@@ -4193,6 +4407,7 @@ Module u256.
                   [
                     M.borrow (| Pointer.Kind.MutRef, high |);
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "wrapping_mul",
@@ -4201,6 +4416,7 @@ Module u256.
                       |),
                       [
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_trait_method (|
                             "core::ops::bit::Shr",
                             Ty.path "move_core_types::u256::U256",
@@ -4213,6 +4429,7 @@ Module u256.
                           [ M.read (| self |); M.read (| half |) ]
                         |);
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_trait_method (|
                             "core::ops::bit::Shr",
                             Ty.path "move_core_types::u256::U256",
@@ -4255,6 +4472,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "primitive_types::U256",
@@ -4295,6 +4513,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "primitive_types::U256",
@@ -4335,6 +4554,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "primitive_types::U256",
@@ -4375,6 +4595,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "primitive_types::U256",
@@ -4415,6 +4636,7 @@ Module u256.
             "move_core_types::u256::U256"
             [
               M.call_closure (|
+                Ty.path "primitive_types::U256",
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.path "primitive_types::U256",
@@ -4452,6 +4674,7 @@ Module u256.
         ltac:(M.monadic
           (let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.path "num_bigint::bigint::BigInt",
             M.get_associated_function (|
               Ty.path "num_bigint::bigint::BigInt",
               "from_bytes_le",
@@ -4467,6 +4690,10 @@ Module u256.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          [ Ty.path "u8" ],
                         M.get_associated_function (|
                           Ty.path "move_core_types::u256::U256",
                           "to_le_bytes",
@@ -4511,9 +4738,10 @@ Module u256.
         ltac:(M.monadic
           (let n := M.alloc (| n |) in
           M.read (|
-            let~ num_str :=
+            let~ num_str : Ty.path "alloc::string::String" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_function (|
                     "core::hint::must_use",
                     [],
@@ -4521,12 +4749,14 @@ Module u256.
                   |),
                   [
                     M.read (|
-                      let~ res :=
+                      let~ res : Ty.path "alloc::string::String" :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "alloc::string::String",
                             M.get_function (| "alloc::fmt::format", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
@@ -4552,6 +4782,7 @@ Module u256.
                                           Value.Array
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_upper_hex",
@@ -4591,6 +4822,7 @@ Module u256.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "ethnum::uint::U256",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -4602,6 +4834,10 @@ Module u256.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "ethnum::uint::U256"; Ty.path "core::num::error::ParseIntError" ],
                     M.get_associated_function (|
                       Ty.path "ethnum::uint::U256",
                       "from_str_radix",
@@ -4613,6 +4849,7 @@ Module u256.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.path "alloc::string::String",
@@ -4676,9 +4913,10 @@ Module u256.
         ltac:(M.monadic
           (let n := M.alloc (| n |) in
           M.read (|
-            let~ n :=
+            let~ n : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (|
                     Ty.path "primitive_types::U256",
                     "low_u64",
@@ -4712,6 +4950,7 @@ Module u256.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256CastError",
                             M.get_associated_function (|
                               Ty.path "move_core_types::u256::U256CastError",
                               "new",
@@ -4771,9 +5010,10 @@ Module u256.
         ltac:(M.monadic
           (let n := M.alloc (| n |) in
           M.read (|
-            let~ n :=
+            let~ n : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (|
                     Ty.path "primitive_types::U256",
                     "low_u64",
@@ -4807,6 +5047,7 @@ Module u256.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256CastError",
                             M.get_associated_function (|
                               Ty.path "move_core_types::u256::U256CastError",
                               "new",
@@ -4866,9 +5107,10 @@ Module u256.
         ltac:(M.monadic
           (let n := M.alloc (| n |) in
           M.read (|
-            let~ n :=
+            let~ n : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (|
                     Ty.path "primitive_types::U256",
                     "low_u64",
@@ -4902,6 +5144,7 @@ Module u256.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256CastError",
                             M.get_associated_function (|
                               Ty.path "move_core_types::u256::U256CastError",
                               "new",
@@ -4961,9 +5204,10 @@ Module u256.
         ltac:(M.monadic
           (let n := M.alloc (| n |) in
           M.read (|
-            let~ n :=
+            let~ n : Ty.path "u128" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (|
                     Ty.path "primitive_types::U256",
                     "low_u128",
@@ -4997,6 +5241,7 @@ Module u256.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256CastError",
                             M.get_associated_function (|
                               Ty.path "move_core_types::u256::U256CastError",
                               "new",
@@ -5064,6 +5309,7 @@ Module u256.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.path "move_core_types::u256::U256",
@@ -5079,6 +5325,7 @@ Module u256.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "move_core_types::u256::U256",
                                     M.get_trait_method (|
                                       "core::convert::From",
                                       Ty.path "move_core_types::u256::U256",
@@ -5101,6 +5348,7 @@ Module u256.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256CastError",
                             M.get_associated_function (|
                               Ty.path "move_core_types::u256::U256CastError",
                               "new",
@@ -5123,6 +5371,7 @@ Module u256.
                         "core::result::Result::Ok"
                         [
                           M.call_closure (|
+                            Ty.path "u128",
                             M.get_associated_function (|
                               Ty.path "primitive_types::U256",
                               "low_u128",
@@ -5174,13 +5423,18 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rng := M.alloc (| rng |) in
           M.read (|
-            let~ dest :=
+            let~ dest :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [ Ty.path "u8" ] :=
               M.alloc (|
                 repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "rand_core::RngCore", R, [], [], "fill_bytes", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| rng |) |) |);
@@ -5193,6 +5447,7 @@ Module u256.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "move_core_types::u256::U256",
                 M.get_associated_function (|
                   Ty.path "move_core_types::u256::U256",
                   "from_le_bytes",
@@ -5280,6 +5535,10 @@ Module u256.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
@@ -5376,6 +5635,7 @@ Module u256.
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::u256::U256",
@@ -5406,6 +5666,7 @@ Module u256.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "move_core_types::u256::U256",
@@ -5437,6 +5698,7 @@ Module u256.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::u256::U256",
@@ -5547,10 +5809,11 @@ Module u256.
           (let low := M.alloc (| low |) in
           let high := M.alloc (| high |) in
           M.read (|
-            let~ low :=
+            let~ low : Ty.path "move_core_types::u256::U256" :=
               M.copy (|
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                     M.get_trait_method (|
                       "rand::distributions::uniform::SampleBorrow",
                       B1,
@@ -5564,10 +5827,11 @@ Module u256.
                   |)
                 |)
               |) in
-            let~ high :=
+            let~ high : Ty.path "move_core_types::u256::U256" :=
               M.copy (|
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                     M.get_trait_method (|
                       "rand::distributions::uniform::SampleBorrow",
                       B2,
@@ -5581,7 +5845,7 @@ Module u256.
                   |)
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -5592,6 +5856,7 @@ Module u256.
                           (M.alloc (|
                             UnOp.not (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
@@ -5612,9 +5877,11 @@ Module u256.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -5650,6 +5917,7 @@ Module u256.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "move_core_types::u256::UniformU256",
                 M.get_trait_method (|
                   "rand::distributions::uniform::UniformSampler",
                   Ty.path "move_core_types::u256::UniformU256",
@@ -5662,6 +5930,7 @@ Module u256.
                 [
                   M.read (| low |);
                   M.call_closure (|
+                    Ty.path "move_core_types::u256::U256",
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
                       Ty.path "move_core_types::u256::U256",
@@ -5674,6 +5943,7 @@ Module u256.
                     [
                       M.read (| high |);
                       M.call_closure (|
+                        Ty.path "move_core_types::u256::U256",
                         M.get_associated_function (|
                           Ty.path "move_core_types::u256::U256",
                           "one",
@@ -5727,10 +5997,11 @@ Module u256.
           (let low := M.alloc (| low |) in
           let high := M.alloc (| high |) in
           M.read (|
-            let~ low :=
+            let~ low : Ty.path "move_core_types::u256::U256" :=
               M.copy (|
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                     M.get_trait_method (|
                       "rand::distributions::uniform::SampleBorrow",
                       B1,
@@ -5744,10 +6015,11 @@ Module u256.
                   |)
                 |)
               |) in
-            let~ high :=
+            let~ high : Ty.path "move_core_types::u256::U256" :=
               M.copy (|
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                     M.get_trait_method (|
                       "rand::distributions::uniform::SampleBorrow",
                       B2,
@@ -5761,7 +6033,7 @@ Module u256.
                   |)
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -5772,6 +6044,7 @@ Module u256.
                           (M.alloc (|
                             UnOp.not (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
@@ -5792,9 +6065,11 @@ Module u256.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -5828,9 +6103,10 @@ Module u256.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ unsigned_max :=
+            let~ unsigned_max : Ty.path "move_core_types::u256::U256" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_core_types::u256::U256",
                   M.get_associated_function (|
                     Ty.path "move_core_types::u256::U256",
                     "max_value",
@@ -5840,9 +6116,10 @@ Module u256.
                   []
                 |)
               |) in
-            let~ range :=
+            let~ range : Ty.path "move_core_types::u256::U256" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_core_types::u256::U256",
                   M.get_associated_function (|
                     Ty.path "move_core_types::u256::U256",
                     "wrapping_add",
@@ -5851,6 +6128,7 @@ Module u256.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "wrapping_sub",
@@ -5860,6 +6138,7 @@ Module u256.
                       [ M.read (| high |); M.read (| low |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "one",
@@ -5871,7 +6150,7 @@ Module u256.
                   ]
                 |)
               |) in
-            let~ ints_to_reject :=
+            let~ ints_to_reject : Ty.path "move_core_types::u256::U256" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5882,6 +6161,7 @@ Module u256.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
@@ -5897,6 +6177,7 @@ Module u256.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "move_core_types::u256::U256",
                                         M.get_associated_function (|
                                           Ty.path "move_core_types::u256::U256",
                                           "zero",
@@ -5914,6 +6195,7 @@ Module u256.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256",
                             M.get_trait_method (|
                               "core::ops::arith::Add",
                               Ty.path "move_core_types::u256::U256",
@@ -5925,6 +6207,7 @@ Module u256.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "move_core_types::u256::U256",
                                 M.get_trait_method (|
                                   "core::ops::arith::Sub",
                                   Ty.path "move_core_types::u256::U256",
@@ -5937,6 +6220,7 @@ Module u256.
                                 [ M.read (| unsigned_max |); M.read (| range |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "move_core_types::u256::U256",
                                 M.get_trait_method (|
                                   "core::ops::arith::Rem",
                                   Ty.path "move_core_types::u256::U256",
@@ -5948,6 +6232,7 @@ Module u256.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_core_types::u256::U256",
                                     M.get_associated_function (|
                                       Ty.path "move_core_types::u256::U256",
                                       "one",
@@ -5966,6 +6251,7 @@ Module u256.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256",
                             M.get_associated_function (|
                               Ty.path "move_core_types::u256::U256",
                               "zero",
@@ -6019,7 +6305,7 @@ Module u256.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ range :=
+                let~ range : Ty.path "move_core_types::u256::U256" :=
                   M.copy (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
@@ -6036,6 +6322,7 @@ Module u256.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
@@ -6051,6 +6338,7 @@ Module u256.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "move_core_types::u256::U256",
                                         M.get_associated_function (|
                                           Ty.path "move_core_types::u256::U256",
                                           "zero",
@@ -6066,9 +6354,10 @@ Module u256.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ unsigned_max :=
+                        let~ unsigned_max : Ty.path "move_core_types::u256::U256" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "move_core_types::u256::U256",
                               M.get_associated_function (|
                                 Ty.path "move_core_types::u256::U256",
                                 "max_value",
@@ -6078,9 +6367,10 @@ Module u256.
                               []
                             |)
                           |) in
-                        let~ zone :=
+                        let~ zone : Ty.path "move_core_types::u256::U256" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "move_core_types::u256::U256",
                               M.get_trait_method (|
                                 "core::ops::arith::Sub",
                                 Ty.path "move_core_types::u256::U256",
@@ -6107,9 +6397,10 @@ Module u256.
                             M.read (|
                               M.loop (|
                                 ltac:(M.monadic
-                                  (let~ v :=
+                                  (let~ v : Ty.path "move_core_types::u256::U256" :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "move_core_types::u256::U256",
                                         M.get_trait_method (|
                                           "rand::rng::Rng",
                                           R,
@@ -6130,6 +6421,11 @@ Module u256.
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple
+                                          [
+                                            Ty.path "move_core_types::u256::U256";
+                                            Ty.path "move_core_types::u256::U256"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_core_types::u256::U256",
                                           "wmul",
@@ -6155,6 +6451,7 @@ Module u256.
                                                     M.use
                                                       (M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialOrd",
                                                             Ty.path "move_core_types::u256::U256",
@@ -6181,6 +6478,7 @@ Module u256.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.path "move_core_types::u256::U256",
                                                             M.get_associated_function (|
                                                               Ty.path "move_core_types::u256::U256",
                                                               "wrapping_add",
@@ -6216,6 +6514,7 @@ Module u256.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256",
                             M.get_trait_method (|
                               "rand::rng::Rng",
                               R,
@@ -6255,10 +6554,11 @@ Module u256.
           let high := M.alloc (| high |) in
           let rng := M.alloc (| rng |) in
           M.read (|
-            let~ low :=
+            let~ low : Ty.path "move_core_types::u256::U256" :=
               M.copy (|
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                     M.get_trait_method (|
                       "rand::distributions::uniform::SampleBorrow",
                       B1,
@@ -6272,10 +6572,11 @@ Module u256.
                   |)
                 |)
               |) in
-            let~ high :=
+            let~ high : Ty.path "move_core_types::u256::U256" :=
               M.copy (|
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                     M.get_trait_method (|
                       "rand::distributions::uniform::SampleBorrow",
                       B2,
@@ -6289,7 +6590,7 @@ Module u256.
                   |)
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6300,6 +6601,7 @@ Module u256.
                           (M.alloc (|
                             UnOp.not (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
@@ -6320,9 +6622,11 @@ Module u256.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -6358,6 +6662,7 @@ Module u256.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "move_core_types::u256::U256",
                 M.get_trait_method (|
                   "rand::distributions::uniform::UniformSampler",
                   Ty.path "move_core_types::u256::UniformU256",
@@ -6371,6 +6676,7 @@ Module u256.
                 [
                   M.read (| low |);
                   M.call_closure (|
+                    Ty.path "move_core_types::u256::U256",
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
                       Ty.path "move_core_types::u256::U256",
@@ -6383,6 +6689,7 @@ Module u256.
                     [
                       M.read (| high |);
                       M.call_closure (|
+                        Ty.path "move_core_types::u256::U256",
                         M.get_associated_function (|
                           Ty.path "move_core_types::u256::U256",
                           "one",
@@ -6446,10 +6753,11 @@ Module u256.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ low :=
+                let~ low : Ty.path "move_core_types::u256::U256" :=
                   M.copy (|
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                         M.get_trait_method (|
                           "rand::distributions::uniform::SampleBorrow",
                           B1,
@@ -6463,10 +6771,11 @@ Module u256.
                       |)
                     |)
                   |) in
-                let~ high :=
+                let~ high : Ty.path "move_core_types::u256::U256" :=
                   M.copy (|
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                         M.get_trait_method (|
                           "rand::distributions::uniform::SampleBorrow",
                           B2,
@@ -6480,7 +6789,7 @@ Module u256.
                       |)
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -6491,6 +6800,7 @@ Module u256.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialOrd",
                                       Ty.path "move_core_types::u256::U256",
@@ -6512,9 +6822,11 @@ Module u256.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
+                                Ty.path "never",
                                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
@@ -6548,9 +6860,10 @@ Module u256.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ range :=
+                let~ range : Ty.path "move_core_types::u256::U256" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "wrapping_add",
@@ -6559,6 +6872,7 @@ Module u256.
                       |),
                       [
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_associated_function (|
                             Ty.path "move_core_types::u256::U256",
                             "wrapping_sub",
@@ -6568,6 +6882,7 @@ Module u256.
                           [ M.read (| high |); M.read (| low |) ]
                         |);
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_associated_function (|
                             Ty.path "move_core_types::u256::U256",
                             "one",
@@ -6579,7 +6894,7 @@ Module u256.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -6589,6 +6904,7 @@ Module u256.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "move_core_types::u256::U256",
@@ -6604,6 +6920,7 @@ Module u256.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_core_types::u256::U256",
                                           M.get_associated_function (|
                                             Ty.path "move_core_types::u256::U256",
                                             "zero",
@@ -6624,6 +6941,7 @@ Module u256.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.path "move_core_types::u256::U256",
                                     M.get_trait_method (|
                                       "rand::rng::Rng",
                                       R,
@@ -6647,9 +6965,10 @@ Module u256.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ zone :=
+                let~ zone : Ty.path "move_core_types::u256::U256" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "move_core_types::u256::U256",
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "wrapping_sub",
@@ -6658,6 +6977,7 @@ Module u256.
                       |),
                       [
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_trait_method (|
                             "core::ops::bit::Shl",
                             Ty.path "move_core_types::u256::U256",
@@ -6670,6 +6990,7 @@ Module u256.
                           [
                             M.read (| range |);
                             M.call_closure (|
+                              Ty.path "u32",
                               M.get_associated_function (|
                                 Ty.path "move_core_types::u256::U256",
                                 "leading_zeros",
@@ -6681,6 +7002,7 @@ Module u256.
                           ]
                         |);
                         M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
                           M.get_associated_function (|
                             Ty.path "move_core_types::u256::U256",
                             "one",
@@ -6697,9 +7019,10 @@ Module u256.
                     M.read (|
                       M.loop (|
                         ltac:(M.monadic
-                          (let~ v :=
+                          (let~ v : Ty.path "move_core_types::u256::U256" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_core_types::u256::U256",
                                 M.get_trait_method (|
                                   "rand::rng::Rng",
                                   R,
@@ -6716,6 +7039,11 @@ Module u256.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple
+                                  [
+                                    Ty.path "move_core_types::u256::U256";
+                                    Ty.path "move_core_types::u256::U256"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::u256::U256",
                                   "wmul",
@@ -6741,6 +7069,7 @@ Module u256.
                                             M.use
                                               (M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "bool",
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Ty.path "move_core_types::u256::U256",
@@ -6766,6 +7095,7 @@ Module u256.
                                               M.read (|
                                                 M.return_ (|
                                                   M.call_closure (|
+                                                    Ty.path "move_core_types::u256::U256",
                                                     M.get_associated_function (|
                                                       Ty.path "move_core_types::u256::U256",
                                                       "wrapping_add",

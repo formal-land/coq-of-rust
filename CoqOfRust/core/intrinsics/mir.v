@@ -60,6 +60,7 @@ Module intrinsics.
         ltac:(M.monadic
           (M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::UnwindContinue.panic_cold_explicit",
                 [],
@@ -82,6 +83,7 @@ Module intrinsics.
         ltac:(M.monadic
           (M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::UnwindUnreachable.panic_cold_explicit",
                 [],
@@ -105,6 +107,7 @@ Module intrinsics.
           (let reason := M.alloc (| reason |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::UnwindTerminate.panic_cold_explicit",
                 [],
@@ -128,6 +131,7 @@ Module intrinsics.
           (let goto := M.alloc (| goto |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::UnwindCleanup.panic_cold_explicit",
                 [],
@@ -159,6 +163,7 @@ Module intrinsics.
           (let goto := M.alloc (| goto |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::ReturnTo.panic_cold_explicit", [], [] |),
               []
             |)
@@ -176,6 +181,7 @@ Module intrinsics.
         ltac:(M.monadic
           (M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Return.panic_cold_explicit", [], [] |),
               []
             |)
@@ -194,6 +200,7 @@ Module intrinsics.
           (let destination := M.alloc (| destination |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Goto.panic_cold_explicit", [], [] |),
               []
             |)
@@ -211,6 +218,7 @@ Module intrinsics.
         ltac:(M.monadic
           (M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Unreachable.panic_cold_explicit", [], [] |),
               []
             |)
@@ -232,6 +240,7 @@ Module intrinsics.
           let unwind_action := M.alloc (| unwind_action |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Drop.panic_cold_explicit", [], [] |),
               []
             |)
@@ -252,6 +261,7 @@ Module intrinsics.
           let unwind_action := M.alloc (| unwind_action |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Call.panic_cold_explicit", [], [] |),
               []
             |)
@@ -270,6 +280,7 @@ Module intrinsics.
           (let call := M.alloc (| call |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::TailCall.panic_cold_explicit", [], [] |),
               []
             |)
@@ -287,6 +298,7 @@ Module intrinsics.
         ltac:(M.monadic
           (M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::UnwindResume.panic_cold_explicit",
                 [],
@@ -310,6 +322,7 @@ Module intrinsics.
           (let local := M.alloc (| local |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::StorageLive.panic_cold_explicit", [], [] |),
               []
             |)
@@ -329,6 +342,7 @@ Module intrinsics.
           (let local := M.alloc (| local |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::StorageDead.panic_cold_explicit", [], [] |),
               []
             |)
@@ -348,6 +362,7 @@ Module intrinsics.
           (let operand := M.alloc (| operand |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Assume.panic_cold_explicit", [], [] |),
               []
             |)
@@ -366,6 +381,7 @@ Module intrinsics.
           (let place := M.alloc (| place |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Deinit.panic_cold_explicit", [], [] |),
               []
             |)
@@ -384,6 +400,7 @@ Module intrinsics.
           (let binop := M.alloc (| binop |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Checked.panic_cold_explicit", [], [] |),
               []
             |)
@@ -402,6 +419,7 @@ Module intrinsics.
           (let place := M.alloc (| place |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Len.panic_cold_explicit", [], [] |),
               []
             |)
@@ -420,6 +438,7 @@ Module intrinsics.
           (let place := M.alloc (| place |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::PtrMetadata.panic_cold_explicit", [], [] |),
               []
             |)
@@ -439,6 +458,7 @@ Module intrinsics.
           (let place := M.alloc (| place |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::CopyForDeref.panic_cold_explicit",
                 [],
@@ -462,6 +482,7 @@ Module intrinsics.
           (let place := M.alloc (| place |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Retag.panic_cold_explicit", [], [] |),
               []
             |)
@@ -480,6 +501,7 @@ Module intrinsics.
           (let place := M.alloc (| place |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Move.panic_cold_explicit", [], [] |),
               []
             |)
@@ -498,6 +520,7 @@ Module intrinsics.
           (let s := M.alloc (| s |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Static.panic_cold_explicit", [], [] |),
               []
             |)
@@ -516,6 +539,7 @@ Module intrinsics.
           (let s := M.alloc (| s |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::StaticMut.panic_cold_explicit", [], [] |),
               []
             |)
@@ -535,6 +559,7 @@ Module intrinsics.
           (let place := M.alloc (| place |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::Discriminant.panic_cold_explicit",
                 [],
@@ -559,6 +584,7 @@ Module intrinsics.
           let index := M.alloc (| index |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::SetDiscriminant.panic_cold_explicit",
                 [],
@@ -583,6 +609,7 @@ Module intrinsics.
           let count := M.alloc (| count |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Offset.panic_cold_explicit", [], [] |),
               []
             |)
@@ -602,6 +629,7 @@ Module intrinsics.
           let field := M.alloc (| field |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Field.panic_cold_explicit", [], [] |),
               []
             |)
@@ -621,6 +649,7 @@ Module intrinsics.
           let index := M.alloc (| index |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::Variant.panic_cold_explicit", [], [] |),
               []
             |)
@@ -639,6 +668,7 @@ Module intrinsics.
           (let operand := M.alloc (| operand |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::CastTransmute.panic_cold_explicit",
                 [],
@@ -662,6 +692,7 @@ Module intrinsics.
           (let operand := M.alloc (| operand |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::CastPtrToPtr.panic_cold_explicit",
                 [],
@@ -685,6 +716,7 @@ Module intrinsics.
           (let place := M.alloc (| place |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (|
                 "core::intrinsics::mir::__internal_make_place.panic_cold_explicit",
                 [],
@@ -709,6 +741,7 @@ Module intrinsics.
           let s := M.alloc (| s |) in
           M.never_to_any (|
             M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::intrinsics::mir::__debuginfo.panic_cold_explicit", [], [] |),
               []
             |)

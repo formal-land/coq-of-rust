@@ -34,7 +34,16 @@ Module interpreter.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ names :=
+            let~ names :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 9 ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                  ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -83,7 +92,16 @@ Module interpreter.
                   |)
                 |)
               |) in
-            let~ values :=
+            let~ values :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                  ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -223,6 +241,10 @@ Module interpreter.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
@@ -269,6 +291,7 @@ Module interpreter.
             [
               ("bytecode",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.associated,
@@ -296,6 +319,7 @@ Module interpreter.
                 |));
               ("stack",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.associated,
@@ -323,6 +347,7 @@ Module interpreter.
                 |));
               ("return_data",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.associated,
@@ -350,6 +375,7 @@ Module interpreter.
                 |));
               ("memory",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.associated,
@@ -377,6 +403,7 @@ Module interpreter.
                 |));
               ("input",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.associated,
@@ -404,6 +431,7 @@ Module interpreter.
                 |));
               ("sub_routine",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.associated,
@@ -431,6 +459,7 @@ Module interpreter.
                 |));
               ("control",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.associated,
@@ -458,6 +487,7 @@ Module interpreter.
                 |));
               ("runtime_flag",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.associated,
@@ -485,6 +515,7 @@ Module interpreter.
                 |));
               ("extend",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.associated,
@@ -572,7 +603,8 @@ Module interpreter.
           let spec_id := M.alloc (| spec_id |) in
           let gas_limit := M.alloc (| gas_limit |) in
           M.read (|
-            let~ runtime_flag :=
+            let~ runtime_flag :
+                Ty.path "revm_interpreter::interpreter::runtime_flags::RuntimeFlags" :=
               M.alloc (|
                 Value.StructRecord
                   "revm_interpreter::interpreter::runtime_flags::RuntimeFlags"
@@ -581,6 +613,7 @@ Module interpreter.
                     ("is_static", M.read (| is_static |));
                     ("is_eof",
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_associated_function (|
                           Ty.path "revm_bytecode::bytecode::Bytecode",
                           "is_eof",
@@ -598,6 +631,7 @@ Module interpreter.
                 [
                   ("bytecode",
                     M.call_closure (|
+                      Ty.path "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
                         "new",
@@ -608,6 +642,7 @@ Module interpreter.
                     |));
                   ("stack",
                     M.call_closure (|
+                      Ty.path "revm_interpreter::interpreter::stack::Stack",
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::interpreter::stack::Stack",
                         "new",
@@ -618,6 +653,7 @@ Module interpreter.
                     |));
                   ("return_data",
                     M.call_closure (|
+                      Ty.path "revm_interpreter::interpreter::return_data::ReturnDataImpl",
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.path "revm_interpreter::interpreter::return_data::ReturnDataImpl",
@@ -633,6 +669,7 @@ Module interpreter.
                   ("input", M.read (| inputs |));
                   ("sub_routine",
                     M.call_closure (|
+                      Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
@@ -646,6 +683,7 @@ Module interpreter.
                     |));
                   ("control",
                     M.call_closure (|
+                      Ty.path "revm_interpreter::interpreter::loop_control::LoopControl",
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::interpreter::loop_control::LoopControl",
                         "new",
@@ -657,6 +695,7 @@ Module interpreter.
                   ("runtime_flag", M.read (| runtime_flag |));
                   ("extend",
                     M.call_closure (|
+                      EXT,
                       M.get_trait_method (|
                         "core::default::Default",
                         EXT,
@@ -818,6 +857,31 @@ Module interpreter.
             [
               ("instruction_table",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 256 ]
+                        [
+                          Ty.function
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                    []
+                                    [ WIRE ]
+                                ];
+                              Ty.apply (Ty.path "&mut") [] [ HOST ]
+                            ]
+                            (Ty.tuple [])
+                        ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -903,6 +967,31 @@ Module interpreter.
             [
               ("instruction_table",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 256 ]
+                        [
+                          Ty.function
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                    []
+                                    [ WIRE ]
+                                ];
+                              Ty.apply (Ty.path "&mut") [] [ HOST ]
+                            ]
+                            (Ty.tuple [])
+                        ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
@@ -935,6 +1024,25 @@ Module interpreter.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 256 ]
+                        [
+                          Ty.function
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                    []
+                                    [ WIRE ]
+                                ];
+                              Ty.apply (Ty.path "&mut") [] [ HOST ]
+                            ]
+                            (Ty.tuple [])
+                        ],
                       M.get_function (|
                         "revm_interpreter::table::make_instruction_table",
                         [],
@@ -966,6 +1074,30 @@ Module interpreter.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 256 ]
+                          [
+                            Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                      []
+                                      [ WIRE ]
+                                  ];
+                                Ty.apply (Ty.path "&mut") [] [ HOST ]
+                              ]
+                              (Ty.tuple [])
+                          ]
+                      ],
                     M.get_trait_method (|
                       "core::convert::AsRef",
                       Ty.apply
@@ -1084,9 +1216,10 @@ Module interpreter.
           let interpreter := M.alloc (| interpreter |) in
           let host := M.alloc (| host |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.read (| M.deref (| M.read (| self |) |) |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| interpreter |) |) |);
@@ -1159,9 +1292,10 @@ Module interpreter.
           let instruction_table := M.alloc (| instruction_table |) in
           let host := M.alloc (| host |) in
           M.read (|
-            let~ opcode :=
+            let~ opcode : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_trait_method (|
                     "revm_interpreter::interpreter_types::Jumps",
                     Ty.associated,
@@ -1183,9 +1317,10 @@ Module interpreter.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "revm_interpreter::interpreter_types::Jumps",
                     Ty.associated,
@@ -1210,6 +1345,7 @@ Module interpreter.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "revm_interpreter::table::CustomInstruction",
                   FN,
@@ -1285,9 +1421,10 @@ Module interpreter.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::LoopControl",
                         Ty.associated,
@@ -1315,7 +1452,7 @@ Module interpreter.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -1327,6 +1464,7 @@ Module interpreter.
                                 M.use
                                   (M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path
                                           "revm_interpreter::instruction_result::InstructionResult",
@@ -1336,6 +1474,8 @@ Module interpreter.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.path
+                                            "revm_interpreter::instruction_result::InstructionResult",
                                           M.get_trait_method (|
                                             "revm_interpreter::interpreter_types::LoopControl",
                                             Ty.associated,
@@ -1364,9 +1504,10 @@ Module interpreter.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "revm_interpreter::interpreter::Interpreter")
@@ -1398,7 +1539,7 @@ Module interpreter.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -1409,9 +1550,10 @@ Module interpreter.
                         ]
                       |)))
                   |) in
-                let~ action :=
+                let~ action : Ty.path "revm_interpreter::interpreter_action::InterpreterAction" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::LoopControl",
                         Ty.associated,
@@ -1433,7 +1575,7 @@ Module interpreter.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1443,6 +1585,7 @@ Module interpreter.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path
                                       "revm_interpreter::interpreter_action::InterpreterAction",
@@ -1471,6 +1614,7 @@ Module interpreter.
                           [
                             ("result",
                               M.call_closure (|
+                                Ty.path "revm_interpreter::instruction_result::InstructionResult",
                                 M.get_trait_method (|
                                   "revm_interpreter::interpreter_types::LoopControl",
                                   Ty.associated,
@@ -1493,6 +1637,7 @@ Module interpreter.
                               |));
                             ("output",
                               M.call_closure (|
+                                Ty.path "alloy_primitives::bytes_::Bytes",
                                 M.get_associated_function (|
                                   Ty.path "alloy_primitives::bytes_::Bytes",
                                   "new",
@@ -1505,6 +1650,10 @@ Module interpreter.
                               M.read (|
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.path "revm_interpreter::gas::Gas" ],
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::LoopControl",
                                       Ty.associated,
@@ -1568,6 +1717,7 @@ Module interpreter.
             [
               ("result",
                 M.call_closure (|
+                  Ty.path "revm_interpreter::instruction_result::InstructionResult",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "revm_interpreter::instruction_result::InstructionResult",
@@ -1595,6 +1745,7 @@ Module interpreter.
                 |));
               ("output",
                 M.call_closure (|
+                  Ty.path "alloy_primitives::bytes_::Bytes",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloy_primitives::bytes_::Bytes",
@@ -1622,6 +1773,7 @@ Module interpreter.
                 |));
               ("gas",
                 M.call_closure (|
+                  Ty.path "revm_interpreter::gas::Gas",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "revm_interpreter::gas::Gas",
@@ -1670,6 +1822,10 @@ Module interpreter.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
@@ -1766,6 +1922,7 @@ Module interpreter.
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "revm_interpreter::instruction_result::InstructionResult",
@@ -1796,6 +1953,7 @@ Module interpreter.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "alloy_primitives::bytes_::Bytes",
@@ -1827,6 +1985,7 @@ Module interpreter.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "revm_interpreter::gas::Gas",
@@ -1955,6 +2114,7 @@ Module interpreter.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_associated_function (|
               Ty.path "revm_interpreter::instruction_result::InstructionResult",
               "is_ok",
@@ -1988,6 +2148,7 @@ Module interpreter.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_associated_function (|
               Ty.path "revm_interpreter::instruction_result::InstructionResult",
               "is_revert",
@@ -2021,6 +2182,7 @@ Module interpreter.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_associated_function (|
               Ty.path "revm_interpreter::instruction_result::InstructionResult",
               "is_error",

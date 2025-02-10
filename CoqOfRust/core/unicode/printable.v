@@ -50,18 +50,23 @@ Module unicode.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ xupper :=
+                let~ xupper : Ty.path "u8" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "u8")
                       (BinOp.Wrap.shr (| M.read (| x |), Value.Integer IntegerKind.I32 8 |))
                   |) in
-                let~ lowerstart := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                let~ _ :=
+                let~ lowerstart : Ty.path "usize" :=
+                  M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -88,10 +93,19 @@ Module unicode.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -136,14 +150,14 @@ Module unicode.
                                           let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let upper := M.copy (| γ2_0 |) in
                                           let lowercount := M.copy (| γ2_1 |) in
-                                          let~ lowerend :=
+                                          let~ lowerend : Ty.path "usize" :=
                                             M.alloc (|
                                               BinOp.Wrap.add (|
                                                 M.read (| lowerstart |),
                                                 M.cast (Ty.path "usize") (M.read (| lowercount |))
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -166,6 +180,10 @@ Module unicode.
                                                       (M.match_operator (|
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::slice::iter::Iter")
+                                                              []
+                                                              [ Ty.path "u8" ],
                                                             M.get_trait_method (|
                                                               "core::iter::traits::collect::IntoIterator",
                                                               Ty.apply
@@ -188,6 +206,15 @@ Module unicode.
                                                                 Pointer.Kind.Ref,
                                                                 M.deref (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::index::Index",
                                                                       Ty.apply
@@ -238,10 +265,20 @@ Module unicode.
                                                               (let iter := M.copy (| γ |) in
                                                               M.loop (|
                                                                 ltac:(M.monadic
-                                                                  (let~ _ :=
+                                                                  (let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u8" ]
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::iter::traits::iterator::Iterator",
                                                                             Ty.apply
@@ -380,8 +417,10 @@ Module unicode.
                                                     |)))
                                               ]
                                             |) in
-                                          let~ _ :=
-                                            M.write (| lowerstart, M.read (| lowerend |) |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.alloc (|
+                                              M.write (| lowerstart, M.read (| lowerend |) |)
+                                            |) in
                                           M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
@@ -389,10 +428,18 @@ Module unicode.
                             |)))
                       ]
                     |)) in
-                let~ x := M.alloc (| M.cast (Ty.path "i32") (M.read (| x |)) |) in
-                let~ normal :=
+                let~ x : Ty.path "i32" := M.alloc (| M.cast (Ty.path "i32") (M.read (| x |)) |) in
+                let~ normal :
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::cloned::Cloned")
+                      []
+                      [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::cloned::Cloned")
+                        []
+                        [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
@@ -404,6 +451,7 @@ Module unicode.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "iter",
@@ -415,8 +463,8 @@ Module unicode.
                       ]
                     |)
                   |) in
-                let~ current := M.alloc (| Value.Bool true |) in
-                let~ _ :=
+                let~ current : Ty.path "bool" := M.alloc (| Value.Bool true |) in
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -427,6 +475,7 @@ Module unicode.
                               (let γ :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -454,7 +503,7 @@ Module unicode.
                                   0
                                 |) in
                               let v := M.copy (| γ0_0 |) in
-                              let~ len :=
+                              let~ len : Ty.path "i32" :=
                                 M.copy (|
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -489,6 +538,7 @@ Module unicode.
                                               (M.cast
                                                 (Ty.path "i32")
                                                 (M.call_closure (|
+                                                  Ty.path "u8",
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -500,6 +550,10 @@ Module unicode.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       M.get_trait_method (|
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
@@ -529,13 +583,15 @@ Module unicode.
                                     ]
                                   |)
                                 |) in
-                              let~ _ :=
-                                let β := x in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.sub (| M.read (| β |), M.read (| len |) |)
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β := x in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.sub (| M.read (| β |), M.read (| len |) |)
+                                  |)
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -560,15 +616,17 @@ Module unicode.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let~ _ :=
-                                M.write (| current, UnOp.not (| M.read (| current |) |) |) in
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  M.write (| current, UnOp.not (| M.read (| current |) |) |)
+                                |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -646,8 +704,9 @@ Module unicode.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ x := M.alloc (| M.cast (Ty.path "u32") (M.read (| x |)) |) in
-                let~ lower := M.alloc (| M.cast (Ty.path "u16") (M.read (| x |)) |) in
+                let~ x : Ty.path "u32" := M.alloc (| M.cast (Ty.path "u32") (M.read (| x |)) |) in
+                let~ lower : Ty.path "u16" :=
+                  M.alloc (| M.cast (Ty.path "u16") (M.read (| x |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -704,6 +763,7 @@ Module unicode.
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_function (|
                                               "core::unicode::printable::check",
                                               [],
@@ -763,6 +823,7 @@ Module unicode.
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_function (|
                                                       "core::unicode::printable::check",
                                                       [],
@@ -802,7 +863,7 @@ Module unicode.
                                                 |)));
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let~ _ :=
+                                                (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -844,7 +905,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -886,7 +947,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -928,7 +989,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -970,7 +1031,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -1012,7 +1073,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -1054,7 +1115,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -1096,7 +1157,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -1138,7 +1199,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -1180,7 +1241,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [

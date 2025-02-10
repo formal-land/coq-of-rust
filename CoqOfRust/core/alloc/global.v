@@ -17,9 +17,10 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let layout := M.alloc (| layout |) in
             M.read (|
-              let~ size :=
+              let~ size : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "size",
@@ -29,9 +30,10 @@ Module alloc.
                     [ M.borrow (| Pointer.Kind.Ref, layout |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     M.get_trait_method (|
                       "core::alloc::global::GlobalAlloc",
                       Self,
@@ -47,7 +49,7 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -58,6 +60,7 @@ Module alloc.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
@@ -70,9 +73,10 @@ Module alloc.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (|
                                 "core::intrinsics::write_bytes",
                                 [],
@@ -102,9 +106,10 @@ Module alloc.
             let layout := M.alloc (| layout |) in
             let new_size := M.alloc (| new_size |) in
             M.read (|
-              let~ new_layout :=
+              let~ new_layout : Ty.path "core::alloc::layout::Layout" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::alloc::layout::Layout",
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "from_size_align_unchecked",
@@ -114,6 +119,7 @@ Module alloc.
                     [
                       M.read (| new_size |);
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "align",
@@ -125,9 +131,10 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let~ new_ptr :=
+              let~ new_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     M.get_trait_method (|
                       "core::alloc::global::GlobalAlloc",
                       Self,
@@ -143,7 +150,7 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -154,6 +161,7 @@ Module alloc.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
@@ -166,9 +174,10 @@ Module alloc.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (|
                                 "core::intrinsics::copy_nonoverlapping",
                                 [],
@@ -178,9 +187,11 @@ Module alloc.
                                 (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |));
                                 M.read (| new_ptr |);
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "size",
@@ -195,9 +206,10 @@ Module alloc.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_trait_method (|
                                 "core::alloc::global::GlobalAlloc",
                                 Self,

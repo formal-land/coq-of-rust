@@ -12,13 +12,15 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
     ltac:(M.monadic
       (let boxed_i32 := M.alloc (| boxed_i32 |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -51,6 +53,7 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -99,13 +102,15 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
     ltac:(M.monadic
       (let borrowed_i32 := M.alloc (| borrowed_i32 |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -138,6 +143,7 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -204,9 +210,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ boxed_i32 :=
+        let~ boxed_i32 :
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -219,10 +233,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 5 ]
             |)
           |) in
-        let~ stacked_i32 := M.alloc (| Value.Integer IntegerKind.I32 6 |) in
-        let~ _ :=
+        let~ stacked_i32 : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 6 |) in
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_borrowing::borrow_i32", [], [] |),
               [
                 M.borrow (|
@@ -234,9 +249,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_borrowing::borrow_i32", [], [] |),
               [
                 M.borrow (|
@@ -246,25 +262,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
-          let~ _ref_to_i32 :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ref_to_i32 : Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] :=
             M.alloc (|
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (| M.read (| M.deref (| M.borrow (| Pointer.Kind.Ref, boxed_i32 |) |) |) |)
               |)
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "scoping_rules_borrowing::borrow_i32", [], [] |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| _ref_to_i32 |) |) |) ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_borrowing::eat_box_i32", [], [] |),
               [ M.read (| boxed_i32 |) ]
             |)

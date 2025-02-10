@@ -35,6 +35,7 @@ Module interpreter.
               [
                 ("target_address",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bits::address::Address",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -62,6 +63,7 @@ Module interpreter.
                   |));
                 ("caller_address",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bits::address::Address",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -89,6 +91,7 @@ Module interpreter.
                   |));
                 ("input",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bytes_::Bytes",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -116,6 +119,10 @@ Module interpreter.
                   |));
                 ("call_value",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -167,6 +174,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
@@ -275,6 +286,7 @@ Module interpreter.
               [
                 ("target_address",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bits::address::Address",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -288,6 +300,7 @@ Module interpreter.
                   |));
                 ("caller_address",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bits::address::Address",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -301,6 +314,7 @@ Module interpreter.
                   |));
                 ("input",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bytes_::Bytes",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -314,6 +328,10 @@ Module interpreter.
                   |));
                 ("call_value",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.apply
@@ -365,6 +383,7 @@ Module interpreter.
               LogicalOp.and (|
                 LogicalOp.and (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -395,6 +414,7 @@ Module interpreter.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "alloy_primitives::bits::address::Address",
@@ -426,6 +446,7 @@ Module interpreter.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -457,6 +478,7 @@ Module interpreter.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -607,6 +629,7 @@ Module interpreter.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
                     Ty.path "bytes::bytes::Bytes",
@@ -621,6 +644,7 @@ Module interpreter.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.path "alloy_primitives::bytes_::Bytes",

@@ -37,6 +37,7 @@ Module pin.
             [
               ("__pointer",
                 M.call_closure (|
+                  Ptr,
                   M.get_trait_method (| "core::clone::Clone", Ptr, [], [], "clone", [], [] |),
                   [
                     M.borrow (|
@@ -83,6 +84,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.associated,
@@ -97,6 +99,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -114,6 +117,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -145,6 +149,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.associated,
@@ -159,6 +164,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -176,6 +182,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -237,6 +244,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
@@ -251,6 +259,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -268,6 +277,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -299,6 +309,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
@@ -313,6 +324,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -330,6 +342,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -361,6 +374,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
@@ -375,6 +389,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -392,6 +407,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -423,6 +439,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
@@ -437,6 +454,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -454,6 +472,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -485,6 +504,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.associated,
@@ -499,6 +519,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -516,6 +537,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -566,12 +588,14 @@ Module pin.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", Ty.associated, [], [], "cmp", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -589,6 +613,7 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -632,9 +657,10 @@ Module pin.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.associated,
@@ -649,6 +675,7 @@ Module pin.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.associated ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -697,6 +724,7 @@ Module pin.
         ltac:(M.monadic
           (let pointer := M.alloc (| pointer |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
               "new_unchecked",
@@ -772,6 +800,7 @@ Module pin.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::pin::Pin")
@@ -789,6 +818,7 @@ Module pin.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.associated ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ptr,
@@ -835,6 +865,10 @@ Module pin.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::pin::Pin")
+              []
+              [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::pin::Pin")
@@ -852,6 +886,7 @@ Module pin.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
                           Ptr,
@@ -927,6 +962,10 @@ Module pin.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::pin::Pin")
+              []
+              [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
               "as_mut",
@@ -938,6 +977,7 @@ Module pin.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::pin::Pin")
@@ -982,32 +1022,35 @@ Module pin.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.deref (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::DerefMut",
-                      Ptr,
-                      [],
-                      [],
-                      "deref_mut",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::pin::Pin",
-                          "__pointer"
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                      M.get_trait_method (|
+                        "core::ops::deref::DerefMut",
+                        Ptr,
+                        [],
+                        [],
+                        "deref_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::pin::Pin",
+                            "__pointer"
+                          |)
                         |)
-                      |)
-                    ]
-                  |)
-                |),
-                M.read (| value |)
+                      ]
+                    |)
+                  |),
+                  M.read (| value |)
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -1075,7 +1118,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let func := M.alloc (| func |) in
           M.read (|
-            let~ pointer :=
+            let~ pointer : Ty.apply (Ty.path "&") [] [ T ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1086,9 +1129,10 @@ Module pin.
                   |)
                 |)
               |) in
-            let~ new_pointer :=
+            let~ new_pointer : Ty.apply (Ty.path "&") [] [ U ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ U ],
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     F,
@@ -1107,6 +1151,7 @@ Module pin.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ U ] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ U ] ],
                   "new_unchecked",
@@ -1160,6 +1205,7 @@ Module pin.
         ltac:(M.monadic
           (let r := M.alloc (| r |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               "new_unchecked",
@@ -1313,12 +1359,13 @@ Module pin.
           (let self := M.alloc (| self |) in
           let func := M.alloc (| func |) in
           M.read (|
-            let~ pointer :=
+            let~ pointer : Ty.apply (Ty.path "&mut") [] [ T ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ T ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::pin::Pin")
@@ -1333,9 +1380,10 @@ Module pin.
                   |)
                 |)
               |) in
-            let~ new_pointer :=
+            let~ new_pointer : Ty.apply (Ty.path "&mut") [] [ U ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&mut") [] [ U ],
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     F,
@@ -1354,6 +1402,7 @@ Module pin.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ U ] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ U ] ],
                   "new_unchecked",
@@ -1385,6 +1434,7 @@ Module pin.
         ltac:(M.monadic
           (let r := M.alloc (| r |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               "new_unchecked",
@@ -1425,6 +1475,7 @@ Module pin.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.associated ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::pin::Pin")
@@ -1436,6 +1487,10 @@ Module pin.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::pin::Pin")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                       "as_ref",
@@ -1482,6 +1537,7 @@ Module pin.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::pin::Pin")
@@ -1493,6 +1549,10 @@ Module pin.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::pin::Pin")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                           "as_mut",
@@ -1559,6 +1619,10 @@ Module pin.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (| "core::fmt::Debug", Ptr, [], [], "fmt", [], [] |),
             [
               M.borrow (|
@@ -1605,6 +1669,10 @@ Module pin.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (| "core::fmt::Display", Ptr, [], [], "fmt", [], [] |),
             [
               M.borrow (|
@@ -1651,6 +1719,10 @@ Module pin.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (| "core::fmt::Pointer", Ptr, [], [], "fmt", [], [] |),
             [
               M.borrow (|

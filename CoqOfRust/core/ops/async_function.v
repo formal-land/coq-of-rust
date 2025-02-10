@@ -34,6 +34,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFn",
                   F,
@@ -92,6 +93,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFn",
                   F,
@@ -152,6 +154,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFn",
                   F,
@@ -212,6 +215,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFnMut",
                   F,
@@ -272,6 +276,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFnMut",
                   F,

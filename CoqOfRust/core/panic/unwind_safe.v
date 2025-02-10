@@ -371,6 +371,7 @@ Module panic.
             (let self := M.alloc (| self |) in
             let _args := M.alloc (| _args |) in
             M.call_closure (|
+              R,
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 F,
@@ -424,6 +425,10 @@ Module panic.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
@@ -435,6 +440,7 @@ Module panic.
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugTuple",
                         "field",
@@ -446,6 +452,7 @@ Module panic.
                           Pointer.Kind.MutRef,
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "core::fmt::builders::DebugTuple",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_tuple",
@@ -511,6 +518,7 @@ Module panic.
               "core::panic::unwind_safe::AssertUnwindSafe"
               [
                 M.call_closure (|
+                  T,
                   M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                   []
                 |)
@@ -549,9 +557,11 @@ Module panic.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.read (|
-              let~ pinned_field :=
+              let~ pinned_field :
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::pin::Pin")
@@ -625,6 +635,7 @@ Module panic.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.associated ],
                   M.get_trait_method (|
                     "core::future::future::Future",
                     F,
@@ -675,6 +686,10 @@ Module panic.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
@@ -686,6 +701,7 @@ Module panic.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::pin::Pin")
@@ -770,6 +786,9 @@ Module panic.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
                 S,

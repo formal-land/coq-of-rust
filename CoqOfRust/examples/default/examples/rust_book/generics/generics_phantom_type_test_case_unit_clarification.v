@@ -144,6 +144,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_t
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field2_finish",
@@ -213,6 +214,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
           "generics_phantom_type_test_case_unit_clarification::Length"
           [
             M.call_closure (|
+              Ty.path "f64",
               M.get_trait_method (| "core::clone::Clone", Ty.path "f64", [], [], "clone", [], [] |),
               [
                 M.borrow (|
@@ -231,6 +233,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
               ]
             |);
             M.call_closure (|
+              Ty.apply (Ty.path "core::marker::PhantomData") [] [ Unit ],
               M.get_trait_method (|
                 "core::clone::Clone",
                 Ty.apply (Ty.path "core::marker::PhantomData") [] [ Unit ],
@@ -365,21 +368,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ one_foot :=
+        let~ one_foot :
+            Ty.apply
+              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              []
+              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ] :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type_test_case_unit_clarification::Length"
               [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ]
           |) in
-        let~ one_meter :=
+        let~ one_meter :
+            Ty.apply
+              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              []
+              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ] :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type_test_case_unit_clarification::Length"
               [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ]
           |) in
-        let~ two_feet :=
+        let~ two_feet :
+            Ty.apply
+              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              []
+              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                []
+                [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ],
               M.get_trait_method (|
                 "core::ops::arith::Add",
                 Ty.apply
@@ -400,9 +419,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| one_foot |); M.read (| one_foot |) ]
             |)
           |) in
-        let~ two_meters :=
+        let~ two_meters :
+            Ty.apply
+              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              []
+              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+                []
+                [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ],
               M.get_trait_method (|
                 "core::ops::arith::Add",
                 Ty.apply
@@ -423,13 +450,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| one_meter |); M.read (| one_meter |) ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -462,6 +491,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -495,13 +525,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -534,6 +566,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",

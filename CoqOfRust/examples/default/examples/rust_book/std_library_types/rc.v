@@ -43,9 +43,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ rc_examples :=
+        let~ rc_examples : Ty.path "alloc::string::String" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "alloc::string::String",
               M.get_trait_method (|
                 "alloc::string::ToString",
                 Ty.path "str",
@@ -63,13 +64,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -95,9 +98,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ rc_a :=
+        let~ rc_a :
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::rc::Rc")
+                []
+                [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::rc::Rc")
@@ -110,13 +121,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| rc_examples |) ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -149,6 +162,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -163,6 +177,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "usize",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::rc::Rc")
@@ -201,14 +216,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
-            let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
@@ -235,9 +252,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ rc_b :=
+          let~ rc_b :
+              Ty.apply
+                (Ty.path "alloc::rc::Rc")
+                []
+                [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  []
+                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -258,13 +283,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ]
               |)
             |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -297,6 +324,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -311,6 +339,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "usize",
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::rc::Rc")
@@ -349,13 +378,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -388,6 +419,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -402,6 +434,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "usize",
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::rc::Rc")
@@ -440,13 +473,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -479,6 +514,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -493,6 +529,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "bool",
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialEq",
                                                     Ty.apply
@@ -543,13 +580,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -582,6 +621,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -596,6 +636,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "usize",
                                                   M.get_associated_function (|
                                                     Ty.path "alloc::string::String",
                                                     "len",
@@ -607,6 +648,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Pointer.Kind.Ref,
                                                       M.deref (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "alloc::string::String" ],
                                                           M.get_trait_method (|
                                                             "core::ops::deref::Deref",
                                                             Ty.apply
@@ -645,13 +690,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -684,6 +731,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -716,13 +764,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
@@ -754,13 +804,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -793,6 +845,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -807,6 +860,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "usize",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::rc::Rc")
@@ -845,13 +899,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",

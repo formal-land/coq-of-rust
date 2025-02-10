@@ -134,6 +134,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -186,6 +187,7 @@ Module vec.
               "alloc::borrow::Cow::Owned"
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::FromIterator",
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],

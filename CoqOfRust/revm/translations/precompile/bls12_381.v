@@ -23,6 +23,10 @@ Module bls12_381.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.apply
+            (Ty.path "core::array::iter::IntoIter")
+            [ Value.Integer IntegerKind.Usize 9 ]
+            [ Ty.path "revm_precompile::PrecompileWithAddress" ],
           M.get_trait_method (|
             "core::iter::traits::collect::IntoIterator",
             Ty.apply

@@ -17,6 +17,7 @@ Module ops.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::ops::drop::Drop", T, [], [], "drop", [], [] |),
             [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
           |)))

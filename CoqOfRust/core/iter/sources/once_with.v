@@ -47,6 +47,7 @@ Module iter.
                 [
                   ("gen",
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ F ],
                       M.get_trait_method (|
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ F ],
@@ -115,6 +116,7 @@ Module iter.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                   "is_some",
@@ -137,6 +139,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
@@ -156,6 +162,10 @@ Module iter.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
@@ -208,11 +218,21 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ f :=
+                    let~ f : F :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  F
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ F ],
@@ -224,6 +244,7 @@ Module iter.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ F ],
                                     "take",
@@ -259,6 +280,7 @@ Module iter.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply (Ty.path "core::option::Option") [] [ A ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply (Ty.path "core::option::Option") [] [ A ],
@@ -297,6 +319,7 @@ Module iter.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            A,
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
@@ -332,6 +355,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.tuple
+                  [
+                    Ty.path "usize";
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::option::Iter") [] [ F ],
@@ -346,6 +374,7 @@ Module iter.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Iter") [] [ F ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ F ],
                           "iter",
@@ -405,6 +434,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ A ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ],
@@ -444,6 +474,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.path "usize",
                 M.get_trait_method (|
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   Ty.apply (Ty.path "core::option::Iter") [] [ F ],
@@ -458,6 +489,7 @@ Module iter.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Iter") [] [ F ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ F ],
                           "iter",

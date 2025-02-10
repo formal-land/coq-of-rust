@@ -24,10 +24,12 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.call_closure (|
+              Ty.path "core::fmt::Arguments",
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
               [
                 M.borrow (|
@@ -48,6 +50,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
                         Value.Array
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::rt::Argument",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
                                 "new_display",
@@ -101,15 +104,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ circle :=
+        let~ circle : Ty.path "converting_to_string::Circle" :=
           M.alloc (|
             Value.StructRecord
               "converting_to_string::Circle"
               [ ("radius", Value.Integer IntegerKind.I32 6) ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.path "alloc::string::String" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "alloc::string::String",
               M.get_trait_method (|
                 "alloc::string::ToString",
                 Ty.path "converting_to_string::Circle",

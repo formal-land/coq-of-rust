@@ -36,6 +36,10 @@ Module metadata.
             [
               ("key",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -66,6 +70,10 @@ Module metadata.
                 |));
               ("value",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -129,6 +137,7 @@ Module metadata.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply
@@ -167,6 +176,7 @@ Module metadata.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply
@@ -264,6 +274,10 @@ Module metadata.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -333,11 +347,15 @@ Module metadata.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -394,10 +412,14 @@ Module metadata.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -467,10 +489,14 @@ Module metadata.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -542,6 +568,7 @@ Module metadata.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -576,6 +603,10 @@ Module metadata.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::metadata::Metadata"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,

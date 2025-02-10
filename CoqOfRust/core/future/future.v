@@ -25,9 +25,11 @@ Module future.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.associated ],
               M.get_trait_method (| "core::future::future::Future", F, [], [], "poll", [], [] |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                     "new",
@@ -44,6 +46,10 @@ Module future.
                             M.read (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                                   M.get_trait_method (|
                                     "core::ops::deref::DerefMut",
                                     Ty.apply
@@ -106,6 +112,7 @@ Module future.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.associated ],
               M.get_trait_method (|
                 "core::future::future::Future",
                 Ty.associated,
@@ -117,6 +124,10 @@ Module future.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::pin::Pin")
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     "as_deref_mut",

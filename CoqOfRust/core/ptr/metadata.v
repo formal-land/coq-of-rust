@@ -19,6 +19,7 @@ Module ptr.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
+            Ty.associated,
             M.get_function (| "core::intrinsics::ptr_metadata", [], [ T; Ty.associated ] |),
             [ M.read (| ptr |) ]
           |)))
@@ -43,6 +44,7 @@ Module ptr.
           (let data_pointer := M.alloc (| data_pointer |) in
           let metadata := M.alloc (| metadata |) in
           M.call_closure (|
+            Ty.apply (Ty.path "*const") [] [ T ],
             M.get_function (|
               "core::intrinsics::aggregate_raw_ptr",
               [],
@@ -76,6 +78,7 @@ Module ptr.
           (let data_pointer := M.alloc (| data_pointer |) in
           let metadata := M.alloc (| metadata |) in
           M.call_closure (|
+            Ty.apply (Ty.path "*mut") [] [ T ],
             M.get_function (|
               "core::intrinsics::aggregate_raw_ptr",
               [],
@@ -135,6 +138,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
               M.get_function (|
                 "core::intrinsics::transmute",
                 [],
@@ -169,11 +173,13 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (| "core::intrinsics::vtable_size", [], [] |),
               [
                 M.cast
                   (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
                   (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                       "vtable_ptr",
@@ -205,11 +211,13 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (| "core::intrinsics::vtable_align", [], [] |),
               [
                 M.cast
                   (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
                   (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                       "vtable_ptr",
@@ -242,6 +250,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "core::alloc::layout::Layout",
               M.get_associated_function (|
                 Ty.path "core::alloc::layout::Layout",
                 "from_size_align_unchecked",
@@ -250,6 +259,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "size_of",
@@ -259,6 +269,7 @@ Module ptr.
                   [ M.read (| self |) ]
                 |);
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "align_of",
@@ -321,6 +332,10 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugTuple",
                 "finish",
@@ -332,6 +347,7 @@ Module ptr.
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugTuple",
                         "field",
@@ -343,6 +359,7 @@ Module ptr.
                           Pointer.Kind.MutRef,
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "core::fmt::builders::DebugTuple",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_tuple",
@@ -366,6 +383,10 @@ Module ptr.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [ Ty.path "core::ptr::metadata::VTable" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::metadata::DynMetadata")
@@ -483,9 +504,11 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (| "core::ptr::eq", [], [ Ty.path "core::ptr::metadata::VTable" ] |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "vtable_ptr",
@@ -495,6 +518,7 @@ Module ptr.
                   [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |);
                 M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "vtable_ptr",
@@ -534,6 +558,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (|
                 "core::cmp::Ord",
                 Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
@@ -551,6 +576,7 @@ Module ptr.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                             "vtable_ptr",
@@ -570,6 +596,7 @@ Module ptr.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                             "vtable_ptr",
@@ -621,6 +648,7 @@ Module ptr.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
@@ -665,6 +693,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let hasher := M.alloc (| hasher |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "core::ptr::hash",
                 [],
@@ -672,6 +701,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
                     "vtable_ptr",

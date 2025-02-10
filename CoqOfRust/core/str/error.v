@@ -104,6 +104,7 @@ Module str.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
@@ -188,6 +189,10 @@ Module str.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -371,6 +376,10 @@ Module str.
                       let error_len := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
@@ -380,6 +389,7 @@ Module str.
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -411,6 +421,7 @@ Module str.
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -427,6 +438,7 @@ Module str.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -463,6 +475,10 @@ Module str.
                     ltac:(M.monadic
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
@@ -472,6 +488,7 @@ Module str.
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -505,6 +522,7 @@ Module str.
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -598,6 +616,10 @@ Module str.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -713,6 +735,10 @@ Module str.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
               [
                 M.borrow (|

@@ -19,7 +19,7 @@ Module hint.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -29,14 +29,16 @@ Module hint.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (|
                             "core::hint::unreachable_unchecked.precondition_check",
                             [],
@@ -50,7 +52,11 @@ Module hint.
               ]
             |) in
           M.alloc (|
-            M.call_closure (| M.get_function (| "core::intrinsics::unreachable", [], [] |), [] |)
+            M.call_closure (|
+              Ty.path "never",
+              M.get_function (| "core::intrinsics::unreachable", [], [] |),
+              []
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -79,7 +85,7 @@ Module hint.
       ltac:(M.monadic
         (let cond := M.alloc (| cond |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -89,14 +95,16 @@ Module hint.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (|
                             "core::hint::assert_unchecked.precondition_check",
                             [],
@@ -109,9 +117,10 @@ Module hint.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "core::intrinsics::assume", [], [] |),
                 [ M.read (| cond |) ]
               |)
@@ -167,9 +176,10 @@ Module hint.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "core::core_arch::x86::sse2::_mm_pause", [], [] |),
                 []
               |)
@@ -193,6 +203,7 @@ Module hint.
       ltac:(M.monadic
         (let dummy := M.alloc (| dummy |) in
         M.call_closure (|
+          T,
           M.get_function (| "core::intrinsics::black_box", [], [ T ] |),
           [ M.read (| dummy |) ]
         |)))

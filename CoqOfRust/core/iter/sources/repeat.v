@@ -47,6 +47,7 @@ Module iter.
                 [
                   ("element",
                     M.call_closure (|
+                      A,
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -90,6 +91,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field1_finish",
@@ -157,6 +162,7 @@ Module iter.
                 "core::option::Option::Some"
                 [
                   M.call_closure (|
+                    A,
                     M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -250,6 +256,7 @@ Module iter.
                             "core::option::Option::Some"
                             [
                               M.call_closure (|
+                                A,
                                 M.get_trait_method (|
                                   "core::clone::Clone",
                                   A,
@@ -349,6 +356,7 @@ Module iter.
                 "core::option::Option::Some"
                 [
                   M.call_closure (|
+                    A,
                     M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -423,6 +431,7 @@ Module iter.
                             "core::option::Option::Some"
                             [
                               M.call_closure (|
+                                A,
                                 M.get_trait_method (|
                                   "core::clone::Clone",
                                   A,

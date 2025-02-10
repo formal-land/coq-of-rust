@@ -27,6 +27,7 @@ Module async_iter.
               [
                 ("iter",
                   M.call_closure (|
+                    I,
                     M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -70,6 +71,10 @@ Module async_iter.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
@@ -140,6 +145,7 @@ Module async_iter.
             [
               ("iter",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     I,
@@ -181,6 +187,7 @@ Module async_iter.
               "core::task::poll::Poll::Ready"
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     I,
@@ -196,6 +203,11 @@ Module async_iter.
                       M.SubPointer.get_struct_record_field (|
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ]
+                              ],
                             M.get_trait_method (|
                               "core::ops::deref::DerefMut",
                               Ty.apply
@@ -243,6 +255,9 @@ Module async_iter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 I,

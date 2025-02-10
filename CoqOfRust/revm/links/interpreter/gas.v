@@ -37,6 +37,10 @@ Module MemoryGas.
       ];
   }.
 
+  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::gas::MemoryGas").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+
   Lemma of_value_with words_num words_num' expansion_cost expansion_cost' :
     words_num' = φ words_num ->
     expansion_cost' = φ expansion_cost ->
@@ -60,9 +64,9 @@ Module MemoryGas.
   Smpl Add apply of_value : of_value.
 
   Module SubPointer.
-    Definition get_words_num : SubPointer.Runner.t t Usize.t := {|
-      SubPointer.Runner.index :=
-        Pointer.Index.StructRecord "revm_interpreter::gas::MemoryGas" "words_num";
+    Definition get_words_num : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::gas::MemoryGas" "words_num") :=
+    {|
       SubPointer.Runner.projection x := Some x.(words_num);
       SubPointer.Runner.injection x y := Some (x <| words_num := y |>);
     |}.
@@ -72,11 +76,11 @@ Module MemoryGas.
     Proof.
       now constructor.
     Qed.
-    Smpl Add run_sub_pointer get_words_num_is_valid : run_symbolic.
+    Smpl Add apply get_words_num_is_valid : run_sub_pointer.
 
-    Definition get_expansion_cost : SubPointer.Runner.t t U64.t := {|
-      SubPointer.Runner.index :=
-        Pointer.Index.StructRecord "revm_interpreter::gas::MemoryGas" "expansion_cost";
+    Definition get_expansion_cost : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::gas::MemoryGas" "expansion_cost") :=
+    {|
       SubPointer.Runner.projection x := Some x.(expansion_cost);
       SubPointer.Runner.injection x y := Some (x <| expansion_cost := y |>);
     |}.
@@ -86,7 +90,7 @@ Module MemoryGas.
     Proof.
       now constructor.
     Qed.
-    Smpl Add run_sub_pointer get_expansion_cost_is_valid : run_symbolic.
+    Smpl Add apply get_expansion_cost_is_valid : run_sub_pointer.
   End SubPointer.
 End MemoryGas.
 
@@ -154,24 +158,22 @@ Module Impl_MemoryGas.
       option U64.t
     }}.
   Proof.
-  Admitted.
-    (* run_symbolic.
-    eapply Run.Let. {
+    run_symbolic.
+    run_symbolic_let. {
       run_symbolic.
       eapply Run.CallPrimitiveAreEqual with (A := bool); try smpl of_value.
       intros []; run_symbolic.
     }
     intros [|[]]; run_symbolic.
-    eapply Run.Let. {
+    run_symbolic_let. {
       run_symbolic.
-      eapply Run.CallClosure. {
-        epose proof (core.mem.links.mod.run_swap (T := _) _ (Ref.cast_to _ output1)).
-        apply H.
+      run_symbolic_closure. {
+        apply (core.mem.links.mod.run_swap _ (Ref.cast_to _ output1)).
       }
       intros []; run_symbolic.
     }
     intros [|[]]; run_symbolic.
-  Defined. *)
+  Defined.
   Smpl Add apply run_record_new_len : run_closure.
 End Impl_MemoryGas.
 
@@ -200,6 +202,10 @@ Module MemoryExtensionResult.
       | OutOfGas => Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" []
       end;
   }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::gas::MemoryExtensionResult").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with_Extended :
     Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" [] = φ Extended.
@@ -266,6 +272,10 @@ Module Gas.
       ];
   }.
 
+  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::gas::Gas").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+
   Lemma of_value_impl limit limit' remaining remaining' refunded refunded' memory memory' :
     limit' = φ limit ->
     remaining' = φ remaining ->
@@ -301,9 +311,9 @@ Module Gas.
   Smpl Add apply of_value : of_value.
 
   Module SubPointer.
-    Definition get_limit : SubPointer.Runner.t t U64.t := {|
-      SubPointer.Runner.index :=
-        Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "limit";
+    Definition get_limit : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "limit") :=
+    {|
       SubPointer.Runner.projection x := Some x.(limit);
       SubPointer.Runner.injection x y := Some (x <| limit := y |>);
     |}.
@@ -313,11 +323,11 @@ Module Gas.
     Proof.
       now constructor.
     Qed.
-    Smpl Add run_sub_pointer get_limit_is_valid : run_symbolic.
+    Smpl Add apply get_limit_is_valid : run_sub_pointer.
 
-    Definition get_remaining : SubPointer.Runner.t t U64.t := {|
-      SubPointer.Runner.index :=
-        Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "remaining";
+    Definition get_remaining : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "remaining") :=
+    {|
       SubPointer.Runner.projection x := Some x.(remaining);
       SubPointer.Runner.injection x y := Some (x <| remaining := y |>);
     |}.
@@ -327,11 +337,11 @@ Module Gas.
     Proof.
       now constructor.
     Qed.
-    Smpl Add run_sub_pointer get_remaining_is_valid : run_symbolic.
+    Smpl Add apply get_remaining_is_valid : run_sub_pointer.
 
-    Definition get_refunded : SubPointer.Runner.t t I64.t := {|
-      SubPointer.Runner.index :=
-        Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "refunded";
+    Definition get_refunded : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "refunded") :=
+    {|
       SubPointer.Runner.projection x := Some x.(refunded);
       SubPointer.Runner.injection x y := Some (x <| refunded := y |>);
     |}.
@@ -341,11 +351,11 @@ Module Gas.
     Proof.
       now constructor.
     Qed.
-    Smpl Add run_sub_pointer get_refunded_is_valid : run_symbolic.
+    Smpl Add apply get_refunded_is_valid : run_sub_pointer.
 
-    Definition get_memory : SubPointer.Runner.t t MemoryGas.t := {|
-      SubPointer.Runner.index :=
-        Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "memory";
+    Definition get_memory : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "memory") :=
+    {|
       SubPointer.Runner.projection x := Some x.(memory);
       SubPointer.Runner.injection x y := Some (x <| memory := y |>);
     |}.
@@ -355,7 +365,7 @@ Module Gas.
     Proof.
       now constructor.
     Qed.
-    Smpl Add run_sub_pointer get_memory_is_valid : run_symbolic.
+    Smpl Add apply get_memory_is_valid : run_sub_pointer.
   End SubPointer.
 End Gas.
 
@@ -568,7 +578,7 @@ Module Impl_revm_interpreter_gas_Gas.
   Proof.
     destruct cmp.Impl_Ord_for_u64.run_min as [min [H_min run_min]].
     run_symbolic.
-    eapply Run.Let. {
+    run_symbolic_let. {
       run_symbolic.
       eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
       intros []; run_symbolic.
@@ -602,42 +612,7 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.record_cost [] [] [φ self; φ cost] 🔽 bool }}.
   Proof.
     run_symbolic.
-    match goal with
-    | |- {{
-        CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.GetSubPointer (φ ?ref) ?index) _ 🔽
-        ?R, ?Output
-      }} =>
-      match type of ref with
-      | Ref.t _ ?A =>
-        epose proof (H_0 :=
-          Run.CallPrimitiveGetSubPointer
-            (A := A)
-            R Output
-            _ _ _
-            Pair.SubPointer.get_index_0_is_valid
-        )
-      end
-    end.
-    apply H_0; clear H_0; intros.
-    match goal with
-    | |- {{
-        CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.GetSubPointer (φ ?ref) ?index) _ 🔽
-        ?R, ?Output
-      }} =>
-      match type of ref with
-      | Ref.t _ ?A =>
-        epose proof (H_1 :=
-          Run.CallPrimitiveGetSubPointer
-            (A := A)
-            R Output
-            _ _ _
-            Pair.SubPointer.get_index_1_is_valid
-        )
-      end
-    end.
-    apply H_1; clear H_1; intros.
-    run_symbolic.
-    eapply Run.Let. {
+    run_symbolic_let. {
       run_symbolic.
       eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
       intros []; run_symbolic.
@@ -665,6 +640,12 @@ Module Impl_revm_interpreter_gas_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.record_memory_expansion [] [] [φ self; φ new_len] 🔽 MemoryExtensionResult.t }}.
   Proof.
     run_symbolic.
-  Admitted.
+    run_symbolic_let. {
+      run_symbolic.
+      eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
+      intros []; run_symbolic.
+    }
+    intros [|[]]; run_symbolic.
+  Defined.
   Smpl Add apply run_record_memory_expansion : run_closure.
 End Impl_revm_interpreter_gas_Gas.

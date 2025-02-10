@@ -39,6 +39,10 @@ Module interpreter.
               [
                 ("buffer",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -69,6 +73,10 @@ Module interpreter.
                   |));
                 ("checkpoints",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -99,6 +107,7 @@ Module interpreter.
                   |));
                 ("last_checkpoint",
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "usize",
@@ -162,6 +171,7 @@ Module interpreter.
             LogicalOp.and (|
               LogicalOp.and (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -200,6 +210,7 @@ Module interpreter.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.apply
@@ -324,9 +335,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.apply
@@ -357,9 +369,10 @@ Module interpreter.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.apply
@@ -392,6 +405,7 @@ Module interpreter.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "usize",
@@ -440,6 +454,10 @@ Module interpreter.
               [
                 ("buffer",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -453,6 +471,10 @@ Module interpreter.
                   |));
                 ("checkpoints",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -492,6 +514,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish_non_exhaustive",
@@ -503,6 +529,7 @@ Module interpreter.
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
@@ -514,6 +541,10 @@ Module interpreter.
                           Pointer.Kind.MutRef,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.path "core::fmt::builders::DebugStruct" ],
                               M.get_associated_function (|
                                 Ty.path "core::fmt::builders::DebugStruct",
                                 "field",
@@ -525,6 +556,7 @@ Module interpreter.
                                   Pointer.Kind.MutRef,
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "core::fmt::builders::DebugStruct",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "debug_struct",
@@ -555,6 +587,7 @@ Module interpreter.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "usize",
                                           M.get_associated_function (|
                                             Ty.path
                                               "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -588,6 +621,7 @@ Module interpreter.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "alloc::string::String",
                                   M.get_function (|
                                     "const_hex::encode",
                                     [],
@@ -600,6 +634,10 @@ Module interpreter.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                       M.get_associated_function (|
                                         Ty.path
                                           "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -651,6 +689,7 @@ Module interpreter.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                 "new",
@@ -743,9 +782,10 @@ Module interpreter.
             let len := M.alloc (| len |) in
             let data := M.alloc (| data |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set_data",
@@ -757,6 +797,11 @@ Module interpreter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory"
+                              ],
                             M.get_trait_method (|
                               "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                               T,
@@ -771,6 +816,7 @@ Module interpreter.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&mut") [] [ T ],
                                     M.get_trait_method (|
                                       "core::ops::deref::DerefMut",
                                       Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
@@ -785,6 +831,7 @@ Module interpreter.
                                         Pointer.Kind.MutRef,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                                               "borrow_mut",
@@ -796,6 +843,15 @@ Module interpreter.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::cell::RefCell")
+                                                          []
+                                                          [ T ]
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::deref::Deref",
                                                       Ty.apply
@@ -861,9 +917,10 @@ Module interpreter.
             let memory_offset := M.alloc (| memory_offset |) in
             let data := M.alloc (| data |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set",
@@ -875,6 +932,11 @@ Module interpreter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory"
+                              ],
                             M.get_trait_method (|
                               "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                               T,
@@ -889,6 +951,7 @@ Module interpreter.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&mut") [] [ T ],
                                     M.get_trait_method (|
                                       "core::ops::deref::DerefMut",
                                       Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
@@ -903,6 +966,7 @@ Module interpreter.
                                         Pointer.Kind.MutRef,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                                               "borrow_mut",
@@ -914,6 +978,15 @@ Module interpreter.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::cell::RefCell")
+                                                          []
+                                                          [ T ]
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::deref::Deref",
                                                       Ty.apply
@@ -975,6 +1048,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                 "len",
@@ -986,6 +1060,10 @@ Module interpreter.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory" ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                         T,
@@ -1000,6 +1078,7 @@ Module interpreter.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
@@ -1014,6 +1093,7 @@ Module interpreter.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                                         "borrow",
@@ -1025,6 +1105,11 @@ Module interpreter.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "core::cell::RefCell") [] [ T ]
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::deref::Deref",
                                                 Ty.apply
@@ -1086,9 +1171,10 @@ Module interpreter.
             let source := M.alloc (| source |) in
             let len := M.alloc (| len |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "copy",
@@ -1100,6 +1186,11 @@ Module interpreter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory"
+                              ],
                             M.get_trait_method (|
                               "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                               T,
@@ -1114,6 +1205,7 @@ Module interpreter.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&mut") [] [ T ],
                                     M.get_trait_method (|
                                       "core::ops::deref::DerefMut",
                                       Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
@@ -1128,6 +1220,7 @@ Module interpreter.
                                         Pointer.Kind.MutRef,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                                               "borrow_mut",
@@ -1139,6 +1232,15 @@ Module interpreter.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::cell::RefCell")
+                                                          []
+                                                          [ T ]
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::deref::Deref",
                                                       Ty.apply
@@ -1202,6 +1304,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let range := M.alloc (| range |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::cell::Ref")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
                 "map",
@@ -1215,6 +1321,7 @@ Module interpreter.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                     "borrow",
@@ -1226,6 +1333,10 @@ Module interpreter.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::cell::RefCell") [] [ T ] ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -1263,6 +1374,10 @@ Module interpreter.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         M.get_associated_function (|
                                           Ty.path
                                             "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -1275,6 +1390,13 @@ Module interpreter.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "revm_interpreter::interpreter::shared_memory::SharedMemory"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                                                   T,
@@ -1321,9 +1443,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let new_size := M.alloc (| new_size |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "resize",
@@ -1335,6 +1458,11 @@ Module interpreter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory"
+                              ],
                             M.get_trait_method (|
                               "revm_interpreter::interpreter::shared_memory::MemoryGetter",
                               T,
@@ -1349,6 +1477,7 @@ Module interpreter.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&mut") [] [ T ],
                                     M.get_trait_method (|
                                       "core::ops::deref::DerefMut",
                                       Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
@@ -1363,6 +1492,7 @@ Module interpreter.
                                         Pointer.Kind.MutRef,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
                                               "borrow_mut",
@@ -1374,6 +1504,15 @@ Module interpreter.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::cell::RefCell")
+                                                          []
+                                                          [ T ]
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::deref::Deref",
                                                       Ty.apply
@@ -1453,6 +1592,7 @@ Module interpreter.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                 "with_capacity",
@@ -1493,6 +1633,10 @@ Module interpreter.
               [
                 ("buffer",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -1506,6 +1650,10 @@ Module interpreter.
                   |));
                 ("checkpoints",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -1539,9 +1687,10 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ new_checkpoint :=
+              let~ new_checkpoint : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -1563,9 +1712,10 @@ Module interpreter.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -1588,14 +1738,16 @@ Module interpreter.
                     ]
                   |)
                 |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                    "last_checkpoint"
-                  |),
-                  M.read (| new_checkpoint |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                      "last_checkpoint"
+                    |),
+                    M.read (| new_checkpoint |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -1628,6 +1780,7 @@ Module interpreter.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -1656,79 +1809,94 @@ Module interpreter.
                           0
                         |) in
                       let old_checkpoint := M.copy (| γ0_0 |) in
-                      let~ _ :=
-                        M.write (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                            "last_checkpoint"
-                          |),
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                              "unwrap_or_default",
-                              [],
-                              []
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                              "last_checkpoint"
                             |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
-                                  "cloned",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
-                                      "last",
-                                      [],
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                                "unwrap_or_default",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
                                       []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                    "cloned",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
+                                        "last",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
+                                                (Ty.path "&")
                                                 []
-                                                [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
-                                              [],
-                                              [],
-                                              "deref",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                                  "checkpoints"
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ]
+                                                ],
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [ Ty.path "usize"; Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                                                    "checkpoints"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)
-                            ]
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -1775,6 +1943,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -1821,6 +1990,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             BinOp.eq (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (|
                   Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                   "len",
@@ -1849,9 +2019,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let new_size := M.alloc (| new_size |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -1908,6 +2079,7 @@ Module interpreter.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                     "slice_range",
@@ -1970,6 +2142,15 @@ Module interpreter.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                              ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "get",
@@ -1982,6 +2163,10 @@ Module interpreter.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -2032,6 +2217,7 @@ Module interpreter.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
+                                            Ty.path "never",
                                             M.get_function (|
                                               "core::panicking::panic_fmt",
                                               [],
@@ -2039,6 +2225,7 @@ Module interpreter.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::Arguments",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
@@ -2078,6 +2265,7 @@ Module interpreter.
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.path "usize",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -2114,6 +2302,8 @@ Module interpreter.
                                                                   Value.Array
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
@@ -2136,6 +2326,8 @@ Module interpreter.
                                                                         ]
                                                                       |);
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
@@ -2158,6 +2350,8 @@ Module interpreter.
                                                                         ]
                                                                       |);
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
@@ -2197,10 +2391,11 @@ Module interpreter.
                                       (M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let~ _ :=
+                                            let~ _ : Ty.tuple [] :=
                                               M.alloc (|
                                                 M.never_to_any (|
                                                   M.call_closure (|
+                                                    Ty.path "never",
                                                     M.get_function (|
                                                       "core::hint::unreachable_unchecked",
                                                       [],
@@ -2247,7 +2442,7 @@ Module interpreter.
               Pointer.Kind.MutRef,
               M.deref (|
                 M.read (|
-                  let~ end_ :=
+                  let~ end_ : Ty.path "usize" :=
                     M.alloc (| BinOp.Wrap.add (| M.read (| offset |), M.read (| size |) |) |) in
                   M.alloc (|
                     M.borrow (|
@@ -2257,6 +2452,15 @@ Module interpreter.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "get_mut",
@@ -2273,6 +2477,10 @@ Module interpreter.
                                     Pointer.Kind.MutRef,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         M.get_associated_function (|
                                           Ty.path
                                             "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -2329,6 +2537,7 @@ Module interpreter.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.call_closure (|
+                                                Ty.path "never",
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
                                                   [],
@@ -2336,6 +2545,7 @@ Module interpreter.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path "core::fmt::Arguments",
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
@@ -2370,6 +2580,8 @@ Module interpreter.
                                                               Value.Array
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
@@ -2390,6 +2602,8 @@ Module interpreter.
                                                                     ]
                                                                   |);
                                                                   M.call_closure (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::rt::Argument",
@@ -2425,10 +2639,11 @@ Module interpreter.
                                           (M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.alloc (|
                                                     M.never_to_any (|
                                                       M.call_closure (|
+                                                        Ty.path "never",
                                                         M.get_function (|
                                                           "core::hint::unreachable_unchecked",
                                                           [],
@@ -2474,6 +2689,7 @@ Module interpreter.
               M.SubPointer.get_array_field (|
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "slice_len",
@@ -2508,6 +2724,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                [],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -2525,6 +2745,16 @@ Module interpreter.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [];
+                      Ty.path "core::array::TryFromSliceError"
+                    ],
                   M.get_trait_method (|
                     "core::convert::TryInto",
                     Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
@@ -2544,6 +2774,10 @@ Module interpreter.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                             "slice_len",
@@ -2580,6 +2814,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                [],
               M.get_trait_method (|
                 "core::convert::Into",
                 Ty.apply
@@ -2599,6 +2837,10 @@ Module interpreter.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [],
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                     "get_word",
@@ -2631,9 +2873,10 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let byte := M.alloc (| byte |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set",
@@ -2676,9 +2919,10 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set",
@@ -2695,6 +2939,10 @@ Module interpreter.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
                                   Ty.apply
@@ -2740,9 +2988,10 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                       "set",
@@ -2759,6 +3008,10 @@ Module interpreter.
                             Pointer.Kind.Ref,
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [ Ty.path "u8" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
@@ -2816,6 +3069,7 @@ Module interpreter.
                           (M.alloc (|
                             UnOp.not (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "is_empty",
@@ -2828,9 +3082,10 @@ Module interpreter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "copy_from_slice",
@@ -2842,6 +3097,10 @@ Module interpreter.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -2856,6 +3115,7 @@ Module interpreter.
                                       |);
                                       M.read (| offset |);
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
@@ -2920,7 +3180,7 @@ Module interpreter.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -2932,6 +3192,7 @@ Module interpreter.
                                   BinOp.ge (|
                                     M.read (| data_offset |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
@@ -2952,9 +3213,10 @@ Module interpreter.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "fill",
@@ -2966,6 +3228,11 @@ Module interpreter.
                                             Pointer.Kind.MutRef,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -2995,13 +3262,15 @@ Module interpreter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ data_end :=
+                  let~ data_end : Ty.path "usize" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                         [
                           BinOp.Wrap.add (| M.read (| data_offset |), M.read (| len |) |);
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
@@ -3013,11 +3282,11 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let~ data_len :=
+                  let~ data_len : Ty.path "usize" :=
                     M.alloc (|
                       BinOp.Wrap.sub (| M.read (| data_end |), M.read (| data_offset |) |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -3026,7 +3295,7 @@ Module interpreter.
                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -3040,6 +3309,7 @@ Module interpreter.
                                                 BinOp.lt (|
                                                   M.read (| data_offset |),
                                                   M.call_closure (|
+                                                    Ty.path "usize",
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -3061,6 +3331,7 @@ Module interpreter.
                                                   (BinOp.le (|
                                                     M.read (| data_end |),
                                                     M.call_closure (|
+                                                      Ty.path "usize",
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
@@ -3089,6 +3360,7 @@ Module interpreter.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
+                                            Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
@@ -3106,9 +3378,17 @@ Module interpreter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ data :=
+                  let~ data :
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get_unchecked",
@@ -3123,9 +3403,10 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
@@ -3137,6 +3418,10 @@ Module interpreter.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_associated_function (|
                                   Ty.path
                                     "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -3159,9 +3444,10 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "fill",
@@ -3173,6 +3459,10 @@ Module interpreter.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_associated_function (|
                                   Ty.path
                                     "revm_interpreter::interpreter::shared_memory::SharedMemory",
@@ -3221,9 +3511,10 @@ Module interpreter.
             let src := M.alloc (| src |) in
             let len := M.alloc (| len |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "copy_within",
@@ -3235,6 +3526,10 @@ Module interpreter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             M.get_associated_function (|
                               Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
                               "context_memory_mut",
@@ -3281,6 +3576,7 @@ Module interpreter.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "get_unchecked",
@@ -3292,6 +3588,10 @@ Module interpreter.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -3330,6 +3630,7 @@ Module interpreter.
                           |));
                         ("end_",
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -3378,9 +3679,10 @@ Module interpreter.
               Pointer.Kind.MutRef,
               M.deref (|
                 M.read (|
-                  let~ buf_len :=
+                  let~ buf_len : Ty.path "usize" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -3410,6 +3712,10 @@ Module interpreter.
                           Pointer.Kind.MutRef,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "get_unchecked_mut",
@@ -3426,6 +3732,10 @@ Module interpreter.
                                   Pointer.Kind.MutRef,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                       M.get_trait_method (|
                                         "core::ops::deref::DerefMut",
                                         Ty.apply
@@ -3494,6 +3804,7 @@ Module interpreter.
           (let len := M.alloc (| len |) in
           BinOp.Wrap.div (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (| Ty.path "usize", "saturating_add", [], [] |),
               [ M.read (| len |); Value.Integer IntegerKind.Usize 31 ]
             |),

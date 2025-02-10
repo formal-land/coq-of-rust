@@ -35,7 +35,7 @@ Module main.
       ltac:(M.monadic
         (let control := M.alloc (| control |) in
         M.read (|
-          let~ _ := InlineAssembly in
+          let~ _ : Ty.tuple [] := InlineAssembly in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

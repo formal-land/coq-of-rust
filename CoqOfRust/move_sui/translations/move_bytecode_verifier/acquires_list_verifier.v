@@ -110,9 +110,23 @@ Module acquires_list_verifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ annotated_acquires :=
+                let~ annotated_acquires :
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                        Ty.path "alloc::alloc::Global"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -140,6 +154,15 @@ Module acquires_list_verifier.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::cloned::Cloned")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -154,6 +177,11 @@ Module acquires_list_verifier.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinitionIndex"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
@@ -169,6 +197,18 @@ Module acquires_list_verifier.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::StructDefinitionIndex"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.apply
@@ -205,9 +245,31 @@ Module acquires_list_verifier.
                       ]
                     |)
                   |) in
-                let~ handle_to_def :=
+                let~ handle_to_def :
+                    Ty.apply
+                      (Ty.path "std::collections::hash::map::HashMap")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
+                        Ty.path "std::hash::random::RandomState"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "std::collections::hash::map::HashMap")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
+                          Ty.path "std::hash::random::RandomState"
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
@@ -227,11 +289,15 @@ Module acquires_list_verifier.
                       []
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -251,6 +317,16 @@ Module acquires_list_verifier.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_defs",
@@ -268,10 +344,22 @@ Module acquires_list_verifier.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -315,9 +403,33 @@ Module acquires_list_verifier.
                                               0
                                             |) in
                                           let func_def := M.copy (| γ0_0 |) in
-                                          let~ _ :=
+                                          let~ _ :
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionDefinition"
+                                                    ]
+                                                ] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::FunctionDefinition"
+                                                      ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "std::collections::hash::map::HashMap")
@@ -358,7 +470,8 @@ Module acquires_list_verifier.
                             |)))
                       ]
                     |)) in
-                let~ verifier :=
+                let~ verifier :
+                    Ty.path "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier" :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier"
@@ -368,6 +481,13 @@ Module acquires_list_verifier.
                         ("annotated_acquires", M.read (| annotated_acquires |));
                         ("actual_acquires",
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::set::BTreeSet")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -385,11 +505,20 @@ Module acquires_list_verifier.
                         ("handle_to_def", M.read (| handle_to_def |))
                       ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -409,6 +538,15 @@ Module acquires_list_verifier.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -423,6 +561,10 @@ Module acquires_list_verifier.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -437,6 +579,18 @@ Module acquires_list_verifier.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::Bytecode"
+                                                ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::deref::Deref",
                                             Ty.apply
@@ -461,6 +615,18 @@ Module acquires_list_verifier.
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::CodeUnit"
+                                                                ]
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -505,9 +671,13 @@ Module acquires_list_verifier.
                                                                 γ,
                                                                 "core::option::Option::None"
                                                               |) in
-                                                            let~ err :=
+                                                            let~ err :
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError",
@@ -517,6 +687,8 @@ Module acquires_list_verifier.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError",
@@ -531,6 +703,8 @@ Module acquires_list_verifier.
                                                                       ]
                                                                     |);
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "alloc::string::String",
                                                                       M.get_function (|
                                                                         "core::hint::must_use",
                                                                         [],
@@ -541,9 +715,13 @@ Module acquires_list_verifier.
                                                                       |),
                                                                       [
                                                                         M.read (|
-                                                                          let~ res :=
+                                                                          let~ res :
+                                                                              Ty.path
+                                                                                "alloc::string::String" :=
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "alloc::string::String",
                                                                                 M.get_function (|
                                                                                   "alloc::fmt::format",
                                                                                   [],
@@ -551,6 +729,8 @@ Module acquires_list_verifier.
                                                                                 |),
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "core::fmt::Arguments",
@@ -583,6 +763,18 @@ Module acquires_list_verifier.
                                                                                             Pointer.Kind.Ref,
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "array")
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0
+                                                                                                  ]
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument"
+                                                                                                  ],
                                                                                                 M.get_associated_function (|
                                                                                                   Ty.path
                                                                                                     "core::fmt::rt::Argument",
@@ -626,6 +818,7 @@ Module acquires_list_verifier.
                                                                     M.alloc (|
                                                                       M.never_to_any (|
                                                                         M.call_closure (|
+                                                                          Ty.path "never",
                                                                           M.get_function (|
                                                                             "core::panicking::panic_fmt",
                                                                             [],
@@ -633,6 +826,8 @@ Module acquires_list_verifier.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
@@ -667,6 +862,8 @@ Module acquires_list_verifier.
                                                                                         Value.Array
                                                                                           [
                                                                                             M.call_closure (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
                                                                                               M.get_associated_function (|
                                                                                                 Ty.path
                                                                                                   "core::fmt::rt::Argument",
@@ -740,10 +937,26 @@ Module acquires_list_verifier.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Bytecode"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -798,6 +1011,20 @@ Module acquires_list_verifier.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -816,6 +1043,14 @@ Module acquires_list_verifier.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
@@ -850,6 +1085,14 @@ Module acquires_list_verifier.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -900,11 +1143,18 @@ Module acquires_list_verifier.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::set::IntoIter")
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -937,10 +1187,17 @@ Module acquires_list_verifier.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinitionIndex"
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -985,7 +1242,7 @@ Module acquires_list_verifier.
                                               0
                                             |) in
                                           let annotation := M.copy (| γ0_0 |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -996,6 +1253,7 @@ Module acquires_list_verifier.
                                                         (M.alloc (|
                                                           UnOp.not (|
                                                             M.call_closure (|
+                                                              Ty.path "bool",
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -1048,6 +1306,8 @@ Module acquires_list_verifier.
                                                               "core::result::Result::Err"
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError",
@@ -1070,11 +1330,30 @@ Module acquires_list_verifier.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          let~ struct_def :=
+                                          let~ struct_def :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructDefinition"
+                                                ] :=
                                             M.copy (|
                                               M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefinition"
+                                                          ]
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -1092,6 +1371,18 @@ Module acquires_list_verifier.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::StructDefinition"
+                                                                  ]
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::CompiledModule",
@@ -1138,9 +1429,13 @@ Module acquires_list_verifier.
                                                           γ,
                                                           "core::option::Option::None"
                                                         |) in
-                                                      let~ err :=
+                                                      let~ err :
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError" :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError",
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError",
@@ -1150,6 +1445,8 @@ Module acquires_list_verifier.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
@@ -1164,6 +1461,7 @@ Module acquires_list_verifier.
                                                                 ]
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "alloc::string::String",
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
                                                                   [],
@@ -1172,9 +1470,13 @@ Module acquires_list_verifier.
                                                                 |),
                                                                 [
                                                                   M.read (|
-                                                                    let~ res :=
+                                                                    let~ res :
+                                                                        Ty.path
+                                                                          "alloc::string::String" :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "alloc::string::String",
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
                                                                             [],
@@ -1182,6 +1484,8 @@ Module acquires_list_verifier.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
@@ -1214,6 +1518,18 @@ Module acquires_list_verifier.
                                                                                       Pointer.Kind.Ref,
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "array")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                IntegerKind.Usize
+                                                                                                0
+                                                                                            ]
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument"
+                                                                                            ],
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "core::fmt::rt::Argument",
@@ -1255,6 +1571,7 @@ Module acquires_list_verifier.
                                                               M.alloc (|
                                                                 M.never_to_any (|
                                                                   M.call_closure (|
+                                                                    Ty.path "never",
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
                                                                       [],
@@ -1262,6 +1579,8 @@ Module acquires_list_verifier.
                                                                     |),
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "core::fmt::Arguments",
@@ -1296,6 +1615,8 @@ Module acquires_list_verifier.
                                                                                   Value.Array
                                                                                     [
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::rt::Argument",
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
@@ -1347,9 +1668,23 @@ Module acquires_list_verifier.
                                                 ]
                                               |)
                                             |) in
-                                          let~ struct_handle :=
+                                          let~ struct_handle :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructHandle"
+                                                ] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructHandle"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
@@ -1382,6 +1717,7 @@ Module acquires_list_verifier.
                                                       (M.alloc (|
                                                         UnOp.not (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::AbilitySet",
@@ -1416,6 +1752,8 @@ Module acquires_list_verifier.
                                                             "core::result::Result::Err"
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
@@ -1570,6 +1908,10 @@ Module acquires_list_verifier.
                     let idx := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
@@ -1594,9 +1936,17 @@ Module acquires_list_verifier.
                         0
                       |) in
                     let idx := M.alloc (| γ1_0 |) in
-                    let~ fi :=
+                    let~ fi :
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FunctionInstantiation" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionInstantiation" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "function_instantiation_at",
@@ -1622,6 +1972,10 @@ Module acquires_list_verifier.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
@@ -1688,6 +2042,13 @@ Module acquires_list_verifier.
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
@@ -1752,9 +2113,23 @@ Module acquires_list_verifier.
                           match γ with
                           | [ idx ] =>
                             ltac:(M.monadic
-                              (let~ si :=
+                              (let~ si :
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format::StructDefInstantiation"
+                                    ] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::file_format::StructDefInstantiation"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_instantiation_at",
@@ -1780,6 +2155,13 @@ Module acquires_list_verifier.
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
@@ -2516,9 +2898,17 @@ Module acquires_list_verifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ function_handle :=
+                let~ function_handle :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "function_handle_at",
@@ -2542,9 +2932,23 @@ Module acquires_list_verifier.
                       ]
                     |)
                   |) in
-                let~ function_acquired_resources :=
+                let~ function_acquired_resources :
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                        Ty.path "alloc::alloc::Global"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       M.get_associated_function (|
                         Ty.path "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
                         "function_acquired_resources",
@@ -2558,11 +2962,15 @@ Module acquires_list_verifier.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::set::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2593,10 +3001,22 @@ Module acquires_list_verifier.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefinitionIndex"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -2650,6 +3070,7 @@ Module acquires_list_verifier.
                                                       (M.alloc (|
                                                         UnOp.not (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -2699,6 +3120,8 @@ Module acquires_list_verifier.
                                                             "core::result::Result::Err"
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
@@ -2732,9 +3155,10 @@ Module acquires_list_verifier.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2805,6 +3229,7 @@ Module acquires_list_verifier.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2834,9 +3259,10 @@ Module acquires_list_verifier.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.path "bool" :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2870,6 +3296,7 @@ Module acquires_list_verifier.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
@@ -2926,7 +3353,7 @@ Module acquires_list_verifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2936,6 +3363,7 @@ Module acquires_list_verifier.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path "move_binary_format::file_format::ModuleHandleIndex",
@@ -2959,6 +3387,8 @@ Module acquires_list_verifier.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path
+                                            "move_binary_format::file_format::ModuleHandleIndex",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -2993,6 +3423,14 @@ Module acquires_list_verifier.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::file_format::StructDefinitionIndex";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -3018,6 +3456,20 @@ Module acquires_list_verifier.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                            ]
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
@@ -3062,6 +3514,13 @@ Module acquires_list_verifier.
                         let func_def := M.copy (| γ0_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::set::BTreeSet")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -3093,6 +3552,18 @@ Module acquires_list_verifier.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::cloned::Cloned")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::file_format::StructDefinitionIndex"
+                                      ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -3111,6 +3582,13 @@ Module acquires_list_verifier.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::file_format::StructDefinitionIndex"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -3128,6 +3606,18 @@ Module acquires_list_verifier.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructDefinitionIndex"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -3171,6 +3661,13 @@ Module acquires_list_verifier.
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::set::BTreeSet")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -3210,6 +3707,7 @@ Module acquires_list_verifier.
           let status := M.alloc (| status |) in
           let offset := M.alloc (| offset |) in
           M.call_closure (|
+            Ty.path "move_binary_format::errors::PartialVMError",
             M.get_associated_function (|
               Ty.path "move_binary_format::errors::PartialVMError",
               "at_code_offset",
@@ -3218,6 +3716,7 @@ Module acquires_list_verifier.
             |),
             [
               M.call_closure (|
+                Ty.path "move_binary_format::errors::PartialVMError",
                 M.get_associated_function (|
                   Ty.path "move_binary_format::errors::PartialVMError",
                   "new",

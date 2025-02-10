@@ -47,6 +47,7 @@ Module type_safety.
             [
               ("param_count",
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::Signature",
                     "len",
@@ -81,7 +82,7 @@ Module type_safety.
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
           M.read (|
-            let~ idx := M.alloc (| M.cast (Ty.path "usize") (M.read (| i |)) |) in
+            let~ idx : Ty.path "usize" := M.alloc (| M.cast (Ty.path "usize") (M.read (| i |)) |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -110,6 +111,10 @@ Module type_safety.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
                                   Ty.apply
@@ -160,6 +165,10 @@ Module type_safety.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_trait_method (|
                                   "core::ops::index::Index",
                                   Ty.apply
@@ -266,9 +275,10 @@ Module type_safety.
           (let module := M.alloc (| module |) in
           let function_context := M.alloc (| function_context |) in
           M.read (|
-            let~ locals :=
+            let~ locals : Ty.path "move_bytecode_verifier::type_safety::Locals" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_bytecode_verifier::type_safety::Locals",
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier::type_safety::Locals",
                     "new",
@@ -280,6 +290,10 @@ Module type_safety.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Signature" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             "parameters",
@@ -299,6 +313,10 @@ Module type_safety.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Signature" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             "locals",
@@ -326,6 +344,10 @@ Module type_safety.
                   ("locals", M.read (| locals |));
                   ("stack",
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "move_abstract_stack::AbstractStack")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "move_abstract_stack::AbstractStack")
@@ -361,6 +383,10 @@ Module type_safety.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::type_safety::Locals",
                   "local_at",
@@ -400,6 +426,13 @@ Module type_safety.
           (let self := M.alloc (| self |) in
           let t := M.alloc (| t |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_binary_format::file_format::AbilitySet";
+                Ty.path "move_binary_format::errors::PartialVMError"
+              ],
             M.get_associated_function (|
               Ty.path "move_binary_format::file_format::CompiledModule",
               "abilities",
@@ -424,6 +457,15 @@ Module type_safety.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                      ],
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::absint::FunctionContext",
                       "type_parameters",
@@ -473,6 +515,7 @@ Module type_safety.
           let status := M.alloc (| status |) in
           let offset := M.alloc (| offset |) in
           M.call_closure (|
+            Ty.path "move_binary_format::errors::PartialVMError",
             M.get_associated_function (|
               Ty.path "move_binary_format::errors::PartialVMError",
               "at_code_offset",
@@ -481,6 +524,7 @@ Module type_safety.
             |),
             [
               M.call_closure (|
+                Ty.path "move_binary_format::errors::PartialVMError",
                 M.get_associated_function (|
                   Ty.path "move_binary_format::errors::PartialVMError",
                   "new",
@@ -490,6 +534,7 @@ Module type_safety.
                 [ M.read (| status |) ]
               |);
               M.call_closure (|
+                Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -501,6 +546,10 @@ Module type_safety.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::absint::FunctionContext",
                       "index",
@@ -557,10 +606,23 @@ Module type_safety.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -575,6 +637,10 @@ Module type_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                               "charge_ty",
@@ -608,6 +674,13 @@ Module type_safety.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -649,10 +722,14 @@ Module type_safety.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "move_abstract_stack::AbsStackError" ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -695,9 +772,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -706,6 +784,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -719,6 +798,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -726,12 +806,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -765,6 +847,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -801,6 +884,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -831,6 +916,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -865,9 +951,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -895,6 +983,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -976,10 +1065,23 @@ Module type_safety.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -994,6 +1096,10 @@ Module type_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                               "charge_ty",
@@ -1027,6 +1133,13 @@ Module type_safety.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1068,10 +1181,14 @@ Module type_safety.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "move_abstract_stack::AbsStackError" ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -1115,9 +1232,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -1126,6 +1244,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -1139,6 +1258,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -1146,12 +1266,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -1185,6 +1307,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -1221,6 +1344,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -1251,6 +1376,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -1285,9 +1411,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -1315,6 +1443,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -1390,6 +1519,10 @@ Module type_safety.
           let meter := M.alloc (| meter |) in
           let ty := M.alloc (| ty |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             M.get_associated_function (|
               Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
               "charge_ty_",
@@ -1432,6 +1565,10 @@ Module type_safety.
           let ty := M.alloc (| ty |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             M.get_trait_method (|
               "move_bytecode_verifier_meter::Meter",
               impl_Meter__plus___Sized,
@@ -1447,6 +1584,7 @@ Module type_safety.
               M.read (| M.get_constant "move_bytecode_verifier::type_safety::TYPE_NODE_COST" |);
               BinOp.Wrap.mul (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.path "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
@@ -1458,6 +1596,8 @@ Module type_safety.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path
+                        "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::SignatureToken",
                         "preorder_traversal",
@@ -1500,11 +1640,15 @@ Module type_safety.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1531,10 +1675,22 @@ Module type_safety.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1581,6 +1737,20 @@ Module type_safety.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -1599,6 +1769,14 @@ Module type_safety.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -1639,6 +1817,14 @@ Module type_safety.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -1727,12 +1913,17 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ verifier :=
+              let~ verifier :
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker" ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                           "new",
@@ -1750,11 +1941,15 @@ Module type_safety.
                     |)
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
+                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -1769,6 +1964,10 @@ Module type_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                             M.get_trait_method (|
                               "move_binary_format::control_flow_graph::ControlFlowGraph",
                               Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
@@ -1783,6 +1982,13 @@ Module type_safety.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                       "cfg",
@@ -1809,10 +2015,14 @@ Module type_safety.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "u16" ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -1854,6 +2064,17 @@ Module type_safety.
                                           (M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  []
+                                                  [
+                                                    Ty.dyn
+                                                      [
+                                                        ("core::iter::traits::iterator::Iterator::Trait",
+                                                          [])
+                                                      ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::IntoIterator",
                                                   Ty.apply
@@ -1875,6 +2096,17 @@ Module type_safety.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "alloc::boxed::Box")
+                                                      []
+                                                      [
+                                                        Ty.dyn
+                                                          [
+                                                            ("core::iter::traits::iterator::Iterator::Trait",
+                                                              [])
+                                                          ];
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "move_binary_format::control_flow_graph::ControlFlowGraph",
                                                       Ty.path
@@ -1890,6 +2122,13 @@ Module type_safety.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_bytecode_verifier::absint::FunctionContext",
@@ -1920,10 +2159,14 @@ Module type_safety.
                                                   (let iter := M.copy (| γ |) in
                                                   M.loop (|
                                                     ltac:(M.monadic
-                                                      (let~ _ :=
+                                                      (let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ Ty.path "u16" ],
                                                               M.get_trait_method (|
                                                                 "core::iter::traits::iterator::Iterator",
                                                                 Ty.apply
@@ -1978,12 +2221,26 @@ Module type_safety.
                                                                     0
                                                                   |) in
                                                                 let offset := M.copy (| γ0_0 |) in
-                                                                let~ instr :=
+                                                                let~ instr :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::Bytecode"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.deref (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::Bytecode"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::index::Index",
                                                                             Ty.apply
@@ -2008,6 +2265,13 @@ Module type_safety.
                                                                               M.SubPointer.get_struct_record_field (|
                                                                                 M.deref (|
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::CodeUnit"
+                                                                                      ],
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "move_bytecode_verifier::absint::FunctionContext",
@@ -2050,6 +2314,23 @@ Module type_safety.
                                                                 M.match_operator (|
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::ops::control_flow::ControlFlow")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ];
+                                                                          Ty.tuple []
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::Try",
                                                                         Ty.apply
@@ -2069,6 +2350,15 @@ Module type_safety.
                                                                       |),
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ],
                                                                           M.get_function (|
                                                                             "move_bytecode_verifier::type_safety::verify_instr",
                                                                             [],
@@ -2119,6 +2409,15 @@ Module type_safety.
                                                                             M.read (|
                                                                               M.return_ (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::ops::try_trait::FromResidual",
                                                                                     Ty.apply
@@ -2255,11 +2554,18 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ operand :=
+              let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "move_abstract_stack::AbsStackError"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -2301,9 +2607,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -2312,6 +2619,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -2325,6 +2633,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -2332,12 +2641,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -2371,6 +2682,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -2407,6 +2719,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -2437,6 +2751,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -2471,9 +2786,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -2501,6 +2818,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -2551,7 +2869,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2565,6 +2883,7 @@ Module type_safety.
                                 ltac:(M.monadic
                                   (UnOp.not (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::SignatureToken",
                                         "is_mutable_reference",
@@ -2586,6 +2905,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -2612,9 +2932,17 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ field_handle :=
+              let~ field_handle :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FieldHandle" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FieldHandle" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "field_handle_at",
@@ -2638,9 +2966,17 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ struct_def :=
+              let~ struct_def :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "struct_def_at",
@@ -2670,9 +3006,10 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ expected_type :=
+              let~ expected_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -2690,7 +3027,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   operand,
                   [
@@ -2728,6 +3065,7 @@ Module type_safety.
                                   (let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.path "move_binary_format::file_format::SignatureToken",
@@ -2768,6 +3106,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -2793,7 +3132,11 @@ Module type_safety.
                         |)))
                   ]
                 |) in
-              let~ field_def :=
+              let~ field_def :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FieldDefinition" ] :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -2823,6 +3166,7 @@ Module type_safety.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path
                                             "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -2861,6 +3205,10 @@ Module type_safety.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FieldDefinition" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -2898,9 +3246,23 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ field_type :=
+              let~ field_type :
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::SignatureToken";
+                      Ty.path "alloc::alloc::Global"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::SignatureToken";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -2915,6 +3277,7 @@ Module type_safety.
                     |),
                     [
                       M.call_closure (|
+                        Ty.path "move_binary_format::file_format::SignatureToken",
                         M.get_function (|
                           "move_bytecode_verifier::type_safety::instantiate",
                           [],
@@ -2944,10 +3307,23 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -2962,6 +3338,10 @@ Module type_safety.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                             "push",
@@ -3018,6 +3398,13 @@ Module type_safety.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -3106,9 +3493,10 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ loc_signature :=
+              let~ loc_signature : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "move_binary_format::file_format::SignatureToken",
@@ -3123,6 +3511,10 @@ Module type_safety.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                               "local_at",
@@ -3139,7 +3531,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -3149,6 +3541,7 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::SignatureToken",
                                   "is_reference",
@@ -3168,6 +3561,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -3194,10 +3588,23 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -3212,6 +3619,10 @@ Module type_safety.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                             "push",
@@ -3238,6 +3649,14 @@ Module type_safety.
                                           "move_binary_format::file_format::SignatureToken::MutableReference"
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
@@ -3262,6 +3681,14 @@ Module type_safety.
                                           "move_binary_format::file_format::SignatureToken::Reference"
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
@@ -3302,6 +3729,13 @@ Module type_safety.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -3399,11 +3833,18 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ operand :=
+              let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "move_abstract_stack::AbsStackError"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -3445,9 +3886,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -3456,6 +3898,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -3469,6 +3912,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -3476,12 +3920,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -3515,6 +3961,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -3551,6 +3998,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -3581,6 +4030,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -3615,9 +4065,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -3645,6 +4097,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -3695,7 +4148,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -3705,6 +4158,7 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "move_binary_format::file_format::SignatureToken",
@@ -3737,6 +4191,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -3763,9 +4218,17 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ struct_def :=
+              let~ struct_def :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "struct_def_at",
@@ -3789,9 +4252,10 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ struct_type :=
+              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -3809,7 +4273,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -3820,6 +4284,7 @@ Module type_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::AbilitySet",
                                     "has_key",
@@ -3831,6 +4296,21 @@ Module type_safety.
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               Ty.apply
@@ -3850,6 +4330,15 @@ Module type_safety.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -3888,6 +4377,14 @@ Module type_safety.
                                                   M.read (|
                                                     M.return_ (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
@@ -3946,6 +4443,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -3972,9 +4470,10 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ struct_type :=
+              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -3992,10 +4491,23 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -4010,6 +4522,10 @@ Module type_safety.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                             "push",
@@ -4036,6 +4552,14 @@ Module type_safety.
                                           "move_binary_format::file_format::SignatureToken::MutableReference"
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
@@ -4060,6 +4584,14 @@ Module type_safety.
                                           "move_binary_format::file_format::SignatureToken::Reference"
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
@@ -4100,6 +4632,13 @@ Module type_safety.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -4188,9 +4727,17 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ parameters :=
+              let~ parameters :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::Signature" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::Signature" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "signature_at",
@@ -4220,11 +4767,20 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::rev::Rev")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -4244,6 +4800,15 @@ Module type_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::rev::Rev")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -4258,6 +4823,10 @@ Module type_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -4272,6 +4841,18 @@ Module type_safety.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -4314,10 +4895,22 @@ Module type_safety.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -4363,11 +4956,21 @@ Module type_safety.
                                             0
                                           |) in
                                         let parameter := M.copy (| γ0_0 |) in
-                                        let~ arg :=
+                                        let~ arg :
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken" :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "move_abstract_stack::AbsStackError"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -4412,9 +5015,13 @@ Module type_safety.
                                                         0
                                                       |) in
                                                     let e := M.copy (| γ0_0 |) in
-                                                    let~ err :=
+                                                    let~ err :
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError" :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError",
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
@@ -4424,6 +5031,8 @@ Module type_safety.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
@@ -4438,6 +5047,7 @@ Module type_safety.
                                                               ]
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_function (|
                                                                 "core::hint::must_use",
                                                                 [],
@@ -4445,9 +5055,13 @@ Module type_safety.
                                                               |),
                                                               [
                                                                 M.read (|
-                                                                  let~ res :=
+                                                                  let~ res :
+                                                                      Ty.path
+                                                                        "alloc::string::String" :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "alloc::string::String",
                                                                         M.get_function (|
                                                                           "alloc::fmt::format",
                                                                           [],
@@ -4455,6 +5069,8 @@ Module type_safety.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
@@ -4489,6 +5105,8 @@ Module type_safety.
                                                                                       Value.Array
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Argument",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "core::fmt::rt::Argument",
@@ -4525,6 +5143,8 @@ Module type_safety.
                                                                                       Value.Array
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Placeholder",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "core::fmt::rt::Placeholder",
@@ -4558,6 +5178,8 @@ Module type_safety.
                                                                                 |)
                                                                               |);
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::UnsafeArg",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::UnsafeArg",
@@ -4595,6 +5217,7 @@ Module type_safety.
                                                             M.alloc (|
                                                               M.never_to_any (|
                                                                 M.call_closure (|
+                                                                  Ty.path "never",
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
                                                                     [],
@@ -4602,6 +5225,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -4636,6 +5261,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -4698,6 +5325,7 @@ Module type_safety.
                                                       LogicalOp.or (|
                                                         LogicalOp.and (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::Signature",
@@ -4716,6 +5344,7 @@ Module type_safety.
                                                           |),
                                                           ltac:(M.monadic
                                                             (M.call_closure (|
+                                                              Ty.path "bool",
                                                               M.get_trait_method (|
                                                                 "core::cmp::PartialEq",
                                                                 Ty.apply
@@ -4760,6 +5389,7 @@ Module type_safety.
                                                           (LogicalOp.and (|
                                                             UnOp.not (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_binary_format::file_format::Signature",
@@ -4779,6 +5409,7 @@ Module type_safety.
                                                             |),
                                                             ltac:(M.monadic
                                                               (M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.path
@@ -4801,6 +5432,8 @@ Module type_safety.
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::SignatureToken",
                                                                         M.get_function (|
                                                                           "move_bytecode_verifier::type_safety::instantiate",
                                                                           [],
@@ -4843,6 +5476,8 @@ Module type_safety.
                                                           "core::result::Result::Err"
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -4877,11 +5512,15 @@ Module type_safety.
                           |)))
                     ]
                   |)) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::slice::iter::Iter")
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -4908,6 +5547,10 @@ Module type_safety.
                             M.SubPointer.get_struct_tuple_field (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Signature" ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "signature_at",
@@ -4950,10 +5593,22 @@ Module type_safety.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -4997,6 +5652,20 @@ Module type_safety.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ];
+                                                  Ty.tuple []
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::Try",
                                                 Ty.apply
@@ -5015,6 +5684,14 @@ Module type_safety.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -5032,6 +5709,8 @@ Module type_safety.
                                                       M.deref (| M.read (| meter |) |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken",
                                                       M.get_function (|
                                                         "move_bytecode_verifier::type_safety::instantiate",
                                                         [],
@@ -5068,6 +5747,14 @@ Module type_safety.
                                                     M.read (|
                                                       M.return_ (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             Ty.apply
@@ -5185,6 +5872,7 @@ Module type_safety.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
+                          Ty.path "move_binary_format::errors::PartialVMError",
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                             "error",
@@ -5211,9 +5899,23 @@ Module type_safety.
                       0
                     |) in
                   let fields := M.alloc (| γ1_0 |) in
-                  let~ field_sig :=
+                  let~ field_sig :
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::SignatureToken";
+                          Ty.path "alloc::alloc::Global"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -5229,11 +5931,15 @@ Module type_safety.
                         []
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FieldDefinition" ],
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
@@ -5248,6 +5954,10 @@ Module type_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FieldDefinition" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -5262,6 +5972,18 @@ Module type_safety.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FieldDefinition"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -5298,10 +6020,22 @@ Module type_safety.
                               (let iter := M.copy (| γ |) in
                               M.loop (|
                                 ltac:(M.monadic
-                                  (let~ _ :=
+                                  (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FieldDefinition"
+                                                ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
@@ -5345,9 +6079,10 @@ Module type_safety.
                                                 0
                                               |) in
                                             let field_def := M.copy (| γ0_0 |) in
-                                            let~ _ :=
+                                            let~ _ : Ty.tuple [] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.tuple [],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -5364,6 +6099,8 @@ Module type_safety.
                                                   [
                                                     M.borrow (| Pointer.Kind.MutRef, field_sig |);
                                                     M.call_closure (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken",
                                                       M.get_function (|
                                                         "move_bytecode_verifier::type_safety::instantiate",
                                                         [],
@@ -5457,9 +6194,10 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type :=
+              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -5477,11 +6215,24 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ field_sig :=
+              let~ field_sig : Ty.path "move_binary_format::file_format::Signature" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.path "move_binary_format::file_format::Signature"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -5499,6 +6250,13 @@ Module type_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::Signature";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ],
                             M.get_function (|
                               "move_bytecode_verifier::type_safety::type_fields_signature",
                               [],
@@ -5536,6 +6294,13 @@ Module type_safety.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -5578,11 +6343,20 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::rev::Rev")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -5602,6 +6376,15 @@ Module type_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::rev::Rev")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -5616,6 +6399,10 @@ Module type_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -5630,6 +6417,18 @@ Module type_safety.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -5672,10 +6471,22 @@ Module type_safety.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -5721,11 +6532,21 @@ Module type_safety.
                                             0
                                           |) in
                                         let sig := M.copy (| γ0_0 |) in
-                                        let~ arg :=
+                                        let~ arg :
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken" :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "move_abstract_stack::AbsStackError"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -5770,9 +6591,13 @@ Module type_safety.
                                                         0
                                                       |) in
                                                     let e := M.copy (| γ0_0 |) in
-                                                    let~ err :=
+                                                    let~ err :
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError" :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError",
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
@@ -5782,6 +6607,8 @@ Module type_safety.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
@@ -5796,6 +6623,7 @@ Module type_safety.
                                                               ]
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_function (|
                                                                 "core::hint::must_use",
                                                                 [],
@@ -5803,9 +6631,13 @@ Module type_safety.
                                                               |),
                                                               [
                                                                 M.read (|
-                                                                  let~ res :=
+                                                                  let~ res :
+                                                                      Ty.path
+                                                                        "alloc::string::String" :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "alloc::string::String",
                                                                         M.get_function (|
                                                                           "alloc::fmt::format",
                                                                           [],
@@ -5813,6 +6645,8 @@ Module type_safety.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
@@ -5847,6 +6681,8 @@ Module type_safety.
                                                                                       Value.Array
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Argument",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "core::fmt::rt::Argument",
@@ -5883,6 +6719,8 @@ Module type_safety.
                                                                                       Value.Array
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Placeholder",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "core::fmt::rt::Placeholder",
@@ -5916,6 +6754,8 @@ Module type_safety.
                                                                                 |)
                                                                               |);
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::UnsafeArg",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::UnsafeArg",
@@ -5953,6 +6793,7 @@ Module type_safety.
                                                             M.alloc (|
                                                               M.never_to_any (|
                                                                 M.call_closure (|
+                                                                  Ty.path "never",
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
                                                                     [],
@@ -5960,6 +6801,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -5994,6 +6837,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -6054,6 +6899,7 @@ Module type_safety.
                                                   M.use
                                                     (M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.apply
@@ -6101,6 +6947,8 @@ Module type_safety.
                                                           "core::result::Result::Err"
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -6135,10 +6983,23 @@ Module type_safety.
                           |)))
                     ]
                   |)) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -6153,6 +7014,10 @@ Module type_safety.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                             "push",
@@ -6183,6 +7048,13 @@ Module type_safety.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -6269,9 +7141,10 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type :=
+              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -6289,11 +7162,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ arg :=
+              let~ arg : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "move_abstract_stack::AbsStackError"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -6335,9 +7215,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -6346,6 +7227,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -6359,6 +7241,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -6366,12 +7249,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -6405,6 +7290,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -6441,6 +7327,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -6471,6 +7359,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -6505,9 +7394,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -6535,6 +7426,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -6585,7 +7477,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -6595,6 +7487,7 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "move_binary_format::file_format::SignatureToken",
@@ -6620,6 +7513,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -6646,11 +7540,24 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ field_sig :=
+              let~ field_sig : Ty.path "move_binary_format::file_format::Signature" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.path "move_binary_format::file_format::Signature"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -6668,6 +7575,13 @@ Module type_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::Signature";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ],
                             M.get_function (|
                               "move_bytecode_verifier::type_safety::type_fields_signature",
                               [],
@@ -6705,6 +7619,13 @@ Module type_safety.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -6747,11 +7668,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -6784,10 +7712,15 @@ Module type_safety.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -6832,6 +7765,20 @@ Module type_safety.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ];
+                                                  Ty.tuple []
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::Try",
                                                 Ty.apply
@@ -6850,6 +7797,14 @@ Module type_safety.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -6887,6 +7842,14 @@ Module type_safety.
                                                     M.read (|
                                                       M.return_ (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             Ty.apply
@@ -6987,9 +7950,10 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type :=
+              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -7007,7 +7971,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7018,6 +7982,7 @@ Module type_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::AbilitySet",
                                     "has_key",
@@ -7029,6 +7994,21 @@ Module type_safety.
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               Ty.apply
@@ -7048,6 +8028,15 @@ Module type_safety.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -7086,6 +8075,14 @@ Module type_safety.
                                                   M.read (|
                                                     M.return_ (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
@@ -7144,6 +8141,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -7170,11 +8168,18 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ operand :=
+              let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "move_abstract_stack::AbsStackError"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -7216,9 +8221,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -7227,6 +8233,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -7240,6 +8247,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -7247,12 +8255,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -7286,6 +8296,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -7322,6 +8333,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -7352,6 +8365,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -7386,9 +8400,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -7416,6 +8432,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -7466,7 +8483,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7476,6 +8493,7 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "move_binary_format::file_format::SignatureToken",
@@ -7508,6 +8526,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -7534,10 +8553,23 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -7552,6 +8584,10 @@ Module type_safety.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                             "push",
@@ -7584,6 +8620,13 @@ Module type_safety.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -7669,9 +8712,10 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type :=
+              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -7689,7 +8733,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7700,6 +8744,7 @@ Module type_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::AbilitySet",
                                     "has_key",
@@ -7711,6 +8756,21 @@ Module type_safety.
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               Ty.apply
@@ -7730,6 +8790,15 @@ Module type_safety.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -7768,6 +8837,14 @@ Module type_safety.
                                                   M.read (|
                                                     M.return_ (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
@@ -7826,6 +8903,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -7852,9 +8930,10 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ struct_type :=
+              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -7872,11 +8951,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ operand :=
+              let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "move_abstract_stack::AbsStackError"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -7918,9 +9004,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -7929,6 +9016,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -7942,6 +9030,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -7949,12 +9038,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -7988,6 +9079,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -8024,6 +9116,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -8054,6 +9148,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -8088,9 +9183,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -8118,6 +9215,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -8168,7 +9266,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8178,6 +9276,7 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "move_binary_format::file_format::SignatureToken",
@@ -8210,6 +9309,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -8236,10 +9336,23 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -8254,6 +9367,10 @@ Module type_safety.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                             "push",
@@ -8284,6 +9401,13 @@ Module type_safety.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -8373,9 +9497,10 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ struct_type :=
+              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -8393,7 +9518,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8404,6 +9529,7 @@ Module type_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::AbilitySet",
                                     "has_key",
@@ -8415,6 +9541,21 @@ Module type_safety.
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               Ty.apply
@@ -8434,6 +9575,15 @@ Module type_safety.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -8472,6 +9622,14 @@ Module type_safety.
                                                   M.read (|
                                                     M.return_ (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
@@ -8530,6 +9688,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -8556,9 +9715,10 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ struct_type :=
+              let~ struct_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::SignatureToken",
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
                       [],
@@ -8576,11 +9736,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ key_struct_operand :=
+              let~ key_struct_operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "move_abstract_stack::AbsStackError"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -8622,9 +9789,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -8633,6 +9801,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -8646,6 +9815,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -8653,12 +9823,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -8692,6 +9864,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -8728,6 +9901,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -8758,6 +9933,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -8792,9 +9968,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -8822,6 +10000,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -8872,11 +10051,19 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ signer_reference_operand :=
+              let~ signer_reference_operand :
+                  Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "move_abstract_stack::AbsStackError"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -8918,9 +10105,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -8929,6 +10117,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -8942,6 +10131,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -8949,12 +10139,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -8988,6 +10180,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -9024,6 +10217,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -9054,6 +10249,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -9088,9 +10284,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -9118,6 +10316,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -9168,7 +10367,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -9178,6 +10377,7 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "move_binary_format::file_format::SignatureToken",
@@ -9203,6 +10403,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -9261,6 +10462,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -9290,6 +10492,7 @@ Module type_safety.
                           "core::result::Result::Err"
                           [
                             M.call_closure (|
+                              Ty.path "move_binary_format::errors::PartialVMError",
                               M.get_associated_function (|
                                 Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                                 "error",
@@ -9364,11 +10567,18 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ operand_idx :=
+              let~ operand_idx : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "move_abstract_stack::AbsStackError"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -9410,9 +10620,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -9421,6 +10632,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -9434,6 +10646,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -9441,12 +10654,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -9480,6 +10695,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -9516,6 +10732,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -9546,6 +10764,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -9580,9 +10799,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -9610,6 +10831,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -9660,11 +10882,18 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ operand_vec :=
+              let~ operand_vec : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::SignatureToken";
+                            Ty.path "move_abstract_stack::AbsStackError"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "move_abstract_stack::AbstractStack")
@@ -9706,9 +10935,10 @@ Module type_safety.
                               0
                             |) in
                           let e := M.copy (| γ0_0 |) in
-                          let~ err :=
+                          let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "with_message",
@@ -9717,6 +10947,7 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -9730,6 +10961,7 @@ Module type_safety.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (|
                                       "core::hint::must_use",
                                       [],
@@ -9737,12 +10969,14 @@ Module type_safety.
                                     |),
                                     [
                                       M.read (|
-                                        let~ res :=
+                                        let~ res : Ty.path "alloc::string::String" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1_formatted",
@@ -9776,6 +11010,7 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -9812,6 +11047,8 @@ Module type_safety.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "core::fmt::rt::Placeholder",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Placeholder",
@@ -9842,6 +11079,7 @@ Module type_safety.
                                                       |)
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::UnsafeArg",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::UnsafeArg",
                                                         "new",
@@ -9876,9 +11114,11 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -9906,6 +11146,7 @@ Module type_safety.
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -9956,7 +11197,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -9966,6 +11207,7 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "move_binary_format::file_format::SignatureToken",
@@ -9998,6 +11240,7 @@ Module type_safety.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -10024,11 +11267,15 @@ Module type_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ element_type :=
+              let~ element_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                         M.get_function (|
                           "move_bytecode_verifier::type_safety::get_vector_element_type",
                           [],
@@ -10050,6 +11297,7 @@ Module type_safety.
                           let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -10089,6 +11337,7 @@ Module type_safety.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path
                                             "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -10115,7 +11364,7 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ element_ref_type :=
+              let~ element_ref_type : Ty.path "move_binary_format::file_format::SignatureToken" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -10130,6 +11379,13 @@ Module type_safety.
                               "move_binary_format::file_format::SignatureToken::MutableReference"
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
@@ -10153,6 +11409,13 @@ Module type_safety.
                               "move_binary_format::file_format::SignatureToken::Reference"
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
@@ -10172,10 +11435,23 @@ Module type_safety.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -10190,6 +11466,10 @@ Module type_safety.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_associated_function (|
                             Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
                             "push",
@@ -10220,6 +11500,13 @@ Module type_safety.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -10771,7 +12058,7 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   bytecode,
                   [
@@ -10783,11 +12070,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::Pop"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -10829,9 +12123,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -10840,6 +12136,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -10854,6 +12151,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -10861,9 +12159,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -10871,6 +12170,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -10904,6 +12204,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -10940,6 +12242,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -10972,6 +12276,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -11007,6 +12312,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -11014,6 +12320,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -11042,6 +12349,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -11093,9 +12402,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ abilities :=
+                        let~ abilities :
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::AbilitySet";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::AbilitySet";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "abilities",
@@ -11123,6 +12446,16 @@ Module type_safety.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [ Ty.path "move_binary_format::file_format::AbilitySet"
+                                            ]
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                         "type_parameters",
@@ -11159,6 +12492,7 @@ Module type_safety.
                                     (M.alloc (|
                                       UnOp.not (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::file_format::AbilitySet",
                                             "has_drop",
@@ -11170,6 +12504,22 @@ Module type_safety.
                                               M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::ops::control_flow::ControlFlow")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ];
+                                                        Ty.path
+                                                          "move_binary_format::file_format::AbilitySet"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
@@ -11205,6 +12555,14 @@ Module type_safety.
                                                           M.read (|
                                                             M.return_ (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
@@ -11268,6 +12626,7 @@ Module type_safety.
                                           "core::result::Result::Err"
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -11325,11 +12684,20 @@ Module type_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ operand :=
+                                  (let~ operand :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -11374,9 +12742,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -11386,6 +12758,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -11400,6 +12774,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -11407,9 +12782,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -11417,6 +12794,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -11451,6 +12830,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -11487,6 +12868,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -11520,6 +12903,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -11556,6 +12941,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -11563,6 +12949,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -11595,6 +12982,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -11655,6 +13044,7 @@ Module type_safety.
                                             M.use
                                               (M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "bool",
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialEq",
                                                     Ty.path
@@ -11694,6 +13084,8 @@ Module type_safety.
                                                     "core::result::Result::Err"
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -11733,11 +13125,18 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -11779,9 +13178,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -11790,6 +13191,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -11804,6 +13206,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -11811,9 +13214,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -11821,6 +13225,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -11854,6 +13259,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -11890,6 +13297,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -11922,6 +13331,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -11957,6 +13367,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -11964,6 +13375,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -11992,6 +13404,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -12052,6 +13466,7 @@ Module type_safety.
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -12084,6 +13499,13 @@ Module type_safety.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -12117,6 +13539,7 @@ Module type_safety.
                                           "core::result::Result::Err"
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -12151,11 +13574,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::Abort"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -12197,9 +13627,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -12208,6 +13640,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -12222,6 +13655,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -12229,9 +13663,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -12239,6 +13674,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -12272,6 +13708,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -12308,6 +13746,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -12340,6 +13780,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -12375,6 +13816,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -12382,6 +13824,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -12410,6 +13853,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -12470,6 +13915,7 @@ Module type_safety.
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.path "move_binary_format::file_format::SignatureToken",
@@ -12508,6 +13954,7 @@ Module type_safety.
                                           "core::result::Result::Err"
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -12542,13 +13989,29 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::Ret"
                           |) in
-                        let~ return_ :=
+                        let~ return_ :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::SignatureToken";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.SubPointer.get_struct_tuple_field (|
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Signature" ],
                                     M.get_associated_function (|
                                       Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                       "return_",
@@ -12580,6 +14043,15 @@ Module type_safety.
                           (M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::rev::Rev")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::collect::IntoIterator",
                                   Ty.apply
@@ -12600,6 +14072,18 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::rev::Rev")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -12615,6 +14099,13 @@ Module type_safety.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
@@ -12632,6 +14123,18 @@ Module type_safety.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::deref::Deref",
                                                   Ty.apply
@@ -12670,10 +14173,22 @@ Module type_safety.
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
                                     ltac:(M.monadic
-                                      (let~ _ :=
+                                      (let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]
+                                                ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
@@ -12724,11 +14239,22 @@ Module type_safety.
                                                     0
                                                   |) in
                                                 let return_type := M.copy (| γ0_0 |) in
-                                                let~ operand :=
+                                                let~ operand :
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken" :=
                                                   M.copy (|
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::SignatureToken";
+                                                              Ty.path
+                                                                "move_abstract_stack::AbsStackError"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -12774,9 +14300,13 @@ Module type_safety.
                                                                 0
                                                               |) in
                                                             let e := M.copy (| γ0_0 |) in
-                                                            let~ err :=
+                                                            let~ err :
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError",
@@ -12786,6 +14316,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError",
@@ -12800,6 +14332,8 @@ Module type_safety.
                                                                       ]
                                                                     |);
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "alloc::string::String",
                                                                       M.get_function (|
                                                                         "core::hint::must_use",
                                                                         [],
@@ -12810,9 +14344,13 @@ Module type_safety.
                                                                       |),
                                                                       [
                                                                         M.read (|
-                                                                          let~ res :=
+                                                                          let~ res :
+                                                                              Ty.path
+                                                                                "alloc::string::String" :=
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "alloc::string::String",
                                                                                 M.get_function (|
                                                                                   "alloc::fmt::format",
                                                                                   [],
@@ -12820,6 +14358,8 @@ Module type_safety.
                                                                                 |),
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "core::fmt::Arguments",
@@ -12854,6 +14394,8 @@ Module type_safety.
                                                                                               Value.Array
                                                                                                 [
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Argument",
                                                                                                     M.get_associated_function (|
                                                                                                       Ty.path
                                                                                                         "core::fmt::rt::Argument",
@@ -12890,6 +14432,8 @@ Module type_safety.
                                                                                               Value.Array
                                                                                                 [
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::rt::Placeholder",
                                                                                                     M.get_associated_function (|
                                                                                                       Ty.path
                                                                                                         "core::fmt::rt::Placeholder",
@@ -12923,6 +14467,8 @@ Module type_safety.
                                                                                         |)
                                                                                       |);
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::rt::UnsafeArg",
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "core::fmt::rt::UnsafeArg",
@@ -12962,6 +14508,7 @@ Module type_safety.
                                                                     M.alloc (|
                                                                       M.never_to_any (|
                                                                         M.call_closure (|
+                                                                          Ty.path "never",
                                                                           M.get_function (|
                                                                             "core::panicking::panic_fmt",
                                                                             [],
@@ -12969,6 +14516,8 @@ Module type_safety.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
@@ -13003,6 +14552,8 @@ Module type_safety.
                                                                                         Value.Array
                                                                                           [
                                                                                             M.call_closure (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
                                                                                               M.get_associated_function (|
                                                                                                 Ty.path
                                                                                                   "core::fmt::rt::Argument",
@@ -13063,6 +14614,7 @@ Module type_safety.
                                                           M.use
                                                             (M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_trait_method (|
                                                                   "core::cmp::PartialEq",
                                                                   Ty.apply
@@ -13116,6 +14668,8 @@ Module type_safety.
                                                                   "core::result::Result::Err"
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -13192,11 +14746,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::FreezeRef"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -13238,9 +14799,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -13249,6 +14812,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -13263,6 +14827,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -13270,9 +14835,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -13280,6 +14846,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -13313,6 +14880,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -13349,6 +14918,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -13381,6 +14952,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -13416,6 +14988,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -13423,6 +14996,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -13451,6 +15025,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -13517,6 +15093,19 @@ Module type_safety.
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ];
+                                          Ty.tuple []
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::Try",
                                         Ty.apply
@@ -13534,6 +15123,13 @@ Module type_safety.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -13573,6 +15169,14 @@ Module type_safety.
                                             M.read (|
                                               M.return_ (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
@@ -13626,6 +15230,7 @@ Module type_safety.
                                           "core::result::Result::Err"
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -13664,6 +15269,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -13681,6 +15299,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_field",
                                     [],
@@ -13708,6 +15333,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -13748,6 +15381,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -13800,9 +15440,17 @@ Module type_safety.
                             0
                           |) in
                         let field_inst_index := M.alloc (| γ1_0 |) in
-                        let~ field_inst :=
+                        let~ field_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FieldInstantiation" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FieldInstantiation" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "field_instantiation_at",
@@ -13826,9 +15474,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_inst :=
+                        let~ type_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signature_at",
@@ -13858,10 +15514,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -13879,6 +15548,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -13899,6 +15575,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -13953,6 +15641,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -13999,6 +15694,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -14016,6 +15724,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_field",
                                     [],
@@ -14063,6 +15778,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -14118,6 +15840,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -14135,6 +15870,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_field",
                                     [],
@@ -14162,6 +15904,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -14202,6 +15952,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -14254,9 +16011,17 @@ Module type_safety.
                             0
                           |) in
                         let field_inst_index := M.alloc (| γ1_0 |) in
-                        let~ field_inst :=
+                        let~ field_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FieldInstantiation" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FieldInstantiation" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "field_instantiation_at",
@@ -14280,9 +16045,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_inst :=
+                        let~ type_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signature_at",
@@ -14312,10 +16085,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14333,6 +16119,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -14353,6 +16146,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -14407,6 +16212,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14453,6 +16265,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -14470,6 +16295,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_field",
                                     [],
@@ -14517,6 +16349,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -14568,10 +16407,23 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU8",
                             0
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14589,6 +16441,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -14628,6 +16487,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14681,10 +16547,23 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU16",
                             0
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14702,6 +16581,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -14741,6 +16627,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14794,10 +16687,23 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU32",
                             0
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14815,6 +16721,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -14854,6 +16767,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14907,10 +16827,23 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU64",
                             0
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14928,6 +16861,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -14967,6 +16907,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15020,10 +16967,23 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU128",
                             0
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -15041,6 +17001,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -15080,6 +17047,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15133,10 +17107,23 @@ Module type_safety.
                             "move_binary_format::file_format::Bytecode::LdU256",
                             0
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -15154,6 +17141,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -15193,6 +17187,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15247,9 +17248,11 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ signature :=
+                        let~ signature :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "move_binary_format::file_format::SignatureToken",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_binary_format::file_format::SignatureToken",
@@ -15265,6 +17268,10 @@ Module type_safety.
                                   M.SubPointer.get_struct_record_field (|
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Constant" ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "constant_at",
@@ -15295,10 +17302,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -15316,6 +17336,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -15353,6 +17380,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15426,10 +17460,24 @@ Module type_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ _ :=
+                                  (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ];
+                                              Ty.tuple []
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -15447,6 +17495,14 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.tuple [];
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -15486,6 +17542,14 @@ Module type_safety.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -15543,9 +17607,11 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ local_signature :=
+                        let~ local_signature :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "move_binary_format::file_format::SignatureToken",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_binary_format::file_format::SignatureToken",
@@ -15560,6 +17626,11 @@ Module type_safety.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -15580,7 +17651,7 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -15591,6 +17662,7 @@ Module type_safety.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::file_format::AbilitySet",
                                               "has_copy",
@@ -15602,6 +17674,22 @@ Module type_safety.
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ];
+                                                          Ty.path
+                                                            "move_binary_format::file_format::AbilitySet"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::Try",
                                                         Ty.apply
@@ -15621,6 +17709,15 @@ Module type_safety.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_binary_format::file_format::CompiledModule",
@@ -15656,6 +17753,18 @@ Module type_safety.
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet"
+                                                                        ]
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::absint::FunctionContext",
@@ -15702,6 +17811,14 @@ Module type_safety.
                                                             M.read (|
                                                               M.return_ (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::FromResidual",
                                                                     Ty.apply
@@ -15766,6 +17883,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -15795,6 +17914,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -15812,6 +17944,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -15849,6 +17988,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -15901,9 +18047,11 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ local_signature :=
+                        let~ local_signature :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "move_binary_format::file_format::SignatureToken",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_binary_format::file_format::SignatureToken",
@@ -15918,6 +18066,11 @@ Module type_safety.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path
                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -15941,6 +18094,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -15958,6 +18124,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.path
                                       "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -15995,6 +18168,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -16050,6 +18230,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -16067,6 +18260,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_loc",
                                     [],
@@ -16104,6 +18304,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -16159,6 +18366,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -16176,6 +18396,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_loc",
                                     [],
@@ -16213,6 +18440,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -16265,9 +18499,17 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ function_handle :=
+                        let~ function_handle :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_handle_at",
@@ -16294,6 +18536,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -16311,6 +18566,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::call",
                                     [],
@@ -16340,6 +18602,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -16380,6 +18650,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -16432,9 +18709,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ func_inst :=
+                        let~ func_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_instantiation_at",
@@ -16458,9 +18745,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ func_handle :=
+                        let~ func_handle :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_handle_at",
@@ -16490,12 +18785,25 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_args :=
+                        let~ type_args :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Signature" ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "signature_at",
@@ -16527,10 +18835,23 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -16548,6 +18869,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -16568,6 +18896,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -16626,6 +18966,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -16672,6 +19019,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -16689,6 +19049,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::call",
                                     [],
@@ -16734,6 +19101,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -16786,9 +19160,17 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_definition :=
+                        let~ struct_definition :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -16815,6 +19197,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -16832,6 +19227,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::pack",
                                     [],
@@ -16861,6 +19263,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -16901,6 +19311,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -16953,9 +19370,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_inst :=
+                        let~ struct_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
@@ -16979,9 +19406,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ struct_def :=
+                        let~ struct_def :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -17011,9 +19446,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_args :=
+                        let~ type_args :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signature_at",
@@ -17043,10 +19486,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -17064,6 +19520,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -17084,6 +19547,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -17138,6 +19613,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -17184,6 +19666,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -17201,6 +19696,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::pack",
                                     [],
@@ -17244,6 +19746,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -17296,9 +19805,17 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_definition :=
+                        let~ struct_definition :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -17325,6 +19842,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -17342,6 +19872,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::unpack",
                                     [],
@@ -17371,6 +19908,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -17411,6 +19956,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -17463,9 +20015,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_inst :=
+                        let~ struct_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
@@ -17489,9 +20051,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ struct_def :=
+                        let~ struct_def :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -17521,9 +20091,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_args :=
+                        let~ type_args :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signature_at",
@@ -17553,10 +20131,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -17574,6 +20165,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -17594,6 +20192,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -17648,6 +20258,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -17694,6 +20311,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -17711,6 +20341,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::unpack",
                                     [],
@@ -17754,6 +20391,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -17804,11 +20448,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::ReadRef"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -17850,9 +20501,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -17861,6 +20514,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -17875,6 +20529,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -17882,9 +20537,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -17892,6 +20548,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -17925,6 +20582,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -17961,6 +20620,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -17993,6 +20654,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -18028,6 +20690,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -18035,6 +20698,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -18063,6 +20727,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -18148,7 +20814,7 @@ Module type_safety.
                                       match γ with
                                       | [ inner ] =>
                                         ltac:(M.monadic
-                                          (let~ _ :=
+                                          (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -18159,6 +20825,7 @@ Module type_safety.
                                                         (M.alloc (|
                                                           UnOp.not (|
                                                             M.call_closure (|
+                                                              Ty.path "bool",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::file_format::AbilitySet",
@@ -18171,6 +20838,24 @@ Module type_safety.
                                                                   M.match_operator (|
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::ops::control_flow::ControlFlow")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ];
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::AbilitySet"
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::ops::try_trait::Try",
                                                                           Ty.apply
@@ -18191,6 +20876,16 @@ Module type_safety.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::AbilitySet";
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -18241,6 +20936,15 @@ Module type_safety.
                                                                               M.read (|
                                                                                 M.return_ (|
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ],
                                                                                     M.get_trait_method (|
                                                                                       "core::ops::try_trait::FromResidual",
                                                                                       Ty.apply
@@ -18311,6 +21015,8 @@ Module type_safety.
                                                               "core::result::Result::Err"
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -18340,10 +21046,24 @@ Module type_safety.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -18362,6 +21082,14 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -18401,6 +21129,14 @@ Module type_safety.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -18459,6 +21195,7 @@ Module type_safety.
                                           "core::result::Result::Err"
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -18492,11 +21229,19 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::WriteRef"
                           |) in
-                        let~ ref_operand :=
+                        let~ ref_operand :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -18538,9 +21283,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -18549,6 +21296,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -18563,6 +21311,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -18570,9 +21319,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -18580,6 +21330,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -18613,6 +21364,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -18649,6 +21402,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -18681,6 +21436,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -18716,6 +21472,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -18723,6 +21480,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -18751,6 +21509,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -18802,11 +21562,19 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ val_operand :=
+                        let~ val_operand :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -18848,9 +21616,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -18859,6 +21629,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -18873,6 +21644,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -18880,9 +21652,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -18890,6 +21663,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -18923,6 +21697,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -18959,6 +21735,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -18991,6 +21769,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -19026,6 +21805,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -19033,6 +21813,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -19061,6 +21842,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -19112,7 +21895,8 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ ref_inner_signature :=
+                        let~ ref_inner_signature :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               ref_operand,
@@ -19137,6 +21921,8 @@ Module type_safety.
                                               "core::result::Result::Err"
                                               [
                                                 M.call_closure (|
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError",
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -19163,7 +21949,7 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -19174,6 +21960,7 @@ Module type_safety.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::file_format::AbilitySet",
                                               "has_drop",
@@ -19185,6 +21972,22 @@ Module type_safety.
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ];
+                                                          Ty.path
+                                                            "move_binary_format::file_format::AbilitySet"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::Try",
                                                         Ty.apply
@@ -19204,6 +22007,15 @@ Module type_safety.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -19245,6 +22057,14 @@ Module type_safety.
                                                             M.read (|
                                                               M.return_ (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::FromResidual",
                                                                     Ty.apply
@@ -19309,6 +22129,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -19344,6 +22166,7 @@ Module type_safety.
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.path "move_binary_format::file_format::SignatureToken",
@@ -19375,6 +22198,7 @@ Module type_safety.
                                           "core::result::Result::Err"
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -19409,11 +22233,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU8"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -19455,9 +22286,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -19466,6 +22299,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -19480,6 +22314,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -19487,9 +22322,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -19497,6 +22333,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -19530,6 +22367,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -19566,6 +22405,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -19598,6 +22439,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -19633,6 +22475,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -19640,6 +22483,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -19668,6 +22512,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -19719,7 +22565,7 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -19730,6 +22576,7 @@ Module type_safety.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::SignatureToken",
@@ -19754,6 +22601,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -19780,10 +22629,23 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -19801,6 +22663,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -19840,6 +22709,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -19892,11 +22768,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU64"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -19938,9 +22821,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -19949,6 +22834,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -19963,6 +22849,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -19970,9 +22857,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -19980,6 +22868,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -20013,6 +22902,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -20049,6 +22940,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -20081,6 +22974,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -20116,6 +23010,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -20123,6 +23018,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -20151,6 +23047,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -20202,7 +23100,7 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -20213,6 +23111,7 @@ Module type_safety.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::SignatureToken",
@@ -20237,6 +23136,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -20263,10 +23164,23 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -20284,6 +23198,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -20323,6 +23244,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -20375,11 +23303,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU128"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -20421,9 +23356,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -20432,6 +23369,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -20446,6 +23384,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -20453,9 +23392,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -20463,6 +23403,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -20496,6 +23437,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -20532,6 +23475,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -20564,6 +23509,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -20599,6 +23545,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -20606,6 +23553,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -20634,6 +23582,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -20685,7 +23635,7 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -20696,6 +23646,7 @@ Module type_safety.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::SignatureToken",
@@ -20720,6 +23671,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -20746,10 +23699,23 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -20767,6 +23733,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -20806,6 +23779,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -20933,11 +23913,20 @@ Module type_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ operand1 :=
+                                  (let~ operand1 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -20982,9 +23971,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -20994,6 +23987,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -21008,6 +24003,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -21015,9 +24011,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -21025,6 +24023,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -21059,6 +24059,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -21095,6 +24097,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -21128,6 +24132,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -21164,6 +24170,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -21171,6 +24178,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -21203,6 +24211,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -21254,11 +24264,20 @@ Module type_safety.
                                         ]
                                       |)
                                     |) in
-                                  let~ operand2 :=
+                                  let~ operand2 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -21303,9 +24322,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -21315,6 +24338,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -21329,6 +24354,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -21336,9 +24362,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -21346,6 +24374,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -21380,6 +24410,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -21416,6 +24448,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -21449,6 +24483,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -21485,6 +24521,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -21492,6 +24529,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -21524,6 +24562,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -21585,6 +24625,7 @@ Module type_safety.
                                               (M.alloc (|
                                                 LogicalOp.and (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::file_format::SignatureToken",
@@ -21596,6 +24637,7 @@ Module type_safety.
                                                   |),
                                                   ltac:(M.monadic
                                                     (M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
                                                         Ty.path
@@ -21621,10 +24663,24 @@ Module type_safety.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -21643,6 +24699,14 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -21680,6 +24744,14 @@ Module type_safety.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -21735,6 +24807,8 @@ Module type_safety.
                                                     "core::result::Result::Err"
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -21792,11 +24866,20 @@ Module type_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ operand1 :=
+                                  (let~ operand1 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -21841,9 +24924,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -21853,6 +24940,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -21867,6 +24956,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -21874,9 +24964,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -21884,6 +24976,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -21918,6 +25012,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -21954,6 +25050,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -21987,6 +25085,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -22023,6 +25123,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -22030,6 +25131,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -22062,6 +25164,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -22113,11 +25217,20 @@ Module type_safety.
                                         ]
                                       |)
                                     |) in
-                                  let~ operand2 :=
+                                  let~ operand2 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -22162,9 +25275,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -22174,6 +25291,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -22188,6 +25307,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -22195,9 +25315,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -22205,6 +25327,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -22239,6 +25363,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -22275,6 +25401,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -22308,6 +25436,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -22344,6 +25474,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -22351,6 +25482,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -22383,6 +25515,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -22444,6 +25578,7 @@ Module type_safety.
                                               (M.alloc (|
                                                 LogicalOp.and (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::file_format::SignatureToken",
@@ -22455,6 +25590,7 @@ Module type_safety.
                                                   |),
                                                   ltac:(M.monadic
                                                     (M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
                                                         Ty.path
@@ -22487,10 +25623,24 @@ Module type_safety.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -22509,6 +25659,14 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -22546,6 +25704,14 @@ Module type_safety.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -22601,6 +25767,8 @@ Module type_safety.
                                                     "core::result::Result::Err"
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -22658,11 +25826,20 @@ Module type_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ operand1 :=
+                                  (let~ operand1 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -22707,9 +25884,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -22719,6 +25900,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -22733,6 +25916,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -22740,9 +25924,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -22750,6 +25936,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -22784,6 +25972,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -22820,6 +26010,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -22853,6 +26045,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -22889,6 +26083,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -22896,6 +26091,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -22928,6 +26124,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -22979,11 +26177,20 @@ Module type_safety.
                                         ]
                                       |)
                                     |) in
-                                  let~ operand2 :=
+                                  let~ operand2 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -23028,9 +26235,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -23040,6 +26251,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -23054,6 +26267,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -23061,9 +26275,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -23071,6 +26287,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -23105,6 +26323,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -23141,6 +26361,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -23174,6 +26396,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -23210,6 +26434,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -23217,6 +26442,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -23249,6 +26475,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -23310,6 +26538,7 @@ Module type_safety.
                                               (M.alloc (|
                                                 LogicalOp.and (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.path
@@ -23337,6 +26566,7 @@ Module type_safety.
                                                   |),
                                                   ltac:(M.monadic
                                                     (M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
                                                         Ty.path
@@ -23369,10 +26599,24 @@ Module type_safety.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -23391,6 +26635,14 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -23430,6 +26682,14 @@ Module type_safety.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -23485,6 +26745,8 @@ Module type_safety.
                                                     "core::result::Result::Err"
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -23521,11 +26783,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::Not"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -23567,9 +26836,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -23578,6 +26849,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -23592,6 +26864,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -23599,9 +26872,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -23609,6 +26883,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -23642,6 +26917,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -23678,6 +26955,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -23710,6 +26989,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -23745,6 +27025,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -23752,6 +27033,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -23780,6 +27062,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -23840,6 +27124,7 @@ Module type_safety.
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.path "move_binary_format::file_format::SignatureToken",
@@ -23870,10 +27155,23 @@ Module type_safety.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ];
+                                            Ty.tuple []
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::try_trait::Try",
                                           Ty.apply
@@ -23891,6 +27189,13 @@ Module type_safety.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -23930,6 +27235,14 @@ Module type_safety.
                                               M.read (|
                                                 M.return_ (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       Ty.apply
@@ -23984,6 +27297,7 @@ Module type_safety.
                                           "core::result::Result::Err"
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -24038,11 +27352,20 @@ Module type_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ operand1 :=
+                                  (let~ operand1 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -24087,9 +27410,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -24099,6 +27426,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -24113,6 +27442,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -24120,9 +27450,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -24130,6 +27462,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -24164,6 +27498,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -24200,6 +27536,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -24233,6 +27571,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -24269,6 +27609,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -24276,6 +27617,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -24308,6 +27650,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -24359,11 +27703,20 @@ Module type_safety.
                                         ]
                                       |)
                                     |) in
-                                  let~ operand2 :=
+                                  let~ operand2 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -24408,9 +27761,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -24420,6 +27777,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -24434,6 +27793,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -24441,9 +27801,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -24451,6 +27813,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -24485,6 +27849,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -24521,6 +27887,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -24554,6 +27922,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -24590,6 +27960,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -24597,6 +27968,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -24629,6 +28001,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -24690,6 +28064,7 @@ Module type_safety.
                                               (M.alloc (|
                                                 LogicalOp.and (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::file_format::AbilitySet",
@@ -24702,6 +28077,23 @@ Module type_safety.
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ];
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::AbilitySet"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
@@ -24721,6 +28113,15 @@ Module type_safety.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::AbilitySet";
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -24764,6 +28165,15 @@ Module type_safety.
                                                                     M.read (|
                                                                       M.return_ (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
@@ -24815,6 +28225,7 @@ Module type_safety.
                                                   |),
                                                   ltac:(M.monadic
                                                     (M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
                                                         Ty.path
@@ -24840,10 +28251,24 @@ Module type_safety.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -24862,6 +28287,14 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -24901,6 +28334,14 @@ Module type_safety.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -24956,6 +28397,8 @@ Module type_safety.
                                                     "core::result::Result::Err"
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -25031,11 +28474,20 @@ Module type_safety.
                               match γ with
                               | [] =>
                                 ltac:(M.monadic
-                                  (let~ operand1 :=
+                                  (let~ operand1 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -25080,9 +28532,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -25092,6 +28548,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -25106,6 +28564,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -25113,9 +28572,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -25123,6 +28584,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -25157,6 +28620,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -25193,6 +28658,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -25226,6 +28693,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -25262,6 +28731,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -25269,6 +28739,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -25301,6 +28772,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -25352,11 +28825,20 @@ Module type_safety.
                                         ]
                                       |)
                                     |) in
-                                  let~ operand2 :=
+                                  let~ operand2 :
+                                      Ty.path "move_binary_format::file_format::SignatureToken" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "move_abstract_stack::AbstractStack")
@@ -25401,9 +28883,13 @@ Module type_safety.
                                                   0
                                                 |) in
                                               let e := M.copy (| γ0_0 |) in
-                                              let~ err :=
+                                              let~ err :
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -25413,6 +28899,8 @@ Module type_safety.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError",
@@ -25427,6 +28915,7 @@ Module type_safety.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -25434,9 +28923,11 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -25444,6 +28935,8 @@ Module type_safety.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -25478,6 +28971,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -25514,6 +29009,8 @@ Module type_safety.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Placeholder",
@@ -25547,6 +29044,8 @@ Module type_safety.
                                                                           |)
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::UnsafeArg",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::UnsafeArg",
@@ -25583,6 +29082,7 @@ Module type_safety.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.call_closure (|
+                                                            Ty.path "never",
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
                                                               [],
@@ -25590,6 +29090,7 @@ Module type_safety.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1",
@@ -25622,6 +29123,8 @@ Module type_safety.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -25683,6 +29186,7 @@ Module type_safety.
                                               (M.alloc (|
                                                 LogicalOp.and (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::file_format::SignatureToken",
@@ -25694,6 +29198,7 @@ Module type_safety.
                                                   |),
                                                   ltac:(M.monadic
                                                     (M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_trait_method (|
                                                         "core::cmp::PartialEq",
                                                         Ty.path
@@ -25722,6 +29227,20 @@ Module type_safety.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -25740,6 +29259,14 @@ Module type_safety.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -25779,6 +29306,14 @@ Module type_safety.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -25833,6 +29368,8 @@ Module type_safety.
                                                     "core::result::Result::Err"
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -25874,6 +29411,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -25891,6 +29441,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_global",
                                     [],
@@ -25918,6 +29475,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -25958,6 +29523,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -26010,9 +29582,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_inst :=
+                        let~ struct_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
@@ -26036,9 +29618,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_inst :=
+                        let~ type_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signature_at",
@@ -26068,10 +29658,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -26089,6 +29692,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -26109,6 +29719,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -26163,6 +29785,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -26209,6 +29838,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -26226,6 +29868,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_global",
                                     [],
@@ -26273,6 +29922,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -26328,6 +29984,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -26345,6 +30014,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_global",
                                     [],
@@ -26372,6 +30048,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -26412,6 +30096,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -26464,9 +30155,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_inst :=
+                        let~ struct_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
@@ -26490,9 +30191,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_inst :=
+                        let~ type_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signature_at",
@@ -26522,10 +30231,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -26543,6 +30265,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -26563,6 +30292,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -26617,6 +30358,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -26663,6 +30411,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -26680,6 +30441,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_global",
                                     [],
@@ -26727,6 +30495,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -26779,9 +30554,17 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_def :=
+                        let~ struct_def :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -26808,6 +30591,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -26825,6 +30621,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::exists",
                                     [],
@@ -26854,6 +30657,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -26894,6 +30705,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -26946,9 +30764,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_inst :=
+                        let~ struct_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
@@ -26972,9 +30800,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ struct_def :=
+                        let~ struct_def :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -27004,9 +30840,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_args :=
+                        let~ type_args :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signature_at",
@@ -27036,10 +30880,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -27057,6 +30914,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -27077,6 +30941,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -27131,6 +31007,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -27177,6 +31060,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -27194,6 +31090,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::exists",
                                     [],
@@ -27237,6 +31140,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -27289,9 +31199,17 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_def :=
+                        let~ struct_def :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -27318,6 +31236,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -27335,6 +31266,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::move_from",
                                     [],
@@ -27364,6 +31302,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -27404,6 +31350,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -27456,9 +31409,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_inst :=
+                        let~ struct_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
@@ -27482,9 +31445,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ struct_def :=
+                        let~ struct_def :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -27514,9 +31485,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_args :=
+                        let~ type_args :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signature_at",
@@ -27546,10 +31525,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -27567,6 +31559,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -27587,6 +31586,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -27641,6 +31652,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -27687,6 +31705,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -27704,6 +31735,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::move_from",
                                     [],
@@ -27747,6 +31785,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -27799,9 +31844,17 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_def :=
+                        let~ struct_def :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -27828,6 +31881,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -27845,6 +31911,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::move_to",
                                     [],
@@ -27870,6 +31943,14 @@ Module type_safety.
                                               "move_binary_format::file_format::Signature"
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
@@ -27910,6 +31991,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -27962,9 +32050,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_inst :=
+                        let~ struct_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
@@ -27988,9 +32086,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ struct_def :=
+                        let~ struct_def :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -28020,9 +32126,17 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ type_args :=
+                        let~ type_args :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Signature" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signature_at",
@@ -28052,10 +32166,23 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -28073,6 +32200,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -28093,6 +32227,18 @@ Module type_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -28147,6 +32293,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -28193,6 +32346,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -28210,6 +32376,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::move_to",
                                     [],
@@ -28249,6 +32422,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -28308,12 +32488,20 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let num := M.alloc (| γ1_1 |) in
-                        let~ element_type :=
+                        let~ element_type :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -28335,6 +32523,11 @@ Module type_safety.
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -28369,7 +32562,7 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -28378,6 +32571,15 @@ Module type_safety.
                                   (let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "u64" ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -28397,9 +32599,10 @@ Module type_safety.
                                       0
                                     |) in
                                   let num_to_pop := M.copy (| γ0_0 |) in
-                                  let~ is_mismatched :=
+                                  let~ is_mismatched : Ty.path "bool" :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -28414,6 +32617,13 @@ Module type_safety.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "bool";
+                                                Ty.path "move_abstract_stack::AbsStackError"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -28440,6 +32650,14 @@ Module type_safety.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken";
+                                                    Ty.path "move_abstract_stack::AbsStackError"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "move_abstract_stack::AbstractStack")
@@ -28477,6 +32695,7 @@ Module type_safety.
                                                               ltac:(M.monadic
                                                                 (let t := M.copy (| γ |) in
                                                                 M.call_closure (|
+                                                                  Ty.path "bool",
                                                                   M.get_trait_method (|
                                                                     "core::cmp::PartialEq",
                                                                     Ty.apply
@@ -28545,6 +32764,8 @@ Module type_safety.
                                                     "core::result::Result::Err"
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -28574,10 +32795,23 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -28595,6 +32829,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -28615,6 +32856,14 @@ Module type_safety.
                                         "move_binary_format::file_format::SignatureToken::Vector"
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
@@ -28630,6 +32879,8 @@ Module type_safety.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken",
                                                 M.get_trait_method (|
                                                   "core::clone::Clone",
                                                   Ty.path
@@ -28670,6 +32921,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -28724,11 +32982,18 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -28770,9 +33035,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -28781,6 +33048,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -28795,6 +33063,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -28802,9 +33071,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -28812,6 +33082,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -28845,6 +33116,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -28881,6 +33154,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -28913,6 +33188,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -28948,6 +33224,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -28955,6 +33232,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -28983,6 +33261,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -29034,12 +33314,20 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ declared_element_type :=
+                        let~ declared_element_type :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -29061,6 +33349,11 @@ Module type_safety.
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -29095,10 +33388,14 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_function (|
                                   "move_bytecode_verifier::type_safety::get_vector_element_type",
                                   [],
@@ -29120,6 +33417,7 @@ Module type_safety.
                                   let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -29159,10 +33457,24 @@ Module type_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ];
+                                              Ty.tuple []
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -29180,6 +33492,14 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.tuple [];
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -29219,6 +33539,14 @@ Module type_safety.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -29273,6 +33601,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -29309,12 +33639,20 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ declared_element_type :=
+                        let~ declared_element_type :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -29336,6 +33674,11 @@ Module type_safety.
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -29373,6 +33716,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -29390,6 +33746,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_vector_element",
                                     [],
@@ -29430,6 +33793,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -29482,12 +33852,20 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ declared_element_type :=
+                        let~ declared_element_type :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -29509,6 +33887,11 @@ Module type_safety.
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -29546,6 +33929,19 @@ Module type_safety.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -29563,6 +33959,13 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_vector_element",
                                     [],
@@ -29603,6 +34006,13 @@ Module type_safety.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -29655,11 +34065,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ operand_elem :=
+                        let~ operand_elem :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -29701,9 +34119,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -29712,6 +34132,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -29726,6 +34147,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -29733,9 +34155,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -29743,6 +34166,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -29776,6 +34200,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -29812,6 +34238,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -29844,6 +34272,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -29879,6 +34308,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -29886,6 +34316,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -29914,6 +34345,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -29965,11 +34398,19 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ operand_vec :=
+                        let~ operand_vec :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -30011,9 +34452,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -30022,6 +34465,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -30036,6 +34480,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -30043,9 +34488,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -30053,6 +34499,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -30086,6 +34533,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -30122,6 +34571,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -30154,6 +34605,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -30189,6 +34641,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -30196,6 +34649,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -30224,6 +34678,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -30275,12 +34731,20 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ declared_element_type :=
+                        let~ declared_element_type :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -30302,6 +34766,11 @@ Module type_safety.
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -30336,7 +34805,7 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -30346,6 +34815,7 @@ Module type_safety.
                                     M.use
                                       (M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.apply
@@ -30393,6 +34863,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -30419,10 +34891,14 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_function (|
                                   "move_bytecode_verifier::type_safety::get_vector_element_type",
                                   [],
@@ -30444,6 +34920,7 @@ Module type_safety.
                                   let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -30494,6 +34971,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -30530,11 +35009,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ operand_vec :=
+                        let~ operand_vec :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -30576,9 +35063,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -30587,6 +35076,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -30601,6 +35091,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -30608,9 +35099,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -30618,6 +35110,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -30651,6 +35144,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -30687,6 +35182,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -30719,6 +35216,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -30754,6 +35252,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -30761,6 +35260,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -30789,6 +35289,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -30840,12 +35342,20 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ declared_element_type :=
+                        let~ declared_element_type :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -30867,6 +35377,11 @@ Module type_safety.
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -30901,10 +35416,14 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_function (|
                                   "move_bytecode_verifier::type_safety::get_vector_element_type",
                                   [],
@@ -30926,6 +35445,7 @@ Module type_safety.
                                   let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -30965,10 +35485,24 @@ Module type_safety.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ];
+                                              Ty.tuple []
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -30986,6 +35520,14 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.tuple [];
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -31023,6 +35565,14 @@ Module type_safety.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -31077,6 +35627,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -31120,11 +35672,19 @@ Module type_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         let num := M.alloc (| γ1_1 |) in
-                        let~ operand_vec :=
+                        let~ operand_vec :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -31166,9 +35726,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -31177,6 +35739,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -31191,6 +35754,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -31198,9 +35762,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -31208,6 +35773,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -31241,6 +35807,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -31277,6 +35845,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -31309,6 +35879,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -31344,6 +35915,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -31351,6 +35923,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -31379,6 +35952,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -31430,12 +36005,20 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ declared_element_type :=
+                        let~ declared_element_type :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -31457,6 +36040,11 @@ Module type_safety.
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -31491,7 +36079,7 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -31501,6 +36089,7 @@ Module type_safety.
                                     M.use
                                       (M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.path
@@ -31523,6 +36112,14 @@ Module type_safety.
                                                   "move_binary_format::file_format::SignatureToken::Vector"
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::boxed::Box")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::boxed::Box")
@@ -31538,6 +36135,8 @@ Module type_safety.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken",
                                                           M.get_trait_method (|
                                                             "core::clone::Clone",
                                                             Ty.path
@@ -31578,6 +36177,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -31604,10 +36205,23 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -31625,6 +36239,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -31642,6 +36263,7 @@ Module type_safety.
                                         M.deref (| M.read (| meter |) |)
                                       |);
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::file_format::SignatureToken",
                                         M.get_trait_method (|
                                           "core::clone::Clone",
                                           Ty.path "move_binary_format::file_format::SignatureToken",
@@ -31679,6 +36301,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -31733,11 +36362,19 @@ Module type_safety.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ operand_idx2 :=
+                        let~ operand_idx2 :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -31779,9 +36416,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -31790,6 +36429,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -31804,6 +36444,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -31811,9 +36452,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -31821,6 +36463,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -31854,6 +36497,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -31890,6 +36535,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -31922,6 +36569,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -31957,6 +36605,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -31964,6 +36613,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -31992,6 +36642,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -32043,11 +36695,19 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ operand_idx1 :=
+                        let~ operand_idx1 :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -32089,9 +36749,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -32100,6 +36762,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -32114,6 +36777,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -32121,9 +36785,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -32131,6 +36796,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -32164,6 +36830,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -32200,6 +36868,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -32232,6 +36902,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -32267,6 +36938,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -32274,6 +36946,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -32302,6 +36975,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -32353,11 +37028,19 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ operand_vec :=
+                        let~ operand_vec :
+                            Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -32399,9 +37082,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -32410,6 +37095,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -32424,6 +37110,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -32431,9 +37118,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -32441,6 +37129,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -32474,6 +37163,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -32510,6 +37201,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -32542,6 +37235,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -32577,6 +37271,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -32584,6 +37279,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -32612,6 +37308,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -32663,7 +37361,7 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -32674,6 +37372,7 @@ Module type_safety.
                                       (M.alloc (|
                                         LogicalOp.or (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::cmp::PartialEq",
                                               Ty.path
@@ -32701,6 +37400,7 @@ Module type_safety.
                                           |),
                                           ltac:(M.monadic
                                             (M.call_closure (|
+                                              Ty.path "bool",
                                               M.get_trait_method (|
                                                 "core::cmp::PartialEq",
                                                 Ty.path
@@ -32741,6 +37441,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -32767,12 +37469,20 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ declared_element_type :=
+                        let~ declared_element_type :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ] :=
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -32794,6 +37504,11 @@ Module type_safety.
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -32828,10 +37543,14 @@ Module type_safety.
                               |)
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_function (|
                                   "move_bytecode_verifier::type_safety::get_vector_element_type",
                                   [],
@@ -32853,6 +37572,7 @@ Module type_safety.
                                   let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -32903,6 +37623,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -32937,11 +37659,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU16"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -32983,9 +37712,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -32994,6 +37725,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -33008,6 +37740,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -33015,9 +37748,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -33025,6 +37759,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -33058,6 +37793,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -33094,6 +37831,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -33126,6 +37865,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -33161,6 +37901,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -33168,6 +37909,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -33196,6 +37938,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -33247,7 +37991,7 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -33258,6 +38002,7 @@ Module type_safety.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::SignatureToken",
@@ -33282,6 +38027,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -33308,10 +38055,23 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -33329,6 +38089,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -33368,6 +38135,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -33420,11 +38194,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU32"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -33466,9 +38247,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -33477,6 +38260,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -33491,6 +38275,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -33498,9 +38283,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -33508,6 +38294,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -33541,6 +38328,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -33577,6 +38366,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -33609,6 +38400,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -33644,6 +38436,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -33651,6 +38444,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -33679,6 +38473,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -33730,7 +38526,7 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -33741,6 +38537,7 @@ Module type_safety.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::SignatureToken",
@@ -33765,6 +38562,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -33791,10 +38590,23 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -33812,6 +38624,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -33851,6 +38670,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -33903,11 +38729,18 @@ Module type_safety.
                             γ,
                             "move_binary_format::file_format::Bytecode::CastU256"
                           |) in
-                        let~ operand :=
+                        let~ operand : Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "move_abstract_stack::AbsStackError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -33949,9 +38782,11 @@ Module type_safety.
                                         0
                                       |) in
                                     let e := M.copy (| γ0_0 |) in
-                                    let~ err :=
+                                    let~ err :
+                                        Ty.path "move_binary_format::errors::PartialVMError" :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "with_message",
@@ -33960,6 +38795,7 @@ Module type_safety.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::errors::PartialVMError",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::errors::PartialVMError",
@@ -33974,6 +38810,7 @@ Module type_safety.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "alloc::string::String",
                                               M.get_function (|
                                                 "core::hint::must_use",
                                                 [],
@@ -33981,9 +38818,10 @@ Module type_safety.
                                               |),
                                               [
                                                 M.read (|
-                                                  let~ res :=
+                                                  let~ res : Ty.path "alloc::string::String" :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "alloc::fmt::format",
                                                           [],
@@ -33991,6 +38829,7 @@ Module type_safety.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1_formatted",
@@ -34024,6 +38863,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",
@@ -34060,6 +38901,8 @@ Module type_safety.
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Placeholder",
@@ -34092,6 +38935,7 @@ Module type_safety.
                                                                 |)
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::UnsafeArg",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::fmt::rt::UnsafeArg",
@@ -34127,6 +38971,7 @@ Module type_safety.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
+                                                  Ty.path "never",
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
                                                     [],
@@ -34134,6 +38979,7 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::Arguments",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
@@ -34162,6 +39008,8 @@ Module type_safety.
                                                                 Value.Array
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::rt::Argument",
@@ -34213,7 +39061,7 @@ Module type_safety.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -34224,6 +39072,7 @@ Module type_safety.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::SignatureToken",
@@ -34248,6 +39097,8 @@ Module type_safety.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -34274,10 +39125,23 @@ Module type_safety.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -34295,6 +39159,13 @@ Module type_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::type_safety::TypeSafetyChecker",
@@ -34334,6 +39205,13 @@ Module type_safety.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -34415,6 +39293,7 @@ Module type_safety.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::Signature",
                             "is_empty",
@@ -34437,6 +39316,23 @@ Module type_safety.
                       "move_binary_format::file_format::SignatureToken::StructInstantiation"
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path "move_binary_format::file_format::StructHandleIndex";
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -34464,6 +39360,13 @@ Module type_safety.
                               [
                                 M.read (| struct_handle |);
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   M.get_trait_method (|
                                     "core::clone::Clone",
                                     Ty.apply
@@ -34555,7 +39458,7 @@ Module type_safety.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -34565,6 +39468,7 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -34596,6 +39500,7 @@ Module type_safety.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::file_format::SignatureToken",
                                   M.get_trait_method (|
                                     "core::clone::Clone",
                                     Ty.path "move_binary_format::file_format::SignatureToken",
@@ -34740,6 +39645,13 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::Vector"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::SignatureToken";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
@@ -34754,6 +39666,7 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::file_format::SignatureToken",
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::instantiate",
                                     [],
@@ -34819,6 +39732,25 @@ Module type_safety.
                                   "move_binary_format::file_format::SignatureToken::StructInstantiation"
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::StructHandleIndex";
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -34848,6 +39780,14 @@ Module type_safety.
                                           [
                                             M.read (| M.deref (| M.read (| idx |) |) |);
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
@@ -34894,6 +39834,33 @@ Module type_safety.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::iter::adapters::map::Map")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ];
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::SignatureToken"
+                                                                ]
+                                                            ]
+                                                        ]
+                                                        (Ty.path
+                                                          "move_binary_format::file_format::SignatureToken")
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
@@ -34929,6 +39896,13 @@ Module type_safety.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
@@ -34946,6 +39920,18 @@ Module type_safety.
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::SignatureToken"
+                                                                    ]
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::deref::Deref",
                                                                 Ty.apply
@@ -34988,6 +39974,8 @@ Module type_safety.
                                                                     ltac:(M.monadic
                                                                       (let ty := M.copy (| γ |) in
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::SignatureToken",
                                                                         M.get_function (|
                                                                           "move_bytecode_verifier::type_safety::instantiate",
                                                                           [],
@@ -35039,6 +40027,13 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::Reference"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::SignatureToken";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
@@ -35053,6 +40048,7 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::file_format::SignatureToken",
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::instantiate",
                                     [],
@@ -35088,6 +40084,13 @@ Module type_safety.
                           "move_binary_format::file_format::SignatureToken::MutableReference"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::SignatureToken";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
@@ -35102,6 +40105,7 @@ Module type_safety.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::file_format::SignatureToken",
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::instantiate",
                                     [],
@@ -35132,7 +40136,7 @@ Module type_safety.
                           0
                         |) in
                       let idx := M.alloc (| γ1_0 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -35144,7 +40148,7 @@ Module type_safety.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -35159,6 +40163,7 @@ Module type_safety.
                                                       (Ty.path "usize")
                                                       (M.read (| M.deref (| M.read (| idx |) |) |)),
                                                     M.call_closure (|
+                                                      Ty.path "usize",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::file_format::Signature",
@@ -35184,6 +40189,7 @@ Module type_safety.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.call_closure (|
+                                                Ty.path "never",
                                                 M.get_function (|
                                                   "core::panicking::panic",
                                                   [],
@@ -35207,6 +40213,7 @@ Module type_safety.
                         |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "move_binary_format::file_format::SignatureToken",
                           M.get_trait_method (|
                             "core::clone::Clone",
                             Ty.path "move_binary_format::file_format::SignatureToken",
@@ -35221,6 +40228,10 @@ Module type_safety.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply

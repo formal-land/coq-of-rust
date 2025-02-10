@@ -44,6 +44,10 @@ Module async_iter.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
@@ -55,6 +59,7 @@ Module async_iter.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ],
                     "new",
@@ -71,6 +76,10 @@ Module async_iter.
                             M.read (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "&mut") [] [ S ] ],
                                   M.get_trait_method (|
                                     "core::ops::deref::DerefMut",
                                     Ty.apply
@@ -116,6 +125,9 @@ Module async_iter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
@@ -168,6 +180,10 @@ Module async_iter.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
                 Ty.associated,
@@ -179,6 +195,10 @@ Module async_iter.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::pin::Pin")
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     "as_deref_mut",
@@ -205,6 +225,9 @@ Module async_iter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
                 Ty.associated,
@@ -219,6 +242,7 @@ Module async_iter.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.associated ],
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
                         Ty.apply (Ty.path "core::pin::Pin") [] [ P ],

@@ -18,7 +18,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ number := M.alloc (| Value.Integer IntegerKind.U8 4 |) in
+        let~ number : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 4 |) in
         M.match_operator (|
           number,
           [
@@ -28,12 +28,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ :=
                   M.alloc (| BinOp.eq (| M.read (| i |), Value.Integer IntegerKind.U8 0 |) |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -63,12 +65,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ :=
                   M.alloc (| BinOp.gt (| M.read (| i |), Value.Integer IntegerKind.U8 0 |) |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -99,6 +103,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (M.alloc (|
                   M.never_to_any (|
                     M.call_closure (|
+                      Ty.path "never",
                       M.get_function (|
                         "core::panicking::unreachable_display",
                         [],

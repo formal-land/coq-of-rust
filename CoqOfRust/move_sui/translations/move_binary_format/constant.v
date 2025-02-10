@@ -205,6 +205,13 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::Vector"
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_core_types::runtime_value::MoveTypeLayout";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
@@ -222,6 +229,17 @@ Module constant.
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::convert::Infallible" ];
+                                                Ty.path
+                                                  "move_core_types::runtime_value::MoveTypeLayout"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               Ty.apply
@@ -239,6 +257,13 @@ Module constant.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveTypeLayout"
+                                                  ],
                                                 M.get_function (|
                                                   "move_binary_format::constant::sig_to_ty",
                                                   [],
@@ -249,6 +274,13 @@ Module constant.
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::convert::AsRef",
                                                           Ty.apply
@@ -297,6 +329,13 @@ Module constant.
                                                   M.read (|
                                                     M.return_ (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::runtime_value::MoveTypeLayout"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
@@ -599,6 +638,13 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::Vector"
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
@@ -616,6 +662,17 @@ Module constant.
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::convert::Infallible" ];
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               Ty.apply
@@ -633,6 +690,13 @@ Module constant.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.get_function (|
                                                   "move_binary_format::constant::ty_to_sig",
                                                   [],
@@ -643,6 +707,13 @@ Module constant.
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::runtime_value::MoveTypeLayout"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::convert::AsRef",
                                                           Ty.apply
@@ -691,6 +762,13 @@ Module constant.
                                                   M.read (|
                                                     M.return_ (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
@@ -803,6 +881,16 @@ Module constant.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ];
+                                    Ty.path "move_binary_format::file_format::SignatureToken"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -817,6 +905,10 @@ Module constant.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                     M.get_function (|
                                       "move_binary_format::constant::ty_to_sig",
                                       [],
@@ -843,6 +935,11 @@ Module constant.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Constant"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -887,6 +984,19 @@ Module constant.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ];
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -906,6 +1016,15 @@ Module constant.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_core_types::runtime_value::MoveValue",
                                       "simple_serialize",
@@ -933,6 +1052,11 @@ Module constant.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Constant"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -996,11 +1120,21 @@ Module constant.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ ty :=
+                let~ ty : Ty.path "move_core_types::runtime_value::MoveTypeLayout" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "core::convert::Infallible" ];
+                              Ty.path "move_core_types::runtime_value::MoveTypeLayout"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -1015,6 +1149,10 @@ Module constant.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                               M.get_function (|
                                 "move_binary_format::constant::sig_to_ty",
                                 [],
@@ -1054,6 +1192,10 @@ Module constant.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1092,6 +1234,10 @@ Module constant.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -1106,6 +1252,13 @@ Module constant.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_core_types::runtime_value::MoveValue";
+                            Ty.path "anyhow::Error"
+                          ],
                         M.get_associated_function (|
                           Ty.path "move_core_types::runtime_value::MoveValue",
                           "simple_deserialize",
@@ -1117,6 +1270,10 @@ Module constant.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply

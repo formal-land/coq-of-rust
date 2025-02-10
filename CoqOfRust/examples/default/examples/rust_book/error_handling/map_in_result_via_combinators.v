@@ -17,6 +17,10 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       (let first_number_str := M.alloc (| first_number_str |) in
       let second_number_str := M.alloc (| second_number_str |) in
       M.call_closure (|
+        Ty.apply
+          (Ty.path "core::result::Result")
+          []
+          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
         M.get_associated_function (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -36,6 +40,10 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
         |),
         [
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
             M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| first_number_str |) |) |) ]
           |);
@@ -52,6 +60,10 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           ltac:(M.monadic
                             (let first_number := M.copy (| γ |) in
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -66,6 +78,10 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                   M.get_associated_function (|
                                     Ty.path "str",
                                     "parse",
@@ -135,12 +151,14 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -173,6 +191,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -202,12 +221,14 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -240,6 +261,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -289,9 +311,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ twenty :=
+        let~ twenty :
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
               M.get_function (| "map_in_result_via_combinators::multiply", [], [] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "10" |) |) |);
@@ -299,16 +329,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "map_in_result_via_combinators::print", [], [] |),
               [ M.read (| twenty |) ]
             |)
           |) in
-        let~ tt_ :=
+        let~ tt_ :
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
               M.get_function (| "map_in_result_via_combinators::multiply", [], [] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "t" |) |) |);
@@ -316,9 +355,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "map_in_result_via_combinators::print", [], [] |),
               [ M.read (| tt_ |) ]
             |)

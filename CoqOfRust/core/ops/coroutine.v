@@ -54,6 +54,7 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Yielded"
                           [
                             M.call_closure (|
+                              Y,
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Y,
@@ -83,6 +84,7 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Complete"
                           [
                             M.call_closure (|
+                              R,
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 R,
@@ -151,9 +153,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -162,9 +165,10 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -203,6 +207,7 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ Y ],
@@ -240,6 +245,7 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ R ],
@@ -260,6 +266,7 @@ Module ops.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
@@ -301,9 +308,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -312,9 +320,10 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -348,6 +357,10 @@ Module ops.
                       let __arg1_0 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Y,
@@ -385,6 +398,10 @@ Module ops.
                       let __arg1_0 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             R,
@@ -404,6 +421,10 @@ Module ops.
                     ltac:(M.monadic
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
@@ -496,9 +517,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -507,9 +529,10 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -521,6 +544,7 @@ Module ops.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
                       "core::cmp::Ord",
                       Ty.path "isize",
@@ -571,6 +595,7 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Y,
@@ -614,6 +639,7 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     R,
@@ -640,6 +666,7 @@ Module ops.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
@@ -694,6 +721,10 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -725,6 +756,10 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -772,9 +807,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -783,9 +819,10 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "isize",
@@ -819,6 +856,7 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::hash::Hash",
                             Y,
@@ -846,6 +884,7 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::hash::Hash",
                             R,
@@ -902,6 +941,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::ops::coroutine::CoroutineState")
+                []
+                [ Ty.associated; Ty.associated ],
               M.get_trait_method (|
                 "core::ops::coroutine::Coroutine",
                 G,
@@ -913,6 +956,7 @@ Module ops.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                     "as_mut",
@@ -924,6 +968,15 @@ Module ops.
                       Pointer.Kind.MutRef,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::pin::Pin")
+                                []
+                                [ Ty.apply (Ty.path "&mut") [] [ G ] ]
+                            ],
                           M.get_trait_method (|
                             "core::ops::deref::DerefMut",
                             Ty.apply
@@ -994,6 +1047,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let arg := M.alloc (| arg |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::ops::coroutine::CoroutineState")
+                []
+                [ Ty.associated; Ty.associated ],
               M.get_trait_method (|
                 "core::ops::coroutine::Coroutine",
                 G,
@@ -1005,6 +1062,7 @@ Module ops.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                     "new",
@@ -1021,6 +1079,10 @@ Module ops.
                               Pointer.Kind.MutRef,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                                   M.get_trait_method (|
                                     "core::ops::deref::DerefMut",
                                     Ty.apply

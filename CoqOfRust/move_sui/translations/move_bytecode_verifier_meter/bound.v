@@ -46,9 +46,17 @@ Module bound.
           let name := M.alloc (| name |) in
           let scope := M.alloc (| scope |) in
           M.read (|
-            let~ bounds :=
+            let~ bounds :
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                     "get_bounds_mut",
@@ -61,34 +69,39 @@ Module bound.
                   ]
                 |)
               |) in
-            let~ _ :=
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| bounds |) |),
-                  "move_bytecode_verifier_meter::bound::Bounds",
-                  "name"
-                |),
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::Into",
-                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                    [],
-                    [ Ty.path "alloc::string::String" ],
-                    "into",
-                    [],
-                    []
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| bounds |) |),
+                    "move_bytecode_verifier_meter::bound::Bounds",
+                    "name"
                   |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |) ]
+                  M.call_closure (|
+                    Ty.path "alloc::string::String",
+                    M.get_trait_method (|
+                      "core::convert::Into",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                      [],
+                      [ Ty.path "alloc::string::String" ],
+                      "into",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |) ]
+                  |)
                 |)
               |) in
-            let~ _ :=
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| bounds |) |),
-                  "move_bytecode_verifier_meter::bound::Bounds",
-                  "units"
-                |),
-                Value.Integer IntegerKind.U128 0
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| bounds |) |),
+                    "move_bytecode_verifier_meter::bound::Bounds",
+                    "units"
+                  |),
+                  Value.Integer IntegerKind.U128 0
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -110,7 +123,7 @@ Module bound.
           let to := M.alloc (| to |) in
           let factor := M.alloc (| factor |) in
           M.read (|
-            let~ units :=
+            let~ units : Ty.path "u128" :=
               M.alloc (|
                 M.cast
                   (Ty.path "u128")
@@ -121,6 +134,10 @@ Module bound.
                         M.SubPointer.get_struct_record_field (|
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
                               M.get_associated_function (|
                                 Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                                 "get_bounds_mut",
@@ -142,6 +159,10 @@ Module bound.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.get_trait_method (|
                   "move_bytecode_verifier_meter::Meter",
                   Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
@@ -175,6 +196,10 @@ Module bound.
           let scope := M.alloc (| scope |) in
           let units := M.alloc (| units |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             M.get_associated_function (|
               Ty.path "move_bytecode_verifier_meter::bound::Bounds",
               "add",
@@ -186,6 +211,10 @@ Module bound.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                       "get_bounds_mut",
@@ -248,7 +277,7 @@ Module bound.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -267,9 +296,10 @@ Module bound.
                               0
                             |) in
                           let max := M.copy (| γ0_0 |) in
-                          let~ new_units :=
+                          let~ new_units : Ty.path "u128" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "u128",
                                 M.get_associated_function (|
                                   Ty.path "u128",
                                   "saturating_add",
@@ -288,7 +318,7 @@ Module bound.
                                 ]
                               |)
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -312,6 +342,8 @@ Module bound.
                                               "core::result::Result::Err"
                                               [
                                                 M.call_closure (|
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError",
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
@@ -321,6 +353,8 @@ Module bound.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
@@ -335,6 +369,7 @@ Module bound.
                                                       ]
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "core::hint::must_use",
                                                         [],
@@ -342,9 +377,11 @@ Module bound.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          let~ res :=
+                                                          let~ res :
+                                                              Ty.path "alloc::string::String" :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "alloc::string::String",
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
                                                                   [],
@@ -352,6 +389,7 @@ Module bound.
                                                                 |),
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.path "core::fmt::Arguments",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
@@ -402,6 +440,8 @@ Module bound.
                                                                               Value.Array
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
@@ -433,6 +473,8 @@ Module bound.
                                                                                     ]
                                                                                   |);
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
@@ -464,6 +506,8 @@ Module bound.
                                                                                     ]
                                                                                   |);
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
@@ -487,6 +531,8 @@ Module bound.
                                                                                     ]
                                                                                   |);
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
@@ -533,14 +579,16 @@ Module bound.
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "move_bytecode_verifier_meter::bound::Bounds",
-                                "units"
-                              |),
-                              M.read (| new_units |)
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_bytecode_verifier_meter::bound::Bounds",
+                                  "units"
+                                |),
+                                M.read (| new_units |)
+                              |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -594,6 +642,7 @@ Module bound.
                   [
                     ("name",
                       M.call_closure (|
+                        Ty.path "alloc::string::String",
                         M.get_trait_method (|
                           "alloc::string::ToString",
                           Ty.path "str",
@@ -626,6 +675,7 @@ Module bound.
                   [
                     ("name",
                       M.call_closure (|
+                        Ty.path "alloc::string::String",
                         M.get_trait_method (|
                           "alloc::string::ToString",
                           Ty.path "str",
@@ -658,6 +708,7 @@ Module bound.
                   [
                     ("name",
                       M.call_closure (|
+                        Ty.path "alloc::string::String",
                         M.get_trait_method (|
                           "alloc::string::ToString",
                           Ty.path "str",
@@ -793,9 +844,11 @@ Module bound.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
+                                  Ty.path "never",
                                   M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::Arguments",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
@@ -938,9 +991,11 @@ Module bound.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
@@ -996,6 +1051,10 @@ Module bound.
             M.SubPointer.get_struct_record_field (|
               M.deref (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                     "get_bounds",
@@ -1033,6 +1092,10 @@ Module bound.
             M.SubPointer.get_struct_record_field (|
               M.deref (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
                   M.get_associated_function (|
                     Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
                     "get_bounds",

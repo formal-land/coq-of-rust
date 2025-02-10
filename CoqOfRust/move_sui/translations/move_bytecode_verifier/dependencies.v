@@ -95,6 +95,7 @@ Module dependencies.
           (let module := M.alloc (| module |) in
           let dependencies := M.alloc (| dependencies |) in
           M.call_closure (|
+            Ty.path "move_bytecode_verifier::dependencies::Context",
             M.get_associated_function (|
               Ty.path "move_bytecode_verifier::dependencies::Context",
               "new",
@@ -224,9 +225,10 @@ Module dependencies.
           (let module := M.alloc (| module |) in
           let dependencies := M.alloc (| dependencies |) in
           M.read (|
-            let~ self_module :=
+            let~ self_module : Ty.path "move_core_types::language_storage::ModuleId" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_core_types::language_storage::ModuleId",
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "self_id",
@@ -236,9 +238,10 @@ Module dependencies.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                 |)
               |) in
-            let~ self_module_idx :=
+            let~ self_module_idx : Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_binary_format::file_format::ModuleHandleIndex",
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "self_handle_idx",
@@ -248,9 +251,27 @@ Module dependencies.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                 |)
               |) in
-            let~ self_function_defs :=
+            let~ self_function_defs :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                    ],
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "function_defs",
@@ -260,9 +281,31 @@ Module dependencies.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                 |)
               |) in
-            let~ dependency_map :=
+            let~ dependency_map :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "move_core_types::language_storage::ModuleId";
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::CompiledModule" ];
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::ModuleId";
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::CompiledModule" ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
@@ -333,6 +376,54 @@ Module dependencies.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::map::Map")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::filter::Filter")
+                            []
+                            [
+                              Ty.associated;
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::CompiledModule"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                                (Ty.path "bool")
+                            ];
+                          Ty.function
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::CompiledModule" ]
+                                ]
+                            ]
+                            (Ty.tuple
+                              [
+                                Ty.path "move_core_types::language_storage::ModuleId";
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::CompiledModule" ]
+                              ])
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -395,6 +486,31 @@ Module dependencies.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::filter::Filter")
+                            []
+                            [
+                              Ty.associated;
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::CompiledModule"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                                (Ty.path "bool")
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.associated,
@@ -426,6 +542,7 @@ Module dependencies.
                           |),
                           [
                             M.call_closure (|
+                              Ty.associated,
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
                                 impl_IntoIterator_Item____'b_CompiledModule_,
@@ -450,6 +567,7 @@ Module dependencies.
                                             ltac:(M.monadic
                                               (let d := M.copy (| γ |) in
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
                                                   Ty.path
@@ -468,6 +586,8 @@ Module dependencies.
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_core_types::language_storage::ModuleId",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -512,6 +632,8 @@ Module dependencies.
                                           Value.Tuple
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_core_types::language_storage::ModuleId",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
@@ -537,7 +659,19 @@ Module dependencies.
                   ]
                 |)
               |) in
-            let~ script_functions :=
+            let~ script_functions :
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                        Ty.path "alloc::alloc::Global"
+                      ]
+                  ] :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -549,6 +683,7 @@ Module dependencies.
                             (M.alloc (|
                               BinOp.lt (|
                                 M.call_closure (|
+                                  Ty.path "u32",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "version",
@@ -574,6 +709,13 @@ Module dependencies.
                             "core::option::Option::Some"
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -597,7 +739,7 @@ Module dependencies.
                   ]
                 |)
               |) in
-            let~ context :=
+            let~ context : Ty.path "move_bytecode_verifier::dependencies::Context" :=
               M.alloc (|
                 Value.StructRecord
                   "move_bytecode_verifier::dependencies::Context"
@@ -606,6 +748,18 @@ Module dependencies.
                     ("dependency_map", M.read (| dependency_map |));
                     ("struct_id_to_handle_map",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::language_storage::ModuleId";
+                                Ty.path "move_core_types::identifier::Identifier"
+                              ];
+                            Ty.path "move_binary_format::file_format::StructHandleIndex";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -627,6 +781,18 @@ Module dependencies.
                       |));
                     ("func_id_to_handle_map",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::language_storage::ModuleId";
+                                Ty.path "move_core_types::identifier::Identifier"
+                              ];
+                            Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -648,6 +814,14 @@ Module dependencies.
                       |));
                     ("function_visibilities",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                            Ty.path "move_binary_format::file_format::Visibility";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -666,9 +840,35 @@ Module dependencies.
                     ("script_functions", M.read (| script_functions |))
                   ]
               |) in
-            let~ dependency_visibilities :=
+            let~ dependency_visibilities :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.tuple
+                      [
+                        Ty.path "move_core_types::language_storage::ModuleId";
+                        Ty.path "move_core_types::identifier::Identifier"
+                      ];
+                    Ty.tuple
+                      [ Ty.path "move_binary_format::file_format::Visibility"; Ty.path "bool" ];
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.path "move_core_types::language_storage::ModuleId";
+                          Ty.path "move_core_types::identifier::Identifier"
+                        ];
+                      Ty.tuple
+                        [ Ty.path "move_binary_format::file_format::Visibility"; Ty.path "bool" ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -690,11 +890,21 @@ Module dependencies.
                   []
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::Iter")
+                        []
+                        [
+                          Ty.path "move_core_types::language_storage::ModuleId";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::CompiledModule" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
@@ -737,10 +947,37 @@ Module dependencies.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::language_storage::ModuleId"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CompiledModule"
+                                                  ]
+                                              ]
+                                          ]
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -790,9 +1027,24 @@ Module dependencies.
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let module_id := M.copy (| γ1_0 |) in
                                       let module := M.copy (| γ1_1 |) in
-                                      let~ friend_module_ids :=
+                                      let~ friend_module_ids :
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                            []
+                                            [
+                                              Ty.path "move_core_types::language_storage::ModuleId";
+                                              Ty.path "alloc::alloc::Global"
+                                            ] :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::language_storage::ModuleId";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
@@ -821,6 +1073,14 @@ Module dependencies.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::ModuleId";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::IntoIterator",
                                                   Ty.apply
@@ -839,6 +1099,14 @@ Module dependencies.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::language_storage::ModuleId";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::file_format::CompiledModule",
@@ -862,11 +1130,18 @@ Module dependencies.
                                             ]
                                           |)
                                         |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.use
                                           (M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructDefinition"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::IntoIterator",
                                                   Ty.apply
@@ -889,6 +1164,18 @@ Module dependencies.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefinition"
+                                                          ]
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::file_format::CompiledModule",
@@ -916,10 +1203,22 @@ Module dependencies.
                                                   (let iter := M.copy (| γ |) in
                                                   M.loop (|
                                                     ltac:(M.monadic
-                                                      (let~ _ :=
+                                                      (let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::StructDefinition"
+                                                                    ]
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::iter::traits::iterator::Iterator",
                                                                 Ty.apply
@@ -972,9 +1271,23 @@ Module dependencies.
                                                                   |) in
                                                                 let struct_def :=
                                                                   M.copy (| γ0_0 |) in
-                                                                let~ struct_handle :=
+                                                                let~ struct_handle :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructHandle"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructHandle"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -1007,9 +1320,23 @@ Module dependencies.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let~ struct_name :=
+                                                                let~ struct_name :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::identifier::IdentStr"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::identifier::IdentStr"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -1042,9 +1369,25 @@ Module dependencies.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let~ _ :=
+                                                                let~ _ :
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructHandleIndex"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructHandleIndex"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -1079,6 +1422,8 @@ Module dependencies.
                                                                         Value.Tuple
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_core_types::language_storage::ModuleId",
                                                                               M.get_trait_method (|
                                                                                 "core::clone::Clone",
                                                                                 Ty.path
@@ -1101,6 +1446,8 @@ Module dependencies.
                                                                               ]
                                                                             |);
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_core_types::identifier::Identifier",
                                                                               M.get_trait_method (|
                                                                                 "alloc::borrow::ToOwned",
                                                                                 Ty.path
@@ -1148,6 +1495,13 @@ Module dependencies.
                                         (M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::collect::IntoIterator",
                                                 Ty.apply
@@ -1170,6 +1524,18 @@ Module dependencies.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FunctionDefinition"
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
@@ -1197,10 +1563,22 @@ Module dependencies.
                                                 (let iter := M.copy (| γ |) in
                                                 M.loop (|
                                                   ltac:(M.monadic
-                                                    (let~ _ :=
+                                                    (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                                  ]
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::iter::traits::iterator::Iterator",
                                                               Ty.apply
@@ -1251,9 +1629,23 @@ Module dependencies.
                                                                   0
                                                                 |) in
                                                               let func_def := M.copy (| γ0_0 |) in
-                                                              let~ func_handle :=
+                                                              let~ func_handle :
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::FunctionHandle"
+                                                                    ] :=
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::FunctionHandle"
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_binary_format::file_format::CompiledModule",
@@ -1284,9 +1676,23 @@ Module dependencies.
                                                                     ]
                                                                   |)
                                                                 |) in
-                                                              let~ func_name :=
+                                                              let~ func_name :
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_core_types::identifier::IdentStr"
+                                                                    ] :=
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::identifier::IdentStr"
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_binary_format::file_format::CompiledModule",
@@ -1317,9 +1723,32 @@ Module dependencies.
                                                                     ]
                                                                   |)
                                                                 |) in
-                                                              let~ _ :=
+                                                              let~ _ :
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::Visibility";
+                                                                          Ty.path "bool"
+                                                                        ]
+                                                                    ] :=
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::Visibility";
+                                                                            Ty.path "bool"
+                                                                          ]
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path
@@ -1354,6 +1783,8 @@ Module dependencies.
                                                                       Value.Tuple
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "move_core_types::language_storage::ModuleId",
                                                                             M.get_trait_method (|
                                                                               "core::clone::Clone",
                                                                               Ty.path
@@ -1376,6 +1807,8 @@ Module dependencies.
                                                                             ]
                                                                           |);
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "move_core_types::identifier::Identifier",
                                                                             M.get_trait_method (|
                                                                               "alloc::borrow::ToOwned",
                                                                               Ty.path
@@ -1426,7 +1859,7 @@ Module dependencies.
                                                                     ]
                                                                   |)
                                                                 |) in
-                                                              let~ may_be_called :=
+                                                              let~ may_be_called : Ty.path "bool" :=
                                                                 M.copy (|
                                                                   M.match_operator (|
                                                                     M.SubPointer.get_struct_record_field (|
@@ -1456,6 +1889,7 @@ Module dependencies.
                                                                             |) in
                                                                           M.alloc (|
                                                                             M.call_closure (|
+                                                                              Ty.path "bool",
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -1516,9 +1950,25 @@ Module dependencies.
                                                                           M.read (| γ |),
                                                                           Value.Bool true
                                                                         |) in
-                                                                      let~ _ :=
+                                                                      let~ _ :
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::FunctionHandleIndex"
+                                                                            ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::option::Option")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::FunctionHandleIndex"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -1553,6 +2003,8 @@ Module dependencies.
                                                                               Value.Tuple
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "move_core_types::language_storage::ModuleId",
                                                                                     M.get_trait_method (|
                                                                                       "core::clone::Clone",
                                                                                       Ty.path
@@ -1575,6 +2027,8 @@ Module dependencies.
                                                                                     ]
                                                                                   |);
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "move_core_types::identifier::Identifier",
                                                                                     M.get_trait_method (|
                                                                                       "alloc::borrow::ToOwned",
                                                                                       Ty.path
@@ -1633,11 +2087,15 @@ Module dependencies.
                         |)))
                   ]
                 |)) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
@@ -1664,10 +2122,22 @@ Module dependencies.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinition"
+                                          ]
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -1708,9 +2178,21 @@ Module dependencies.
                                           0
                                         |) in
                                       let function_def := M.copy (| γ0_0 |) in
-                                      let~ _ :=
+                                      let~ _ :
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "move_binary_format::file_format::Visibility"
+                                            ] :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::Visibility"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1769,9 +2251,17 @@ Module dependencies.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let~ _ :=
+                                              let~ _ :
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "bool" ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "bool" ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -1822,6 +2312,25 @@ Module dependencies.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::btree::set::BTreeSet")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::FunctionHandleIndex";
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ]
+                                                              ]
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
@@ -1865,6 +2374,7 @@ Module dependencies.
                                                                       ltac:(M.monadic
                                                                         (let s := M.copy (| γ |) in
                                                                         M.call_closure (|
+                                                                          Ty.path "bool",
                                                                           M.get_associated_function (|
                                                                             Ty.apply
                                                                               (Ty.path
@@ -1919,11 +2429,20 @@ Module dependencies.
                         |)))
                   ]
                 |)) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
@@ -1943,6 +2462,15 @@ Module dependencies.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -1957,6 +2485,10 @@ Module dependencies.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
@@ -1971,6 +2503,18 @@ Module dependencies.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionHandle"
+                                            ]
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "function_handles",
@@ -2007,10 +2551,26 @@ Module dependencies.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionHandle"
+                                              ]
+                                          ]
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -2059,7 +2619,7 @@ Module dependencies.
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let idx := M.copy (| γ1_0 |) in
                                       let function_handle := M.copy (| γ1_1 |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
                                           [
@@ -2069,6 +2629,7 @@ Module dependencies.
                                                   M.use
                                                     (M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.path
@@ -2111,9 +2672,11 @@ Module dependencies.
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
                                         |) in
-                                      let~ dep_module_id :=
+                                      let~ dep_module_id :
+                                          Ty.path "move_core_types::language_storage::ModuleId" :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "move_core_types::language_storage::ModuleId",
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -2138,6 +2701,13 @@ Module dependencies.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::ModuleHandle"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::file_format::CompiledModule",
@@ -2174,9 +2744,17 @@ Module dependencies.
                                             ]
                                           |)
                                         |) in
-                                      let~ function_name :=
+                                      let~ function_name :
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_core_types::identifier::IdentStr" ] :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_core_types::identifier::IdentStr" ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -2207,13 +2785,25 @@ Module dependencies.
                                             ]
                                           |)
                                         |) in
-                                      let~ dep_file_format_version :=
+                                      let~ dep_file_format_version : Ty.path "u32" :=
                                         M.copy (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.deref (|
                                               M.read (|
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::CompiledModule"
+                                                          ]
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -2238,6 +2828,23 @@ Module dependencies.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::CompiledModule"
+                                                                  ]
+                                                              ]
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -2291,12 +2898,18 @@ Module dependencies.
                                             "version"
                                           |)
                                         |) in
-                                      let~ dep_function :=
+                                      let~ dep_function :
+                                          Ty.tuple
+                                            [
+                                              Ty.path "move_core_types::language_storage::ModuleId";
+                                              Ty.path "move_core_types::identifier::Identifier"
+                                            ] :=
                                         M.alloc (|
                                           Value.Tuple
                                             [
                                               M.read (| dep_module_id |);
                                               M.call_closure (|
+                                                Ty.path "move_core_types::identifier::Identifier",
                                                 M.get_trait_method (|
                                                   "alloc::borrow::ToOwned",
                                                   Ty.path "move_core_types::identifier::IdentStr",
@@ -2319,6 +2932,22 @@ Module dependencies.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Visibility";
+                                                          Ty.path "bool"
+                                                        ]
+                                                    ]
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -2397,15 +3026,31 @@ Module dependencies.
                                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                               let visibility := M.copy (| γ0_0 |) in
                                               let is_entry := M.copy (| γ0_1 |) in
-                                              let~ fhandle_idx :=
+                                              let~ fhandle_idx :
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionHandleIndex" :=
                                                 M.alloc (|
                                                   Value.StructTuple
                                                     "move_binary_format::file_format::FunctionHandleIndex"
                                                     [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                                 |) in
-                                              let~ _ :=
+                                              let~ _ :
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Visibility"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Visibility"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path
@@ -2463,9 +3108,17 @@ Module dependencies.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let~ _ :=
+                                                      let~ _ :
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "bool" ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [ Ty.path "bool" ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
@@ -2517,6 +3170,26 @@ Module dependencies.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&mut")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::collections::btree::set::BTreeSet")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::FunctionHandleIndex";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ]
+                                                                      ]
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
@@ -2562,6 +3235,7 @@ Module dependencies.
                                                                                 (let s :=
                                                                                   M.copy (| γ |) in
                                                                                 M.call_closure (|
+                                                                                  Ty.path "bool",
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -2638,6 +3312,10 @@ Module dependencies.
         (let module := M.alloc (| module |) in
         let dependencies := M.alloc (| dependencies |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2654,6 +3332,10 @@ Module dependencies.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               M.get_function (|
                 "move_bytecode_verifier::dependencies::verify_module_impl",
                 [],
@@ -2677,6 +3359,7 @@ Module dependencies.
                             ltac:(M.monadic
                               (let e := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::VMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
@@ -2689,6 +3372,7 @@ Module dependencies.
                                     "move_binary_format::errors::Location::Module"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_core_types::language_storage::ModuleId",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
@@ -2740,12 +3424,17 @@ Module dependencies.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ context :=
+              let~ context :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_bytecode_verifier::dependencies::Context" ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_bytecode_verifier::dependencies::Context",
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::dependencies::Context",
                           "module",
@@ -2760,10 +3449,23 @@ Module dependencies.
                     |)
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -2778,6 +3480,10 @@ Module dependencies.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::verify_imported_modules",
                             [],
@@ -2803,6 +3509,13 @@ Module dependencies.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -2844,10 +3557,23 @@ Module dependencies.
                         val))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -2862,6 +3588,10 @@ Module dependencies.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::verify_imported_structs",
                             [],
@@ -2887,6 +3617,13 @@ Module dependencies.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -2928,10 +3665,23 @@ Module dependencies.
                         val))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_binary_format::errors::PartialVMError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -2946,6 +3696,10 @@ Module dependencies.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::verify_imported_functions",
                             [],
@@ -2971,6 +3725,13 @@ Module dependencies.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -3014,6 +3775,10 @@ Module dependencies.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.get_function (|
                     "move_bytecode_verifier::dependencies::verify_all_script_visibility_usage",
                     [],
@@ -3057,9 +3822,10 @@ Module dependencies.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ self_module :=
+              let~ self_module : Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::ModuleHandleIndex",
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_handle_idx",
@@ -3082,11 +3848,20 @@ Module dependencies.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -3106,6 +3881,15 @@ Module dependencies.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -3120,6 +3904,10 @@ Module dependencies.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -3134,6 +3922,18 @@ Module dependencies.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::ModuleHandle"
+                                              ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "module_handles",
@@ -3170,10 +3970,26 @@ Module dependencies.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path "usize";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::ModuleHandle"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -3222,9 +4038,11 @@ Module dependencies.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let idx := M.copy (| γ1_0 |) in
                                         let module_handle := M.copy (| γ1_1 |) in
-                                        let~ module_id :=
+                                        let~ module_id :
+                                            Ty.path "move_core_types::language_storage::ModuleId" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "move_core_types::language_storage::ModuleId",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -3262,6 +4080,7 @@ Module dependencies.
                                                     (M.alloc (|
                                                       LogicalOp.and (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialEq",
                                                             Ty.path
@@ -3297,6 +4116,7 @@ Module dependencies.
                                                         ltac:(M.monadic
                                                           (UnOp.not (|
                                                             M.call_closure (|
+                                                              Ty.path "bool",
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -3359,6 +4179,8 @@ Module dependencies.
                                                           "core::result::Result::Err"
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_function (|
                                                                 "move_binary_format::errors::verification_error",
                                                                 [],
@@ -3454,9 +4276,10 @@ Module dependencies.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ self_module :=
+              let~ self_module : Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::ModuleHandleIndex",
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_handle_idx",
@@ -3479,11 +4302,20 @@ Module dependencies.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructHandle" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -3503,6 +4335,15 @@ Module dependencies.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructHandle" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -3517,6 +4358,10 @@ Module dependencies.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructHandle" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -3531,6 +4376,18 @@ Module dependencies.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructHandle"
+                                              ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "struct_handles",
@@ -3567,10 +4424,26 @@ Module dependencies.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path "usize";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructHandle"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -3619,7 +4492,7 @@ Module dependencies.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let idx := M.copy (| γ1_0 |) in
                                         let struct_handle := M.copy (| γ1_1 |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -3629,6 +4502,7 @@ Module dependencies.
                                                     M.use
                                                       (M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialEq",
                                                             Ty.path
@@ -3674,9 +4548,11 @@ Module dependencies.
                                                 ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                             ]
                                           |) in
-                                        let~ owner_module_id :=
+                                        let~ owner_module_id :
+                                            Ty.path "move_core_types::language_storage::ModuleId" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "move_core_types::language_storage::ModuleId",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -3701,6 +4577,13 @@ Module dependencies.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::ModuleHandle"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
@@ -3737,11 +4620,40 @@ Module dependencies.
                                               ]
                                             |)
                                           |) in
-                                        let~ owner_module :=
+                                        let~ owner_module :
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CompiledModule"
+                                                  ]
+                                              ] :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::CompiledModule"
+                                                            ]
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path
@@ -3805,9 +4717,13 @@ Module dependencies.
                                                         γ,
                                                         "core::option::Option::None"
                                                       |) in
-                                                    let~ err :=
+                                                    let~ err :
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError" :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError",
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
@@ -3817,6 +4733,8 @@ Module dependencies.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
@@ -3831,6 +4749,7 @@ Module dependencies.
                                                               ]
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_function (|
                                                                 "core::hint::must_use",
                                                                 [],
@@ -3838,9 +4757,13 @@ Module dependencies.
                                                               |),
                                                               [
                                                                 M.read (|
-                                                                  let~ res :=
+                                                                  let~ res :
+                                                                      Ty.path
+                                                                        "alloc::string::String" :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "alloc::string::String",
                                                                         M.get_function (|
                                                                           "alloc::fmt::format",
                                                                           [],
@@ -3848,6 +4771,8 @@ Module dependencies.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
@@ -3880,6 +4805,18 @@ Module dependencies.
                                                                                     Pointer.Kind.Ref,
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "array")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              0
+                                                                                          ]
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Argument"
+                                                                                          ],
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
@@ -3921,6 +4858,7 @@ Module dependencies.
                                                             M.alloc (|
                                                               M.never_to_any (|
                                                                 M.call_closure (|
+                                                                  Ty.path "never",
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
                                                                     [],
@@ -3928,6 +4866,8 @@ Module dependencies.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -3962,6 +4902,8 @@ Module dependencies.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -4013,9 +4955,17 @@ Module dependencies.
                                               ]
                                             |)
                                           |) in
-                                        let~ struct_name :=
+                                        let~ struct_name :
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_core_types::identifier::IdentStr" ] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_core_types::identifier::IdentStr" ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -4049,6 +4999,18 @@ Module dependencies.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructHandleIndex"
+                                                    ]
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -4097,6 +5059,8 @@ Module dependencies.
                                                           [
                                                             M.read (| owner_module_id |);
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_core_types::identifier::Identifier",
                                                               M.get_trait_method (|
                                                                 "alloc::borrow::ToOwned",
                                                                 Ty.path
@@ -4134,9 +5098,23 @@ Module dependencies.
                                                     0
                                                   |) in
                                                 let def_idx := M.copy (| γ0_0 |) in
-                                                let~ def_handle :=
+                                                let~ def_handle :
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::StructHandle"
+                                                      ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructHandle"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
@@ -4172,6 +5150,7 @@ Module dependencies.
                                                               LogicalOp.or (|
                                                                 UnOp.not (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_function (|
                                                                       "move_bytecode_verifier::dependencies::compatible_struct_abilities",
                                                                       [],
@@ -4204,6 +5183,7 @@ Module dependencies.
                                                                 ltac:(M.monadic
                                                                   (UnOp.not (|
                                                                     M.call_closure (|
+                                                                      Ty.path "bool",
                                                                       M.get_function (|
                                                                         "move_bytecode_verifier::dependencies::compatible_struct_type_parameters",
                                                                         [],
@@ -4214,6 +5194,19 @@ Module dependencies.
                                                                           Pointer.Kind.Ref,
                                                                           M.deref (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_binary_format::file_format::StructTypeParameter"
+                                                                                    ]
+                                                                                ],
                                                                               M.get_trait_method (|
                                                                                 "core::ops::deref::Deref",
                                                                                 Ty.apply
@@ -4258,6 +5251,19 @@ Module dependencies.
                                                                           Pointer.Kind.Ref,
                                                                           M.deref (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_binary_format::file_format::StructTypeParameter"
+                                                                                    ]
+                                                                                ],
                                                                               M.get_trait_method (|
                                                                                 "core::ops::deref::Deref",
                                                                                 Ty.apply
@@ -4316,6 +5322,8 @@ Module dependencies.
                                                                   "core::result::Result::Err"
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError",
                                                                       M.get_function (|
                                                                         "move_binary_format::errors::verification_error",
                                                                         [],
@@ -4358,6 +5366,8 @@ Module dependencies.
                                                           "core::result::Result::Err"
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_function (|
                                                                 "move_binary_format::errors::verification_error",
                                                                 [],
@@ -4491,9 +5501,10 @@ Module dependencies.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ self_module :=
+              let~ self_module : Ty.path "move_binary_format::file_format::ModuleHandleIndex" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::ModuleHandleIndex",
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_handle_idx",
@@ -4516,11 +5527,20 @@ Module dependencies.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -4540,6 +5560,15 @@ Module dependencies.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -4554,6 +5583,10 @@ Module dependencies.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -4568,6 +5601,18 @@ Module dependencies.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionHandle"
+                                              ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "function_handles",
@@ -4604,10 +5649,26 @@ Module dependencies.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path "usize";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionHandle"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -4656,7 +5717,7 @@ Module dependencies.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let idx := M.copy (| γ1_0 |) in
                                         let function_handle := M.copy (| γ1_1 |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -4666,6 +5727,7 @@ Module dependencies.
                                                     M.use
                                                       (M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialEq",
                                                             Ty.path
@@ -4711,9 +5773,11 @@ Module dependencies.
                                                 ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                             ]
                                           |) in
-                                        let~ owner_module_id :=
+                                        let~ owner_module_id :
+                                            Ty.path "move_core_types::language_storage::ModuleId" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "move_core_types::language_storage::ModuleId",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -4738,6 +5802,13 @@ Module dependencies.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::ModuleHandle"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
@@ -4774,9 +5845,17 @@ Module dependencies.
                                               ]
                                             |)
                                           |) in
-                                        let~ function_name :=
+                                        let~ function_name :
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_core_types::identifier::IdentStr" ] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_core_types::identifier::IdentStr" ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -4807,11 +5886,40 @@ Module dependencies.
                                               ]
                                             |)
                                           |) in
-                                        let~ owner_module :=
+                                        let~ owner_module :
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::CompiledModule"
+                                                  ]
+                                              ] :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::CompiledModule"
+                                                            ]
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path
@@ -4875,9 +5983,13 @@ Module dependencies.
                                                         γ,
                                                         "core::option::Option::None"
                                                       |) in
-                                                    let~ err :=
+                                                    let~ err :
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError" :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError",
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError",
@@ -4887,6 +5999,8 @@ Module dependencies.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
@@ -4901,6 +6015,7 @@ Module dependencies.
                                                               ]
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_function (|
                                                                 "core::hint::must_use",
                                                                 [],
@@ -4908,9 +6023,13 @@ Module dependencies.
                                                               |),
                                                               [
                                                                 M.read (|
-                                                                  let~ res :=
+                                                                  let~ res :
+                                                                      Ty.path
+                                                                        "alloc::string::String" :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "alloc::string::String",
                                                                         M.get_function (|
                                                                           "alloc::fmt::format",
                                                                           [],
@@ -4918,6 +6037,8 @@ Module dependencies.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
@@ -4950,6 +6071,18 @@ Module dependencies.
                                                                                     Pointer.Kind.Ref,
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "array")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              0
+                                                                                          ]
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Argument"
+                                                                                          ],
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "core::fmt::rt::Argument",
@@ -4991,6 +6124,7 @@ Module dependencies.
                                                             M.alloc (|
                                                               M.never_to_any (|
                                                                 M.call_closure (|
+                                                                  Ty.path "never",
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
                                                                     [],
@@ -4998,6 +6132,8 @@ Module dependencies.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -5032,6 +6168,8 @@ Module dependencies.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -5086,6 +6224,18 @@ Module dependencies.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionHandleIndex"
+                                                    ]
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -5133,6 +6283,8 @@ Module dependencies.
                                                         Value.Tuple
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_core_types::language_storage::ModuleId",
                                                               M.get_trait_method (|
                                                                 "core::clone::Clone",
                                                                 Ty.path
@@ -5151,6 +6303,8 @@ Module dependencies.
                                                               ]
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_core_types::identifier::Identifier",
                                                               M.get_trait_method (|
                                                                 "alloc::borrow::ToOwned",
                                                                 Ty.path
@@ -5188,9 +6342,23 @@ Module dependencies.
                                                     0
                                                   |) in
                                                 let def_idx := M.copy (| γ0_0 |) in
-                                                let~ def_handle :=
+                                                let~ def_handle :
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::FunctionHandle"
+                                                      ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FunctionHandle"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
@@ -5215,7 +6383,7 @@ Module dependencies.
                                                       ]
                                                     |)
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -5226,6 +6394,7 @@ Module dependencies.
                                                               (M.alloc (|
                                                                 UnOp.not (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_function (|
                                                                       "move_bytecode_verifier::dependencies::compatible_fun_type_parameters",
                                                                       [],
@@ -5236,6 +6405,18 @@ Module dependencies.
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::AbilitySet"
+                                                                                  ]
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::ops::deref::Deref",
                                                                               Ty.apply
@@ -5280,6 +6461,18 @@ Module dependencies.
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::AbilitySet"
+                                                                                  ]
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::ops::deref::Deref",
                                                                               Ty.apply
@@ -5337,6 +6530,8 @@ Module dependencies.
                                                                     "core::result::Result::Err"
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.get_function (|
                                                                           "move_binary_format::errors::verification_error",
                                                                           [],
@@ -5364,9 +6559,23 @@ Module dependencies.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let~ handle_params :=
+                                                let~ handle_params :
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Signature"
+                                                      ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Signature"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
@@ -5399,11 +6608,35 @@ Module dependencies.
                                                       ]
                                                     |)
                                                   |) in
-                                                let~ def_params :=
+                                                let~ def_params :
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Signature"
+                                                      ] :=
                                                   M.copy (|
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::CompiledModule"
+                                                                    ]
+                                                                ]
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -5461,6 +6694,13 @@ Module dependencies.
                                                             let module := M.copy (| γ0_0 |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::Signature"
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_binary_format::file_format::CompiledModule",
@@ -5506,6 +6746,8 @@ Module dependencies.
                                                                       "core::result::Result::Err"
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_function (|
                                                                             "move_binary_format::errors::verification_error",
                                                                             [],
@@ -5531,10 +6773,25 @@ Module dependencies.
                                                       ]
                                                     |)
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
@@ -5553,6 +6810,14 @@ Module dependencies.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -5581,6 +6846,14 @@ Module dependencies.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ],
                                                                 M.get_function (|
                                                                   "move_bytecode_verifier::dependencies::compare_cross_module_signatures",
                                                                   [],
@@ -5597,6 +6870,18 @@ Module dependencies.
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureToken"
+                                                                              ]
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::ops::deref::Deref",
                                                                           Ty.apply
@@ -5641,6 +6926,18 @@ Module dependencies.
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureToken"
+                                                                              ]
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::ops::deref::Deref",
                                                                           Ty.apply
@@ -5707,6 +7004,8 @@ Module dependencies.
                                                                                 (let e :=
                                                                                   M.copy (| γ |) in
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError",
@@ -5753,6 +7052,15 @@ Module dependencies.
                                                               M.read (|
                                                                 M.return_ (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
@@ -5799,9 +7107,23 @@ Module dependencies.
                                                           val))
                                                     ]
                                                   |) in
-                                                let~ handle_return :=
+                                                let~ handle_return :
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Signature"
+                                                      ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Signature"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::file_format::CompiledModule",
@@ -5834,11 +7156,35 @@ Module dependencies.
                                                       ]
                                                     |)
                                                   |) in
-                                                let~ def_return :=
+                                                let~ def_return :
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Signature"
+                                                      ] :=
                                                   M.copy (|
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::CompiledModule"
+                                                                    ]
+                                                                ]
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -5896,6 +7242,13 @@ Module dependencies.
                                                             let module := M.copy (| γ0_0 |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::Signature"
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_binary_format::file_format::CompiledModule",
@@ -5941,6 +7294,8 @@ Module dependencies.
                                                                       "core::result::Result::Err"
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_function (|
                                                                             "move_binary_format::errors::verification_error",
                                                                             [],
@@ -5966,10 +7321,25 @@ Module dependencies.
                                                       ]
                                                     |)
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
@@ -5988,6 +7358,14 @@ Module dependencies.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
@@ -6016,6 +7394,14 @@ Module dependencies.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ],
                                                                 M.get_function (|
                                                                   "move_bytecode_verifier::dependencies::compare_cross_module_signatures",
                                                                   [],
@@ -6032,6 +7418,18 @@ Module dependencies.
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureToken"
+                                                                              ]
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::ops::deref::Deref",
                                                                           Ty.apply
@@ -6076,6 +7474,18 @@ Module dependencies.
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureToken"
+                                                                              ]
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::ops::deref::Deref",
                                                                           Ty.apply
@@ -6142,6 +7552,8 @@ Module dependencies.
                                                                                 (let e :=
                                                                                   M.copy (| γ |) in
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError",
@@ -6188,6 +7600,15 @@ Module dependencies.
                                                               M.read (|
                                                                 M.return_ (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
@@ -6250,6 +7671,8 @@ Module dependencies.
                                                           "core::result::Result::Err"
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_function (|
                                                                 "move_binary_format::errors::verification_error",
                                                                 [],
@@ -6312,6 +7735,7 @@ Module dependencies.
           M.alloc (| local_struct_abilities_declaration |) in
         let defined_struct_abilities := M.alloc (| defined_struct_abilities |) in
         M.call_closure (|
+          Ty.path "bool",
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format::AbilitySet",
             "is_subset",
@@ -6364,6 +7788,7 @@ Module dependencies.
         LogicalOp.and (|
           BinOp.eq (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -6381,6 +7806,7 @@ Module dependencies.
               ]
             |),
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -6396,6 +7822,7 @@ Module dependencies.
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
@@ -6441,6 +7868,19 @@ Module dependencies.
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::zip::Zip")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::AbilitySet" ];
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -6465,6 +7905,10 @@ Module dependencies.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -6503,6 +7947,7 @@ Module dependencies.
                                     M.copy (| γ0_0 |) in
                                   let defined_type_parameter_constraints := M.copy (| γ0_1 |) in
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_function (|
                                       "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints",
                                       [],
@@ -6572,6 +8017,7 @@ Module dependencies.
         LogicalOp.and (|
           BinOp.eq (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -6589,6 +8035,7 @@ Module dependencies.
               ]
             |),
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -6604,6 +8051,7 @@ Module dependencies.
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
@@ -6649,6 +8097,19 @@ Module dependencies.
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::zip::Zip")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructTypeParameter" ];
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -6673,6 +8134,10 @@ Module dependencies.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -6711,6 +8176,7 @@ Module dependencies.
                                   let defined_type_parameter := M.copy (| γ0_1 |) in
                                   LogicalOp.and (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_function (|
                                         "move_bytecode_verifier::dependencies::compatible_type_parameter_phantom_decl",
                                         [],
@@ -6731,6 +8197,7 @@ Module dependencies.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_function (|
                                           "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints",
                                           [],
@@ -6795,6 +8262,7 @@ Module dependencies.
         let defined_type_parameter_constraints :=
           M.alloc (| defined_type_parameter_constraints |) in
         M.call_closure (|
+          Ty.path "bool",
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format::AbilitySet",
             "is_subset",
@@ -6893,7 +8361,7 @@ Module dependencies.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -6904,6 +8372,7 @@ Module dependencies.
                             (M.alloc (|
                               BinOp.ne (|
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -6921,6 +8390,7 @@ Module dependencies.
                                   ]
                                 |),
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -6949,6 +8419,7 @@ Module dependencies.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
@@ -6969,11 +8440,24 @@ Module dependencies.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::zip::Zip")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ];
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -6997,6 +8481,19 @@ Module dependencies.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::zip::Zip")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ];
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -7021,6 +8518,10 @@ Module dependencies.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -7049,10 +8550,32 @@ Module dependencies.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken"
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -7108,10 +8631,24 @@ Module dependencies.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let handle_type := M.copy (| γ1_0 |) in
                                         let def_type := M.copy (| γ1_1 |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -7130,6 +8667,14 @@ Module dependencies.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_function (|
                                                       "move_bytecode_verifier::dependencies::compare_types",
                                                       [],
@@ -7172,6 +8717,14 @@ Module dependencies.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -7502,6 +9055,10 @@ Module dependencies.
                       let ty2 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::compare_types",
                             [],
@@ -7543,6 +9100,10 @@ Module dependencies.
                       let idx2 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::compare_structs",
                             [],
@@ -7608,10 +9169,24 @@ Module dependencies.
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let idx2 := M.alloc (| γ1_0 |) in
                                       let inst2 := M.alloc (| γ1_1 |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ];
+                                                  Ty.tuple []
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::Try",
                                                 Ty.apply
@@ -7630,6 +9205,14 @@ Module dependencies.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ],
                                                   M.get_function (|
                                                     "move_bytecode_verifier::dependencies::compare_structs",
                                                     [],
@@ -7666,6 +9249,14 @@ Module dependencies.
                                                     M.read (|
                                                       M.return_ (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             Ty.apply
@@ -7712,6 +9303,13 @@ Module dependencies.
                                         |) in
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_function (|
                                             "move_bytecode_verifier::dependencies::compare_cross_module_signatures",
                                             [],
@@ -7726,6 +9324,18 @@ Module dependencies.
                                               Pointer.Kind.Ref,
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ]
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::deref::Deref",
                                                     Ty.apply
@@ -7755,6 +9365,18 @@ Module dependencies.
                                               Pointer.Kind.Ref,
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ]
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::deref::Deref",
                                                     Ty.apply
@@ -7846,6 +9468,13 @@ Module dependencies.
                               ltac:(M.monadic
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_function (|
                                       "move_bytecode_verifier::dependencies::compare_types",
                                       [],
@@ -7903,6 +9532,7 @@ Module dependencies.
                                 M.use
                                   (M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
@@ -7928,6 +9558,7 @@ Module dependencies.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
@@ -8136,6 +9767,7 @@ Module dependencies.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "new",
@@ -8199,9 +9831,17 @@ Module dependencies.
         let idx2 := M.alloc (| idx2 |) in
         let def_module := M.alloc (| def_module |) in
         M.read (|
-          let~ struct_handle :=
+          let~ struct_handle :
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::StructHandle" ],
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "struct_handle_at",
@@ -8225,9 +9865,17 @@ Module dependencies.
                 ]
               |)
             |) in
-          let~ module_handle :=
+          let~ module_handle :
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::ModuleHandle" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "module_handle_at",
@@ -8257,9 +9905,10 @@ Module dependencies.
                 ]
               |)
             |) in
-          let~ module_id :=
+          let~ module_id : Ty.path "move_core_types::language_storage::ModuleId" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "move_core_types::language_storage::ModuleId",
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "module_id_for_handle",
@@ -8283,9 +9932,11 @@ Module dependencies.
                 ]
               |)
             |) in
-          let~ struct_name :=
+          let~ struct_name :
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ],
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "identifier_at",
@@ -8315,9 +9966,17 @@ Module dependencies.
                 ]
               |)
             |) in
-          let~ def_struct_handle :=
+          let~ def_struct_handle :
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::StructHandle" ],
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "struct_handle_at",
@@ -8330,9 +9989,17 @@ Module dependencies.
                 ]
               |)
             |) in
-          let~ def_module_handle :=
+          let~ def_module_handle :
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::ModuleHandle" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "module_handle_at",
@@ -8351,9 +10018,10 @@ Module dependencies.
                 ]
               |)
             |) in
-          let~ def_module_id :=
+          let~ def_module_id : Ty.path "move_core_types::language_storage::ModuleId" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "move_core_types::language_storage::ModuleId",
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "module_id_for_handle",
@@ -8366,9 +10034,11 @@ Module dependencies.
                 ]
               |)
             |) in
-          let~ def_struct_name :=
+          let~ def_struct_name :
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ],
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "identifier_at",
@@ -8397,6 +10067,7 @@ Module dependencies.
                       (M.alloc (|
                         LogicalOp.or (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "move_core_types::language_storage::ModuleId",
@@ -8413,6 +10084,7 @@ Module dependencies.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.apply
@@ -8443,6 +10115,7 @@ Module dependencies.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
+                          Ty.path "move_binary_format::errors::PartialVMError",
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
@@ -8511,7 +10184,19 @@ Module dependencies.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ script_functions :=
+              let~ script_functions :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::FunctionHandleIndex";
+                          Ty.path "alloc::alloc::Global"
+                        ]
+                    ] :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -8552,7 +10237,7 @@ Module dependencies.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8561,7 +10246,7 @@ Module dependencies.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -8573,6 +10258,7 @@ Module dependencies.
                                         UnOp.not (|
                                           BinOp.lt (|
                                             M.call_closure (|
+                                              Ty.path "u32",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -8610,6 +10296,7 @@ Module dependencies.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
@@ -8627,7 +10314,11 @@ Module dependencies.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ m :=
+              let~ m :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::CompiledModule" ] :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| context |) |),
@@ -8635,11 +10326,20 @@ Module dependencies.
                     "module"
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -8659,6 +10359,15 @@ Module dependencies.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -8673,6 +10382,10 @@ Module dependencies.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -8688,6 +10401,18 @@ Module dependencies.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition"
+                                              ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "function_defs",
@@ -8716,10 +10441,26 @@ Module dependencies.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path "usize";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -8768,7 +10509,20 @@ Module dependencies.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let idx := M.copy (| γ1_0 |) in
                                         let fdef := M.copy (| γ1_1 |) in
-                                        let~ code :=
+                                        let~ code :
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Bytecode";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ] :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
@@ -8821,6 +10575,20 @@ Module dependencies.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ];
+                                                  Ty.tuple []
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::Try",
                                                 Ty.apply
@@ -8839,6 +10607,14 @@ Module dependencies.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ],
                                                   M.get_function (|
                                                     "move_bytecode_verifier::dependencies::verify_script_visibility_usage",
                                                     [],
@@ -8875,6 +10651,18 @@ Module dependencies.
                                                       Pointer.Kind.Ref,
                                                       M.deref (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::Bytecode"
+                                                                ]
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::deref::Deref",
                                                             Ty.apply
@@ -8920,6 +10708,14 @@ Module dependencies.
                                                     M.read (|
                                                       M.return_ (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             Ty.apply
@@ -9034,11 +10830,20 @@ Module dependencies.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -9058,6 +10863,15 @@ Module dependencies.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -9072,6 +10886,10 @@ Module dependencies.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -9094,10 +10912,26 @@ Module dependencies.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path "usize";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::Bytecode"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -9144,9 +10978,16 @@ Module dependencies.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let idx := M.copy (| γ1_0 |) in
                                         let instr := M.copy (| γ1_1 |) in
-                                        let~ idx :=
+                                        let~ idx : Ty.path "u16" :=
                                           M.alloc (| M.cast (Ty.path "u16") (M.read (| idx |)) |) in
-                                        let~ fhandle_idx :=
+                                        let~ fhandle_idx :
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionHandleIndex"
+                                              ] :=
                                           M.copy (|
                                             M.match_operator (|
                                               instr,
@@ -9181,6 +11022,13 @@ Module dependencies.
                                                             M.SubPointer.get_struct_record_field (|
                                                               M.deref (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::FunctionInstantiation"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_binary_format::file_format::CompiledModule",
@@ -9226,6 +11074,7 @@ Module dependencies.
                                               [
                                                 M.read (| current_is_entry |);
                                                 M.call_closure (|
+                                                  Ty.path "bool",
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path
@@ -9293,6 +11142,8 @@ Module dependencies.
                                                           "core::result::Result::Err"
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
@@ -9302,6 +11153,8 @@ Module dependencies.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_binary_format::errors::PartialVMError",
@@ -9311,6 +11164,8 @@ Module dependencies.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError",
@@ -9329,6 +11184,7 @@ Module dependencies.
                                                                   ]
                                                                 |);
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_trait_method (|
                                                                     "alloc::string::ToString",
                                                                     Ty.path "str",

@@ -93,6 +93,7 @@ Module transaction_argument.
                         "move_core_types::transaction_argument::TransactionArgument::U8"
                         [
                           M.call_closure (|
+                            Ty.path "u8",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u8",
@@ -121,6 +122,7 @@ Module transaction_argument.
                         "move_core_types::transaction_argument::TransactionArgument::U64"
                         [
                           M.call_closure (|
+                            Ty.path "u64",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u64",
@@ -149,6 +151,7 @@ Module transaction_argument.
                         "move_core_types::transaction_argument::TransactionArgument::U128"
                         [
                           M.call_closure (|
+                            Ty.path "u128",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u128",
@@ -177,6 +180,7 @@ Module transaction_argument.
                         "move_core_types::transaction_argument::TransactionArgument::Address"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::account_address::AccountAddress",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::account_address::AccountAddress",
@@ -205,6 +209,10 @@ Module transaction_argument.
                         "move_core_types::transaction_argument::TransactionArgument::U8Vector"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.apply
@@ -236,6 +244,7 @@ Module transaction_argument.
                         "move_core_types::transaction_argument::TransactionArgument::Bool"
                         [
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "bool",
@@ -264,6 +273,7 @@ Module transaction_argument.
                         "move_core_types::transaction_argument::TransactionArgument::U16"
                         [
                           M.call_closure (|
+                            Ty.path "u16",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u16",
@@ -292,6 +302,7 @@ Module transaction_argument.
                         "move_core_types::transaction_argument::TransactionArgument::U32"
                         [
                           M.call_closure (|
+                            Ty.path "u32",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u32",
@@ -320,6 +331,7 @@ Module transaction_argument.
                         "move_core_types::transaction_argument::TransactionArgument::U256"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::u256::U256",
@@ -358,9 +370,10 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -369,9 +382,10 @@ Module transaction_argument.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "isize",
@@ -405,6 +419,7 @@ Module transaction_argument.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "u8",
@@ -432,6 +447,7 @@ Module transaction_argument.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "u64",
@@ -459,6 +475,7 @@ Module transaction_argument.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "u128",
@@ -486,6 +503,7 @@ Module transaction_argument.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "move_core_types::account_address::AccountAddress",
@@ -513,6 +531,7 @@ Module transaction_argument.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.apply
@@ -543,6 +562,7 @@ Module transaction_argument.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "bool",
@@ -570,6 +590,7 @@ Module transaction_argument.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "u16",
@@ -597,6 +618,7 @@ Module transaction_argument.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "u32",
@@ -624,6 +646,7 @@ Module transaction_argument.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "move_core_types::u256::U256",
@@ -768,9 +791,10 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -779,9 +803,10 @@ Module transaction_argument.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -820,6 +845,7 @@ Module transaction_argument.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
@@ -857,6 +883,7 @@ Module transaction_argument.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
@@ -894,6 +921,7 @@ Module transaction_argument.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
@@ -931,6 +959,7 @@ Module transaction_argument.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -976,6 +1005,7 @@ Module transaction_argument.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -1031,6 +1061,7 @@ Module transaction_argument.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
@@ -1068,6 +1099,7 @@ Module transaction_argument.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
@@ -1105,6 +1137,7 @@ Module transaction_argument.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
@@ -1142,6 +1175,7 @@ Module transaction_argument.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -1170,6 +1204,7 @@ Module transaction_argument.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
+                                  Ty.path "never",
                                   M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
@@ -1219,6 +1254,10 @@ Module transaction_argument.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1248,6 +1287,10 @@ Module transaction_argument.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1277,6 +1320,10 @@ Module transaction_argument.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1306,6 +1353,10 @@ Module transaction_argument.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1335,6 +1386,10 @@ Module transaction_argument.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1390,6 +1445,10 @@ Module transaction_argument.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1419,6 +1478,10 @@ Module transaction_argument.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1448,6 +1511,10 @@ Module transaction_argument.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1477,6 +1544,10 @@ Module transaction_argument.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1519,6 +1590,13 @@ Module transaction_argument.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_core_types::transaction_argument::TransactionArgument";
+                  Ty.associated
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1562,6 +1640,10 @@ Module transaction_argument.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::transaction_argument::VecBytes"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1637,6 +1719,10 @@ Module transaction_argument.
                     let value := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -1646,6 +1732,7 @@ Module transaction_argument.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -1677,6 +1764,7 @@ Module transaction_argument.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -1712,6 +1800,10 @@ Module transaction_argument.
                     let value := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -1721,6 +1813,7 @@ Module transaction_argument.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -1752,6 +1845,7 @@ Module transaction_argument.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -1787,6 +1881,10 @@ Module transaction_argument.
                     let value := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -1796,6 +1894,7 @@ Module transaction_argument.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -1827,6 +1926,7 @@ Module transaction_argument.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -1862,6 +1962,10 @@ Module transaction_argument.
                     let boolean := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -1871,6 +1975,7 @@ Module transaction_argument.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -1902,6 +2007,7 @@ Module transaction_argument.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -1939,6 +2045,10 @@ Module transaction_argument.
                     let address := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -1948,6 +2058,7 @@ Module transaction_argument.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -1979,6 +2090,7 @@ Module transaction_argument.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_debug",
@@ -2024,6 +2136,10 @@ Module transaction_argument.
                     let vector := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -2033,6 +2149,7 @@ Module transaction_argument.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -2064,6 +2181,7 @@ Module transaction_argument.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -2078,6 +2196,7 @@ Module transaction_argument.
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "hex::encode",
                                                           [],
@@ -2126,6 +2245,10 @@ Module transaction_argument.
                     let value := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -2135,6 +2258,7 @@ Module transaction_argument.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -2166,6 +2290,7 @@ Module transaction_argument.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -2201,6 +2326,10 @@ Module transaction_argument.
                     let value := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -2210,6 +2339,7 @@ Module transaction_argument.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -2241,6 +2371,7 @@ Module transaction_argument.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -2276,6 +2407,10 @@ Module transaction_argument.
                     let value := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -2285,6 +2420,7 @@ Module transaction_argument.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -2316,6 +2452,7 @@ Module transaction_argument.
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -2466,6 +2603,7 @@ Module transaction_argument.
                     let v := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_core_types::runtime_value::MoveValue",
                         M.get_associated_function (|
                           Ty.path "move_core_types::runtime_value::MoveValue",
                           "vector_u8",
@@ -2667,6 +2805,22 @@ Module transaction_argument.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "anyhow::Error"
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -2687,6 +2841,17 @@ Module transaction_argument.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
+                                                    ];
+                                                  Ty.path "anyhow::Error"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
@@ -2736,6 +2901,31 @@ Module transaction_argument.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::iter::adapters::map::Map")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::runtime_value::MoveValue";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ];
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::runtime_value::MoveValue"
+                                                            ]
+                                                        ]
+                                                        (Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [ Ty.path "u8"; Ty.path "anyhow::Error" ])
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
@@ -2771,6 +2961,14 @@ Module transaction_argument.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::runtime_value::MoveValue";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::iter::traits::collect::IntoIterator",
                                                         Ty.apply
@@ -2836,6 +3034,8 @@ Module transaction_argument.
                                                                                     "core::result::Result::Err"
                                                                                     [
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "anyhow::Error",
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "anyhow::Error",
@@ -2848,6 +3048,8 @@ Module transaction_argument.
                                                                                         |),
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "alloc::string::String",
                                                                                             M.get_function (|
                                                                                               "core::hint::must_use",
                                                                                               [],
@@ -2859,9 +3061,13 @@ Module transaction_argument.
                                                                                             [
                                                                                               M.read (|
                                                                                                 let~
-                                                                                                      res :=
+                                                                                                      res :
+                                                                                                    Ty.path
+                                                                                                      "alloc::string::String" :=
                                                                                                   M.alloc (|
                                                                                                     M.call_closure (|
+                                                                                                      Ty.path
+                                                                                                        "alloc::string::String",
                                                                                                       M.get_function (|
                                                                                                         "alloc::fmt::format",
                                                                                                         [],
@@ -2869,6 +3075,8 @@ Module transaction_argument.
                                                                                                       |),
                                                                                                       [
                                                                                                         M.call_closure (|
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::Arguments",
                                                                                                           M.get_associated_function (|
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
@@ -2903,6 +3111,8 @@ Module transaction_argument.
                                                                                                                     Value.Array
                                                                                                                       [
                                                                                                                         M.call_closure (|
+                                                                                                                          Ty.path
+                                                                                                                            "core::fmt::rt::Argument",
                                                                                                                           M.get_associated_function (|
                                                                                                                             Ty.path
                                                                                                                               "core::fmt::rt::Argument",
@@ -2973,6 +3183,14 @@ Module transaction_argument.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::transaction_argument::TransactionArgument";
+                                                          Ty.path "anyhow::Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -3055,6 +3273,7 @@ Module transaction_argument.
                                                 "core::result::Result::Err"
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path "anyhow::Error",
                                                     M.get_associated_function (|
                                                       Ty.path "anyhow::Error",
                                                       "msg",
@@ -3063,6 +3282,7 @@ Module transaction_argument.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path "alloc::string::String",
                                                         M.get_function (|
                                                           "core::hint::must_use",
                                                           [],
@@ -3070,9 +3290,11 @@ Module transaction_argument.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            let~ res :=
+                                                            let~ res :
+                                                                Ty.path "alloc::string::String" :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
                                                                     [],
@@ -3080,6 +3302,8 @@ Module transaction_argument.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -3114,6 +3338,8 @@ Module transaction_argument.
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "core::fmt::rt::Argument",
@@ -3237,6 +3463,16 @@ Module transaction_argument.
       ltac:(M.monadic
         (let args := M.alloc (| args |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+              Ty.path "alloc::alloc::Global"
+            ],
           M.get_trait_method (|
             "core::iter::traits::iterator::Iterator",
             Ty.apply
@@ -3281,6 +3517,29 @@ Module transaction_argument.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::iter::adapters::map::Map")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::slice::iter::Iter")
+                    []
+                    [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ];
+                  Ty.function
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
+                        ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+                ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
@@ -3314,6 +3573,10 @@ Module transaction_argument.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::slice::iter::Iter")
+                    []
+                    [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "slice")
@@ -3338,6 +3601,10 @@ Module transaction_argument.
                                 ltac:(M.monadic
                                   (let arg := M.copy (| γ |) in
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -3354,6 +3621,15 @@ Module transaction_argument.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_core_types::runtime_value::MoveValue",
                                           "simple_serialize",
@@ -3365,6 +3641,7 @@ Module transaction_argument.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "move_core_types::runtime_value::MoveValue",
                                                 M.get_trait_method (|
                                                   "core::convert::From",
                                                   Ty.path
@@ -3380,6 +3657,8 @@ Module transaction_argument.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_core_types::transaction_argument::TransactionArgument",
                                                     M.get_trait_method (|
                                                       "core::clone::Clone",
                                                       Ty.path
@@ -3455,6 +3734,10 @@ Module transaction_argument.
             "move_core_types::transaction_argument::VecBytes"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -3506,6 +3789,7 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::hash::Hash",
               Ty.apply
@@ -3599,6 +3883,7 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply
@@ -3669,6 +3954,10 @@ Module transaction_argument.
             "move_core_types::transaction_argument::VecBytes"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply
@@ -3707,6 +3996,29 @@ Module transaction_argument.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::map::Map")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.function
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                          ]
+                          (Ty.path "serde_bytes::bytebuf::ByteBuf")
+                      ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
@@ -3737,6 +4049,16 @@ Module transaction_argument.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -3793,6 +4115,16 @@ Module transaction_argument.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+                Ty.path "alloc::alloc::Global"
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3829,6 +4161,21 @@ Module transaction_argument.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::iter::adapters::map::Map")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                      []
+                      [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ];
+                    Ty.function
+                      [ Ty.tuple [ Ty.path "serde_bytes::bytebuf::ByteBuf" ] ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply
@@ -3854,6 +4201,10 @@ Module transaction_argument.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                      []
+                      [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ],
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply
@@ -3889,6 +4240,10 @@ Module transaction_argument.
                                   ltac:(M.monadic
                                     (let byte_buf := M.copy (| γ |) in
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                       M.get_associated_function (|
                                         Ty.path "serde_bytes::bytebuf::ByteBuf",
                                         "into_vec",

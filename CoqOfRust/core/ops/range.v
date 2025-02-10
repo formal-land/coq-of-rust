@@ -157,10 +157,15 @@ Module ops.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                 M.call_closure (|
+                  Ty.path "core::fmt::Arguments",
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "new_const",
@@ -216,6 +221,7 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
+                    Idx,
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -235,6 +241,7 @@ Module ops.
                   |));
                 ("end_",
                   M.call_closure (|
+                    Idx,
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -280,6 +287,7 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
+                    Idx,
                     M.get_trait_method (|
                       "core::default::Default",
                       Idx,
@@ -293,6 +301,7 @@ Module ops.
                   |));
                 ("end_",
                   M.call_closure (|
+                    Idx,
                     M.get_trait_method (|
                       "core::default::Default",
                       Idx,
@@ -344,6 +353,7 @@ Module ops.
             let other := M.alloc (| other |) in
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                 [
                   M.borrow (|
@@ -366,6 +376,7 @@ Module ops.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -448,9 +459,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                     [
                       M.borrow (|
@@ -472,6 +484,7 @@ Module ops.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                   [
                     M.borrow (|
@@ -526,10 +539,20 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -544,6 +567,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_trait_method (|
                                 "core::fmt::Debug",
                                 Idx,
@@ -583,6 +610,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -621,10 +652,20 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -639,6 +680,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
@@ -648,6 +693,7 @@ Module ops.
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
@@ -688,6 +734,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -726,10 +776,20 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -744,6 +804,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_trait_method (|
                                 "core::fmt::Debug",
                                 Idx,
@@ -783,6 +847,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -857,6 +925,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ],
@@ -892,6 +961,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             UnOp.not (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialOrd", Idx, [], [ Idx ], "lt", [], [] |),
                 [
                   M.borrow (|
@@ -946,6 +1016,7 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
+                    Idx,
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -1002,6 +1073,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
               [
                 M.borrow (|
@@ -1083,6 +1155,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
               [
                 M.borrow (|
@@ -1134,10 +1207,20 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -1152,6 +1235,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_trait_method (|
                                 "core::fmt::Debug",
                                 Idx,
@@ -1191,6 +1278,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1229,10 +1320,20 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -1247,6 +1348,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
@@ -1256,6 +1361,7 @@ Module ops.
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
@@ -1296,6 +1402,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1370,6 +1480,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ],
@@ -1430,6 +1541,7 @@ Module ops.
               [
                 ("end_",
                   M.call_closure (|
+                    Idx,
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -1486,6 +1598,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
               [
                 M.borrow (|
@@ -1567,6 +1680,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
               [
                 M.borrow (|
@@ -1618,10 +1732,20 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -1636,6 +1760,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
@@ -1645,6 +1773,7 @@ Module ops.
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
@@ -1685,6 +1814,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1723,10 +1856,20 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -1741,6 +1884,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_trait_method (|
                                 "core::fmt::Debug",
                                 Idx,
@@ -1780,6 +1927,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1854,6 +2005,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ],
@@ -1901,6 +2053,7 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
+                    Idx,
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -1920,6 +2073,7 @@ Module ops.
                   |));
                 ("end_",
                   M.call_closure (|
+                    Idx,
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -1939,6 +2093,7 @@ Module ops.
                   |));
                 ("exhausted",
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "bool",
@@ -2005,6 +2160,7 @@ Module ops.
             LogicalOp.and (|
               LogicalOp.and (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                   [
                     M.borrow (|
@@ -2027,6 +2183,7 @@ Module ops.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
                     [
                       M.borrow (|
@@ -2134,9 +2291,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                     [
                       M.borrow (|
@@ -2156,9 +2314,10 @@ Module ops.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
                     [
                       M.borrow (|
@@ -2180,6 +2339,7 @@ Module ops.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "bool",
@@ -2372,6 +2532,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ],
@@ -2416,6 +2577,7 @@ Module ops.
               ltac:(M.monadic
                 (UnOp.not (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialOrd",
                       Idx,
@@ -2475,7 +2637,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ exclusive_end :=
+              let~ exclusive_end : Ty.path "usize" :=
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (|
@@ -2488,7 +2650,7 @@ Module ops.
                     Value.Integer IntegerKind.Usize 1
                   |)
                 |) in
-              let~ start :=
+              let~ start : Ty.path "usize" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -2554,10 +2716,20 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -2572,6 +2744,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_trait_method (|
                                 "core::fmt::Debug",
                                 Idx,
@@ -2611,6 +2787,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -2649,10 +2829,20 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -2667,6 +2857,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
@@ -2676,6 +2870,7 @@ Module ops.
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
@@ -2716,6 +2911,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -2754,10 +2953,20 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -2772,6 +2981,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_trait_method (|
                                 "core::fmt::Debug",
                                 Idx,
@@ -2811,6 +3024,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -2849,7 +3066,7 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -2864,10 +3081,23 @@ Module ops.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::fmt::Error"
+                                          ];
+                                        Ty.tuple []
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
                                       Ty.apply
@@ -2882,6 +3112,10 @@ Module ops.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "write_fmt",
@@ -2894,6 +3128,7 @@ Module ops.
                                             M.deref (| M.read (| fmt |) |)
                                           |);
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
@@ -2935,6 +3170,10 @@ Module ops.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
@@ -3030,6 +3269,7 @@ Module ops.
               [
                 ("end_",
                   M.call_closure (|
+                    Idx,
                     M.get_trait_method (| "core::clone::Clone", Idx, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -3086,6 +3326,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
               [
                 M.borrow (|
@@ -3167,6 +3408,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
               [
                 M.borrow (|
@@ -3218,10 +3460,20 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -3236,6 +3488,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "write_fmt",
@@ -3245,6 +3501,7 @@ Module ops.
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
@@ -3285,6 +3542,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -3323,10 +3584,20 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -3341,6 +3612,10 @@ Module ops.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               M.get_trait_method (|
                                 "core::fmt::Debug",
                                 Idx,
@@ -3380,6 +3655,10 @@ Module ops.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -3454,6 +3733,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
                 Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ],
@@ -3532,6 +3812,7 @@ Module ops.
                           "core::ops::range::Bound::Included"
                           [
                             M.call_closure (|
+                              T,
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 T,
@@ -3561,6 +3842,7 @@ Module ops.
                           "core::ops::range::Bound::Excluded"
                           [
                             M.call_closure (|
+                              T,
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 T,
@@ -3634,6 +3916,10 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -3665,6 +3951,10 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -3690,6 +3980,10 @@ Module ops.
                       let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
@@ -3732,9 +4026,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -3743,9 +4038,10 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "isize",
@@ -3779,6 +4075,7 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::hash::Hash",
                             T,
@@ -3806,6 +4103,7 @@ Module ops.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::hash::Hash",
                             T,
@@ -3861,9 +4159,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -3872,9 +4171,10 @@ Module ops.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -3913,6 +4213,7 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ T ],
@@ -3950,6 +4251,7 @@ Module ops.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ T ],
@@ -4183,6 +4485,7 @@ Module ops.
                           "core::ops::range::Bound::Included"
                           [
                             M.call_closure (|
+                              U,
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
@@ -4210,6 +4513,7 @@ Module ops.
                           "core::ops::range::Bound::Excluded"
                           [
                             M.call_closure (|
+                              U,
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
@@ -4276,6 +4580,7 @@ Module ops.
                           "core::ops::range::Bound::Included"
                           [
                             M.call_closure (|
+                              T,
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 T,
@@ -4303,6 +4608,7 @@ Module ops.
                           "core::ops::range::Bound::Excluded"
                           [
                             M.call_closure (|
+                              T,
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 T,
@@ -4346,6 +4652,10 @@ Module ops.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::range::Bound")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::range::RangeBounds",
                         Self,
@@ -4370,6 +4680,7 @@ Module ops.
                         let start := M.copy (| γ0_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.apply (Ty.path "&") [] [ T ],
@@ -4401,6 +4712,7 @@ Module ops.
                         let start := M.copy (| γ0_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.apply (Ty.path "&") [] [ T ],
@@ -4433,6 +4745,10 @@ Module ops.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::range::Bound")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ],
                         M.get_trait_method (|
                           "core::ops::range::RangeBounds",
                           Self,
@@ -4457,6 +4773,7 @@ Module ops.
                           let end_ := M.copy (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialOrd",
                                 Ty.apply (Ty.path "&") [] [ U ],
@@ -4488,6 +4805,7 @@ Module ops.
                           let end_ := M.copy (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialOrd",
                                 Ty.apply (Ty.path "&") [] [ U ],

@@ -57,6 +57,10 @@ Module interpreter_action.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_struct_field1_finish",
@@ -106,6 +110,10 @@ Module interpreter_action.
                       let __self_2 := M.alloc (| γ1_2 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_struct_field3_finish",
@@ -183,6 +191,7 @@ Module interpreter_action.
                           [
                             ("initdata",
                               M.call_closure (|
+                                Ty.path "alloy_primitives::bytes_::Bytes",
                                 M.get_trait_method (|
                                   "core::clone::Clone",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
@@ -231,6 +240,7 @@ Module interpreter_action.
                           [
                             ("initcode",
                               M.call_closure (|
+                                Ty.path "revm_bytecode::eof::Eof",
                                 M.get_trait_method (|
                                   "core::clone::Clone",
                                   Ty.path "revm_bytecode::eof::Eof",
@@ -249,6 +259,7 @@ Module interpreter_action.
                               |));
                             ("input",
                               M.call_closure (|
+                                Ty.path "alloy_primitives::bytes_::Bytes",
                                 M.get_trait_method (|
                                   "core::clone::Clone",
                                   Ty.path "alloy_primitives::bytes_::Bytes",
@@ -267,6 +278,7 @@ Module interpreter_action.
                               |));
                             ("created_address",
                               M.call_closure (|
+                                Ty.path "alloy_primitives::bits::address::Address",
                                 M.get_trait_method (|
                                   "core::clone::Clone",
                                   Ty.path "alloy_primitives::bits::address::Address",
@@ -323,9 +335,10 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -337,9 +350,10 @@ Module interpreter_action.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -381,6 +395,7 @@ Module interpreter_action.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -456,6 +471,7 @@ Module interpreter_action.
                                 LogicalOp.and (|
                                   LogicalOp.and (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply
@@ -480,6 +496,7 @@ Module interpreter_action.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -505,6 +522,7 @@ Module interpreter_action.
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply
@@ -534,6 +552,7 @@ Module interpreter_action.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
@@ -687,6 +706,7 @@ Module interpreter_action.
               [
                 ("initcode",
                   M.call_closure (|
+                    Ty.path "revm_bytecode::eof::Eof",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "revm_bytecode::eof::Eof",
@@ -700,6 +720,7 @@ Module interpreter_action.
                   |));
                 ("input",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bytes_::Bytes",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -713,6 +734,7 @@ Module interpreter_action.
                   |));
                 ("created_address",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bits::address::Address",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -767,6 +789,10 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
@@ -870,6 +896,7 @@ Module interpreter_action.
               [
                 ("caller",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bits::address::Address",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -883,6 +910,10 @@ Module interpreter_action.
                   |));
                 ("value",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.apply
@@ -899,6 +930,7 @@ Module interpreter_action.
                   |));
                 ("gas_limit",
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "u64",
@@ -912,6 +944,8 @@ Module interpreter_action.
                   |));
                 ("kind",
                   M.call_closure (|
+                    Ty.path
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path
@@ -951,6 +985,7 @@ Module interpreter_action.
               [
                 ("caller",
                   M.call_closure (|
+                    Ty.path "alloy_primitives::bits::address::Address",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -978,6 +1013,10 @@ Module interpreter_action.
                   |));
                 ("value",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -1008,6 +1047,7 @@ Module interpreter_action.
                   |));
                 ("gas_limit",
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "u64",
@@ -1035,6 +1075,8 @@ Module interpreter_action.
                   |));
                 ("kind",
                   M.call_closure (|
+                    Ty.path
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path
@@ -1100,6 +1142,7 @@ Module interpreter_action.
               LogicalOp.and (|
                 LogicalOp.and (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloy_primitives::bits::address::Address",
@@ -1130,6 +1173,7 @@ Module interpreter_action.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.apply
@@ -1188,6 +1232,7 @@ Module interpreter_action.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path
@@ -1354,6 +1399,7 @@ Module interpreter_action.
             let gas_limit := M.alloc (| gas_limit |) in
             let input := M.alloc (| input |) in
             M.call_closure (|
+              Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
               M.get_associated_function (|
                 Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
                 "new",

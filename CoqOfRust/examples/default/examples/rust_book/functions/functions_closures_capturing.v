@@ -74,9 +74,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ color :=
+        let~ color : Ty.path "alloc::string::String" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "alloc::string::String",
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "alloc::string::String",
@@ -89,7 +90,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| Value.String "green" |) ]
             |)
           |) in
-        let~ print :=
+        let~ print : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -103,12 +104,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_function (| "std::io::stdio::_print", [], [] |),
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
@@ -141,6 +144,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Value.Array
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
@@ -176,9 +180,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
@@ -191,10 +196,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, print |); Value.Tuple [] ]
             |)
           |) in
-        let~ _reborrow := M.alloc (| M.borrow (| Pointer.Kind.Ref, color |) |) in
-        let~ _ :=
+        let~ _reborrow : Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] :=
+          M.alloc (| M.borrow (| Pointer.Kind.Ref, color |) |) in
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
@@ -207,9 +214,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, print |); Value.Tuple [] ]
             |)
           |) in
-        let~ _color_moved := M.copy (| color |) in
-        let~ count := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
-        let~ inc :=
+        let~ _color_moved : Ty.path "alloc::string::String" := M.copy (| color |) in
+        let~ count : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
+        let~ inc : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -223,22 +230,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ :=
-                                  let β := count in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      Value.Integer IntegerKind.I32 1
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β := count in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.I32 1
+                                      |)
                                     |)
                                   |) in
-                                let~ _ :=
-                                  let~ _ :=
+                                let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -271,6 +282,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_display",
@@ -307,9 +319,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
@@ -322,9 +335,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, inc |); Value.Tuple [] ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),
@@ -337,10 +351,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, inc |); Value.Tuple [] ]
             |)
           |) in
-        let~ _count_reborrowed := M.alloc (| M.borrow (| Pointer.Kind.MutRef, count |) |) in
-        let~ movable :=
+        let~ _count_reborrowed : Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ] :=
+          M.alloc (| M.borrow (| Pointer.Kind.MutRef, count |) |) in
+        let~ movable :
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
@@ -353,7 +376,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer IntegerKind.I32 3 ]
             |)
           |) in
-        let~ consume :=
+        let~ consume : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -367,13 +390,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ :=
-                                  let~ _ :=
+                                let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -406,6 +431,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_debug",
@@ -443,9 +469,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_function (|
                                         "core::mem::drop",
                                         [],
@@ -466,9 +493,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 Ty.function [ Ty.tuple [] ] (Ty.tuple []),

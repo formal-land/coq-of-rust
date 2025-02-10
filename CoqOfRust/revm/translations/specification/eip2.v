@@ -7,6 +7,10 @@ Module eip2.
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              [],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "ruint::Uint")

@@ -175,7 +175,7 @@ Module bls12_381.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -196,14 +196,16 @@ Module bls12_381.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ index :=
+                let~ index : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
                         BinOp.Wrap.sub (| M.read (| k |), Value.Integer IntegerKind.Usize 1 |);
                         BinOp.Wrap.sub (|
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                               "len",
@@ -227,7 +229,7 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ discount :=
+                let~ discount : Ty.path "u64" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "u64")

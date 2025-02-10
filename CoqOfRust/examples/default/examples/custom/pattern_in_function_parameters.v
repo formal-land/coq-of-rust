@@ -66,8 +66,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                       (let γ := M.read (| γ |) in
                       let end_ := M.copy (| γ |) in
                       M.read (|
-                        let~ start := M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
-                        let~ end_ := M.alloc (| M.cast (Ty.path "u32") (M.read (| end_ |)) |) in
+                        let~ start : Ty.path "u32" :=
+                          M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
+                        let~ end_ : Ty.path "u32" :=
+                          M.alloc (| M.cast (Ty.path "u32") (M.read (| end_ |)) |) in
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -83,7 +85,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ count :=
+                                let~ count : Ty.path "u32" :=
                                   M.alloc (|
                                     BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
                                   |) in
@@ -114,6 +116,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "usize" ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -128,6 +134,13 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "usize";
+                                                    Ty.path "core::num::error::TryFromIntError"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::convert::TryFrom",
                                                   Ty.path "usize",
@@ -151,6 +164,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                       ltac:(M.monadic
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "usize" ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
@@ -165,6 +182,13 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "usize";
+                                                    Ty.path "core::num::error::TryFromIntError"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::convert::TryFrom",
                                                   Ty.path "usize",

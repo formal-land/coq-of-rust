@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_basic_contract_caller_AccountId.
           "basic_contract_caller::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -131,19 +132,21 @@ Module Impl_basic_contract_caller_OtherContract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "basic_contract_caller::OtherContract",
-                "value"
-              |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "basic_contract_caller::OtherContract",
-                    "value"
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "basic_contract_caller::OtherContract",
+                  "value"
+                |),
+                UnOp.not (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "basic_contract_caller::OtherContract",
+                      "value"
+                    |)
                   |)
                 |)
               |)
@@ -209,10 +212,11 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       ltac:(M.monadic
         (let other_contract_code_hash := M.alloc (| other_contract_code_hash |) in
         M.read (|
-          let~ other_contract :=
+          let~ other_contract : Ty.path "basic_contract_caller::OtherContract" :=
             M.alloc (|
               M.never_to_any (|
                 M.call_closure (|
+                  Ty.path "never",
                   M.get_function (| "core::panicking::panic", [], [] |),
                   [ M.read (| Value.String "not yet implemented" |) ]
                 |)
@@ -242,9 +246,10 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.path "basic_contract_caller::OtherContract",
                   "flip",
@@ -265,6 +270,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.path "basic_contract_caller::OtherContract",
                 "get",

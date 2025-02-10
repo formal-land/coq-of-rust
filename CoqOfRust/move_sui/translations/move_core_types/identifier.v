@@ -73,8 +73,8 @@ Module identifier.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ i := M.copy (| start_offset |) in
-              let~ _ :=
+              let~ i : Ty.path "usize" := M.copy (| start_offset |) in
+              let~ _ : Ty.tuple [] :=
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -88,6 +88,7 @@ Module identifier.
                                   BinOp.lt (|
                                     M.read (| i |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
@@ -105,7 +106,7 @@ Module identifier.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -116,6 +117,7 @@ Module identifier.
                                           (M.alloc (|
                                             UnOp.not (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_function (|
                                                   "move_core_types::identifier::is_valid_identifier_char",
                                                   [],
@@ -147,13 +149,15 @@ Module identifier.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let~ _ :=
-                              let β := i in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.add (|
-                                  M.read (| β |),
-                                  Value.Integer IntegerKind.Usize 1
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (|
+                                let β := i in
+                                M.write (|
+                                  β,
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -162,7 +166,7 @@ Module identifier.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -201,9 +205,10 @@ Module identifier.
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.read (|
-          let~ b :=
+          let~ b : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
               |)
@@ -276,6 +281,7 @@ Module identifier.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_function (|
                                   "move_core_types::identifier::all_bytes_valid",
                                   [],
@@ -304,6 +310,7 @@ Module identifier.
                     M.alloc (|
                       BinOp.gt (|
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
@@ -318,6 +325,7 @@ Module identifier.
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_function (| "move_core_types::identifier::all_bytes_valid", [], [] |),
                       [
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
@@ -362,6 +370,10 @@ Module identifier.
             "move_core_types::identifier::Identifier"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -413,6 +425,10 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -495,6 +511,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::hash::Hash",
               Ty.apply
@@ -546,6 +563,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
               "core::cmp::Ord",
               Ty.apply
@@ -620,6 +638,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply
@@ -678,6 +697,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.apply
@@ -747,6 +767,7 @@ Module identifier.
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
               M.get_trait_method (|
                 "serde::ser::Serializer",
                 __S,
@@ -799,6 +820,10 @@ Module identifier.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::identifier::Identifier"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -853,9 +878,17 @@ Module identifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ s :=
+                let~ s :
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.path "str"; Ty.path "alloc::alloc::Global" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                       M.get_trait_method (|
                         "core::convert::Into",
                         impl_Into_Box_str__,
@@ -882,6 +915,7 @@ Module identifier.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::identifier::Identifier",
                                   "is_valid",
@@ -922,6 +956,7 @@ Module identifier.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "anyhow::Error",
                                       M.get_associated_function (|
                                         Ty.path "anyhow::Error",
                                         "msg",
@@ -930,6 +965,7 @@ Module identifier.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.path "alloc::string::String",
                                           M.get_function (|
                                             "core::hint::must_use",
                                             [],
@@ -937,9 +973,10 @@ Module identifier.
                                           |),
                                           [
                                             M.read (|
-                                              let~ res :=
+                                              let~ res : Ty.path "alloc::string::String" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "alloc::string::String",
                                                     M.get_function (|
                                                       "alloc::fmt::format",
                                                       [],
@@ -947,6 +984,7 @@ Module identifier.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path "core::fmt::Arguments",
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
@@ -981,6 +1019,8 @@ Module identifier.
                                                                   Value.Array
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
@@ -1052,12 +1092,14 @@ Module identifier.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_function (| "move_core_types::identifier::is_valid", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     M.get_trait_method (|
                       "core::convert::AsRef",
                       impl_AsRef_str_,
@@ -1090,6 +1132,7 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -1140,11 +1183,24 @@ Module identifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ s :=
+                let~ s : Ty.path "alloc::string::String" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::string::FromUtf8Error"
+                                ];
+                              Ty.path "alloc::string::String"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -1162,6 +1218,13 @@ Module identifier.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "alloc::string::String";
+                                  Ty.path "alloc::string::FromUtf8Error"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "alloc::string::String",
                                 "from_utf8",
@@ -1188,6 +1251,13 @@ Module identifier.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.path "anyhow::Error"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1232,6 +1302,11 @@ Module identifier.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "move_core_types::identifier::Identifier"; Ty.path "anyhow::Error"
+                      ],
                     M.get_associated_function (|
                       Ty.path "move_core_types::identifier::Identifier",
                       "new",
@@ -1263,6 +1338,7 @@ Module identifier.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.path "move_core_types::identifier::Identifier",
@@ -1293,6 +1369,7 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "alloc::string::String",
             M.get_trait_method (|
               "core::convert::Into",
               Ty.apply
@@ -1332,9 +1409,14 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (| Ty.path "alloc::string::String", "into_bytes", [], [] |),
             [
               M.call_closure (|
+                Ty.path "alloc::string::String",
                 M.get_associated_function (|
                   Ty.path "move_core_types::identifier::Identifier",
                   "into_string",
@@ -1369,6 +1451,10 @@ Module identifier.
         ltac:(M.monadic
           (let data := M.alloc (| data |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "move_core_types::identifier::Identifier"; Ty.path "anyhow::Error" ],
             M.get_associated_function (|
               Ty.path "move_core_types::identifier::Identifier",
               "new",
@@ -1403,6 +1489,7 @@ Module identifier.
         ltac:(M.monadic
           (let ident_str := M.alloc (| ident_str |) in
           M.call_closure (|
+            Ty.path "move_core_types::identifier::Identifier",
             M.get_trait_method (|
               "alloc::borrow::ToOwned",
               Ty.path "move_core_types::identifier::IdentStr",
@@ -1443,6 +1530,7 @@ Module identifier.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.path "move_core_types::identifier::Identifier",
@@ -1489,6 +1577,7 @@ Module identifier.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ],
                 M.get_trait_method (|
                   "ref_cast::RefCast",
                   Ty.path "move_core_types::identifier::IdentStr",
@@ -1547,10 +1636,15 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.borrow (|
@@ -1571,6 +1665,7 @@ Module identifier.
                           Value.Array
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
@@ -1647,6 +1742,10 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -1729,6 +1828,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (| "core::hash::Hash", Ty.path "str", [], [], "hash", [], [ __H ] |),
             [
               M.borrow (|
@@ -1769,6 +1869,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", Ty.path "str", [], [], "cmp", [], [] |),
             [
               M.borrow (|
@@ -1832,6 +1933,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "str",
@@ -1882,6 +1984,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.path "str",
@@ -1944,10 +2047,11 @@ Module identifier.
         ltac:(M.monadic
           (let _from := M.alloc (| _from |) in
           M.read (|
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (|
                       "ref_cast::layout::assert_layout",
                       [],
@@ -2003,10 +2107,11 @@ Module identifier.
             Pointer.Kind.MutRef,
             M.deref (|
               M.read (|
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (|
                           "ref_cast::layout::assert_layout",
                           [],
@@ -2101,6 +2206,7 @@ Module identifier.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::identifier::IdentStr",
                                   "is_valid",
@@ -2120,6 +2226,10 @@ Module identifier.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::IdentStr" ],
                                     M.get_trait_method (|
                                       "ref_cast::RefCast",
                                       Ty.path "move_core_types::identifier::IdentStr",
@@ -2146,6 +2256,7 @@ Module identifier.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "anyhow::Error",
                                       M.get_associated_function (|
                                         Ty.path "anyhow::Error",
                                         "msg",
@@ -2154,6 +2265,7 @@ Module identifier.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.path "alloc::string::String",
                                           M.get_function (|
                                             "core::hint::must_use",
                                             [],
@@ -2161,9 +2273,10 @@ Module identifier.
                                           |),
                                           [
                                             M.read (|
-                                              let~ res :=
+                                              let~ res : Ty.path "alloc::string::String" :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "alloc::string::String",
                                                     M.get_function (|
                                                       "alloc::fmt::format",
                                                       [],
@@ -2171,6 +2284,7 @@ Module identifier.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path "core::fmt::Arguments",
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
@@ -2205,6 +2319,8 @@ Module identifier.
                                                                   Value.Array
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "core::fmt::rt::Argument",
@@ -2271,12 +2387,14 @@ Module identifier.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_function (| "move_core_types::identifier::is_valid", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     M.get_trait_method (|
                       "core::convert::AsRef",
                       impl_AsRef_str_,
@@ -2309,6 +2427,7 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (| Ty.path "str", "len", [], [] |),
             [
               M.borrow (|
@@ -2338,6 +2457,7 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
             [
               M.borrow (|
@@ -2399,6 +2519,7 @@ Module identifier.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                 [
                   M.borrow (|
@@ -2434,6 +2555,10 @@ Module identifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "move_core_types::gas_algebra::GasQuantity")
+              []
+              [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -2447,6 +2572,7 @@ Module identifier.
               M.cast
                 (Ty.path "u64")
                 (M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.path "move_core_types::identifier::IdentStr",
                     "len",
@@ -2482,6 +2608,7 @@ Module identifier.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.path "move_core_types::identifier::Identifier",
@@ -2527,6 +2654,10 @@ Module identifier.
             "move_core_types::identifier::Identifier"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -2580,10 +2711,15 @@ Module identifier.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.borrow (|
@@ -2604,6 +2740,7 @@ Module identifier.
                           Value.Array
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",

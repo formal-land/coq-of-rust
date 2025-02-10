@@ -76,6 +76,10 @@ Module state.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -168,9 +172,10 @@ Module state.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -179,9 +184,10 @@ Module state.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -240,6 +246,7 @@ Module state.
       ltac:(M.monadic
         (let state := M.alloc (| state |) in
         M.call_closure (|
+          Ty.path "move_core_types::state::VMState",
           M.get_associated_function (|
             Ty.apply
               (Ty.path "std::thread::local::LocalKey")
@@ -287,6 +294,7 @@ Module state.
                             ltac:(M.monadic
                               (let s := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.path "move_core_types::state::VMState",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::cell::RefCell")
@@ -323,6 +331,7 @@ Module state.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "move_core_types::state::VMState",
           M.get_associated_function (|
             Ty.apply
               (Ty.path "std::thread::local::LocalKey")
@@ -372,6 +381,10 @@ Module state.
                               M.read (|
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::state::VMState" ],
                                     M.get_trait_method (|
                                       "core::ops::deref::Deref",
                                       Ty.apply
@@ -389,6 +402,10 @@ Module state.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::cell::Ref")
+                                              []
+                                              [ Ty.path "move_core_types::state::VMState" ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::cell::RefCell")

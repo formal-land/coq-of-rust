@@ -18,11 +18,22 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
       M.catch_return (|
         ltac:(M.monadic
           (M.read (|
-            let~ file :=
+            let~ file : Ty.path "std::fs::File" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error"
+                            ];
+                          Ty.path "std::fs::File"
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -37,6 +48,10 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                           M.get_associated_function (|
                             Ty.path "std::fs::File",
                             "open",
@@ -63,6 +78,21 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "std::io::Lines")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "std::io::buffered::bufreader::BufReader")
+                                            []
+                                            [ Ty.path "std::fs::File" ]
+                                        ];
+                                      Ty.path "std::io::error::Error"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -118,6 +148,15 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                 "core::result::Result::Ok"
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "std::io::Lines")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "std::io::buffered::bufreader::BufReader")
+                          []
+                          [ Ty.path "std::fs::File" ]
+                      ],
                     M.get_trait_method (|
                       "std::io::BufRead",
                       Ty.apply
@@ -132,6 +171,10 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "std::io::buffered::bufreader::BufReader")
+                          []
+                          [ Ty.path "std::fs::File" ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::io::buffered::bufreader::BufReader")
@@ -182,6 +225,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "std::io::Lines")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "std::io::buffered::bufreader::BufReader")
+                                []
+                                [ Ty.path "std::fs::File" ]
+                            ];
+                          Ty.path "std::io::error::Error"
+                        ],
                       M.get_function (|
                         "file_io_read_lines_efficient_method::read_lines",
                         [],
@@ -197,6 +255,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "std::io::Lines")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "std::io::buffered::bufreader::BufReader")
+                              []
+                              [ Ty.path "std::fs::File" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -223,10 +290,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "alloc::string::String";
+                                              Ty.path "std::io::error::Error"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -282,10 +361,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     0
                                                   |) in
                                                 let ip := M.copy (| γ0_0 |) in
-                                                let~ _ :=
-                                                  let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.tuple [],
                                                         M.get_function (|
                                                           "std::io::stdio::_print",
                                                           [],
@@ -293,6 +373,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::Arguments",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
@@ -329,6 +410,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::rt::Argument",

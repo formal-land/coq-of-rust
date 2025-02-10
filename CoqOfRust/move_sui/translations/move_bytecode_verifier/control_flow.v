@@ -39,9 +39,17 @@ Module control_flow.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ function_handle :=
+              let~ function_handle :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "function_handle_at",
@@ -70,6 +78,7 @@ Module control_flow.
                           (M.alloc (|
                             BinOp.le (|
                               M.call_closure (|
+                                Ty.path "u32",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "version",
@@ -83,10 +92,23 @@ Module control_flow.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -104,6 +126,13 @@ Module control_flow.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::control_flow_v5::verify",
                                     [],
@@ -138,6 +167,14 @@ Module control_flow.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::absint::FunctionContext";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -186,6 +223,7 @@ Module control_flow.
                           "core::result::Result::Ok"
                           [
                             M.call_closure (|
+                              Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               M.get_associated_function (|
                                 Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                 "new",
@@ -206,10 +244,23 @@ Module control_flow.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ _ :=
+                      (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -227,6 +278,13 @@ Module control_flow.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::control_flow::verify_fallthrough",
                                     [],
@@ -257,6 +315,14 @@ Module control_flow.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::absint::FunctionContext";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -300,9 +366,11 @@ Module control_flow.
                                 val))
                           ]
                         |) in
-                      let~ function_context :=
+                      let~ function_context :
+                          Ty.path "move_bytecode_verifier::absint::FunctionContext" :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "move_bytecode_verifier::absint::FunctionContext",
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               "new",
@@ -320,10 +388,23 @@ Module control_flow.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -341,6 +422,13 @@ Module control_flow.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.tuple [];
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
                                   M.get_function (|
                                     "move_bytecode_verifier::control_flow::verify_reducibility",
                                     [],
@@ -377,6 +465,14 @@ Module control_flow.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::absint::FunctionContext";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -459,9 +555,11 @@ Module control_flow.
         (let current_function_opt := M.alloc (| current_function_opt |) in
         let code := M.alloc (| code |) in
         M.read (|
-          let~ current_function :=
+          let~ current_function :
+              Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -482,6 +580,15 @@ Module control_flow.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "slice")
@@ -496,6 +603,15 @@ Module control_flow.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                          ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply
@@ -536,6 +652,7 @@ Module control_flow.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
+                          Ty.path "move_binary_format::errors::PartialVMError",
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "new",
@@ -559,6 +676,7 @@ Module control_flow.
                     M.alloc (|
                       UnOp.not (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::Bytecode",
                             "is_unconditional_branch",
@@ -575,6 +693,7 @@ Module control_flow.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
+                          Ty.path "move_binary_format::errors::PartialVMError",
                           M.get_associated_function (|
                             Ty.path "move_binary_format::errors::PartialVMError",
                             "at_code_offset",
@@ -583,6 +702,7 @@ Module control_flow.
                           |),
                           [
                             M.call_closure (|
+                              Ty.path "move_binary_format::errors::PartialVMError",
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
                                 "new",
@@ -600,6 +720,7 @@ Module control_flow.
                               (Ty.path "u16")
                               (BinOp.Wrap.sub (|
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -723,9 +844,11 @@ Module control_flow.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ current_function :=
+              let~ current_function :
+                  Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -737,6 +860,10 @@ Module control_flow.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::absint::FunctionContext",
                           "index",
@@ -756,7 +883,13 @@ Module control_flow.
                     ]
                   |)
                 |) in
-              let~ err :=
+              let~ err :
+                  Ty.function
+                    [ Ty.tuple [ Ty.path "move_core_types::vm_status::StatusCode"; Ty.path "u16" ] ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) :=
                 M.alloc (|
                   M.closure
                     (fun γ =>
@@ -780,6 +913,8 @@ Module control_flow.
                                               "core::result::Result::Err"
                                               [
                                                 M.call_closure (|
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError",
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError",
@@ -789,6 +924,8 @@ Module control_flow.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
@@ -810,9 +947,10 @@ Module control_flow.
                         | _ => M.impossible "wrong number of arguments"
                         end))
                 |) in
-              let~ summary :=
+              let~ summary : Ty.path "move_bytecode_verifier::loop_summary::LoopSummary" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
                       "new",
@@ -824,6 +962,11 @@ Module control_flow.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               "cfg",
@@ -842,9 +985,10 @@ Module control_flow.
                     ]
                   |)
                 |) in
-              let~ partition :=
+              let~ partition : Ty.path "move_bytecode_verifier::loop_summary::LoopPartition" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
                       "new",
@@ -859,11 +1003,12 @@ Module control_flow.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ Ty.associated ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ Ty.associated ],
@@ -875,6 +1020,10 @@ Module control_flow.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::rev::Rev")
+                              []
+                              [ Ty.associated ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.associated,
@@ -886,6 +1035,7 @@ Module control_flow.
                             |),
                             [
                               M.call_closure (|
+                                Ty.associated,
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
                                   "preorder",
@@ -905,10 +1055,14 @@ Module control_flow.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -946,9 +1100,35 @@ Module control_flow.
                                             0
                                           |) in
                                         let head := M.copy (| γ0_0 |) in
-                                        let~ back :=
+                                        let~ back :
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_bytecode_verifier::loop_summary::NodeId";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::loop_summary::NodeId";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::loop_summary::LoopSummary",
@@ -962,7 +1142,7 @@ Module control_flow.
                                               ]
                                             |)
                                           |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -972,6 +1152,7 @@ Module control_flow.
                                                     M.use
                                                       (M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "alloc::vec::Vec")
@@ -1007,9 +1188,25 @@ Module control_flow.
                                                 ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                             ]
                                           |) in
-                                        let~ body :=
+                                        let~ body :
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::loop_summary::NodeId";
+                                                Ty.path "alloc::alloc::Global"
+                                              ] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::loop_summary::NodeId";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -1027,11 +1224,18 @@ Module control_flow.
                                               []
                                             |)
                                           |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.use
                                             (M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_bytecode_verifier::loop_summary::NodeId"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::collect::IntoIterator",
                                                     Ty.apply
@@ -1062,10 +1266,22 @@ Module control_flow.
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
                                                       ltac:(M.monadic
-                                                        (let~ _ :=
+                                                        (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_bytecode_verifier::loop_summary::NodeId"
+                                                                      ]
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::iterator::Iterator",
                                                                   Ty.apply
@@ -1117,9 +1333,13 @@ Module control_flow.
                                                                       0
                                                                     |) in
                                                                   let node := M.copy (| γ0_0 |) in
-                                                                  let~ node :=
+                                                                  let~ node :
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::loop_summary::NodeId" :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_bytecode_verifier::loop_summary::NodeId",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_bytecode_verifier::loop_summary::LoopPartition",
@@ -1149,6 +1369,7 @@ Module control_flow.
                                                                             M.use
                                                                               (M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.path "bool",
                                                                                   M.get_trait_method (|
                                                                                     "core::cmp::PartialEq",
                                                                                     Ty.path
@@ -1179,9 +1400,10 @@ Module control_flow.
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
-                                                                          let~ _ :=
+                                                                          let~ _ : Ty.path "bool" :=
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "bool",
                                                                                 M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -1222,9 +1444,25 @@ Module control_flow.
                                                     |)))
                                               ]
                                             |)) in
-                                        let~ frontier :=
+                                        let~ frontier :
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::loop_summary::NodeId";
+                                                Ty.path "alloc::alloc::Global"
+                                              ] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::loop_summary::NodeId";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
@@ -1257,6 +1495,19 @@ Module control_flow.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::iter::adapters::copied::Copied")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::set::Iter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_bytecode_verifier::loop_summary::NodeId"
+                                                        ]
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
@@ -1278,6 +1529,14 @@ Module control_flow.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::set::Iter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_bytecode_verifier::loop_summary::NodeId"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
@@ -1299,7 +1558,7 @@ Module control_flow.
                                               ]
                                             |)
                                           |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.loop (|
                                             ltac:(M.monadic
                                               (M.match_operator (|
@@ -1310,6 +1569,13 @@ Module control_flow.
                                                       (let γ :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::loop_summary::NodeId"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
@@ -1342,6 +1608,13 @@ Module control_flow.
                                                         (M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::slice::iter::Iter")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_bytecode_verifier::loop_summary::NodeId"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::iter::traits::collect::IntoIterator",
                                                                 Ty.apply
@@ -1366,6 +1639,20 @@ Module control_flow.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_bytecode_verifier::loop_summary::NodeId";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ]
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::loop_summary::LoopSummary",
@@ -1390,10 +1677,23 @@ Module control_flow.
                                                                 (let iter := M.copy (| γ |) in
                                                                 M.loop (|
                                                                   ltac:(M.monadic
-                                                                    (let~ _ :=
+                                                                    (let~ _ : Ty.tuple [] :=
                                                                       M.match_operator (|
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::option::Option")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_bytecode_verifier::loop_summary::NodeId"
+                                                                                  ]
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::iter::traits::iterator::Iterator",
                                                                               Ty.apply
@@ -1448,9 +1748,13 @@ Module control_flow.
                                                                                 |) in
                                                                               let pred :=
                                                                                 M.copy (| γ0_0 |) in
-                                                                              let~ pred :=
+                                                                              let~ pred :
+                                                                                  Ty.path
+                                                                                    "move_bytecode_verifier::loop_summary::NodeId" :=
                                                                                 M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "move_bytecode_verifier::loop_summary::NodeId",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "move_bytecode_verifier::loop_summary::LoopPartition",
@@ -1473,7 +1777,8 @@ Module control_flow.
                                                                                     ]
                                                                                   |)
                                                                                 |) in
-                                                                              let~ _ :=
+                                                                              let~ _ :
+                                                                                  Ty.tuple [] :=
                                                                                 M.match_operator (|
                                                                                   M.alloc (|
                                                                                     Value.Tuple []
@@ -1486,6 +1791,8 @@ Module control_flow.
                                                                                             (M.alloc (|
                                                                                               UnOp.not (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "bool",
                                                                                                   M.get_associated_function (|
                                                                                                     Ty.path
                                                                                                       "move_bytecode_verifier::loop_summary::LoopSummary",
@@ -1521,6 +1828,16 @@ Module control_flow.
                                                                                             M.read (|
                                                                                               M.return_ (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::result::Result")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.tuple
+                                                                                                        [];
+                                                                                                      Ty.path
+                                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                                    ],
                                                                                                   M.get_trait_method (|
                                                                                                     "core::ops::function::Fn",
                                                                                                     Ty.function
@@ -1568,6 +1885,8 @@ Module control_flow.
                                                                                                           "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT"
                                                                                                           [];
                                                                                                         M.call_closure (|
+                                                                                                          Ty.path
+                                                                                                            "u16",
                                                                                                           M.get_associated_function (|
                                                                                                             Ty.path
                                                                                                               "move_bytecode_verifier::loop_summary::LoopSummary",
@@ -1600,10 +1919,13 @@ Module control_flow.
                                                                                         |)))
                                                                                   ]
                                                                                 |) in
-                                                                              let~ body_extended :=
+                                                                              let~ body_extended :
+                                                                                  Ty.path "bool" :=
                                                                                 M.alloc (|
                                                                                   LogicalOp.and (|
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "bool",
                                                                                       M.get_trait_method (|
                                                                                         "core::cmp::PartialEq",
                                                                                         Ty.path
@@ -1630,6 +1952,8 @@ Module control_flow.
                                                                                     |),
                                                                                     ltac:(M.monadic
                                                                                       (M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.get_associated_function (|
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -1675,9 +1999,13 @@ Module control_flow.
                                                                                           Value.Bool
                                                                                             true
                                                                                         |) in
-                                                                                      let~ _ :=
+                                                                                      let~ _ :
+                                                                                          Ty.tuple
+                                                                                            [] :=
                                                                                         M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             M.get_associated_function (|
                                                                                               Ty.apply
                                                                                                 (Ty.path
@@ -1727,7 +2055,7 @@ Module control_flow.
                                                       (M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
-                                                            let~ _ :=
+                                                            let~ _ : Ty.tuple [] :=
                                                               M.alloc (|
                                                                 M.never_to_any (|
                                                                   M.read (| M.break (||) |)
@@ -1740,9 +2068,10 @@ Module control_flow.
                                                 ]
                                               |)))
                                           |) in
-                                        let~ depth :=
+                                        let~ depth : Ty.path "u16" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "u16",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_bytecode_verifier::loop_summary::LoopPartition",
@@ -1805,6 +2134,14 @@ Module control_flow.
                                                             M.read (|
                                                               M.return_ (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::function::Fn",
                                                                     Ty.function
@@ -1849,6 +2186,7 @@ Module control_flow.
                                                                           "move_core_types::vm_status::StatusCode::LOOP_MAX_DEPTH_REACHED"
                                                                           [];
                                                                         M.call_closure (|
+                                                                          Ty.path "u16",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_bytecode_verifier::loop_summary::LoopSummary",

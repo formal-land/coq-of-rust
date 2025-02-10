@@ -25,9 +25,10 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ abs :=
+              let~ abs : Ty.path "f32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "f32",
                     M.get_associated_function (| Ty.path "f32", "abs_private", [], [] |),
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
@@ -78,9 +79,10 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ abs :=
+              let~ abs : Ty.path "f64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "f64",
                     M.get_associated_function (| Ty.path "f64", "abs_private", [], [] |),
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
@@ -149,10 +151,16 @@ Module fmt.
           let sign := M.alloc (| sign |) in
           let precision := M.alloc (| precision |) in
           M.read (|
-            let~ buf :=
+            let~ buf :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 1024 ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 repeat (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
@@ -164,10 +172,23 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 1024
                 |)
               |) in
-            let~ parts :=
+            let~ parts :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 4 ]
+                  [
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ]
+                  ] :=
               M.alloc (|
                 repeat (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -182,9 +203,10 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 4
                 |)
               |) in
-            let~ formatted :=
+            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::num::fmt::Formatted",
                   M.get_function (|
                     "core::num::flt2dec::to_exact_fixed_str",
                     [],
@@ -244,6 +266,10 @@ Module fmt.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "pad_formatted_parts",
@@ -306,10 +332,16 @@ Module fmt.
           let sign := M.alloc (| sign |) in
           let precision := M.alloc (| precision |) in
           M.read (|
-            let~ buf :=
+            let~ buf :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 17 ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 repeat (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
@@ -321,10 +353,23 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 17
                 |)
               |) in
-            let~ parts :=
+            let~ parts :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 4 ]
+                  [
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ]
+                  ] :=
               M.alloc (|
                 repeat (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -339,9 +384,10 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 4
                 |)
               |) in
-            let~ formatted :=
+            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::num::fmt::Formatted",
                   M.get_function (|
                     "core::num::flt2dec::to_shortest_str",
                     [],
@@ -400,6 +446,10 @@ Module fmt.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "pad_formatted_parts",
@@ -451,9 +501,10 @@ Module fmt.
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
           M.read (|
-            let~ force_sign :=
+            let~ force_sign : Ty.path "bool" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "sign_plus",
@@ -463,7 +514,7 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
                 |)
               |) in
-            let~ sign :=
+            let~ sign : Ty.path "core::num::flt2dec::Sign" :=
               M.copy (|
                 M.match_operator (|
                   force_sign,
@@ -501,6 +552,10 @@ Module fmt.
                     let precision := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_function (|
                           "core::fmt::float::float_to_decimal_common_exact",
                           [],
@@ -516,9 +571,14 @@ Module fmt.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ min_precision := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                    (let~ min_precision : Ty.path "usize" :=
+                      M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_function (|
                           "core::fmt::float::float_to_decimal_common_shortest",
                           [],
@@ -582,10 +642,16 @@ Module fmt.
           let precision := M.alloc (| precision |) in
           let upper := M.alloc (| upper |) in
           M.read (|
-            let~ buf :=
+            let~ buf :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 1024 ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 repeat (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
@@ -597,10 +663,23 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 1024
                 |)
               |) in
-            let~ parts :=
+            let~ parts :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 6 ]
+                  [
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ]
+                  ] :=
               M.alloc (|
                 repeat (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -615,9 +694,10 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 6
                 |)
               |) in
-            let~ formatted :=
+            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::num::fmt::Formatted",
                   M.get_function (|
                     "core::num::flt2dec::to_exact_exp_str",
                     [],
@@ -678,6 +758,10 @@ Module fmt.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "pad_formatted_parts",
@@ -743,10 +827,16 @@ Module fmt.
           let sign := M.alloc (| sign |) in
           let upper := M.alloc (| upper |) in
           M.read (|
-            let~ buf :=
+            let~ buf :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 17 ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                  ] :=
               M.alloc (|
                 repeat (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       "uninit",
@@ -758,10 +848,23 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 17
                 |)
               |) in
-            let~ parts :=
+            let~ parts :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 6 ]
+                  [
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ]
+                  ] :=
               M.alloc (|
                 repeat (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::num::fmt::Part" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -776,9 +879,10 @@ Module fmt.
                   Value.Integer IntegerKind.Usize 6
                 |)
               |) in
-            let~ formatted :=
+            let~ formatted : Ty.path "core::num::fmt::Formatted" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::num::fmt::Formatted",
                   M.get_function (|
                     "core::num::flt2dec::to_shortest_exp_str",
                     [],
@@ -839,6 +943,10 @@ Module fmt.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "pad_formatted_parts",
@@ -895,9 +1003,10 @@ Module fmt.
           let num := M.alloc (| num |) in
           let upper := M.alloc (| upper |) in
           M.read (|
-            let~ force_sign :=
+            let~ force_sign : Ty.path "bool" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "sign_plus",
@@ -907,7 +1016,7 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
                 |)
               |) in
-            let~ sign :=
+            let~ sign : Ty.path "core::num::flt2dec::Sign" :=
               M.copy (|
                 M.match_operator (|
                   force_sign,
@@ -945,6 +1054,10 @@ Module fmt.
                     let precision := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_function (|
                           "core::fmt::float::float_to_exponential_common_exact",
                           [],
@@ -966,6 +1079,10 @@ Module fmt.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_function (|
                           "core::fmt::float::float_to_exponential_common_shortest",
                           [],
@@ -1022,9 +1139,10 @@ Module fmt.
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
           M.read (|
-            let~ force_sign :=
+            let~ force_sign : Ty.path "bool" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "sign_plus",
@@ -1034,7 +1152,7 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| fmt |) |) |) ]
                 |)
               |) in
-            let~ sign :=
+            let~ sign : Ty.path "core::num::flt2dec::Sign" :=
               M.copy (|
                 M.match_operator (|
                   force_sign,
@@ -1072,6 +1190,10 @@ Module fmt.
                     let precision := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_function (|
                           "core::fmt::float::float_to_decimal_common_exact",
                           [],
@@ -1096,6 +1218,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::fmt::float::GeneralFormat",
                                       T,
@@ -1115,9 +1238,13 @@ Module fmt.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ upper := M.alloc (| Value.Bool false |) in
+                            let~ upper : Ty.path "bool" := M.alloc (| Value.Bool false |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.get_function (|
                                   "core::fmt::float::float_to_exponential_common_shortest",
                                   [],
@@ -1136,10 +1263,14 @@ Module fmt.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ min_precision :=
+                            (let~ min_precision : Ty.path "usize" :=
                               M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.get_function (|
                                   "core::fmt::float::float_to_decimal_common_shortest",
                                   [],
@@ -1183,6 +1314,10 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_function (|
                 "core::fmt::float::float_to_general_debug",
                 [],
@@ -1219,6 +1354,10 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_function (|
                 "core::fmt::float::float_to_decimal_display",
                 [],
@@ -1255,6 +1394,10 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_function (|
                 "core::fmt::float::float_to_exponential_common",
                 [],
@@ -1292,6 +1435,10 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_function (|
                 "core::fmt::float::float_to_exponential_common",
                 [],
@@ -1329,6 +1476,10 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_function (|
                 "core::fmt::float::float_to_general_debug",
                 [],
@@ -1365,6 +1516,10 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_function (|
                 "core::fmt::float::float_to_decimal_display",
                 [],
@@ -1401,6 +1556,10 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_function (|
                 "core::fmt::float::float_to_exponential_common",
                 [],
@@ -1438,6 +1597,10 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_function (|
                 "core::fmt::float::float_to_exponential_common",
                 [],
@@ -1475,10 +1638,15 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
+                  Ty.path "core::fmt::Arguments",
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "new_v1_formatted",
@@ -1504,6 +1672,7 @@ Module fmt.
                             Value.Array
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Argument",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_lower_hex",
@@ -1518,6 +1687,7 @@ Module fmt.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "u16",
                                               M.get_associated_function (|
                                                 Ty.path "f16",
                                                 "to_bits",
@@ -1546,6 +1716,7 @@ Module fmt.
                             Value.Array
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Placeholder",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Placeholder",
                                     "new",
@@ -1569,6 +1740,7 @@ Module fmt.
                       |)
                     |);
                     M.call_closure (|
+                      Ty.path "core::fmt::rt::UnsafeArg",
                       M.get_associated_function (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         "new",
@@ -1607,10 +1779,15 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
+                  Ty.path "core::fmt::Arguments",
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "new_v1_formatted",
@@ -1636,6 +1813,7 @@ Module fmt.
                             Value.Array
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Argument",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_lower_hex",
@@ -1650,6 +1828,7 @@ Module fmt.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "u128",
                                               M.get_associated_function (|
                                                 Ty.path "f128",
                                                 "to_bits",
@@ -1678,6 +1857,7 @@ Module fmt.
                             Value.Array
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Placeholder",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Placeholder",
                                     "new",
@@ -1701,6 +1881,7 @@ Module fmt.
                       |)
                     |);
                     M.call_closure (|
+                      Ty.path "core::fmt::rt::UnsafeArg",
                       M.get_associated_function (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         "new",

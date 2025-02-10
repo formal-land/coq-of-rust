@@ -54,6 +54,10 @@ Module code_unit_verifier.
           let module := M.alloc (| module |) in
           let meter := M.alloc (| meter |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -70,6 +74,10 @@ Module code_unit_verifier.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
                   "verify_module_impl",
@@ -95,6 +103,7 @@ Module code_unit_verifier.
                               ltac:(M.monadic
                                 (let e := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::errors::VMError",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
@@ -107,6 +116,7 @@ Module code_unit_verifier.
                                       "move_binary_format::errors::Location::Module"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_core_types::language_storage::ModuleId",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -180,9 +190,25 @@ Module code_unit_verifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ name_def_map :=
+                let~ name_def_map :
+                    Ty.apply
+                      (Ty.path "std::collections::hash::map::HashMap")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::IdentifierIndex";
+                        Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                        Ty.path "std::hash::random::RandomState"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "std::collections::hash::map::HashMap")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::IdentifierIndex";
+                          Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                          Ty.path "std::hash::random::RandomState"
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
@@ -199,11 +225,20 @@ Module code_unit_verifier.
                       []
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -223,6 +258,16 @@ Module code_unit_verifier.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -237,6 +282,11 @@ Module code_unit_verifier.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -254,6 +304,18 @@ Module code_unit_verifier.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -283,10 +345,26 @@ Module code_unit_verifier.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -338,9 +416,23 @@ Module code_unit_verifier.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let idx := M.copy (| γ1_0 |) in
                                           let func_def := M.copy (| γ1_1 |) in
-                                          let~ fh :=
+                                          let~ fh :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionHandle"
+                                                ] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionHandle"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
@@ -363,9 +455,23 @@ Module code_unit_verifier.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ :
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                ] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "std::collections::hash::map::HashMap")
@@ -403,12 +509,22 @@ Module code_unit_verifier.
                             |)))
                       ]
                     |)) in
-                let~ total_back_edges := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                let~ _ :=
+                let~ total_back_edges : Ty.path "usize" :=
+                  M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -428,6 +544,16 @@ Module code_unit_verifier.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -442,6 +568,11 @@ Module code_unit_verifier.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -459,6 +590,18 @@ Module code_unit_verifier.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -488,10 +631,26 @@ Module code_unit_verifier.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -543,17 +702,34 @@ Module code_unit_verifier.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let idx := M.copy (| γ1_0 |) in
                                           let function_definition := M.copy (| γ1_1 |) in
-                                          let~ index :=
+                                          let~ index :
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinitionIndex" :=
                                             M.alloc (|
                                               Value.StructTuple
                                                 "move_binary_format::file_format::FunctionDefinitionIndex"
                                                 [ M.cast (Ty.path "u16") (M.read (| idx |)) ]
                                             |) in
-                                          let~ num_back_edges :=
+                                          let~ num_back_edges : Ty.path "usize" :=
                                             M.copy (|
                                               M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::ops::control_flow::ControlFlow")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ];
+                                                        Ty.path "usize"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
@@ -572,6 +748,14 @@ Module code_unit_verifier.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "usize";
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -600,6 +784,14 @@ Module code_unit_verifier.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "usize";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
@@ -654,6 +846,8 @@ Module code_unit_verifier.
                                                                             (let err :=
                                                                               M.copy (| γ |) in
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
@@ -701,6 +895,14 @@ Module code_unit_verifier.
                                                           M.read (|
                                                             M.return_ (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
@@ -747,13 +949,15 @@ Module code_unit_verifier.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
-                                            let β := total_back_edges in
-                                            M.write (|
-                                              β,
-                                              BinOp.Wrap.add (|
-                                                M.read (| β |),
-                                                M.read (| num_back_edges |)
+                                          let~ _ : Ty.tuple [] :=
+                                            M.alloc (|
+                                              let β := total_back_edges in
+                                              M.write (|
+                                                β,
+                                                BinOp.Wrap.add (|
+                                                  M.read (| β |),
+                                                  M.read (| num_back_edges |)
+                                                |)
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))
@@ -763,7 +967,7 @@ Module code_unit_verifier.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -808,6 +1012,8 @@ Module code_unit_verifier.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
@@ -919,9 +1125,10 @@ Module code_unit_verifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "move_bytecode_verifier_meter::Meter",
                         impl_Meter__plus___Sized,
@@ -937,6 +1144,7 @@ Module code_unit_verifier.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                               M.get_associated_function (|
                                 Ty.path "move_core_types::identifier::IdentStr",
                                 "as_str",
@@ -948,6 +1156,10 @@ Module code_unit_verifier.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_core_types::identifier::IdentStr" ],
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "identifier_at",
@@ -963,6 +1175,13 @@ Module code_unit_verifier.
                                           M.SubPointer.get_struct_record_field (|
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionHandle"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
@@ -1003,7 +1222,11 @@ Module code_unit_verifier.
                       ]
                     |)
                   |) in
-                let~ code :=
+                let~ code :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::CodeUnit" ] :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
@@ -1046,11 +1269,24 @@ Module code_unit_verifier.
                       ]
                     |)
                   |) in
-                let~ function_context :=
+                let~ function_context : Ty.path "move_bytecode_verifier::absint::FunctionContext" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.path "move_bytecode_verifier::absint::FunctionContext"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -1068,6 +1304,13 @@ Module code_unit_verifier.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "move_bytecode_verifier::absint::FunctionContext";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_function (|
                                 "move_bytecode_verifier::control_flow::verify_function",
                                 [],
@@ -1106,6 +1349,13 @@ Module code_unit_verifier.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "usize";
+                                          Ty.path "move_binary_format::errors::PartialVMError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1148,7 +1398,7 @@ Module code_unit_verifier.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1177,6 +1427,7 @@ Module code_unit_verifier.
                                       (M.alloc (|
                                         BinOp.gt (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -1191,6 +1442,13 @@ Module code_unit_verifier.
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.path "u16";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "move_binary_format::control_flow_graph::ControlFlowGraph",
                                                       Ty.path
@@ -1206,6 +1464,13 @@ Module code_unit_verifier.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_bytecode_verifier::absint::FunctionContext",
@@ -1244,6 +1509,8 @@ Module code_unit_verifier.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
@@ -1253,6 +1520,8 @@ Module code_unit_verifier.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -1281,9 +1550,10 @@ Module code_unit_verifier.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ num_back_edges :=
+                let~ num_back_edges : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "move_binary_format::control_flow_graph::ControlFlowGraph",
                         Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
@@ -1298,6 +1568,13 @@ Module code_unit_verifier.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.path
+                                    "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                 "cfg",
@@ -1311,7 +1588,7 @@ Module code_unit_verifier.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1356,6 +1633,8 @@ Module code_unit_verifier.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
@@ -1365,6 +1644,8 @@ Module code_unit_verifier.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -1393,7 +1674,8 @@ Module code_unit_verifier.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ code_unit_verifier :=
+                let~ code_unit_verifier :
+                    Ty.path "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier" :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier"
@@ -1405,10 +1687,23 @@ Module code_unit_verifier.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name_def_map |) |) |))
                       ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1423,6 +1718,10 @@ Module code_unit_verifier.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier",
@@ -1457,6 +1756,13 @@ Module code_unit_verifier.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "usize";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1498,10 +1804,23 @@ Module code_unit_verifier.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1516,6 +1835,10 @@ Module code_unit_verifier.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
@@ -1551,6 +1874,13 @@ Module code_unit_verifier.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "usize";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1592,10 +1922,23 @@ Module code_unit_verifier.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1610,6 +1953,10 @@ Module code_unit_verifier.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_trait_method (|
                               "move_bytecode_verifier_meter::Meter",
                               impl_Meter__plus___Sized,
@@ -1644,6 +1991,13 @@ Module code_unit_verifier.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "usize";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1724,10 +2078,23 @@ Module code_unit_verifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1742,6 +2109,10 @@ Module code_unit_verifier.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
@@ -1800,6 +2171,13 @@ Module code_unit_verifier.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1841,10 +2219,23 @@ Module code_unit_verifier.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1859,6 +2250,10 @@ Module code_unit_verifier.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_bytecode_verifier::type_safety::verify",
                               [],
@@ -1911,6 +2306,13 @@ Module code_unit_verifier.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1952,10 +2354,23 @@ Module code_unit_verifier.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1970,6 +2385,10 @@ Module code_unit_verifier.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_bytecode_verifier::locals_safety::verify",
                               [],
@@ -2022,6 +2441,13 @@ Module code_unit_verifier.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -2065,6 +2491,10 @@ Module code_unit_verifier.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_function (|
                       "move_bytecode_verifier::reference_safety::verify",
                       [],

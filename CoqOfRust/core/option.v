@@ -90,6 +90,10 @@ Module option.
                     let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -117,6 +121,10 @@ Module option.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -163,9 +171,10 @@ Module option.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -174,9 +183,10 @@ Module option.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "isize",
@@ -210,6 +220,7 @@ Module option.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
@@ -306,6 +317,7 @@ Module option.
                     let x := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           impl_FnOnce_T__arrow_bool,
@@ -342,6 +354,7 @@ Module option.
           (let self := M.alloc (| self |) in
           UnOp.not (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "is_some",
@@ -393,6 +406,7 @@ Module option.
                     let x := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           impl_FnOnce_T__arrow_bool,
@@ -531,6 +545,7 @@ Module option.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     "as_ref",
@@ -542,6 +557,10 @@ Module option.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::pin::Pin")
@@ -578,6 +597,10 @@ Module option.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::pin::Pin")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ T ] ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::pin::Pin")
@@ -629,6 +652,10 @@ Module option.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     "as_mut",
@@ -640,6 +667,10 @@ Module option.
                       Pointer.Kind.MutRef,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::pin::Pin")
@@ -676,6 +707,10 @@ Module option.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::pin::Pin")
+                              []
+                              [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::pin::Pin")
@@ -718,9 +753,10 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ discriminant :=
+            let~ discriminant : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -767,9 +803,11 @@ Module option.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "*const")
@@ -781,6 +819,10 @@ Module option.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*const")
@@ -809,6 +851,7 @@ Module option.
                     ]
                   |);
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       "len",
@@ -867,9 +910,11 @@ Module option.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                         [
                           M.call_closure (|
+                            Ty.apply (Ty.path "*mut") [] [ T ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "*mut")
@@ -881,6 +926,10 @@ Module option.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "*mut")
@@ -909,6 +958,7 @@ Module option.
                             ]
                           |);
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ T ],
                               "len",
@@ -968,6 +1018,7 @@ Module option.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::option::expect_failed", [], [] |),
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
                         |)
@@ -1018,6 +1069,7 @@ Module option.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::option::unwrap_failed", [], [] |),
                           []
                         |)
@@ -1120,6 +1172,7 @@ Module option.
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
                       M.call_closure (|
+                        T,
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
@@ -1184,6 +1237,7 @@ Module option.
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
                       M.call_closure (|
+                        T,
                         M.get_trait_method (|
                           "core::default::Default",
                           T,
@@ -1247,6 +1301,7 @@ Module option.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                           []
                         |)
@@ -1299,6 +1354,7 @@ Module option.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            U,
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
@@ -1342,7 +1398,7 @@ Module option.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1356,9 +1412,10 @@ Module option.
                           0
                         |) in
                       let x := M.alloc (| γ0_0 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
@@ -1423,6 +1480,7 @@ Module option.
                     let t := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        U,
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
@@ -1485,6 +1543,7 @@ Module option.
                     let t := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        U,
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
@@ -1502,6 +1561,7 @@ Module option.
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
                       M.call_closure (|
+                        U,
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           D,
@@ -1611,6 +1671,7 @@ Module option.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            E,
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
@@ -1650,6 +1711,10 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               "map",
@@ -1663,6 +1728,7 @@ Module option.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                   "as_ref",
@@ -1684,6 +1750,7 @@ Module option.
                               ltac:(M.monadic
                                 (let t := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
                                   M.get_trait_method (|
                                     "core::ops::deref::Deref",
                                     T,
@@ -1724,6 +1791,10 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               "map",
@@ -1737,6 +1808,7 @@ Module option.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                   "as_mut",
@@ -1758,6 +1830,7 @@ Module option.
                               ltac:(M.monadic
                                 (let t := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
                                   M.get_trait_method (|
                                     "core::ops::deref::DerefMut",
                                     T,
@@ -1804,6 +1877,10 @@ Module option.
                   [
                     ("opt",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ T ],
                           "as_ref",
@@ -1842,6 +1919,10 @@ Module option.
                   [
                     ("opt",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ T ],
                           "as_mut",
@@ -1934,6 +2015,7 @@ Module option.
                     let x := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ U ],
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
@@ -1984,7 +2066,7 @@ Module option.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2007,6 +2089,7 @@ Module option.
                                     M.use
                                       (M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::ops::function::FnOnce",
                                             P,
@@ -2140,6 +2223,7 @@ Module option.
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
                           F,
@@ -2239,10 +2323,12 @@ Module option.
             Pointer.Kind.MutRef,
             M.deref (|
               M.read (|
-                let~ _ :=
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.deref (| M.read (| self |) |),
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                    |)
                   |) in
                 M.alloc (|
                   M.borrow (|
@@ -2252,6 +2338,7 @@ Module option.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ T ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
@@ -2263,6 +2350,10 @@ Module option.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "as_mut",
@@ -2313,6 +2404,7 @@ Module option.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       "get_or_insert_with",
@@ -2373,6 +2465,7 @@ Module option.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       "get_or_insert_with",
@@ -2434,7 +2527,7 @@ Module option.
             Pointer.Kind.MutRef,
             M.deref (|
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2443,25 +2536,28 @@ Module option.
                           (let γ := self in
                           let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                          let~ _ :=
-                            M.write (|
-                              M.deref (| M.read (| self |) |),
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::function::FnOnce",
-                                      F,
-                                      [],
-                                      [ Ty.tuple [] ],
-                                      "call_once",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| f |); Value.Tuple [] ]
-                                  |)
-                                ]
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                M.deref (| M.read (| self |) |),
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [
+                                    M.call_closure (|
+                                      T,
+                                      M.get_trait_method (|
+                                        "core::ops::function::FnOnce",
+                                        F,
+                                        [],
+                                        [ Ty.tuple [] ],
+                                        "call_once",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| f |); Value.Tuple [] ]
+                                    |)
+                                  ]
+                              |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -2475,6 +2571,7 @@ Module option.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ T ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
@@ -2486,6 +2583,10 @@ Module option.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "as_mut",
@@ -2530,6 +2631,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
             M.get_function (|
               "core::mem::replace",
               [],
@@ -2573,6 +2675,7 @@ Module option.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
@@ -2584,6 +2687,10 @@ Module option.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "as_mut",
@@ -2605,6 +2712,7 @@ Module option.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::option::Option") [] [ T ],
                           "take",
@@ -2640,6 +2748,7 @@ Module option.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
             M.get_function (|
               "core::mem::replace",
               [],
@@ -2757,6 +2866,7 @@ Module option.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            R,
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
@@ -2937,6 +3047,7 @@ Module option.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            T,
                             M.get_trait_method (|
                               "core::clone::Clone",
                               T,
@@ -3054,6 +3165,7 @@ Module option.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            T,
                             M.get_trait_method (|
                               "core::clone::Clone",
                               T,
@@ -3177,6 +3289,7 @@ Module option.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "never",
           M.get_function (| "core::panicking::panic", [], [] |),
           [ M.read (| Value.String "called `Option::unwrap()` on a `None` value" |) ]
         |)))
@@ -3197,6 +3310,7 @@ Module option.
       ltac:(M.monadic
         (let msg := M.alloc (| msg |) in
         M.call_closure (|
+          Ty.path "never",
           M.get_function (|
             "core::panicking::panic_display",
             [],
@@ -3246,6 +3360,7 @@ Module option.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            T,
                             M.get_trait_method (|
                               "core::clone::Clone",
                               T,
@@ -3311,6 +3426,7 @@ Module option.
                     let from := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::clone::Clone",
                           T,
@@ -3332,19 +3448,22 @@ Module option.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let to := M.copy (| γ0_0 |) in
                     let from := M.copy (| γ0_1 |) in
-                    M.write (|
-                      M.deref (| M.read (| to |) |),
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::clone::Clone",
+                    M.alloc (|
+                      M.write (|
+                        M.deref (| M.read (| to |) |),
+                        M.call_closure (|
                           Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                          [],
-                          [],
-                          "clone",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| from |) |) |) ]
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| from |) |) |) ]
+                        |)
                       |)
                     |)))
               ]
@@ -3452,6 +3571,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Iter") [] [ T ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
               "iter",
@@ -3499,6 +3619,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::IterMut") [] [ T ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
               "iter_mut",
@@ -3567,6 +3688,7 @@ Module option.
         ltac:(M.monadic
           (let o := M.alloc (| o |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
               "as_ref",
@@ -3604,6 +3726,7 @@ Module option.
         ltac:(M.monadic
           (let o := M.alloc (| o |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
               "as_mut",
@@ -3688,6 +3811,7 @@ Module option.
                     let r := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
@@ -3793,6 +3917,10 @@ Module option.
                     let r := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
@@ -3918,6 +4046,7 @@ Module option.
                     let r := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::cmp::Ordering",
                         M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
@@ -4000,6 +4129,7 @@ Module option.
             [
               ("opt",
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ A ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Option") [] [ A ],
@@ -4050,6 +4180,10 @@ Module option.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
@@ -4110,6 +4244,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ A ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ A ],
               "take",
@@ -4143,9 +4278,10 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ len :=
+            let~ len : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::option::Item") [] [ A ],
@@ -4198,6 +4334,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ A ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ A ],
               "take",
@@ -4242,6 +4379,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply (Ty.path "core::option::Option") [] [ A ],
               "len",
@@ -4317,6 +4455,10 @@ Module option.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
@@ -4377,6 +4519,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ A ] ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "core::option::Item") [] [ Ty.apply (Ty.path "&") [] [ A ] ],
@@ -4412,6 +4555,8 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.tuple
+              [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "core::option::Item") [] [ Ty.apply (Ty.path "&") [] [ A ] ],
@@ -4464,6 +4609,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ A ] ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply (Ty.path "core::option::Item") [] [ Ty.apply (Ty.path "&") [] [ A ] ],
@@ -4551,6 +4697,7 @@ Module option.
             [
               ("inner",
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Item") [] [ Ty.apply (Ty.path "&") [] [ A ] ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Item") [] [ Ty.apply (Ty.path "&") [] [ A ] ],
@@ -4608,6 +4755,10 @@ Module option.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
@@ -4668,6 +4819,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "core::option::Item") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
@@ -4703,6 +4855,8 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.tuple
+              [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "core::option::Item") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
@@ -4755,6 +4909,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply (Ty.path "core::option::Item") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
@@ -4846,6 +5001,7 @@ Module option.
             [
               ("inner",
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Item") [] [ A ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Item") [] [ A ],
@@ -4896,6 +5052,10 @@ Module option.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
@@ -4956,6 +5116,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ A ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "core::option::Item") [] [ A ],
@@ -4991,6 +5152,8 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.tuple
+              [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "core::option::Item") [] [ A ],
@@ -5043,6 +5206,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ A ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               Ty.apply (Ty.path "core::option::Item") [] [ A ],
@@ -5129,6 +5293,7 @@ Module option.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ V ],
             M.get_function (|
               "core::iter::adapters::try_process",
               [],
@@ -5161,6 +5326,7 @@ Module option.
             |),
             [
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
@@ -5185,6 +5351,7 @@ Module option.
                               ltac:(M.monadic
                                 (let i := M.copy (| γ |) in
                                 M.call_closure (|
+                                  V,
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply

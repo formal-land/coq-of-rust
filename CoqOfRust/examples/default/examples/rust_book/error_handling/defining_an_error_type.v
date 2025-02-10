@@ -20,6 +20,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -81,10 +82,12 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.call_closure (|
+              Ty.path "core::fmt::Arguments",
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
               [
                 M.borrow (|
@@ -132,6 +135,10 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
     ltac:(M.monadic
       (let vec := M.alloc (| vec |) in
       M.call_closure (|
+        Ty.apply
+          (Ty.path "core::result::Result")
+          []
+          [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ],
         M.get_associated_function (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -157,6 +164,13 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         |),
         [
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                Ty.path "defining_an_error_type::DoubleError"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -168,6 +182,10 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   "first",
@@ -179,6 +197,15 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply
@@ -216,6 +243,10 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                           ltac:(M.monadic
                             (let s := M.copy (| γ |) in
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -230,6 +261,11 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::result::Result")
@@ -246,6 +282,11 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path "str",
                                         "parse",
@@ -335,12 +376,14 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -373,6 +416,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -402,12 +446,14 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -440,6 +486,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -489,9 +536,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ numbers :=
+        let~ numbers :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
@@ -501,6 +556,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.read (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -537,9 +602,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ empty :=
+        let~ empty :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -552,9 +625,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ strings :=
+        let~ strings :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
@@ -564,6 +645,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.read (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -600,36 +691,51 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "defining_an_error_type::print", [], [] |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ],
                   M.get_function (| "defining_an_error_type::double_first", [], [] |),
                   [ M.read (| numbers |) ]
                 |)
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "defining_an_error_type::print", [], [] |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ],
                   M.get_function (| "defining_an_error_type::double_first", [], [] |),
                   [ M.read (| empty |) ]
                 |)
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "defining_an_error_type::print", [], [] |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ],
                   M.get_function (| "defining_an_error_type::double_first", [], [] |),
                   [ M.read (| strings |) ]
                 |)

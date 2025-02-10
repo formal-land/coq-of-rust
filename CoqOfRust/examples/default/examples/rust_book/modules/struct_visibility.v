@@ -74,19 +74,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ open_box :=
+        let~ open_box :
+            Ty.apply
+              (Ty.path "struct_visibility::my::OpenBox")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
             Value.StructRecord
               "struct_visibility::my::OpenBox"
               [ ("contents", M.read (| Value.String "public information" |)) ]
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -119,6 +125,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -152,9 +159,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _closed_box :=
+        let~ _closed_box :
+            Ty.apply
+              (Ty.path "struct_visibility::my::ClosedBox")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "struct_visibility::my::ClosedBox")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "struct_visibility::my::ClosedBox")

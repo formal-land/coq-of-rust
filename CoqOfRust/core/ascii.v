@@ -29,6 +29,10 @@ Module ascii.
             "core::ascii::EscapeDefault"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 4 ]
+                  [],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -80,6 +84,7 @@ Module ascii.
       ltac:(M.monadic
         (let c := M.alloc (| c |) in
         M.call_closure (|
+          Ty.path "core::ascii::EscapeDefault",
           M.get_associated_function (| Ty.path "core::ascii::EscapeDefault", "new", [], [] |),
           [ M.read (| c |) ]
         |)))
@@ -106,6 +111,10 @@ Module ascii.
             "core::ascii::EscapeDefault"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 4 ]
+                  [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -137,6 +146,10 @@ Module ascii.
             "core::ascii::EscapeDefault"
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::escape::EscapeIterInner")
+                  [ Value.Integer IntegerKind.Usize 4 ]
+                  [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -169,6 +182,7 @@ Module ascii.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::escape::EscapeIterInner")
@@ -215,6 +229,7 @@ Module ascii.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -250,9 +265,10 @@ Module ascii.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ n :=
+            let~ n : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::escape::EscapeIterInner")
@@ -294,6 +310,7 @@ Module ascii.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -324,6 +341,7 @@ Module ascii.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -355,6 +373,11 @@ Module ascii.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -409,6 +432,7 @@ Module ascii.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -444,6 +468,11 @@ Module ascii.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -494,6 +523,7 @@ Module ascii.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::escape::EscapeIterInner")
@@ -551,6 +581,10 @@ Module ascii.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -558,6 +592,7 @@ Module ascii.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::escape::EscapeIterInner")
@@ -608,6 +643,10 @@ Module ascii.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::builders::DebugStruct",
               "finish_non_exhaustive",
@@ -619,6 +658,7 @@ Module ascii.
                 Pointer.Kind.MutRef,
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::fmt::builders::DebugStruct",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_struct",

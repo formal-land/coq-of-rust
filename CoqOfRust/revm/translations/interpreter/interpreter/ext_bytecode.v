@@ -26,6 +26,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -142,9 +146,10 @@ Module interpreter.
           ltac:(M.monadic
             (let base := M.alloc (| base |) in
             M.read (|
-              let~ instruction_pointer :=
+              let~ instruction_pointer : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "as_ptr",
@@ -156,6 +161,10 @@ Module interpreter.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.path "bytes::bytes::Bytes",
@@ -170,6 +179,7 @@ Module interpreter.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
                                     M.get_trait_method (|
                                       "core::ops::deref::Deref",
                                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -184,6 +194,10 @@ Module interpreter.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                             M.get_associated_function (|
                                               Ty.path "revm_bytecode::bytecode::Bytecode",
                                               "bytecode",
@@ -236,30 +250,33 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
-                    "instruction_pointer"
-                  |),
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                      "offset",
-                      [],
-                      []
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
+                      "instruction_pointer"
                     |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
-                          "instruction_pointer"
-                        |)
-                      |);
-                      M.read (| offset |)
-                    ]
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                        "offset",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
+                            "instruction_pointer"
+                          |)
+                        |);
+                        M.read (| offset |)
+                      ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -279,92 +296,108 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
-                    "instruction_pointer"
-                  |),
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                      "add",
-                      [],
-                      []
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
+                      "instruction_pointer"
                     |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                          "as_ptr",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.path "bytes::bytes::Bytes",
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::deref::Deref",
-                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                          [],
-                                          [],
-                                          "deref",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "revm_bytecode::bytecode::Bytecode",
-                                                  "bytecode",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
-                                                      "base"
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                        "add",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.path "bytes::bytes::Bytes",
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "bytes::bytes::Bytes" ],
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.path "alloy_primitives::bytes_::Bytes",
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                                  M.get_associated_function (|
+                                                    Ty.path "revm_bytecode::bytecode::Bytecode",
+                                                    "bytecode",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
+                                                        "base"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
+                                                  ]
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        ]
+                                          ]
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |)
-                          |)
-                        ]
-                      |);
-                      M.read (| offset |)
-                    ]
+                          ]
+                        |);
+                        M.read (| offset |)
+                      ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -387,6 +420,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.path "revm_bytecode::legacy::jump_map::JumpTable",
                 "is_valid",
@@ -398,6 +432,10 @@ Module interpreter.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -414,6 +452,15 @@ Module interpreter.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ]
+                            ],
                           M.get_associated_function (|
                             Ty.path "revm_bytecode::bytecode::Bytecode",
                             "legacy_jump_table",
@@ -488,6 +535,7 @@ Module interpreter.
             M.cast
               (Ty.path "usize")
               (M.call_closure (|
+                Ty.path "isize",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                   "offset_from",
@@ -503,6 +551,7 @@ Module interpreter.
                     |)
                   |);
                   M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "as_ptr",
@@ -514,6 +563,10 @@ Module interpreter.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.path "bytes::bytes::Bytes",
@@ -528,6 +581,7 @@ Module interpreter.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
                                     M.get_trait_method (|
                                       "core::ops::deref::Deref",
                                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -542,6 +596,10 @@ Module interpreter.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                             M.get_associated_function (|
                                               Ty.path "revm_bytecode::bytecode::Bytecode",
                                               "bytecode",
@@ -605,6 +663,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i16",
               M.get_function (| "revm_bytecode::utils::read_i16", [], [] |),
               [
                 M.read (|
@@ -630,6 +689,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u16",
               M.get_function (| "revm_bytecode::utils::read_u16", [], [] |),
               [
                 M.read (|
@@ -655,6 +715,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i8",
               M.get_function (|
                 "core::intrinsics::transmute",
                 [],
@@ -716,6 +777,7 @@ Module interpreter.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                   [
                     M.read (|
@@ -751,9 +813,11 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
+              Ty.path "i16",
               M.get_function (| "revm_bytecode::utils::read_i16", [], [] |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                     "offset",
@@ -794,9 +858,11 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
+              Ty.path "u16",
               M.get_function (| "revm_bytecode::utils::read_u16", [], [] |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                     "offset",
@@ -853,6 +919,15 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -904,6 +979,20 @@ Module interpreter.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::sync::Arc")
+                            []
+                            [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ]
+                        ]
+                    ],
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::bytecode::Bytecode",
                     "eof",
@@ -934,6 +1023,18 @@ Module interpreter.
                                 ltac:(M.monadic
                                   (let eof := M.copy (| γ |) in
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "revm_bytecode::eof::types_section::TypesSection"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -949,6 +1050,18 @@ Module interpreter.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "revm_bytecode::eof::types_section::TypesSection"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -972,6 +1085,10 @@ Module interpreter.
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.deref (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [ Ty.path "revm_bytecode::eof::Eof" ],
                                                         M.get_trait_method (|
                                                           "core::ops::deref::Deref",
                                                           Ty.apply
@@ -1032,6 +1149,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -1072,6 +1190,20 @@ Module interpreter.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::sync::Arc")
+                            []
+                            [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ]
+                        ]
+                    ],
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::bytecode::Bytecode",
                     "eof",
@@ -1102,6 +1234,10 @@ Module interpreter.
                                 ltac:(M.monadic
                                   (let eof := M.copy (| γ |) in
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.get_associated_function (|
                                       Ty.path "revm_bytecode::eof::body::EofBody",
                                       "eof_code_section_start",
@@ -1114,6 +1250,10 @@ Module interpreter.
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "revm_bytecode::eof::Eof" ],
                                               M.get_trait_method (|
                                                 "core::ops::deref::Deref",
                                                 Ty.apply
@@ -1182,12 +1322,14 @@ Module interpreter.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.get_associated_function (| Ty.path "revm_bytecode::eof::Eof", "data", [], [] |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -1205,6 +1347,18 @@ Module interpreter.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::sync::Arc")
+                                        []
+                                        [
+                                          Ty.path "revm_bytecode::eof::Eof";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -1229,6 +1383,23 @@ Module interpreter.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::sync::Arc")
+                                                []
+                                                [
+                                                  Ty.path "revm_bytecode::eof::Eof";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path "revm_bytecode::bytecode::Bytecode",
                                         "eof",
@@ -1281,6 +1452,7 @@ Module interpreter.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::eof::Eof",
                     "data_slice",
@@ -1292,6 +1464,7 @@ Module interpreter.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -1309,6 +1482,18 @@ Module interpreter.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::sync::Arc")
+                                        []
+                                        [
+                                          Ty.path "revm_bytecode::eof::Eof";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -1333,6 +1518,23 @@ Module interpreter.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::sync::Arc")
+                                                []
+                                                [
+                                                  Ty.path "revm_bytecode::eof::Eof";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path "revm_bytecode::bytecode::Bytecode",
                                         "eof",
@@ -1388,6 +1590,7 @@ Module interpreter.
                   M.SubPointer.get_struct_record_field (|
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply
@@ -1405,6 +1608,18 @@ Module interpreter.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::sync::Arc")
+                                      []
+                                      [
+                                        Ty.path "revm_bytecode::eof::Eof";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -1429,6 +1644,23 @@ Module interpreter.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::sync::Arc")
+                                              []
+                                              [
+                                                Ty.path "revm_bytecode::eof::Eof";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "revm_bytecode::bytecode::Bytecode",
                                       "eof",
@@ -1497,6 +1729,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -1540,6 +1776,20 @@ Module interpreter.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::sync::Arc")
+                            []
+                            [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ]
+                        ]
+                    ],
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::bytecode::Bytecode",
                     "eof",
@@ -1570,6 +1820,15 @@ Module interpreter.
                                 ltac:(M.monadic
                                   (let eof := M.copy (| γ |) in
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -1584,6 +1843,15 @@ Module interpreter.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -1606,6 +1874,10 @@ Module interpreter.
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.deref (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [ Ty.path "revm_bytecode::eof::Eof" ],
                                                         M.get_trait_method (|
                                                           "core::ops::deref::Deref",
                                                           Ty.apply
@@ -1676,7 +1948,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1688,6 +1960,7 @@ Module interpreter.
                               UnOp.not (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_bytecode::bytecode::Bytecode",
                                       "is_eof",
@@ -1713,7 +1986,7 @@ Module interpreter.
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -1728,6 +2001,7 @@ Module interpreter.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.call_closure (|
+                                              Ty.path "never",
                                               M.get_function (|
                                                 "core::panicking::panic_fmt",
                                                 [],
@@ -1735,6 +2009,7 @@ Module interpreter.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
@@ -1766,6 +2041,12 @@ Module interpreter.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Value.Integer IntegerKind.Usize 0
+                                                                ]
+                                                                [ Ty.path "core::fmt::rt::Argument"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "none",
@@ -1789,10 +2070,11 @@ Module interpreter.
                                         (M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
-                                              let~ _ :=
+                                              let~ _ : Ty.tuple [] :=
                                                 M.alloc (|
                                                   M.never_to_any (|
                                                     M.call_closure (|
+                                                      Ty.path "never",
                                                       M.get_function (|
                                                         "core::hint::unreachable_unchecked",
                                                         [],
@@ -1817,6 +2099,7 @@ Module interpreter.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.path "revm_bytecode::bytecode::Bytecode",
                     "len",
@@ -1852,7 +2135,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1864,6 +2147,7 @@ Module interpreter.
                               UnOp.not (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_bytecode::bytecode::Bytecode",
                                       "is_eof",
@@ -1889,7 +2173,7 @@ Module interpreter.
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -1904,6 +2188,7 @@ Module interpreter.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.call_closure (|
+                                              Ty.path "never",
                                               M.get_function (|
                                                 "core::panicking::panic_fmt",
                                                 [],
@@ -1911,6 +2196,7 @@ Module interpreter.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
@@ -1942,6 +2228,12 @@ Module interpreter.
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Value.Integer IntegerKind.Usize 0
+                                                                ]
+                                                                [ Ty.path "core::fmt::rt::Argument"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "none",
@@ -1965,10 +2257,11 @@ Module interpreter.
                                         (M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
-                                              let~ _ :=
+                                              let~ _ : Ty.tuple [] :=
                                                 M.alloc (|
                                                   M.never_to_any (|
                                                     M.call_closure (|
+                                                      Ty.path "never",
                                                       M.get_function (|
                                                         "core::hint::unreachable_unchecked",
                                                         [],
@@ -1996,6 +2289,7 @@ Module interpreter.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       M.get_associated_function (|
                         Ty.path "revm_bytecode::bytecode::Bytecode",
                         "original_byte_slice",

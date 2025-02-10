@@ -28,7 +28,7 @@ Definition run_max_by {T F : Set} `{Link T} `{Link F}
 Proof.
   destruct Run_FnOnce_for_F as [[call_once [H_call_once run_call_once]]].
   run_symbolic.
-  eapply Run.CallClosure. {
+  run_symbolic_closure. {
     apply (run_call_once compare (Ref.immediate _ v1, Ref.immediate _ v2)).
   }
   intros [ordering|]; run_symbolic.
@@ -92,7 +92,7 @@ Module Ord.
   Proof.
     destruct H_cmp as [cmp [H_cmp run_cmp]].
     run_symbolic.
-    eapply Run.CallClosure. {
+    run_symbolic_closure. {
       apply (
         run_max_by
           (function.Impl_FnOnce_for_Function2.run _ _ _)
@@ -128,7 +128,7 @@ Module Impl_Ord_for_u64.
     }
     { intros.
       run_symbolic.
-      eapply Run.CallClosure. {
+      run_symbolic_closure. {
         apply (intrinsics.run_three_way_compare IntegerKind.U64).
       }
       intros []; run_symbolic.

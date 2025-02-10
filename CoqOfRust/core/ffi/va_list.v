@@ -38,6 +38,10 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field5_finish",
@@ -177,6 +181,10 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -268,6 +276,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              T,
               M.get_function (| "core::ffi::va_list::va_arg", [], [ T ] |),
               [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
             |)))
@@ -298,9 +307,10 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ ap :=
+              let~ ap : Ty.path "core::ffi::va_list::VaListImpl" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::ffi::va_list::VaListImpl",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "core::ffi::va_list::VaListImpl",
@@ -313,9 +323,10 @@ Module ffi.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ ret :=
+              let~ ret : R :=
                 M.alloc (|
                   M.call_closure (|
+                    R,
                     M.get_trait_method (|
                       "core::ops::function::FnOnce",
                       F,
@@ -330,6 +341,7 @@ Module ffi.
                       Value.Tuple
                         [
                           M.call_closure (|
+                            Ty.path "core::ffi::va_list::VaList",
                             M.get_associated_function (|
                               Ty.path "core::ffi::va_list::VaListImpl",
                               "as_va_list",
@@ -342,10 +354,11 @@ Module ffi.
                     ]
                   |)
                 |) in
-              let~ _ :=
-                let~ _ :=
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "core::ffi::va_list::va_end", [], [] |),
                       [
                         M.borrow (|
@@ -626,9 +639,17 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ dest :=
+              let~ dest :
+                  Ty.apply
+                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                    []
+                    [ Ty.path "core::ffi::va_list::VaListImpl" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.path "core::ffi::va_list::VaListImpl" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -641,12 +662,14 @@ Module ffi.
                     []
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "core::ffi::va_list::va_copy", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -664,6 +687,7 @@ Module ffi.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::ffi::va_list::VaListImpl",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")

@@ -23,6 +23,10 @@ Module future.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
@@ -78,6 +82,7 @@ Module future.
               "core::future::ready::Ready"
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -150,6 +155,7 @@ Module future.
               "core::task::poll::Poll::Ready"
               [
                 M.call_closure (|
+                  T,
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     "expect",
@@ -158,6 +164,7 @@ Module future.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         "take",
@@ -170,6 +177,10 @@ Module future.
                           M.SubPointer.get_struct_tuple_field (|
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ] ],
                                 M.get_trait_method (|
                                   "core::ops::deref::DerefMut",
                                   Ty.apply
@@ -231,6 +242,7 @@ Module future.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              T,
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "expect",

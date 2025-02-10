@@ -31,15 +31,15 @@ pub(crate) enum LoopControlFlow {
     Break,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub(crate) enum CallKind {
     /// Pure call of a function, written with a space following the syntax
     /// of Coq.
     Pure,
     /// Like [Pure] but with a result in the monad.
     Effectful,
-    /// Call of a Rust closure, using the monadic operator `M.call`.
-    Closure,
+    /// Call of a Rust closure, using the monadic operator `M.call`. We give the return type.
+    Closure(Rc<CoqType>),
 }
 
 #[derive(Debug, Eq, PartialEq, Serialize)]
@@ -122,7 +122,7 @@ pub(crate) enum Expr {
     },
     Let {
         name: Option<String>,
-        is_user: bool,
+        ty: Option<Rc<CoqType>>,
         init: Rc<Expr>,
         body: Rc<Expr>,
     },
@@ -231,7 +231,7 @@ impl Expr {
                         generic_consts: vec![],
                         generic_tys: vec![],
                     }),
-                    kind: CallKind::Closure,
+                    kind: CallKind::Closure(CoqType::path(&["never"])),
                     args: vec![Rc::new(Expr::Call {
                         func: Expr::local_var("M.read"),
                         kind: CallKind::Effectful,
@@ -273,8 +273,8 @@ impl Expr {
             } => elements.iter().any(|element| element.has_return()),
             Expr::Tuple { elements } => elements.iter().any(|element| element.has_return()),
             Expr::Let {
-                is_user: _,
                 name: _,
+                ty: _,
                 init,
                 body,
             } => init.has_return() || body.has_return(),
@@ -537,8 +537,9 @@ impl Expr {
                 CallKind::Effectful => func
                     .to_coq()
                     .monadic_apply_many(&args.iter().map(|arg| arg.to_coq()).collect_vec()),
-                CallKind::Closure => coq::Expression::just_name("M.call_closure")
+                CallKind::Closure(ty) => coq::Expression::just_name("M.call_closure")
                     .monadic_apply_many(&[
+                        ty.to_coq(),
                         func.to_coq(),
                         Rc::new(coq::Expression::List {
                             exprs: args.iter().map(|arg| arg.to_coq()).collect_vec(),
@@ -621,13 +622,13 @@ impl Expr {
             }
             Expr::Let {
                 name,
-                is_user,
+                ty,
                 init,
                 body,
             } => Rc::new(coq::Expression::Let {
+                is_user: ty.is_some(),
                 name: name.to_owned(),
-                is_user: *is_user,
-                ty: None,
+                ty: ty.as_ref().map(|ty| ty.to_coq()),
                 init: init.to_coq(),
                 body: body.to_coq(),
             }),

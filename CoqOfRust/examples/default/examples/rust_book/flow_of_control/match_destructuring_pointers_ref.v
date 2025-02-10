@@ -58,11 +58,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ reference :=
+        let~ reference : Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] :=
           M.alloc (|
             M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.I32 4 |) |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             reference,
             [
@@ -70,12 +70,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let val := M.copy (| γ |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -110,6 +112,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_debug",
@@ -136,19 +139,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.deref (| M.read (| reference |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let val := M.copy (| γ |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -183,6 +188,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_debug",
@@ -209,28 +215,30 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let~ _not_a_reference := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
+        let~ _not_a_reference : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
         M.match_operator (|
           M.alloc (| Value.Integer IntegerKind.I32 3 |),
           [
             fun γ =>
               ltac:(M.monadic
                 (let _is_a_reference := M.alloc (| γ |) in
-                let~ value := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
-                let~ mut_value := M.alloc (| Value.Integer IntegerKind.I32 6 |) in
-                let~ _ :=
+                let~ value : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
+                let~ mut_value : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 6 |) in
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     value,
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let r := M.alloc (| γ |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_function (| "std::io::stdio::_print", [], [] |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
@@ -265,6 +273,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Value.Array
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_debug",
@@ -300,19 +309,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let m := M.alloc (| γ |) in
-                        let~ _ :=
-                          let β := M.deref (| M.read (| m |) |) in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 10 |)
+                        let~ _ : Ty.tuple [] :=
+                          M.alloc (|
+                            let β := M.deref (| M.read (| m |) |) in
+                            M.write (|
+                              β,
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 10 |)
+                            |)
                           |) in
-                        let~ _ :=
-                          let~ _ :=
+                        let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_function (| "std::io::stdio::_print", [], [] |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
@@ -347,6 +360,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Value.Array
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_debug",

@@ -71,6 +71,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -166,9 +167,10 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -177,9 +179,10 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -238,9 +241,10 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -249,9 +253,10 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -262,6 +267,7 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
@@ -306,9 +312,10 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -317,9 +324,10 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -330,6 +338,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
               [
                 M.borrow (|
@@ -368,7 +377,7 @@ Module Meter.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -395,6 +404,10 @@ Module Meter.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.get_trait_method (|
                     "move_bytecode_verifier_meter::Meter",
                     Self,
@@ -408,6 +421,7 @@ Module Meter.
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.read (| scope |);
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (| Ty.path "u128", "saturating_mul", [], [] |),
                       [ M.read (| units_per_item |); M.cast (Ty.path "u128") (M.read (| items |)) ]
                     |)
@@ -438,7 +452,7 @@ Module Meter.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -463,11 +477,12 @@ Module Meter.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -493,10 +508,14 @@ Module Meter.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -533,10 +552,24 @@ Module Meter.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -555,6 +588,14 @@ Module Meter.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "move_bytecode_verifier_meter::Meter",
                                                       Self,
@@ -591,6 +632,14 @@ Module Meter.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -635,28 +684,31 @@ Module Meter.
                                                   val))
                                             ]
                                           |) in
-                                        let~ _ :=
-                                          M.write (|
-                                            units_per_item,
-                                            M.cast
-                                              (Ty.path "u128")
-                                              (M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::arith::Mul",
+                                        let~ _ : Ty.tuple [] :=
+                                          M.alloc (|
+                                            M.write (|
+                                              units_per_item,
+                                              M.cast
+                                                (Ty.path "u128")
+                                                (M.call_closure (|
                                                   Ty.path "f32",
-                                                  [],
-                                                  [ Ty.path "f32" ],
-                                                  "mul",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| growth_factor |);
-                                                  M.cast
-                                                    (Ty.path "f32")
-                                                    (M.read (| units_per_item |))
-                                                ]
-                                              |))
+                                                  M.get_trait_method (|
+                                                    "core::ops::arith::Mul",
+                                                    Ty.path "f32",
+                                                    [],
+                                                    [ Ty.path "f32" ],
+                                                    "mul",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (| growth_factor |);
+                                                    M.cast
+                                                      (Ty.path "f32")
+                                                      (M.read (| units_per_item |))
+                                                  ]
+                                                |))
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]
@@ -695,6 +747,7 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
         let name := M.alloc (| name |) in
         let scope := M.alloc (| scope |) in
         M.call_closure (|
+          Ty.tuple [],
           M.get_trait_method (|
             "move_bytecode_verifier_meter::Meter",
             Ty.dyn [ ("move_bytecode_verifier_meter::Meter::Trait", []) ],
@@ -730,6 +783,10 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
         let to := M.alloc (| to |) in
         let factor := M.alloc (| factor |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
           M.get_trait_method (|
             "move_bytecode_verifier_meter::Meter",
             Ty.dyn [ ("move_bytecode_verifier_meter::Meter::Trait", []) ],
@@ -765,6 +822,10 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
         let scope := M.alloc (| scope |) in
         let units := M.alloc (| units |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
           M.get_trait_method (|
             "move_bytecode_verifier_meter::Meter",
             Ty.dyn [ ("move_bytecode_verifier_meter::Meter::Trait", []) ],

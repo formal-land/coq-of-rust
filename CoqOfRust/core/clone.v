@@ -10,13 +10,12 @@ Module clone.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let source := M.alloc (| source |) in
-          M.read (|
-            M.write (|
-              M.deref (| M.read (| self |) |),
-              M.call_closure (|
-                M.get_trait_method (| "core::clone::Clone", Self, [], [], "clone", [], [] |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
-              |)
+          M.write (|
+            M.deref (| M.read (| self |) |),
+            M.call_closure (|
+              Self,
+              M.get_trait_method (| "core::clone::Clone", Self, [], [], "clone", [], [] |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -67,6 +66,7 @@ Module clone.
           (let self := M.alloc (| self |) in
           let dst := M.alloc (| dst |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::clone::uninit::CopySpec",
               T,
@@ -112,6 +112,7 @@ Module clone.
           (let self := M.alloc (| self |) in
           let dst := M.alloc (| dst |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::clone::uninit::CopySpec",
               T,
@@ -151,6 +152,7 @@ Module clone.
           (let self := M.alloc (| self |) in
           let dst := M.alloc (| dst |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::clone::CloneToUninit",
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -165,6 +167,7 @@ Module clone.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                     M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
@@ -205,6 +208,7 @@ Module clone.
           (let self := M.alloc (| self |) in
           let dst := M.alloc (| dst |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::clone::CloneToUninit",
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -219,6 +223,7 @@ Module clone.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                     M.get_associated_function (|
                       Ty.path "core::ffi::c_str::CStr",
                       "to_bytes_with_nul",

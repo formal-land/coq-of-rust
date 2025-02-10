@@ -60,10 +60,10 @@ Module main.
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
         M.read (|
-          let~ lo := M.copy (| Value.DeclaredButUndefined |) in
-          let~ hi := M.copy (| Value.DeclaredButUndefined |) in
-          let~ _ :=
-            let~ _ := InlineAssembly in
+          let lo := M.copy (| Value.DeclaredButUndefined |) in
+          let hi := M.copy (| Value.DeclaredButUndefined |) in
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] := InlineAssembly in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (|
             BinOp.Wrap.add (|

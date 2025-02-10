@@ -47,6 +47,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
@@ -58,6 +62,7 @@ Module iter.
                     Pointer.Kind.MutRef,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::fmt::builders::DebugStruct",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct",

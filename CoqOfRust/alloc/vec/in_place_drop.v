@@ -31,6 +31,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [], [] |),
               [
                 M.read (|
@@ -78,9 +79,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (|
                       "core::ptr::drop_in_place",
                       [],
@@ -91,6 +93,7 @@ Module vec.
                         Pointer.Kind.MutPointer,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                             [
                               M.read (|
@@ -101,6 +104,7 @@ Module vec.
                                 |)
                               |);
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
@@ -167,10 +171,18 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ :=
-                let~ _drop_allocation :=
+              let~ _ : Ty.tuple [] :=
+                let~ _drop_allocation :
+                    Ty.apply
+                      (Ty.path "alloc::raw_vec::RawVec")
+                      []
+                      [ Src; Ty.path "alloc::alloc::Global" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::raw_vec::RawVec")
+                        []
+                        [ Src; Ty.path "alloc::alloc::Global" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::raw_vec::RawVec")
@@ -182,6 +194,7 @@ Module vec.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Src ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Dest ],
                             "cast",
@@ -209,9 +222,10 @@ Module vec.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (|
                         "core::ptr::drop_in_place",
                         [],
@@ -219,9 +233,11 @@ Module vec.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ Dest ] ],
                           M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ Dest ] |),
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ Dest ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Dest ],
                                 "as_ptr",

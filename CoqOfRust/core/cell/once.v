@@ -36,6 +36,10 @@ Module cell.
               [
                 ("inner",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::cell::UnsafeCell")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
@@ -69,6 +73,7 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "as_ref",
@@ -83,6 +88,10 @@ Module cell.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "*mut")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::cell::UnsafeCell")
@@ -129,6 +138,7 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "as_mut",
@@ -140,6 +150,10 @@ Module cell.
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::cell::UnsafeCell")
@@ -191,6 +205,13 @@ Module cell.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; T ]
+                      ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "try_insert",
@@ -264,7 +285,7 @@ Module cell.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -273,6 +294,10 @@ Module cell.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                     "get",
@@ -313,7 +338,11 @@ Module cell.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ slot :=
+                  let~ slot :
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] :=
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.MutRef,
@@ -322,6 +351,10 @@ Module cell.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::cell::UnsafeCell")
@@ -355,6 +388,7 @@ Module cell.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                 "insert",
@@ -401,6 +435,10 @@ Module cell.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ T ]; Ty.path "never" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "get_or_try_init",
@@ -429,6 +467,7 @@ Module cell.
                                           "core::result::Result::Ok"
                                           [
                                             M.call_closure (|
+                                              T,
                                               M.get_trait_method (|
                                                 "core::ops::function::FnOnce",
                                                 F,
@@ -504,6 +543,10 @@ Module cell.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.path "never" ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                               "get_mut_or_try_init",
@@ -535,6 +578,7 @@ Module cell.
                                                   "core::result::Result::Ok"
                                                   [
                                                     M.call_closure (|
+                                                      T,
                                                       M.get_trait_method (|
                                                         "core::ops::function::FnOnce",
                                                         F,
@@ -608,7 +652,7 @@ Module cell.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -617,6 +661,10 @@ Module cell.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                     "get",
@@ -655,6 +703,10 @@ Module cell.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ]; E ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                         "try_init",
@@ -703,7 +755,7 @@ Module cell.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -713,6 +765,7 @@ Module cell.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -727,6 +780,10 @@ Module cell.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.apply (Ty.path "&") [] [ T ] ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::cell::once::OnceCell")
@@ -750,10 +807,20 @@ Module cell.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
+                            let~ _ : Ty.apply (Ty.path "&") [] [ T ] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "core::convert::Infallible"; E ];
+                                        Ty.apply (Ty.path "&") [] [ T ]
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
                                       Ty.apply
@@ -768,6 +835,10 @@ Module cell.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.apply (Ty.path "&") [] [ T ]; E ],
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                           "try_init",
@@ -800,6 +871,10 @@ Module cell.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
@@ -847,6 +922,7 @@ Module cell.
                           Pointer.Kind.MutRef,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -858,6 +934,10 @@ Module cell.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                     "get_mut",
@@ -910,11 +990,21 @@ Module cell.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ val :=
+                  let~ val : T :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; E ];
+                                T
+                              ],
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
                               Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
@@ -926,6 +1016,7 @@ Module cell.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                                 M.get_trait_method (|
                                   "core::ops::function::FnOnce",
                                   F,
@@ -955,6 +1046,10 @@ Module cell.
                                   M.read (|
                                     M.return_ (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.apply (Ty.path "&") [] [ T ]; E ],
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
@@ -999,6 +1094,13 @@ Module cell.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply (Ty.path "&") [] [ T ];
+                                    Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; T ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                   "try_insert",
@@ -1028,9 +1130,11 @@ Module cell.
                           (M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
+                                Ty.path "never",
                                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
@@ -1082,6 +1186,7 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ T ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::cell::UnsafeCell")
@@ -1121,6 +1226,7 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                 "into_inner",
@@ -1129,6 +1235,7 @@ Module cell.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                   M.get_function (|
                     "core::mem::take",
                     [],
@@ -1161,6 +1268,7 @@ Module cell.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                 "new",
@@ -1202,9 +1310,10 @@ Module cell.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ d :=
+              let~ d : Ty.path "core::fmt::builders::DebugTuple" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::fmt::builders::DebugTuple",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Formatter",
                       "debug_tuple",
@@ -1220,10 +1329,14 @@ Module cell.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                         "get",
@@ -1245,6 +1358,10 @@ Module cell.
                         let v := M.copy (| γ0_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::fmt::builders::DebugTuple" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               "field",
@@ -1265,6 +1382,10 @@ Module cell.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "core::fmt::builders::DebugTuple" ],
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugTuple",
                                   "field",
@@ -1280,6 +1401,7 @@ Module cell.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
@@ -1314,6 +1436,10 @@ Module cell.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugTuple",
                     "finish",
@@ -1358,9 +1484,10 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ res :=
+              let~ res : Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "new",
@@ -1370,7 +1497,7 @@ Module cell.
                     []
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1379,6 +1506,10 @@ Module cell.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ T ] ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                 "get",
@@ -1398,6 +1529,7 @@ Module cell.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; T ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                 "set",
@@ -1407,6 +1539,7 @@ Module cell.
                               [
                                 M.borrow (| Pointer.Kind.Ref, res |);
                                 M.call_closure (|
+                                  T,
                                   M.get_trait_method (|
                                     "core::clone::Clone",
                                     T,
@@ -1447,6 +1580,7 @@ Module cell.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
@@ -1491,6 +1625,7 @@ Module cell.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
@@ -1506,6 +1641,10 @@ Module cell.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                         "get",
@@ -1520,6 +1659,10 @@ Module cell.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                         "get",
@@ -1575,6 +1718,10 @@ Module cell.
               [
                 ("inner",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::cell::UnsafeCell")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")

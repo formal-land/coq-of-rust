@@ -17,13 +17,18 @@ Module mem.
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.read (|
-              let~ transmute :=
+              let~ transmute :
+                  Ty.apply
+                    (Ty.path "core::mem::transmutability::TransmuteFrom::transmute::Transmute")
+                    []
+                    [ Src; Self ] :=
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::transmutability::TransmuteFrom::transmute::Transmute"
                     [
                       ("src",
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Src ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Src ],
                             "new",
@@ -34,7 +39,7 @@ Module mem.
                         |))
                     ]
                 |) in
-              let~ dst :=
+              let~ dst : Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Self ] :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     transmute,
@@ -44,6 +49,7 @@ Module mem.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Self,
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Self ],
                     "into_inner",
@@ -263,6 +269,10 @@ Module mem.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
@@ -683,6 +693,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
             M.call_closure (|
+              Ty.path "core::mem::transmutability::Assume",
               M.get_associated_function (|
                 Ty.path "core::mem::transmutability::Assume",
                 "and",
@@ -721,6 +732,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
             M.call_closure (|
+              Ty.path "core::mem::transmutability::Assume",
               M.get_associated_function (|
                 Ty.path "core::mem::transmutability::Assume",
                 "but_not",

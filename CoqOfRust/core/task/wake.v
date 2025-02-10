@@ -55,6 +55,7 @@ Module task.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
@@ -106,6 +107,10 @@ Module task.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -205,9 +210,11 @@ Module task.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.path "core::task::wake::RawWaker",
                 M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                     M.get_function (| "core::ptr::null", [], [ Ty.tuple [] ] |),
                     []
                   |);
@@ -423,6 +430,10 @@ Module task.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
@@ -597,6 +608,10 @@ Module task.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -628,6 +643,10 @@ Module task.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -706,6 +725,7 @@ Module task.
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
             M.call_closure (|
+              Ty.path "core::task::wake::Context",
               M.get_associated_function (|
                 Ty.path "core::task::wake::ContextBuilder",
                 "build",
@@ -714,6 +734,7 @@ Module task.
               |),
               [
                 M.call_closure (|
+                  Ty.path "core::task::wake::ContextBuilder",
                   M.get_associated_function (|
                     Ty.path "core::task::wake::ContextBuilder",
                     "from_waker",
@@ -892,6 +913,10 @@ Module task.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
@@ -903,6 +928,7 @@ Module task.
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
                       M.get_associated_function (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         "field",
@@ -914,6 +940,7 @@ Module task.
                           Pointer.Kind.MutRef,
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "core::fmt::builders::DebugStruct",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Formatter",
                                 "debug_struct",
@@ -1002,6 +1029,10 @@ Module task.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field5_finish",
@@ -1127,9 +1158,11 @@ Module task.
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
             M.read (|
-              let~ local_waker :=
+              let~ local_waker :
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
                     M.get_function (|
                       "core::intrinsics::transmute",
                       [],
@@ -1180,7 +1213,7 @@ Module task.
           ltac:(M.monadic
             (let cx := M.alloc (| cx |) in
             M.read (|
-              let~ ext :=
+              let~ ext : Ty.path "core::task::wake::ExtData" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -1483,9 +1516,17 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ this :=
+              let~ this :
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.path "core::task::wake::Waker" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                      []
+                      [ Ty.path "core::task::wake::Waker" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -1498,9 +1539,10 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (|
@@ -1509,6 +1551,7 @@ Module task.
                               M.SubPointer.get_struct_record_field (|
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
                                     M.get_trait_method (|
                                       "core::ops::deref::Deref",
                                       Ty.apply
@@ -1542,6 +1585,7 @@ Module task.
                           M.SubPointer.get_struct_record_field (|
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply
@@ -1590,6 +1634,7 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple [],
               M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
@@ -1696,6 +1741,7 @@ Module task.
                                   BinOp.eq (| M.read (| a_data |), M.read (| b_data |) |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_function (|
                                         "core::ptr::eq",
                                         [],
@@ -1861,6 +1907,7 @@ Module task.
               [
                 ("waker",
                   M.call_closure (|
+                    Ty.path "core::task::wake::RawWaker",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (|
@@ -1922,6 +1969,7 @@ Module task.
                           (M.alloc (|
                             UnOp.not (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "core::task::wake::Waker",
                                   "will_wake",
@@ -1936,20 +1984,23 @@ Module task.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.write (|
-                          M.deref (| M.read (| self |) |),
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::clone::Clone",
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            M.deref (| M.read (| self |) |),
+                            M.call_closure (|
                               Ty.path "core::task::wake::Waker",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                Ty.path "core::task::wake::Waker",
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
+                            |)
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -1987,6 +2038,7 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple [],
               M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
@@ -2050,7 +2102,8 @@ Module task.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ vtable_ptr :=
+              let~ vtable_ptr :
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ] :=
                 M.copy (|
                   M.use
                     (M.alloc (|
@@ -2074,6 +2127,10 @@ Module task.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "finish",
@@ -2085,6 +2142,10 @@ Module task.
                       Pointer.Kind.MutRef,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "core::fmt::builders::DebugStruct" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
@@ -2096,6 +2157,10 @@ Module task.
                               Pointer.Kind.MutRef,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.path "core::fmt::builders::DebugStruct" ],
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::builders::DebugStruct",
                                     "field",
@@ -2107,6 +2172,7 @@ Module task.
                                       Pointer.Kind.MutRef,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::fmt::builders::DebugStruct",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "debug_struct",
@@ -2220,9 +2286,17 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ this :=
+              let~ this :
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.path "core::task::wake::LocalWaker" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                      []
+                      [ Ty.path "core::task::wake::LocalWaker" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -2235,9 +2309,10 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (|
@@ -2246,6 +2321,10 @@ Module task.
                               M.SubPointer.get_struct_record_field (|
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "core::task::wake::LocalWaker" ],
                                     M.get_trait_method (|
                                       "core::ops::deref::Deref",
                                       Ty.apply
@@ -2279,6 +2358,10 @@ Module task.
                           M.SubPointer.get_struct_record_field (|
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "core::task::wake::LocalWaker" ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply
@@ -2327,6 +2410,7 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple [],
               M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
@@ -2433,6 +2517,7 @@ Module task.
                                   BinOp.eq (| M.read (| a_data |), M.read (| b_data |) |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_function (|
                                         "core::ptr::eq",
                                         [],
@@ -2598,6 +2683,7 @@ Module task.
               [
                 ("waker",
                   M.call_closure (|
+                    Ty.path "core::task::wake::RawWaker",
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (|
@@ -2659,6 +2745,7 @@ Module task.
                           (M.alloc (|
                             UnOp.not (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "core::task::wake::LocalWaker",
                                   "will_wake",
@@ -2673,20 +2760,23 @@ Module task.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.write (|
-                          M.deref (| M.read (| self |) |),
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::clone::Clone",
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            M.deref (| M.read (| self |) |),
+                            M.call_closure (|
                               Ty.path "core::task::wake::LocalWaker",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                Ty.path "core::task::wake::LocalWaker",
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
+                            |)
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2722,6 +2812,7 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
               M.get_function (|
                 "core::intrinsics::transmute",
                 [],
@@ -2760,6 +2851,7 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple [],
               M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
@@ -2823,7 +2915,8 @@ Module task.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ vtable_ptr :=
+              let~ vtable_ptr :
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ] :=
                 M.copy (|
                   M.use
                     (M.alloc (|
@@ -2847,6 +2940,10 @@ Module task.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                   M.get_associated_function (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     "finish",
@@ -2858,6 +2955,10 @@ Module task.
                       Pointer.Kind.MutRef,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "core::fmt::builders::DebugStruct" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::builders::DebugStruct",
                             "field",
@@ -2869,6 +2970,10 @@ Module task.
                               Pointer.Kind.MutRef,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.path "core::fmt::builders::DebugStruct" ],
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::builders::DebugStruct",
                                     "field",
@@ -2880,6 +2985,7 @@ Module task.
                                       Pointer.Kind.MutRef,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::fmt::builders::DebugStruct",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "debug_struct",

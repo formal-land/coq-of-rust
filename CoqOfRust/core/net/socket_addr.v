@@ -90,9 +90,10 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -101,9 +102,10 @@ Module net.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -142,6 +144,7 @@ Module net.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -187,6 +190,7 @@ Module net.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -215,6 +219,7 @@ Module net.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
@@ -286,9 +291,10 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -297,9 +303,10 @@ Module net.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "isize",
@@ -333,6 +340,7 @@ Module net.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::hash::Hash",
                             Ty.path "core::net::socket_addr::SocketAddrV4",
@@ -360,6 +368,7 @@ Module net.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::hash::Hash",
                             Ty.path "core::net::socket_addr::SocketAddrV6",
@@ -400,9 +409,10 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -411,9 +421,10 @@ Module net.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -447,6 +458,10 @@ Module net.
                       let __arg1_0 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::socket_addr::SocketAddrV4",
@@ -484,6 +499,10 @@ Module net.
                       let __arg1_0 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "core::net::socket_addr::SocketAddrV6",
@@ -503,6 +522,10 @@ Module net.
                     ltac:(M.monadic
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
@@ -549,9 +572,10 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -560,9 +584,10 @@ Module net.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -574,6 +599,7 @@ Module net.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
                       "core::cmp::Ord",
                       Ty.path "isize",
@@ -624,6 +650,7 @@ Module net.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.path "core::net::socket_addr::SocketAddrV4",
@@ -667,6 +694,7 @@ Module net.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.path "core::net::socket_addr::SocketAddrV6",
@@ -693,6 +721,7 @@ Module net.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
@@ -831,6 +860,7 @@ Module net.
             let other := M.alloc (| other |) in
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "core::net::ip_addr::Ipv4Addr",
@@ -902,6 +932,7 @@ Module net.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
                       "core::cmp::Ord",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
@@ -947,6 +978,7 @@ Module net.
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (|
                             "core::cmp::Ord",
                             Ty.path "u16",
@@ -1018,6 +1050,7 @@ Module net.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                     M.get_trait_method (|
                       "core::cmp::PartialOrd",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
@@ -1069,6 +1102,10 @@ Module net.
                       let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "u16",
@@ -1137,9 +1174,10 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "core::net::ip_addr::Ipv4Addr",
@@ -1169,6 +1207,7 @@ Module net.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "u16",
@@ -1343,6 +1382,7 @@ Module net.
               LogicalOp.and (|
                 LogicalOp.and (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
@@ -1450,6 +1490,7 @@ Module net.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
                       "core::cmp::Ord",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
@@ -1496,6 +1537,7 @@ Module net.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "core::cmp::Ordering",
                             M.get_trait_method (|
                               "core::cmp::Ord",
                               Ty.path "u16",
@@ -1542,6 +1584,7 @@ Module net.
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "core::cmp::Ordering",
                                     M.get_trait_method (|
                                       "core::cmp::Ord",
                                       Ty.path "u32",
@@ -1588,6 +1631,7 @@ Module net.
                                         M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             Ty.path "u32",
@@ -1671,6 +1715,7 @@ Module net.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                     M.get_trait_method (|
                       "core::cmp::PartialOrd",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
@@ -1723,6 +1768,10 @@ Module net.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::cmp::Ordering" ],
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.path "u16",
@@ -1775,6 +1824,10 @@ Module net.
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::cmp::Ordering" ],
                                     M.get_trait_method (|
                                       "core::cmp::PartialOrd",
                                       Ty.path "u32",
@@ -1830,6 +1883,10 @@ Module net.
                                         |) in
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Ty.path "u32",
@@ -1910,9 +1967,10 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "core::net::ip_addr::Ipv6Addr",
@@ -1940,9 +1998,10 @@ Module net.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "u16",
@@ -1970,9 +2029,10 @@ Module net.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "u32",
@@ -2002,6 +2062,7 @@ Module net.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "u32",
@@ -2076,6 +2137,7 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4"
                           [
                             M.call_closure (|
+                              Ty.path "core::net::socket_addr::SocketAddrV4",
                               M.get_associated_function (|
                                 Ty.path "core::net::socket_addr::SocketAddrV4",
                                 "new",
@@ -2100,6 +2162,7 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6"
                           [
                             M.call_closure (|
+                              Ty.path "core::net::socket_addr::SocketAddrV6",
                               M.get_associated_function (|
                                 Ty.path "core::net::socket_addr::SocketAddrV6",
                                 "new",
@@ -2157,6 +2220,10 @@ Module net.
                             M.read (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                                   M.get_associated_function (|
                                     Ty.path "core::net::socket_addr::SocketAddrV4",
                                     "ip",
@@ -2185,6 +2252,10 @@ Module net.
                             M.read (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                                   M.get_associated_function (|
                                     Ty.path "core::net::socket_addr::SocketAddrV6",
                                     "ip",
@@ -2247,6 +2318,7 @@ Module net.
                       let new_ip := M.copy (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV4",
                             "set_ip",
@@ -2280,6 +2352,7 @@ Module net.
                       let new_ip := M.copy (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV6",
                             "set_ip",
@@ -2298,27 +2371,32 @@ Module net.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let self_ := M.copy (| γ0_0 |) in
                       let new_ip := M.copy (| γ0_1 |) in
-                      M.write (|
-                        M.deref (| M.read (| self_ |) |),
-                        M.call_closure (|
-                          M.get_associated_function (|
+                      M.alloc (|
+                        M.write (|
+                          M.deref (| M.read (| self_ |) |),
+                          M.call_closure (|
                             Ty.path "core::net::socket_addr::SocketAddr",
-                            "new",
-                            [],
-                            []
-                          |),
-                          [
-                            M.read (| new_ip |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::net::socket_addr::SocketAddr",
-                                "port",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self_ |) |) |) ]
-                            |)
-                          ]
+                            M.get_associated_function (|
+                              Ty.path "core::net::socket_addr::SocketAddr",
+                              "new",
+                              [],
+                              []
+                            |),
+                            [
+                              M.read (| new_ip |);
+                              M.call_closure (|
+                                Ty.path "u16",
+                                M.get_associated_function (|
+                                  Ty.path "core::net::socket_addr::SocketAddr",
+                                  "port",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self_ |) |) |)
+                                ]
+                              |)
+                            ]
+                          |)
                         |)
                       |)))
                 ]
@@ -2358,6 +2436,7 @@ Module net.
                       let a := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "u16",
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV4",
                             "port",
@@ -2378,6 +2457,7 @@ Module net.
                       let a := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "u16",
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV6",
                             "port",
@@ -2425,6 +2505,7 @@ Module net.
                       let a := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV4",
                             "set_port",
@@ -2448,6 +2529,7 @@ Module net.
                       let a := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_associated_function (|
                             Ty.path "core::net::socket_addr::SocketAddrV6",
                             "set_port",
@@ -2600,14 +2682,16 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_ip := M.alloc (| new_ip |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::net::socket_addr::SocketAddrV4",
-                    "ip"
-                  |),
-                  M.read (| new_ip |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::net::socket_addr::SocketAddrV4",
+                      "ip"
+                    |),
+                    M.read (| new_ip |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2652,14 +2736,16 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_port := M.alloc (| new_port |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::net::socket_addr::SocketAddrV4",
-                    "port"
-                  |),
-                  M.read (| new_port |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::net::socket_addr::SocketAddrV4",
+                      "port"
+                    |),
+                    M.read (| new_port |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2741,14 +2827,16 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_ip := M.alloc (| new_ip |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::net::socket_addr::SocketAddrV6",
-                    "ip"
-                  |),
-                  M.read (| new_ip |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::net::socket_addr::SocketAddrV6",
+                      "ip"
+                    |),
+                    M.read (| new_ip |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2793,14 +2881,16 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_port := M.alloc (| new_port |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::net::socket_addr::SocketAddrV6",
-                    "port"
-                  |),
-                  M.read (| new_port |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::net::socket_addr::SocketAddrV6",
+                      "port"
+                    |),
+                    M.read (| new_port |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2845,14 +2935,16 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_flowinfo := M.alloc (| new_flowinfo |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::net::socket_addr::SocketAddrV6",
-                    "flowinfo"
-                  |),
-                  M.read (| new_flowinfo |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::net::socket_addr::SocketAddrV6",
+                      "flowinfo"
+                    |),
+                    M.read (| new_flowinfo |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2898,14 +2990,16 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_scope_id := M.alloc (| new_scope_id |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::net::socket_addr::SocketAddrV6",
-                    "scope_id"
-                  |),
-                  M.read (| new_scope_id |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::net::socket_addr::SocketAddrV6",
+                      "scope_id"
+                    |),
+                    M.read (| new_scope_id |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2982,6 +3076,7 @@ Module net.
           ltac:(M.monadic
             (let pieces := M.alloc (| pieces |) in
             M.call_closure (|
+              Ty.path "core::net::socket_addr::SocketAddr",
               M.get_associated_function (|
                 Ty.path "core::net::socket_addr::SocketAddr",
                 "new",
@@ -2990,6 +3085,7 @@ Module net.
               |),
               [
                 M.call_closure (|
+                  Ty.path "core::net::ip_addr::IpAddr",
                   M.get_trait_method (|
                     "core::convert::Into",
                     I,
@@ -3048,6 +3144,10 @@ Module net.
                       let a := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_trait_method (|
                             "core::fmt::Display",
                             Ty.path "core::net::socket_addr::SocketAddrV4",
@@ -3074,6 +3174,10 @@ Module net.
                       let a := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_trait_method (|
                             "core::fmt::Display",
                             Ty.path "core::net::socket_addr::SocketAddrV6",
@@ -3118,6 +3222,10 @@ Module net.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (|
                 "core::fmt::Display",
                 Ty.path "core::net::socket_addr::SocketAddr",
@@ -3180,6 +3288,7 @@ Module net.
                           (M.alloc (|
                             LogicalOp.and (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
@@ -3191,6 +3300,10 @@ Module net.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "precision",
@@ -3210,6 +3323,7 @@ Module net.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -3224,6 +3338,10 @@ Module net.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "width",
@@ -3246,6 +3364,10 @@ Module net.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_fmt",
@@ -3255,6 +3377,7 @@ Module net.
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -3286,6 +3409,7 @@ Module net.
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -3305,6 +3429,11 @@ Module net.
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "core::net::ip_addr::Ipv4Addr"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "core::net::socket_addr::SocketAddrV4",
@@ -3326,6 +3455,7 @@ Module net.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -3340,6 +3470,7 @@ Module net.
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "u16",
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "core::net::socket_addr::SocketAddrV4",
@@ -3372,9 +3503,17 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ buf :=
+                      (let~ buf :
+                          Ty.apply
+                            (Ty.path "core::net::display_buffer::DisplayBuffer")
+                            [ Value.Integer IntegerKind.Usize 21 ]
+                            [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::net::display_buffer::DisplayBuffer")
+                              [ Value.Integer IntegerKind.Usize 21 ]
+                              [],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::net::display_buffer::DisplayBuffer")
@@ -3387,9 +3526,10 @@ Module net.
                             []
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
@@ -3401,6 +3541,10 @@ Module net.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.get_trait_method (|
                                   "core::fmt::Write",
                                   Ty.apply
@@ -3416,6 +3560,7 @@ Module net.
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, buf |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
@@ -3447,6 +3592,7 @@ Module net.
                                               Value.Array
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
@@ -3466,6 +3612,13 @@ Module net.
                                                             Pointer.Kind.Ref,
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::net::ip_addr::Ipv4Addr"
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::net::socket_addr::SocketAddrV4",
@@ -3487,6 +3640,7 @@ Module net.
                                                     ]
                                                   |);
                                                   M.call_closure (|
+                                                    Ty.path "core::fmt::rt::Argument",
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::rt::Argument",
                                                       "new_display",
@@ -3501,6 +3655,7 @@ Module net.
                                                             Pointer.Kind.Ref,
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "u16",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "core::net::socket_addr::SocketAddrV4",
@@ -3535,6 +3690,10 @@ Module net.
                         |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "pad",
@@ -3547,6 +3706,7 @@ Module net.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::net::display_buffer::DisplayBuffer")
@@ -3592,6 +3752,10 @@ Module net.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (|
                 "core::fmt::Display",
                 Ty.path "core::net::socket_addr::SocketAddrV4",
@@ -3662,6 +3826,7 @@ Module net.
                           (M.alloc (|
                             LogicalOp.and (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
@@ -3673,6 +3838,10 @@ Module net.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "precision",
@@ -3692,6 +3861,7 @@ Module net.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -3706,6 +3876,10 @@ Module net.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Formatter",
                                             "width",
@@ -3729,6 +3903,7 @@ Module net.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "u32",
                             M.get_associated_function (|
                               Ty.path "core::net::socket_addr::SocketAddrV6",
                               "scope_id",
@@ -3748,6 +3923,10 @@ Module net.
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "write_fmt",
@@ -3760,6 +3939,7 @@ Module net.
                                       M.deref (| M.read (| f |) |)
                                     |);
                                     M.call_closure (|
+                                      Ty.path "core::fmt::Arguments",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
@@ -3791,6 +3971,7 @@ Module net.
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::Argument",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
@@ -3811,6 +3992,13 @@ Module net.
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::net::ip_addr::Ipv6Addr"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::net::socket_addr::SocketAddrV6",
@@ -3834,6 +4022,7 @@ Module net.
                                                       ]
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::Argument",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
@@ -3848,6 +4037,7 @@ Module net.
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "u16",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::net::socket_addr::SocketAddrV6",
@@ -3885,6 +4075,10 @@ Module net.
                               (let scope_id := M.copy (| γ |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "write_fmt",
@@ -3897,6 +4091,7 @@ Module net.
                                       M.deref (| M.read (| f |) |)
                                     |);
                                     M.call_closure (|
+                                      Ty.path "core::fmt::Arguments",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
@@ -3929,6 +4124,7 @@ Module net.
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::Argument",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
@@ -3949,6 +4145,13 @@ Module net.
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::net::ip_addr::Ipv6Addr"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::net::socket_addr::SocketAddrV6",
@@ -3972,6 +4175,7 @@ Module net.
                                                       ]
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::Argument",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
@@ -3991,6 +4195,7 @@ Module net.
                                                       ]
                                                     |);
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::Argument",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
@@ -4005,6 +4210,7 @@ Module net.
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "u16",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::net::socket_addr::SocketAddrV6",
@@ -4041,9 +4247,17 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ buf :=
+                      (let~ buf :
+                          Ty.apply
+                            (Ty.path "core::net::display_buffer::DisplayBuffer")
+                            [ Value.Integer IntegerKind.Usize 58 ]
+                            [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::net::display_buffer::DisplayBuffer")
+                              [ Value.Integer IntegerKind.Usize 58 ]
+                              [],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::net::display_buffer::DisplayBuffer")
@@ -4056,9 +4270,10 @@ Module net.
                             []
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
@@ -4073,6 +4288,7 @@ Module net.
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "u32",
                                       M.get_associated_function (|
                                         Ty.path "core::net::socket_addr::SocketAddrV6",
                                         "scope_id",
@@ -4097,6 +4313,10 @@ Module net.
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             M.get_trait_method (|
                                               "core::fmt::Write",
                                               Ty.apply
@@ -4112,6 +4332,7 @@ Module net.
                                             [
                                               M.borrow (| Pointer.Kind.MutRef, buf |);
                                               M.call_closure (|
+                                                Ty.path "core::fmt::Arguments",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
@@ -4143,6 +4364,7 @@ Module net.
                                                           Value.Array
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::Argument",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_display",
@@ -4165,6 +4387,13 @@ Module net.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::net::ip_addr::Ipv6Addr"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::net::socket_addr::SocketAddrV6",
@@ -4188,6 +4417,7 @@ Module net.
                                                                 ]
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::Argument",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_display",
@@ -4202,6 +4432,7 @@ Module net.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "u16",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::net::socket_addr::SocketAddrV6",
@@ -4239,6 +4470,10 @@ Module net.
                                         (let scope_id := M.copy (| γ |) in
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             M.get_trait_method (|
                                               "core::fmt::Write",
                                               Ty.apply
@@ -4254,6 +4489,7 @@ Module net.
                                             [
                                               M.borrow (| Pointer.Kind.MutRef, buf |);
                                               M.call_closure (|
+                                                Ty.path "core::fmt::Arguments",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
@@ -4286,6 +4522,7 @@ Module net.
                                                           Value.Array
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::Argument",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_display",
@@ -4308,6 +4545,13 @@ Module net.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::net::ip_addr::Ipv6Addr"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::net::socket_addr::SocketAddrV6",
@@ -4331,6 +4575,7 @@ Module net.
                                                                 ]
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::Argument",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_display",
@@ -4350,6 +4595,7 @@ Module net.
                                                                 ]
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::rt::Argument",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::rt::Argument",
                                                                   "new_display",
@@ -4364,6 +4610,7 @@ Module net.
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "u16",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::net::socket_addr::SocketAddrV6",
@@ -4404,6 +4651,10 @@ Module net.
                         |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "pad",
@@ -4416,6 +4667,7 @@ Module net.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::net::display_buffer::DisplayBuffer")
@@ -4461,6 +4713,10 @@ Module net.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (|
                 "core::fmt::Display",
                 Ty.path "core::net::socket_addr::SocketAddrV6",

@@ -12,9 +12,11 @@ Module raw_vec.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "never",
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
+              Ty.path "core::fmt::Arguments",
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
               [
                 M.borrow (|
@@ -153,6 +155,7 @@ Module raw_vec.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new_in",
@@ -183,6 +186,10 @@ Module raw_vec.
             [
               ("inner",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::raw_vec::RawVecInner")
+                    []
+                    [ Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::raw_vec::RawVecInner")
@@ -231,6 +238,10 @@ Module raw_vec.
             [
               ("inner",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::raw_vec::RawVecInner")
+                    []
+                    [ Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::raw_vec::RawVecInner")
@@ -279,6 +290,16 @@ Module raw_vec.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::raw_vec::RawVecInner")
+                        []
+                        [ Ty.path "alloc::alloc::Global" ];
+                      Ty.path "alloc::collections::TryReserveError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::raw_vec::RawVecInner")
@@ -311,6 +332,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
@@ -398,8 +420,15 @@ Module raw_vec.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (| "alloc::raw_vec::min_non_zero_cap", [], [] |),
-              [ M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |) ]
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_function (| "core::mem::size_of", [], [ T ] |),
+                  []
+                |)
+              ]
             |)
           |))).
     
@@ -424,6 +453,7 @@ Module raw_vec.
             [
               ("inner",
                 M.call_closure (|
+                  Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                     "new_in",
@@ -432,7 +462,11 @@ Module raw_vec.
                   |),
                   [
                     M.read (| alloc |);
-                    M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_function (| "core::mem::align_of", [], [ T ] |),
+                      []
+                    |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -470,6 +504,7 @@ Module raw_vec.
             [
               ("inner",
                 M.call_closure (|
+                  Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                     "with_capacity_in",
@@ -516,6 +551,13 @@ Module raw_vec.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ];
+                      Ty.path "alloc::collections::TryReserveError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                     "try_with_capacity_in",
@@ -589,6 +631,7 @@ Module raw_vec.
             [
               ("inner",
                 M.call_closure (|
+                  Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                     "with_capacity_zeroed_in",
@@ -634,7 +677,7 @@ Module raw_vec.
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -642,7 +685,7 @@ Module raw_vec.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -655,6 +698,7 @@ Module raw_vec.
                                         BinOp.le (|
                                           M.read (| len |),
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::raw_vec::RawVec")
@@ -677,9 +721,11 @@ Module raw_vec.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
@@ -717,9 +763,17 @@ Module raw_vec.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ me :=
+            let~ me :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -732,9 +786,27 @@ Module raw_vec.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ slice :=
+            let~ slice :
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "*mut")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                    ],
                   M.get_function (|
                     "core::ptr::slice_from_raw_parts_mut",
                     [],
@@ -747,6 +819,7 @@ Module raw_vec.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ])
                       (M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                           "ptr",
@@ -758,6 +831,10 @@ Module raw_vec.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply
@@ -782,6 +859,16 @@ Module raw_vec.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                    A
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
@@ -800,6 +887,7 @@ Module raw_vec.
                 [
                   M.read (| slice |);
                   M.call_closure (|
+                    A,
                     M.get_function (| "core::ptr::read", [], [ A ] |),
                     [
                       M.borrow (|
@@ -811,6 +899,10 @@ Module raw_vec.
                               M.SubPointer.get_struct_record_field (|
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ],
                                     M.get_trait_method (|
                                       "core::ops::deref::Deref",
                                       Ty.apply
@@ -876,9 +968,10 @@ Module raw_vec.
           let capacity := M.alloc (| capacity |) in
           let alloc := M.alloc (| alloc |) in
           M.read (|
-            let~ ptr :=
+            let~ ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
                     "cast",
@@ -888,9 +981,10 @@ Module raw_vec.
                   [ M.read (| ptr |) ]
                 |)
               |) in
-            let~ capacity :=
+            let~ capacity : Ty.path "alloc::raw_vec::Cap" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "alloc::raw_vec::Cap",
                   M.get_associated_function (| Ty.path "alloc::raw_vec::Cap", "new", [], [ T ] |),
                   [ M.read (| capacity |) ]
                 |)
@@ -901,6 +995,7 @@ Module raw_vec.
                 [
                   ("inner",
                     M.call_closure (|
+                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                         "from_raw_parts_in",
@@ -945,9 +1040,10 @@ Module raw_vec.
           let capacity := M.alloc (| capacity |) in
           let alloc := M.alloc (| alloc |) in
           M.read (|
-            let~ ptr :=
+            let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "cast",
@@ -957,9 +1053,10 @@ Module raw_vec.
                   [ M.read (| ptr |) ]
                 |)
               |) in
-            let~ capacity :=
+            let~ capacity : Ty.path "alloc::raw_vec::Cap" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "alloc::raw_vec::Cap",
                   M.get_associated_function (| Ty.path "alloc::raw_vec::Cap", "new", [], [ T ] |),
                   [ M.read (| capacity |) ]
                 |)
@@ -970,6 +1067,7 @@ Module raw_vec.
                 [
                   ("inner",
                     M.call_closure (|
+                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                         "from_nonnull_in",
@@ -1002,6 +1100,7 @@ Module raw_vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "*mut") [] [ T ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "ptr",
@@ -1039,6 +1138,7 @@ Module raw_vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "non_null",
@@ -1076,6 +1176,7 @@ Module raw_vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "capacity",
@@ -1091,7 +1192,11 @@ Module raw_vec.
                   "inner"
                 |)
               |);
-              M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_function (| "core::mem::size_of", [], [ T ] |),
+                []
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1117,6 +1222,7 @@ Module raw_vec.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ A ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                   "allocator",
@@ -1158,6 +1264,7 @@ Module raw_vec.
           let len := M.alloc (| len |) in
           let additional := M.alloc (| additional |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "reserve",
@@ -1198,6 +1305,7 @@ Module raw_vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "grow_one",
@@ -1238,6 +1346,10 @@ Module raw_vec.
           let len := M.alloc (| len |) in
           let additional := M.alloc (| additional |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "try_reserve",
@@ -1285,6 +1397,7 @@ Module raw_vec.
           let len := M.alloc (| len |) in
           let additional := M.alloc (| additional |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "reserve_exact",
@@ -1336,6 +1449,10 @@ Module raw_vec.
           let len := M.alloc (| len |) in
           let additional := M.alloc (| additional |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "try_reserve_exact",
@@ -1382,6 +1499,7 @@ Module raw_vec.
           (let self := M.alloc (| self |) in
           let cap := M.alloc (| cap |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "shrink_to_fit",
@@ -1426,6 +1544,7 @@ Module raw_vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "deallocate",
@@ -1474,9 +1593,10 @@ Module raw_vec.
           (let alloc := M.alloc (| alloc |) in
           let align := M.alloc (| align |) in
           M.read (|
-            let~ ptr :=
+            let~ ptr : Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
                   M.get_function (|
                     "core::intrinsics::transmute",
                     [],
@@ -1537,6 +1657,13 @@ Module raw_vec.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ];
+                      Ty.path "alloc::collections::TryReserveError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                     "try_allocate_in",
@@ -1557,14 +1684,16 @@ Module raw_vec.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let this := M.copy (| γ0_0 |) in
-                    let~ _ :=
-                      let~ _ :=
+                    let~ _ : Ty.tuple [] :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                     "needs_to_grow",
@@ -1592,6 +1721,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
@@ -1631,6 +1761,13 @@ Module raw_vec.
           let alloc := M.alloc (| alloc |) in
           let elem_layout := M.alloc (| elem_layout |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ];
+                Ty.path "alloc::collections::TryReserveError"
+              ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
               "try_allocate_in",
@@ -1677,6 +1814,13 @@ Module raw_vec.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ];
+                      Ty.path "alloc::collections::TryReserveError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                     "try_allocate_in",
@@ -1706,6 +1850,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
@@ -1778,11 +1923,18 @@ Module raw_vec.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ layout :=
+                let~ layout : Ty.path "core::alloc::layout::Layout" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::alloc::layout::Layout";
+                              Ty.path "alloc::collections::TryReserveError"
+                            ],
                           M.get_function (| "alloc::raw_vec::layout_array", [], [] |),
                           [ M.read (| capacity |); M.read (| elem_layout |) ]
                         |)
@@ -1814,6 +1966,7 @@ Module raw_vec.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "alloc::collections::TryReserveError",
                                           M.get_trait_method (|
                                             "core::convert::Into",
                                             Ty.path "alloc::collections::TryReserveErrorKind",
@@ -1837,7 +1990,7 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1848,6 +2001,7 @@ Module raw_vec.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
@@ -1869,6 +2023,7 @@ Module raw_vec.
                                     "core::result::Result::Ok"
                                     [
                                       M.call_closure (|
+                                        Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                           "new_in",
@@ -1878,6 +2033,7 @@ Module raw_vec.
                                         [
                                           M.read (| alloc |);
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "align",
@@ -1896,7 +2052,7 @@ Module raw_vec.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1905,9 +2061,14 @@ Module raw_vec.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
                                 M.get_function (| "alloc::raw_vec::alloc_guard", [], [] |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
@@ -1938,7 +2099,17 @@ Module raw_vec.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ result :=
+                let~ result :
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                        Ty.path "core::alloc::AllocError"
+                      ] :=
                   M.copy (|
                     M.match_operator (|
                       init,
@@ -1952,6 +2123,16 @@ Module raw_vec.
                               |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                    Ty.path "core::alloc::AllocError"
+                                  ],
                                 M.get_trait_method (|
                                   "core::alloc::Allocator",
                                   A,
@@ -1970,6 +2151,16 @@ Module raw_vec.
                               M.is_struct_tuple (| γ, "alloc::raw_vec::AllocInit::Zeroed" |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                    Ty.path "core::alloc::AllocError"
+                                  ],
                                 M.get_trait_method (|
                                   "core::alloc::Allocator",
                                   A,
@@ -1985,7 +2176,11 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ ptr :=
+                let~ ptr :
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                   M.copy (|
                     M.match_operator (|
                       result,
@@ -2016,6 +2211,7 @@ Module raw_vec.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
+                                          Ty.path "alloc::collections::TryReserveError",
                                           M.get_trait_method (|
                                             "core::convert::Into",
                                             Ty.path "alloc::collections::TryReserveErrorKind",
@@ -2051,6 +2247,7 @@ Module raw_vec.
                         [
                           ("ptr",
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
                               M.get_trait_method (|
                                 "core::convert::From",
                                 Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
@@ -2067,6 +2264,10 @@ Module raw_vec.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
@@ -2119,6 +2320,7 @@ Module raw_vec.
             [
               ("ptr",
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -2161,6 +2363,7 @@ Module raw_vec.
             [
               ("ptr",
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
@@ -2195,6 +2398,7 @@ Module raw_vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "*mut") [] [ T ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
               "as_ptr",
@@ -2203,6 +2407,7 @@ Module raw_vec.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                   "non_null",
@@ -2231,6 +2436,7 @@ Module raw_vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
             M.get_trait_method (|
               "core::convert::Into",
               Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
@@ -2242,6 +2448,7 @@ Module raw_vec.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
                   "cast",
@@ -2388,6 +2595,7 @@ Module raw_vec.
                           LogicalOp.or (|
                             BinOp.eq (|
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "size",
@@ -2419,12 +2627,14 @@ Module raw_vec.
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ alloc_size :=
+                    (let~ alloc_size : Ty.path "usize" :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (| Ty.path "usize", "unchecked_mul", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
@@ -2447,9 +2657,10 @@ Module raw_vec.
                           ]
                         |)
                       |) in
-                    let~ layout :=
+                    let~ layout : Ty.path "core::alloc::layout::Layout" :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::alloc::layout::Layout",
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
@@ -2459,6 +2670,7 @@ Module raw_vec.
                           [
                             M.read (| alloc_size |);
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "align",
@@ -2477,6 +2689,10 @@ Module raw_vec.
                           Value.Tuple
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.path "u8" ],
                                 M.get_trait_method (|
                                   "core::convert::Into",
                                   Ty.apply
@@ -2561,6 +2777,7 @@ Module raw_vec.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                               "needs_to_grow",
@@ -2576,9 +2793,10 @@ Module raw_vec.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_associated_function (|
                             Self,
                             "do_reserve_and_handle.reserve",
@@ -2629,6 +2847,10 @@ Module raw_vec.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                             "grow_amortized",
@@ -2659,6 +2881,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
@@ -2705,7 +2928,7 @@ Module raw_vec.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2715,6 +2938,7 @@ Module raw_vec.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                     "needs_to_grow",
@@ -2734,10 +2958,23 @@ Module raw_vec.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "alloc::collections::TryReserveError"
+                                        ];
+                                      Ty.tuple []
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
@@ -2753,6 +2990,11 @@ Module raw_vec.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
+                                        ],
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                         "grow_amortized",
@@ -2787,6 +3029,13 @@ Module raw_vec.
                                         M.read (|
                                           M.return_ (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.tuple [];
+                                                  Ty.path "alloc::collections::TryReserveError"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
@@ -2832,14 +3081,16 @@ Module raw_vec.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "core::hint::assert_unchecked", [], [] |),
                         [
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                 "needs_to_grow",
@@ -2894,6 +3145,10 @@ Module raw_vec.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                             "try_reserve_exact",
@@ -2914,6 +3169,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
@@ -2965,7 +3221,7 @@ Module raw_vec.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2975,6 +3231,7 @@ Module raw_vec.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                     "needs_to_grow",
@@ -2994,10 +3251,23 @@ Module raw_vec.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "alloc::collections::TryReserveError"
+                                        ];
+                                      Ty.tuple []
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
@@ -3013,6 +3283,11 @@ Module raw_vec.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
+                                        ],
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                         "grow_exact",
@@ -3047,6 +3322,13 @@ Module raw_vec.
                                         M.read (|
                                           M.return_ (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.tuple [];
+                                                  Ty.path "alloc::collections::TryReserveError"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
@@ -3092,14 +3374,16 @@ Module raw_vec.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "core::hint::assert_unchecked", [], [] |),
                         [
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                 "needs_to_grow",
@@ -3153,6 +3437,10 @@ Module raw_vec.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                             "shrink",
@@ -3172,6 +3460,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
@@ -3206,9 +3495,11 @@ Module raw_vec.
           BinOp.gt (|
             M.read (| additional |),
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                     "capacity",
@@ -3218,6 +3509,7 @@ Module raw_vec.
                   [
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
@@ -3263,47 +3555,53 @@ Module raw_vec.
           let ptr := M.alloc (| ptr |) in
           let cap := M.alloc (| cap |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "alloc::raw_vec::RawVecInner",
-                  "ptr"
-                |),
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
-                    [],
-                    [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] ],
-                    "from",
-                    [],
-                    []
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::raw_vec::RawVecInner",
+                    "ptr"
                   |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::ptr::non_null::NonNull")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                        "cast",
-                        [],
-                        [ Ty.path "u8" ]
-                      |),
-                      [ M.read (| ptr |) ]
-                    |)
-                  ]
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::convert::From",
+                      Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
+                      [],
+                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          "cast",
+                          [],
+                          [ Ty.path "u8" ]
+                        |),
+                        [ M.read (| ptr |) ]
+                      |)
+                    ]
+                  |)
                 |)
               |) in
-            let~ _ :=
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "alloc::raw_vec::RawVecInner",
-                  "cap"
-                |),
-                Value.StructTuple "alloc::raw_vec::Cap" [ M.read (| cap |) ]
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloc::raw_vec::RawVecInner",
+                    "cap"
+                  |),
+                  Value.StructTuple "alloc::raw_vec::Cap" [ M.read (| cap |) ]
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -3365,7 +3663,7 @@ Module raw_vec.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3374,7 +3672,7 @@ Module raw_vec.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -3398,6 +3696,7 @@ Module raw_vec.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
+                                          Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
@@ -3414,7 +3713,7 @@ Module raw_vec.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3425,6 +3724,7 @@ Module raw_vec.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
@@ -3446,6 +3746,7 @@ Module raw_vec.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "alloc::collections::TryReserveError",
                                         M.get_trait_method (|
                                           "core::convert::Into",
                                           Ty.path "alloc::collections::TryReserveErrorKind",
@@ -3469,11 +3770,24 @@ Module raw_vec.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ required_cap :=
+                let~ required_cap : Ty.path "usize" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::collections::TryReserveErrorKind"
+                                ];
+                              Ty.path "usize"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -3489,6 +3803,11 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "usize"; Ty.path "alloc::collections::TryReserveErrorKind"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "ok_or",
@@ -3497,6 +3816,7 @@ Module raw_vec.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "checked_add",
@@ -3528,6 +3848,11 @@ Module raw_vec.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -3570,9 +3895,10 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ cap :=
+                let~ cap : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                       [
                         BinOp.Wrap.mul (|
@@ -3593,15 +3919,18 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ cap :=
+                let~ cap : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                       [
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_function (| "alloc::raw_vec::min_non_zero_cap", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
@@ -3616,11 +3945,24 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ new_layout :=
+                let~ new_layout : Ty.path "core::alloc::layout::Layout" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ];
+                              Ty.path "core::alloc::layout::Layout"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -3638,6 +3980,13 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::alloc::layout::Layout";
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ],
                               M.get_function (| "alloc::raw_vec::layout_array", [], [] |),
                               [ M.read (| cap |); M.read (| elem_layout |) ]
                             |)
@@ -3659,6 +4008,11 @@ Module raw_vec.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -3701,11 +4055,31 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ ptr :=
+                let~ ptr :
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ];
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -3726,10 +4100,33 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ],
                               M.get_function (| "alloc::raw_vec::finish_grow", [], [ A ] |),
                               [
                                 M.read (| new_layout |);
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.path "u8" ];
+                                          Ty.path "core::alloc::layout::Layout"
+                                        ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                     "current_memory",
@@ -3777,6 +4174,11 @@ Module raw_vec.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -3819,9 +4221,10 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                         "set_ptr_and_cap",
@@ -3882,7 +4285,7 @@ Module raw_vec.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3893,6 +4296,7 @@ Module raw_vec.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
                                       "size",
@@ -3914,6 +4318,7 @@ Module raw_vec.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "alloc::collections::TryReserveError",
                                         M.get_trait_method (|
                                           "core::convert::Into",
                                           Ty.path "alloc::collections::TryReserveErrorKind",
@@ -3937,11 +4342,24 @@ Module raw_vec.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ cap :=
+                let~ cap : Ty.path "usize" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::collections::TryReserveErrorKind"
+                                ];
+                              Ty.path "usize"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -3957,6 +4375,11 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "usize"; Ty.path "alloc::collections::TryReserveErrorKind"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "ok_or",
@@ -3965,6 +4388,7 @@ Module raw_vec.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "checked_add",
@@ -3996,6 +4420,11 @@ Module raw_vec.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -4038,11 +4467,24 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ new_layout :=
+                let~ new_layout : Ty.path "core::alloc::layout::Layout" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ];
+                              Ty.path "core::alloc::layout::Layout"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -4060,6 +4502,13 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::alloc::layout::Layout";
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ],
                               M.get_function (| "alloc::raw_vec::layout_array", [], [] |),
                               [ M.read (| cap |); M.read (| elem_layout |) ]
                             |)
@@ -4081,6 +4530,11 @@ Module raw_vec.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -4123,11 +4577,31 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ ptr :=
+                let~ ptr :
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ];
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -4148,10 +4622,33 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ],
                               M.get_function (| "alloc::raw_vec::finish_grow", [], [ A ] |),
                               [
                                 M.read (| new_layout |);
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.path "u8" ];
+                                          Ty.path "core::alloc::layout::Layout"
+                                        ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                     "current_memory",
@@ -4199,6 +4696,11 @@ Module raw_vec.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -4241,10 +4743,11 @@ Module raw_vec.
                       ]
                     |)
                   |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                           "set_ptr_and_cap",
@@ -4286,7 +4789,7 @@ Module raw_vec.
           let cap := M.alloc (| cap |) in
           let elem_layout := M.alloc (| elem_layout |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4299,6 +4802,7 @@ Module raw_vec.
                               BinOp.le (|
                                 M.read (| cap |),
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                     "capacity",
@@ -4311,6 +4815,7 @@ Module raw_vec.
                                       M.deref (| M.read (| self |) |)
                                     |);
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "size",
@@ -4328,9 +4833,11 @@ Module raw_vec.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -4365,6 +4872,10 @@ Module raw_vec.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                   "shrink_unchecked",
@@ -4447,6 +4958,19 @@ Module raw_vec.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [ Ty.path "u8" ];
+                                        Ty.path "core::alloc::layout::Layout"
+                                      ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                   "current_memory",
@@ -4487,7 +5011,7 @@ Module raw_vec.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let ptr := M.copy (| γ0_0 |) in
                         let layout := M.copy (| γ0_1 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -4506,9 +5030,10 @@ Module raw_vec.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_trait_method (|
                                           "core::alloc::Allocator",
                                           A,
@@ -4532,62 +5057,77 @@ Module raw_vec.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloc::raw_vec::RawVecInner",
-                                        "ptr"
-                                      |),
-                                      M.call_closure (|
-                                        M.get_associated_function (|
+                                  let~ _ : Ty.tuple [] :=
+                                    M.alloc (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::raw_vec::RawVecInner",
+                                          "ptr"
+                                        |),
+                                        M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::ptr::unique::Unique")
                                             []
                                             [ Ty.path "u8" ],
-                                          "new_unchecked",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_function (|
-                                              "core::ptr::without_provenance_mut",
-                                              [],
-                                              [ Ty.path "u8" ]
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::alloc::layout::Layout",
-                                                  "align",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
-                                              |)
-                                            ]
-                                          |)
-                                        ]
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::unique::Unique")
+                                              []
+                                              [ Ty.path "u8" ],
+                                            "new_unchecked",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                              M.get_function (|
+                                                "core::ptr::without_provenance_mut",
+                                                [],
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::alloc::layout::Layout",
+                                                    "align",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.Ref, elem_layout |) ]
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                        |)
                                       |)
                                     |) in
-                                  let~ _ :=
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloc::raw_vec::RawVecInner",
-                                        "cap"
-                                      |),
-                                      M.read (| M.get_constant "alloc::raw_vec::ZERO" |)
+                                  let~ _ : Ty.tuple [] :=
+                                    M.alloc (|
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::raw_vec::RawVecInner",
+                                          "cap"
+                                        |),
+                                        M.read (| M.get_constant "alloc::raw_vec::ZERO" |)
+                                      |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let~ ptr :=
+                                  (let~ ptr :
+                                      Ty.apply
+                                        (Ty.path "core::ptr::non_null::NonNull")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                                     M.copy (|
-                                      let~ new_size :=
+                                      let~ new_size : Ty.path "usize" :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.path "usize",
                                               "unchecked_mul",
@@ -4596,6 +5136,7 @@ Module raw_vec.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.path "usize",
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
@@ -4608,9 +5149,10 @@ Module raw_vec.
                                             ]
                                           |)
                                         |) in
-                                      let~ new_layout :=
+                                      let~ new_layout : Ty.path "core::alloc::layout::Layout" :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "core::alloc::layout::Layout",
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "from_size_align_unchecked",
@@ -4620,6 +5162,7 @@ Module raw_vec.
                                             [
                                               M.read (| new_size |);
                                               M.call_closure (|
+                                                Ty.path "usize",
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "align",
@@ -4634,6 +5177,23 @@ Module raw_vec.
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "alloc::collections::TryReserveErrorKind"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               Ty.apply
@@ -4655,6 +5215,22 @@ Module raw_vec.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ];
+                                                    Ty.path
+                                                      "alloc::collections::TryReserveErrorKind"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -4687,6 +5263,21 @@ Module raw_vec.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [ Ty.path "u8" ]
+                                                          ];
+                                                        Ty.path "core::alloc::AllocError"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::alloc::Allocator",
                                                       A,
@@ -4754,6 +5345,14 @@ Module raw_vec.
                                                   M.read (|
                                                     M.return_ (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "alloc::collections::TryReserveError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
@@ -4798,9 +5397,10 @@ Module raw_vec.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                                           "set_ptr_and_cap",
@@ -4860,6 +5460,19 @@ Module raw_vec.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.path "u8" ];
+                                  Ty.path "core::alloc::layout::Layout"
+                                ]
+                            ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
                             "current_memory",
@@ -4882,9 +5495,10 @@ Module raw_vec.
                     let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                     let ptr := M.copy (| γ1_0 |) in
                     let layout := M.copy (| γ1_1 |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::alloc::Allocator",
                             A,
@@ -4957,10 +5571,23 @@ Module raw_vec.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "alloc::collections::TryReserveError"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -4975,9 +5602,14 @@ Module raw_vec.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "alloc::collections::TryReserveError" ],
                           M.get_function (| "alloc::raw_vec::alloc_guard", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "size",
@@ -5006,6 +5638,16 @@ Module raw_vec.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ptr::non_null::NonNull")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                      Ty.path "alloc::collections::TryReserveError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -5050,7 +5692,17 @@ Module raw_vec.
                         val))
                   ]
                 |) in
-              let~ memory :=
+              let~ memory :
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                      Ty.path "core::alloc::AllocError"
+                    ] :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -5068,7 +5720,7 @@ Module raw_vec.
                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                           let ptr := M.copy (| γ1_0 |) in
                           let old_layout := M.copy (| γ1_1 |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -5080,7 +5732,7 @@ Module raw_vec.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
                                         M.alloc (|
                                           Value.Tuple
@@ -5089,6 +5741,7 @@ Module raw_vec.
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "usize",
                                                     M.get_associated_function (|
                                                       Ty.path "core::alloc::layout::Layout",
                                                       "align",
@@ -5103,6 +5756,7 @@ Module raw_vec.
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "usize",
                                                     M.get_associated_function (|
                                                       Ty.path "core::alloc::layout::Layout",
                                                       "align",
@@ -5154,7 +5808,9 @@ Module raw_vec.
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
-                                                            let~ kind :=
+                                                            let~ kind :
+                                                                Ty.path
+                                                                  "core::panicking::AssertKind" :=
                                                               M.alloc (|
                                                                 Value.StructTuple
                                                                   "core::panicking::AssertKind::Eq"
@@ -5162,6 +5818,7 @@ Module raw_vec.
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "never",
                                                                 M.get_function (|
                                                                   "core::panicking::assert_failed",
                                                                   [],
@@ -5211,13 +5868,15 @@ Module raw_vec.
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_function (| "core::hint::assert_unchecked", [], [] |),
                                 [
                                   BinOp.eq (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "align",
@@ -5227,6 +5886,7 @@ Module raw_vec.
                                       [ M.borrow (| Pointer.Kind.Ref, old_layout |) ]
                                     |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "align",
@@ -5241,6 +5901,16 @@ Module raw_vec.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.get_trait_method (|
                                 "core::alloc::Allocator",
                                 A,
@@ -5262,6 +5932,16 @@ Module raw_vec.
                         ltac:(M.monadic
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.get_trait_method (|
                                 "core::alloc::Allocator",
                                 A,
@@ -5282,6 +5962,16 @@ Module raw_vec.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                      Ty.path "alloc::collections::TryReserveError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -5316,6 +6006,7 @@ Module raw_vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "alloc::collections::TryReserveError",
                                         M.get_trait_method (|
                                           "core::convert::Into",
                                           Ty.path "alloc::collections::TryReserveErrorKind",
@@ -5366,6 +6057,7 @@ Module raw_vec.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.path "alloc::collections::TryReserveErrorKind",
                 M.get_associated_function (|
                   Ty.path "alloc::collections::TryReserveError",
                   "kind",
@@ -5385,6 +6077,7 @@ Module raw_vec.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "never",
                       M.get_function (| "alloc::raw_vec::capacity_overflow", [], [] |),
                       []
                     |)
@@ -5400,6 +6093,7 @@ Module raw_vec.
                   let layout := M.copy (| γ0_0 |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "never",
                       M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
                       [ M.read (| layout |) ]
                     |)
@@ -5456,6 +6150,7 @@ Module raw_vec.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
+                          Ty.path "alloc::collections::TryReserveError",
                           M.get_trait_method (|
                             "core::convert::Into",
                             Ty.path "alloc::collections::TryReserveErrorKind",
@@ -5497,6 +6192,11 @@ Module raw_vec.
         (let cap := M.alloc (| cap |) in
         let elem_layout := M.alloc (| elem_layout |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "core::alloc::layout::Layout"; Ty.path "alloc::collections::TryReserveError"
+            ],
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -5513,6 +6213,11 @@ Module raw_vec.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "core::alloc::layout::Layout"; Ty.path "core::alloc::layout::LayoutError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -5535,6 +6240,13 @@ Module raw_vec.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                      Ty.path "core::alloc::layout::LayoutError"
+                    ],
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "repeat",
@@ -5577,6 +6289,7 @@ Module raw_vec.
                           fun γ =>
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "alloc::collections::TryReserveError",
                                 M.get_trait_method (|
                                   "core::convert::Into",
                                   Ty.path "alloc::collections::TryReserveErrorKind",

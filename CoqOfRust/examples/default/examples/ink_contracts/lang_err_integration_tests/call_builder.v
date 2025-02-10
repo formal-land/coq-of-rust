@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_call_builder_AccountId.
           "call_builder::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -165,6 +166,7 @@ Module Impl_call_builder_CallBuilderTest.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "call_builder::CallBuilderTest",
           M.get_trait_method (|
             "core::default::Default",
             Ty.path "call_builder::CallBuilderTest",
@@ -209,10 +211,15 @@ Module Impl_call_builder_CallBuilderTest.
         let address := M.alloc (| address |) in
         let selector := M.alloc (| selector |) in
         M.read (|
-          let~ result :=
+          let~ result :
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "call_builder::LangError" ] :=
             M.alloc (|
               M.never_to_any (|
                 M.call_closure (|
+                  Ty.path "never",
                   M.get_function (| "core::panicking::panic", [], [] |),
                   [ M.read (| Value.String "not yet implemented" |) ]
                 |)
@@ -241,9 +248,11 @@ Module Impl_call_builder_CallBuilderTest.
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
+                        Ty.path "never",
                         M.get_function (| "core::panicking::panic_fmt", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -275,6 +284,10 @@ Module Impl_call_builder_CallBuilderTest.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 0 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "none",

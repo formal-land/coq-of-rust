@@ -51,6 +51,14 @@ Module Impl_wildcard_selector_WildcardSelector.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 4 ]
+                      [ Ty.path "u8" ];
+                    Ty.path "alloc::string::String"
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -72,6 +80,20 @@ Module Impl_wildcard_selector_WildcardSelector.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 4 ]
+                              [ Ty.path "u8" ];
+                            Ty.path "alloc::string::String"
+                          ];
+                        Ty.tuple []
+                      ],
                     M.get_function (|
                       "wildcard_selector::decode_input",
                       [],
@@ -98,13 +120,15 @@ Module Impl_wildcard_selector_WildcardSelector.
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let _selector := M.copy (| γ0_0 |) in
                   let _message := M.copy (| γ0_1 |) in
-                  let~ _ :=
-                    let~ _ :=
+                  let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -138,6 +162,7 @@ Module Impl_wildcard_selector_WildcardSelector.
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_debug",
@@ -159,6 +184,7 @@ Module Impl_wildcard_selector_WildcardSelector.
                                               ]
                                             |);
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -207,13 +233,15 @@ Module Impl_wildcard_selector_WildcardSelector.
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
         M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -246,6 +274,7 @@ Module Impl_wildcard_selector_WildcardSelector.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",

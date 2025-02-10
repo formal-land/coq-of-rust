@@ -37,6 +37,7 @@ Module Impl_mutual_loop_LoopA.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "mutual_loop::LoopB",
           M.get_associated_function (| Ty.path "mutual_loop::LoopB", "start_loop", [], [] |),
           []
         |)))
@@ -82,6 +83,7 @@ Module Impl_mutual_loop_LoopB.
           [
             ("ident",
               M.call_closure (|
+                Ty.path "mutual_loop::LoopA",
                 M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [], [] |),
                 []
               |))
@@ -105,16 +107,18 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ la :=
+        let~ la : Ty.path "mutual_loop::LoopA" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "mutual_loop::LoopA",
               M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [], [] |),
               []
             |)
           |) in
-        let~ lb :=
+        let~ lb : Ty.path "mutual_loop::LoopB" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "mutual_loop::LoopB",
               M.get_associated_function (| Ty.path "mutual_loop::LoopA", "start_loop", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, la |) ]
             |)

@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
           "contract_transfer::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -177,6 +178,7 @@ Module Impl_contract_transfer_GiveMe.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "contract_transfer::Env",
           M.get_associated_function (| Ty.path "contract_transfer::GiveMe", "init_env", [], [] |),
           []
         |)))
@@ -223,13 +225,15 @@ Module Impl_contract_transfer_GiveMe.
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -262,6 +266,7 @@ Module Impl_contract_transfer_GiveMe.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -286,13 +291,15 @@ Module Impl_contract_transfer_GiveMe.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -325,6 +332,7 @@ Module Impl_contract_transfer_GiveMe.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -339,6 +347,7 @@ Module Impl_contract_transfer_GiveMe.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "u128",
                                                   M.get_associated_function (|
                                                     Ty.path "contract_transfer::Env",
                                                     "balance",
@@ -350,6 +359,7 @@ Module Impl_contract_transfer_GiveMe.
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "contract_transfer::Env",
                                                           M.get_associated_function (|
                                                             Ty.path "contract_transfer::GiveMe",
                                                             "env",
@@ -384,7 +394,7 @@ Module Impl_contract_transfer_GiveMe.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -397,6 +407,7 @@ Module Impl_contract_transfer_GiveMe.
                             BinOp.le (|
                               M.read (| value |),
                               M.call_closure (|
+                                Ty.path "u128",
                                 M.get_associated_function (|
                                   Ty.path "contract_transfer::Env",
                                   "balance",
@@ -408,6 +419,7 @@ Module Impl_contract_transfer_GiveMe.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "contract_transfer::Env",
                                         M.get_associated_function (|
                                           Ty.path "contract_transfer::GiveMe",
                                           "env",
@@ -432,6 +444,7 @@ Module Impl_contract_transfer_GiveMe.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (|
                             "std::panicking::begin_panic",
                             [],
@@ -453,6 +466,7 @@ Module Impl_contract_transfer_GiveMe.
                     M.use
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -467,6 +481,10 @@ Module Impl_contract_transfer_GiveMe.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.tuple [] ],
                                   M.get_associated_function (|
                                     Ty.path "contract_transfer::Env",
                                     "transfer",
@@ -478,6 +496,7 @@ Module Impl_contract_transfer_GiveMe.
                                       Pointer.Kind.MutRef,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "contract_transfer::Env",
                                           M.get_associated_function (|
                                             Ty.path "contract_transfer::GiveMe",
                                             "env",
@@ -494,6 +513,7 @@ Module Impl_contract_transfer_GiveMe.
                                       |)
                                     |);
                                     M.call_closure (|
+                                      Ty.path "contract_transfer::AccountId",
                                       M.get_associated_function (|
                                         Ty.path "contract_transfer::Env",
                                         "caller",
@@ -505,6 +525,7 @@ Module Impl_contract_transfer_GiveMe.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "contract_transfer::Env",
                                               M.get_associated_function (|
                                                 Ty.path "contract_transfer::GiveMe",
                                                 "env",
@@ -534,6 +555,7 @@ Module Impl_contract_transfer_GiveMe.
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
+                        Ty.path "never",
                         M.get_function (|
                           "std::panicking::begin_panic",
                           [],
@@ -570,13 +592,15 @@ Module Impl_contract_transfer_GiveMe.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -609,6 +633,7 @@ Module Impl_contract_transfer_GiveMe.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -623,6 +648,7 @@ Module Impl_contract_transfer_GiveMe.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "u128",
                                                   M.get_associated_function (|
                                                     Ty.path "contract_transfer::Env",
                                                     "transferred_value",
@@ -634,6 +660,7 @@ Module Impl_contract_transfer_GiveMe.
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "contract_transfer::Env",
                                                           M.get_associated_function (|
                                                             Ty.path "contract_transfer::GiveMe",
                                                             "env",
@@ -668,7 +695,7 @@ Module Impl_contract_transfer_GiveMe.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -680,6 +707,7 @@ Module Impl_contract_transfer_GiveMe.
                           UnOp.not (|
                             BinOp.eq (|
                               M.call_closure (|
+                                Ty.path "u128",
                                 M.get_associated_function (|
                                   Ty.path "contract_transfer::Env",
                                   "transferred_value",
@@ -691,6 +719,7 @@ Module Impl_contract_transfer_GiveMe.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "contract_transfer::Env",
                                         M.get_associated_function (|
                                           Ty.path "contract_transfer::GiveMe",
                                           "env",
@@ -716,6 +745,7 @@ Module Impl_contract_transfer_GiveMe.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (|
                             "std::panicking::begin_panic",
                             [],

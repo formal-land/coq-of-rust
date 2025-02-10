@@ -13,9 +13,10 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ text :=
+        let~ text : Ty.path "alloc::string::String" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "alloc::string::String",
               M.get_trait_method (|
                 "alloc::borrow::ToOwned",
                 Ty.path "str",
@@ -41,12 +42,14 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_function (| "std::io::stdio::_print", [], [] |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::Arguments",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
@@ -79,6 +82,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path "core::fmt::rt::Argument",
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
@@ -135,9 +139,10 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ text :=
+        let~ text : Ty.path "alloc::string::String" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "alloc::string::String",
               M.get_trait_method (|
                 "alloc::borrow::ToOwned",
                 Ty.path "str",
@@ -163,12 +168,14 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_function (| "std::io::stdio::_print", [], [] |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::Arguments",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
@@ -201,6 +208,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path "core::fmt::rt::Argument",
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
@@ -257,9 +265,10 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ text :=
+        let~ text : Ty.path "alloc::string::String" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "alloc::string::String",
               M.get_trait_method (|
                 "alloc::borrow::ToOwned",
                 Ty.path "str",
@@ -285,12 +294,14 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_function (| "std::io::stdio::_print", [], [] |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::Arguments",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
@@ -323,6 +334,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path "core::fmt::rt::Argument",
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
@@ -383,30 +395,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ fn_plain :=
+        let~ fn_plain : Ty.associated :=
           M.alloc (|
             M.call_closure (|
+              Ty.associated,
               M.get_function (| "functions_closures_as_output_parameters::create_fn", [], [] |),
               []
             |)
           |) in
-        let~ fn_mut :=
+        let~ fn_mut : Ty.associated :=
           M.alloc (|
             M.call_closure (|
+              Ty.associated,
               M.get_function (| "functions_closures_as_output_parameters::create_fnmut", [], [] |),
               []
             |)
           |) in
-        let~ fn_once :=
+        let~ fn_once : Ty.associated :=
           M.alloc (|
             M.call_closure (|
+              Ty.associated,
               M.get_function (| "functions_closures_as_output_parameters::create_fnonce", [], [] |),
               []
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.associated,
@@ -419,9 +435,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, fn_plain |); Value.Tuple [] ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 Ty.associated,
@@ -434,9 +451,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, fn_mut |); Value.Tuple [] ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 Ty.associated,

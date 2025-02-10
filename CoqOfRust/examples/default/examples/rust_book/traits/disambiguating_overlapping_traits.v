@@ -29,6 +29,7 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "alloc::string::String",
           M.get_trait_method (|
             "core::clone::Clone",
             Ty.path "alloc::string::String",
@@ -114,13 +115,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ form :=
+        let~ form : Ty.path "disambiguating_overlapping_traits::Form" :=
           M.alloc (|
             Value.StructRecord
               "disambiguating_overlapping_traits::Form"
               [
                 ("username",
                   M.call_closure (|
+                    Ty.path "alloc::string::String",
                     M.get_trait_method (|
                       "alloc::borrow::ToOwned",
                       Ty.path "str",
@@ -140,9 +142,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("age", Value.Integer IntegerKind.U8 28)
               ]
           |) in
-        let~ username :=
+        let~ username : Ty.path "alloc::string::String" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "alloc::string::String",
               M.get_trait_method (|
                 "disambiguating_overlapping_traits::UsernameWidget",
                 Ty.path "disambiguating_overlapping_traits::Form",
@@ -156,7 +159,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -165,6 +168,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "alloc::string::String",
                         M.get_trait_method (|
                           "alloc::string::ToString",
                           Ty.path "str",
@@ -203,6 +207,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.path "alloc::string::String",
@@ -230,12 +235,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],
@@ -276,9 +282,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ age :=
+        let~ age : Ty.path "u8" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "u8",
               M.get_trait_method (|
                 "disambiguating_overlapping_traits::AgeWidget",
                 Ty.path "disambiguating_overlapping_traits::Form",
@@ -292,7 +299,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -328,12 +335,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],

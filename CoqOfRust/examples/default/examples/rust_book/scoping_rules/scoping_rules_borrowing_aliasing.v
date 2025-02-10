@@ -71,7 +71,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ point :=
+        let~ point : Ty.path "scoping_rules_borrowing_aliasing::Point" :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_aliasing::Point"
@@ -81,15 +81,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("z", Value.Integer IntegerKind.I32 0)
               ]
           |) in
-        let~ borrowed_point := M.alloc (| M.borrow (| Pointer.Kind.Ref, point |) |) in
-        let~ another_borrow := M.alloc (| M.borrow (| Pointer.Kind.Ref, point |) |) in
-        let~ _ :=
-          let~ _ :=
+        let~ borrowed_point :
+            Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] :=
+          M.alloc (| M.borrow (| Pointer.Kind.Ref, point |) |) in
+        let~ another_borrow :
+            Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] :=
+          M.alloc (| M.borrow (| Pointer.Kind.Ref, point |) |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -124,6 +130,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -147,6 +154,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -170,6 +178,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -203,13 +212,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -244,6 +255,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -267,6 +279,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -290,6 +303,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -323,41 +337,51 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ mutable_borrow := M.alloc (| M.borrow (| Pointer.Kind.MutRef, point |) |) in
-        let~ _ :=
-          M.write (|
-            M.SubPointer.get_struct_record_field (|
-              M.deref (| M.read (| mutable_borrow |) |),
-              "scoping_rules_borrowing_aliasing::Point",
-              "x"
-            |),
-            Value.Integer IntegerKind.I32 5
+        let~ mutable_borrow :
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] :=
+          M.alloc (| M.borrow (| Pointer.Kind.MutRef, point |) |) in
+        let~ _ : Ty.tuple [] :=
+          M.alloc (|
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| mutable_borrow |) |),
+                "scoping_rules_borrowing_aliasing::Point",
+                "x"
+              |),
+              Value.Integer IntegerKind.I32 5
+            |)
           |) in
-        let~ _ :=
-          M.write (|
-            M.SubPointer.get_struct_record_field (|
-              M.deref (| M.read (| mutable_borrow |) |),
-              "scoping_rules_borrowing_aliasing::Point",
-              "y"
-            |),
-            Value.Integer IntegerKind.I32 2
+        let~ _ : Ty.tuple [] :=
+          M.alloc (|
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| mutable_borrow |) |),
+                "scoping_rules_borrowing_aliasing::Point",
+                "y"
+              |),
+              Value.Integer IntegerKind.I32 2
+            |)
           |) in
-        let~ _ :=
-          M.write (|
-            M.SubPointer.get_struct_record_field (|
-              M.deref (| M.read (| mutable_borrow |) |),
-              "scoping_rules_borrowing_aliasing::Point",
-              "z"
-            |),
-            Value.Integer IntegerKind.I32 1
+        let~ _ : Ty.tuple [] :=
+          M.alloc (|
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| mutable_borrow |) |),
+                "scoping_rules_borrowing_aliasing::Point",
+                "z"
+              |),
+              Value.Integer IntegerKind.I32 1
+            |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -392,6 +416,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -415,6 +440,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -438,6 +464,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -471,14 +498,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ new_borrowed_point := M.alloc (| M.borrow (| Pointer.Kind.Ref, point |) |) in
-        let~ _ :=
-          let~ _ :=
+        let~ new_borrowed_point :
+            Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_aliasing::Point" ] :=
+          M.alloc (| M.borrow (| Pointer.Kind.Ref, point |) |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -513,6 +544,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -536,6 +568,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -559,6 +592,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",

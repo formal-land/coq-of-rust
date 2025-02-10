@@ -33,7 +33,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ a := M.alloc (| Value.StructTuple "if_let_challenge::Foo::Bar" [] |) in
+        let~ a : Ty.path "if_let_challenge::Foo" :=
+          M.alloc (| Value.StructTuple "if_let_challenge::Foo::Bar" [] |) in
         M.match_operator (|
           M.alloc (| Value.Tuple [] |),
           [
@@ -41,13 +42,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ := a in
                 let _ := M.is_struct_tuple (| γ, "if_let_challenge::Foo::Bar" |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",

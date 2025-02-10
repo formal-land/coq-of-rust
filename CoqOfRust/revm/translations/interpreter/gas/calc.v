@@ -69,6 +69,7 @@ Module gas.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.path "revm_specification::hardfork::SpecId",
                               "is_enabled_in",
@@ -82,7 +83,7 @@ Module gas.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ sstore_clears_schedule :=
+                    let~ sstore_clears_schedule : Ty.path "i64" :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -93,6 +94,7 @@ Module gas.
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "revm_specification::hardfork::SpecId",
                                           "is_enabled_in",
@@ -148,6 +150,7 @@ Module gas.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_context_interface::host::SStoreResult",
                                       "is_new_eq_present",
@@ -177,6 +180,7 @@ Module gas.
                                         (M.alloc (|
                                           LogicalOp.and (|
                                             M.call_closure (|
+                                              Ty.path "bool",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "revm_context_interface::host::SStoreResult",
@@ -193,6 +197,7 @@ Module gas.
                                             |),
                                             ltac:(M.monadic
                                               (M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "revm_context_interface::host::SStoreResult",
@@ -217,8 +222,9 @@ Module gas.
                                     sstore_clears_schedule));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ refund := M.alloc (| Value.Integer IntegerKind.I64 0 |) in
-                                    let~ _ :=
+                                    (let~ refund : Ty.path "i64" :=
+                                      M.alloc (| Value.Integer IntegerKind.I64 0 |) in
+                                    let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -229,6 +235,7 @@ Module gas.
                                                   (M.alloc (|
                                                     UnOp.not (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "revm_context_interface::host::SStoreResult",
@@ -259,6 +266,7 @@ Module gas.
                                                         M.use
                                                           (M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "bool",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "revm_context_interface::host::SStoreResult",
@@ -279,13 +287,15 @@ Module gas.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let~ _ :=
-                                                        let β := refund in
-                                                        M.write (|
-                                                          β,
-                                                          BinOp.Wrap.sub (|
-                                                            M.read (| β |),
-                                                            M.read (| sstore_clears_schedule |)
+                                                      let~ _ : Ty.tuple [] :=
+                                                        M.alloc (|
+                                                          let β := refund in
+                                                          M.write (|
+                                                            β,
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| β |),
+                                                              M.read (| sstore_clears_schedule |)
+                                                            |)
                                                           |)
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)));
@@ -300,6 +310,7 @@ Module gas.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.path "bool",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "revm_context_interface::host::SStoreResult",
@@ -322,14 +333,16 @@ Module gas.
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
-                                                              let~ _ :=
-                                                                let β := refund in
-                                                                M.write (|
-                                                                  β,
-                                                                  BinOp.Wrap.add (|
-                                                                    M.read (| β |),
-                                                                    M.read (|
-                                                                      sstore_clears_schedule
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.alloc (|
+                                                                  let β := refund in
+                                                                  M.write (|
+                                                                    β,
+                                                                    BinOp.Wrap.add (|
+                                                                      M.read (| β |),
+                                                                      M.read (|
+                                                                        sstore_clears_schedule
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |) in
@@ -344,7 +357,7 @@ Module gas.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -354,6 +367,7 @@ Module gas.
                                                 M.use
                                                   (M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "revm_context_interface::host::SStoreResult",
@@ -384,6 +398,7 @@ Module gas.
                                                           M.use
                                                             (M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "revm_specification::hardfork::SpecId",
@@ -433,6 +448,7 @@ Module gas.
                                                                   "revm_interpreter::gas::constants::SSTORE_RESET"
                                                               |);
                                                               M.call_closure (|
+                                                                Ty.path "u64",
                                                                 M.get_function (|
                                                                   "revm_interpreter::gas::calc::sload_cost",
                                                                   [],
@@ -465,6 +481,7 @@ Module gas.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.path "bool",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "revm_context_interface::host::SStoreResult",
@@ -487,40 +504,44 @@ Module gas.
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
-                                                              let~ _ :=
-                                                                let β := refund in
-                                                                M.write (|
-                                                                  β,
-                                                                  BinOp.Wrap.add (|
-                                                                    M.read (| β |),
-                                                                    M.cast
-                                                                      (Ty.path "i64")
-                                                                      (BinOp.Wrap.sub (|
-                                                                        M.read (|
-                                                                          M.get_constant
-                                                                            "revm_interpreter::gas::constants::SSTORE_SET"
-                                                                        |),
-                                                                        M.read (| gas_sload |)
-                                                                      |))
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.alloc (|
+                                                                  let β := refund in
+                                                                  M.write (|
+                                                                    β,
+                                                                    BinOp.Wrap.add (|
+                                                                      M.read (| β |),
+                                                                      M.cast
+                                                                        (Ty.path "i64")
+                                                                        (BinOp.Wrap.sub (|
+                                                                          M.read (|
+                                                                            M.get_constant
+                                                                              "revm_interpreter::gas::constants::SSTORE_SET"
+                                                                          |),
+                                                                          M.read (| gas_sload |)
+                                                                        |))
+                                                                    |)
                                                                   |)
                                                                 |) in
                                                               M.alloc (| Value.Tuple [] |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
-                                                              (let~ _ :=
-                                                                let β := refund in
-                                                                M.write (|
-                                                                  β,
-                                                                  BinOp.Wrap.add (|
-                                                                    M.read (| β |),
-                                                                    M.cast
-                                                                      (Ty.path "i64")
-                                                                      (BinOp.Wrap.sub (|
-                                                                        M.read (|
-                                                                          gas_sstore_reset
-                                                                        |),
-                                                                        M.read (| gas_sload |)
-                                                                      |))
+                                                              (let~ _ : Ty.tuple [] :=
+                                                                M.alloc (|
+                                                                  let β := refund in
+                                                                  M.write (|
+                                                                    β,
+                                                                    BinOp.Wrap.add (|
+                                                                      M.read (| β |),
+                                                                      M.cast
+                                                                        (Ty.path "i64")
+                                                                        (BinOp.Wrap.sub (|
+                                                                          M.read (|
+                                                                            gas_sstore_reset
+                                                                          |),
+                                                                          M.read (| gas_sload |)
+                                                                        |))
+                                                                    |)
                                                                   |)
                                                                 |) in
                                                               M.alloc (| Value.Tuple [] |)))
@@ -549,6 +570,7 @@ Module gas.
                                   LogicalOp.and (|
                                     UnOp.not (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "revm_context_interface::host::SStoreResult",
                                           "is_present_zero",
@@ -565,6 +587,7 @@ Module gas.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "revm_context_interface::host::SStoreResult",
                                           "is_new_zero",
@@ -610,6 +633,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                 M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (| M.get_constant "revm_interpreter::gas::constants::CREATE" |);
@@ -617,6 +641,7 @@ Module gas.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                           M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                           [
                             M.read (| len |);
@@ -691,12 +716,12 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ l := M.alloc (| Value.Integer IntegerKind.U64 256 |) in
-                let~ i := M.alloc (| Value.Integer IntegerKind.Usize 3 |) in
-                let~ _ :=
+                let~ l : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 256 |) in
+                let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 3 |) in
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
-                      (let~ _ :=
+                      (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -710,6 +735,15 @@ Module gas.
                                           M.SubPointer.get_array_field (|
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                                      [ Ty.path "u64" ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "ruint::Uint")
@@ -739,61 +773,75 @@ Module gas.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ :=
-                                  let β := l in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.sub (|
-                                      M.read (| β |),
-                                      Value.Integer IntegerKind.U64 64
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β := l in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.sub (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.U64 64
+                                      |)
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let~ _ :=
-                                  let β := l in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.sub (|
-                                      M.read (| β |),
-                                      M.cast
-                                        (Ty.path "u64")
-                                        (M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "u64",
-                                            "leading_zeros",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_array_field (|
-                                                M.deref (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
+                                (let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β := l in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.sub (|
+                                        M.read (| β |),
+                                        M.cast
+                                          (Ty.path "u64")
+                                          (M.call_closure (|
+                                            Ty.path "u32",
+                                            M.get_associated_function (|
+                                              Ty.path "u64",
+                                              "leading_zeros",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_array_field (|
+                                                  M.deref (|
+                                                    M.call_closure (|
                                                       Ty.apply
-                                                        (Ty.path "ruint::Uint")
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 4 ]
+                                                            [ Ty.path "u64" ]
+                                                        ],
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          [],
+                                                        "as_limbs",
                                                         [
                                                           Value.Integer IntegerKind.Usize 256;
                                                           Value.Integer IntegerKind.Usize 4
-                                                        ]
-                                                        [],
-                                                      "as_limbs",
-                                                      [
-                                                        Value.Integer IntegerKind.Usize 256;
-                                                        Value.Integer IntegerKind.Usize 4
-                                                      ],
-                                                      []
-                                                    |),
-                                                    [ M.borrow (| Pointer.Kind.Ref, value |) ]
-                                                  |)
-                                                |),
-                                                i
+                                                        ],
+                                                        []
+                                                      |),
+                                                      [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                                    |)
+                                                  |),
+                                                  i
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |))
+                                            ]
+                                          |))
+                                      |)
                                     |)
                                   |) in
                                 M.match_operator (|
@@ -837,7 +885,7 @@ Module gas.
                                 |)))
                           ]
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -860,11 +908,13 @@ Module gas.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let~ _ :=
-                        let β := i in
-                        M.write (|
-                          β,
-                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := i in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                          |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
                   |) in
@@ -913,6 +963,7 @@ Module gas.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
@@ -940,9 +991,23 @@ Module gas.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ gas_byte :=
+                        (let~ gas_byte :
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
@@ -969,6 +1034,7 @@ Module gas.
                                             M.use
                                               (M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "bool",
                                                   M.get_associated_function (|
                                                     Ty.path "revm_specification::hardfork::SpecId",
                                                     "is_enabled_in",
@@ -998,11 +1064,34 @@ Module gas.
                               ]
                             |)
                           |) in
-                        let~ gas :=
+                        let~ gas :
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [] :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "core::convert::Infallible" ];
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
@@ -1025,6 +1114,18 @@ Module gas.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
@@ -1042,6 +1143,13 @@ Module gas.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
@@ -1067,6 +1175,22 @@ Module gas.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "core::convert::Infallible" ];
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ]
+                                                      []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -1089,6 +1213,18 @@ Module gas.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          []
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "ruint::Uint")
@@ -1107,6 +1243,13 @@ Module gas.
                                                     [
                                                       M.read (| gas_byte |);
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          [],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "ruint::Uint")
@@ -1126,6 +1269,7 @@ Module gas.
                                                           BinOp.Wrap.add (|
                                                             BinOp.Wrap.div (|
                                                               M.call_closure (|
+                                                                Ty.path "u64",
                                                                 M.get_function (|
                                                                   "revm_interpreter::gas::calc::log2floor",
                                                                   [],
@@ -1159,6 +1303,10 @@ Module gas.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [ Ty.path "u64" ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -1218,6 +1366,10 @@ Module gas.
                                         M.read (|
                                           M.return_ (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "u64" ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
@@ -1256,6 +1408,7 @@ Module gas.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
@@ -1273,6 +1426,16 @@ Module gas.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "u64";
+                                    Ty.apply
+                                      (Ty.path "ruint::from::FromUintError")
+                                      []
+                                      [ Ty.path "u64" ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::convert::TryFrom",
                                   Ty.path "u64",
@@ -1316,6 +1479,7 @@ Module gas.
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
             M.get_function (| "revm_interpreter::gas::calc::copy_cost", [], [] |),
             [
               M.read (| M.get_constant "revm_interpreter::gas::constants::VERYLOW" |);
@@ -1353,7 +1517,7 @@ Module gas.
           let len := M.alloc (| len |) in
           let load := M.alloc (| load |) in
           M.read (|
-            let~ base_gas :=
+            let~ base_gas : Ty.path "u64" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -1364,6 +1528,7 @@ Module gas.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
@@ -1382,6 +1547,7 @@ Module gas.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "u64",
                             M.get_function (|
                               "revm_interpreter::gas::calc::warm_cold_cost_with_delegation",
                               [],
@@ -1401,6 +1567,7 @@ Module gas.
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "revm_specification::hardfork::SpecId",
                                           "is_enabled_in",
@@ -1430,6 +1597,7 @@ Module gas.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                 M.get_function (| "revm_interpreter::gas::calc::copy_cost", [], [] |),
                 [ M.read (| base_gas |); M.read (| len |) ]
               |)
@@ -1456,6 +1624,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                 M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (| base_cost |);
@@ -1463,6 +1632,7 @@ Module gas.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                           M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                           [
                             M.read (| len |);
@@ -1517,12 +1687,14 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                 M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                           M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                           [
                             M.read (| M.get_constant "revm_interpreter::gas::constants::LOG" |);
@@ -1530,6 +1702,7 @@ Module gas.
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                                     M.get_associated_function (|
                                       Ty.path "u64",
                                       "checked_mul",
@@ -1624,6 +1797,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                 M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                 [
                   M.read (| M.get_constant "revm_interpreter::gas::constants::KECCAK256" |);
@@ -1631,6 +1805,7 @@ Module gas.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                           M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                           [
                             M.read (| len |);
@@ -1686,12 +1861,14 @@ Module gas.
           (let len := M.alloc (| len |) in
           let multiple := M.alloc (| multiple |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
             M.get_associated_function (| Ty.path "u64", "checked_mul", [], [] |),
             [
               M.read (| multiple |);
               M.cast
                 (Ty.path "u64")
                 (M.call_closure (|
+                  Ty.path "usize",
                   M.get_function (|
                     "revm_interpreter::interpreter::shared_memory::num_words",
                     [],
@@ -1725,6 +1902,7 @@ Module gas.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                   M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                   [
                     M.read (| len |);
@@ -1790,6 +1968,7 @@ Module gas.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.path "revm_specification::hardfork::SpecId",
                               "is_enabled_in",
@@ -1829,6 +2008,7 @@ Module gas.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
@@ -1857,6 +2037,7 @@ Module gas.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path "revm_specification::hardfork::SpecId",
                                               "is_enabled_in",
@@ -1928,6 +2109,7 @@ Module gas.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.path "revm_specification::hardfork::SpecId",
                               "is_enabled_in",
@@ -1941,9 +2123,10 @@ Module gas.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ gas_cost :=
+                    let~ gas_cost : Ty.path "u64" :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "u64",
                           M.get_function (|
                             "revm_interpreter::gas::calc::istanbul_sstore_cost",
                             [ Value.Integer IntegerKind.U64 100; Value.Integer IntegerKind.U64 2900
@@ -1953,7 +2136,7 @@ Module gas.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                         |)
                       |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -1965,15 +2148,17 @@ Module gas.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ _ :=
-                                let β := gas_cost in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    M.read (|
-                                      M.get_constant
-                                        "revm_interpreter::gas::constants::COLD_SLOAD_COST"
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β := gas_cost in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      M.read (|
+                                        M.get_constant
+                                          "revm_interpreter::gas::constants::COLD_SLOAD_COST"
+                                      |)
                                     |)
                                   |)
                                 |) in
@@ -1993,6 +2178,7 @@ Module gas.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
@@ -2011,6 +2197,7 @@ Module gas.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "u64",
                                 M.get_function (|
                                   "revm_interpreter::gas::calc::istanbul_sstore_cost",
                                   [
@@ -2026,6 +2213,7 @@ Module gas.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "u64",
                                 M.get_function (|
                                   "revm_interpreter::gas::calc::frontier_sstore_cost",
                                   [],
@@ -2076,6 +2264,7 @@ Module gas.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.path "revm_context_interface::host::SStoreResult",
                               "is_new_eq_present",
@@ -2099,6 +2288,7 @@ Module gas.
                                 (M.alloc (|
                                   LogicalOp.and (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path "revm_context_interface::host::SStoreResult",
                                         "is_original_eq_present",
@@ -2114,6 +2304,7 @@ Module gas.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "revm_context_interface::host::SStoreResult",
                                           "is_original_zero",
@@ -2143,6 +2334,7 @@ Module gas.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.path "revm_context_interface::host::SStoreResult",
                                               "is_original_eq_present",
@@ -2207,6 +2399,7 @@ Module gas.
                         (M.alloc (|
                           LogicalOp.and (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.path "revm_context_interface::host::SStoreResult",
                                 "is_present_zero",
@@ -2218,6 +2411,7 @@ Module gas.
                             ltac:(M.monadic
                               (UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "revm_context_interface::host::SStoreResult",
                                     "is_new_zero",
@@ -2282,7 +2476,7 @@ Module gas.
           (let spec_id := M.alloc (| spec_id |) in
           let res := M.alloc (| res |) in
           M.read (|
-            let~ should_charge_topup :=
+            let~ should_charge_topup : Ty.path "bool" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2293,6 +2487,7 @@ Module gas.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
@@ -2358,7 +2553,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let~ selfdestruct_gas_topup :=
+            let~ selfdestruct_gas_topup : Ty.path "u64" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2370,6 +2565,7 @@ Module gas.
                             (M.alloc (|
                               LogicalOp.and (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "revm_specification::hardfork::SpecId",
                                     "is_enabled_in",
@@ -2393,7 +2589,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let~ selfdestruct_gas :=
+            let~ selfdestruct_gas : Ty.path "u64" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2404,6 +2600,7 @@ Module gas.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
@@ -2425,14 +2622,14 @@ Module gas.
                   ]
                 |)
               |) in
-            let~ gas :=
+            let~ gas : Ty.path "u64" :=
               M.alloc (|
                 BinOp.Wrap.add (|
                   M.read (| selfdestruct_gas |),
                   M.read (| selfdestruct_gas_topup |)
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2443,6 +2640,7 @@ Module gas.
                           (M.alloc (|
                             LogicalOp.and (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
@@ -2467,14 +2665,16 @@ Module gas.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let β := gas in
-                      M.write (|
-                        β,
-                        BinOp.Wrap.add (|
-                          M.read (| β |),
-                          M.read (|
-                            M.get_constant
-                              "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST"
+                      M.alloc (|
+                        let β := gas in
+                        M.write (|
+                          β,
+                          BinOp.Wrap.add (|
+                            M.read (| β |),
+                            M.read (|
+                              M.get_constant
+                                "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST"
+                            |)
                           |)
                         |)
                       |)));
@@ -2531,7 +2731,7 @@ Module gas.
           let transfers_value := M.alloc (| transfers_value |) in
           let account_load := M.alloc (| account_load |) in
           M.read (|
-            let~ gas :=
+            let~ gas : Ty.path "u64" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2542,6 +2742,7 @@ Module gas.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
@@ -2560,6 +2761,7 @@ Module gas.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "u64",
                             M.get_function (|
                               "revm_interpreter::gas::calc::warm_cold_cost_with_delegation",
                               [],
@@ -2587,6 +2789,7 @@ Module gas.
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "revm_specification::hardfork::SpecId",
                                           "is_enabled_in",
@@ -2614,7 +2817,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2622,14 +2825,16 @@ Module gas.
                     ltac:(M.monadic
                       (let γ := M.use transfers_value in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        let β := gas in
-                        M.write (|
-                          β,
-                          BinOp.Wrap.add (|
-                            M.read (| β |),
-                            M.read (|
-                              M.get_constant "revm_interpreter::gas::constants::CALLVALUE"
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := gas in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.add (|
+                              M.read (| β |),
+                              M.read (|
+                                M.get_constant "revm_interpreter::gas::constants::CALLVALUE"
+                              |)
                             |)
                           |)
                         |) in
@@ -2637,7 +2842,7 @@ Module gas.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2660,6 +2865,7 @@ Module gas.
                                 M.use
                                   (M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         "is_enabled_in",
@@ -2690,15 +2896,17 @@ Module gas.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let~ _ :=
-                                        let β := gas in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.add (|
-                                            M.read (| β |),
-                                            M.read (|
-                                              M.get_constant
-                                                "revm_interpreter::gas::constants::NEWACCOUNT"
+                                      let~ _ : Ty.tuple [] :=
+                                        M.alloc (|
+                                          let β := gas in
+                                          M.write (|
+                                            β,
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              M.read (|
+                                                M.get_constant
+                                                  "revm_interpreter::gas::constants::NEWACCOUNT"
+                                              |)
                                             |)
                                           |)
                                         |) in
@@ -2708,14 +2916,17 @@ Module gas.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let~ _ :=
-                                let β := gas in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    M.read (|
-                                      M.get_constant "revm_interpreter::gas::constants::NEWACCOUNT"
+                              (let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β := gas in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      M.read (|
+                                        M.get_constant
+                                          "revm_interpreter::gas::constants::NEWACCOUNT"
+                                      |)
                                     |)
                                   |)
                                 |) in
@@ -2788,9 +2999,10 @@ Module gas.
         ltac:(M.monadic
           (let load := M.alloc (| load |) in
           M.read (|
-            let~ gas :=
+            let~ gas : Ty.path "u64" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_function (| "revm_interpreter::gas::calc::warm_cold_cost", [], [] |),
                   [
                     M.read (|
@@ -2807,7 +3019,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2826,19 +3038,22 @@ Module gas.
                           0
                         |) in
                       let is_cold := M.copy (| γ0_0 |) in
-                      let~ _ :=
-                        let β := gas in
-                        M.write (|
-                          β,
-                          BinOp.Wrap.add (|
-                            M.read (| β |),
-                            M.call_closure (|
-                              M.get_function (|
-                                "revm_interpreter::gas::calc::warm_cold_cost",
-                                [],
-                                []
-                              |),
-                              [ M.read (| is_cold |) ]
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := gas in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.add (|
+                              M.read (| β |),
+                              M.call_closure (|
+                                Ty.path "u64",
+                                M.get_function (|
+                                  "revm_interpreter::gas::calc::warm_cold_cost",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| is_cold |) ]
+                              |)
                             |)
                           |)
                         |) in
@@ -2871,12 +3086,15 @@ Module gas.
         ltac:(M.monadic
           (let num_words := M.alloc (| num_words |) in
           M.read (|
-            let~ num_words := M.alloc (| M.cast (Ty.path "u64") (M.read (| num_words |)) |) in
+            let~ num_words : Ty.path "u64" :=
+              M.alloc (| M.cast (Ty.path "u64") (M.read (| num_words |)) |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "u64",
                 M.get_associated_function (| Ty.path "u64", "saturating_add", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                     [
                       M.read (| M.get_constant "revm_interpreter::gas::constants::MEMORY" |);
@@ -2885,6 +3103,7 @@ Module gas.
                   |);
                   BinOp.Wrap.div (|
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                       [ M.read (| num_words |); M.read (| num_words |) ]
                     |),
@@ -2965,12 +3184,13 @@ Module gas.
           let access_list := M.alloc (| access_list |) in
           let authorization_list_num := M.alloc (| authorization_list_num |) in
           M.read (|
-            let~ initial_gas := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-            let~ zero_data_len :=
+            let~ initial_gas : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+            let~ zero_data_len : Ty.path "u64" :=
               M.alloc (|
                 M.cast
                   (Ty.path "u64")
                   (M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
@@ -2998,6 +3218,23 @@ Module gas.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::filter::Filter")
+                          []
+                          [
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
+                            Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                  ]
+                              ]
+                              (Ty.path "bool")
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
@@ -3021,6 +3258,7 @@ Module gas.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "iter",
@@ -3058,12 +3296,13 @@ Module gas.
                     ]
                   |))
               |) in
-            let~ non_zero_data_len :=
+            let~ non_zero_data_len : Ty.path "u64" :=
               M.alloc (|
                 BinOp.Wrap.sub (|
                   M.cast
                     (Ty.path "u64")
                     (M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
@@ -3075,66 +3314,72 @@ Module gas.
                   M.read (| zero_data_len |)
                 |)
               |) in
-            let~ _ :=
-              let β := initial_gas in
-              M.write (|
-                β,
-                BinOp.Wrap.add (|
-                  M.read (| β |),
-                  BinOp.Wrap.mul (|
-                    M.read (| zero_data_len |),
-                    M.read (|
-                      M.get_constant "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA"
-                    |)
-                  |)
-                |)
-              |) in
-            let~ _ :=
-              let β := initial_gas in
-              M.write (|
-                β,
-                BinOp.Wrap.add (|
-                  M.read (| β |),
-                  BinOp.Wrap.mul (|
-                    M.read (| non_zero_data_len |),
-                    M.read (|
-                      M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "revm_specification::hardfork::SpecId",
-                                        "is_enabled_in",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (| spec_id |);
-                                        Value.StructTuple
-                                          "revm_specification::hardfork::SpecId::ISTANBUL"
-                                          []
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (| Value.Integer IntegerKind.U64 16 |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 68 |)))
-                        ]
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                let β := initial_gas in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (|
+                    M.read (| β |),
+                    BinOp.Wrap.mul (|
+                      M.read (| zero_data_len |),
+                      M.read (|
+                        M.get_constant "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA"
                       |)
                     |)
                   |)
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                let β := initial_gas in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (|
+                    M.read (| β |),
+                    BinOp.Wrap.mul (|
+                      M.read (| non_zero_data_len |),
+                      M.read (|
+                        M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path "revm_specification::hardfork::SpecId",
+                                          "is_enabled_in",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (| spec_id |);
+                                          Value.StructTuple
+                                            "revm_specification::hardfork::SpecId::ISTANBUL"
+                                            []
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  M.is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (| Value.Integer IntegerKind.U64 16 |)));
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 68 |)))
+                          ]
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |) in
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3151,6 +3396,7 @@ Module gas.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                             M.get_trait_method (|
                               "revm_context_interface::transaction::access_list::AccessListTrait",
                               AccessListT,
@@ -3175,32 +3421,36 @@ Module gas.
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let account_num := M.copy (| γ0_0 |) in
                               let storage_num := M.copy (| γ0_1 |) in
-                              let~ _ :=
-                                let β := initial_gas in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    BinOp.Wrap.mul (|
-                                      M.cast (Ty.path "u64") (M.read (| account_num |)),
-                                      M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS"
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β := initial_gas in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      BinOp.Wrap.mul (|
+                                        M.cast (Ty.path "u64") (M.read (| account_num |)),
+                                        M.read (|
+                                          M.get_constant
+                                            "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS"
+                                        |)
                                       |)
                                     |)
                                   |)
                                 |) in
-                              let~ _ :=
-                                let β := initial_gas in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    BinOp.Wrap.mul (|
-                                      M.cast (Ty.path "u64") (M.read (| storage_num |)),
-                                      M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β := initial_gas in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      BinOp.Wrap.mul (|
+                                        M.cast (Ty.path "u64") (M.read (| storage_num |)),
+                                        M.read (|
+                                          M.get_constant
+                                            "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -3211,63 +3461,69 @@ Module gas.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ :=
-              let β := initial_gas in
-              M.write (|
-                β,
-                BinOp.Wrap.add (|
-                  M.read (| β |),
-                  M.read (|
-                    M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.use is_create in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm_specification::hardfork::SpecId",
-                                              "is_enabled_in",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.read (| spec_id |);
-                                              Value.StructTuple
-                                                "revm_specification::hardfork::SpecId::HOMESTEAD"
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                let β := initial_gas in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (|
+                    M.read (| β |),
+                    M.read (|
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.use is_create in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              M.match_operator (|
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.path "revm_specification::hardfork::SpecId",
+                                                "is_enabled_in",
+                                                [],
                                                 []
-                                            ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (| Value.Integer IntegerKind.U64 53000 |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.alloc (| Value.Integer IntegerKind.U64 21000 |)))
-                              ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 21000 |)))
-                      ]
+                                              |),
+                                              [
+                                                M.read (| spec_id |);
+                                                Value.StructTuple
+                                                  "revm_specification::hardfork::SpecId::HOMESTEAD"
+                                                  []
+                                              ]
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (| Value.Integer IntegerKind.U64 53000 |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (| Value.Integer IntegerKind.U64 21000 |)))
+                                ]
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 21000 |)))
+                        ]
+                      |)
                     |)
                   |)
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3278,6 +3534,7 @@ Module gas.
                           (M.alloc (|
                             LogicalOp.and (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.path "revm_specification::hardfork::SpecId",
                                   "is_enabled_in",
@@ -3295,36 +3552,44 @@ Module gas.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let β := initial_gas in
-                      M.write (|
-                        β,
-                        BinOp.Wrap.add (|
-                          M.read (| β |),
-                          M.call_closure (|
-                            M.get_function (|
-                              "revm_interpreter::gas::calc::initcode_cost",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |)
-                                ]
-                              |)
-                            ]
+                      M.alloc (|
+                        let β := initial_gas in
+                        M.write (|
+                          β,
+                          BinOp.Wrap.add (|
+                            M.read (| β |),
+                            M.call_closure (|
+                              Ty.path "u64",
+                              M.get_function (|
+                                "revm_interpreter::gas::calc::initcode_cost",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| input |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
                           |)
                         |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3334,6 +3599,7 @@ Module gas.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.path "revm_specification::hardfork::SpecId",
                                 "is_enabled_in",
@@ -3347,17 +3613,19 @@ Module gas.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        let β := initial_gas in
-                        M.write (|
-                          β,
-                          BinOp.Wrap.add (|
-                            M.read (| β |),
-                            BinOp.Wrap.mul (|
-                              M.read (| authorization_list_num |),
-                              M.read (|
-                                M.get_constant
-                                  "revm_specification::eip7702::constants::PER_EMPTY_ACCOUNT_COST"
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := initial_gas in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.add (|
+                              M.read (| β |),
+                              BinOp.Wrap.mul (|
+                                M.read (| authorization_list_num |),
+                                M.read (|
+                                  M.get_constant
+                                    "revm_specification::eip7702::constants::PER_EMPTY_ACCOUNT_COST"
+                                |)
                               |)
                             |)
                           |)

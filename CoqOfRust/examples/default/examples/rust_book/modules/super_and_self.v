@@ -11,13 +11,15 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -62,13 +64,15 @@ Module cool.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
@@ -115,13 +119,15 @@ Module my.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
@@ -166,13 +172,15 @@ Module my.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
@@ -238,13 +246,15 @@ Module my.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
@@ -275,28 +285,45 @@ Module my.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
-            M.alloc (|
-              M.call_closure (| M.get_function (| "super_and_self::my::function", [], [] |), [] |)
-            |) in
-          let~ _ :=
-            M.alloc (|
-              M.call_closure (| M.get_function (| "super_and_self::my::function", [], [] |), [] |)
-            |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
+                M.get_function (| "super_and_self::my::function", [], [] |),
+                []
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_function (| "super_and_self::my::function", [], [] |),
+                []
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "super_and_self::my::cool::function", [], [] |),
                 []
               |)
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
-              M.call_closure (| M.get_function (| "super_and_self::function", [], [] |), [] |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_function (| "super_and_self::function", [], [] |),
+                []
+              |)
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
-              M.call_closure (| M.get_function (| "super_and_self::cool::function", [], [] |), [] |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_function (| "super_and_self::cool::function", [], [] |),
+                []
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -317,9 +344,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "super_and_self::my::indirect_call", [], [] |),
               []
             |)

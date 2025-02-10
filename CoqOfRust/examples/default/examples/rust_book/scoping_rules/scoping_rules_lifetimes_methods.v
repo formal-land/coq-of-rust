@@ -23,14 +23,16 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            let β :=
-              M.SubPointer.get_struct_tuple_field (|
-                M.deref (| M.read (| self |) |),
-                "scoping_rules_lifetimes_methods::Owner",
-                0
-              |) in
-            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              let β :=
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "scoping_rules_lifetimes_methods::Owner",
+                  0
+                |) in
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -50,13 +52,15 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -89,6 +93,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -144,15 +149,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ owner :=
+        let~ owner : Ty.path "scoping_rules_lifetimes_methods::Owner" :=
           M.alloc (|
             Value.StructTuple
               "scoping_rules_lifetimes_methods::Owner"
               [ Value.Integer IntegerKind.I32 18 ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.path "scoping_rules_lifetimes_methods::Owner",
                 "add_one",
@@ -162,9 +168,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, owner |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.path "scoping_rules_lifetimes_methods::Owner",
                 "print",

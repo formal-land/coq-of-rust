@@ -65,6 +65,7 @@ Module future.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ],
                             M.get_function (|
                               "core::mem::replace",
                               [],
@@ -94,6 +95,7 @@ Module future.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
@@ -155,10 +157,14 @@ Module future.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::pin::Pin")
@@ -175,6 +181,15 @@ Module future.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::pin::Pin")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::pin::Pin")
@@ -205,11 +220,15 @@ Module future.
                                 0
                               |) in
                             let f := M.alloc (| γ0_0 |) in
-                            let~ val :=
+                            let~ val : Ty.associated :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::task::poll::Poll")
+                                        []
+                                        [ Ty.associated ],
                                       M.get_trait_method (|
                                         "core::future::future::Future",
                                         F,
@@ -221,6 +240,10 @@ Module future.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::pin::Pin")
+                                            []
+                                            [ Ty.apply (Ty.path "&mut") [] [ F ] ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::pin::Pin")
@@ -271,9 +294,10 @@ Module future.
                                   ]
                                 |)
                               |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::pin::Pin")
@@ -318,6 +342,7 @@ Module future.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
+                                  Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
                                   [
                                     M.read (|

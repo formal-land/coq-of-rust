@@ -25,6 +25,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -88,6 +92,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -127,6 +132,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.tuple
+                  [
+                    Ty.path "usize";
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -172,6 +182,13 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.tuple [];
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -213,6 +230,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -262,6 +280,7 @@ Module iter.
                 M.SubPointer.get_struct_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         I,
@@ -290,6 +309,7 @@ Module iter.
                         |);
                         M.read (| init |);
                         M.call_closure (|
+                          Ty.associated,
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
@@ -326,6 +346,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                R,
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -389,6 +410,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -434,6 +456,13 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.tuple [];
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -475,6 +504,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -524,6 +554,7 @@ Module iter.
                 M.SubPointer.get_struct_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         I,
@@ -552,6 +583,7 @@ Module iter.
                         |);
                         M.read (| init |);
                         M.call_closure (|
+                          Ty.associated,
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
@@ -588,6 +620,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                R,
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,

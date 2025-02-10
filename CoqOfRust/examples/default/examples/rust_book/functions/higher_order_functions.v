@@ -58,13 +58,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -96,13 +98,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ upper := M.alloc (| Value.Integer IntegerKind.U32 1000 |) in
-        let~ acc := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
-        let~ _ :=
+        let~ upper : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 1000 |) in
+        let~ acc : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
+        let~ _ : Ty.tuple [] :=
           M.use
             (M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
@@ -125,10 +128,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -164,7 +168,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let n := M.copy (| γ0_0 |) in
-                                  let~ n_squared :=
+                                  let~ n_squared : Ty.path "u32" :=
                                     M.alloc (|
                                       BinOp.Wrap.mul (| M.read (| n |), M.read (| n |) |)
                                     |) in
@@ -200,6 +204,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.use
                                                       (M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_function (|
                                                             "higher_order_functions::is_odd",
                                                             [],
@@ -213,13 +218,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let~ _ :=
-                                                    let β := acc in
-                                                    M.write (|
-                                                      β,
-                                                      BinOp.Wrap.add (|
-                                                        M.read (| β |),
-                                                        M.read (| n_squared |)
+                                                  let~ _ : Ty.tuple [] :=
+                                                    M.alloc (|
+                                                      let β := acc in
+                                                      M.write (|
+                                                        β,
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| β |),
+                                                          M.read (| n_squared |)
+                                                        |)
                                                       |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
@@ -235,13 +242,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -274,6 +283,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -298,9 +308,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ sum_of_squared_odd_numbers :=
+        let~ sum_of_squared_odd_numbers : Ty.path "u32" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "u32",
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
@@ -334,6 +345,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::filter::Filter")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::take_while::TakeWhile")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::map::Map")
+                            []
+                            [
+                              Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
+                              Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                            ];
+                          Ty.function
+                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                            (Ty.path "bool")
+                        ];
+                      Ty.function
+                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                        (Ty.path "bool")
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
@@ -363,6 +397,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::take_while::TakeWhile")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::map::Map")
+                            []
+                            [
+                              Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
+                              Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                            ];
+                          Ty.function
+                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                            (Ty.path "bool")
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -384,6 +433,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::map::Map")
+                            []
+                            [
+                              Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
+                              Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ],
@@ -456,6 +512,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       (let γ := M.read (| γ |) in
                                       let n_squared := M.copy (| γ |) in
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_function (|
                                           "higher_order_functions::is_odd",
                                           [],
@@ -472,13 +529,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -511,6 +570,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",

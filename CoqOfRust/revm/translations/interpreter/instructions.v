@@ -16,9 +16,47 @@ Module instructions.
       ltac:(M.monadic
         (let opcode := M.alloc (| opcode |) in
         M.read (|
-          let~ table :=
+          let~ table :
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 256 ]
+                [
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            []
+                            [ WIRE ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple [])
+                ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 256 ]
+                  [
+                    Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "revm_interpreter::interpreter::Interpreter")
+                              []
+                              [ WIRE ]
+                          ];
+                        Ty.apply (Ty.path "&mut") [] [ H ]
+                      ]
+                      (Ty.tuple [])
+                  ],
                 M.get_function (|
                   "revm_interpreter::instructions::instruction_table",
                   [],
@@ -239,7 +277,26 @@ Module instructions.
     | [], [ WIRE; H ], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ table :=
+          let~ table :
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 256 ]
+                [
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            []
+                            [ WIRE ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple [])
+                ] :=
             M.alloc (|
               repeat (|
                 M.read (|
@@ -257,3051 +314,3405 @@ Module instructions.
                 Value.Integer IntegerKind.Usize 256
               |)
             |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::stop",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::add",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::stop",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::add",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::MUL" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::mul",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SUB" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::sub",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DIV" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::div",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SDIV" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::sdiv",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::MOD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::rem",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SMOD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::smod",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::ADDMOD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::addmod",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::MULMOD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::mulmod",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::EXP" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::exp",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SIGNEXTEND" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::signextend",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::LT" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::lt",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::GT" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::gt",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SLT" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::slt",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SGT" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::sgt",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::EQ" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::eq",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::ISZERO" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::iszero",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::AND" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::bitand",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::OR" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::bitor",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::XOR" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::bitxor",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::NOT" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::not",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::BYTE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::byte",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SHL" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::shl",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SHR" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::shr",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SAR" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::bitwise::sar",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::KECCAK256" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::keccak256",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::ADDRESS" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::address",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::balance",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::ORIGIN" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::tx_info::origin",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLER" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::caller",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLVALUE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::callvalue",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLDATALOAD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::calldataload",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLDATASIZE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::calldatasize",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLDATACOPY" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::calldatacopy",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CODESIZE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::codesize",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CODECOPY" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::codecopy",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::GASPRICE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::tx_info::gasprice",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTCODESIZE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::extcodesize",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTCODECOPY" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::extcodecopy",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURNDATASIZE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::returndatasize",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURNDATACOPY" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::returndatacopy",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTCODEHASH" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::extcodehash",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::BLOCKHASH" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::blockhash",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::COINBASE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::block_info::coinbase",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::TIMESTAMP" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::block_info::timestamp",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::NUMBER" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::block_info::block_number",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DIFFICULTY" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::block_info::difficulty",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::GASLIMIT" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::block_info::gaslimit",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CHAINID" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::block_info::chainid",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SELFBALANCE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::selfbalance",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::BASEFEE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::block_info::basefee",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::BLOBHASH" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::tx_info::blob_hash",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::BLOBBASEFEE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::block_info::blob_basefee",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::POP" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::pop", [], [ WIRE; H ] |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::MLOAD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::memory::mload",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::MSTORE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::memory::mstore",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::MSTORE8" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::memory::mstore8",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SLOAD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::sload",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SSTORE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::sstore",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::JUMP" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::jump",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::JUMPI" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::jumpi",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::PC" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::pc",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::MSIZE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::memory::msize",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::GAS" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::gas",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::JUMPDEST" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::jumpdest_or_nop",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::TLOAD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::tload",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::TSTORE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::tstore",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::MCOPY" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::memory::mcopy",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH0" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push0",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH1" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 1 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH2" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 2 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH3" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 3 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH4" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 4 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH5" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 5 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH6" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 6 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH7" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 7 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH8" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 8 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH9" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 9 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH10" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 10 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH11" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 11 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH12" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 12 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH13" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 13 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH14" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 14 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH15" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 15 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH16" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 16 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH17" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 17 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH18" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 18 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH19" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 19 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH20" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 20 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH21" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 21 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH22" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 22 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH23" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 23 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH24" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 24 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH25" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 25 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH26" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 26 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH27" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 27 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH28" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 28 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH29" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 29 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH30" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 30 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH31" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 31 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::PUSH32" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::push",
-                  [ Value.Integer IntegerKind.Usize 32 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP1" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 1 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP2" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 2 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP3" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 3 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP4" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 4 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP5" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 5 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP6" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 6 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP7" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 7 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP8" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 8 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP9" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 9 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP10" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 10 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP11" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 11 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP12" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 12 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP13" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 13 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP14" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 14 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP15" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 15 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUP16" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dup",
-                  [ Value.Integer IntegerKind.Usize 16 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP1" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 1 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP2" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 2 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP3" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 3 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP4" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 4 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP5" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 5 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP6" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 6 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP7" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 7 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP8" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 8 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP9" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 9 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP10" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 10 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP11" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 11 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP12" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 12 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP13" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 13 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP14" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 14 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP15" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 15 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAP16" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swap",
-                  [ Value.Integer IntegerKind.Usize 16 ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG0" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::log",
-                  [ Value.Integer IntegerKind.Usize 0 ],
-                  [ H; WIRE ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG1" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::log",
-                  [ Value.Integer IntegerKind.Usize 1 ],
-                  [ H; WIRE ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG2" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::log",
-                  [ Value.Integer IntegerKind.Usize 2 ],
-                  [ H; WIRE ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG3" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::log",
-                  [ Value.Integer IntegerKind.Usize 3 ],
-                  [ H; WIRE ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::LOG4" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::log",
-                  [ Value.Integer IntegerKind.Usize 4 ],
-                  [ H; WIRE ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DATALOAD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::data::data_load",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DATALOADN" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::data::data_loadn",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DATASIZE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::data::data_size",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DATACOPY" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::data::data_copy",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::RJUMP" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::rjump",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::RJUMPI" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::rjumpi",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::RJUMPV" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::rjumpv",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLF" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::callf",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::RETF" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::retf",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::JUMPF" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::jumpf",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DUPN" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::dupn",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SWAPN" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::swapn",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::EXCHANGE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::stack::exchange",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::EOFCREATE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::eofcreate",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURNCONTRACT" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::return_contract",
-                  [],
-                  [ H; WIRE ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CREATE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::create",
-                  [ Value.Bool false ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CALL" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::call",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CALLCODE" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::call_code",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURN" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::ret",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::DELEGATECALL" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::delegate_call",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::CREATE2" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::create",
-                  [ Value.Bool true ],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::RETURNDATALOAD" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::system::returndataload",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTCALL" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::extcall",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTDELEGATECALL" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::extdelegatecall",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::STATICCALL" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::static_call",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::EXTSTATICCALL" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::contract::extstaticcall",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::REVERT" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::revert",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::INVALID" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::invalid",
-                  [],
-                  [ WIRE; H ]
-                |))
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_array_field (|
-                table,
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::SELFDESTRUCT" |))
-                |)
-              |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::selfdestruct",
-                  [],
-                  [ WIRE; H ]
-                |))
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::stop",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::add",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::stop",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::add",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::MUL" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::mul",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SUB" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::sub",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DIV" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::div",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SDIV" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::sdiv",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::MOD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::rem",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SMOD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::smod",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::ADDMOD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::addmod",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::MULMOD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::mulmod",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EXP" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::exp",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SIGNEXTEND" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::signextend",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::LT" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::lt",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::GT" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::gt",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SLT" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::slt",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SGT" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::sgt",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EQ" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::eq",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::ISZERO" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::iszero",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::AND" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::bitand",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::OR" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::bitor",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::XOR" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::bitxor",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::NOT" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::not",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::BYTE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::byte",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SHL" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::shl",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SHR" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::shr",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SAR" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::bitwise::sar",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::KECCAK256" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::keccak256",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::ADDRESS" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::address",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::balance",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::ORIGIN" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::tx_info::origin",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CALLER" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::caller",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CALLVALUE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::callvalue",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CALLDATALOAD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::calldataload",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CALLDATASIZE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::calldatasize",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CALLDATACOPY" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::calldatacopy",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CODESIZE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::codesize",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CODECOPY" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::codecopy",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::GASPRICE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::tx_info::gasprice",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EXTCODESIZE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::extcodesize",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EXTCODECOPY" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::extcodecopy",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::RETURNDATASIZE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::returndatasize",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::RETURNDATACOPY" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::returndatacopy",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EXTCODEHASH" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::extcodehash",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::BLOCKHASH" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::blockhash",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::COINBASE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::block_info::coinbase",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::TIMESTAMP" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::block_info::timestamp",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::NUMBER" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::block_info::block_number",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DIFFICULTY" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::block_info::difficulty",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::GASLIMIT" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::block_info::gaslimit",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CHAINID" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::block_info::chainid",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SELFBALANCE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::selfbalance",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::BASEFEE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::block_info::basefee",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::BLOBHASH" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::tx_info::blob_hash",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::BLOBBASEFEE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::block_info::blob_basefee",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::POP" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::pop",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::MLOAD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::memory::mload",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::MSTORE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::memory::mstore",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::MSTORE8" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::memory::mstore8",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SLOAD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::sload",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SSTORE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::sstore",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::JUMP" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::jump",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::JUMPI" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::jumpi",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PC" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::pc",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::MSIZE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::memory::msize",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::GAS" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::gas",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::JUMPDEST" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::jumpdest_or_nop",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::TLOAD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::tload",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::TSTORE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::tstore",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::MCOPY" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::memory::mcopy",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH0" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push0",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH1" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 1 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH2" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 2 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH3" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 3 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH4" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 4 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH5" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 5 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH6" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 6 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH7" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 7 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH8" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 8 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH9" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 9 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH10" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 10 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH11" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 11 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH12" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 12 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH13" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 13 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH14" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 14 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH15" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 15 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH16" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 16 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH17" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 17 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH18" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 18 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH19" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 19 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH20" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 20 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH21" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 21 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH22" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 22 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH23" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 23 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH24" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 24 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH25" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 25 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH26" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 26 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH27" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 27 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH28" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 28 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH29" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 29 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH30" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 30 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH31" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 31 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::PUSH32" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::push",
+                    [ Value.Integer IntegerKind.Usize 32 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP1" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 1 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP2" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 2 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP3" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 3 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP4" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 4 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP5" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 5 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP6" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 6 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP7" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 7 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP8" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 8 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP9" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 9 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP10" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 10 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP11" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 11 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP12" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 12 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP13" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 13 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP14" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 14 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP15" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 15 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUP16" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dup",
+                    [ Value.Integer IntegerKind.Usize 16 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP1" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 1 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP2" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 2 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP3" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 3 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP4" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 4 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP5" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 5 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP6" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 6 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP7" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 7 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP8" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 8 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP9" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 9 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP10" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 10 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP11" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 11 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP12" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 12 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP13" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 13 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP14" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 14 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP15" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 15 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAP16" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swap",
+                    [ Value.Integer IntegerKind.Usize 16 ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::LOG0" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::log",
+                    [ Value.Integer IntegerKind.Usize 0 ],
+                    [ H; WIRE ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::LOG1" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::log",
+                    [ Value.Integer IntegerKind.Usize 1 ],
+                    [ H; WIRE ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::LOG2" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::log",
+                    [ Value.Integer IntegerKind.Usize 2 ],
+                    [ H; WIRE ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::LOG3" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::log",
+                    [ Value.Integer IntegerKind.Usize 3 ],
+                    [ H; WIRE ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::LOG4" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::log",
+                    [ Value.Integer IntegerKind.Usize 4 ],
+                    [ H; WIRE ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DATALOAD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::data::data_load",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DATALOADN" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::data::data_loadn",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DATASIZE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::data::data_size",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DATACOPY" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::data::data_copy",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::RJUMP" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::rjump",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::RJUMPI" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::rjumpi",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::RJUMPV" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::rjumpv",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CALLF" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::callf",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::RETF" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::retf",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::JUMPF" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::jumpf",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DUPN" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::dupn",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SWAPN" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::swapn",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EXCHANGE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::stack::exchange",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EOFCREATE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::eofcreate",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::RETURNCONTRACT" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::return_contract",
+                    [],
+                    [ H; WIRE ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CREATE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::create",
+                    [ Value.Bool false ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CALL" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::call",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CALLCODE" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::call_code",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::RETURN" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::ret",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::DELEGATECALL" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::delegate_call",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::CREATE2" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::create",
+                    [ Value.Bool true ],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::RETURNDATALOAD" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::system::returndataload",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EXTCALL" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::extcall",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EXTDELEGATECALL" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::extdelegatecall",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::STATICCALL" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::static_call",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::EXTSTATICCALL" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::contract::extstaticcall",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::REVERT" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::revert",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::INVALID" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::control::invalid",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_array_field (|
+                  table,
+                  M.alloc (|
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (| M.get_constant "revm_bytecode::opcode::SELFDESTRUCT" |))
+                  |)
+                |),
+                (* ReifyFnPointer *)
+                M.pointer_coercion
+                  (M.get_function (|
+                    "revm_interpreter::instructions::host::selfdestruct",
+                    [],
+                    [ WIRE; H ]
+                  |))
+              |)
             |) in
           table
         |)))

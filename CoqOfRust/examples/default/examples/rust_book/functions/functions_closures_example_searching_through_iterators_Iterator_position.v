@@ -21,9 +21,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ vec :=
+        let~ vec :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
@@ -33,6 +41,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.read (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 6 ]
+                          [ Ty.path "i32" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -66,9 +84,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ index_of_first_even_number :=
+        let~ index_of_first_even_number :
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "i32" ],
@@ -87,6 +107,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "i32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                         "iter",
@@ -98,6 +119,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -145,7 +170,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -178,6 +203,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -213,12 +239,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],
@@ -265,9 +292,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ index_of_first_negative_number :=
+        let~ index_of_first_negative_number :
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
@@ -285,6 +314,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
+                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
@@ -321,7 +354,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -350,6 +383,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -385,12 +419,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],

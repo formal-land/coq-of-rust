@@ -27,6 +27,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
           [
             ("_key",
               M.call_closure (|
+                Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
@@ -40,6 +41,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               |));
             ("_value",
               M.call_closure (|
+                Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
@@ -160,6 +162,7 @@ Module Impl_core_default_Default_for_erc721_AccountId.
           "erc721::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -329,6 +332,10 @@ Module Impl_core_default_Default_for_erc721_Erc721.
           [
             ("token_owner",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "erc721::Mapping")
+                  []
+                  [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -345,6 +352,10 @@ Module Impl_core_default_Default_for_erc721_Erc721.
               |));
             ("token_approvals",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "erc721::Mapping")
+                  []
+                  [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -361,6 +372,10 @@ Module Impl_core_default_Default_for_erc721_Erc721.
               |));
             ("owned_tokens_count",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "erc721::Mapping")
+                  []
+                  [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -377,6 +392,13 @@ Module Impl_core_default_Default_for_erc721_Erc721.
               |));
             ("operator_approvals",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "erc721::Mapping")
+                  []
+                  [
+                    Ty.tuple [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId" ];
+                    Ty.tuple []
+                  ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -474,9 +496,10 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -485,9 +508,10 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -689,6 +713,7 @@ Module Impl_erc721_Erc721.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "erc721::Env",
           M.get_associated_function (| Ty.path "erc721::Erc721", "init_env", [], [] |),
           []
         |)))
@@ -708,6 +733,7 @@ Module Impl_erc721_Erc721.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "erc721::Erc721",
           M.get_trait_method (|
             "core::default::Default",
             Ty.path "erc721::Erc721",
@@ -737,6 +763,7 @@ Module Impl_erc721_Erc721.
         (let self := M.alloc (| self |) in
         let of := M.alloc (| of |) in
         M.call_closure (|
+          Ty.path "u32",
           M.get_associated_function (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
             "unwrap_or",
@@ -745,6 +772,7 @@ Module Impl_erc721_Erc721.
           |),
           [
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "erc721::Mapping")
@@ -788,9 +816,10 @@ Module Impl_erc721_Erc721.
         (let self := M.alloc (| self |) in
         let id := M.alloc (| id |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "erc721::Mapping")
@@ -835,6 +864,7 @@ Module Impl_erc721_Erc721.
         let owner := M.alloc (| owner |) in
         let operator := M.alloc (| operator |) in
         M.call_closure (|
+          Ty.path "bool",
           M.get_associated_function (|
             Ty.apply
               (Ty.path "erc721::Mapping")
@@ -884,6 +914,7 @@ Module Impl_erc721_Erc721.
         (let self := M.alloc (| self |) in
         let id := M.alloc (| id |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ],
           M.get_associated_function (|
             Ty.apply (Ty.path "erc721::Mapping") [] [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
             "get",
@@ -928,9 +959,11 @@ Module Impl_erc721_Erc721.
         let from := M.alloc (| from |) in
         let id := M.alloc (| id |) in
         M.read (|
-          let~ owner :=
+          let~ owner :
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ],
                 M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [], [] |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| id |)
                 ]
@@ -939,6 +972,7 @@ Module Impl_erc721_Erc721.
           M.alloc (|
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ],
@@ -957,6 +991,7 @@ Module Impl_erc721_Erc721.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
+                            Ty.path "erc721::AccountId",
                             M.get_trait_method (|
                               "core::convert::From",
                               Ty.path "erc721::AccountId",
@@ -987,6 +1022,7 @@ Module Impl_erc721_Erc721.
                 (LogicalOp.or (|
                   LogicalOp.or (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.apply
@@ -1011,6 +1047,7 @@ Module Impl_erc721_Erc721.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -1034,6 +1071,10 @@ Module Impl_erc721_Erc721.
                             Pointer.Kind.Ref,
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "erc721::AccountId" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "erc721::Mapping")
@@ -1065,6 +1106,7 @@ Module Impl_erc721_Erc721.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_associated_function (|
                         Ty.path "erc721::Erc721",
                         "approved_for_all",
@@ -1074,6 +1116,7 @@ Module Impl_erc721_Erc721.
                       [
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                         M.call_closure (|
+                          Ty.path "erc721::AccountId",
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -1092,6 +1135,7 @@ Module Impl_erc721_Erc721.
                           ]
                         |);
                         M.call_closure (|
+                          Ty.path "erc721::AccountId",
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -1134,6 +1178,7 @@ Module Impl_erc721_Erc721.
         (let self := M.alloc (| self |) in
         let id := M.alloc (| id |) in
         M.call_closure (|
+          Ty.path "bool",
           M.get_associated_function (|
             Ty.apply (Ty.path "erc721::Mapping") [] [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
             "contains",
@@ -1170,6 +1215,7 @@ Module Impl_erc721_Erc721.
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         M.call_closure (|
+          Ty.path "u32",
           M.get_associated_function (| Ty.path "erc721::Erc721", "balance_of_or_zero", [], [] |),
           [
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -1194,6 +1240,7 @@ Module Impl_erc721_Erc721.
         (let self := M.alloc (| self |) in
         let id := M.alloc (| id |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ],
           M.get_associated_function (|
             Ty.apply (Ty.path "erc721::Mapping") [] [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
             "get",
@@ -1231,6 +1278,7 @@ Module Impl_erc721_Erc721.
         let owner := M.alloc (| owner |) in
         let operator := M.alloc (| operator |) in
         M.call_closure (|
+          Ty.path "bool",
           M.get_associated_function (| Ty.path "erc721::Erc721", "approved_for_all", [], [] |),
           [
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -1276,15 +1324,17 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller :=
+              let~ caller : Ty.path "erc721::AccountId" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "erc721::AccountId",
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "erc721::Env",
                             M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
@@ -1293,7 +1343,7 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1303,6 +1353,7 @@ Module Impl_erc721_Erc721.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "erc721::AccountId",
@@ -1334,15 +1385,17 @@ Module Impl_erc721_Erc721.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "erc721::Env",
                             M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
@@ -1362,7 +1415,7 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1371,9 +1424,10 @@ Module Impl_erc721_Erc721.
                         (let γ := M.use approved in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "erc721::Mapping")
@@ -1404,9 +1458,10 @@ Module Impl_erc721_Erc721.
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "erc721::Mapping")
@@ -1462,10 +1517,20 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -1480,6 +1545,10 @@ Module Impl_erc721_Erc721.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "approve_for_all",
@@ -1510,6 +1579,10 @@ Module Impl_erc721_Erc721.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -1597,15 +1670,17 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller :=
+              let~ caller : Ty.path "erc721::AccountId" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "erc721::AccountId",
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "erc721::Env",
                             M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
@@ -1614,9 +1689,11 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let~ owner :=
+              let~ owner :
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ],
                     M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [], [] |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -1624,7 +1701,7 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1636,6 +1713,7 @@ Module Impl_erc721_Erc721.
                               UnOp.not (|
                                 LogicalOp.or (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -1667,6 +1745,7 @@ Module Impl_erc721_Erc721.
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path "erc721::Erc721",
                                         "approved_for_all",
@@ -1679,6 +1758,7 @@ Module Impl_erc721_Erc721.
                                           M.deref (| M.read (| self |) |)
                                         |);
                                         M.call_closure (|
+                                          Ty.path "erc721::AccountId",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -1720,7 +1800,7 @@ Module Impl_erc721_Erc721.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1730,6 +1810,7 @@ Module Impl_erc721_Erc721.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "erc721::AccountId",
@@ -1745,6 +1826,7 @@ Module Impl_erc721_Erc721.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "erc721::AccountId",
                                         M.get_trait_method (|
                                           "core::convert::From",
                                           Ty.path "erc721::AccountId",
@@ -1787,7 +1869,7 @@ Module Impl_erc721_Erc721.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1797,6 +1879,7 @@ Module Impl_erc721_Erc721.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "erc721::Mapping")
@@ -1837,9 +1920,10 @@ Module Impl_erc721_Erc721.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "erc721::Mapping")
@@ -1866,15 +1950,17 @@ Module Impl_erc721_Erc721.
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "erc721::Env",
                             M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
@@ -1919,10 +2005,20 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -1937,6 +2033,10 @@ Module Impl_erc721_Erc721.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "approve_for",
@@ -1970,6 +2070,10 @@ Module Impl_erc721_Erc721.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -2069,7 +2173,7 @@ Module Impl_erc721_Erc721.
                         |) in
                       let token_owner := M.alloc (| γ1_0 |) in
                       let owned_tokens_count := M.alloc (| γ1_1 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -2080,6 +2184,7 @@ Module Impl_erc721_Erc721.
                                     (M.alloc (|
                                       UnOp.not (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "erc721::Mapping")
@@ -2121,11 +2226,22 @@ Module Impl_erc721_Erc721.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let~ count :=
+                      let~ count : Ty.path "u32" :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -2140,6 +2256,10 @@ Module Impl_erc721_Erc721.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "erc721::Error" ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -2151,6 +2271,10 @@ Module Impl_erc721_Erc721.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u32" ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -2167,6 +2291,10 @@ Module Impl_erc721_Erc721.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "u32" ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "erc721::Mapping")
@@ -2235,6 +2363,10 @@ Module Impl_erc721_Erc721.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "erc721::Error" ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -2274,9 +2406,10 @@ Module Impl_erc721_Erc721.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "erc721::Mapping")
@@ -2296,9 +2429,10 @@ Module Impl_erc721_Erc721.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "erc721::Mapping")
@@ -2411,15 +2545,17 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller :=
+              let~ caller : Ty.path "erc721::AccountId" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "erc721::AccountId",
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "erc721::Env",
                             M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
@@ -2428,10 +2564,20 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -2446,6 +2592,10 @@ Module Impl_erc721_Erc721.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "transfer_token_from",
@@ -2483,6 +2633,10 @@ Module Impl_erc721_Erc721.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -2552,10 +2706,20 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -2570,6 +2734,10 @@ Module Impl_erc721_Erc721.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "transfer_token_from",
@@ -2607,6 +2775,10 @@ Module Impl_erc721_Erc721.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -2676,15 +2848,17 @@ Module Impl_erc721_Erc721.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ caller :=
+              let~ caller : Ty.path "erc721::AccountId" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "erc721::AccountId",
                     M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "erc721::Env",
                             M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
@@ -2693,10 +2867,20 @@ Module Impl_erc721_Erc721.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -2711,6 +2895,10 @@ Module Impl_erc721_Erc721.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
                           M.get_associated_function (|
                             Ty.path "erc721::Erc721",
                             "add_token_to",
@@ -2744,6 +2932,10 @@ Module Impl_erc721_Erc721.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -2782,15 +2974,17 @@ Module Impl_erc721_Erc721.
                         val))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "erc721::Env",
                             M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
@@ -2807,6 +3001,7 @@ Module Impl_erc721_Erc721.
                                   "core::option::Option::Some"
                                   [
                                     M.call_closure (|
+                                      Ty.path "erc721::AccountId",
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         Ty.path "erc721::AccountId",

@@ -149,7 +149,7 @@
                                     "body": {
                                       "Let": {
                                         "name": "gas_limit",
-                                        "is_user": false,
+                                        "ty": null,
                                         "init": {
                                           "Call": {
                                             "func": {
@@ -241,7 +241,23 @@
                                                         }
                                                       }
                                                     ],
-                                                    "kind": "Closure"
+                                                    "kind": {
+                                                      "Closure": {
+                                                        "Application": {
+                                                          "func": {
+                                                            "Path": {
+                                                              "path": [
+                                                                "revm_interpreter",
+                                                                "gas",
+                                                                "Gas"
+                                                              ]
+                                                            }
+                                                          },
+                                                          "consts": [],
+                                                          "tys": []
+                                                        }
+                                                      }
+                                                    }
                                                   }
                                                 }
                                               ]
@@ -369,7 +385,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -386,7 +402,7 @@
                                           "body": {
                                             "Let": {
                                               "name": "result",
-                                              "is_user": false,
+                                              "ty": null,
                                               "init": {
                                                 "Call": {
                                                   "func": {
@@ -409,60 +425,74 @@
                                                     {
                                                       "Let": {
                                                         "name": null,
-                                                        "is_user": true,
+                                                        "ty": {
+                                                          "Tuple": {
+                                                            "tys": []
+                                                          }
+                                                        },
                                                         "init": {
                                                           "Call": {
                                                             "func": {
-                                                              "LocalVar": "M.write"
+                                                              "LocalVar": "M.alloc"
                                                             },
                                                             "args": [
                                                               {
                                                                 "Call": {
                                                                   "func": {
-                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                    "LocalVar": "M.write"
                                                                   },
                                                                   "args": [
                                                                     {
                                                                       "Call": {
                                                                         "func": {
-                                                                          "LocalVar": "M.deref"
+                                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
                                                                         },
                                                                         "args": [
                                                                           {
                                                                             "Call": {
                                                                               "func": {
-                                                                                "LocalVar": "M.read"
+                                                                                "LocalVar": "M.deref"
                                                                               },
                                                                               "args": [
                                                                                 {
-                                                                                  "LocalVar": "self"
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "LocalVar": "M.read"
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "LocalVar": "self"
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Effectful"
+                                                                                  }
                                                                                 }
                                                                               ],
                                                                               "kind": "Effectful"
                                                                             }
+                                                                          },
+                                                                          {
+                                                                            "InternalString": "revm_interpreter::interpreter::loop_control::LoopControl"
+                                                                          },
+                                                                          {
+                                                                            "InternalString": "instruction_result"
                                                                           }
                                                                         ],
                                                                         "kind": "Effectful"
                                                                       }
                                                                     },
                                                                     {
-                                                                      "InternalString": "revm_interpreter::interpreter::loop_control::LoopControl"
-                                                                    },
-                                                                    {
-                                                                      "InternalString": "instruction_result"
-                                                                    }
-                                                                  ],
-                                                                  "kind": "Effectful"
-                                                                }
-                                                              },
-                                                              {
-                                                                "Call": {
-                                                                  "func": {
-                                                                    "LocalVar": "M.read"
-                                                                  },
-                                                                  "args": [
-                                                                    {
-                                                                      "LocalVar": "result"
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "result"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
                                                                     }
                                                                   ],
                                                                   "kind": "Effectful"
@@ -602,7 +632,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -619,7 +649,7 @@
                                           "body": {
                                             "Let": {
                                               "name": "action",
-                                              "is_user": false,
+                                              "ty": null,
                                               "init": {
                                                 "Call": {
                                                   "func": {
@@ -636,7 +666,7 @@
                                               "body": {
                                                 "Let": {
                                                   "name": "result",
-                                                  "is_user": false,
+                                                  "ty": null,
                                                   "init": {
                                                     "Call": {
                                                       "func": {
@@ -659,60 +689,74 @@
                                                         {
                                                           "Let": {
                                                             "name": null,
-                                                            "is_user": true,
+                                                            "ty": {
+                                                              "Tuple": {
+                                                                "tys": []
+                                                              }
+                                                            },
                                                             "init": {
                                                               "Call": {
                                                                 "func": {
-                                                                  "LocalVar": "M.write"
+                                                                  "LocalVar": "M.alloc"
                                                                 },
                                                                 "args": [
                                                                   {
                                                                     "Call": {
                                                                       "func": {
-                                                                        "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                        "LocalVar": "M.write"
                                                                       },
                                                                       "args": [
                                                                         {
                                                                           "Call": {
                                                                             "func": {
-                                                                              "LocalVar": "M.deref"
+                                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
                                                                             },
                                                                             "args": [
                                                                               {
                                                                                 "Call": {
                                                                                   "func": {
-                                                                                    "LocalVar": "M.read"
+                                                                                    "LocalVar": "M.deref"
                                                                                   },
                                                                                   "args": [
                                                                                     {
-                                                                                      "LocalVar": "self"
+                                                                                      "Call": {
+                                                                                        "func": {
+                                                                                          "LocalVar": "M.read"
+                                                                                        },
+                                                                                        "args": [
+                                                                                          {
+                                                                                            "LocalVar": "self"
+                                                                                          }
+                                                                                        ],
+                                                                                        "kind": "Effectful"
+                                                                                      }
                                                                                     }
                                                                                   ],
                                                                                   "kind": "Effectful"
                                                                                 }
+                                                                              },
+                                                                              {
+                                                                                "InternalString": "revm_interpreter::interpreter::loop_control::LoopControl"
+                                                                              },
+                                                                              {
+                                                                                "InternalString": "next_action"
                                                                               }
                                                                             ],
                                                                             "kind": "Effectful"
                                                                           }
                                                                         },
                                                                         {
-                                                                          "InternalString": "revm_interpreter::interpreter::loop_control::LoopControl"
-                                                                        },
-                                                                        {
-                                                                          "InternalString": "next_action"
-                                                                        }
-                                                                      ],
-                                                                      "kind": "Effectful"
-                                                                    }
-                                                                  },
-                                                                  {
-                                                                    "Call": {
-                                                                      "func": {
-                                                                        "LocalVar": "M.read"
-                                                                      },
-                                                                      "args": [
-                                                                        {
-                                                                          "LocalVar": "action"
+                                                                          "Call": {
+                                                                            "func": {
+                                                                              "LocalVar": "M.read"
+                                                                            },
+                                                                            "args": [
+                                                                              {
+                                                                                "LocalVar": "action"
+                                                                              }
+                                                                            ],
+                                                                            "kind": "Effectful"
+                                                                          }
                                                                         }
                                                                       ],
                                                                       "kind": "Effectful"
@@ -725,60 +769,74 @@
                                                             "body": {
                                                               "Let": {
                                                                 "name": null,
-                                                                "is_user": true,
+                                                                "ty": {
+                                                                  "Tuple": {
+                                                                    "tys": []
+                                                                  }
+                                                                },
                                                                 "init": {
                                                                   "Call": {
                                                                     "func": {
-                                                                      "LocalVar": "M.write"
+                                                                      "LocalVar": "M.alloc"
                                                                     },
                                                                     "args": [
                                                                       {
                                                                         "Call": {
                                                                           "func": {
-                                                                            "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                            "LocalVar": "M.write"
                                                                           },
                                                                           "args": [
                                                                             {
                                                                               "Call": {
                                                                                 "func": {
-                                                                                  "LocalVar": "M.deref"
+                                                                                  "LocalVar": "M.SubPointer.get_struct_record_field"
                                                                                 },
                                                                                 "args": [
                                                                                   {
                                                                                     "Call": {
                                                                                       "func": {
-                                                                                        "LocalVar": "M.read"
+                                                                                        "LocalVar": "M.deref"
                                                                                       },
                                                                                       "args": [
                                                                                         {
-                                                                                          "LocalVar": "self"
+                                                                                          "Call": {
+                                                                                            "func": {
+                                                                                              "LocalVar": "M.read"
+                                                                                            },
+                                                                                            "args": [
+                                                                                              {
+                                                                                                "LocalVar": "self"
+                                                                                              }
+                                                                                            ],
+                                                                                            "kind": "Effectful"
+                                                                                          }
                                                                                         }
                                                                                       ],
                                                                                       "kind": "Effectful"
                                                                                     }
+                                                                                  },
+                                                                                  {
+                                                                                    "InternalString": "revm_interpreter::interpreter::loop_control::LoopControl"
+                                                                                  },
+                                                                                  {
+                                                                                    "InternalString": "instruction_result"
                                                                                   }
                                                                                 ],
                                                                                 "kind": "Effectful"
                                                                               }
                                                                             },
                                                                             {
-                                                                              "InternalString": "revm_interpreter::interpreter::loop_control::LoopControl"
-                                                                            },
-                                                                            {
-                                                                              "InternalString": "instruction_result"
-                                                                            }
-                                                                          ],
-                                                                          "kind": "Effectful"
-                                                                        }
-                                                                      },
-                                                                      {
-                                                                        "Call": {
-                                                                          "func": {
-                                                                            "LocalVar": "M.read"
-                                                                          },
-                                                                          "args": [
-                                                                            {
-                                                                              "LocalVar": "result"
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.read"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "LocalVar": "result"
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
                                                                             }
                                                                           ],
                                                                           "kind": "Effectful"
@@ -905,7 +963,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -1093,7 +1151,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -1232,7 +1290,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -1352,7 +1410,23 @@
                                                   }
                                                 }
                                               ],
-                                              "kind": "Closure"
+                                              "kind": {
+                                                "Closure": {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_interpreter",
+                                                          "interpreter_action",
+                                                          "InterpreterAction"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              }
                                             }
                                           }
                                         }

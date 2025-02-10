@@ -25,6 +25,7 @@ Module ops.
               [
                 ("start",
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "usize",
@@ -52,6 +53,7 @@ Module ops.
                   |));
                 ("end_",
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "usize",
@@ -100,6 +102,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -276,7 +282,7 @@ Module ops.
             (let start := M.alloc (| start |) in
             let end_ := M.alloc (| end_ |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -286,15 +292,17 @@ Module ops.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.new_unchecked",
@@ -398,6 +406,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
               [
                 M.read (|
@@ -438,7 +447,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -447,7 +456,7 @@ Module ops.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -483,6 +492,7 @@ Module ops.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
@@ -499,7 +509,7 @@ Module ops.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ value :=
+              let~ value : Ty.path "usize" :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -507,16 +517,19 @@ Module ops.
                     "start"
                   |)
                 |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::ops::index_range::IndexRange",
-                    "start"
-                  |),
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "usize", "unchecked_add", [], [] |),
-                    [ M.read (| value |); Value.Integer IntegerKind.Usize 1 ]
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ops::index_range::IndexRange",
+                      "start"
+                    |),
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (| Ty.path "usize", "unchecked_add", [], [] |),
+                      [ M.read (| value |); Value.Integer IntegerKind.Usize 1 ]
+                    |)
                   |)
                 |) in
               value
@@ -544,7 +557,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -553,7 +566,7 @@ Module ops.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -589,6 +602,7 @@ Module ops.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
@@ -605,9 +619,10 @@ Module ops.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ value :=
+              let~ value : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
                     [
                       M.read (|
@@ -621,14 +636,16 @@ Module ops.
                     ]
                   |)
                 |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::ops::index_range::IndexRange",
-                    "end"
-                  |),
-                  M.read (| value |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ops::index_range::IndexRange",
+                      "end"
+                    |),
+                    M.read (| value |)
+                  |)
                 |) in
               value
             |)))
@@ -660,7 +677,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ mid :=
+              let~ mid : Ty.path "usize" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -673,6 +690,7 @@ Module ops.
                                 BinOp.le (|
                                   M.read (| n |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_trait_method (|
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       Ty.apply
@@ -693,6 +711,7 @@ Module ops.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.path "usize",
                                 "unchecked_add",
@@ -721,7 +740,7 @@ Module ops.
                     ]
                   |)
                 |) in
-              let~ prefix :=
+              let~ prefix : Ty.path "core::ops::index_range::IndexRange" :=
                 M.alloc (|
                   Value.StructRecord
                     "core::ops::index_range::IndexRange"
@@ -737,14 +756,16 @@ Module ops.
                       ("end_", M.read (| mid |))
                     ]
                 |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::ops::index_range::IndexRange",
-                    "start"
-                  |),
-                  M.read (| mid |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ops::index_range::IndexRange",
+                      "start"
+                    |),
+                    M.read (| mid |)
+                  |)
                 |) in
               prefix
             |)))
@@ -775,7 +796,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ mid :=
+              let~ mid : Ty.path "usize" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -788,6 +809,7 @@ Module ops.
                                 BinOp.le (|
                                   M.read (| n |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_trait_method (|
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       Ty.apply
@@ -808,6 +830,7 @@ Module ops.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.path "usize",
                                 "unchecked_sub",
@@ -836,7 +859,7 @@ Module ops.
                     ]
                   |)
                 |) in
-              let~ suffix :=
+              let~ suffix : Ty.path "core::ops::index_range::IndexRange" :=
                 M.alloc (|
                   Value.StructRecord
                     "core::ops::index_range::IndexRange"
@@ -852,14 +875,16 @@ Module ops.
                         |))
                     ]
                 |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::ops::index_range::IndexRange",
-                    "end"
-                  |),
-                  M.read (| mid |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::ops::index_range::IndexRange",
+                      "end"
+                    |),
+                    M.read (| mid |)
+                  |)
                 |) in
               suffix
             |)))
@@ -902,6 +927,7 @@ Module ops.
                           (M.alloc (|
                             BinOp.gt (|
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply
@@ -925,6 +951,7 @@ Module ops.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "next_unchecked",
@@ -957,9 +984,10 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ len :=
+              let~ len : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "len",
@@ -993,9 +1021,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ taken :=
+              let~ taken : Ty.path "core::ops::index_range::IndexRange" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::ops::index_range::IndexRange",
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "take_prefix",
@@ -1010,6 +1039,13 @@ Module ops.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -1038,6 +1074,10 @@ Module ops.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
@@ -1048,6 +1088,7 @@ Module ops.
                         BinOp.Wrap.sub (|
                           M.read (| n |),
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
@@ -1111,6 +1152,7 @@ Module ops.
                           (M.alloc (|
                             BinOp.gt (|
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply
@@ -1134,6 +1176,7 @@ Module ops.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.path "core::ops::index_range::IndexRange",
                                 "next_back_unchecked",
@@ -1167,9 +1210,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ taken :=
+              let~ taken : Ty.path "core::ops::index_range::IndexRange" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::ops::index_range::IndexRange",
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
                       "take_suffix",
@@ -1184,6 +1228,13 @@ Module ops.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -1212,6 +1263,10 @@ Module ops.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
@@ -1222,6 +1277,7 @@ Module ops.
                         BinOp.Wrap.sub (|
                           M.read (| n |),
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
@@ -1268,6 +1324,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.path "core::ops::index_range::IndexRange",
                 "len",

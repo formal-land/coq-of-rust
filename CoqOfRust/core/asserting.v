@@ -62,6 +62,10 @@ Module asserting.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -108,28 +112,30 @@ Module asserting.
           (let self := M.alloc (| self |) in
           let to := M.alloc (| to |) in
           M.read (|
-            let~ _ :=
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| to |) |),
-                  "core::asserting::Capture",
-                  "elem"
-                |),
-                Value.StructTuple
-                  "core::option::Option::Some"
-                  [
-                    M.read (|
-                      M.deref (|
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::asserting::Wrapper",
-                            0
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| to |) |),
+                    "core::asserting::Capture",
+                    "elem"
+                  |),
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    [
+                      M.read (|
+                        M.deref (|
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::asserting::Wrapper",
+                              0
+                            |)
                           |)
                         |)
                       |)
-                    |)
-                  ]
+                    ]
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -181,6 +187,10 @@ Module asserting.
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -207,6 +217,10 @@ Module asserting.
                     let value := M.alloc (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_trait_method (| "core::fmt::Debug", E, [], [], "fmt", [], [] |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |);

@@ -68,6 +68,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
           M.get_trait_method (|
             "core::cmp::PartialOrd",
             Ty.path "f64",
@@ -136,6 +137,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_tuple_field1_finish",
@@ -261,17 +263,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _one_second :=
+        let~ _one_second : Ty.path "derive::Seconds" :=
           M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer IntegerKind.I32 1 ] |) in
-        let~ foot :=
+        let~ foot : Ty.path "derive::Inches" :=
           M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer IntegerKind.I32 12 ] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -304,6 +308,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -328,11 +333,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ meter :=
+        let~ meter : Ty.path "derive::Centimeters" :=
           M.alloc (|
             Value.StructTuple "derive::Centimeters" [ M.read (| UnsupportedLiteral |) ]
           |) in
-        let~ cmp :=
+        let~ cmp : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
           M.copy (|
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
@@ -343,6 +348,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
                               Ty.path "derive::Centimeters",
@@ -357,6 +363,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "derive::Centimeters",
                                     M.get_associated_function (|
                                       Ty.path "derive::Inches",
                                       "to_centimeters",
@@ -384,13 +391,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -423,6 +432,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",

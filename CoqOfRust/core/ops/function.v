@@ -29,6 +29,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
                 [
                   M.borrow (|
@@ -71,6 +72,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
                 [
                   M.borrow (|
@@ -116,6 +118,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -159,6 +162,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::ops::function::FnMut",
                   F,
@@ -212,6 +216,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::ops::function::FnMut",
                   F,

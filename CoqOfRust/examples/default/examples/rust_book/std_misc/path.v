@@ -32,9 +32,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ path :=
+        let~ path : Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
               M.get_associated_function (|
                 Ty.path "std::path::Path",
                 "new",
@@ -44,16 +45,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "." |) |) |) ]
             |)
           |) in
-        let~ _display :=
+        let~ _display : Ty.path "std::path::Display" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "std::path::Display",
               M.get_associated_function (| Ty.path "std::path::Path", "display", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| path |) |) |) ]
             |)
           |) in
-        let~ new_path :=
+        let~ new_path : Ty.path "std::path::PathBuf" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "std::path::PathBuf",
               M.get_associated_function (|
                 Ty.path "std::path::Path",
                 "join",
@@ -65,6 +68,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
                         Ty.path "std::path::PathBuf",
@@ -79,6 +83,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Pointer.Kind.Ref,
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "std::path::PathBuf",
                               M.get_associated_function (|
                                 Ty.path "std::path::Path",
                                 "join",
@@ -100,9 +105,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.path "std::path::PathBuf",
                 "push",
@@ -112,9 +118,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, new_path |); M.read (| Value.String "c" |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.path "std::path::PathBuf",
                 "push",
@@ -127,9 +134,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.path "std::path::PathBuf",
                 "set_file_name",
@@ -145,12 +153,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.get_associated_function (| Ty.path "std::path::Path", "to_str", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
                         Ty.path "std::path::PathBuf",
@@ -174,6 +187,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (|
                   M.never_to_any (|
                     M.call_closure (|
+                      Ty.path "never",
                       M.get_function (|
                         "std::panicking::begin_panic",
                         [],
@@ -188,12 +202,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let s := M.copy (| γ0_0 |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -226,6 +242,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",

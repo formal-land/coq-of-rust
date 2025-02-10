@@ -64,12 +64,14 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageLoad" |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -108,12 +110,14 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageUnload" |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -144,12 +148,14 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::KeyPress", 0 |) in
                 let c := M.copy (| γ0_0 |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -182,6 +188,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -211,12 +218,14 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::Paste", 0 |) in
                 let s := M.copy (| γ0_0 |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -249,6 +258,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -281,13 +291,15 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                   M.SubPointer.get_struct_record_field (| γ, "enums::WebEvent::Click", "y" |) in
                 let x := M.copy (| γ0_0 |) in
                 let y := M.copy (| γ0_1 |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -321,6 +333,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -335,6 +348,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                             ]
                                           |);
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -390,14 +404,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ pressed :=
+        let~ pressed : Ty.path "enums::WebEvent" :=
           M.alloc (| Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ] |) in
-        let~ pasted :=
+        let~ pasted : Ty.path "enums::WebEvent" :=
           M.alloc (|
             Value.StructTuple
               "enums::WebEvent::Paste"
               [
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "alloc::borrow::ToOwned",
                     Ty.path "str",
@@ -416,45 +431,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               ]
           |) in
-        let~ click :=
+        let~ click : Ty.path "enums::WebEvent" :=
           M.alloc (|
             Value.StructRecord
               "enums::WebEvent::Click"
               [ ("x", Value.Integer IntegerKind.I64 20); ("y", Value.Integer IntegerKind.I64 80) ]
           |) in
-        let~ load := M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] |) in
-        let~ unload := M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in
-        let~ _ :=
+        let~ load : Ty.path "enums::WebEvent" :=
+          M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] |) in
+        let~ unload : Ty.path "enums::WebEvent" :=
+          M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "enums::inspect", [], [] |),
               [ M.read (| pressed |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "enums::inspect", [], [] |),
               [ M.read (| pasted |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "enums::inspect", [], [] |),
               [ M.read (| click |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "enums::inspect", [], [] |),
               [ M.read (| load |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "enums::inspect", [], [] |),
               [ M.read (| unload |) ]
             |)

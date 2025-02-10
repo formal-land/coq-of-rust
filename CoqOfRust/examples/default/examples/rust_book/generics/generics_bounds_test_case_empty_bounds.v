@@ -106,19 +106,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ cardinal :=
+        let~ cardinal : Ty.path "generics_bounds_test_case_empty_bounds::Cardinal" :=
           M.alloc (| Value.StructTuple "generics_bounds_test_case_empty_bounds::Cardinal" [] |) in
-        let~ blue_jay :=
+        let~ blue_jay : Ty.path "generics_bounds_test_case_empty_bounds::BlueJay" :=
           M.alloc (| Value.StructTuple "generics_bounds_test_case_empty_bounds::BlueJay" [] |) in
-        let~ _turkey :=
+        let~ _turkey : Ty.path "generics_bounds_test_case_empty_bounds::Turkey" :=
           M.alloc (| Value.StructTuple "generics_bounds_test_case_empty_bounds::Turkey" [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -151,6 +153,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -165,6 +168,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.get_function (|
                                                   "generics_bounds_test_case_empty_bounds::red",
                                                   [],
@@ -199,13 +203,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -238,6 +244,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -252,6 +259,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.get_function (|
                                                   "generics_bounds_test_case_empty_bounds::blue",
                                                   [],

@@ -68,21 +68,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ status := M.alloc (| Value.StructTuple "enums_use::Status::Poor" [] |) in
-        let~ work := M.alloc (| Value.StructTuple "enums_use::Work::Civilian" [] |) in
-        let~ _ :=
+        let~ status : Ty.path "enums_use::Status" :=
+          M.alloc (| Value.StructTuple "enums_use::Status::Poor" [] |) in
+        let~ work : Ty.path "enums_use::Work" :=
+          M.alloc (| Value.StructTuple "enums_use::Work::Civilian" [] |) in
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             status,
             [
               fun γ =>
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "enums_use::Status::Rich" |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
@@ -113,12 +117,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "enums_use::Status::Poor" |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
@@ -153,12 +159,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "enums_use::Work::Civilian" |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -187,12 +195,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "enums_use::Work::Soldier" |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",

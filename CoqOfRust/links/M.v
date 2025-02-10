@@ -13,6 +13,33 @@ Arguments Φ _ {_}.
 
 Global Opaque φ.
 
+Smpl Create of_ty.
+
+Module OfTy.
+  Inductive t (ty' : Ty.t) : Type :=
+  | Make {A : Set} `{Link A} :
+    ty' = Φ A ->
+    t ty'.
+
+  Definition get_Set {ty' : Ty.t} (x : t ty') : Set :=
+    let '@Make _ A _ _ := x in
+    A.
+
+  Global Instance IsLink {ty' : Ty.t} (x : t ty') : Link (get_Set x).
+  Proof.
+    destruct x.
+    assumption.
+  Defined.
+
+  Definition of_ty {A : Set} `{Link A} :
+    t (Φ A).
+  Proof.
+    eapply Make with (A := A).
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+End OfTy.
+
 Smpl Create of_value.
 Smpl Add reflexivity : of_value.
 
@@ -57,6 +84,10 @@ Module Bool.
     φ b := Value.Bool b;
   }.
 
+  Definition of_ty : OfTy.t (Ty.path "bool").
+  Proof. eapply OfTy.Make with (A := bool); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+
   Lemma of_value_with (b : bool) :
     Value.Bool b = φ b.
   Proof. reflexivity. Qed.
@@ -98,6 +129,54 @@ Module Integer.
     Φ := Ty.path (to_ty_path kind);
     φ '{| value := value |} := Value.Integer kind value;
   }.
+
+  Definition of_ty_i8 : OfTy.t (Ty.path "i8").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.I8); reflexivity. Defined.
+  Smpl Add apply of_ty_i8 : of_ty.
+
+  Definition of_ty_i16 : OfTy.t (Ty.path "i16").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.I16); reflexivity. Defined.
+  Smpl Add apply of_ty_i16 : of_ty.
+
+  Definition of_ty_i32 : OfTy.t (Ty.path "i32").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.I32); reflexivity. Defined.
+  Smpl Add apply of_ty_i32 : of_ty.
+
+  Definition of_ty_i64 : OfTy.t (Ty.path "i64").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.I64); reflexivity. Defined.
+  Smpl Add apply of_ty_i64 : of_ty.
+
+  Definition of_ty_i128 : OfTy.t (Ty.path "i128").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.I128); reflexivity. Defined.
+  Smpl Add apply of_ty_i128 : of_ty.
+
+  Definition of_ty_isize : OfTy.t (Ty.path "isize").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.Isize); reflexivity. Defined.
+  Smpl Add apply of_ty_isize : of_ty.
+
+  Definition of_ty_u8 : OfTy.t (Ty.path "u8").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.U8); reflexivity. Defined.
+  Smpl Add apply of_ty_u8 : of_ty.
+
+  Definition of_ty_u16 : OfTy.t (Ty.path "u16").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.U16); reflexivity. Defined.
+  Smpl Add apply of_ty_u16 : of_ty.
+
+  Definition of_ty_u32 : OfTy.t (Ty.path "u32").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.U32); reflexivity. Defined.
+  Smpl Add apply of_ty_u32 : of_ty.
+
+  Definition of_ty_u64 : OfTy.t (Ty.path "u64").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.U64); reflexivity. Defined.
+  Smpl Add apply of_ty_u64 : of_ty.
+
+  Definition of_ty_u128 : OfTy.t (Ty.path "u128").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.U128); reflexivity. Defined.
+  Smpl Add apply of_ty_u128 : of_ty.
+
+  Definition of_ty_usize : OfTy.t (Ty.path "usize").
+  Proof. eapply OfTy.Make with (A := t IntegerKind.Usize); reflexivity. Defined.
+  Smpl Add apply of_ty_usize : of_ty.
 
   Lemma of_value_with {kind : IntegerKind.t} (value : Z) :
     Value.Integer kind value = φ (Integer.Build_t kind value).
@@ -168,42 +247,54 @@ Module Char.
     φ '(Make c) := Value.UnicodeChar c;
   }.
 
+  Definition of_ty : OfTy.t (Ty.path "char").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+ 
   Lemma of_value_with (c : Z) :
     Value.UnicodeChar c = φ (Char.Make c).
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with : of_value.
-
+ 
   Definition of_value (c : Z) :
     OfValue.t (Value.UnicodeChar c).
   Proof. eapply OfValue.Make with (A := t); smpl of_value. Defined.
   Smpl Add apply of_value : of_value.
 End Char.
-
+ 
 (** ** Tuples *)
 Module Never.
   Global Instance IsLink : Link Empty_set := {
     Φ := Ty.path "never";
     φ x := match x with end;
   }.
-End Never.
 
+  Lemma of_ty : OfTy.t (Ty.path "never").
+  Proof. eapply OfTy.Make with (A := Empty_set); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+End Never.
+ 
 Module Unit.
   Global Instance IsLink : Link unit := {
     Φ := Ty.tuple [];
     φ 'tt := Value.Tuple [];
   }.
 
+  Definition of_ty : OfTy.t (Ty.tuple []).
+  Proof. eapply OfTy.Make with (A := unit); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+ 
   Lemma of_value_with :
     Value.Tuple [] = φ tt.
   Proof. reflexivity. Qed.
   Smpl Add apply of_value_with : of_value.
-
+ 
   Definition of_value :
     OfValue.t (Value.Tuple []).
   Proof. eapply OfValue.Make with (A := unit); smpl of_value. Defined.
   Smpl Add apply of_value : of_value.
 End Unit.
-
+ 
 (** A general type for references. Can be used for mutable or non-mutable references, as well as
     for unsafe pointers (we assume that the `unsafe` code is safe). *)
 Module Ref.
@@ -275,6 +366,50 @@ Module Ref.
     reflexivity.
   Qed.
 
+  Definition of_ty_ref ty' :
+    OfTy.t ty' ->
+    OfTy.t (Ty.apply (Ty.path "&") [] [ty']).
+  Proof.
+    intros [A].
+    eapply OfTy.Make with (A := t Pointer.Kind.Ref A).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty_ref : of_ty.
+
+  Definition of_ty_mut_ref ty' :
+    OfTy.t ty' ->
+    OfTy.t (Ty.apply (Ty.path "&mut") [] [ty']).
+  Proof.
+    intros [A].
+    eapply OfTy.Make with (A := t Pointer.Kind.MutRef A).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty_mut_ref : of_ty.
+
+  Definition of_ty_const_pointer ty' :
+    OfTy.t ty' ->
+    OfTy.t (Ty.apply (Ty.path "*const") [] [ty']).
+  Proof.
+    intros [A].
+    eapply OfTy.Make with (A := t Pointer.Kind.ConstPointer A).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty_const_pointer : of_ty.
+
+  Definition of_ty_mut_pointer ty' :
+    OfTy.t ty' ->
+    OfTy.t (Ty.apply (Ty.path "*mut") [] [ty']).
+  Proof.
+    intros [A].
+    eapply OfTy.Make with (A := t Pointer.Kind.MutPointer A).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty_mut_pointer : of_ty.
+
   (** We can make the conversion of values for immediate pointers that are used in Rust `const`. *)
   Lemma of_value_with {A : Set} `{Link A} (value : A) value' :
     value' = φ value ->
@@ -308,34 +443,38 @@ Module SubPointer.
         and [injection] are to read or update values at this [index], once we have a typed
         representation. These operations can fail if the field is from an enum case that is not the
         one currently selected. *)
-    Record t (A Sub_A : Set) {H_A : Link A} {H_Sub_A : Link Sub_A} : Set := {
-      index : Pointer.Index.t;
+    Record t (A : Set) {H_A : Link A} (index : Pointer.Index.t) : Type := {
+      Sub_A : Set;
+      H_Sub_A : Link Sub_A;
       projection : A -> option Sub_A;
       injection : A -> Sub_A -> option A;
     }.
-    Arguments index {_ _ _ _}.
-    Arguments projection {_ _ _ _}.
-    Arguments injection {_ _ _ _}.
+    Arguments Sub_A {_ _ _}.
+    Arguments H_Sub_A {_ _ _}.
+    Arguments projection {_ _ _}.
+    Arguments injection {_ _ _}.
 
     Module Valid.
       (** What does it mean for a [runner] to be well formed. *)
-      Record t {A Sub_A : Set} `{Link A} `{Link Sub_A} (runner : Runner.t A Sub_A) : Prop := {
+      Record t {A : Set} `{Link A} {index : Pointer.Index.t} (runner : Runner.t A index) : Prop := {
+        Sub_A := runner.(Sub_A);
+        H_Sub_A := runner.(H_Sub_A);
         read_commutativity (a : A) :
           Option.map (runner.(projection) a) φ =
-          Value.read_index (φ a) runner.(index);
+          Value.read_index (φ a) index;
         write_commutativity (a : A) (sub_a : Sub_A) :
           Option.map (runner.(injection) a sub_a) φ =
-          Value.write_index (φ a) runner.(index) (φ sub_a);
+          Value.write_index (φ a) index (φ sub_a);
       }.
     End Valid.
   End Runner.
 End SubPointer.
 
-Module IsSubPointer.
+(* Module IsSubPointer.
   (** If a pointer (the sub-pointer) targets the field given by a [runner] of another value
       targeted by a pointer. We only consider the core part of a pointer. *)
-  Inductive t {A Sub_A : Set} `{Link A} `{Link Sub_A}
-      (runner : SubPointer.Runner.t A Sub_A) : Ref.Core.t A -> Ref.Core.t Sub_A -> Set :=
+  Inductive t {A Sub_A : Set} `{Link A} `{Link Sub_A} {index : Pointer.Index.t}
+      (runner : SubPointer.Runner.t A Sub_A index) : Ref.Core.t A -> Ref.Core.t Sub_A -> Set :=
   | Immediate (value : A) (sub_value : Sub_A) :
     runner.(SubPointer.Runner.projection) value = Some sub_value ->
     t runner
@@ -352,7 +491,7 @@ Module IsSubPointer.
     let sub_ref : Ref.Core.t Sub_A :=
       Ref.Core.Mutable
         address
-        (path ++ [runner.(SubPointer.Runner.index)])
+        (path ++ [index])
         big_to_value
         (fun (big_a : Big_A) =>
           match projection big_a with
@@ -371,7 +510,7 @@ Module IsSubPointer.
           end : option Big_A
         ) in
     t runner ref sub_ref.
-End IsSubPointer.
+End IsSubPointer. *)
 
 (** Some convenient `output_to_value` functions. *)
 
@@ -399,6 +538,7 @@ Module Output.
       end.
 
     Smpl Create of_output.
+    Smpl Add reflexivity : of_output.
 
     Lemma of_return_eq {R : Set} `{Link R} (return_ : R) return_' :
       return_' = φ return_ ->
@@ -479,11 +619,16 @@ Module Run.
       the expression [e] can produce.
   *)
   Inductive t (R Output : Set) `{Link R} `{Link Output} : M -> Set :=
-  | Pure
-      (output : Output.t R Output)
-      (output' : Value.t + Exception.t) :
-    output' = Output.to_value output ->
-    {{ LowM.Pure output' 🔽 R, Output }}
+  | PureSuccess
+      (value' : Value.t)
+      (value : Output) :
+    value' = φ value ->
+    {{ LowM.Pure (inl value') 🔽 R, Output }}
+  | PureException
+      (exception' : Exception.t)
+      (exception : Output.Exception.t R) :
+    exception' = Output.Exception.to_exception exception ->
+    {{ LowM.Pure (inr exception') 🔽 R, Output }}
   | CallPrimitiveStateAlloc
       (value' : Value.t)
       (k : Value.t -> M)
@@ -525,17 +670,19 @@ Module Run.
     value' = φ value ->
     {{ k (φ tt) 🔽 R, Output }} ->
     {{ LowM.CallPrimitive (Primitive.StateWrite (φ ref) value') k 🔽 R, Output }}
-  | CallPrimitiveGetSubPointer {A Sub_A : Set} `{Link A} `{Link Sub_A}
+  | CallPrimitiveGetSubPointer {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
-      (runner : SubPointer.Runner.t A Sub_A)
+      (index : Pointer.Index.t)
+      (runner : SubPointer.Runner.t A index)
       (k : Value.t -> M) :
+    let _ := runner.(SubPointer.Runner.H_Sub_A) in
     let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
     SubPointer.Runner.Valid.t runner ->
-    (forall (sub_ref : Ref.t Pointer.Kind.Raw Sub_A),
+    (forall (sub_ref : Ref.t Pointer.Kind.Raw runner.(SubPointer.Runner.Sub_A)),
       {{ k (φ sub_ref) 🔽 R, Output }}
     ) ->
     {{
-      LowM.CallPrimitive (Primitive.GetSubPointer (φ ref) runner.(SubPointer.Runner.index)) k 🔽
+      LowM.CallPrimitive (Primitive.GetSubPointer (φ ref) index) k 🔽
       R, Output
     }}
   | CallPrimitiveAreEqual {A : Set} `{Link A}
@@ -593,35 +740,40 @@ Module Run.
         k 🔽
         R, Output
     }}
-  | CallClosure {Output' : Set}
-      (ty : Ty.t) (to_value : Output' -> Value.t)
-      (f : list Value.t -> M) (args : list Value.t)
-      (k : Value.t + Exception.t -> M) :
-    let _ := Build_Link _ ty to_value in
+  | CallClosure
+      (ty : Ty.t) (f : list Value.t -> M) (args : list Value.t) (k : Value.t + Exception.t -> M)
+      (of_ty : OfTy.t ty) :
+    let Output' : Set := OfTy.get_Set of_ty in
     let closure := Value.Closure (existS (_, _) f) in
     {{ f args 🔽 Output', Output' }} ->
     (forall (value_inter : SuccessOrPanic.t Output'),
       {{ k (SuccessOrPanic.to_value value_inter) 🔽 R, Output }}
     ) ->
-    {{ LowM.CallClosure closure args k 🔽 R, Output }}
-  | Let {Output' : Set}
-      (ty : Ty.t) (to_value : Output' -> Value.t)
-      (e : M) (k : Value.t + Exception.t -> M) :
-    let _ := Build_Link _ ty to_value in
+    {{ LowM.CallClosure ty closure args k 🔽 R, Output }}
+  | Let
+      (ty : Ty.t) (e : M) (k : Value.t + Exception.t -> M)
+      (of_ty : OfTy.t ty) :
+    let Output' : Set := Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty) in
     {{ e 🔽 R, Output' }} ->
     (forall (value_inter : Output.t R Output'),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
-    {{ LowM.Let e k 🔽 R, Output }}
+    {{ LowM.Let ty e k 🔽 R, Output }}
   (** This primitive is useful to avoid blocking the reduction of this inductive with a [rewrite]
       that is hard to eliminate. *)
-  | Rewrite (e e' : M) :
+  | Rewrite
+      (e e' : M) :
     e = e' ->
     {{ e' 🔽 R, Output }} ->
     {{ e 🔽 R, Output }}
 
   where "{{ e 🔽 R , Output }}" :=
     (t R Output e).
+
+  (* Print CallPrimitiveGetSubPointer.
+  Arguments CallPrimitiveGetSubPointer (R Output)%_type_scope 
+  {H H0} {A Sub_A}%_type_scope {H1} H2 ref_core index 
+  runner k%_function_scope _ _%_function_scope. *)
 
   Notation "{{ e 🔽 Output }}" := ({{ e 🔽 Output , Output }}).
 End Run.
@@ -636,9 +788,10 @@ Module Primitive.
   | StateAlloc {A : Set} `{Link A} (value : A) : t (Ref.Core.t A)
   | StateRead {A : Set} `{Link A} (ref_core : Ref.Core.t A) : t A
   | StateWrite {A : Set} `{Link A} (ref_core : Ref.Core.t A) (value : A) : t unit
-  | GetSubPointer {A Sub_A : Set} `{Link A} `{Link Sub_A}
-    (ref_core : Ref.Core.t A) (runner : SubPointer.Runner.t A Sub_A) :
-    t (Ref.Core.t Sub_A)
+  | GetSubPointer {A : Set} `{Link A} {index : Pointer.Index.t}
+    (ref_core : Ref.Core.t A) (runner : SubPointer.Runner.t A index) :
+    let _ := runner.(SubPointer.Runner.H_Sub_A) in
+    t (Ref.Core.t runner.(SubPointer.Runner.Sub_A))
   | AreEqual {A : Set} `{Link A} (x y : A) : t bool.
 End Primitive.
 
@@ -668,8 +821,11 @@ Fixpoint evaluate {R Output : Set} `{Link R} `{Link Output} {e : M}
   LowM.t R Output.
 Proof.
   destruct run.
-  { (* Pure *)
-    exact (LowM.Pure output).
+  { (* PureSuccess *)
+    exact (LowM.Pure (Output.Success value)).
+  }
+  { (* PureException *)
+    exact (LowM.Pure (Output.Exception exception)).
   }
   { (* Alloc *)
     apply (LowM.CallPrimitive (Primitive.StateAlloc (OfValue.get_value of_value))).
@@ -748,10 +904,15 @@ Proof.
 Defined.
 
 Ltac run_symbolic_pure :=
-  eapply Run.Pure;
-    try reflexivity;
+  (
+    eapply Run.PureSuccess;
+    repeat smpl of_value
+  ) ||
+  (
+    eapply Run.PureException;
     repeat smpl of_output;
-    repeat smpl of_value.
+    repeat smpl of_value
+  ).
 
 Ltac run_symbolic_state_alloc_immediate :=
   unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat smpl of_value |].
@@ -783,7 +944,11 @@ Ltac run_symbolic_get_trait_method :=
 Smpl Create run_closure.
 
 Ltac run_symbolic_closure :=
-  eapply Run.CallClosure; [
+  unshelve eapply Run.CallClosure; [repeat smpl of_ty | |].
+
+Ltac run_symbolic_closure_auto :=
+  unshelve eapply Run.CallClosure; [
+    repeat smpl of_ty |
     now (
       smpl run_closure ||
       match goal with
@@ -792,6 +957,13 @@ Ltac run_symbolic_closure :=
     ) |
     intros []
   ].
+
+Smpl Create run_sub_pointer.
+
+Ltac run_sub_pointer :=
+  eapply Run.CallPrimitiveGetSubPointer; [
+    smpl run_sub_pointer
+  |]; intro.
 
 Ltac run_main_rewrites :=
   eapply Run.Rewrite; [
@@ -823,10 +995,14 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_get_function ||
     run_symbolic_get_associated_function ||
     run_symbolic_get_trait_method ||
-    run_symbolic_closure ||
+    run_symbolic_closure_auto ||
+    run_sub_pointer ||
     run_rewrites ||
     fold @LowM.let_
   end.
+
+Ltac run_symbolic_let :=
+  unshelve eapply Run.Let; [repeat smpl of_ty | |].
 
 Smpl Create run_symbolic.
 
@@ -837,17 +1013,12 @@ Ltac run_symbolic :=
     smpl run_symbolic ||
     (
       (* Automatically handle common lets *)
-      eapply Run.Let; [
+      run_symbolic_let; [
         run_symbolic
       |];
       intros [|[]]; run_symbolic
     )
   )).
-
-(** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
-    validity statement for the index that we access. *)
-Ltac run_sub_pointer sub_pointer_is_valid :=
-  cbn; apply (Run.CallPrimitiveGetSubPointer _ _ _ _ _ sub_pointer_is_valid); intros.
 
 Module Function2.
   Record t {A1 A2 Output : Set} `{Link A1} `{Link A2} `{Link Output} : Set := {
@@ -878,6 +1049,17 @@ Module OneElementTuple.
     φ '{| value := value |} := Value.Tuple [φ value];
   }.
 
+  Definition of_ty (ty' : Ty.t) :
+    OfTy.t ty' ->
+    OfTy.t (Ty.tuple [ty']).
+  Proof.
+    intros [A].
+    eapply OfTy.Make with (A := t A).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+
   Lemma of_value_with {A : Set} `{Link A} value value' :
     value' = φ value ->
     Value.Tuple [value'] = φ (OneElementTuple.Build_t A _ value).
@@ -904,6 +1086,18 @@ Module Pair.
     φ '(a1, a2) := Value.Tuple [φ a1; φ a2];
   }.
 
+  Definition of_ty (ty1 ty2 : Ty.t) :
+    OfTy.t ty1 ->
+    OfTy.t ty2 ->
+    OfTy.t (Ty.tuple [ty1; ty2]).
+  Proof.
+    intros [A1] [A2].
+    eapply OfTy.Make with (A := A1 * A2).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+
   Lemma of_value_with {A1 A2 : Set} `{Link A1} `{Link A2} a1 a2 a1' a2' :
     a1' = φ a1 ->
     a2' = φ a2 ->
@@ -924,8 +1118,7 @@ Module Pair.
 
   Module SubPointer.
     Definition get_index_0 {A1 A2 : Set} `{Link A1} `{Link A2} :
-        SubPointer.Runner.t (A1 * A2) A1 := {|
-      SubPointer.Runner.index := Pointer.Index.Tuple 0;
+        SubPointer.Runner.t (A1 * A2) (Pointer.Index.Tuple 0) := {|
       SubPointer.Runner.projection '(a1, _) := Some a1;
       SubPointer.Runner.injection '(a1, a2) a1' := Some (a1', a2);
     |}.
@@ -935,11 +1128,10 @@ Module Pair.
     Proof.
       hauto l: on.
     Qed.
-    Smpl Add run_sub_pointer get_index_0_is_valid : run_symbolic.
+    Smpl Add apply get_index_0_is_valid : run_sub_pointer.
 
     Definition get_index_1 {A1 A2 : Set} `{Link A1} `{Link A2} :
-        SubPointer.Runner.t (A1 * A2) A2 := {|
-      SubPointer.Runner.index := Pointer.Index.Tuple 1;
+        SubPointer.Runner.t (A1 * A2) (Pointer.Index.Tuple 1) := {|
       SubPointer.Runner.projection '(_, a2) := Some a2;
       SubPointer.Runner.injection '(a1, a2) a2' := Some (a1, a2');
     |}.
@@ -949,6 +1141,6 @@ Module Pair.
     Proof.
       hauto l: on.
     Qed.
-    Smpl Add run_sub_pointer get_index_1_is_valid : run_symbolic.
+    Smpl Add apply get_index_1_is_valid : run_sub_pointer.
   End SubPointer.
 End Pair.

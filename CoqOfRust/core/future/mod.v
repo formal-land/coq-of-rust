@@ -27,6 +27,10 @@ Module future.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_tuple_field1_finish",
@@ -151,6 +155,7 @@ Module future.
                       Pointer.Kind.MutRef,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.path "core::task::wake::Context" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ Ty.path "core::task::wake::Context" ],
                             "cast",
@@ -159,6 +164,7 @@ Module future.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ Ty.path "core::task::wake::Context" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")

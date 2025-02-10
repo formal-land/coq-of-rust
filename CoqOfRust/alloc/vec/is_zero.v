@@ -20,6 +20,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "i8" ] ] (Ty.path "bool"),
@@ -83,6 +84,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "i16" ] ] (Ty.path "bool"),
@@ -146,6 +148,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool"),
@@ -209,6 +212,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "i64" ] ] (Ty.path "bool"),
@@ -272,6 +276,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "i128" ] ] (Ty.path "bool"),
@@ -335,6 +340,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "isize" ] ] (Ty.path "bool"),
@@ -398,6 +404,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.path "bool"),
@@ -461,6 +468,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "u16" ] ] (Ty.path "bool"),
@@ -524,6 +532,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "bool"),
@@ -587,6 +596,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "u64" ] ] (Ty.path "bool"),
@@ -650,6 +660,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "u128" ] ] (Ty.path "bool"),
@@ -713,6 +724,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool"),
@@ -776,6 +788,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "bool" ] ] (Ty.path "bool"),
@@ -836,6 +849,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool"),
@@ -896,6 +910,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "f32" ] ] (Ty.path "bool"),
@@ -923,6 +938,7 @@ Module vec.
                                       (let x := M.copy (| γ |) in
                                       BinOp.eq (|
                                         M.call_closure (|
+                                          Ty.path "u32",
                                           M.get_associated_function (|
                                             Ty.path "f32",
                                             "to_bits",
@@ -967,6 +983,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
                 Ty.function [ Ty.tuple [ Ty.path "f64" ] ] (Ty.path "bool"),
@@ -994,6 +1011,7 @@ Module vec.
                                       (let x := M.copy (| γ |) in
                                       BinOp.eq (|
                                         M.call_closure (|
+                                          Ty.path "u64",
                                           M.get_associated_function (|
                                             Ty.path "f64",
                                             "to_bits",
@@ -1039,6 +1057,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "is_null",
@@ -1074,6 +1093,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "is_null", [], [] |),
               [ M.read (| M.deref (| M.read (| self |) |) |) ]
             |)))
@@ -1123,6 +1143,7 @@ Module vec.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
@@ -1137,6 +1158,7 @@ Module vec.
                       Pointer.Kind.MutRef,
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "iter",
@@ -1228,6 +1250,7 @@ Module vec.
                                   LogicalOp.and (|
                                     LogicalOp.and (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "alloc::vec::is_zero::IsZero",
                                           A,
@@ -1246,6 +1269,7 @@ Module vec.
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "alloc::vec::is_zero::IsZero",
                                             B,
@@ -1265,6 +1289,7 @@ Module vec.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "alloc::vec::is_zero::IsZero",
                                           C,
@@ -1284,6 +1309,7 @@ Module vec.
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "alloc::vec::is_zero::IsZero",
                                         D,
@@ -1303,6 +1329,7 @@ Module vec.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "alloc::vec::is_zero::IsZero",
                                       E,
@@ -1322,6 +1349,7 @@ Module vec.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "alloc::vec::is_zero::IsZero",
                                     F,
@@ -1341,6 +1369,7 @@ Module vec.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
                                   G,
@@ -1360,6 +1389,7 @@ Module vec.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
                                 H,
@@ -1443,6 +1473,7 @@ Module vec.
                                 LogicalOp.and (|
                                   LogicalOp.and (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "alloc::vec::is_zero::IsZero",
                                         B,
@@ -1461,6 +1492,7 @@ Module vec.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "alloc::vec::is_zero::IsZero",
                                           C,
@@ -1480,6 +1512,7 @@ Module vec.
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "alloc::vec::is_zero::IsZero",
                                         D,
@@ -1499,6 +1532,7 @@ Module vec.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "alloc::vec::is_zero::IsZero",
                                       E,
@@ -1518,6 +1552,7 @@ Module vec.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "alloc::vec::is_zero::IsZero",
                                     F,
@@ -1537,6 +1572,7 @@ Module vec.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
                                   G,
@@ -1556,6 +1592,7 @@ Module vec.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
                                 H,
@@ -1636,6 +1673,7 @@ Module vec.
                               LogicalOp.and (|
                                 LogicalOp.and (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "alloc::vec::is_zero::IsZero",
                                       C,
@@ -1654,6 +1692,7 @@ Module vec.
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "alloc::vec::is_zero::IsZero",
                                         D,
@@ -1673,6 +1712,7 @@ Module vec.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "alloc::vec::is_zero::IsZero",
                                       E,
@@ -1692,6 +1732,7 @@ Module vec.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "alloc::vec::is_zero::IsZero",
                                     F,
@@ -1711,6 +1752,7 @@ Module vec.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
                                   G,
@@ -1730,6 +1772,7 @@ Module vec.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
                                 H,
@@ -1807,6 +1850,7 @@ Module vec.
                             LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "alloc::vec::is_zero::IsZero",
                                     D,
@@ -1825,6 +1869,7 @@ Module vec.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "alloc::vec::is_zero::IsZero",
                                       E,
@@ -1844,6 +1889,7 @@ Module vec.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "alloc::vec::is_zero::IsZero",
                                     F,
@@ -1863,6 +1909,7 @@ Module vec.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
                                   G,
@@ -1882,6 +1929,7 @@ Module vec.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
                                 H,
@@ -1956,6 +2004,7 @@ Module vec.
                           LogicalOp.and (|
                             LogicalOp.and (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
                                   E,
@@ -1974,6 +2023,7 @@ Module vec.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "alloc::vec::is_zero::IsZero",
                                     F,
@@ -1993,6 +2043,7 @@ Module vec.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
                                   G,
@@ -2012,6 +2063,7 @@ Module vec.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
                                 H,
@@ -2078,6 +2130,7 @@ Module vec.
                         LogicalOp.and (|
                           LogicalOp.and (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
                                 F,
@@ -2092,6 +2145,7 @@ Module vec.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
                                   G,
@@ -2111,6 +2165,7 @@ Module vec.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
                                 H,
@@ -2174,6 +2229,7 @@ Module vec.
                       M.alloc (|
                         LogicalOp.and (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "alloc::vec::is_zero::IsZero",
                               G,
@@ -2187,6 +2243,7 @@ Module vec.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
                                 H,
@@ -2247,6 +2304,7 @@ Module vec.
                       let value_H := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "alloc::vec::is_zero::IsZero",
                             H,
@@ -2290,6 +2348,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 "is_none",
@@ -2329,6 +2388,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2371,6 +2431,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2411,6 +2472,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2451,6 +2513,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2491,6 +2554,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2531,6 +2595,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2571,6 +2636,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2611,6 +2677,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2651,6 +2718,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2691,6 +2759,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2731,6 +2800,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2771,6 +2841,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2811,6 +2882,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2851,9 +2923,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                     "is_none",
@@ -2893,9 +2966,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                     "is_none",
@@ -2935,9 +3009,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                     "is_none",
@@ -2977,9 +3052,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     "is_none",
@@ -3019,9 +3095,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                     "is_none",
@@ -3061,9 +3138,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                     "is_none",
@@ -3103,9 +3181,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                     "is_none",
@@ -3145,9 +3224,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                     "is_none",
@@ -3187,9 +3267,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                     "is_none",
@@ -3229,9 +3310,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                     "is_none",
@@ -3271,9 +3353,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                     "is_none",
@@ -3313,9 +3396,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                     "is_none",
@@ -3353,6 +3437,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "alloc::vec::is_zero::IsZero", T, [], [], "is_zero", [], [] |),
               [
                 M.borrow (|
@@ -3393,6 +3478,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "alloc::vec::is_zero::IsZero", T, [], [], "is_zero", [], [] |),
               [
                 M.borrow (|
@@ -3436,9 +3522,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ raw :=
+              let~ raw : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_function (|
                       "core::intrinsics::transmute",
                       [],
@@ -3486,9 +3573,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ raw :=
+              let~ raw : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_function (|
                       "core::intrinsics::transmute",
                       [],
@@ -3544,9 +3632,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ raw :=
+              let~ raw : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_function (|
                       "core::intrinsics::transmute",
                       [],

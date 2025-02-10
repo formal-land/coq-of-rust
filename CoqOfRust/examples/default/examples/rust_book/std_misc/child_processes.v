@@ -24,9 +24,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ output :=
+        let~ output : Ty.path "std::process::Output" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "std::process::Output",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -42,12 +43,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ],
                   M.get_associated_function (| Ty.path "std::process::Command", "output", [], [] |),
                   [
                     M.borrow (|
                       Pointer.Kind.MutRef,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&mut") [] [ Ty.path "std::process::Command" ],
                           M.get_associated_function (|
                             Ty.path "std::process::Command",
                             "arg",
@@ -59,6 +65,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Pointer.Kind.MutRef,
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "std::process::Command",
                                   M.get_associated_function (|
                                     Ty.path "std::process::Command",
                                     "new",
@@ -90,9 +97,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   (let e := M.copy (| γ |) in
                                   M.never_to_any (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
@@ -125,6 +134,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Value.Array
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::rt::Argument",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::rt::Argument",
                                                             "new_display",
@@ -166,6 +176,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_associated_function (|
                           Ty.path "std::process::ExitStatus",
                           "success",
@@ -185,9 +196,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let~ s :=
+                let~ s : Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "from_utf8_lossy",
@@ -199,6 +211,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -232,13 +248,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -272,6 +290,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -304,9 +323,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ s :=
+                (let~ s : Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
                       M.get_associated_function (|
                         Ty.path "alloc::string::String",
                         "from_utf8_lossy",
@@ -318,6 +338,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -351,13 +375,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -388,6 +414,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",

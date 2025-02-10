@@ -269,7 +269,7 @@ Module FunctionTraitAutomaticImpl.
         match ε, τ, α with
         | [], [], [self; Value.Tuple args] =>
           let* self := M.read self in
-          M.call_closure self args
+          M.call_closure Output self args
         | _, _, _ => M.impossible "wrong number of arguments"
         end
       )) ].
@@ -284,7 +284,7 @@ Module FunctionTraitAutomaticImpl.
         match ε, τ, α with
         | [], [], [self; Value.Tuple args] =>
           let* self := M.read self in
-          M.call_closure self args
+          M.call_closure Output self args
         | _, _, _ => M.impossible "wrong number of arguments"
         end
       )) ].
@@ -298,7 +298,7 @@ Module FunctionTraitAutomaticImpl.
       (* Instance *) [ ("call_once", InstanceField.Method (fun ε τ α =>
         match ε, τ, α with
         | [], [], [self; Value.Tuple args] =>
-          M.call_closure self args
+          M.call_closure Output self args
         | _, _, _ => M.impossible "wrong number of arguments"
         end
       )) ].

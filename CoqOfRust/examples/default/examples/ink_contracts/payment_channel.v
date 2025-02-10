@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
           "payment_channel::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -265,9 +266,10 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -276,9 +278,10 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -669,6 +672,7 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "payment_channel::Env",
           M.get_associated_function (|
             Ty.path "payment_channel::PaymentChannel",
             "init_env",
@@ -706,11 +710,12 @@ Module Impl_payment_channel_PaymentChannel.
         let amount := M.alloc (| amount |) in
         let signature := M.alloc (| signature |) in
         M.read (|
-          let~ encodable :=
+          let~ encodable : Ty.tuple [ Ty.path "payment_channel::AccountId"; Ty.path "u128" ] :=
             M.alloc (|
               Value.Tuple
                 [
                   M.call_closure (|
+                    Ty.path "payment_channel::AccountId",
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "account_id",
@@ -722,6 +727,7 @@ Module Impl_payment_channel_PaymentChannel.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "payment_channel::Env",
                             M.get_associated_function (|
                               Ty.path "payment_channel::PaymentChannel",
                               "env",
@@ -737,9 +743,11 @@ Module Impl_payment_channel_PaymentChannel.
                   M.read (| amount |)
                 ]
             |) in
-          let~ message :=
+          let~ message :
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] :=
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -755,9 +763,10 @@ Module Impl_payment_channel_PaymentChannel.
                 []
               |)
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (|
                   "payment_channel::hash_encoded",
                   [],
@@ -778,13 +787,15 @@ Module Impl_payment_channel_PaymentChannel.
                 ]
               |)
             |) in
-          let~ pub_key :=
+          let~ pub_key :
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 33 ] [ Ty.path "u8" ] :=
             M.alloc (|
               repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 33 |)
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -796,6 +807,10 @@ Module Impl_payment_channel_PaymentChannel.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                     M.get_function (| "payment_channel::ecdsa_recover", [], [] |),
                     [
                       M.borrow (|
@@ -826,6 +841,7 @@ Module Impl_payment_channel_PaymentChannel.
                                     (let err := M.copy (| γ |) in
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (|
                                           "std::panicking::begin_panic",
                                           [],
@@ -841,13 +857,15 @@ Module Impl_payment_channel_PaymentChannel.
                 ]
               |)
             |) in
-          let~ signature_account_id :=
+          let~ signature_account_id :
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] :=
             M.alloc (|
               repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "payment_channel::CryptoHash",
                   Ty.path "payment_channel::Blake2x256",
@@ -871,6 +889,7 @@ Module Impl_payment_channel_PaymentChannel.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "payment_channel::AccountId",
@@ -893,6 +912,7 @@ Module Impl_payment_channel_PaymentChannel.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "payment_channel::AccountId",
                       M.get_trait_method (|
                         "core::convert::Into",
                         Ty.apply
@@ -942,12 +962,14 @@ Module Impl_payment_channel_PaymentChannel.
           [
             ("sender",
               M.call_closure (|
+                Ty.path "payment_channel::AccountId",
                 M.get_associated_function (| Ty.path "payment_channel::Env", "caller", [], [] |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "payment_channel::Env",
                         M.get_associated_function (|
                           Ty.path "payment_channel::PaymentChannel",
                           "init_env",
@@ -1003,7 +1025,7 @@ Module Impl_payment_channel_PaymentChannel.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1013,6 +1035,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "payment_channel::AccountId",
@@ -1027,6 +1050,7 @@ Module Impl_payment_channel_PaymentChannel.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "payment_channel::AccountId",
                                         M.get_associated_function (|
                                           Ty.path "payment_channel::Env",
                                           "caller",
@@ -1038,6 +1062,7 @@ Module Impl_payment_channel_PaymentChannel.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "payment_channel::Env",
                                                 M.get_associated_function (|
                                                   Ty.path "payment_channel::PaymentChannel",
                                                   "env",
@@ -1088,7 +1113,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1128,7 +1153,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1139,6 +1164,7 @@ Module Impl_payment_channel_PaymentChannel.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
@@ -1173,10 +1199,21 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "payment_channel::Error"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -1191,6 +1228,10 @@ Module Impl_payment_channel_PaymentChannel.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -1207,6 +1248,10 @@ Module Impl_payment_channel_PaymentChannel.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                               M.get_associated_function (|
                                 Ty.path "payment_channel::Env",
                                 "transfer",
@@ -1218,6 +1263,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "payment_channel::Env",
                                       M.get_associated_function (|
                                         Ty.path "payment_channel::PaymentChannel",
                                         "env",
@@ -1290,6 +1336,10 @@ Module Impl_payment_channel_PaymentChannel.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -1355,10 +1405,21 @@ Module Impl_payment_channel_PaymentChannel.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "payment_channel::Error"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -1373,6 +1434,10 @@ Module Impl_payment_channel_PaymentChannel.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                           M.get_associated_function (|
                             Ty.path "payment_channel::PaymentChannel",
                             "close_inner",
@@ -1403,6 +1468,10 @@ Module Impl_payment_channel_PaymentChannel.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -1441,9 +1510,10 @@ Module Impl_payment_channel_PaymentChannel.
                         val))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "terminate_contract",
@@ -1455,6 +1525,7 @@ Module Impl_payment_channel_PaymentChannel.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "payment_channel::Env",
                             M.get_associated_function (|
                               Ty.path "payment_channel::PaymentChannel",
                               "env",
@@ -1512,7 +1583,7 @@ Module Impl_payment_channel_PaymentChannel.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1522,6 +1593,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "payment_channel::AccountId",
@@ -1536,6 +1608,7 @@ Module Impl_payment_channel_PaymentChannel.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "payment_channel::AccountId",
                                         M.get_associated_function (|
                                           Ty.path "payment_channel::Env",
                                           "caller",
@@ -1547,6 +1620,7 @@ Module Impl_payment_channel_PaymentChannel.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "payment_channel::Env",
                                                 M.get_associated_function (|
                                                   Ty.path "payment_channel::PaymentChannel",
                                                   "env",
@@ -1594,9 +1668,10 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ now :=
+              let~ now : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "block_timestamp",
@@ -1608,6 +1683,7 @@ Module Impl_payment_channel_PaymentChannel.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "payment_channel::Env",
                             M.get_associated_function (|
                               Ty.path "payment_channel::PaymentChannel",
                               "env",
@@ -1621,7 +1697,7 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              let~ expiration :=
+              let~ expiration : Ty.path "u64" :=
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.read (| now |),
@@ -1634,9 +1710,10 @@ Module Impl_payment_channel_PaymentChannel.
                     |)
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.path "payment_channel::Env",
                       "emit_event",
@@ -1648,6 +1725,7 @@ Module Impl_payment_channel_PaymentChannel.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "payment_channel::Env",
                             M.get_associated_function (|
                               Ty.path "payment_channel::PaymentChannel",
                               "env",
@@ -1678,14 +1756,16 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "payment_channel::PaymentChannel",
-                    "expiration"
-                  |),
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| expiration |) ]
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "payment_channel::PaymentChannel",
+                      "expiration"
+                    |),
+                    Value.StructTuple "core::option::Option::Some" [ M.read (| expiration |) ]
+                  |)
                 |) in
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
@@ -1741,9 +1821,10 @@ Module Impl_payment_channel_PaymentChannel.
                           0
                         |) in
                       let expiration := M.copy (| γ0_0 |) in
-                      let~ now :=
+                      let~ now : Ty.path "u64" :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "u64",
                             M.get_associated_function (|
                               Ty.path "payment_channel::Env",
                               "block_timestamp",
@@ -1755,6 +1836,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "payment_channel::Env",
                                     M.get_associated_function (|
                                       Ty.path "payment_channel::PaymentChannel",
                                       "env",
@@ -1773,7 +1855,7 @@ Module Impl_payment_channel_PaymentChannel.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -1807,9 +1889,10 @@ Module Impl_payment_channel_PaymentChannel.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_associated_function (|
                               Ty.path "payment_channel::Env",
                               "terminate_contract",
@@ -1821,6 +1904,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "payment_channel::Env",
                                     M.get_associated_function (|
                                       Ty.path "payment_channel::PaymentChannel",
                                       "env",
@@ -1904,7 +1988,7 @@ Module Impl_payment_channel_PaymentChannel.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1914,6 +1998,7 @@ Module Impl_payment_channel_PaymentChannel.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.path "payment_channel::AccountId",
@@ -1928,6 +2013,7 @@ Module Impl_payment_channel_PaymentChannel.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "payment_channel::AccountId",
                                         M.get_associated_function (|
                                           Ty.path "payment_channel::Env",
                                           "caller",
@@ -1939,6 +2025,7 @@ Module Impl_payment_channel_PaymentChannel.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "payment_channel::Env",
                                                 M.get_associated_function (|
                                                   Ty.path "payment_channel::PaymentChannel",
                                                   "env",
@@ -1989,7 +2076,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2000,6 +2087,7 @@ Module Impl_payment_channel_PaymentChannel.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
@@ -2034,7 +2122,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2074,7 +2162,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ amount_to_withdraw :=
+              let~ amount_to_withdraw : Ty.path "u128" :=
                 M.alloc (|
                   BinOp.Wrap.sub (|
                     M.read (| amount |),
@@ -2087,21 +2175,34 @@ Module Impl_payment_channel_PaymentChannel.
                     |)
                   |)
                 |) in
-              let~ _ :=
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "payment_channel::PaymentChannel",
-                    "withdrawn"
-                  |) in
-                M.write (|
-                  β,
-                  BinOp.Wrap.add (| M.read (| β |), M.read (| amount_to_withdraw |) |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  let β :=
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "payment_channel::PaymentChannel",
+                      "withdrawn"
+                    |) in
+                  M.write (|
+                    β,
+                    BinOp.Wrap.add (| M.read (| β |), M.read (| amount_to_withdraw |) |)
+                  |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "payment_channel::Error"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -2116,6 +2217,10 @@ Module Impl_payment_channel_PaymentChannel.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -2132,6 +2237,10 @@ Module Impl_payment_channel_PaymentChannel.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                               M.get_associated_function (|
                                 Ty.path "payment_channel::Env",
                                 "transfer",
@@ -2143,6 +2252,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "payment_channel::Env",
                                       M.get_associated_function (|
                                         Ty.path "payment_channel::PaymentChannel",
                                         "env",
@@ -2206,6 +2316,10 @@ Module Impl_payment_channel_PaymentChannel.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -2383,12 +2497,14 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "u128",
           M.get_associated_function (| Ty.path "payment_channel::Env", "balance", [], [] |),
           [
             M.borrow (|
               Pointer.Kind.Ref,
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "payment_channel::Env",
                   M.get_associated_function (|
                     Ty.path "payment_channel::PaymentChannel",
                     "env",

@@ -15,6 +15,11 @@ Module iter.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple
+                        [
+                          Ty.path "usize";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Self,
@@ -34,7 +39,7 @@ Module iter.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let lower := M.copy (| γ0_0 |) in
                         let upper := M.copy (| γ0_1 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               Value.Tuple
@@ -67,6 +72,7 @@ Module iter.
                                               (M.alloc (|
                                                 UnOp.not (|
                                                   M.call_closure (|
+                                                    Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -105,7 +111,7 @@ Module iter.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let~ kind :=
+                                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                                   M.alloc (|
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"
@@ -113,6 +119,7 @@ Module iter.
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.path "never",
                                                     M.get_function (|
                                                       "core::panicking::assert_failed",
                                                       [],
@@ -182,6 +189,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               BinOp.eq (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Self,
@@ -220,6 +228,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.path "usize",
                 M.get_trait_method (|
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,
@@ -251,6 +260,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::iter::traits::exact_size::ExactSizeIterator",
                   I,

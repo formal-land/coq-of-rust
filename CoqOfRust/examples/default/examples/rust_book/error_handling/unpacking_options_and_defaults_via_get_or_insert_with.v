@@ -48,6 +48,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -170,8 +171,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ my_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let~ get_lemon_as_fallback :=
+        let~ my_fruit :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ] :=
+          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ get_lemon_as_fallback :
+            Ty.function
+              [ Ty.tuple [] ]
+              (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit") :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -185,13 +194,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           fun γ =>
                             ltac:(M.monadic
                               (M.read (|
-                                let~ _ :=
-                                  let~ _ :=
+                                let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
@@ -234,9 +245,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
-        let~ first_available_fruit :=
+        let~ first_available_fruit :
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -253,13 +272,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, my_fruit |); M.read (| get_lemon_as_fallback |) ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -292,6 +313,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -326,13 +348,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -365,6 +389,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -399,7 +424,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ my_apple :=
+        let~ my_apple :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ] :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
@@ -409,9 +438,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
               ]
           |) in
-        let~ should_be_apple :=
+        let~ should_be_apple :
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -428,13 +465,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.borrow (| Pointer.Kind.MutRef, my_apple |); M.read (| get_lemon_as_fallback |) ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -467,6 +506,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -501,13 +541,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -540,6 +582,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",

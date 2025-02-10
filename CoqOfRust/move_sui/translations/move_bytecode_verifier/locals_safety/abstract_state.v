@@ -75,6 +75,10 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -191,9 +195,10 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -203,9 +208,10 @@ Module locals_safety.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -307,6 +313,10 @@ Module locals_safety.
               [
                 ("current_function",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -337,6 +347,13 @@ Module locals_safety.
                   |));
                 ("all_local_abilities",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::AbilitySet";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -370,6 +387,13 @@ Module locals_safety.
                   |));
                 ("local_states",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -426,6 +450,10 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field3_finish",
@@ -579,6 +607,7 @@ Module locals_safety.
             LogicalOp.and (|
               LogicalOp.and (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -617,6 +646,7 @@ Module locals_safety.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.apply
@@ -662,6 +692,7 @@ Module locals_safety.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -756,9 +787,10 @@ Module locals_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ num_args :=
+                  let~ num_args : Ty.path "usize" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.path "move_binary_format::file_format::Signature",
                           "len",
@@ -770,6 +802,10 @@ Module locals_safety.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ],
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                   "parameters",
@@ -788,11 +824,12 @@ Module locals_safety.
                         ]
                       |)
                     |) in
-                  let~ num_locals :=
+                  let~ num_locals : Ty.path "usize" :=
                     M.alloc (|
                       BinOp.Wrap.add (|
                         M.read (| num_args |),
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::Signature",
                             "len",
@@ -804,6 +841,10 @@ Module locals_safety.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Signature" ],
                                   M.get_associated_function (|
                                     Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                     "locals",
@@ -823,9 +864,25 @@ Module locals_safety.
                         |)
                       |)
                     |) in
-                  let~ local_states :=
+                  let~ local_states :
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                          Ty.path "alloc::alloc::Global"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -855,6 +912,16 @@ Module locals_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::map::Map")
+                              []
+                              [
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                                Ty.function
+                                  [ Ty.tuple [ Ty.path "usize" ] ]
+                                  (Ty.path
+                                    "move_bytecode_verifier::locals_safety::abstract_state::LocalState")
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -933,11 +1000,37 @@ Module locals_safety.
                         ]
                       |)
                     |) in
-                  let~ all_local_abilities :=
+                  let~ all_local_abilities :
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::AbilitySet";
+                          Ty.path "alloc::alloc::Global"
+                        ] :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ];
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::AbilitySet";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
                               Ty.apply
@@ -961,6 +1054,19 @@ Module locals_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::AbilitySet";
+                                        Ty.path "alloc::alloc::Global"
+                                      ];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -1029,6 +1135,50 @@ Module locals_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::map::Map")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::chain::Chain")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::slice::iter::Iter")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "core::slice::iter::Iter")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ];
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::file_format::AbilitySet";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ])
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -1086,6 +1236,25 @@ Module locals_safety.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::chain::Chain")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::slice::iter::Iter")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "core::slice::iter::Iter")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1111,6 +1280,13 @@ Module locals_safety.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::slice::iter::Iter")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -1128,6 +1304,18 @@ Module locals_safety.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ]
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::deref::Deref",
                                                       Ty.apply
@@ -1150,6 +1338,13 @@ Module locals_safety.
                                                         M.SubPointer.get_struct_tuple_field (|
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::Signature"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::absint::FunctionContext",
@@ -1178,6 +1373,13 @@ Module locals_safety.
                                             ]
                                           |);
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::slice::iter::Iter")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -1195,6 +1397,18 @@ Module locals_safety.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ]
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::deref::Deref",
                                                       Ty.apply
@@ -1217,6 +1431,13 @@ Module locals_safety.
                                                         M.SubPointer.get_struct_tuple_field (|
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::Signature"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::absint::FunctionContext",
@@ -1259,6 +1480,15 @@ Module locals_safety.
                                                       ltac:(M.monadic
                                                         (let st := M.copy (| γ |) in
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_binary_format::file_format::CompiledModule",
@@ -1279,6 +1509,18 @@ Module locals_safety.
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet"
+                                                                        ]
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::absint::FunctionContext",
@@ -1327,6 +1569,14 @@ Module locals_safety.
                                   M.read (|
                                     M.return_ (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::locals_safety::abstract_state::AbstractState";
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
@@ -1379,6 +1629,13 @@ Module locals_safety.
                           [
                             ("current_function",
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::FunctionDefinitionIndex"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                   "index",
@@ -1419,6 +1676,10 @@ Module locals_safety.
             M.read (|
               M.deref (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply
@@ -1499,6 +1760,10 @@ Module locals_safety.
             M.read (|
               M.deref (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState" ],
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply
@@ -1575,43 +1840,44 @@ Module locals_safety.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
-            M.read (|
-              M.write (|
-                M.deref (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::index::IndexMut",
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [
-                          Ty.path
-                            "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      [],
-                      [ Ty.path "usize" ],
-                      "index_mut",
-                      [],
+            M.write (|
+              M.deref (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState" ],
+                  M.get_trait_method (|
+                    "core::ops::index::IndexMut",
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
                       []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                          "local_states"
-                        |)
-                      |);
-                      M.cast (Ty.path "usize") (M.read (| idx |))
-                    ]
-                  |)
-                |),
-                Value.StructTuple
-                  "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
-                  []
-              |)
+                      [
+                        Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    [],
+                    [ Ty.path "usize" ],
+                    "index_mut",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                        "local_states"
+                      |)
+                    |);
+                    M.cast (Ty.path "usize") (M.read (| idx |))
+                  ]
+                |)
+              |),
+              Value.StructTuple
+                "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
+                []
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1633,7 +1899,7 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1644,6 +1910,7 @@ Module locals_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.path
@@ -1662,6 +1929,13 @@ Module locals_safety.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::index::Index",
                                             Ty.apply
@@ -1709,6 +1983,7 @@ Module locals_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -1722,41 +1997,50 @@ Module locals_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              M.write (|
-                M.deref (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::index::IndexMut",
+              M.alloc (|
+                M.write (|
+                  M.deref (|
+                    M.call_closure (|
                       Ty.apply
-                        (Ty.path "alloc::vec::Vec")
+                        (Ty.path "&mut")
                         []
                         [
                           Ty.path
-                            "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
-                          Ty.path "alloc::alloc::Global"
+                            "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                         ],
-                      [],
-                      [ Ty.path "usize" ],
-                      "index_mut",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                          "local_states"
-                        |)
-                      |);
-                      M.cast (Ty.path "usize") (M.read (| idx |))
-                    ]
-                  |)
-                |),
-                Value.StructTuple
-                  "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
-                  []
+                      M.get_trait_method (|
+                        "core::ops::index::IndexMut",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        [],
+                        [ Ty.path "usize" ],
+                        "index_mut",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                            "local_states"
+                          |)
+                        |);
+                        M.cast (Ty.path "usize") (M.read (| idx |))
+                      ]
+                    |)
+                  |),
+                  Value.StructTuple
+                    "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
+                    []
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1782,6 +2066,7 @@ Module locals_safety.
             let status := M.alloc (| status |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
+              Ty.path "move_binary_format::errors::PartialVMError",
               M.get_associated_function (|
                 Ty.path "move_binary_format::errors::PartialVMError",
                 "at_code_offset",
@@ -1790,6 +2075,7 @@ Module locals_safety.
               |),
               [
                 M.call_closure (|
+                  Ty.path "move_binary_format::errors::PartialVMError",
                   M.get_associated_function (|
                     Ty.path "move_binary_format::errors::PartialVMError",
                     "new",
@@ -1799,6 +2085,7 @@ Module locals_safety.
                   [ M.read (| status |) ]
                 |);
                 M.call_closure (|
+                  Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -1874,7 +2161,7 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1885,6 +2172,7 @@ Module locals_safety.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -1934,6 +2222,7 @@ Module locals_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -1947,7 +2236,7 @@ Module locals_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1959,6 +2248,7 @@ Module locals_safety.
                               UnOp.not (|
                                 BinOp.eq (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1983,6 +2273,7 @@ Module locals_safety.
                                     ]
                                   |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -2014,6 +2305,7 @@ Module locals_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -2027,7 +2319,7 @@ Module locals_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2039,6 +2331,7 @@ Module locals_safety.
                               UnOp.not (|
                                 BinOp.eq (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -2064,6 +2357,7 @@ Module locals_safety.
                                     ]
                                   |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -2096,6 +2390,7 @@ Module locals_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
@@ -2109,7 +2404,11 @@ Module locals_safety.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ current_function :=
+              let~ current_function :
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ] :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -2117,9 +2416,23 @@ Module locals_safety.
                     "current_function"
                   |)
                 |) in
-              let~ all_local_abilities :=
+              let~ all_local_abilities :
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::AbilitySet";
+                      Ty.path "alloc::alloc::Global"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::AbilitySet";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -2147,9 +2460,23 @@ Module locals_safety.
                     ]
                   |)
                 |) in
-              let~ local_states :=
+              let~ local_states :
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                      Ty.path "alloc::alloc::Global"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
@@ -2218,6 +2545,55 @@ Module locals_safety.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::map::Map")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::zip::Zip")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                  ];
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                  ]
+                              ];
+                            Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                          ]
+                                      ]
+                                  ]
+                              ]
+                              (Ty.path
+                                "move_bytecode_verifier::locals_safety::abstract_state::LocalState")
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -2275,6 +2651,25 @@ Module locals_safety.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::zip::Zip")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                  ];
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -2306,6 +2701,13 @@ Module locals_safety.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -2323,6 +2725,18 @@ Module locals_safety.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -2701,10 +3115,23 @@ Module locals_safety.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -2719,6 +3146,11 @@ Module locals_safety.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_trait_method (|
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
@@ -2760,6 +3192,13 @@ Module locals_safety.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "move_bytecode_verifier::absint::JoinResult";
+                                          Ty.path "move_binary_format::errors::PartialVMError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -2801,10 +3240,23 @@ Module locals_safety.
                             val))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -2819,6 +3271,11 @@ Module locals_safety.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_trait_method (|
                                 "move_bytecode_verifier_meter::Meter",
                                 impl_Meter__plus___Sized,
@@ -2841,6 +3298,7 @@ Module locals_safety.
                                     "move_bytecode_verifier::locals_safety::abstract_state::JOIN_PER_LOCAL_COST"
                                 |);
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -2885,6 +3343,13 @@ Module locals_safety.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "move_bytecode_verifier::absint::JoinResult";
+                                          Ty.path "move_binary_format::errors::PartialVMError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -2926,9 +3391,13 @@ Module locals_safety.
                             val))
                       ]
                     |) in
-                  let~ joined :=
+                  let~ joined :
+                      Ty.path
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path
+                          "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                         M.get_associated_function (|
                           Ty.path
                             "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
@@ -2942,7 +3411,7 @@ Module locals_safety.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -2954,6 +3423,7 @@ Module locals_safety.
                                   UnOp.not (|
                                     BinOp.eq (|
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -2979,6 +3449,7 @@ Module locals_safety.
                                         ]
                                       |),
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -3011,6 +3482,7 @@ Module locals_safety.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
+                                  Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
                                   [
                                     M.read (|
@@ -3024,9 +3496,10 @@ Module locals_safety.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ locals_unchanged :=
+                  let~ locals_unchanged : Ty.path "bool" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -3084,6 +3557,25 @@ Module locals_safety.
                             Pointer.Kind.MutRef,
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::zip::Zip")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                      ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -3115,6 +3607,13 @@ Module locals_safety.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -3132,6 +3631,18 @@ Module locals_safety.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -3191,6 +3702,7 @@ Module locals_safety.
                                             let self_state := M.copy (| γ0_0 |) in
                                             let other_state := M.copy (| γ0_1 |) in
                                             M.call_closure (|
+                                              Ty.path "bool",
                                               M.get_trait_method (|
                                                 "core::cmp::PartialEq",
                                                 Ty.apply
@@ -3245,8 +3757,10 @@ Module locals_safety.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let~ _ :=
-                            M.write (| M.deref (| M.read (| self |) |), M.read (| joined |) |) in
+                          (let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (| M.deref (| M.read (| self |) |), M.read (| joined |) |)
+                            |) in
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"

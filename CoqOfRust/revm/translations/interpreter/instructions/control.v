@@ -25,7 +25,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -36,6 +36,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
@@ -63,9 +64,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -97,7 +99,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -108,6 +110,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -119,6 +122,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -153,9 +160,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -187,11 +195,12 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ offset :=
+                let~ offset : Ty.path "isize" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "isize")
                       (M.call_closure (|
+                        Ty.path "i16",
                         M.get_trait_method (|
                           "revm_interpreter::interpreter_types::Immediates",
                           Ty.associated,
@@ -213,9 +222,10 @@ Module instructions.
                         ]
                       |))
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::Jumps",
                         Ty.associated,
@@ -274,7 +284,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -285,6 +295,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
@@ -312,9 +323,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -346,7 +358,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -357,6 +369,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -368,6 +381,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -403,9 +420,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -440,6 +458,23 @@ Module instructions.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ]
+                        ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
@@ -472,8 +507,9 @@ Module instructions.
                           |) in
                         let γ1_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
                         let condition := M.copy (| γ1_0 |) in
-                        let~ offset := M.alloc (| Value.Integer IntegerKind.Isize 2 |) in
-                        let~ _ :=
+                        let~ offset : Ty.path "isize" :=
+                          M.alloc (| Value.Integer IntegerKind.Isize 2 |) in
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -484,6 +520,7 @@ Module instructions.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
@@ -508,44 +545,48 @@ Module instructions.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ :=
-                                    let β := offset in
-                                    M.write (|
-                                      β,
-                                      BinOp.Wrap.add (|
-                                        M.read (| β |),
-                                        M.cast
-                                          (Ty.path "isize")
-                                          (M.call_closure (|
-                                            M.get_trait_method (|
-                                              "revm_interpreter::interpreter_types::Immediates",
-                                              Ty.associated,
-                                              [],
-                                              [],
-                                              "read_i16",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| interpreter |) |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "bytecode"
+                                  let~ _ : Ty.tuple [] :=
+                                    M.alloc (|
+                                      let β := offset in
+                                      M.write (|
+                                        β,
+                                        BinOp.Wrap.add (|
+                                          M.read (| β |),
+                                          M.cast
+                                            (Ty.path "isize")
+                                            (M.call_closure (|
+                                              Ty.path "i16",
+                                              M.get_trait_method (|
+                                                "revm_interpreter::interpreter_types::Immediates",
+                                                Ty.associated,
+                                                [],
+                                                [],
+                                                "read_i16",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "bytecode"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
-                                          |))
+                                              ]
+                                            |))
+                                        |)
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_trait_method (|
                                 "revm_interpreter::interpreter_types::Jumps",
                                 Ty.associated,
@@ -609,7 +650,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -620,6 +661,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
@@ -647,9 +689,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -681,7 +724,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -692,6 +735,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -703,6 +747,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -738,9 +786,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -775,6 +824,23 @@ Module instructions.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ]
+                        ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
@@ -807,9 +873,10 @@ Module instructions.
                           |) in
                         let γ1_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
                         let case := M.copy (| γ1_0 |) in
-                        let~ case :=
+                        let~ case : Ty.path "isize" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "isize",
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -821,6 +888,11 @@ Module instructions.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::convert::TryFrom",
                                     Ty.path "isize",
@@ -835,6 +907,15 @@ Module instructions.
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 4 ]
+                                                  [ Ty.path "u64" ]
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
@@ -932,11 +1013,12 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        let~ max_index :=
+                        let~ max_index : Ty.path "isize" :=
                           M.alloc (|
                             M.cast
                               (Ty.path "isize")
                               (M.call_closure (|
+                                Ty.path "u8",
                                 M.get_trait_method (|
                                   "revm_interpreter::interpreter_types::Immediates",
                                   Ty.associated,
@@ -958,7 +1040,7 @@ Module instructions.
                                 ]
                               |))
                           |) in
-                        let~ offset :=
+                        let~ offset : Ty.path "isize" :=
                           M.alloc (|
                             BinOp.Wrap.add (|
                               BinOp.Wrap.mul (|
@@ -971,7 +1053,7 @@ Module instructions.
                               Value.Integer IntegerKind.Isize 1
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -987,51 +1069,55 @@ Module instructions.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ :=
-                                    let β := offset in
-                                    M.write (|
-                                      β,
-                                      BinOp.Wrap.add (|
-                                        M.read (| β |),
-                                        M.cast
-                                          (Ty.path "isize")
-                                          (M.call_closure (|
-                                            M.get_trait_method (|
-                                              "revm_interpreter::interpreter_types::Immediates",
-                                              Ty.associated,
-                                              [],
-                                              [],
-                                              "read_offset_i16",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| interpreter |) |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "bytecode"
+                                  let~ _ : Ty.tuple [] :=
+                                    M.alloc (|
+                                      let β := offset in
+                                      M.write (|
+                                        β,
+                                        BinOp.Wrap.add (|
+                                          M.read (| β |),
+                                          M.cast
+                                            (Ty.path "isize")
+                                            (M.call_closure (|
+                                              Ty.path "i16",
+                                              M.get_trait_method (|
+                                                "revm_interpreter::interpreter_types::Immediates",
+                                                Ty.associated,
+                                                [],
+                                                [],
+                                                "read_offset_i16",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| interpreter |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "bytecode"
+                                                  |)
+                                                |);
+                                                BinOp.Wrap.add (|
+                                                  Value.Integer IntegerKind.Isize 1,
+                                                  BinOp.Wrap.mul (|
+                                                    M.read (| case |),
+                                                    Value.Integer IntegerKind.Isize 2
+                                                  |)
                                                 |)
-                                              |);
-                                              BinOp.Wrap.add (|
-                                                Value.Integer IntegerKind.Isize 1,
-                                                BinOp.Wrap.mul (|
-                                                  M.read (| case |),
-                                                  Value.Integer IntegerKind.Isize 2
-                                                |)
-                                              |)
-                                            ]
-                                          |))
+                                              ]
+                                            |))
+                                        |)
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_trait_method (|
                                 "revm_interpreter::interpreter_types::Jumps",
                                 Ty.associated,
@@ -1084,7 +1170,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1095,6 +1181,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1106,6 +1193,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -1140,9 +1231,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -1177,6 +1269,23 @@ Module instructions.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ]
+                        ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
@@ -1209,9 +1318,10 @@ Module instructions.
                           |) in
                         let γ1_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
                         let target := M.copy (| γ1_0 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (|
                                 "revm_interpreter::instructions::control::jump_inner",
                                 [],
@@ -1259,7 +1369,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1270,6 +1380,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1281,6 +1392,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -1315,9 +1430,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -1352,6 +1468,23 @@ Module instructions.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 2 ]
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ]
+                        ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
@@ -1396,6 +1529,7 @@ Module instructions.
                                     (M.alloc (|
                                       UnOp.not (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
@@ -1420,9 +1554,10 @@ Module instructions.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_function (|
                                         "revm_interpreter::instructions::control::jump_inner",
                                         [],
@@ -1473,11 +1608,20 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ target :=
+                let~ target : Ty.path "usize" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 4 ]
+                                [ Ty.path "u64" ]
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "ruint::Uint")
@@ -1498,7 +1642,7 @@ Module instructions.
                         fun γ =>
                           ltac:(M.monadic
                             (let x := M.copy (| γ |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1563,9 +1707,10 @@ Module instructions.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let~ _ :=
+                                            let~ _ : Ty.tuple [] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.tuple [],
                                                   M.get_trait_method (|
                                                     "revm_interpreter::interpreter_types::LoopControl",
                                                     Ty.associated,
@@ -1610,7 +1755,7 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1621,6 +1766,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::Jumps",
                                       Ty.associated,
@@ -1649,9 +1795,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -1683,9 +1830,10 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::Jumps",
                         Ty.associated,
@@ -1735,7 +1883,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1746,6 +1894,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1757,6 +1906,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -1791,9 +1944,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -1886,7 +2040,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1897,6 +2051,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
@@ -1924,9 +2079,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -1958,7 +2114,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1969,6 +2125,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -1980,6 +2137,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -2014,9 +2175,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -2048,11 +2210,12 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ idx :=
+                let~ idx : Ty.path "usize" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
                       (M.call_closure (|
+                        Ty.path "u16",
                         M.get_trait_method (|
                           "revm_interpreter::interpreter_types::Immediates",
                           Ty.associated,
@@ -2077,6 +2240,15 @@ Module instructions.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]
+                        ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::EofCodeInfo",
                         Ty.associated,
@@ -2109,7 +2281,7 @@ Module instructions.
                             0
                           |) in
                         let types := M.copy (| γ0_0 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -2121,6 +2293,7 @@ Module instructions.
                                         BinOp.gt (|
                                           BinOp.Wrap.add (|
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::StackTrait",
                                                 Ty.associated,
@@ -2173,9 +2346,10 @@ Module instructions.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.tuple [],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::LoopControl",
                                                 Ty.associated,
@@ -2207,7 +2381,7 @@ Module instructions.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -2218,6 +2392,7 @@ Module instructions.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::SubRoutineStack",
                                               Ty.associated,
@@ -2238,6 +2413,7 @@ Module instructions.
                                               |);
                                               BinOp.Wrap.add (|
                                                 M.call_closure (|
+                                                  Ty.path "usize",
                                                   M.get_trait_method (|
                                                     "revm_interpreter::interpreter_types::Jumps",
                                                     Ty.associated,
@@ -2273,9 +2449,10 @@ Module instructions.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.tuple [],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::LoopControl",
                                                 Ty.associated,
@@ -2307,9 +2484,10 @@ Module instructions.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ pc :=
+                        let~ pc : Ty.path "usize" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 "expect",
@@ -2318,6 +2496,7 @@ Module instructions.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   M.get_trait_method (|
                                     "revm_interpreter::interpreter_types::EofCodeInfo",
                                     Ty.associated,
@@ -2348,9 +2527,10 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_trait_method (|
                                 "revm_interpreter::interpreter_types::Jumps",
                                 Ty.associated,
@@ -2408,7 +2588,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2419,6 +2599,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
@@ -2446,9 +2627,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -2480,7 +2662,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2491,6 +2673,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -2502,6 +2685,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -2536,9 +2723,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -2573,6 +2761,7 @@ Module instructions.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::SubRoutineStack",
                         Ty.associated,
@@ -2604,9 +2793,10 @@ Module instructions.
                             0
                           |) in
                         let jump := M.copy (| γ0_0 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_trait_method (|
                                 "revm_interpreter::interpreter_types::Jumps",
                                 Ty.associated,
@@ -2681,7 +2871,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2692,6 +2882,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
                                       Ty.associated,
@@ -2719,9 +2910,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -2753,7 +2945,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2764,6 +2956,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -2775,6 +2968,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -2809,9 +3006,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -2843,11 +3041,12 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ idx :=
+                let~ idx : Ty.path "usize" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
                       (M.call_closure (|
+                        Ty.path "u16",
                         M.get_trait_method (|
                           "revm_interpreter::interpreter_types::Immediates",
                           Ty.associated,
@@ -2869,9 +3068,17 @@ Module instructions.
                         ]
                       |))
                   |) in
-                let~ types :=
+                let~ types :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -2888,6 +3095,15 @@ Module instructions.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]
+                            ],
                           M.get_trait_method (|
                             "revm_interpreter::interpreter_types::EofCodeInfo",
                             Ty.associated,
@@ -2916,7 +3132,7 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2928,6 +3144,7 @@ Module instructions.
                                 BinOp.gt (|
                                   BinOp.Wrap.add (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::StackTrait",
                                         Ty.associated,
@@ -2977,9 +3194,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -3011,9 +3229,10 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::SubRoutineStack",
                         Ty.associated,
@@ -3036,9 +3255,10 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ pc :=
+                let~ pc : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         "expect",
@@ -3047,6 +3267,7 @@ Module instructions.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           M.get_trait_method (|
                             "revm_interpreter::interpreter_types::EofCodeInfo",
                             Ty.associated,
@@ -3075,9 +3296,10 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::Jumps",
                         Ty.associated,
@@ -3128,7 +3350,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3139,6 +3361,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "record_cost",
@@ -3150,6 +3373,10 @@ Module instructions.
                                         Pointer.Kind.MutRef,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
                                               Ty.associated,
@@ -3184,9 +3411,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -3218,7 +3446,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3229,6 +3457,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
                                       Ty.associated,
@@ -3248,6 +3477,13 @@ Module instructions.
                                         |)
                                       |);
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
@@ -3266,6 +3502,7 @@ Module instructions.
                                         [
                                           BinOp.Wrap.sub (|
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::Jumps",
                                                 Ty.associated,
@@ -3299,9 +3536,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -3384,6 +3622,23 @@ Module instructions.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 2 ]
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ]
+                        ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
                         Ty.associated,
@@ -3418,11 +3673,20 @@ Module instructions.
                         let γ1_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
                         let offset := M.copy (| γ1_0 |) in
                         let len := M.copy (| γ1_1 |) in
-                        let~ len :=
+                        let~ len : Ty.path "usize" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 4 ]
+                                        [ Ty.path "u64" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
@@ -3445,7 +3709,7 @@ Module instructions.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let x := M.copy (| γ |) in
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -3514,9 +3778,10 @@ Module instructions.
                                               M.alloc (|
                                                 M.never_to_any (|
                                                   M.read (|
-                                                    let~ _ :=
+                                                    let~ _ : Ty.tuple [] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.tuple [],
                                                           M.get_trait_method (|
                                                             "revm_interpreter::interpreter_types::LoopControl",
                                                             Ty.associated,
@@ -3563,9 +3828,10 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        let~ output :=
+                        let~ output : Ty.path "alloy_primitives::bytes_::Bytes" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloy_primitives::bytes_::Bytes",
                               M.get_trait_method (|
                                 "core::default::Default",
                                 Ty.path "alloy_primitives::bytes_::Bytes",
@@ -3578,7 +3844,7 @@ Module instructions.
                               []
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -3597,11 +3863,20 @@ Module instructions.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ offset :=
+                                  let~ offset : Ty.path "usize" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 4 ]
+                                                  [ Ty.path "u64" ]
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
@@ -3624,7 +3899,7 @@ Module instructions.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let x := M.copy (| γ |) in
-                                              let~ _ :=
+                                              let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
@@ -3710,9 +3985,10 @@ Module instructions.
                                                         M.alloc (|
                                                           M.never_to_any (|
                                                             M.read (|
-                                                              let~ _ :=
+                                                              let~ _ : Ty.tuple [] :=
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.tuple [],
                                                                     M.get_trait_method (|
                                                                       "revm_interpreter::interpreter_types::LoopControl",
                                                                       Ty.associated,
@@ -3763,9 +4039,10 @@ Module instructions.
                                         ]
                                       |)
                                     |) in
-                                  let~ words_num :=
+                                  let~ words_num : Ty.path "usize" :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_function (|
                                           "revm_interpreter::interpreter::shared_memory::num_words",
                                           [],
@@ -3773,6 +4050,7 @@ Module instructions.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.path "usize",
                                               "saturating_add",
@@ -3784,10 +4062,11 @@ Module instructions.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "revm_interpreter::gas::MemoryExtensionResult",
                                           M.get_associated_function (|
                                             Ty.path "revm_interpreter::gas::Gas",
                                             "record_memory_expansion",
@@ -3799,6 +4078,10 @@ Module instructions.
                                               Pointer.Kind.MutRef,
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [ Ty.path "revm_interpreter::gas::Gas" ],
                                                   M.get_trait_method (|
                                                     "revm_interpreter::interpreter_types::LoopControl",
                                                     Ty.associated,
@@ -3833,9 +4116,10 @@ Module instructions.
                                                 γ,
                                                 "revm_interpreter::gas::MemoryExtensionResult::Extended"
                                               |) in
-                                            let~ _ :=
+                                            let~ _ : Ty.path "bool" :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "bool",
                                                   M.get_trait_method (|
                                                     "revm_interpreter::interpreter_types::MemoryTrait",
                                                     Ty.associated,
@@ -3872,9 +4156,10 @@ Module instructions.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.tuple [],
                                                         M.get_trait_method (|
                                                           "revm_interpreter::interpreter_types::LoopControl",
                                                           Ty.associated,
@@ -3915,90 +4200,111 @@ Module instructions.
                                             M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  M.write (|
-                                    output,
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::Into",
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                        [],
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                        "into",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                            "to_vec",
-                                            [],
+                                  M.alloc (|
+                                    M.write (|
+                                      output,
+                                      M.call_closure (|
+                                        Ty.path "alloy_primitives::bytes_::Bytes",
+                                        M.get_trait_method (|
+                                          "core::convert::Into",
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
                                             []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.associated,
-                                                    [],
-                                                    [],
-                                                    "deref",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "revm_interpreter::interpreter_types::MemoryTrait",
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                          [],
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                          "into",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              "to_vec",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.associated,
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          M.call_closure (|
                                                             Ty.associated,
-                                                            [],
-                                                            [],
-                                                            "slice_len",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.deref (|
-                                                                  M.read (| interpreter |)
-                                                                |),
-                                                                "revm_interpreter::interpreter::Interpreter",
-                                                                "memory"
-                                                              |)
-                                                            |);
-                                                            M.read (| offset |);
-                                                            M.read (| len |)
-                                                          ]
+                                                            M.get_trait_method (|
+                                                              "revm_interpreter::interpreter_types::MemoryTrait",
+                                                              Ty.associated,
+                                                              [],
+                                                              [],
+                                                              "slice_len",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (|
+                                                                    M.read (| interpreter |)
+                                                                  |),
+                                                                  "revm_interpreter::interpreter::Interpreter",
+                                                                  "memory"
+                                                                |)
+                                                              |);
+                                                              M.read (| offset |);
+                                                              M.read (| len |)
+                                                            ]
+                                                          |)
                                                         |)
                                                       |)
-                                                    |)
-                                                  ]
+                                                    ]
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
+                                            ]
+                                          |)
+                                        ]
+                                      |)
                                     |)
                                   |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ gas :=
+                        let~ gas : Ty.path "revm_interpreter::gas::Gas" :=
                           M.copy (|
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "revm_interpreter::gas::Gas" ],
                                 M.get_trait_method (|
                                   "revm_interpreter::interpreter_types::LoopControl",
                                   Ty.associated,
@@ -4021,9 +4327,10 @@ Module instructions.
                               |)
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_trait_method (|
                                 "revm_interpreter::interpreter_types::LoopControl",
                                 Ty.associated,
@@ -4085,9 +4392,10 @@ Module instructions.
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (|
                     "revm_interpreter::instructions::control::return_inner",
                     [],
@@ -4127,7 +4435,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -4138,6 +4446,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "revm_specification::hardfork::SpecId",
                                       "is_enabled_in",
@@ -4146,6 +4455,7 @@ Module instructions.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "revm_specification::hardfork::SpecId",
                                         M.get_trait_method (|
                                           "revm_interpreter::interpreter_types::RuntimeFlag",
                                           Ty.associated,
@@ -4178,9 +4488,10 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
                                         Ty.associated,
@@ -4212,9 +4523,10 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (|
                         "revm_interpreter::instructions::control::return_inner",
                         [],
@@ -4254,9 +4566,10 @@ Module instructions.
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "revm_interpreter::interpreter_types::LoopControl",
                     Ty.associated,
@@ -4306,9 +4619,10 @@ Module instructions.
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "revm_interpreter::interpreter_types::LoopControl",
                     Ty.associated,
@@ -4359,9 +4673,10 @@ Module instructions.
           (let interpreter := M.alloc (| interpreter |) in
           let _host := M.alloc (| _host |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "revm_interpreter::interpreter_types::LoopControl",
                     Ty.associated,

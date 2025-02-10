@@ -33,7 +33,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ current :=
+          let~ current : Ty.path "u32" :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -41,35 +41,39 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
                 "curr"
               |)
             |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "iterators::Fibonacci",
-                "curr"
-              |),
-              M.read (|
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "iterators::Fibonacci",
-                  "next"
-                |)
-              |)
-            |) in
-          let~ _ :=
-            M.write (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "iterators::Fibonacci",
-                "next"
-              |),
-              BinOp.Wrap.add (|
-                M.read (| current |),
+                  "curr"
+                |),
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "iterators::Fibonacci",
                     "next"
+                  |)
+                |)
+              |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "iterators::Fibonacci",
+                  "next"
+                |),
+                BinOp.Wrap.add (|
+                  M.read (| current |),
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "iterators::Fibonacci",
+                      "next"
+                    |)
                   |)
                 |)
               |)
@@ -149,7 +153,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ sequence :=
+        let~ sequence : Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ] :=
           M.alloc (|
             Value.StructRecord
               "core::ops::range::Range"
@@ -158,13 +162,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("end_", Value.Integer IntegerKind.I32 3)
               ]
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -192,13 +198,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -228,6 +236,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -247,6 +256,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "i32" ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -278,13 +291,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -314,6 +329,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -333,6 +349,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "i32" ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -364,13 +384,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -400,6 +422,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -419,6 +442,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "i32" ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -450,13 +477,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -486,6 +515,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -505,6 +535,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "i32" ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -536,13 +570,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -569,11 +605,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.use
             (M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
@@ -599,10 +636,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
@@ -635,13 +673,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let i := M.copy (| γ0_0 |) in
-                                  let~ _ :=
-                                    let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.tuple [],
                                           M.get_function (| "std::io::stdio::_print", [], [] |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::Arguments",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
@@ -674,6 +714,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_display",
@@ -710,13 +751,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -748,11 +791,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.use
             (M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::take::Take")
+                    []
+                    [ Ty.path "iterators::Fibonacci" ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
@@ -767,6 +814,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::take::Take")
+                        []
+                        [ Ty.path "iterators::Fibonacci" ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.path "iterators::Fibonacci",
@@ -778,6 +829,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.call_closure (|
+                          Ty.path "iterators::Fibonacci",
                           M.get_function (| "iterators::fibonacci", [], [] |),
                           []
                         |);
@@ -793,10 +845,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -832,13 +885,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let i := M.copy (| γ0_0 |) in
-                                  let~ _ :=
-                                    let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.tuple [],
                                           M.get_function (| "std::io::stdio::_print", [], [] |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::Arguments",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
@@ -871,6 +926,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_display",
@@ -907,13 +963,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -945,11 +1003,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.use
             (M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::take::Take")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::skip::Skip")
+                        []
+                        [ Ty.path "iterators::Fibonacci" ]
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
@@ -969,6 +1036,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::take::Take")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::skip::Skip")
+                            []
+                            [ Ty.path "iterators::Fibonacci" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -983,6 +1059,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::skip::Skip")
+                            []
+                            [ Ty.path "iterators::Fibonacci" ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.path "iterators::Fibonacci",
@@ -994,6 +1074,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             M.call_closure (|
+                              Ty.path "iterators::Fibonacci",
                               M.get_function (| "iterators::fibonacci", [], [] |),
                               []
                             |);
@@ -1012,10 +1093,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -1056,13 +1138,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let i := M.copy (| γ0_0 |) in
-                                  let~ _ :=
-                                    let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.tuple [],
                                           M.get_function (| "std::io::stdio::_print", [], [] |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::Arguments",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
@@ -1095,6 +1179,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_display",
@@ -1131,7 +1216,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let~ array :=
+        let~ array :
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u32" ] :=
           M.alloc (|
             Value.Array
               [
@@ -1141,13 +1227,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 Value.Integer IntegerKind.U32 7
               ]
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -1180,6 +1268,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -1223,6 +1312,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           (M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
@@ -1234,6 +1324,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                       "iter",
@@ -1251,10 +1342,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (let iter := M.copy (| γ |) in
                   M.loop (|
                     ltac:(M.monadic
-                      (let~ _ :=
+                      (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
@@ -1286,13 +1381,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     0
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
-                                let~ _ :=
-                                  let~ _ :=
+                                let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -1325,6 +1422,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_display",
